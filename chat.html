@@ -52,6 +52,40 @@
 				<label>24:00</label>
 			</div>
 		</div>
+		<div class="mine">
+			<div>
+				<label>Read<br />24:00</label>
+				<span>message. message. message. message. message. message. message. message. message. message. message. message. message. message.</span>
+			</div>
+			<div>
+				<label>Read<br />24:00</label>
+				<span>message. message. message. message. message. message. message.</span>
+			</div>
+		</div>
+		<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=30&h=30" alt="" />
+		<div>
+			<strong>หนาดูนะดี๊</strong>
+			<div>
+				<span>message. message. message. message. message. message. message. message. message. message. message. message. message. message.</span>
+				<label>24:00</label>
+			</div>
+			<div>
+				<span>message. message. message. message. message. message. message.</span>
+				<label>24:00</label>
+			</div>
+		</div>
+		<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=30&h=30" alt="" />
+		<div>
+			<strong>หนาดูนะดี๊</strong>
+			<div>
+				<span>message. message. message. message. message. message. message. message. message. message. message. message. message. message.</span>
+				<label>24:00</label>
+			</div>
+			<div>
+				<span>message. message. message. message. message. message. message.</span>
+				<label>24:00</label>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -60,20 +94,36 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-1 col-xs-2 center">
-				<img src="images/icon-mic.png" alt="" width="100%" />			
+				<span class="glyphicon glyphicon-menu-hamburger"></span>
 			</div>
 			<input type="text" name="message" value="" class="col-md-10 col-xs-8" />
 			<div class="col-md-1 col-xs-2 center">
-				<img src="images/icon-msgoption.png" alt="" width="100%" />
+				<span class="glyphicon glyphicon-edit"></span>
 			</div>
 		</div>
 	</div>
 </div>
 
+
+<div id="chatmenu" class="row-fluid">
+	<div class="col-xs-4">
+		<span class="glyphicon glyphicon-picture"></span>
+	</div>
+	<div class="col-xs-4">
+		<span class="glyphicon glyphicon-picture"></span>
+	</div>
+	<div class="col-xs-4">
+		<span class="glyphicon glyphicon-picture"></span>
+	</div>
+</div>
+
+
 <script>
 $(function() {
+
+	$("#chatmessage").animate({ scrollTop: $('#chatmessage').height()}, 1);
 	
-	border = $('#main-header').height() + $('#chatbox').height() + 20;	
+	border = $('#main-header').height() + $('#chatbox').height() + 40;	
     $(window).resize(function() {
         $('#chatmessage').height($(window).height() - border);
     });
