@@ -75,6 +75,34 @@ a:hover { text-decoration:none; }
 #chatmenu > div:hover { background-color:rgba(0,0,0,0.05); cursor:pointer; }
 #chatmenu > div > span { font-size:40px; }
 
+#freecall-bg { float:left; display:inline-block; width:100%; height:100vh; background-position:50% 50%; background-size:cover; position:fixed; top:0; left:0; z-index:0; opacity:1; }
+#freecall { float:left; display:inline-block; width:100%; height:100vh; background-position:50% 50%; background-size:cover; position:relative; z-index:1; background-color:rgba(0,0,0,0.9); }
+#freecall .container { max-width:300px; text-align:center; }
+#freecall .container .person { margin-top:5vh; color:#fff; }
+#freecall .container .person img { margin-bottom:20px; }
+#freecall .container .person strong { font-size:30px; line-height:40px; }
+#freecall .container .menu { margin-top:20px; }
+#freecall .container .menu span { width:64px; line-height:60px; font-size:40px; border:2px solid #fff; border-radius:50%; cursor:pointer; background-color:rgba(255,255,255,0.1); color:#fff; }
+#freecall .container .menu span:hover { opacity:0.8; }
+#freecall .container .menu button { width:100%; line-height:30px; margin-top:20px; font-size:20px; }
+#freecall  .menu-video { width:100%; margin:0; position:fixed; bottom:5vh; left:0; }
+#freecall  .menu-video .container { width:100%; max-width:300px; }
+#freecall  .menu-video span { width:64px; line-height:60px; font-size:40px; border:2px solid #fff; border-radius:50%; cursor:pointer; background-color:rgba(255,255,255,0.1); color:#fff; }
+#freecall  .menu-video span:hover { opacity:0.8; }
+#freecall  .menu-video button { width:100%; line-height:30px; margin-top:20px; font-size:20px; }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
