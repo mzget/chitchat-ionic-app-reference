@@ -48,47 +48,48 @@
 					</div>
 				</div>
 			</form>
-			
+			<a href="list.html">Go to list</a>
 		</div>
 	</div>
 </div>
 
-
+<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
 <script type="text/javascript" src="js/cordova.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript">
-	app.initialize();
+app.initialize();
+
+$('#btn-login').click(function(event){
+	event.preventDefault();
 	
-	$('#btn-login').click(function(event){
-		event.preventDefault();
-		
-		$('input').attr('readonly',true);
-		email = $('form input[name="email"]').val();
-		password = $('form input[name="password"]').val();
-		
-		jQuery.support.cors = true;
-		$.ajax({
-			url: "http://stalk.animation-genius.com/index.php",
-			data: { "r":"api/login", "username":email, "password":password },
-			type: "GET",
-			timeout: 30000,
-			dataType: "text",
-			success: function(data) {
-				//alert(data);
-				if(data == 'true')
-				{
-					window.location = "list.html";
-				}else{
-					$('.message').css('opacity','1').delay(1000).animate({'opacity':'0'}, 1000, function(){
-						$('.form-control').attr('readonly',false);					
-					});
-				}
-			},
-			error: function(jqXHR, textStatus, ex) {
-				alert(textStatus + "," + ex + "," + jqXHR.responseText);
+	$('input').attr('readonly',true);
+	email = $('form input[name="email"]').val();
+	password = $('form input[name="password"]').val();
+	
+	jQuery.support.cors = true;
+	$.ajax({
+		url: "http://stalk.animation-genius.com/index.php",
+		data: { "r":"api/login", "username":email, "password":password },
+		type: "GET",
+		timeout: 30000,
+		dataType: "text",
+		success: function(data) {
+			//alert(data);
+			if(data == 'true')
+			{
+				//$.cookie('email', email, { expires:1 }); //Generate cookie
+				window.location = "list.html";
+			}else{
+				$('.message').css('opacity','1').delay(1000).animate({'opacity':'0'}, 1000, function(){
+					$('.form-control').attr('readonly',false);					
+				});
 			}
-		});
+		},
+		error: function(jqXHR, textStatus, ex) {
+			alert(textStatus + "," + ex + "," + jqXHR.responseText);
+		}
 	});
+});
 </script>
 </body>
 </html>
