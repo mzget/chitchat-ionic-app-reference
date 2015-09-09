@@ -6,6 +6,7 @@ a:hover { text-decoration:none; }
 * { font-size:14px; line-height:22px; }
 
 .center { text-align:center; }
+.right { text-align:right; }
 .text-white { color:#fff; }
 
 #login { height:100vh; 
@@ -18,7 +19,7 @@ a:hover { text-decoration:none; }
 #login .message { line-height:30px; margin:5px 0 0; font-weight:normal; opacity:0; color:#f00; }
 
 #main-header  { margin:0 0 0 0; box-shadow:0 1px 0 0 rgba(0,0,0,0.1); background-color:#519cd3; position:relative; z-index:101; }
-#main-header .title { float:left; display:inline; margin:10px 0 0 5%; color:#fff; font-size:150%; line-height:120%; }
+#main-header .title { float:left; display:inline; margin:10px 0 0 4%; color:#fff; font-size:150%; line-height:120%; }
 #main-header .menu { float:right; display:inline; font-size:150%; }
 #main-header .menu > * { float:left; display:inline; padding:10px; color:#fff; }
 #main-header .menu > *:hover { background-color:rgba(0,0,0,0.1); }
@@ -31,12 +32,22 @@ a:hover { text-decoration:none; }
 #main-menu .row > *.active { box-shadow:0 1px 0 0 rgba(255,255,0,0.4); box-shadow:0 -1px 0 0 rgba(255,255,0,0.4) inset; }
 
 #list { display:inline-block; background-color:rgba(255,255,255,0.9); overflow-y:scroll; }
+#list  .container-fluid { padding:0; }
 #list .row-fluid { overflow:hidden; }
 #list .row { padding:5px 0 5px 5%; border-bottom:1px solid rgba(0,0,0,0.1); overflow:hidden; }
 #list .row:hover { background-color:rgba(0,0,0,0.03); cursor:pointer; }
-#list .row img { display:inline-block; margin:0 10px 0 0; border-radius:50%; vertical-align:middle; }
-#list .title { color:#888; background-color:rgba(255,255,255,0.95) }
+#list .row img { display:inline-block; margin:0 10px 0 10px; border-radius:50%; vertical-align:middle; }
+#list .title { color:#888; background-color:rgba(255,255,255,0.95); text-indent:10px; }
 #list .title span { color:#aaa; }
+
+#list-chat { display:inline-block; background-color:rgba(255,255,255,0.9); overflow-y:scroll; }
+#list-chat  .container-fluid { padding:0; }
+#list-chat .row-fluid { overflow:hidden; }
+#list-chat .row { padding:5px 0 5px 5%; border-bottom:1px solid rgba(0,0,0,0.1); overflow:hidden; }
+#list-chat .row:hover { background-color:rgba(0,0,0,0.03); cursor:pointer; }
+#list-chat .row img { display:inline-block; margin:0 10px 0 10px; border-radius:50%; vertical-align:middle; }
+#list-chat .person .pull-left > * { float:left; }
+#list-chat .person .pull-right { margin-right:20px; }
 
 #popup-bg { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:-100%; background-color:rgba(0,0,0,0.9); z-index:102; }
 #popup-detail  { display:inline-table; width:80%; height:auto; position:fixed; top:0; left:-100%; z-index:103; }
