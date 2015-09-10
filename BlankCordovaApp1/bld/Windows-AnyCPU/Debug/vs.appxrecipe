@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>ADMIN-PC</Machine>
+    <WindowsUser>Admin</WindowsUser>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetOsVersion>10.0</TargetOsVersion>
+    <TargetOsDescription>Windows 10.0</TargetOsDescription>
+    <SolutionConfiguration>debug|anycpu</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>eeba4b70-5635-11e5-a37e-394e41814bbc</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\build\windows\bld\</IntermediateOutputPath>
+    <RegisteredManifestChecksum>80F32813CF83383433BA648C6CF6C03F5A34AD0F03FDF9C5195388D79CDB796F</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>com.phonegap.helloworld_1.0.0.0_neutral__h35559jr9hy9m</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>com.phonegap.helloworld_h35559jr9hy9m!com.phonegap.helloworld</RegisteredUserModeAppID>
+    <RegisteredPackageID>com.phonegap.helloworld</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=Apache Cordova Team</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.0</RegisteredVersion>
+    <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\build\windows\debug\anycpu\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2015-09-09T12:09:42.681</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\SplashScreen.scale-100.png">
+      <PackagePath>images\SplashScreen.scale-100.png</PackagePath>
+      <Modified>2015-09-09T03:55:02.764</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square150x150Logo.scale-100.png">
+      <PackagePath>images\Square150x150Logo.scale-100.png</PackagePath>
+      <Modified>2015-09-09T03:55:02.713</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square30x30Logo.scale-100.png">
+      <PackagePath>images\Square30x30Logo.scale-100.png</PackagePath>
+      <Modified>2015-09-09T03:55:02.668</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square310x310Logo.scale-100.png">
+      <PackagePath>images\Square310x310Logo.scale-100.png</PackagePath>
+      <Modified>2015-09-09T03:55:02.627</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square44x44Logo.scale-100.png">
+      <PackagePath>images\Square44x44Logo.scale-100.png</PackagePath>
+      <Modified>2015-09-09T03:55:02.752</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square70x70Logo.scale-100.png">
+      <PackagePath>images\Square70x70Logo.scale-100.png</PackagePath>
+      <Modified>2015-09-09T03:55:02.615</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square71x71Logo.scale-100.png">
+      <PackagePath>images\Square71x71Logo.scale-100.png</PackagePath>
+      <Modified>2015-09-09T03:55:02.739</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\StoreLogo.scale-100.png">
+      <PackagePath>images\StoreLogo.scale-100.png</PackagePath>
+      <Modified>2015-09-09T03:55:02.697</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Wide310x150Logo.scale-100.png">
+      <PackagePath>images\Wide310x150Logo.scale-100.png</PackagePath>
+      <Modified>2015-09-09T03:55:02.727</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fav.png">
+      <PackagePath>www\fav.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.223</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\favicon.ico.png">
+      <PackagePath>www\favicon.ico.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.224</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-addmember.png">
+      <PackagePath>www\images\icon-addmember.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.308</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-chat.png">
+      <PackagePath>www\images\icon-chat.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.310</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-mic.png">
+      <PackagePath>www\images\icon-mic.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.311</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-more.png">
+      <PackagePath>www\images\icon-more.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.312</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-msgoption.png">
+      <PackagePath>www\images\icon-msgoption.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.314</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-option.png">
+      <PackagePath>www\images\icon-option.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.315</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-search.png">
+      <PackagePath>www\images\icon-search.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.317</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-timeline.png">
+      <PackagePath>www\images\icon-timeline.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.318</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-user.png">
+      <PackagePath>www\images\icon-user.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.319</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\logo-main.png">
+      <PackagePath>www\images\logo-main.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.321</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\img\logo.png">
+      <PackagePath>www\img\logo.png</PackagePath>
+      <Modified>2015-09-09T12:09:40.324</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\WinJS\js\base.js">
+      <PackagePath>WinJS\js\base.js</PackagePath>
+      <Modified>2015-09-09T03:55:13.894</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova-js-src\exec.js">
+      <PackagePath>www\cordova-js-src\exec.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.875</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova-js-src\platform.js">
+      <PackagePath>www\cordova-js-src\platform.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.876</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova.js">
+      <PackagePath>www\cordova.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.617</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova_plugins.js">
+      <PackagePath>www\cordova_plugins.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.880</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\angular.min.js">
+      <PackagePath>www\js\angular.min.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.929</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\bootstrap.js">
+      <PackagePath>www\js\bootstrap.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.940</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\bootstrap.min.js">
+      <PackagePath>www\js\bootstrap.min.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.951</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\index.js">
+      <PackagePath>www\js\index.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.952</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery-2.1.4.intellisense.js">
+      <PackagePath>www\js\jquery-2.1.4.intellisense.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.982</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery-2.1.4.js">
+      <PackagePath>www\js\jquery-2.1.4.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.006</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery-2.1.4.min.js">
+      <PackagePath>www\js\jquery-2.1.4.min.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.025</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery.min.js">
+      <PackagePath>www\js\jquery.min.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.045</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\build\build.js">
+      <PackagePath>www\js\local\boot\build\build.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.050</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\component\emitter\master\index.js">
+      <PackagePath>www\js\local\boot\components\component\emitter\master\index.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.057</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\netease\pomelo-protocol\master\lib\protocol.js">
+      <PackagePath>www\js\local\boot\components\netease\pomelo-protocol\master\lib\protocol.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.063</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\pomelonode\pomelo-jsclient-websocket\master\lib\pomelo-client.js">
+      <PackagePath>www\js\local\boot\components\pomelonode\pomelo-jsclient-websocket\master\lib\pomelo-client.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.069</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\pomelonode\pomelo-protobuf\master\lib\client\protobuf.js">
+      <PackagePath>www\js\local\boot\components\pomelonode\pomelo-protobuf\master\lib\client\protobuf.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.078</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\index.js">
+      <PackagePath>www\js\local\boot\index.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.081</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\main.js">
+      <PackagePath>www\js\main.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.082</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\npm.js">
+      <PackagePath>www\js\npm.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.083</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\build\build.js">
+      <PackagePath>www\js\pomelo\build\build.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.101</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\lib\index.js">
+      <PackagePath>www\js\pomelo\lib\index.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.104</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\lib\pomelo-client.js">
+      <PackagePath>www\js\pomelo\lib\pomelo-client.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.105</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\lib\socket.io.js">
+      <PackagePath>www\js\pomelo\lib\socket.io.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.122</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\require.js">
+      <PackagePath>www\js\require.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.133</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\server\serverImplemented.js">
+      <PackagePath>www\js\server\serverImplemented.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.134</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\appBundle.js">
+      <PackagePath>www\scripts\appBundle.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.137</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\platformOverrides.js">
+      <PackagePath>www\scripts\platformOverrides.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.602</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\winstore-jscompat.js">
+      <PackagePath>www\scripts\winstore-jscompat.js</PackagePath>
+      <Modified>2015-09-09T12:09:40.603</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\helper.js">
+      <PackagePath>www\spec\helper.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.139</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\index.js">
+      <PackagePath>www\spec\index.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.140</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\jasmine-html.js">
+      <PackagePath>www\spec\lib\jasmine-1.2.0\jasmine-html.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.146</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\jasmine.js">
+      <PackagePath>www\spec\lib\jasmine-1.2.0\jasmine.js</PackagePath>
+      <Modified>2015-09-09T12:09:41.160</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\chat.html">
+      <PackagePath>www\chat.html</PackagePath>
+      <Modified>2015-09-09T12:09:40.186</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\index.html">
+      <PackagePath>www\index.html</PackagePath>
+      <Modified>2015-09-09T12:09:40.325</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\list.html">
+      <PackagePath>www\list.html</PackagePath>
+      <Modified>2015-09-09T12:09:41.135</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\login.html">
+      <PackagePath>www\login.html</PackagePath>
+      <Modified>2015-09-09T12:09:41.136</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec.html">
+      <PackagePath>www\spec.html</PackagePath>
+      <Modified>2015-09-09T12:09:41.161</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap-theme.css">
+      <PackagePath>www\css\bootstrap-theme.css</PackagePath>
+      <Modified>2015-09-09T12:09:40.885</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap-theme.min.css">
+      <PackagePath>www\css\bootstrap-theme.min.css</PackagePath>
+      <Modified>2015-09-09T12:09:40.889</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap.css">
+      <PackagePath>www\css\bootstrap.css</PackagePath>
+      <Modified>2015-09-09T12:09:40.895</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap.min.css">
+      <PackagePath>www\css\bootstrap.min.css</PackagePath>
+      <Modified>2015-09-09T12:09:40.901</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\font-awesome.min.css">
+      <PackagePath>www\css\font-awesome.min.css</PackagePath>
+      <Modified>2015-09-09T12:09:40.219</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\index.css">
+      <PackagePath>www\css\index.css</PackagePath>
+      <Modified>2015-09-09T12:09:40.903</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\jasmine.css">
+      <PackagePath>www\spec\lib\jasmine-1.2.0\jasmine.css</PackagePath>
+      <Modified>2015-09-09T12:09:41.148</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\style.css">
+      <PackagePath>www\style.css</PackagePath>
+      <Modified>2015-09-09T12:09:41.162</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap-theme.css.map">
+      <PackagePath>www\css\bootstrap-theme.css.map</PackagePath>
+      <Modified>2015-09-09T12:09:40.196</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap.css.map">
+      <PackagePath>www\css\bootstrap.css.map</PackagePath>
+      <Modified>2015-09-09T12:09:40.209</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery-2.1.4.min.map">
+      <PackagePath>www\js\jquery-2.1.4.min.map</PackagePath>
+      <Modified>2015-09-09T12:09:40.442</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\appBundle.js.map">
+      <PackagePath>www\scripts\appBundle.js.map</PackagePath>
+      <Modified>2015-09-09T12:09:40.570</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.eot">
+      <PackagePath>www\fonts\fontawesome-webfont.eot</PackagePath>
+      <Modified>2015-09-09T12:09:40.255</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.eot">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.eot</PackagePath>
+      <Modified>2015-09-09T12:09:40.289</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.svg">
+      <PackagePath>www\fonts\fontawesome-webfont.svg</PackagePath>
+      <Modified>2015-09-09T12:09:40.265</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.svg">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.svg</PackagePath>
+      <Modified>2015-09-09T12:09:40.294</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.ttf">
+      <PackagePath>www\fonts\fontawesome-webfont.ttf</PackagePath>
+      <Modified>2015-09-09T12:09:40.269</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.ttf">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.ttf</PackagePath>
+      <Modified>2015-09-09T12:09:40.298</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.woff">
+      <PackagePath>www\fonts\fontawesome-webfont.woff</PackagePath>
+      <Modified>2015-09-09T12:09:40.273</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.woff">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.woff</PackagePath>
+      <Modified>2015-09-09T12:09:40.302</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.woff2">
+      <PackagePath>www\fonts\fontawesome-webfont.woff2</PackagePath>
+      <Modified>2015-09-09T12:09:40.276</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.woff2">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.woff2</PackagePath>
+      <Modified>2015-09-09T12:09:40.306</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\FontAwesome.otf">
+      <PackagePath>www\fonts\FontAwesome.otf</PackagePath>
+      <Modified>2015-09-09T12:09:40.280</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\component.json">
+      <PackagePath>www\js\local\boot\component.json</PackagePath>
+      <Modified>2015-09-09T12:09:41.051</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\component\emitter\master\component.json">
+      <PackagePath>www\js\local\boot\components\component\emitter\master\component.json</PackagePath>
+      <Modified>2015-09-09T12:09:41.052</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\netease\pomelo-protocol\master\component.json">
+      <PackagePath>www\js\local\boot\components\netease\pomelo-protocol\master\component.json</PackagePath>
+      <Modified>2015-09-09T12:09:41.058</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\pomelonode\pomelo-jsclient-websocket\master\component.json">
+      <PackagePath>www\js\local\boot\components\pomelonode\pomelo-jsclient-websocket\master\component.json</PackagePath>
+      <Modified>2015-09-09T12:09:41.064</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\pomelonode\pomelo-protobuf\master\component.json">
+      <PackagePath>www\js\local\boot\components\pomelonode\pomelo-protobuf\master\component.json</PackagePath>
+      <Modified>2015-09-09T12:09:41.073</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\component.json">
+      <PackagePath>www\js\pomelo\component.json</PackagePath>
+      <Modified>2015-09-09T12:09:41.102</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\main.ts">
+      <PackagePath>www\js\main.ts</PackagePath>
+      <Modified>2015-09-09T12:09:40.502</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\server\serverImplemented.ts">
+      <PackagePath>www\js\server\serverImplemented.ts</PackagePath>
+      <Modified>2015-09-09T12:09:40.562</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\README.md">
+      <PackagePath>www\js\pomelo\README.md</PackagePath>
+      <Modified>2015-09-09T12:09:40.545</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\MIT.LICENSE">
+      <PackagePath>www\spec\lib\jasmine-1.2.0\MIT.LICENSE</PackagePath>
+      <Modified>2015-09-09T12:09:40.595</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\config.xml">
+      <PackagePath>config.xml</PackagePath>
+      <Modified>2015-09-09T12:09:42.267</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\build\windows\debug\anycpu\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2015-09-09T12:09:42.520</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
