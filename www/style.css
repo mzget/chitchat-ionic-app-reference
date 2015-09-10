@@ -29,12 +29,12 @@ a:hover { text-decoration:none; }
 #main-menu .row > * { padding:10px 0; color:#fff; }
 #main-menu .row > * img { max-width:30px; }
 #main-menu .row > *:hover { background-color:rgba(0,0,0,0.1); cursor:pointer; }
-#main-menu .row > *.active { box-shadow:0 1px 0 0 rgba(255,255,0,0.4); box-shadow:0 -1px 0 0 rgba(255,255,0,0.4) inset; }
+#main-menu .row > *.active { box-shadow:0 1px 0 0 rgba(255,255,0,0.4), 0 -3px 0 0 rgba(255,255,0,0.4) inset; }
 
 #list { display:inline-block; background-color:rgba(255,255,255,0.9); overflow-y:scroll; }
 #list  .container-fluid { padding:0; }
 #list .row-fluid { overflow:hidden; }
-#list .row { padding:5px 0 5px 5%; border-bottom:1px solid rgba(0,0,0,0.1); overflow:hidden; }
+#list .row { margin:0; padding:5px 0 5px 0; border-bottom:1px solid rgba(0,0,0,0.1); overflow:hidden; }
 #list .row:hover { background-color:rgba(0,0,0,0.03); cursor:pointer; }
 #list .row img { display:inline-block; margin:0 10px 0 10px; border-radius:50%; vertical-align:middle; }
 #list .title { color:#888; background-color:rgba(255,255,255,0.95); text-indent:10px; }
@@ -43,11 +43,24 @@ a:hover { text-decoration:none; }
 #list-chat { display:inline-block; background-color:rgba(255,255,255,0.9); overflow-y:scroll; }
 #list-chat  .container-fluid { padding:0; }
 #list-chat .row-fluid { overflow:hidden; }
-#list-chat .row { padding:5px 0 5px 5%; border-bottom:1px solid rgba(0,0,0,0.1); overflow:hidden; }
+#list-chat .row { padding:5px 0 5px 0; border-bottom:1px solid rgba(0,0,0,0.1); overflow:hidden; }
 #list-chat .row:hover { background-color:rgba(0,0,0,0.03); cursor:pointer; }
 #list-chat .row img { display:inline-block; margin:0 10px 0 10px; border-radius:50%; vertical-align:middle; }
-#list-chat .person .pull-left > * { float:left; }
+#list-chat .person { margin:0; padding:10px 0; }
+#list-chat .person .pull-left { display:table; }
+#list-chat .person .pull-left > * { display:table-cell; vertical-align:top; }
+#list-chat .person .pull-left > img { width:50px; margin:0 10px; }
+#list-chat .person .pull-left > div > * { float:left; display:inline; }
+#list-chat .person .pull-left > div strong { line-height:14px; }
+#list-chat .person .pull-left > div .receive { margin:0 0 0 5px; padding:0 5px; font-size:10px; line-height:14px; background-color:rgba(0,0,0,0.3); border-radius:5px; color:#fff; }
+#list-chat .person .pull-left > div .message { white-space:nowrap; line-height:10px; }
+#list-chat .person .pull-left > div .date { white-space:nowrap; font-size:10px; line-height:4px; color:#aaa; }
 #list-chat .person .pull-right { margin-right:20px; }
+
+#listmore { display:block; height:0; overflow:hidden; position:fixed; top:113px; left:0; z-index:100; background-color:#fff; box-shadow:0 1px 1px 1px rgba(0,0,0,0.2); }
+#listmore > div { text-align:center; padding:10px 0 10px; }
+#listmore > div:hover { background-color:rgba(0,0,0,0.05); cursor:pointer; }
+#listmore > div > span { font-size:30px; }
 
 #popup-bg { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:-100%; background-color:rgba(0,0,0,0.9); z-index:102; }
 #popup-detail  { display:inline-table; width:80%; height:auto; position:fixed; top:0; left:-100%; z-index:103; }

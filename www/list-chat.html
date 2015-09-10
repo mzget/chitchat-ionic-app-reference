@@ -37,16 +37,16 @@
 <div id="main-menu" class="row-fluid">
 	<div class="container-fluid">
 		<div class="row">
-			<a class="col-xs-3 active">
+			<a href="list.html" class="col-xs-3">
 				<img src="images/icon-user.png" alt="" width="100%" /><br />FRIEND	
 			</a>
-			<a href="chat.html" class="col-xs-3">
+			<a href="list-chat.html" class="col-xs-3 active">
 				<img src="images/icon-chat.png" alt="" width="100%" /><br />CHAT
 			</a>
-			<a class="col-xs-3">
+			<a href="timeline.html" class="col-xs-3">
 				<img src="images/icon-timeline.png" alt="" width="100%" /><br />TIMELINE	
 			</a>
-			<a class="col-xs-3">
+			<a id="btn-listmore" href="#" class="col-xs-3">
 				<img src="images/icon-more.png" alt="" width="100%" /><br />MORE	
 			</a>
 		</div>
@@ -56,22 +56,49 @@
 <div id="list-chat" class="row-fluid">
 	<div class="container-fluid">
 	
-		<div id="list_profile" class="row-fluid">
-			<div class="row person">
-				<div class="pull-left">
-					<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=50&h=50" alt="" /> 
-					<div>
-						ATOMX<br />
-						<span class="message">message message message.</span>
-					</div>
+		<div class="row person">
+			<div class="pull-left">
+				<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=50&h=50" alt="" /> 
+				<div>
+					<strong>ATOMX</strong> <span class="receive">+99</span><br />
+					<span class="message">message message message. message message message. message message message.</span><br />
+					<span class="date">31 ก.พ. 2017</span>
 				</div>
-				<div class="pull-right right">
-					31 ก.พ. 2017<br />
-					<label>+99</label>
+			</div>
+		</div>
+		<div class="row person">
+			<div class="pull-left">
+				<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=50&h=50" alt="" /> 
+				<div>
+					<strong>ATOMX</strong> <span class="receive">+99</span><br />
+					<span class="message">message message message. message message message. message message message.</span><br />
+					<span class="date">31 ก.พ. 2017</span>
+				</div>
+			</div>
+		</div>
+		<div class="row person">
+			<div class="pull-left">
+				<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=50&h=50" alt="" /> 
+				<div>
+					<strong>ATOMX</strong> <span class="receive">+99</span><br />
+					<span class="message">message message message. message message message. message message message.</span><br />
+					<span class="date">31 ก.พ. 2017</span>
 				</div>
 			</div>
 		</div>
 		
+	</div>
+</div>
+
+<div id="listmore" class="row-fluid">
+	<div class="col-xs-4">
+		<span class="fa fa-group"></span><br /><label>Create group</label>
+	</div>
+	<div class="col-xs-4">
+		<span class="fa fa-image"></span><br /><label>Theme</label>
+	</div>
+	<div class="col-xs-4">
+		<span class="fa fa-sign-out"></span><br /><label>Log out</label>
 	</div>
 </div>
 			
@@ -94,19 +121,9 @@ $(function() {
 	
 });
 
-$(document).ready(function(){
-	allmessage = document.getElementsByClassName("message");	
-	sizeallmessage = allmessage.length;
-	for(i=0; i<sizeallmessage; i++)
-	{		
-		text = allmessage[i].innerText;
-		if( text.length >= 10 )
-			allmessage[i].innerHTML = text.substr(0, 10) + ' ...';
-	}
-});
-
 </script>
 
+<script src="js/theme.js"></script>
 
 </body>
 </html>
