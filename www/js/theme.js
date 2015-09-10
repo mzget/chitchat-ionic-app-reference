@@ -45,3 +45,38 @@ $('#btn-listmore').click(function(){
 		$('#listmore').animate({'height':'79px'}, 200);			
 	}
 });
+
+
+
+
+//Open Chat Menu
+$('#chatbox_menu').click(function(){
+	chatmenu_top = parseInt($('#chatmenu').css('top'));
+	if( chatmenu_top == -300 )
+	{
+		$('#chatmenu').animate({'top':'41px'});
+		$("#chatmessage").css({'opacity':'0.8'});
+		$("#chatbox").css({'opacity':'0.8'});
+	}
+});
+
+
+//Close Chat Menu
+$("#chatmessage").click(function(){
+	chatmenu_top = parseInt($('#chatmenu').css('top'));
+	if( chatmenu_top == 41 )
+	{
+		$('#chatmenu').animate({'top':'-300px'}, 200);		
+		$("#chatmessage").css({'opacity':'1'});
+		$("#chatbox").css({'opacity':'1'});
+	}
+});
+$("#chatbox").click(function(){
+	chatmenu_top = parseInt($('#chatmenu').css('top'));
+	if( chatmenu_top == 41 )
+	{
+		$('#chatmenu').animate({'top':'-300px'}, 200);		
+		$("#chatmessage").css({'opacity':'1'});
+		$("#chatbox").css({'opacity':'1'});
+	}
+});
