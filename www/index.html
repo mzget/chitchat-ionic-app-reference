@@ -53,6 +53,8 @@
 	</div>
 </div>
 
+
+<script type="text/javascript" src="js/md5.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.min.js"></script>
 <script type="text/javascript" src="js/cordova.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
@@ -64,7 +66,7 @@ $('#btn-login').click(function(event){
 	
 	$('input').attr('readonly',true);
 	email = $('form input[name="email"]').val();
-	password = $('form input[name="password"]').val();
+	password = CryptoJS.MD5( $('form input[name="password"]').val() );
 	
 	jQuery.support.cors = true;
 	$.ajax({
