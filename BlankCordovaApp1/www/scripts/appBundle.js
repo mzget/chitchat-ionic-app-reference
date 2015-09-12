@@ -38,11 +38,6 @@ requirejs.config({
 // Directly call the RequireJS require() function and from here
 // TypeScript's external module support takes over
 //require(["../../scripts/server/serverImplemented"]); 
-var pomelo = null;
-var client = require(['../js/pomelo/pomeloclient'], function (obj) {
-    console.log(obj);
-    pomelo = obj;
-});
 //require(['pomelo-client'], function (photoService) {
 //    var photoHtml = "";
 //photoService.Init().then(function (images) {
@@ -59,6 +54,13 @@ var client = require(['../js/pomelo/pomeloclient'], function (obj) {
 //    })
 //});
 //});
+var pomelo;
+var username = "";
+var password = "";
+var getPomelo = require(['../js/pomelo/pomeloclient'], function (obj) {
+    console.log(obj);
+    pomelo = obj;
+});
 var ChatServer;
 (function (ChatServer) {
     var AutheData = (function () {
@@ -70,12 +72,24 @@ var ChatServer;
         function ServerImplemented() {
             this.host = "git.animation-genius.com";
             this.port = 3014;
+            console.log("pomelo: ", pomelo);
+            username = localStorage.getItem("username");
+            password = localStorage.getItem("password");
+            var authen = localStorage.getItem("authen");
+            if (authen !== null) {
+                this.authenData = JSON.parse(authen);
+            }
+            else {
+                this.authenData = new AutheData();
+            }
         }
         ServerImplemented.prototype.getClient = function () {
-            if (pomelo !== null)
+            var self = this;
+            if (pomelo !== null) {
                 return pomelo;
+            }
             else {
-                console.log("disconnect Event");
+                console.warn("disconnect Event");
             }
         };
         ServerImplemented.prototype.init = function () { };
@@ -87,6 +101,7 @@ var ChatServer;
         };
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
             console.log("connecting to: ", _host, _port);
+            var self = this;
             pomelo.init({ host: _host, port: _port }, function (socket) {
                 console.log("client.init : ", socket);
                 callback();
@@ -102,17 +117,19 @@ var ChatServer;
         /// <summary>
         /// Connect to gate server then get query of connector server.
         /// </summary>
-        ServerImplemented.prototype.logIn = function (username, passwordHash, callback) {
+        ServerImplemented.prototype.logIn = function (_username, passwordHash, callback) {
             var self = this;
             require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
                 var hash = CryptoJS.MD5(passwordHash);
                 var md = hash.toString(CryptoJS.enc.Hex);
-                self.username = username;
-                self.password = md;
+                username = _username;
+                password = md;
+                localStorage.setItem("username", username);
+                localStorage.setItem("password", password);
                 if (pomelo !== null) {
                     self.connectSocketServer(self.host, self.port, function () {
                         //if (!IsLoginSuccess) {       
-                        var msg = { uid: self.username };
+                        var msg = { uid: username };
                         pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
                             console.log("QueryConnectorServ", result);
                             if (result.code === 200) {
@@ -131,13 +148,14 @@ var ChatServer;
         //<!-- Authentication. request for token sign.
         ServerImplemented.prototype.connectConnectorServer = function (callback) {
             var self = this;
-            var msg = { username: this.username, password: this.password };
+            var msg = { username: username, password: password };
+            console.log("login:", msg.username, msg.password);
             //if (SpartanTalkApplication.getSharedAppData().contains(INSTALLATION_ID)) {
             //    msg.put(INSTALLATION_ID, SpartanTalkApplication.getSharedAppData().getString(INSTALLATION_ID, ""));
             //}
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, function (res) {
-                console.log("login: ", res, msg);
+                console.log("login: ", JSON.stringify(res));
                 if (res.code === 500) {
                     if (callback != null) {
                         callback(res.message, null);
@@ -145,9 +163,9 @@ var ChatServer;
                     pomelo.disconnect();
                 }
                 else {
-                    self.authenData = new AutheData();
                     self.authenData.userId = res.uid;
                     self.authenData.token = res.token;
+                    localStorage.setItem("authen", JSON.stringify(self.authenData));
                     if (callback != null) {
                         callback(null, res);
                     }
@@ -155,7 +173,7 @@ var ChatServer;
             });
         };
         ServerImplemented.prototype.UpdateUserProfile = function (myId, profileFields, callback) {
-            profileFields["token"] = ServerImplemented.prototype.authenData.token;
+            profileFields["token"] = this.authenData.token;
             profileFields["_id"] = myId;
             pomelo.request("auth.profileHandler.profileUpdate", profileFields, function (result) {
                 if (callback != null) {
@@ -165,7 +183,7 @@ var ChatServer;
         };
         ServerImplemented.prototype.ProfileImageChanged = function (userId, path, callback) {
             var msg = {};
-            msg["token"] = ServerImplemented.prototype.authenData.token;
+            msg["token"] = this.authenData.token;
             msg["userId"] = userId;
             msg["path"] = path;
             pomelo.request("auth.profileHandler.profileImageChanged", msg, function (result) {
@@ -177,16 +195,16 @@ var ChatServer;
         ServerImplemented.prototype.GetLastAccessRoomsInfo = function (userId) {
             var msg = {};
             msg["id"] = userId;
-            msg["token"] = ServerImplemented.prototype.authenData.token;
+            msg["token"] = this.authenData.token;
             //<!-- Get user info.
             pomelo.request("connector.entryHandler.getLastAccessRooms", msg, function (result) {
             });
         };
         ServerImplemented.prototype.GetMe = function (callback) {
             var msg = {};
-            msg["username"] = ServerImplemented.prototype.username;
-            msg["password"] = ServerImplemented.prototype.password;
-            msg["token"] = ServerImplemented.prototype.authenData.token;
+            msg["username"] = username;
+            msg["password"] = password;
+            msg["token"] = this.authenData.token;
             //<!-- Get user info.
             pomelo.request("connector.entryHandler.getMe", msg, function (result) {
                 console.log("getMe: ", result);

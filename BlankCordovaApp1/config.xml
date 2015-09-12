@@ -81,4 +81,7 @@
   <preference name="InAppBrowserStorageEnabled" value="False" />
   <preference name="SuppressesIncrementalRendering" value="True" />
   <preference name="windows-target-version" value="10.0" />
+  <vs:platformSpecificValues xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps">
+    <vs:platformSpecificWidget platformName="windows" version="0.0.0.1" />
+  </vs:platformSpecificValues>
 </widget>

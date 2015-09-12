@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
 <link rel="stylesheet" href="css/font-awesome.min.css" />
 <link rel="stylesheet" href="style.css" />
-<script src="js/bootstrap.min.js"></script>
 <script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 
 </head>
 
@@ -193,22 +193,35 @@
 	</div>
 </div>
 
-
+	<script src="js/require.js" data-main="scripts/appBundle"></script>
+	<script src="scripts/appBundle.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.min.js"></script>
 <!--<script type="text/javascript" src="js/cordova.js"></script>-->
 <script type="text/javascript" src="js/index.js"></script>
 <script>
-app.initialize();
+	app.initialize();
+	
+	var server = new ChatServer.ServerImplemented();
+	setTimeout(() => {
+	    server.GetMe((err, res) => {
+	        if (err || res === null) {
+	            console.err(err);
+	        }
+	        else {
+	            console.log(res);
+	        }
+	    });
+	}, 1000);
 
 $(function() {
 	
 	//alert( $.cookie('email') );
 	
 	border = $('#main-header').height() + $('#main-menu').height();
-    $(window).resize(function() {
-        $('#list').height($(window).height() - border);
-    });
-    $(window).resize();
+	$(window).resize(function() {
+		$('#list').height($(window).height() - border);
+	});
+	$(window).resize();
 	
 });
 
