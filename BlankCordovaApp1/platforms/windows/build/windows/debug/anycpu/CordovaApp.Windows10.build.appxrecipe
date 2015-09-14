@@ -1,0 +1,558 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>DESKTOP-BRP93AJ</Machine>
+    <WindowsUser>natta</WindowsUser>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetOsVersion>10.0</TargetOsVersion>
+    <TargetOsDescription>Windows 10.0</TargetOsDescription>
+    <SolutionConfiguration>debug|anycpu</SolutionConfiguration>
+    <PackageArchitecture>neutral</PackageArchitecture>
+    <PackageIdentityName>eeba4b70-5635-11e5-a37e-394e41814bbc</PackageIdentityName>
+    <IntermediateOutputPath>E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\build\windows\bld\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\build\windows\debug\anycpu\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\images\SplashScreen.scale-100.png">
+      <PackagePath>images\SplashScreen.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\images\Square150x150Logo.scale-100.png">
+      <PackagePath>images\Square150x150Logo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\images\Square30x30Logo.scale-100.png">
+      <PackagePath>images\Square30x30Logo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\images\Square310x310Logo.scale-100.png">
+      <PackagePath>images\Square310x310Logo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\images\Square44x44Logo.scale-100.png">
+      <PackagePath>images\Square44x44Logo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\images\Square70x70Logo.scale-100.png">
+      <PackagePath>images\Square70x70Logo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\images\Square71x71Logo.scale-100.png">
+      <PackagePath>images\Square71x71Logo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\images\StoreLogo.scale-100.png">
+      <PackagePath>images\StoreLogo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\images\Wide310x150Logo.scale-100.png">
+      <PackagePath>images\Wide310x150Logo.scale-100.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fav.png">
+      <PackagePath>www\fav.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-addmember.png">
+      <PackagePath>www\images\icon-addmember.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-chat.png">
+      <PackagePath>www\images\icon-chat.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-mic.png">
+      <PackagePath>www\images\icon-mic.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-more.png">
+      <PackagePath>www\images\icon-more.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-msgoption.png">
+      <PackagePath>www\images\icon-msgoption.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-option.png">
+      <PackagePath>www\images\icon-option.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-search.png">
+      <PackagePath>www\images\icon-search.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-timeline.png">
+      <PackagePath>www\images\icon-timeline.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-user.png">
+      <PackagePath>www\images\icon-user.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\logo-main.png">
+      <PackagePath>www\images\logo-main.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\img\logo.png">
+      <PackagePath>www\img\logo.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\android\icon-36-ldpi.png">
+      <PackagePath>www\res\icon\android\icon-36-ldpi.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\android\icon-48-mdpi.png">
+      <PackagePath>www\res\icon\android\icon-48-mdpi.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\android\icon-72-hdpi.png">
+      <PackagePath>www\res\icon\android\icon-72-hdpi.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\android\icon-96-xhdpi.png">
+      <PackagePath>www\res\icon\android\icon-96-xhdpi.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\bada-wac\icon-48-type5.png">
+      <PackagePath>www\res\icon\bada-wac\icon-48-type5.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\bada-wac\icon-50-type3.png">
+      <PackagePath>www\res\icon\bada-wac\icon-50-type3.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\bada-wac\icon-80-type4.png">
+      <PackagePath>www\res\icon\bada-wac\icon-80-type4.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\bada\icon-128.png">
+      <PackagePath>www\res\icon\bada\icon-128.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\blackberry\icon-80.png">
+      <PackagePath>www\res\icon\blackberry\icon-80.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\ios\icon-57-2x.png">
+      <PackagePath>www\res\icon\ios\icon-57-2x.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\ios\icon-57.png">
+      <PackagePath>www\res\icon\ios\icon-57.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\ios\icon-72-2x.png">
+      <PackagePath>www\res\icon\ios\icon-72-2x.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\ios\icon-72.png">
+      <PackagePath>www\res\icon\ios\icon-72.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\tizen\icon-128.png">
+      <PackagePath>www\res\icon\tizen\icon-128.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\webos\icon-64.png">
+      <PackagePath>www\res\icon\webos\icon-64.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\windows-phone\icon-173-tile.png">
+      <PackagePath>www\res\icon\windows-phone\icon-173-tile.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\windows-phone\icon-48.png">
+      <PackagePath>www\res\icon\windows-phone\icon-48.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\icon\windows-phone\icon-62-tile.png">
+      <PackagePath>www\res\icon\windows-phone\icon-62-tile.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\android\screen-hdpi-landscape.png">
+      <PackagePath>www\res\screen\android\screen-hdpi-landscape.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\android\screen-hdpi-portrait.png">
+      <PackagePath>www\res\screen\android\screen-hdpi-portrait.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\android\screen-ldpi-landscape.png">
+      <PackagePath>www\res\screen\android\screen-ldpi-landscape.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\android\screen-ldpi-portrait.png">
+      <PackagePath>www\res\screen\android\screen-ldpi-portrait.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\android\screen-mdpi-landscape.png">
+      <PackagePath>www\res\screen\android\screen-mdpi-landscape.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\android\screen-mdpi-portrait.png">
+      <PackagePath>www\res\screen\android\screen-mdpi-portrait.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\android\screen-xhdpi-landscape.png">
+      <PackagePath>www\res\screen\android\screen-xhdpi-landscape.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\android\screen-xhdpi-portrait.png">
+      <PackagePath>www\res\screen\android\screen-xhdpi-portrait.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\bada-wac\screen-type3.png">
+      <PackagePath>www\res\screen\bada-wac\screen-type3.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\bada-wac\screen-type4.png">
+      <PackagePath>www\res\screen\bada-wac\screen-type4.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\bada-wac\screen-type5.png">
+      <PackagePath>www\res\screen\bada-wac\screen-type5.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\bada\screen-portrait.png">
+      <PackagePath>www\res\screen\bada\screen-portrait.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\blackberry\screen-225.png">
+      <PackagePath>www\res\screen\blackberry\screen-225.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\ios\screen-ipad-landscape-2x.png">
+      <PackagePath>www\res\screen\ios\screen-ipad-landscape-2x.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\ios\screen-ipad-landscape.png">
+      <PackagePath>www\res\screen\ios\screen-ipad-landscape.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\ios\screen-ipad-portrait-2x.png">
+      <PackagePath>www\res\screen\ios\screen-ipad-portrait-2x.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\ios\screen-ipad-portrait.png">
+      <PackagePath>www\res\screen\ios\screen-ipad-portrait.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\ios\screen-iphone-landscape-2x.png">
+      <PackagePath>www\res\screen\ios\screen-iphone-landscape-2x.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\ios\screen-iphone-landscape.png">
+      <PackagePath>www\res\screen\ios\screen-iphone-landscape.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\ios\screen-iphone-portrait-2x.png">
+      <PackagePath>www\res\screen\ios\screen-iphone-portrait-2x.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\ios\screen-iphone-portrait-568h-2x.png">
+      <PackagePath>www\res\screen\ios\screen-iphone-portrait-568h-2x.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\ios\screen-iphone-portrait.png">
+      <PackagePath>www\res\screen\ios\screen-iphone-portrait.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\webos\screen-64.png">
+      <PackagePath>www\res\screen\webos\screen-64.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\WinJS\js\base.js">
+      <PackagePath>WinJS\js\base.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova-js-src\exec.js">
+      <PackagePath>www\cordova-js-src\exec.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova-js-src\platform.js">
+      <PackagePath>www\cordova-js-src\platform.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova.js">
+      <PackagePath>www\cordova.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova_plugins.js">
+      <PackagePath>www\cordova_plugins.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\angular.min.js">
+      <PackagePath>www\js\angular.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\bootstrap.js">
+      <PackagePath>www\js\bootstrap.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\bootstrap.min.js">
+      <PackagePath>www\js\bootstrap.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\aes.js">
+      <PackagePath>www\js\crypto-js\aes.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\cipher-core.js">
+      <PackagePath>www\js\crypto-js\cipher-core.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\core.js">
+      <PackagePath>www\js\crypto-js\core.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\crypto-js.js">
+      <PackagePath>www\js\crypto-js\crypto-js.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\enc-base64.js">
+      <PackagePath>www\js\crypto-js\enc-base64.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\enc-hex.js">
+      <PackagePath>www\js\crypto-js\enc-hex.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\enc-latin1.js">
+      <PackagePath>www\js\crypto-js\enc-latin1.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\enc-utf16.js">
+      <PackagePath>www\js\crypto-js\enc-utf16.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\enc-utf8.js">
+      <PackagePath>www\js\crypto-js\enc-utf8.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\evpkdf.js">
+      <PackagePath>www\js\crypto-js\evpkdf.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\format-hex.js">
+      <PackagePath>www\js\crypto-js\format-hex.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\format-openssl.js">
+      <PackagePath>www\js\crypto-js\format-openssl.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\hmac-md5.js">
+      <PackagePath>www\js\crypto-js\hmac-md5.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\hmac-ripemd160.js">
+      <PackagePath>www\js\crypto-js\hmac-ripemd160.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\hmac-sha1.js">
+      <PackagePath>www\js\crypto-js\hmac-sha1.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\hmac-sha224.js">
+      <PackagePath>www\js\crypto-js\hmac-sha224.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\hmac-sha256.js">
+      <PackagePath>www\js\crypto-js\hmac-sha256.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\hmac-sha3.js">
+      <PackagePath>www\js\crypto-js\hmac-sha3.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\hmac-sha384.js">
+      <PackagePath>www\js\crypto-js\hmac-sha384.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\hmac-sha512.js">
+      <PackagePath>www\js\crypto-js\hmac-sha512.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\hmac.js">
+      <PackagePath>www\js\crypto-js\hmac.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\index.js">
+      <PackagePath>www\js\crypto-js\index.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\lib-typedarrays.js">
+      <PackagePath>www\js\crypto-js\lib-typedarrays.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\md5.js">
+      <PackagePath>www\js\crypto-js\md5.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\mode-cfb.js">
+      <PackagePath>www\js\crypto-js\mode-cfb.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\mode-ctr-gladman.js">
+      <PackagePath>www\js\crypto-js\mode-ctr-gladman.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\mode-ctr.js">
+      <PackagePath>www\js\crypto-js\mode-ctr.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\mode-ecb.js">
+      <PackagePath>www\js\crypto-js\mode-ecb.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\mode-ofb.js">
+      <PackagePath>www\js\crypto-js\mode-ofb.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\pad-ansix923.js">
+      <PackagePath>www\js\crypto-js\pad-ansix923.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\pad-iso10126.js">
+      <PackagePath>www\js\crypto-js\pad-iso10126.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\pad-iso97971.js">
+      <PackagePath>www\js\crypto-js\pad-iso97971.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\pad-nopadding.js">
+      <PackagePath>www\js\crypto-js\pad-nopadding.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\pad-pkcs7.js">
+      <PackagePath>www\js\crypto-js\pad-pkcs7.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\pad-zeropadding.js">
+      <PackagePath>www\js\crypto-js\pad-zeropadding.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\pbkdf2.js">
+      <PackagePath>www\js\crypto-js\pbkdf2.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\rabbit-legacy.js">
+      <PackagePath>www\js\crypto-js\rabbit-legacy.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\rabbit.js">
+      <PackagePath>www\js\crypto-js\rabbit.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\rc4.js">
+      <PackagePath>www\js\crypto-js\rc4.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\ripemd160.js">
+      <PackagePath>www\js\crypto-js\ripemd160.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\sha1.js">
+      <PackagePath>www\js\crypto-js\sha1.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\sha224.js">
+      <PackagePath>www\js\crypto-js\sha224.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\sha256.js">
+      <PackagePath>www\js\crypto-js\sha256.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\sha3.js">
+      <PackagePath>www\js\crypto-js\sha3.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\sha384.js">
+      <PackagePath>www\js\crypto-js\sha384.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\sha512.js">
+      <PackagePath>www\js\crypto-js\sha512.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\tripledes.js">
+      <PackagePath>www\js\crypto-js\tripledes.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\x64-core.js">
+      <PackagePath>www\js\crypto-js\x64-core.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\index.js">
+      <PackagePath>www\js\index.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery.cookie.min.js">
+      <PackagePath>www\js\jquery.cookie.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery.min.js">
+      <PackagePath>www\js\jquery.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\npm.js">
+      <PackagePath>www\js\npm.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\pomeloclient.js">
+      <PackagePath>www\js\pomelo\pomeloclient.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\require.js">
+      <PackagePath>www\js\require.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\socket.io.js">
+      <PackagePath>www\js\socket.io.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\theme.js">
+      <PackagePath>www\js\theme.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\appBundle.js">
+      <PackagePath>www\scripts\appBundle.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\platformOverrides.js">
+      <PackagePath>www\scripts\platformOverrides.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\winstore-jscompat.js">
+      <PackagePath>www\scripts\winstore-jscompat.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\helper.js">
+      <PackagePath>www\spec\helper.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\index.js">
+      <PackagePath>www\spec\index.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\jasmine-html.js">
+      <PackagePath>www\spec\lib\jasmine-1.2.0\jasmine-html.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\jasmine.js">
+      <PackagePath>www\spec\lib\jasmine-1.2.0\jasmine.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\chat.html">
+      <PackagePath>www\chat.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\freecall.html">
+      <PackagePath>www\freecall.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\index.html">
+      <PackagePath>www\index.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\list-chat.html">
+      <PackagePath>www\list-chat.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\list.html">
+      <PackagePath>www\list.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\login.html">
+      <PackagePath>www\login.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\spec.html">
+      <PackagePath>www\spec.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\timeline.html">
+      <PackagePath>www\timeline.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\videocall.html">
+      <PackagePath>www\videocall.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap-theme.css">
+      <PackagePath>www\css\bootstrap-theme.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap-theme.min.css">
+      <PackagePath>www\css\bootstrap-theme.min.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap.css">
+      <PackagePath>www\css\bootstrap.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap.min.css">
+      <PackagePath>www\css\bootstrap.min.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\css\font-awesome.min.css">
+      <PackagePath>www\css\font-awesome.min.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\css\index.css">
+      <PackagePath>www\css\index.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\jasmine.css">
+      <PackagePath>www\spec\lib\jasmine-1.2.0\jasmine.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\style.css">
+      <PackagePath>www\style.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap-theme.css.map">
+      <PackagePath>www\css\bootstrap-theme.css.map</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap.css.map">
+      <PackagePath>www\css\bootstrap.css.map</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\appBundle.js.map">
+      <PackagePath>www\scripts\appBundle.js.map</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\favicon.ico">
+      <PackagePath>www\favicon.ico</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.eot">
+      <PackagePath>www\fonts\fontawesome-webfont.eot</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.eot">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.eot</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.svg">
+      <PackagePath>www\fonts\fontawesome-webfont.svg</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.svg">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.svg</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.ttf">
+      <PackagePath>www\fonts\fontawesome-webfont.ttf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.ttf">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.ttf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.woff">
+      <PackagePath>www\fonts\fontawesome-webfont.woff</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.woff">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.woff</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.woff2">
+      <PackagePath>www\fonts\fontawesome-webfont.woff2</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.woff2">
+      <PackagePath>www\fonts\glyphicons-halflings-regular.woff2</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\FontAwesome.otf">
+      <PackagePath>www\fonts\FontAwesome.otf</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\images\bg.jpg">
+      <PackagePath>www\images\bg.jpg</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\windows-phone\screen-portrait.jpg">
+      <PackagePath>www\res\screen\windows-phone\screen-portrait.jpg</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\.DS_Store">
+      <PackagePath>www\js\.DS_Store</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\bower.json">
+      <PackagePath>www\js\crypto-js\bower.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\package.json">
+      <PackagePath>www\js\crypto-js\package.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\CONTRIBUTING.md">
+      <PackagePath>www\js\crypto-js\CONTRIBUTING.md</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\README.md">
+      <PackagePath>www\js\crypto-js\README.md</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\screen\tizen\README.md">
+      <PackagePath>www\res\screen\tizen\README.md</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\js\crypto-js\docs\QuickStartGuide.wiki">
+      <PackagePath>www\js\crypto-js\docs\QuickStartGuide.wiki</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\res\.pgbomit">
+      <PackagePath>www\res\.pgbomit</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\MIT.LICENSE">
+      <PackagePath>www\spec\lib\jasmine-1.2.0\MIT.LICENSE</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\config.xml">
+      <PackagePath>config.xml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\TSCordovaApp\BlankCordovaApp1\platforms\windows\build\windows\debug\anycpu\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
