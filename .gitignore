@@ -1,1 +1,6 @@
 ChitChat_cordova/node_modules/
+ChitChat_cordova/bld/
+ChitChat_cordova/platforms/
+ChitChat_cordova/plugins/
+ChitChat_cordova/bin/
+.vs/ChitChat_cordova/v14/
