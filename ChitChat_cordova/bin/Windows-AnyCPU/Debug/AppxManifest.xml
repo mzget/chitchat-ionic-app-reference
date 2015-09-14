@@ -7,11 +7,11 @@
 
     For more information on package manifest files, see http://go.microsoft.com/fwlink/?LinkID=241727
   -->
-  <Identity Name="com.phonegap.helloworld" Publisher="CN=Apache Cordova Team" Version="1.0.0.0" ProcessorArchitecture="neutral" />
-  <mp:PhoneIdentity PhoneProductId="eeba4b70-5635-11e5-a37e-394e41814bbc" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="com.ahoostudio.spartantalk" Publisher="CN=Apache Cordova Team" Version="1.0.0.0" ProcessorArchitecture="neutral" />
+  <mp:PhoneIdentity PhoneProductId="e605cba0-5a93-11e5-a575-bf4757d61a49" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>TEST1</DisplayName>
-    <PublisherDisplayName>PhoneGap Team</PublisherDisplayName>
+    <PublisherDisplayName>AhooStudio Team</PublisherDisplayName>
     <Logo>images\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -21,10 +21,10 @@
     <Resource Language="EN-US" />
   </Resources>
   <Applications>
-    <Application Id="com.phonegap.helloworld" StartPage="ms-appx-web:///www/index.html">
+    <Application Id="com.ahoostudio.spartantalk" StartPage="ms-appx-web:///www/index.html">
       <uap:VisualElements BackgroundColor="#464646" Description="CordovaApp" DisplayName="TEST1" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png">
         <uap:SplashScreen Image="images\splashscreen.png" />
-        <uap:DefaultTile ShortName="BlankCordovaApp1" Square310x310Logo="images\Square310x310Logo.png" Square71x71Logo="images\Square71x71Logo.png" Wide310x150Logo="images\Wide310x150Logo.png" />
+        <uap:DefaultTile ShortName="TEST1" Square310x310Logo="images\Square310x310Logo.png" Square71x71Logo="images\Square71x71Logo.png" Wide310x150Logo="images\Wide310x150Logo.png" />
         <uap:InitialRotationPreference>
           <uap:Rotation Preference="portrait" />
           <uap:Rotation Preference="landscape" />
@@ -38,8 +38,6 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
-    <DeviceCapability Name="webcam" />
-    <DeviceCapability Name="microphone" />
   </Capabilities>
   <build:Metadata>
     <build:Item Name="SharedGUID" Value="9ebdb27f-d75b-4d8c-b53f-7be4a1fe89f9" />

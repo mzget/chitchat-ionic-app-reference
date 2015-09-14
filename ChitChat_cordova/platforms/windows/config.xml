@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.helloworld" version="0.0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+<widget id="com.ahoostudio.spartantalk" version="0.0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>TEST1</name>
-    <description>Hello World sample application that responds to the deviceready event.</description>
-    <author email="support@phonegap.com" href="http://phonegap.com">PhoneGap Team</author>
+    <description>Hello World.</description>
+    <author email="support@phonegap.com" href="http://phonegap.com">AhooStudio Team</author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
     <preference name="orientation" value="default" />
@@ -69,10 +69,10 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <preference name="KeepRunning" value="False" />
-    <preference name="ShowTitle" value="True" />
-    <preference name="InAppBrowserStorageEnabled" value="False" />
-    <preference name="SuppressesIncrementalRendering" value="True" />
+    <preference name="KeepRunning" value="True" />
+    <preference name="ShowTitle" value="False" />
+    <preference name="InAppBrowserStorageEnabled" value="True" />
+    <preference name="SuppressesIncrementalRendering" value="False" />
     <preference name="windows-target-version" value="10.0" />
     <vs:platformSpecificValues xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps">
         <vs:platformSpecificWidget platformName="windows" version="0.0.0.1" />

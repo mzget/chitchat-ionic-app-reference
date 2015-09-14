@@ -1,8 +1,0 @@
-﻿{
-  "name": "boot",
-  "description": "Main app boot component",
-  "dependencies": {
-    "component/emitter":"master"
-  },
-  "scripts": ["index.js"]
-}

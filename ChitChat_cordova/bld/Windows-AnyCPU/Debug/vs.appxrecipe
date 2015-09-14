@@ -8,407 +8,415 @@
     <TargetOsDescription>Windows 10.0</TargetOsDescription>
     <SolutionConfiguration>debug|anycpu</SolutionConfiguration>
     <PackageArchitecture>neutral</PackageArchitecture>
-    <PackageIdentityName>eeba4b70-5635-11e5-a37e-394e41814bbc</PackageIdentityName>
-    <IntermediateOutputPath>C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\build\windows\bld\</IntermediateOutputPath>
-    <RegisteredManifestChecksum>80F32813CF83383433BA648C6CF6C03F5A34AD0F03FDF9C5195388D79CDB796F</RegisteredManifestChecksum>
-    <RegisteredPackageMoniker>com.phonegap.helloworld_1.0.0.0_neutral__h35559jr9hy9m</RegisteredPackageMoniker>
-    <RegisteredUserModeAppID>com.phonegap.helloworld_h35559jr9hy9m!com.phonegap.helloworld</RegisteredUserModeAppID>
-    <RegisteredPackageID>com.phonegap.helloworld</RegisteredPackageID>
+    <PackageIdentityName>e605cba0-5a93-11e5-a575-bf4757d61a49</PackageIdentityName>
+    <IntermediateOutputPath>C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\</IntermediateOutputPath>
+    <RegisteredManifestChecksum>826FCBB61C615C940842FAF2BB7490049C35988636AD1F0B67554EA670B87AB3</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>com.ahoostudio.spartantalk_1.0.0.0_neutral__h35559jr9hy9m</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>com.ahoostudio.spartantalk_h35559jr9hy9m!com.ahoostudio.spartantalk</RegisteredUserModeAppID>
+    <RegisteredPackageID>com.ahoostudio.spartantalk</RegisteredPackageID>
     <RegisteredPackagePublisher>CN=Apache Cordova Team</RegisteredPackagePublisher>
     <RegisteredVersion>1.0.0.0</RegisteredVersion>
     <JitOptimizationSuppressed>True</JitOptimizationSuppressed>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\build\windows\debug\anycpu\AppxManifest.xml">
+    <AppXManifest Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2015-09-09T12:09:42.681</Modified>
+      <Modified>2015-09-14T11:24:23.966</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\SplashScreen.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\SplashScreen.scale-100.png">
       <PackagePath>images\SplashScreen.scale-100.png</PackagePath>
-      <Modified>2015-09-09T03:55:02.764</Modified>
+      <Modified>2015-09-14T09:53:43.046</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square150x150Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square150x150Logo.scale-100.png">
       <PackagePath>images\Square150x150Logo.scale-100.png</PackagePath>
-      <Modified>2015-09-09T03:55:02.713</Modified>
+      <Modified>2015-09-14T09:53:43.049</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square30x30Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square30x30Logo.scale-100.png">
       <PackagePath>images\Square30x30Logo.scale-100.png</PackagePath>
-      <Modified>2015-09-09T03:55:02.668</Modified>
+      <Modified>2015-09-14T09:53:43.057</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square310x310Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square310x310Logo.scale-100.png">
       <PackagePath>images\Square310x310Logo.scale-100.png</PackagePath>
-      <Modified>2015-09-09T03:55:02.627</Modified>
+      <Modified>2015-09-14T09:53:43.058</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square44x44Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square44x44Logo.scale-100.png">
       <PackagePath>images\Square44x44Logo.scale-100.png</PackagePath>
-      <Modified>2015-09-09T03:55:02.752</Modified>
+      <Modified>2015-09-14T09:53:43.059</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square70x70Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square70x70Logo.scale-100.png">
       <PackagePath>images\Square70x70Logo.scale-100.png</PackagePath>
-      <Modified>2015-09-09T03:55:02.615</Modified>
+      <Modified>2015-09-14T09:53:43.061</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Square71x71Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square71x71Logo.scale-100.png">
       <PackagePath>images\Square71x71Logo.scale-100.png</PackagePath>
-      <Modified>2015-09-09T03:55:02.739</Modified>
+      <Modified>2015-09-14T09:53:43.061</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\StoreLogo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\StoreLogo.scale-100.png">
       <PackagePath>images\StoreLogo.scale-100.png</PackagePath>
-      <Modified>2015-09-09T03:55:02.697</Modified>
+      <Modified>2015-09-14T09:53:43.063</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\images\Wide310x150Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Wide310x150Logo.scale-100.png">
       <PackagePath>images\Wide310x150Logo.scale-100.png</PackagePath>
-      <Modified>2015-09-09T03:55:02.727</Modified>
+      <Modified>2015-09-14T09:53:43.065</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fav.png">
-      <PackagePath>www\fav.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.223</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\img\ionic.png">
+      <PackagePath>www\img\ionic.png</PackagePath>
+      <Modified>2015-09-14T11:24:18.361</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\favicon.ico.png">
-      <PackagePath>www\favicon.ico.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.224</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-addmember.png">
-      <PackagePath>www\images\icon-addmember.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.308</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-chat.png">
-      <PackagePath>www\images\icon-chat.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.310</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-mic.png">
-      <PackagePath>www\images\icon-mic.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.311</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-more.png">
-      <PackagePath>www\images\icon-more.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.312</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-msgoption.png">
-      <PackagePath>www\images\icon-msgoption.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.314</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-option.png">
-      <PackagePath>www\images\icon-option.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.315</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-search.png">
-      <PackagePath>www\images\icon-search.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.317</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-timeline.png">
-      <PackagePath>www\images\icon-timeline.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.318</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\icon-user.png">
-      <PackagePath>www\images\icon-user.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.319</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\images\logo-main.png">
-      <PackagePath>www\images\logo-main.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.321</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\img\logo.png">
-      <PackagePath>www\img\logo.png</PackagePath>
-      <Modified>2015-09-09T12:09:40.324</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\WinJS\js\base.js">
-      <PackagePath>WinJS\js\base.js</PackagePath>
-      <Modified>2015-09-09T03:55:13.894</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova-js-src\exec.js">
-      <PackagePath>www\cordova-js-src\exec.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.875</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova-js-src\platform.js">
-      <PackagePath>www\cordova-js-src\platform.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.876</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova.js">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova.js">
       <PackagePath>www\cordova.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.617</Modified>
+      <Modified>2015-09-14T11:24:19.714</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\cordova_plugins.js">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova_plugins.js">
       <PackagePath>www\cordova_plugins.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.880</Modified>
+      <Modified>2015-09-14T11:24:20.622</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\angular.min.js">
-      <PackagePath>www\js\angular.min.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.929</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\app.js">
+      <PackagePath>www\js\app.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.627</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\bootstrap.js">
-      <PackagePath>www\js\bootstrap.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.940</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\controllers.js">
+      <PackagePath>www\js\controllers.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.631</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\bootstrap.min.js">
-      <PackagePath>www\js\bootstrap.min.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.951</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services.js">
+      <PackagePath>www\js\services.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.635</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\index.js">
-      <PackagePath>www\js\index.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.952</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.js">
+      <PackagePath>www\lib\ionic\js\angular-ui\angular-ui-router.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.774</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery-2.1.4.intellisense.js">
-      <PackagePath>www\js\jquery-2.1.4.intellisense.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.982</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.min.js">
+      <PackagePath>www\lib\ionic\js\angular-ui\angular-ui-router.min.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.784</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery-2.1.4.js">
-      <PackagePath>www\js\jquery-2.1.4.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.006</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-animate.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-animate.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.658</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery-2.1.4.min.js">
-      <PackagePath>www\js\jquery-2.1.4.min.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.025</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-animate.min.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-animate.min.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.667</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery.min.js">
-      <PackagePath>www\js\jquery.min.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.045</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-resource.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-resource.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.672</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\build\build.js">
-      <PackagePath>www\js\local\boot\build\build.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.050</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-resource.min.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-resource.min.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.679</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\component\emitter\master\index.js">
-      <PackagePath>www\js\local\boot\components\component\emitter\master\index.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.057</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-sanitize.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.688</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\netease\pomelo-protocol\master\lib\protocol.js">
-      <PackagePath>www\js\local\boot\components\netease\pomelo-protocol\master\lib\protocol.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.063</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.min.js">
+      <PackagePath>www\lib\ionic\js\angular\angular-sanitize.min.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.689</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\pomelonode\pomelo-jsclient-websocket\master\lib\pomelo-client.js">
-      <PackagePath>www\js\local\boot\components\pomelonode\pomelo-jsclient-websocket\master\lib\pomelo-client.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.069</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular.js">
+      <PackagePath>www\lib\ionic\js\angular\angular.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.738</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\pomelonode\pomelo-protobuf\master\lib\client\protobuf.js">
-      <PackagePath>www\js\local\boot\components\pomelonode\pomelo-protobuf\master\lib\client\protobuf.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.078</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular.min.js">
+      <PackagePath>www\lib\ionic\js\angular\angular.min.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.763</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\index.js">
-      <PackagePath>www\js\local\boot\index.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.081</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic-angular.js">
+      <PackagePath>www\lib\ionic\js\ionic-angular.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.812</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\main.js">
-      <PackagePath>www\js\main.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.082</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic-angular.min.js">
+      <PackagePath>www\lib\ionic\js\ionic-angular.min.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.829</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\npm.js">
-      <PackagePath>www\js\npm.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.083</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.bundle.js">
+      <PackagePath>www\lib\ionic\js\ionic.bundle.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.931</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\build\build.js">
-      <PackagePath>www\js\pomelo\build\build.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.101</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.bundle.min.js">
+      <PackagePath>www\lib\ionic\js\ionic.bundle.min.js</PackagePath>
+      <Modified>2015-09-14T11:24:20.986</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\lib\index.js">
-      <PackagePath>www\js\pomelo\lib\index.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.104</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.js">
+      <PackagePath>www\lib\ionic\js\ionic.js</PackagePath>
+      <Modified>2015-09-14T11:24:21.004</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\lib\pomelo-client.js">
-      <PackagePath>www\js\pomelo\lib\pomelo-client.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.105</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.min.js">
+      <PackagePath>www\lib\ionic\js\ionic.min.js</PackagePath>
+      <Modified>2015-09-14T11:24:21.020</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\lib\socket.io.js">
-      <PackagePath>www\js\pomelo\lib\socket.io.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.122</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\require.js">
-      <PackagePath>www\js\require.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.133</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\server\serverImplemented.js">
-      <PackagePath>www\js\server\serverImplemented.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.134</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\appBundle.js">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js">
       <PackagePath>www\scripts\appBundle.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.137</Modified>
+      <Modified>2015-09-14T11:24:21.027</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\platformOverrides.js">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\platformOverrides.js">
       <PackagePath>www\scripts\platformOverrides.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.602</Modified>
+      <Modified>2015-09-14T11:24:19.651</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\winstore-jscompat.js">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\winstore-jscompat.js">
       <PackagePath>www\scripts\winstore-jscompat.js</PackagePath>
-      <Modified>2015-09-09T12:09:40.603</Modified>
+      <Modified>2015-09-14T11:24:19.667</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\helper.js">
-      <PackagePath>www\spec\helper.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.139</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\WinJS\js\base.js">
+      <PackagePath>www\WinJS\js\base.js</PackagePath>
+      <Modified>2015-09-14T11:24:19.840</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\index.js">
-      <PackagePath>www\spec\index.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.140</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\css\style.css">
+      <PackagePath>www\css\style.css</PackagePath>
+      <Modified>2015-09-14T11:24:20.626</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\jasmine-html.js">
-      <PackagePath>www\spec\lib\jasmine-1.2.0\jasmine-html.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.146</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\css\ionic.css">
+      <PackagePath>www\lib\ionic\css\ionic.css</PackagePath>
+      <Modified>2015-09-14T11:24:20.642</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\jasmine.js">
-      <PackagePath>www\spec\lib\jasmine-1.2.0\jasmine.js</PackagePath>
-      <Modified>2015-09-09T12:09:41.160</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\css\ionic.min.css">
+      <PackagePath>www\lib\ionic\css\ionic.min.css</PackagePath>
+      <Modified>2015-09-14T11:24:20.648</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\chat.html">
-      <PackagePath>www\chat.html</PackagePath>
-      <Modified>2015-09-09T12:09:40.186</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\favicon.ico">
+      <PackagePath>www\favicon.ico</PackagePath>
+      <Modified>2015-09-14T11:24:18.346</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\index.html">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\index.html">
       <PackagePath>www\index.html</PackagePath>
-      <Modified>2015-09-09T12:09:40.325</Modified>
+      <Modified>2015-09-14T11:24:18.369</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\list.html">
-      <PackagePath>www\list.html</PackagePath>
-      <Modified>2015-09-09T12:09:41.135</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\chat-detail.html">
+      <PackagePath>www\templates\chat-detail.html</PackagePath>
+      <Modified>2015-09-14T11:24:21.030</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\login.html">
-      <PackagePath>www\login.html</PackagePath>
-      <Modified>2015-09-09T12:09:41.136</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-account.html">
+      <PackagePath>www\templates\tab-account.html</PackagePath>
+      <Modified>2015-09-14T11:24:21.033</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec.html">
-      <PackagePath>www\spec.html</PackagePath>
-      <Modified>2015-09-09T12:09:41.161</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-chats.html">
+      <PackagePath>www\templates\tab-chats.html</PackagePath>
+      <Modified>2015-09-14T11:24:21.037</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap-theme.css">
-      <PackagePath>www\css\bootstrap-theme.css</PackagePath>
-      <Modified>2015-09-09T12:09:40.885</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-dash.html">
+      <PackagePath>www\templates\tab-dash.html</PackagePath>
+      <Modified>2015-09-14T11:24:21.038</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap-theme.min.css">
-      <PackagePath>www\css\bootstrap-theme.min.css</PackagePath>
-      <Modified>2015-09-09T12:09:40.889</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-timeline.html">
+      <PackagePath>www\templates\tab-timeline.html</PackagePath>
+      <Modified>2015-09-14T11:24:21.041</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap.css">
-      <PackagePath>www\css\bootstrap.css</PackagePath>
-      <Modified>2015-09-09T12:09:40.895</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tabs.html">
+      <PackagePath>www\templates\tabs.html</PackagePath>
+      <Modified>2015-09-14T11:24:21.042</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap.min.css">
-      <PackagePath>www\css\bootstrap.min.css</PackagePath>
-      <Modified>2015-09-09T12:09:40.901</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\index.html.bak">
+      <PackagePath>www\index.html.bak</PackagePath>
+      <Modified>2015-09-14T11:24:18.381</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\font-awesome.min.css">
-      <PackagePath>www\css\font-awesome.min.css</PackagePath>
-      <Modified>2015-09-09T12:09:40.219</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\app.js.bak">
+      <PackagePath>www\js\app.js.bak</PackagePath>
+      <Modified>2015-09-14T11:24:18.410</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\index.css">
-      <PackagePath>www\css\index.css</PackagePath>
-      <Modified>2015-09-09T12:09:40.903</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services.js.bak">
+      <PackagePath>www\js\services.js.bak</PackagePath>
+      <Modified>2015-09-14T11:24:18.435</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\jasmine.css">
-      <PackagePath>www\spec\lib\jasmine-1.2.0\jasmine.css</PackagePath>
-      <Modified>2015-09-09T12:09:41.148</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-timeline.html.bak">
+      <PackagePath>www\templates\tab-timeline.html.bak</PackagePath>
+      <Modified>2015-09-14T11:24:19.639</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\style.css">
-      <PackagePath>www\style.css</PackagePath>
-      <Modified>2015-09-09T12:09:41.162</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tabs.html.bak">
+      <PackagePath>www\templates\tabs.html.bak</PackagePath>
+      <Modified>2015-09-14T11:24:19.644</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap-theme.css.map">
-      <PackagePath>www\css\bootstrap-theme.css.map</PackagePath>
-      <Modified>2015-09-09T12:09:40.196</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.eot">
+      <PackagePath>www\lib\ionic\fonts\ionicons.eot</PackagePath>
+      <Modified>2015-09-14T11:24:18.478</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\css\bootstrap.css.map">
-      <PackagePath>www\css\bootstrap.css.map</PackagePath>
-      <Modified>2015-09-09T12:09:40.209</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.svg">
+      <PackagePath>www\lib\ionic\fonts\ionicons.svg</PackagePath>
+      <Modified>2015-09-14T11:24:18.503</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\jquery-2.1.4.min.map">
-      <PackagePath>www\js\jquery-2.1.4.min.map</PackagePath>
-      <Modified>2015-09-09T12:09:40.442</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.ttf">
+      <PackagePath>www\lib\ionic\fonts\ionicons.ttf</PackagePath>
+      <Modified>2015-09-14T11:24:18.515</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\scripts\appBundle.js.map">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.woff">
+      <PackagePath>www\lib\ionic\fonts\ionicons.woff</PackagePath>
+      <Modified>2015-09-14T11:24:18.531</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionic.scss">
+      <PackagePath>www\lib\ionic\scss\ionic.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.332</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\ionicons.scss">
+      <PackagePath>www\lib\ionic\scss\ionicons\ionicons.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.334</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-font.scss">
+      <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-font.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.342</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-icons.scss">
+      <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-icons.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.360</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-variables.scss">
+      <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-variables.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.368</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_action-sheet.scss">
+      <PackagePath>www\lib\ionic\scss\_action-sheet.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.371</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_animations.scss">
+      <PackagePath>www\lib\ionic\scss\_animations.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.373</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_backdrop.scss">
+      <PackagePath>www\lib\ionic\scss\_backdrop.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.375</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_badge.scss">
+      <PackagePath>www\lib\ionic\scss\_badge.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.400</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_bar.scss">
+      <PackagePath>www\lib\ionic\scss\_bar.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.414</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_button-bar.scss">
+      <PackagePath>www\lib\ionic\scss\_button-bar.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.416</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_button.scss">
+      <PackagePath>www\lib\ionic\scss\_button.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.426</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_checkbox.scss">
+      <PackagePath>www\lib\ionic\scss\_checkbox.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.435</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_form.scss">
+      <PackagePath>www\lib\ionic\scss\_form.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.443</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_grid.scss">
+      <PackagePath>www\lib\ionic\scss\_grid.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.447</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_items.scss">
+      <PackagePath>www\lib\ionic\scss\_items.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.461</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_list.scss">
+      <PackagePath>www\lib\ionic\scss\_list.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.463</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_loading.scss">
+      <PackagePath>www\lib\ionic\scss\_loading.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.466</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_menu.scss">
+      <PackagePath>www\lib\ionic\scss\_menu.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.480</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_mixins.scss">
+      <PackagePath>www\lib\ionic\scss\_mixins.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.495</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_modal.scss">
+      <PackagePath>www\lib\ionic\scss\_modal.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.498</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_platform.scss">
+      <PackagePath>www\lib\ionic\scss\_platform.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.500</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_popover.scss">
+      <PackagePath>www\lib\ionic\scss\_popover.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.503</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_popup.scss">
+      <PackagePath>www\lib\ionic\scss\_popup.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.505</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_progress.scss">
+      <PackagePath>www\lib\ionic\scss\_progress.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.506</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_radio.scss">
+      <PackagePath>www\lib\ionic\scss\_radio.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.522</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_range.scss">
+      <PackagePath>www\lib\ionic\scss\_range.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.525</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_refresher.scss">
+      <PackagePath>www\lib\ionic\scss\_refresher.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.527</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_reset.scss">
+      <PackagePath>www\lib\ionic\scss\_reset.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.536</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_scaffolding.scss">
+      <PackagePath>www\lib\ionic\scss\_scaffolding.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.543</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_select.scss">
+      <PackagePath>www\lib\ionic\scss\_select.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.545</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_slide-box.scss">
+      <PackagePath>www\lib\ionic\scss\_slide-box.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.551</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_spinner.scss">
+      <PackagePath>www\lib\ionic\scss\_spinner.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.554</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_tabs.scss">
+      <PackagePath>www\lib\ionic\scss\_tabs.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.570</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_toggle.scss">
+      <PackagePath>www\lib\ionic\scss\_toggle.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.585</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_transitions.scss">
+      <PackagePath>www\lib\ionic\scss\_transitions.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.589</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_type.scss">
+      <PackagePath>www\lib\ionic\scss\_type.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.592</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_util.scss">
+      <PackagePath>www\lib\ionic\scss\_util.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.600</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_variables.scss">
+      <PackagePath>www\lib\ionic\scss\_variables.scss</PackagePath>
+      <Modified>2015-09-14T11:24:19.606</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\version.json">
+      <PackagePath>www\lib\ionic\version.json</PackagePath>
+      <Modified>2015-09-14T11:24:21.021</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js.map">
       <PackagePath>www\scripts\appBundle.js.map</PackagePath>
-      <Modified>2015-09-09T12:09:40.570</Modified>
+      <Modified>2015-09-14T11:24:19.617</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.eot">
-      <PackagePath>www\fonts\fontawesome-webfont.eot</PackagePath>
-      <Modified>2015-09-09T12:09:40.255</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.eot">
-      <PackagePath>www\fonts\glyphicons-halflings-regular.eot</PackagePath>
-      <Modified>2015-09-09T12:09:40.289</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.svg">
-      <PackagePath>www\fonts\fontawesome-webfont.svg</PackagePath>
-      <Modified>2015-09-09T12:09:40.265</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.svg">
-      <PackagePath>www\fonts\glyphicons-halflings-regular.svg</PackagePath>
-      <Modified>2015-09-09T12:09:40.294</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.ttf">
-      <PackagePath>www\fonts\fontawesome-webfont.ttf</PackagePath>
-      <Modified>2015-09-09T12:09:40.269</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.ttf">
-      <PackagePath>www\fonts\glyphicons-halflings-regular.ttf</PackagePath>
-      <Modified>2015-09-09T12:09:40.298</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.woff">
-      <PackagePath>www\fonts\fontawesome-webfont.woff</PackagePath>
-      <Modified>2015-09-09T12:09:40.273</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.woff">
-      <PackagePath>www\fonts\glyphicons-halflings-regular.woff</PackagePath>
-      <Modified>2015-09-09T12:09:40.302</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\fontawesome-webfont.woff2">
-      <PackagePath>www\fonts\fontawesome-webfont.woff2</PackagePath>
-      <Modified>2015-09-09T12:09:40.276</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\glyphicons-halflings-regular.woff2">
-      <PackagePath>www\fonts\glyphicons-halflings-regular.woff2</PackagePath>
-      <Modified>2015-09-09T12:09:40.306</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\fonts\FontAwesome.otf">
-      <PackagePath>www\fonts\FontAwesome.otf</PackagePath>
-      <Modified>2015-09-09T12:09:40.280</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\component.json">
-      <PackagePath>www\js\local\boot\component.json</PackagePath>
-      <Modified>2015-09-09T12:09:41.051</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\component\emitter\master\component.json">
-      <PackagePath>www\js\local\boot\components\component\emitter\master\component.json</PackagePath>
-      <Modified>2015-09-09T12:09:41.052</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\netease\pomelo-protocol\master\component.json">
-      <PackagePath>www\js\local\boot\components\netease\pomelo-protocol\master\component.json</PackagePath>
-      <Modified>2015-09-09T12:09:41.058</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\pomelonode\pomelo-jsclient-websocket\master\component.json">
-      <PackagePath>www\js\local\boot\components\pomelonode\pomelo-jsclient-websocket\master\component.json</PackagePath>
-      <Modified>2015-09-09T12:09:41.064</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\local\boot\components\pomelonode\pomelo-protobuf\master\component.json">
-      <PackagePath>www\js\local\boot\components\pomelonode\pomelo-protobuf\master\component.json</PackagePath>
-      <Modified>2015-09-09T12:09:41.073</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\component.json">
-      <PackagePath>www\js\pomelo\component.json</PackagePath>
-      <Modified>2015-09-09T12:09:41.102</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\main.ts">
-      <PackagePath>www\js\main.ts</PackagePath>
-      <Modified>2015-09-09T12:09:40.502</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\server\serverImplemented.ts">
-      <PackagePath>www\js\server\serverImplemented.ts</PackagePath>
-      <Modified>2015-09-09T12:09:40.562</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\js\pomelo\README.md">
-      <PackagePath>www\js\pomelo\README.md</PackagePath>
-      <Modified>2015-09-09T12:09:40.545</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\www\spec\lib\jasmine-1.2.0\MIT.LICENSE">
-      <PackagePath>www\spec\lib\jasmine-1.2.0\MIT.LICENSE</PackagePath>
-      <Modified>2015-09-09T12:09:40.595</Modified>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\config.xml">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\config.xml">
       <PackagePath>config.xml</PackagePath>
-      <Modified>2015-09-09T12:09:42.267</Modified>
+      <Modified>2015-09-14T11:24:23.547</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Desktop\BlankCordovaApp\BlankCordovaApp1\platforms\windows\build\windows\debug\anycpu\resources.pri">
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2015-09-09T12:09:42.520</Modified>
+      <Modified>2015-09-14T11:24:23.809</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
