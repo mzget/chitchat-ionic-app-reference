@@ -1,0 +1,7 @@
+{
+  "name": "SpartanTalk",
+  "version": "1.0.0",
+  "dependencies": {
+    "crypto-js": "3.1.5"
+  }
+}

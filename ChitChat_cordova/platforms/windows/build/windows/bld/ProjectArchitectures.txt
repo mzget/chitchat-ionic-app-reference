@@ -1,0 +1,1 @@
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\CordovaApp.Windows10.jsproj;neutral
