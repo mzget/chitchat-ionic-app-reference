@@ -80,3 +80,25 @@ $("#chatbox").click(function(){
 		$("#chatbox").css({'opacity':'1'});
 	}
 });
+
+
+
+
+$('.seemore').click(function(){
+	$(this).parent().children('p').css({'max-height':''});
+	$(this).css({'display':'none'});
+});
+
+$('.social label').click(function(){
+	$(this).parent().parent().parent().children('.comments').css({'height':'auto'});
+});
+
+$('.gallery a').click(function(){
+	event.preventDefault();
+	//alert( $(this).attr('href') );
+	$('#popup-image').css({'display':'inline-block'});
+	$('#popup-image .image').css({'background-image':'url('+$(this).attr('href')+')'});
+});
+$('#popup-image .fa').click(function(){
+	$('#popup-image').css({'display':'none'});
+});
