@@ -152,7 +152,8 @@ module ChatServer {
                 }
             });
         }
-
+        
+        //<!-- user profile -->
 
         public UpdateUserProfile(myId: string, profileFields: { [k: string]: string }, callback: (err, res) => void) {
             profileFields["token"] = this.authenData.token;
@@ -224,6 +225,66 @@ module ChatServer {
                     onSuccessCheckToken(false, null, null);
             }
         }
+
+        //<!-- end user profile section. -->
+
+        //region <!- Company data.
+
+        /// <summary>
+        /// Gets the company info.
+        /// Beware for data loading so mush. please load from cache before load from server.
+        /// </summary>
+        public void getCompanyInfo(final DataCallBack callBack) throws JSONException {
+        JSONObject msg = new JSONObject();
+        msg.put("token", getServerImplemented().authenData.getString("token"));
+        getServerImplemented().getClient().request("connector.entryHandler.getCompanyInfo", msg, new DataCallBack() {
+                    @Override
+    public void responseData(JSONObject jsonObject) {
+        Log.println(Log.INFO, "getCompanyInfo", jsonObject.toString());
+
+        if (callBack != null)
+            callBack.responseData(jsonObject);
+    }
+});
+    }
+
+    /// <summary>
+    /// Gets the company members.
+    /// Beware for data loading so mush. please load from cache before load from server.
+    /// </summary>
+    public void getCompanyMembers(final DataCallBack callBack) throws JSONException {
+    JSONObject msg = new JSONObject();
+    msg.put("token", getServerImplemented().authenData.getString("token"));
+    getServerImplemented().getClient().request("connector.entryHandler.getCompanyMember", msg, new DataCallBack() {
+            @Override
+public void responseData(JSONObject jsonObject) {
+    Log.println(Log.INFO, "getCompanyMembers", jsonObject.toString());
+
+    if (callBack != null)
+        callBack.responseData(jsonObject);
+}
+        });
+    }
+
+    /// <summary>
+    /// Gets the company chat rooms.
+    /// Beware for data loading so mush. please load from cache before load from server.
+    /// </summary>
+    public void getOrganizationGroups(final DataCallBack callBack) throws JSONException {
+    JSONObject msg = new JSONObject();
+    msg.put("token", getServerImplemented().authenData.getString("token"));
+    getServerImplemented().getClient().request("connector.entryHandler.getCompanyChatRoom", msg, new DataCallBack() {
+            @Override
+public void responseData(JSONObject jsonObject) {
+    System.out.println("getOrganizationGroups: " + jsonObject.toString());
+
+    if (callBack != null)
+        callBack.responseData(jsonObject);
+}
+        });
+    }
+
+    //endregion
     }
 
     interface IOnChatListener extends EventListener {
