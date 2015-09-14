@@ -153,7 +153,7 @@ module ChatServer {
             });
         }
         
-        //<!-- user profile -->
+        //region <!-- user profile -->
 
         public UpdateUserProfile(myId: string, profileFields: { [k: string]: string }, callback: (err, res) => void) {
             profileFields["token"] = this.authenData.token;
@@ -226,11 +226,11 @@ module ChatServer {
             }
         }
 
-        //<!-- end user profile section. -->
+        //endregion <!-- end user profile section. -->
 
 
 
-        //region <!- Company data.
+        //region <!-- Company data.
 
         /// <summary>
         /// Gets the company info.
@@ -274,7 +274,7 @@ module ChatServer {
             });
         }
 
-        //endregion
+        //endregion <!-- Company data. 
 
 
         //region <!-- Group && Project base. -->
@@ -305,6 +305,177 @@ module ChatServer {
         }
 
         //endregion <!-- Group && Project base. -->
+
+
+
+        //region <!-- Group && Private Chat Room... -->
+        //*********************************************************************************
+
+        /// <summary>
+        /// Gets the public group chat rooms.
+        /// Beware for data loading so mush. please load from cache before load from server.
+        /// </summary>
+        /// <param name="callback">Callback.</param>
+        public getProjectBaseGroups(callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            pomelo.request("connector.entryHandler.getProjectBaseGroups", msg, (result) => {
+                console.log("getProjectBaseGroups: " + result.toString());
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
+        public getPrivateGroups(callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            pomelo.request("connector.entryHandler.getMyPrivateGroupChat", msg, (result) => {
+                console.log("getPrivateGroups: " + result.toString());
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+        public UserRequestCreateGroupChat(groupName: string, memberIds: string[], callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["groupName"] = groupName;
+            msg["memberIds"] = JSON.stringify(memberIds);
+            pomelo.request("chat.chatRoomHandler.userCreateGroupChat", msg, (result) => {
+                console.log("RequestCreateGroupChat", result.toString());
+
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
+        public UpdatedGroupImage(groupId: string, path: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["groupId"] = groupId;
+            msg["path"] = path;
+            pomelo.request("chat.chatRoomHandler.updateGroupImage", msg, (result) => {
+                console.log("UpdatedGroupImage", result.toString());
+
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+        public editGroupMembers(editType: string, roomId: string, roomType: RoomType, members: string[], callback: (err, res) => void) {
+            if (editType == null || editType.length === 0) return;
+            if (roomId == null || roomId.length === 0) return;
+            if (roomType === null) return;
+            if (members == null || members.length === 0) return;
+
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["editType"] = editType;
+            msg["roomId"] = roomId;
+            msg["roomType"] = roomType.toString();
+            msg["members"] = JSON.stringify(members);
+            pomelo.request("chat.chatRoomHandler.editGroupMembers", msg, (result) => {
+                console.log("editGroupMembers response." + result.toString());
+
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+        public editGroupName(roomId: string, roomType: RoomType, newGroupName: string, callback: (err, res) => void) {
+            if (roomId == null || roomId.length === 0) return;
+            if (roomType === null) return;
+            if (newGroupName == null || newGroupName.length === 0) return;
+
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["roomId"] = roomId;
+            msg["roomType"] = roomType.toString();
+            msg["newGroupName"] = newGroupName;
+            pomelo.request("chat.chatRoomHandler.editGroupName", msg, (result) => {
+                console.log("editGroupName response." + result.toString());
+
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+        /// <summary>
+        /// Gets Private Chat Room.
+        /// </summary>
+        /// <param name="myId">My identifier.</param>
+        /// <param name="myRoommateId">My roommate identifier.</param>
+        public getPrivateChatRoomId(myId: string, myRoommateId: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["ownerId"] = myId;
+            msg["roommateId"] = myRoommateId;
+            pomelo.request("chat.chatRoomHandler.getRoomById", msg, (result) => {
+                console.log("getPrivateChatRoomId", result.toString());
+
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+        //<!-- Join and leave chat room.
+        public JoinChatRoomRequest(room_id: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["rid"] = room_id;
+            msg["username"] = username;
+            pomelo.request("connector.entryHandler.enterRoom", msg, (result) => {
+                console.log("JoinChatRequest: " + result);
+                if (callback !== null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+        public LeaveChatRoomRequest(roomId: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["rid"] = roomId;
+            msg["username"] = username;
+            pomelo.request("connector.entryHandler.leaveRoom", msg, (result) => {
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
+        /// <summary>
+        /// Gets the room info. For load Room info by room_id.
+        /// </summary>
+        /// <c> return data</c>
+        public getRoomInfo(roomId: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["roomId"] = roomId;
+
+            pomelo.request("chat.chatRoomHandler.getRoomInfo", msg, (result) => {
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
+        public getUnreadMsgOfRoom(roomId: string, lastAccessTime: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["roomId"] = roomId;
+            msg["lastAccessTime"] = lastAccessTime;
+            pomelo.request("chat.chatRoomHandler.getUnreadRoomMessage", msg, (result) => {
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+        //endregion <!-- Group && Private Chat Room... -->
     }
 
     interface IOnChatListener extends EventListener {
