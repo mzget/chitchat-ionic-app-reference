@@ -228,6 +228,8 @@ module ChatServer {
 
         //<!-- end user profile section. -->
 
+
+
         //region <!- Company data.
 
         /// <summary>
@@ -244,9 +246,9 @@ module ChatServer {
             });
         }
 
-    /// <summary>
-    /// Gets the company members.
-    /// Beware for data loading so mush. please load from cache before load from server.
+        /// <summary>
+        /// Gets the company members.
+        /// Beware for data loading so mush. please load from cache before load from server.
         /// </summary>
         public getCompanyMembers(callBack: (err, res) => void) {
             var msg: IDictionary = {};
@@ -258,9 +260,9 @@ module ChatServer {
             });
         }
 
-    /// <summary>
-    /// Gets the company chat rooms.
-    /// Beware for data loading so mush. please load from cache before load from server.
+        /// <summary>
+        /// Gets the company chat rooms.
+        /// Beware for data loading so mush. please load from cache before load from server.
         /// </summary>
         public getOrganizationGroups(callBack: (err, res) => void) {
             var msg: IDictionary = {};
@@ -272,7 +274,37 @@ module ChatServer {
             });
         }
 
-    //endregion
+        //endregion
+
+
+        //region <!-- Group && Project base. -->
+
+        public requestCreateProjectBaseGroup(groupName: string, members: Member[], callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["groupName"] = groupName;
+            msg["members"] = JSON.stringify(members);
+            pomelo.request("chat.chatRoomHandler.requestCreateProjectBase", msg, (result) => {
+                console.log("requestCreateProjectBaseGroup: " + result.toString());
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+    
+
+        public editMemberInfoInProjectBase(roomId: string, roomType: RoomType, member: Member, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["roomId"] = roomId;
+            msg["roomType"] = roomType.toString();
+            msg["member"] = JSON.stringify(member);
+            pomelo.request("chat.chatRoomHandler.editMemberInfoInProjectBase", msg, (result) => {
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
+        //endregion <!-- Group && Project base. -->
     }
 
     interface IOnChatListener extends EventListener {
