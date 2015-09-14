@@ -54,14 +54,191 @@
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova_plugins.js">
       <PackagePath>www\cordova_plugins.js</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\angular.min.js">
+      <PackagePath>www\js\angular.min.js</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\app.js">
       <PackagePath>www\js\app.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\bootstrap.js">
+      <PackagePath>www\js\bootstrap.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\bootstrap.min.js">
+      <PackagePath>www\js\bootstrap.min.js</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\controllers.js">
       <PackagePath>www\js\controllers.js</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\aes.js">
+      <PackagePath>www\js\crypto-js\aes.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\cipher-core.js">
+      <PackagePath>www\js\crypto-js\cipher-core.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\core.js">
+      <PackagePath>www\js\crypto-js\core.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\crypto-js.js">
+      <PackagePath>www\js\crypto-js\crypto-js.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-base64.js">
+      <PackagePath>www\js\crypto-js\enc-base64.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-hex.js">
+      <PackagePath>www\js\crypto-js\enc-hex.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-latin1.js">
+      <PackagePath>www\js\crypto-js\enc-latin1.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-utf16.js">
+      <PackagePath>www\js\crypto-js\enc-utf16.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-utf8.js">
+      <PackagePath>www\js\crypto-js\enc-utf8.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\evpkdf.js">
+      <PackagePath>www\js\crypto-js\evpkdf.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\format-hex.js">
+      <PackagePath>www\js\crypto-js\format-hex.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\format-openssl.js">
+      <PackagePath>www\js\crypto-js\format-openssl.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-md5.js">
+      <PackagePath>www\js\crypto-js\hmac-md5.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-ripemd160.js">
+      <PackagePath>www\js\crypto-js\hmac-ripemd160.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha1.js">
+      <PackagePath>www\js\crypto-js\hmac-sha1.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha224.js">
+      <PackagePath>www\js\crypto-js\hmac-sha224.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha256.js">
+      <PackagePath>www\js\crypto-js\hmac-sha256.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha3.js">
+      <PackagePath>www\js\crypto-js\hmac-sha3.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha384.js">
+      <PackagePath>www\js\crypto-js\hmac-sha384.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha512.js">
+      <PackagePath>www\js\crypto-js\hmac-sha512.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac.js">
+      <PackagePath>www\js\crypto-js\hmac.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\index.js">
+      <PackagePath>www\js\crypto-js\index.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\lib-typedarrays.js">
+      <PackagePath>www\js\crypto-js\lib-typedarrays.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\md5.js">
+      <PackagePath>www\js\crypto-js\md5.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-cfb.js">
+      <PackagePath>www\js\crypto-js\mode-cfb.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ctr-gladman.js">
+      <PackagePath>www\js\crypto-js\mode-ctr-gladman.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ctr.js">
+      <PackagePath>www\js\crypto-js\mode-ctr.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ecb.js">
+      <PackagePath>www\js\crypto-js\mode-ecb.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ofb.js">
+      <PackagePath>www\js\crypto-js\mode-ofb.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-ansix923.js">
+      <PackagePath>www\js\crypto-js\pad-ansix923.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-iso10126.js">
+      <PackagePath>www\js\crypto-js\pad-iso10126.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-iso97971.js">
+      <PackagePath>www\js\crypto-js\pad-iso97971.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-nopadding.js">
+      <PackagePath>www\js\crypto-js\pad-nopadding.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-pkcs7.js">
+      <PackagePath>www\js\crypto-js\pad-pkcs7.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-zeropadding.js">
+      <PackagePath>www\js\crypto-js\pad-zeropadding.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pbkdf2.js">
+      <PackagePath>www\js\crypto-js\pbkdf2.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rabbit-legacy.js">
+      <PackagePath>www\js\crypto-js\rabbit-legacy.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rabbit.js">
+      <PackagePath>www\js\crypto-js\rabbit.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rc4.js">
+      <PackagePath>www\js\crypto-js\rc4.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\ripemd160.js">
+      <PackagePath>www\js\crypto-js\ripemd160.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha1.js">
+      <PackagePath>www\js\crypto-js\sha1.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha224.js">
+      <PackagePath>www\js\crypto-js\sha224.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha256.js">
+      <PackagePath>www\js\crypto-js\sha256.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha3.js">
+      <PackagePath>www\js\crypto-js\sha3.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha384.js">
+      <PackagePath>www\js\crypto-js\sha384.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha512.js">
+      <PackagePath>www\js\crypto-js\sha512.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\tripledes.js">
+      <PackagePath>www\js\crypto-js\tripledes.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\x64-core.js">
+      <PackagePath>www\js\crypto-js\x64-core.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\index.js">
+      <PackagePath>www\js\index.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\jquery.cookie.min.js">
+      <PackagePath>www\js\jquery.cookie.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\jquery.min.js">
+      <PackagePath>www\js\jquery.min.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\npm.js">
+      <PackagePath>www\js\npm.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\pomelo\pomeloclient.js">
+      <PackagePath>www\js\pomelo\pomeloclient.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\require.js">
+      <PackagePath>www\js\require.js</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services.js">
       <PackagePath>www\js\services.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\socket.io.js">
+      <PackagePath>www\js\socket.io.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\theme.js">
+      <PackagePath>www\js\theme.js</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.js">
       <PackagePath>www\lib\ionic\js\angular-ui\angular-ui-router.js</PackagePath>
@@ -170,6 +347,24 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tabs.html.bak">
       <PackagePath>www\templates\tabs.html.bak</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\bower.json">
+      <PackagePath>www\js\crypto-js\bower.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\package.json">
+      <PackagePath>www\js\crypto-js\package.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\version.json">
+      <PackagePath>www\lib\ionic\version.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\CONTRIBUTING.md">
+      <PackagePath>www\js\crypto-js\CONTRIBUTING.md</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\README.md">
+      <PackagePath>www\js\crypto-js\README.md</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\docs\QuickStartGuide.wiki">
+      <PackagePath>www\js\crypto-js\docs\QuickStartGuide.wiki</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.eot">
       <PackagePath>www\lib\ionic\fonts\ionicons.eot</PackagePath>
@@ -299,9 +494,6 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_variables.scss">
       <PackagePath>www\lib\ionic\scss\_variables.scss</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\version.json">
-      <PackagePath>www\lib\ionic\version.json</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js.map">
       <PackagePath>www\scripts\appBundle.js.map</PackagePath>
