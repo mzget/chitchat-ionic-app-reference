@@ -261,6 +261,30 @@ var ChatServer;
                     callBack(null, result);
             });
         };
+        //endregion
+        //region <!-- Group && Project base. -->
+        ServerImplemented.prototype.requestCreateProjectBaseGroup = function (groupName, members, callback) {
+            var msg = {};
+            msg["token"] = this.authenData.token;
+            msg["groupName"] = groupName;
+            msg["members"] = JSON.stringify(members);
+            pomelo.request("chat.chatRoomHandler.requestCreateProjectBase", msg, function (result) {
+                console.log("requestCreateProjectBaseGroup: " + result.toString());
+                if (callback != null)
+                    callback(null, result);
+            });
+        };
+        ServerImplemented.prototype.editMemberInfoInProjectBase = function (roomId, roomType, member, callback) {
+            var msg = {};
+            msg["token"] = this.authenData.token;
+            msg["roomId"] = roomId;
+            msg["roomType"] = roomType.toString();
+            msg["member"] = JSON.stringify(member);
+            pomelo.request("chat.chatRoomHandler.editMemberInfoInProjectBase", msg, function (result) {
+                if (callback != null)
+                    callback(null, result);
+            });
+        };
         return ServerImplemented;
     })();
     ChatServer.ServerImplemented = ServerImplemented;
@@ -303,9 +327,49 @@ var ChatServer;
     })();
     ChatServer.ServerEventListener = ServerEventListener;
 })(ChatServer || (ChatServer = {}));
+var Member = (function () {
+    function Member() {
+        this.role = MemberRole.member;
+    }
+    return Member;
+})();
+var MemberRole;
+(function (MemberRole) {
+    MemberRole[MemberRole["member"] = 0] = "member";
+    MemberRole[MemberRole["admin"] = 1] = "admin";
+})(MemberRole || (MemberRole = {}));
+var Room = (function () {
+    function Room() {
+    }
+    return Room;
+})();
+var RoomType;
+(function (RoomType) {
+    RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
+    RoomType[RoomType["projectBaseGroup"] = 1] = "projectBaseGroup";
+    RoomType[RoomType["privateGroup"] = 2] = "privateGroup";
+    RoomType[RoomType["privateChat"] = 3] = "privateChat";
+})(RoomType || (RoomType = {}));
+;
+var RoomStatus;
+(function (RoomStatus) {
+    RoomStatus[RoomStatus["active"] = 0] = "active";
+    RoomStatus[RoomStatus["disable"] = 1] = "disable";
+    RoomStatus[RoomStatus["delete"] = 2] = "delete";
+})(RoomStatus || (RoomStatus = {}));
+;
 var TokenDecode = (function () {
     function TokenDecode() {
     }
     return TokenDecode;
 })();
+var Role;
+(function (Role) {
+    Role[Role["personnel"] = 0] = "personnel";
+    Role[Role["section_chief"] = 1] = "section_chief";
+    Role[Role["department_chief"] = 2] = "department_chief";
+    Role[Role["division_chief"] = 3] = "division_chief";
+    Role[Role["admin"] = 4] = "admin";
+})(Role || (Role = {}));
+;
 //# sourceMappingURL=appBundle.js.map
