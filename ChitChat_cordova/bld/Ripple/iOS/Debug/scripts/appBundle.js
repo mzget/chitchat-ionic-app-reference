@@ -38,22 +38,6 @@ requirejs.config({
 // Directly call the RequireJS require() function and from here
 // TypeScript's external module support takes over
 //require(["../../scripts/server/serverImplemented"]); 
-//require(['pomelo-client'], function (photoService) {
-//    var photoHtml = "";
-//photoService.Init().then(function (images) {
-//    images.forEach(function (item, index) {
-//        var createNewRow = (index % 4 == 0);
-//        if (createNewRow) {
-//            if (index != 0) {
-//                photoHtml += '</div>';
-//            }
-//            photoHtml += '<div class="row">';
-//        }
-//        photoHtml += '<div class="col-md-3"><img src="' + item + '" alt="" class="img-thumbnail"/></div>'
-//        document.getElementById('photos').innerHTML = photoHtml;
-//    })
-//});
-//});
 var pomelo;
 var username = "";
 var password = "";
@@ -214,6 +198,27 @@ var ChatServer;
                 }
             });
         };
+        ServerImplemented.prototype.TokenAuthen = function (tokenBearer, checkTokenCallback) {
+            var _this = this;
+            var msg = {};
+            msg["token"] = tokenBearer;
+            pomelo.request("gate.gateHandler.authenGateway", msg, function (result) {
+                _this.OnTokenAuthenticate(result, checkTokenCallback);
+            });
+        };
+        ServerImplemented.prototype.OnTokenAuthenticate = function (tokenRes, onSuccessCheckToken) {
+            if (tokenRes.code === 200) {
+                var data = tokenRes.data;
+                var decode = data.decoded; //["decoded"];
+                var decodedModel = JSON.parse(JSON.stringify(decode));
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(true, decodedModel.username, decodedModel.password);
+            }
+            else {
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(false, null, null);
+            }
+        };
         return ServerImplemented;
     })();
     ChatServer.ServerImplemented = ServerImplemented;
@@ -256,4 +261,9 @@ var ChatServer;
     })();
     ChatServer.ServerEventListener = ServerEventListener;
 })(ChatServer || (ChatServer = {}));
+var TokenDecode = (function () {
+    function TokenDecode() {
+    }
+    return TokenDecode;
+})();
 //# sourceMappingURL=appBundle.js.map

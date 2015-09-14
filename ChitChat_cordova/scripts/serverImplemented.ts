@@ -1,24 +1,4 @@
-﻿
-//require(['pomelo-client'], function (photoService) {
-//    var photoHtml = "";
-
-//photoService.Init().then(function (images) {
-//    images.forEach(function (item, index) {
-//        var createNewRow = (index % 4 == 0);
-//        if (createNewRow) {
-//            if (index != 0) {
-//                photoHtml += '</div>';
-//            }
-//            photoHtml += '<div class="row">';
-//        }
-//        photoHtml += '<div class="col-md-3"><img src="' + item + '" alt="" class="img-thumbnail"/></div>'
-
-//        document.getElementById('photos').innerHTML = photoHtml;
-//    })
-//});
-//});
-
-var pomelo;
+﻿var pomelo;
 var username: string = "";
 var password: string = "";
 
@@ -40,7 +20,7 @@ module ChatServer {
         token: string;
     }
 
-    export class ServerImplemented {      
+    export class ServerImplemented {
         host: string = "git.animation-genius.com";
         port: number = 3014;
         authenData: AutheData;
@@ -127,7 +107,7 @@ module ChatServer {
                             console.log("QueryConnectorServ", result);
 
                             if (result.code === 200) {
-                               pomelo.disconnect();
+                                pomelo.disconnect();
 
                                 var port = result.port;
                                 self.connectSocketServer(self.host, port, () => {
@@ -172,6 +152,7 @@ module ChatServer {
                 }
             });
         }
+
 
         public UpdateUserProfile(myId: string, profileFields: { [k: string]: string }, callback: (err, res) => void) {
             profileFields["token"] = this.authenData.token;
@@ -220,6 +201,28 @@ module ChatServer {
                     callback(null, result);
                 }
             });
+        }
+
+        public TokenAuthen(tokenBearer: string, checkTokenCallback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = tokenBearer;
+            pomelo.request("gate.gateHandler.authenGateway", msg, (result) => {
+                this.OnTokenAuthenticate(result, checkTokenCallback);
+            });
+        }
+
+        private OnTokenAuthenticate(tokenRes: any, onSuccessCheckToken: (success: boolean, username: string, password: string) => void) {
+            if (tokenRes.code === 200) {
+                var data = tokenRes.data;
+                var decode = data.decoded; //["decoded"];
+                var decodedModel: TokenDecode = JSON.parse(JSON.stringify(decode));
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(true, decodedModel.username, decodedModel.password);
+            }
+            else {
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(false, null, null);
+            }
         }
     }
 
