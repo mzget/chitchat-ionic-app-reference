@@ -154,6 +154,7 @@ var ChatServer;
                 }
             });
         };
+        //<!-- user profile -->
         ServerImplemented.prototype.UpdateUserProfile = function (myId, profileFields, callback) {
             profileFields["token"] = this.authenData.token;
             profileFields["_id"] = myId;
@@ -218,6 +219,47 @@ var ChatServer;
                 if (onSuccessCheckToken != null)
                     onSuccessCheckToken(false, null, null);
             }
+        };
+        //<!-- end user profile section. -->
+        //region <!- Company data.
+        /// <summary>
+        /// Gets the company info.
+        /// Beware for data loading so mush. please load from cache before load from server.
+        /// </summary>
+        ServerImplemented.prototype.getCompanyInfo = function (callBack) {
+            var msg = {};
+            msg["token"] = this.authenData.token;
+            pomelo.request("connector.entryHandler.getCompanyInfo", msg, function (result) {
+                console.log("getCompanyInfo", result.toString());
+                if (callBack != null)
+                    callBack(null, result);
+            });
+        };
+        /// <summary>
+        /// Gets the company members.
+        /// Beware for data loading so mush. please load from cache before load from server.
+        /// </summary>
+        ServerImplemented.prototype.getCompanyMembers = function (callBack) {
+            var msg = {};
+            msg["token"] = this.authenData.token;
+            pomelo.request("connector.entryHandler.getCompanyMember", msg, function (result) {
+                console.log("getCompanyMembers", result.toString());
+                if (callBack != null)
+                    callBack(null, result);
+            });
+        };
+        /// <summary>
+        /// Gets the company chat rooms.
+        /// Beware for data loading so mush. please load from cache before load from server.
+        /// </summary>
+        ServerImplemented.prototype.getOrganizationGroups = function (callBack) {
+            var msg = {};
+            msg["token"] = this.authenData.token;
+            pomelo.request("connector.entryHandler.getCompanyChatRoom", msg, function (result) {
+                console.log("getOrganizationGroups: " + result.toString());
+                if (callBack != null)
+                    callBack(null, result);
+            });
         };
         return ServerImplemented;
     })();
