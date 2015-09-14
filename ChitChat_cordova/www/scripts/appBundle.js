@@ -58,7 +58,6 @@ var pomelo;
 var username = "";
 var password = "";
 var getPomelo = require(['../js/pomelo/pomeloclient'], function (obj) {
-    console.log(obj);
     pomelo = obj;
 });
 var ChatServer;
@@ -72,7 +71,6 @@ var ChatServer;
         function ServerImplemented() {
             this.host = "git.animation-genius.com";
             this.port = 3014;
-            console.log("pomelo: ", pomelo);
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
             var authen = localStorage.getItem("authen");

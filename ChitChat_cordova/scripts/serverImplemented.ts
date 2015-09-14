@@ -23,7 +23,6 @@ var username: string = "";
 var password: string = "";
 
 var getPomelo = require(['../js/pomelo/pomeloclient'], function (obj) {
-    console.log(obj);
     pomelo = obj;
 });
 
@@ -63,8 +62,6 @@ module ChatServer {
         }
 
         constructor() {
-            console.log("pomelo: ", pomelo);
-
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
             var authen = localStorage.getItem("authen");
