@@ -8,7 +8,7 @@
     },
     "installed_plugins": {
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "BlankCordovaApp1"
+            "PACKAGE_NAME": "TEST1"
         }
     },
     "dependent_plugins": {}

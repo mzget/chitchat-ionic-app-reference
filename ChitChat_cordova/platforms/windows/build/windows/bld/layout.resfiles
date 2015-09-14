@@ -8,12 +8,9 @@ images\Square70x70Logo.scale-100.png
 images\Square71x71Logo.scale-100.png
 images\StoreLogo.scale-100.png
 images\Wide310x150Logo.scale-100.png
-WinJS\js\base.js
 www\chat.html
 www\cordova.js
 www\cordova_plugins.js
-www\cordova-js-src\exec.js
-www\cordova-js-src\platform.js
 www\css\bootstrap.css
 www\css\bootstrap.css.map
 www\css\bootstrap.min.css
@@ -175,3 +172,4 @@ www\spec\lib\jasmine-1.2.0\MIT.LICENSE
 www\style.css
 www\timeline.html
 www\videocall.html
+www\WinJS\js\base.js

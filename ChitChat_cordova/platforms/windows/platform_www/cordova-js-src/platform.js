@@ -27,9 +27,16 @@ module.exports = {
         var cordova = require('cordova'),
             exec = require('cordova/exec'),
             channel = cordova.require('cordova/channel'),
+            platform = require('cordova/platform'),
             modulemapper = require('cordova/modulemapper');
 
         modulemapper.clobbers('cordova/exec/proxy', 'cordova.commandProxy');
+
+        // we will make sure we get this channel
+        // TODO: remove this once other platforms catch up.
+        if(!channel.onActivated) {
+            channel.onActivated = cordova.addDocumentEventHandler('activated');
+        }
         channel.onNativeReady.fire();
 
         var onWinJSReady = function () {
@@ -42,7 +49,18 @@ module.exports = {
                 cordova.fireDocumentEvent('resume',null,true);
             };
 
+            // activation args are available via the activated event
+            // OR cordova.require('cordova/platform').activationContext
+            // activationContext:{type: actType, args: args};
+            var activationHandler = function (e) {
+                var args = e.detail.arguments;
+                var actType = e.detail.type;
+                platform.activationContext = { type: actType, args: args };
+                cordova.fireDocumentEvent('activated', platform.activationContext, true);
+            };
+
             app.addEventListener("checkpoint", checkpointHandler);
+            app.addEventListener("activated", activationHandler, false);
             Windows.UI.WebUI.WebUIApplication.addEventListener("resuming", resumingHandler, false);
             app.start();
         };
@@ -52,7 +70,7 @@ module.exports = {
 
             if (navigator.appVersion.indexOf('MSAppHost/3.0') !== -1) {
                 // Windows 10 UWP
-                scriptElem.src = '/WinJS/js/base.js';
+                scriptElem.src = '/www/WinJS/js/base.js';
             } else if (navigator.appVersion.indexOf("Windows Phone 8.1;") !== -1) {
                 // windows phone 8.1 + Mobile IE 11
                 scriptElem.src = "//Microsoft.Phone.WinJS.2.1/js/base.js";

@@ -202,14 +202,16 @@
 	app.initialize();
 	
 	var server = new ChatServer.ServerImplemented();
-	server.GetMe((err, res) => {
-		if (err || res === null) {
-			console.err(err);
-		}
-		else {
-			console.log(res);
-		}
-	});
+	setTimeout(() => {
+	    server.GetMe((err, res) => {
+	        if (err || res === null) {
+	            console.err(err);
+	        }
+	        else {
+	            console.log(res);
+	        }
+	    });
+	}, 1000);
 
 $(function() {
 	

@@ -114,7 +114,7 @@
 	if (!this._events) this._events = {};
 
 	// To avoid recursion in the case that type == "newListeners"! Before
-      // adding it to the listeners, first emit "newListeners".  
+	  // adding it to the listeners, first emit "newListeners".  
 //	this.emit('newListener', type, typeof listener.listener === 'function' ? listener.listener : listener);
 
 	if (!this._events[type]) {
