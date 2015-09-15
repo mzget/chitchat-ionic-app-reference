@@ -506,6 +506,25 @@ var ChatServer;
                 self.onChatListener.onGetMessagesReaders(data);
             });
         };
+        ServerEventListener.prototype.callRTCEvents = function () {
+            var self = this;
+            pomelo.on(ServerEventListener.ON_VIDEO_CALL, function (data) {
+                console.log(ServerEventListener.ON_VIDEO_CALL, data);
+                self.rtcCallListener.onVideoCall(data);
+            });
+            pomelo.on(ServerEventListener.ON_VOICE_CALL, function (data) {
+                console.log(ServerEventListener.ON_VOICE_CALL, data);
+                self.rtcCallListener.onVoiceCall(data);
+            });
+            pomelo.on(ServerEventListener.ON_HANGUP_CALL, function (data) {
+                console.log(ServerEventListener.ON_HANGUP_CALL, data);
+                self.rtcCallListener.onHangupCall(data);
+            });
+            pomelo.on(ServerEventListener.ON_THE_LINE_IS_BUSY, function (data) {
+                console.log(ServerEventListener.ON_THE_LINE_IS_BUSY, data);
+                self.rtcCallListener.onTheLineIsBusy(data);
+            });
+        };
         ServerEventListener.ON_ADD = "onAdd";
         ServerEventListener.ON_LEAVE = "onLeave";
         ServerEventListener.ON_CHAT = "onChat";

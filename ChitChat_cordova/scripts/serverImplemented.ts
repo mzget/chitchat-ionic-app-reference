@@ -583,5 +583,30 @@ module ChatServer {
                 self.onChatListener.onGetMessagesReaders(data);
             });
         }
+
+        private callRTCEvents() {
+            var self = this;
+
+            pomelo.on(ServerEventListener.ON_VIDEO_CALL, (data) => {
+                console.log(ServerEventListener.ON_VIDEO_CALL, data);
+
+                self.rtcCallListener.onVideoCall(data);
+            });
+            pomelo.on(ServerEventListener.ON_VOICE_CALL, (data) => {
+                console.log(ServerEventListener.ON_VOICE_CALL, data);
+
+                self.rtcCallListener.onVoiceCall(data);
+            });
+            pomelo.on(ServerEventListener.ON_HANGUP_CALL, (data) => {
+                console.log(ServerEventListener.ON_HANGUP_CALL, data);
+
+                self.rtcCallListener.onHangupCall(data);
+            });
+            pomelo.on(ServerEventListener.ON_THE_LINE_IS_BUSY, (data) => {
+                console.log(ServerEventListener.ON_THE_LINE_IS_BUSY, data);
+
+                self.rtcCallListener.onTheLineIsBusy(data);
+            });
+        }
     }
 }
