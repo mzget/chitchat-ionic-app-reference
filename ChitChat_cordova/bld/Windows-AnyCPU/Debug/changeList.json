@@ -90,10 +90,10 @@
     "www\\js\\crypto-js\\enc-latin1.js",
     "www_old\\style.css",
     "res\\icons\\android\\icon-48-mdpi.png",
-    "www\\templates\\tab-dash.html",
     "www_old\\js\\crypto-js\\mode-cfb.js",
     "www\\lib\\ionic\\scss\\_menu.scss",
     "www\\lib\\ionic\\js\\ionic.min.js",
+    "www\\templates\\tab-group-detail.html",
     "www\\js\\crypto-js\\ripemd160.js",
     "www\\js\\crypto-js\\enc-base64.js",
     "www_old\\js\\crypto-js\\enc-utf16.js",
@@ -169,6 +169,7 @@
     "www_old\\js\\crypto-js\\rabbit.js",
     "www\\lib\\ionic\\scss\\ionicons\\ionicons.scss",
     "www\\js\\crypto-js\\index.js",
+    "www\\templates\\tab-group.html",
     "www_old\\res\\icon\\android\\icon-72-hdpi.png",
     "www\\js\\crypto-js\\hmac-sha512.js",
     "www_old\\js\\crypto-js\\enc-utf8.js",
@@ -427,8 +428,7 @@
   "deletedPluginsIos": [],
   "changedFiles": [
     "www\\scripts\\appBundle.js.map",
-    "www\\scripts\\appBundle.js",
-    "www\\index.html"
+    "www\\scripts\\appBundle.js"
   ],
   "deletedFiles": [],
   "addedPlugins": [],

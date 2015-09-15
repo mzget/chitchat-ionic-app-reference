@@ -483,6 +483,8 @@ module ChatServer {
         public static ON_ADD: string = "onAdd";
         public static ON_LEAVE: string = "onLeave";
         public static ON_CHAT: string = "onChat";
+        public static ON_MESSAGE_READ: string = "onMessageRead";
+        public static ON_GET_MESSAGES_READERS: string = "onGetMessagesReaders";
 
         public static ON_VIDEO_CALL: string = "onVideoCall";
         public static ON_VOICE_CALL: string = "onVoiceCall";
@@ -500,8 +502,6 @@ module ChatServer {
         public static ON_NEW_GROUP_CREATED: string = "onNewGroupCreated";
         public static ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE: string = "onUpdateMemberInfoInProjectBase";
 
-        public static ON_MESSAGE_READ: string = "onMessageRead";
-        public static ON_GET_MESSAGES_READERS: string = "onGetMessagesReaders";
         public static ON_USER_UPDATE_IMAGE_PROFILE: string = "onUserUpdateImgProfile";
         public static ON_USER_UPDATE_PROFILE: string = "onUserUpdateProfile";
 
@@ -510,15 +510,26 @@ module ChatServer {
         public static ON_GET_ORGANIZE_GROUPS: string = "onGetOrganizeGroups";
         public static ON_GET_PROJECT_BASE_GROUPS: string = "onGetProjectBaseGroups";
 
-        public onChatListener: ChatServerListener;
-        public frontendListener: FrontendServerListener;
+        public onChatListener: Services.ChatServerListener;
+        public frontendListener: Services.FrontendServerListener;
+        public rtcCallListener: Services.RTCListener;
+        public serverListener: Services.ServerListener;
 
         constructor() {
-            this.frontendListener = new FrontendServerListener();
-            this.onChatListener = new ChatServerListener();
+            this.frontendListener = new Services.FrontendServerListener();
+            this.onChatListener = new Services.ChatServerListener();
+            this.rtcCallListener = new Services.RTCListener();
+            this.serverListener = new Services.ServerListener();
         }
+
         public addListenner() {
-            var self = this;
+            this.callFrontendServer();
+            this.callChatServer();
+        }
+
+        private callFrontendServer() {
+
+            var self = this; 
 
             //wait message from the server.
             pomelo.on(ServerEventListener.ON_GET_ORGANIZE_GROUPS, function (data) {
@@ -542,12 +553,34 @@ module ChatServer {
                 self.frontendListener.onGetProjectBaseGroupsComplete(data);
             });
 
+        }
 
-
+        private callChatServer() {
+            var self = this;
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, data);
 
                 self.onChatListener.onChatData(data);
+            });
+
+            //pomelo.on(ServerEventListener.ON_ADD, (data) => {
+            //    console.log(ServerEventListener.ON_ADD, data);
+            //    self.onChatListener.on(data);
+            //});
+
+            pomelo.on(ServerEventListener.ON_LEAVE, (data) => {
+                console.log(ServerEventListener.ON_LEAVE, data);
+                self.onChatListener.onLeaveRoom(data);
+            });
+
+            pomelo.on(ServerEventListener.ON_MESSAGE_READ, (data) => {
+                console.log(ServerEventListener.ON_MESSAGE_READ, data);
+                self.onChatListener.onMessageRead(data);
+            });
+
+            pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, (data) => {
+                console.log(ServerEventListener.ON_GET_MESSAGES_READERS, data);
+                self.onChatListener.onGetMessagesReaders(data);
             });
         }
     }

@@ -22,7 +22,7 @@
     <AppXManifest Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2015-09-15T10:24:16.808</Modified>
+      <Modified>2015-09-15T11:26:42.532</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
@@ -64,619 +64,623 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\img\ionic.png">
       <PackagePath>www\img\ionic.png</PackagePath>
-      <Modified>2015-09-15T10:24:13.289</Modified>
+      <Modified>2015-09-15T11:26:39.259</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\img\logo-main.png">
       <PackagePath>www\img\logo-main.png</PackagePath>
-      <Modified>2015-09-15T10:24:13.291</Modified>
+      <Modified>2015-09-15T11:26:39.260</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova.js">
       <PackagePath>www\cordova.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.131</Modified>
+      <Modified>2015-09-15T11:26:40.016</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova_plugins.js">
       <PackagePath>www\cordova_plugins.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.463</Modified>
+      <Modified>2015-09-15T11:26:40.311</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\angular.min.js">
       <PackagePath>www\js\angular.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.494</Modified>
+      <Modified>2015-09-15T11:26:40.338</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\app.js">
       <PackagePath>www\js\app.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.495</Modified>
+      <Modified>2015-09-15T11:26:40.342</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\bootstrap.js">
       <PackagePath>www\js\bootstrap.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.506</Modified>
+      <Modified>2015-09-15T11:26:40.359</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\bootstrap.min.js">
       <PackagePath>www\js\bootstrap.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.516</Modified>
+      <Modified>2015-09-15T11:26:40.380</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\controllers.js">
       <PackagePath>www\js\controllers.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.517</Modified>
+      <Modified>2015-09-15T11:26:40.381</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\aes.js">
       <PackagePath>www\js\crypto-js\aes.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.523</Modified>
+      <Modified>2015-09-15T11:26:40.387</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\cipher-core.js">
       <PackagePath>www\js\crypto-js\cipher-core.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.543</Modified>
+      <Modified>2015-09-15T11:26:40.395</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\core.js">
       <PackagePath>www\js\crypto-js\core.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.550</Modified>
+      <Modified>2015-09-15T11:26:40.400</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\crypto-js.js">
       <PackagePath>www\js\crypto-js\crypto-js.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.566</Modified>
+      <Modified>2015-09-15T11:26:40.415</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-base64.js">
       <PackagePath>www\js\crypto-js\enc-base64.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.567</Modified>
+      <Modified>2015-09-15T11:26:40.416</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-hex.js">
       <PackagePath>www\js\crypto-js\enc-hex.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.568</Modified>
+      <Modified>2015-09-15T11:26:40.417</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-latin1.js">
       <PackagePath>www\js\crypto-js\enc-latin1.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.572</Modified>
+      <Modified>2015-09-15T11:26:40.418</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-utf16.js">
       <PackagePath>www\js\crypto-js\enc-utf16.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.573</Modified>
+      <Modified>2015-09-15T11:26:40.419</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-utf8.js">
       <PackagePath>www\js\crypto-js\enc-utf8.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.574</Modified>
+      <Modified>2015-09-15T11:26:40.423</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\evpkdf.js">
       <PackagePath>www\js\crypto-js\evpkdf.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.574</Modified>
+      <Modified>2015-09-15T11:26:40.424</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\format-hex.js">
       <PackagePath>www\js\crypto-js\format-hex.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.575</Modified>
+      <Modified>2015-09-15T11:26:40.426</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\format-openssl.js">
       <PackagePath>www\js\crypto-js\format-openssl.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.576</Modified>
+      <Modified>2015-09-15T11:26:40.426</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-md5.js">
       <PackagePath>www\js\crypto-js\hmac-md5.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.577</Modified>
+      <Modified>2015-09-15T11:26:40.427</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-ripemd160.js">
       <PackagePath>www\js\crypto-js\hmac-ripemd160.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.578</Modified>
+      <Modified>2015-09-15T11:26:40.429</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha1.js">
       <PackagePath>www\js\crypto-js\hmac-sha1.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.578</Modified>
+      <Modified>2015-09-15T11:26:40.430</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha224.js">
       <PackagePath>www\js\crypto-js\hmac-sha224.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.579</Modified>
+      <Modified>2015-09-15T11:26:40.430</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha256.js">
       <PackagePath>www\js\crypto-js\hmac-sha256.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.583</Modified>
+      <Modified>2015-09-15T11:26:40.431</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha3.js">
       <PackagePath>www\js\crypto-js\hmac-sha3.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.585</Modified>
+      <Modified>2015-09-15T11:26:40.432</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha384.js">
       <PackagePath>www\js\crypto-js\hmac-sha384.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.586</Modified>
+      <Modified>2015-09-15T11:26:40.433</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha512.js">
       <PackagePath>www\js\crypto-js\hmac-sha512.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.587</Modified>
+      <Modified>2015-09-15T11:26:40.434</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac.js">
       <PackagePath>www\js\crypto-js\hmac.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.588</Modified>
+      <Modified>2015-09-15T11:26:40.435</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\index.js">
       <PackagePath>www\js\crypto-js\index.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.589</Modified>
+      <Modified>2015-09-15T11:26:40.436</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\lib-typedarrays.js">
       <PackagePath>www\js\crypto-js\lib-typedarrays.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.590</Modified>
+      <Modified>2015-09-15T11:26:40.437</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\md5.js">
       <PackagePath>www\js\crypto-js\md5.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.595</Modified>
+      <Modified>2015-09-15T11:26:40.443</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-cfb.js">
       <PackagePath>www\js\crypto-js\mode-cfb.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.600</Modified>
+      <Modified>2015-09-15T11:26:40.448</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ctr-gladman.js">
       <PackagePath>www\js\crypto-js\mode-ctr-gladman.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.601</Modified>
+      <Modified>2015-09-15T11:26:40.450</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ctr.js">
       <PackagePath>www\js\crypto-js\mode-ctr.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.602</Modified>
+      <Modified>2015-09-15T11:26:40.450</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ecb.js">
       <PackagePath>www\js\crypto-js\mode-ecb.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.603</Modified>
+      <Modified>2015-09-15T11:26:40.451</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ofb.js">
       <PackagePath>www\js\crypto-js\mode-ofb.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.604</Modified>
+      <Modified>2015-09-15T11:26:40.452</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-ansix923.js">
       <PackagePath>www\js\crypto-js\pad-ansix923.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.606</Modified>
+      <Modified>2015-09-15T11:26:40.459</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-iso10126.js">
       <PackagePath>www\js\crypto-js\pad-iso10126.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.607</Modified>
+      <Modified>2015-09-15T11:26:40.463</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-iso97971.js">
       <PackagePath>www\js\crypto-js\pad-iso97971.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.608</Modified>
+      <Modified>2015-09-15T11:26:40.464</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-nopadding.js">
       <PackagePath>www\js\crypto-js\pad-nopadding.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.612</Modified>
+      <Modified>2015-09-15T11:26:40.468</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-pkcs7.js">
       <PackagePath>www\js\crypto-js\pad-pkcs7.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.615</Modified>
+      <Modified>2015-09-15T11:26:40.472</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-zeropadding.js">
       <PackagePath>www\js\crypto-js\pad-zeropadding.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.619</Modified>
+      <Modified>2015-09-15T11:26:40.476</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pbkdf2.js">
       <PackagePath>www\js\crypto-js\pbkdf2.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.620</Modified>
+      <Modified>2015-09-15T11:26:40.477</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rabbit-legacy.js">
       <PackagePath>www\js\crypto-js\rabbit-legacy.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.625</Modified>
+      <Modified>2015-09-15T11:26:40.482</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rabbit.js">
       <PackagePath>www\js\crypto-js\rabbit.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.627</Modified>
+      <Modified>2015-09-15T11:26:40.487</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rc4.js">
       <PackagePath>www\js\crypto-js\rc4.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.627</Modified>
+      <Modified>2015-09-15T11:26:40.488</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\ripemd160.js">
       <PackagePath>www\js\crypto-js\ripemd160.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.633</Modified>
+      <Modified>2015-09-15T11:26:40.493</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha1.js">
       <PackagePath>www\js\crypto-js\sha1.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.638</Modified>
+      <Modified>2015-09-15T11:26:40.498</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha224.js">
       <PackagePath>www\js\crypto-js\sha224.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.643</Modified>
+      <Modified>2015-09-15T11:26:40.502</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha256.js">
       <PackagePath>www\js\crypto-js\sha256.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.647</Modified>
+      <Modified>2015-09-15T11:26:40.503</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha3.js">
       <PackagePath>www\js\crypto-js\sha3.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.653</Modified>
+      <Modified>2015-09-15T11:26:40.508</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha384.js">
       <PackagePath>www\js\crypto-js\sha384.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.657</Modified>
+      <Modified>2015-09-15T11:26:40.509</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha512.js">
       <PackagePath>www\js\crypto-js\sha512.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.662</Modified>
+      <Modified>2015-09-15T11:26:40.514</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\tripledes.js">
       <PackagePath>www\js\crypto-js\tripledes.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.668</Modified>
+      <Modified>2015-09-15T11:26:40.520</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\x64-core.js">
       <PackagePath>www\js\crypto-js\x64-core.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.673</Modified>
+      <Modified>2015-09-15T11:26:40.525</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\index.js">
       <PackagePath>www\js\index.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.677</Modified>
+      <Modified>2015-09-15T11:26:40.526</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\jquery.cookie.min.js">
       <PackagePath>www\js\jquery.cookie.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.678</Modified>
+      <Modified>2015-09-15T11:26:40.527</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\jquery.min.js">
       <PackagePath>www\js\jquery.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.699</Modified>
+      <Modified>2015-09-15T11:26:40.548</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\npm.js">
       <PackagePath>www\js\npm.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.700</Modified>
+      <Modified>2015-09-15T11:26:40.549</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\pomelo\pomeloclient.js">
       <PackagePath>www\js\pomelo\pomeloclient.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.706</Modified>
+      <Modified>2015-09-15T11:26:40.555</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\require.js">
       <PackagePath>www\js\require.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.718</Modified>
+      <Modified>2015-09-15T11:26:40.566</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services.js">
       <PackagePath>www\js\services.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.719</Modified>
+      <Modified>2015-09-15T11:26:40.567</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\socket.io.js">
       <PackagePath>www\js\socket.io.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.732</Modified>
+      <Modified>2015-09-15T11:26:40.579</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\template.js">
       <PackagePath>www\js\template.js</PackagePath>
-      <Modified>2015-09-15T10:24:13.658</Modified>
+      <Modified>2015-09-15T11:26:39.520</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\theme.js">
       <PackagePath>www\js\theme.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.733</Modified>
+      <Modified>2015-09-15T11:26:40.581</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.js">
       <PackagePath>www\lib\ionic\js\angular-ui\angular-ui-router.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.890</Modified>
+      <Modified>2015-09-15T11:26:40.730</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.min.js">
       <PackagePath>www\lib\ionic\js\angular-ui\angular-ui-router.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.901</Modified>
+      <Modified>2015-09-15T11:26:40.740</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-animate.js">
       <PackagePath>www\lib\ionic\js\angular\angular-animate.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.763</Modified>
+      <Modified>2015-09-15T11:26:40.610</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-animate.min.js">
       <PackagePath>www\lib\ionic\js\angular\angular-animate.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.771</Modified>
+      <Modified>2015-09-15T11:26:40.619</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-resource.js">
       <PackagePath>www\lib\ionic\js\angular\angular-resource.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.777</Modified>
+      <Modified>2015-09-15T11:26:40.625</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-resource.min.js">
       <PackagePath>www\lib\ionic\js\angular\angular-resource.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.784</Modified>
+      <Modified>2015-09-15T11:26:40.626</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.js">
       <PackagePath>www\lib\ionic\js\angular\angular-sanitize.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.793</Modified>
+      <Modified>2015-09-15T11:26:40.635</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.min.js">
       <PackagePath>www\lib\ionic\js\angular\angular-sanitize.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.800</Modified>
+      <Modified>2015-09-15T11:26:40.642</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular.js">
       <PackagePath>www\lib\ionic\js\angular\angular.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.852</Modified>
+      <Modified>2015-09-15T11:26:40.692</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular.min.js">
       <PackagePath>www\lib\ionic\js\angular\angular.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.879</Modified>
+      <Modified>2015-09-15T11:26:40.718</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic-angular.js">
       <PackagePath>www\lib\ionic\js\ionic-angular.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.930</Modified>
+      <Modified>2015-09-15T11:26:40.771</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic-angular.min.js">
       <PackagePath>www\lib\ionic\js\ionic-angular.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.948</Modified>
+      <Modified>2015-09-15T11:26:40.790</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.bundle.js">
       <PackagePath>www\lib\ionic\js\ionic.bundle.js</PackagePath>
-      <Modified>2015-09-15T10:24:15.056</Modified>
+      <Modified>2015-09-15T11:26:40.904</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.bundle.min.js">
       <PackagePath>www\lib\ionic\js\ionic.bundle.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:15.112</Modified>
+      <Modified>2015-09-15T11:26:40.961</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.js">
       <PackagePath>www\lib\ionic\js\ionic.js</PackagePath>
-      <Modified>2015-09-15T10:24:15.131</Modified>
+      <Modified>2015-09-15T11:26:40.981</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.min.js">
       <PackagePath>www\lib\ionic\js\ionic.min.js</PackagePath>
-      <Modified>2015-09-15T10:24:15.147</Modified>
+      <Modified>2015-09-15T11:26:40.998</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js">
       <PackagePath>www\scripts\appBundle.js</PackagePath>
-      <Modified>2015-09-15T10:24:15.154</Modified>
+      <Modified>2015-09-15T11:26:41.006</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\platformOverrides.js">
       <PackagePath>www\scripts\platformOverrides.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.114</Modified>
+      <Modified>2015-09-15T11:26:39.998</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\winstore-jscompat.js">
       <PackagePath>www\scripts\winstore-jscompat.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.116</Modified>
+      <Modified>2015-09-15T11:26:40.000</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\WinJS\js\base.js">
       <PackagePath>www\WinJS\js\base.js</PackagePath>
-      <Modified>2015-09-15T10:24:14.197</Modified>
+      <Modified>2015-09-15T11:26:40.071</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\css\style.css">
       <PackagePath>www\css\style.css</PackagePath>
-      <Modified>2015-09-15T10:24:14.467</Modified>
+      <Modified>2015-09-15T11:26:40.312</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\css\ionic.css">
       <PackagePath>www\lib\ionic\css\ionic.css</PackagePath>
-      <Modified>2015-09-15T10:24:14.743</Modified>
+      <Modified>2015-09-15T11:26:40.590</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\css\ionic.min.css">
       <PackagePath>www\lib\ionic\css\ionic.min.css</PackagePath>
-      <Modified>2015-09-15T10:24:14.751</Modified>
+      <Modified>2015-09-15T11:26:40.599</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\favicon.ico">
       <PackagePath>www\favicon.ico</PackagePath>
-      <Modified>2015-09-15T10:24:13.276</Modified>
+      <Modified>2015-09-15T11:26:39.257</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\index.html">
       <PackagePath>www\index.html</PackagePath>
-      <Modified>2015-09-15T10:24:13.292</Modified>
+      <Modified>2015-09-15T11:26:39.261</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\chat-detail.html">
       <PackagePath>www\templates\chat-detail.html</PackagePath>
-      <Modified>2015-09-15T10:24:15.158</Modified>
+      <Modified>2015-09-15T11:26:41.010</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-account.html">
       <PackagePath>www\templates\tab-account.html</PackagePath>
-      <Modified>2015-09-15T10:24:15.159</Modified>
+      <Modified>2015-09-15T11:26:41.011</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-chats.html">
       <PackagePath>www\templates\tab-chats.html</PackagePath>
-      <Modified>2015-09-15T10:24:15.160</Modified>
+      <Modified>2015-09-15T11:26:41.012</Modified>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-dash.html">
-      <PackagePath>www\templates\tab-dash.html</PackagePath>
-      <Modified>2015-09-15T10:24:15.161</Modified>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-group-detail.html">
+      <PackagePath>www\templates\tab-group-detail.html</PackagePath>
+      <Modified>2015-09-15T11:26:39.987</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-group.html">
+      <PackagePath>www\templates\tab-group.html</PackagePath>
+      <Modified>2015-09-15T11:26:41.013</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-timeline.html">
       <PackagePath>www\templates\tab-timeline.html</PackagePath>
-      <Modified>2015-09-15T10:24:15.164</Modified>
+      <Modified>2015-09-15T11:26:41.017</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tabs.html">
       <PackagePath>www\templates\tabs.html</PackagePath>
-      <Modified>2015-09-15T10:24:15.167</Modified>
+      <Modified>2015-09-15T11:26:41.018</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\app.js.bak">
       <PackagePath>www\js\app.js.bak</PackagePath>
-      <Modified>2015-09-15T10:24:13.319</Modified>
+      <Modified>2015-09-15T11:26:39.290</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services.js.bak">
       <PackagePath>www\js\services.js.bak</PackagePath>
-      <Modified>2015-09-15T10:24:13.646</Modified>
+      <Modified>2015-09-15T11:26:39.508</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-timeline.html.bak">
       <PackagePath>www\templates\tab-timeline.html.bak</PackagePath>
-      <Modified>2015-09-15T10:24:14.107</Modified>
+      <Modified>2015-09-15T11:26:39.992</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tabs.html.bak">
       <PackagePath>www\templates\tabs.html.bak</PackagePath>
-      <Modified>2015-09-15T10:24:14.111</Modified>
+      <Modified>2015-09-15T11:26:39.995</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\bower.json">
       <PackagePath>www\js\crypto-js\bower.json</PackagePath>
-      <Modified>2015-09-15T10:24:14.527</Modified>
+      <Modified>2015-09-15T11:26:40.388</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\package.json">
       <PackagePath>www\js\crypto-js\package.json</PackagePath>
-      <Modified>2015-09-15T10:24:14.605</Modified>
+      <Modified>2015-09-15T11:26:40.454</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\version.json">
       <PackagePath>www\lib\ionic\version.json</PackagePath>
-      <Modified>2015-09-15T10:24:15.148</Modified>
+      <Modified>2015-09-15T11:26:40.999</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\CONTRIBUTING.md">
       <PackagePath>www\js\crypto-js\CONTRIBUTING.md</PackagePath>
-      <Modified>2015-09-15T10:24:13.402</Modified>
+      <Modified>2015-09-15T11:26:39.323</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\README.md">
       <PackagePath>www\js\crypto-js\README.md</PackagePath>
-      <Modified>2015-09-15T10:24:13.539</Modified>
+      <Modified>2015-09-15T11:26:39.435</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\docs\QuickStartGuide.wiki">
       <PackagePath>www\js\crypto-js\docs\QuickStartGuide.wiki</PackagePath>
-      <Modified>2015-09-15T10:24:13.451</Modified>
+      <Modified>2015-09-15T11:26:39.370</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.eot">
       <PackagePath>www\lib\ionic\fonts\ionicons.eot</PackagePath>
-      <Modified>2015-09-15T10:24:13.673</Modified>
+      <Modified>2015-09-15T11:26:39.535</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.svg">
       <PackagePath>www\lib\ionic\fonts\ionicons.svg</PackagePath>
-      <Modified>2015-09-15T10:24:13.681</Modified>
+      <Modified>2015-09-15T11:26:39.543</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.ttf">
       <PackagePath>www\lib\ionic\fonts\ionicons.ttf</PackagePath>
-      <Modified>2015-09-15T10:24:13.685</Modified>
+      <Modified>2015-09-15T11:26:39.547</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.woff">
       <PackagePath>www\lib\ionic\fonts\ionicons.woff</PackagePath>
-      <Modified>2015-09-15T10:24:13.689</Modified>
+      <Modified>2015-09-15T11:26:39.551</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionic.scss">
       <PackagePath>www\lib\ionic\scss\ionic.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.001</Modified>
+      <Modified>2015-09-15T11:26:39.877</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\ionicons.scss">
       <PackagePath>www\lib\ionic\scss\ionicons\ionicons.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.003</Modified>
+      <Modified>2015-09-15T11:26:39.878</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-font.scss">
       <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-font.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.004</Modified>
+      <Modified>2015-09-15T11:26:39.880</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-icons.scss">
       <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-icons.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.010</Modified>
+      <Modified>2015-09-15T11:26:39.886</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-variables.scss">
       <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-variables.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.015</Modified>
+      <Modified>2015-09-15T11:26:39.891</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_action-sheet.scss">
       <PackagePath>www\lib\ionic\scss\_action-sheet.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.018</Modified>
+      <Modified>2015-09-15T11:26:39.894</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_animations.scss">
       <PackagePath>www\lib\ionic\scss\_animations.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.020</Modified>
+      <Modified>2015-09-15T11:26:39.896</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_backdrop.scss">
       <PackagePath>www\lib\ionic\scss\_backdrop.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.021</Modified>
+      <Modified>2015-09-15T11:26:39.898</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_badge.scss">
       <PackagePath>www\lib\ionic\scss\_badge.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.024</Modified>
+      <Modified>2015-09-15T11:26:39.899</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_bar.scss">
       <PackagePath>www\lib\ionic\scss\_bar.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.028</Modified>
+      <Modified>2015-09-15T11:26:39.903</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_button-bar.scss">
       <PackagePath>www\lib\ionic\scss\_button-bar.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.029</Modified>
+      <Modified>2015-09-15T11:26:39.904</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_button.scss">
       <PackagePath>www\lib\ionic\scss\_button.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.032</Modified>
+      <Modified>2015-09-15T11:26:39.908</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_checkbox.scss">
       <PackagePath>www\lib\ionic\scss\_checkbox.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.034</Modified>
+      <Modified>2015-09-15T11:26:39.912</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_form.scss">
       <PackagePath>www\lib\ionic\scss\_form.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.035</Modified>
+      <Modified>2015-09-15T11:26:39.913</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_grid.scss">
       <PackagePath>www\lib\ionic\scss\_grid.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.036</Modified>
+      <Modified>2015-09-15T11:26:39.914</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_items.scss">
       <PackagePath>www\lib\ionic\scss\_items.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.040</Modified>
+      <Modified>2015-09-15T11:26:39.919</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_list.scss">
       <PackagePath>www\lib\ionic\scss\_list.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.042</Modified>
+      <Modified>2015-09-15T11:26:39.920</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_loading.scss">
       <PackagePath>www\lib\ionic\scss\_loading.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.043</Modified>
+      <Modified>2015-09-15T11:26:39.921</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_menu.scss">
       <PackagePath>www\lib\ionic\scss\_menu.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.046</Modified>
+      <Modified>2015-09-15T11:26:39.922</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_mixins.scss">
       <PackagePath>www\lib\ionic\scss\_mixins.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.051</Modified>
+      <Modified>2015-09-15T11:26:39.926</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_modal.scss">
       <PackagePath>www\lib\ionic\scss\_modal.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.052</Modified>
+      <Modified>2015-09-15T11:26:39.928</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_platform.scss">
       <PackagePath>www\lib\ionic\scss\_platform.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.054</Modified>
+      <Modified>2015-09-15T11:26:39.930</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_popover.scss">
       <PackagePath>www\lib\ionic\scss\_popover.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.055</Modified>
+      <Modified>2015-09-15T11:26:39.931</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_popup.scss">
       <PackagePath>www\lib\ionic\scss\_popup.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.056</Modified>
+      <Modified>2015-09-15T11:26:39.933</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_progress.scss">
       <PackagePath>www\lib\ionic\scss\_progress.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.057</Modified>
+      <Modified>2015-09-15T11:26:39.934</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_radio.scss">
       <PackagePath>www\lib\ionic\scss\_radio.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.060</Modified>
+      <Modified>2015-09-15T11:26:39.937</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_range.scss">
       <PackagePath>www\lib\ionic\scss\_range.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.062</Modified>
+      <Modified>2015-09-15T11:26:39.938</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_refresher.scss">
       <PackagePath>www\lib\ionic\scss\_refresher.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.063</Modified>
+      <Modified>2015-09-15T11:26:39.940</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_reset.scss">
       <PackagePath>www\lib\ionic\scss\_reset.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.064</Modified>
+      <Modified>2015-09-15T11:26:39.941</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_scaffolding.scss">
       <PackagePath>www\lib\ionic\scss\_scaffolding.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.065</Modified>
+      <Modified>2015-09-15T11:26:39.943</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_select.scss">
       <PackagePath>www\lib\ionic\scss\_select.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.067</Modified>
+      <Modified>2015-09-15T11:26:39.944</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_slide-box.scss">
       <PackagePath>www\lib\ionic\scss\_slide-box.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.068</Modified>
+      <Modified>2015-09-15T11:26:39.946</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_spinner.scss">
       <PackagePath>www\lib\ionic\scss\_spinner.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.069</Modified>
+      <Modified>2015-09-15T11:26:39.947</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_tabs.scss">
       <PackagePath>www\lib\ionic\scss\_tabs.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.073</Modified>
+      <Modified>2015-09-15T11:26:39.951</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_toggle.scss">
       <PackagePath>www\lib\ionic\scss\_toggle.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.078</Modified>
+      <Modified>2015-09-15T11:26:39.956</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_transitions.scss">
       <PackagePath>www\lib\ionic\scss\_transitions.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.079</Modified>
+      <Modified>2015-09-15T11:26:39.957</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_type.scss">
       <PackagePath>www\lib\ionic\scss\_type.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.081</Modified>
+      <Modified>2015-09-15T11:26:39.958</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_util.scss">
       <PackagePath>www\lib\ionic\scss\_util.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.084</Modified>
+      <Modified>2015-09-15T11:26:39.962</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_variables.scss">
       <PackagePath>www\lib\ionic\scss\_variables.scss</PackagePath>
-      <Modified>2015-09-15T10:24:14.088</Modified>
+      <Modified>2015-09-15T11:26:39.966</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js.map">
       <PackagePath>www\scripts\appBundle.js.map</PackagePath>
-      <Modified>2015-09-15T10:24:14.100</Modified>
+      <Modified>2015-09-15T11:26:39.978</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\config.xml">
       <PackagePath>config.xml</PackagePath>
-      <Modified>2015-09-15T10:24:16.370</Modified>
+      <Modified>2015-09-15T11:26:42.096</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2015-09-15T10:24:16.637</Modified>
+      <Modified>2015-09-15T11:26:42.356</Modified>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>
