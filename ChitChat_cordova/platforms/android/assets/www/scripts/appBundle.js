@@ -29,15 +29,24 @@ var BlankCordovaApp1;
     };
 })(BlankCordovaApp1 || (BlankCordovaApp1 = {}));
 /// <reference path="./typings/tsd.d.ts" />
-//requirejs.config({
-//    paths: {
-//        jquery: '../js/jquery.min',
-//        cryptojs: '../js/crypto-js/crypto-js'
-//    }
-//});
+requirejs.config({
+    paths: {
+        jquery: '../js/jquery.min',
+        cryptojs: '../js/crypto-js/crypto-js'
+    }
+});
 // Directly call the RequireJS require() function and from here
 // TypeScript's external module support takes over
-//require(["../../scripts/server/serverImplemented"]); 
+//require(["../../scripts/server/serverImplemented"]);
+var Main = (function () {
+    function Main() {
+        this.serverListener = ChatServer.ServerEventListener.prototype;
+    }
+    Main.prototype.startChatServerListener = function () {
+        this.serverListener.addListenner();
+    };
+    return Main;
+})();
 var pomelo;
 var username = "";
 var password = "";
@@ -449,6 +458,10 @@ var ChatServer;
         ServerEventListener.prototype.addListenner = function () {
             var self = this;
             //wait message from the server.
+            pomelo.on(ServerEventListener.ON_GET_ORGANIZE_GROUPS, function (data) {
+                console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS, data);
+                self.frontendListener.onGetOrganizeGroupsComplete(data);
+            });
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, data);
                 self.onChatListener.onChatData(data);
