@@ -240,7 +240,7 @@ module ChatServer {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getCompanyInfo", msg, (result) => {
-                console.log("getCompanyInfo", result.toString());
+                console.log("getCompanyInfo", JSON.stringify(result));
                 if (callBack != null)
                     callBack(null, result);
             });
@@ -254,7 +254,7 @@ module ChatServer {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getCompanyMember", msg, (result) => {
-                console.log("getCompanyMembers", result.toString());
+                console.log("getCompanyMembers", JSON.stringify(result));
                 if (callBack != null)
                     callBack(null, result);
             });
@@ -268,7 +268,7 @@ module ChatServer {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getCompanyChatRoom", msg, (result) => {
-                console.log("getOrganizationGroups: " + result.toString());
+                console.log("getOrganizationGroups: " + JSON.stringify(result));
                 if (callBack != null)
                     callBack(null, result);
             });
@@ -285,7 +285,7 @@ module ChatServer {
             msg["groupName"] = groupName;
             msg["members"] = JSON.stringify(members);
             pomelo.request("chat.chatRoomHandler.requestCreateProjectBase", msg, (result) => {
-                console.log("requestCreateProjectBaseGroup: " + result.toString());
+                console.log("requestCreateProjectBaseGroup: " + JSON.stringify(result));
                 if (callback != null)
                     callback(null, result);
             });
@@ -320,7 +320,7 @@ module ChatServer {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getProjectBaseGroups", msg, (result) => {
-                console.log("getProjectBaseGroups: " + result.toString());
+                console.log("getProjectBaseGroups: " + JSON.stringify(result));
                 if (callback != null)
                     callback(null, result);
             });
@@ -330,7 +330,7 @@ module ChatServer {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getMyPrivateGroupChat", msg, (result) => {
-                console.log("getPrivateGroups: " + result.toString());
+                console.log("getPrivateGroups: " + JSON.stringify(result));
                 if (callback != null) {
                     callback(null, result);
                 }
@@ -343,7 +343,7 @@ module ChatServer {
             msg["groupName"] = groupName;
             msg["memberIds"] = JSON.stringify(memberIds);
             pomelo.request("chat.chatRoomHandler.userCreateGroupChat", msg, (result) => {
-                console.log("RequestCreateGroupChat", result.toString());
+                console.log("RequestCreateGroupChat", JSON.stringify(result));
 
                 if (callback != null)
                     callback(null, result);
@@ -356,7 +356,7 @@ module ChatServer {
             msg["groupId"] = groupId;
             msg["path"] = path;
             pomelo.request("chat.chatRoomHandler.updateGroupImage", msg, (result) => {
-                console.log("UpdatedGroupImage", result.toString());
+                console.log("UpdatedGroupImage", JSON.stringify(result));
 
                 if (callback != null) {
                     callback(null, result);
@@ -486,6 +486,13 @@ module ChatServer {
         onGetMessagesReaders(dataEvent);
     }
 
+    interface IFrontendServerListener extends EventListener {
+        onGetCompanyMemberComplete(dataEvent);
+        onGetPrivateGroupsComplete(dataEvent);
+        onGetOrganizeGroupsComplete(dataEvent);
+        onGetProjectBaseGroupsComplete(dataEvent);
+    }
+
     export class ServerEventListener {
         public static ON_ADD: string = "onAdd";
         public static ON_LEAVE: string = "onLeave";
@@ -518,12 +525,22 @@ module ChatServer {
         public static ON_GET_PROJECT_BASE_GROUPS: string = "onGetProjectBaseGroups";
 
         public onChatListener: IOnChatListener;
+        public frontendListener: IFrontendServerListener;
 
         constructor() { }
         public addListenner() {
             var self = this;
 
             //wait message from the server.
+            pomelo.on(ServerEventListener.ON_GET_ORGANIZE_GROUPS, function (data) {
+                console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS, JSON.stringify(data));
+
+                self.frontendListener.onGetOrganizeGroupsComplete(data);
+            });
+
+
+
+
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, data);
 

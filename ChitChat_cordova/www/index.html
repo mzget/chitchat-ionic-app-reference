@@ -155,7 +155,10 @@
 
 			server.logIn(email, password, (err, res) => {			
 				if (!err && res !== null) {
-					document.getElementById('login').style.display = 'none';
+				    document.getElementById('login').style.display = 'none';
+
+				    var main = new Main();
+				    main.startChatServerListener();
 
 					server.GetMe((err, res) => {
 						console.log("get me: ", res);
@@ -167,6 +170,15 @@
 					    }
 					    else {
 					        console.log("companyInfo: ", res);
+					    }
+					});
+
+					server.getOrganizationGroups((err, res) => {
+					    if (err || res === null) {
+					        console.error(err);
+					    }
+					    else {
+					        console.log("organize groups: ", res);
 					    }
 					});
 				}
