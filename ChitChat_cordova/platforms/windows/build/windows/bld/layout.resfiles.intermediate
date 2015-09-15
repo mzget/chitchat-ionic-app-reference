@@ -154,7 +154,8 @@ www\scripts\winstore-jscompat.js
 www\templates\chat-detail.html
 www\templates\tab-account.html
 www\templates\tab-chats.html
-www\templates\tab-dash.html
+www\templates\tab-group.html
+www\templates\tab-group-detail.html
 www\templates\tabs.html
 www\templates\tabs.html.bak
 www\templates\tab-timeline.html
