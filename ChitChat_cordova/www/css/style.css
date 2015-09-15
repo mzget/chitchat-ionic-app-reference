@@ -14,15 +14,12 @@
 #login form .form-control { float:none; display:inline-block; width:90%; max-width:300px; line-height:28px; height:28px; margin:0 0 10px; padding:0 5%; border-radius:20px; }
 #login form button { float:none; display:block; width:100%; max-width:100px; margin:0 auto; line-height:30px; border-radius:10px; background-color:#001A66; color:#fff; box-shadow:none; border:none; background-color:#0c92cf; }
 
-
-
-
-
-
-
-
-
-
+.group-detail { text-align:center; }
+.group-detail img { width:100%; max-width:150px; height:150px; border-radius:50%; }
+.group-detail .group-menu { display:table; width:100%; max-width:600px; margin:0 auto; }
+.group-detail .group-menu > * { float:left; display:inline; width:100%; max-width:33%; padding:20px 0; font-size:40px; cursor:pointer; }
+.group-detail .group-menu > * span { font-size:14px; position:relative; top:-10px; }
+.group-detail .group-menu >:hover { background-color:rgba(0,0,0,0.05); }
 
 
 

@@ -23,100 +23,10 @@
 	<script src="js/services.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/require.js" data-main="scripts/appBundle"></script>
+	
+	<script src="js/template.js"></script>
+	
 	<script src="scripts/appBundle.js"></script>
-
-	<style type="text/css">
-		#login {
-			float: left;
-			display: inline-block;
-			width: 100%;
-			height: 100vh;
-			position: fixed;
-			top: 0;
-			left: 0;
-			z-index: 100;
-			background-color: #fff;
-			background: -webkit-linear-gradient(rgba(255,255,255,1), #519cd3); /* For Safari 5.1 to 6.0 */
-			background: -o-linear-gradient(rgba(255,255,255,1), #519cd3); /* For Opera 11.1 to 12.0 */
-			background: -moz-linear-gradient(rgba(255,255,255,1), #519cd3); /* For Firefox 3.6 to 15 */
-			background: linear-gradient(rgba(255,255,255,1), #519cd3); /* Standard syntax (must be last) */
-		}
-
-			#login .container {
-				max-width: 600px;
-				margin-top: 10vh;
-			}
-
-				#login .container form {
-					max-width: 300px;
-					margin: 30px auto 0;
-				}
-
-			#login .message {
-				line-height: 30px;
-				margin: 5px 0 0;
-				font-weight: normal;
-				opacity: 1;
-				color: #f00;
-			}
-
-			#login .container {
-				float: none;
-				display: table;
-				width: 100%;
-				max-width: 1000px;
-				margin: 0 auto;
-				text-align: center;
-			}
-
-			#login .login-logo {
-				margin-top: 5vh;
-				max-width: 200px;
-			}
-
-			#login form {
-				float: none;
-				display: inline-block;
-				width: 100%;
-				text-align: center;
-			}
-
-				#login form > * {
-					float: left;
-					display: inline;
-					width: 100%;
-				}
-
-				#login form .form-control {
-					float: none;
-					display: inline-block;
-					width: 90%;
-					max-width: 300px;
-					margin: 0 0 10px;
-					padding: 0 5%;
-					border-radius: 20px;
-				}
-
-				#login form button {
-					float: none;
-					display: block;
-					width: 100%;
-					max-width: 100px;
-					margin: 0 auto;
-					line-height: 30px;
-					border-radius: 10px;
-					background-color: #001A66;
-					color: #fff;
-					box-shadow: none;
-					background: -webkit-linear-gradient(#6676A3, #001F7A); /* For Safari 5.1 to 6.0 */
-					background: -o-linear-gradient(#6676A3, #001F7A); /* For Opera 11.1 to 12.0 */
-					background: -moz-linear-gradient(#6676A3, #001F7A); /* For Firefox 3.6 to 15 */
-					background: linear-gradient(#6676A3, #001F7A); /* Standard syntax (must be last) */
-				}
-
-		border:none;
-		}
-	</style>
 
 </head>
 <body ng-app="starter">    
@@ -129,29 +39,16 @@
 		var authen = server.authenData;
 	</script>
 
-	<div id="login">
-		<div class="container">
-			<img class="login-logo" src="img/logo-main.png" width="40%" />
-			<form>
-				<div>
-					<input class="form-control" type="email" name="email" placeholder="Email" />
-				</div>
-				<div>
-					<input class="form-control" type="password" name="password" placeholder="Password" />
-				</div>
-				<button id="btn-login" class="btn btn-primary btn-block btn-flat">Sign In</button>
-			</form>
-		</div>
-	</div>
-
 	<script type="text/javascript">
-
-		$('#btn-login').click(function (event) {
+	formLogin();
+	
+		$('body #login #btn-login').click(function (event) {
+			
 			event.preventDefault();
 
-			$('input').attr('readonly', true);
-			email = $('form input[name="email"]').val();
-			password = $('form input[name="password"]').val();
+			$('body #login input').attr('readonly', true);
+			email = $('body #login form input[name="email"]').val();
+			password = $('body #login form input[name="password"]').val();
 
 			server.logIn(email, password, (err, res) => {			
 				if (!err && res !== null) {
