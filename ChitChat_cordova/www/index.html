@@ -56,7 +56,7 @@
 
 				    var main = new Main().startChatServerListener();
 
-					server.GetMe((err, res) => {
+					server.getMe((err, res) => {
 						console.log("get me: ", res);
 					});
 
@@ -75,6 +75,24 @@
 					    }
 					    else {
 					        console.log("organize groups: ", res);
+					    }
+					});
+
+					server.getProjectBaseGroups((err, res) => {
+					    if (err || res === null) {
+					        console.error(err);
+					    }
+					    else {
+					        console.log("project base groups: ", res);
+					    }
+					});
+
+					server.getPrivateGroups((err, res) => {
+					    if (err || res === null) {
+					        console.error(err);
+					    }
+					    else {
+					        console.log("Private groups: ", res);
 					    }
 					});
 				}

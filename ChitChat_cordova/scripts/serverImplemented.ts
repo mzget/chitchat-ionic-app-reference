@@ -186,14 +186,14 @@ module ChatServer {
             });
         }
 
-        public GetMe(callback: (err, res) => void) {
+        public getMe(callback: (err, res) => void) {
             var msg: IDictionary = {};
             msg["username"] = username;
             msg["password"] = password;
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
             pomelo.request("connector.entryHandler.getMe", msg, (result) => {
-                console.log("getMe: ", result);
+                console.log("getMe: ", JSON.stringify(result));
                 if (result.code === 500) {
                     callback(result.message, null);
                     //                    if (OnLoginComplete != null)
@@ -279,6 +279,16 @@ module ChatServer {
 
         //region <!-- Group && Project base. -->
 
+        public getProjectBaseGroups(callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            pomelo.request("connector.entryHandler.getProjectBaseGroups", msg, (result) => {
+                console.log("getProjectBaseGroups: " + JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
         public requestCreateProjectBaseGroup(groupName: string, members: Member[], callback: (err, res) => void) {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
@@ -316,15 +326,6 @@ module ChatServer {
         /// Beware for data loading so mush. please load from cache before load from server.
         /// </summary>
         /// <param name="callback">Callback.</param>
-        public getProjectBaseGroups(callback: (err, res) => void) {
-            var msg: IDictionary = {};
-            msg["token"] = this.authenData.token;
-            pomelo.request("connector.entryHandler.getProjectBaseGroups", msg, (result) => {
-                console.log("getProjectBaseGroups: " + JSON.stringify(result));
-                if (callback != null)
-                    callback(null, result);
-            });
-        }
 
         public getPrivateGroups(callback: (err, res) => void) {
             var msg: IDictionary = {};
@@ -509,11 +510,12 @@ module ChatServer {
         public static ON_GET_ORGANIZE_GROUPS: string = "onGetOrganizeGroups";
         public static ON_GET_PROJECT_BASE_GROUPS: string = "onGetProjectBaseGroups";
 
-        public onChatListener: IOnChatListener;
+        public onChatListener: ChatServerListener;
         public frontendListener: FrontendServerListener;
 
         constructor() {
             this.frontendListener = new FrontendServerListener();
+            this.onChatListener = new ChatServerListener();
         }
         public addListenner() {
             var self = this;
@@ -524,7 +526,21 @@ module ChatServer {
 
                 self.frontendListener.onGetOrganizeGroupsComplete(data);
             });
+            pomelo.on(ServerEventListener.ON_GET_COMPANY_MEMBERS, data => {
+                console.log(ServerEventListener.ON_GET_COMPANY_MEMBERS, JSON.stringify(data));
 
+                self.frontendListener.onGetCompanyMemberComplete(data);
+            });
+            pomelo.on(ServerEventListener.ON_GET_PRIVATE_GROUPS, data => {
+                console.log(ServerEventListener.ON_GET_PRIVATE_GROUPS, JSON.stringify(data));
+
+                self.frontendListener.onGetPrivateGroupsComplete(data);
+            });
+            pomelo.on(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS, data => {
+                console.log(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS, JSON.stringify(data));
+
+                self.frontendListener.onGetProjectBaseGroupsComplete(data);
+            });
 
 
 
