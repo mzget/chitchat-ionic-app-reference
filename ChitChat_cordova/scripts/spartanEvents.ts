@@ -7,6 +7,13 @@ interface IOnChatListener {
     onMessageRead(dataEvent);
     onGetMessagesReaders(dataEvent);
 }
+class ChatServerListener implements IOnChatListener {
+    onChatData(data) { };
+    onLeaveRoom(data) { };
+    onRoomJoin(data) { };
+    onMessageRead(dataEvent) { };
+    onGetMessagesReaders(dataEvent) { };
+}
 
 interface IFrontendServerListener {
     onGetCompanyMemberComplete(dataEvent);
