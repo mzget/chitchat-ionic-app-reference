@@ -43,7 +43,7 @@ var Main = (function () {
         this.serverListener = new ChatServer.ServerEventListener();
     }
     Main.prototype.startChatServerListener = function () {
-        // this.serverListener.addListenner();
+        this.serverListener.addListenner();
     };
     return Main;
 })();
@@ -96,12 +96,12 @@ var ChatServer;
             pomelo.init({ host: _host, port: _port }, function (socket) {
                 console.log("client.init : ", socket);
                 callback();
-                pomelo.on("disconnect", function (dataEvent) {
-                    console.log("disconnect Event");
-                    //if (connectionListen != null) {
-                    //    connectionListen.connectionEvent("disconnect");
-                    //}
-                });
+                //pomelo.on("disconnect", function (dataEvent) {
+                //console.error("disconnect Event", dataEvent);
+                //if (connectionListen != null) {
+                //    connectionListen.connectionEvent("disconnect");
+                //}
+                //});
             });
         };
         // region <!-- Authentication...
@@ -454,6 +454,7 @@ var ChatServer;
     ChatServer.ServerImplemented = ServerImplemented;
     var ServerEventListener = (function () {
         function ServerEventListener() {
+            this.frontendListener = new FrontendServerListener();
         }
         ServerEventListener.prototype.addListenner = function () {
             var self = this;
@@ -495,6 +496,20 @@ var ChatServer;
     })();
     ChatServer.ServerEventListener = ServerEventListener;
 })(ChatServer || (ChatServer = {}));
+var FrontendServerListener = (function () {
+    function FrontendServerListener() {
+    }
+    FrontendServerListener.prototype.onGetCompanyMemberComplete = function (dataEvent) { };
+    ;
+    FrontendServerListener.prototype.onGetPrivateGroupsComplete = function (dataEvent) { };
+    ;
+    FrontendServerListener.prototype.onGetOrganizeGroupsComplete = function (dataEvent) { };
+    ;
+    FrontendServerListener.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) { };
+    ;
+    return FrontendServerListener;
+})();
+;
 var Member = (function () {
     function Member() {
         this.role = MemberRole.member;

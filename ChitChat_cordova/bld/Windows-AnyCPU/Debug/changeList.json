@@ -418,14 +418,17 @@
     "www\\js\\crypto-js\\pad-iso10126.js",
     "www_old\\js\\crypto-js\\aes.js",
     "www\\lib\\ionic\\scss\\_radio.scss",
-    "www_old\\js\\crypto-js\\crypto-js.js"
+    "www_old\\js\\crypto-js\\crypto-js.js",
+    "scripts\\spartanEvents.ts"
   ],
   "deletedFilesIos": [],
   "addedPluginsIos": [],
   "deletedPluginsIos": [],
   "changedFiles": [
     "www\\scripts\\appBundle.js.map",
-    "www\\scripts\\appBundle.js"
+    "www\\scripts\\appBundle.js",
+    "www\\js\\pomelo\\pomeloclient.js",
+    "scripts\\spartanEvents.ts"
   ],
   "deletedFiles": [],
   "addedPlugins": [],

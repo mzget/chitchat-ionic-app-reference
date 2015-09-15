@@ -71,12 +71,12 @@ module ChatServer {
                 console.log("client.init : ", socket);
                 callback();
 
-                pomelo.on("disconnect", function (dataEvent) {
-                    console.log("disconnect Event");
+                //pomelo.on("disconnect", function (dataEvent) {
+                    //console.error("disconnect Event", dataEvent);
                     //if (connectionListen != null) {
                     //    connectionListen.connectionEvent("disconnect");
                     //}
-                });
+                //});
             });
         }
 
@@ -478,21 +478,6 @@ module ChatServer {
         //endregion <!-- Group && Private Chat Room... -->
     }
 
-    interface IOnChatListener extends EventListener {
-        onChatData(data);
-        onLeaveRoom(data);
-        onRoomJoin(data);
-        onMessageRead(dataEvent);
-        onGetMessagesReaders(dataEvent);
-    }
-
-    interface IFrontendServerListener extends EventListener {
-        onGetCompanyMemberComplete(dataEvent);
-        onGetPrivateGroupsComplete(dataEvent);
-        onGetOrganizeGroupsComplete(dataEvent);
-        onGetProjectBaseGroupsComplete(dataEvent);
-    }
-
     export class ServerEventListener {
         public static ON_ADD: string = "onAdd";
         public static ON_LEAVE: string = "onLeave";
@@ -525,9 +510,11 @@ module ChatServer {
         public static ON_GET_PROJECT_BASE_GROUPS: string = "onGetProjectBaseGroups";
 
         public onChatListener: IOnChatListener;
-        public frontendListener: IFrontendServerListener;
+        public frontendListener: FrontendServerListener;
 
-        constructor() { }
+        constructor() {
+            this.frontendListener = new FrontendServerListener();
+        }
         public addListenner() {
             var self = this;
 
