@@ -16,6 +16,6 @@ class Main {
     constructor() { }
 
     public startChatServerListener() {
-       // this.serverListener.addListenner();
+        this.serverListener.addListenner();
     }
 }
