@@ -15,6 +15,7 @@
     <DebuggerFlavor>RippleiPhone5</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Windows-AnyCPU'">
-    <DebuggerFlavor>WindowsLocal</DebuggerFlavor>
+    <DebuggerFlavor>WindowsMobileEmulator</DebuggerFlavor>
+    <WindowsMobileEmulatorID>2DDADD82-5910-40E6-894F-17EB5CD463EF;Mobile Emulator 10.0.10240.0 720p 5 inch 1GB</WindowsMobileEmulatorID>
   </PropertyGroup>
 </Project>

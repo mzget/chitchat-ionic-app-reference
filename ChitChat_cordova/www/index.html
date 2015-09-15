@@ -35,39 +35,60 @@
 <script src="js/socket.io.js"></script>
 <script>
 var socket = io;
-</script>
-
-<script type="text/javascript">
-//formLogin(); //get form login
-
 var server = new ChatServer.ServerImplemented();
+var authen = server.authenData;
 
-$(document).ready(function(){
-	$('body #login #btn-login').click(function (event) {
-		event.preventDefault();
 
-		$('body #login input').attr('readonly', true);
-		email = $('form input[name="email"]').val();
-		password = $('form input[name="password"]').val();
+// Get Login form
+formLogin(); 
 
-		server.logIn(email, password, (err, res) => {					
-			if (!err && res !== null) {
-				document.getElementById('login').style.display = 'none';
 
-				server.GetMe((err, res) => {
-					console.log("get me: ", res);
-				});
-			}
-			else {
-				console.log(err);
-			}
-		});
-	});		
+// Submit Login form
+$('body #login #btn-login').click(function (event) {
+	event.preventDefault();
+
+	$('body #login input').attr('readonly', true);
+	email = $('body #login input[name="email"]').val();
+	password = $('body #login input[name="password"]').val();
+	
+	server.logIn(email, password, (err, res) => {			
+		if (!err && res !== null) {
+			document.getElementById('login').style.display = 'none';
+
+			var main = new Main();
+			main.startChatServerListener();
+
+			server.GetMe((err, res) => {
+				console.log("get me: ", res);
+			});
+
+			server.getCompanyInfo((err, res) => {
+				if (err || res === null) {
+					console.error(err);
+				}
+				else {
+					console.log("companyInfo: ", res);
+				}
+			});
+
+			server.getOrganizationGroups((err, res) => {
+				if (err || res === null) {
+					console.error(err);
+				}
+				else {
+					console.log("organize groups: ", res);
+				}
+			});
+		}
+		else {
+			console.log(err);
+		}
+	});
 });
 </script>
 
 
-
+<!-- Ionic -->
 <ion-nav-bar class="bar-stable">
 	<ion-nav-back-button>
 	</ion-nav-back-button>
