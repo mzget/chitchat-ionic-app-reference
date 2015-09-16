@@ -20,7 +20,7 @@
         onTheLineIsBusy(dataEvent);
     }
     interface IServerListener {
-        onGetRoomAccess(dataEvent);
+        onAccessRoom(dataEvent);
         onUpdatedLastAccessTime(dataEvent);
         onAddRoomAccess(dataEvent);
 
@@ -59,7 +59,7 @@
     }
 
     export class ServerListener implements IServerListener {
-        onGetRoomAccess(dataEvent) { };
+        onAccessRoom(dataEvent) { };
         onUpdatedLastAccessTime(dataEvent) { };
         onAddRoomAccess(dataEvent) { };
 

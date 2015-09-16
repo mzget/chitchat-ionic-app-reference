@@ -230,7 +230,7 @@ var ChatServer;
             }
         };
         //endregion <!-- end user profile section. -->
-        //region <!-- Company data.
+        //region <!-- Company data. -->
         /// <summary>
         /// Gets the company info.
         /// Beware for data loading so mush. please load from cache before load from server.
@@ -462,6 +462,8 @@ var ChatServer;
         ServerEventListener.prototype.addListenner = function () {
             this.callFrontendServer();
             this.callChatServer();
+            this.callRTCEvents();
+            this.callServerEvents();
         };
         ServerEventListener.prototype.callFrontendServer = function () {
             var self = this;
@@ -525,6 +527,56 @@ var ChatServer;
                 self.rtcCallListener.onTheLineIsBusy(data);
             });
         };
+        ServerEventListener.prototype.callServerEvents = function () {
+            var self = this;
+            //<!-- AccessRoom Info -->
+            pomelo.on(ServerEventListener.ON_ACCESS_ROOMS, function (data) {
+                console.log(ServerEventListener.ON_ACCESS_ROOMS, data);
+                self.serverListener.onAccessRoom(data);
+            });
+            pomelo.on(ServerEventListener.ON_ADD_ROOM_ACCESS, function (data) {
+                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS, data);
+                self.serverListener.onAddRoomAccess(data);
+            });
+            pomelo.on(ServerEventListener.ON_UPDATED_LASTACCESSTIME, function (data) {
+                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, data);
+                self.serverListener.onUpdatedLastAccessTime(data);
+            });
+            //<!-- User profile -->
+            pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, function (data) {
+                console.log(ServerEventListener.ON_USER_UPDATE_PROFILE, data);
+                self.serverListener.onUserUpdateProfile(data);
+            });
+            pomelo.on(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, function (data) {
+                console.log(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, data);
+                self.serverListener.onUserUpdateImageProfile(data);
+            });
+            //<!-- Group -->
+            pomelo.on(ServerEventListener.ON_CREATE_GROUP_SUCCESS, function (data) {
+                console.log(ServerEventListener.ON_CREATE_GROUP_SUCCESS, data);
+                self.serverListener.onCreateGroupSuccess(data);
+            });
+            pomelo.on(ServerEventListener.ON_EDITED_GROUP_MEMBER, function (data) {
+                console.log(ServerEventListener.ON_EDITED_GROUP_MEMBER, data);
+                self.serverListener.onEditedGroupMember(data);
+            });
+            pomelo.on(ServerEventListener.ON_EDITED_GROUP_NAME, function (data) {
+                console.log(ServerEventListener.ON_EDITED_GROUP_NAME, data);
+                self.serverListener.onEditedGroupName(data);
+            });
+            pomelo.on(ServerEventListener.ON_EDITED_GROUP_IMAGE, function (data) {
+                console.log(ServerEventListener.ON_EDITED_GROUP_IMAGE, data);
+                self.serverListener.onEditedGroupImage(data);
+            });
+            pomelo.on(ServerEventListener.ON_NEW_GROUP_CREATED, function (data) {
+                console.log(ServerEventListener.ON_NEW_GROUP_CREATED, data);
+                self.serverListener.onNewGroupCreated(data);
+            });
+            pomelo.on(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, function (data) {
+                console.log(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, data);
+                self.serverListener.onUpdateMemberInfoInProjectBase(data);
+            });
+        };
         ServerEventListener.ON_ADD = "onAdd";
         ServerEventListener.ON_LEAVE = "onLeave";
         ServerEventListener.ON_CHAT = "onChat";
@@ -534,15 +586,18 @@ var ChatServer;
         ServerEventListener.ON_VOICE_CALL = "onVoiceCall";
         ServerEventListener.ON_HANGUP_CALL = "onHangupCall";
         ServerEventListener.ON_THE_LINE_IS_BUSY = "onTheLineIsBusy";
+        //<!-- AccessRoom Info -->
         ServerEventListener.ON_ACCESS_ROOMS = "onAccessRooms";
         ServerEventListener.ON_ADD_ROOM_ACCESS = "onAddRoomAccess";
         ServerEventListener.ON_UPDATED_LASTACCESSTIME = "onUpdatedLastAccessTime";
+        //<!-- Group -->
         ServerEventListener.ON_CREATE_GROUP_SUCCESS = "onCreateGroupSuccess";
         ServerEventListener.ON_EDITED_GROUP_MEMBER = "onEditGroupMembers";
         ServerEventListener.ON_EDITED_GROUP_NAME = "onEditGroupName";
         ServerEventListener.ON_EDITED_GROUP_IMAGE = "onEditGroupImage";
         ServerEventListener.ON_NEW_GROUP_CREATED = "onNewGroupCreated";
         ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE = "onUpdateMemberInfoInProjectBase";
+        //<!-- User profile -->
         ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE = "onUserUpdateImgProfile";
         ServerEventListener.ON_USER_UPDATE_PROFILE = "onUserUpdateProfile";
         ServerEventListener.ON_GET_COMPANY_MEMBERS = "onGetCompanyMembers";
@@ -603,7 +658,7 @@ var Services;
     var ServerListener = (function () {
         function ServerListener() {
         }
-        ServerListener.prototype.onGetRoomAccess = function (dataEvent) { };
+        ServerListener.prototype.onAccessRoom = function (dataEvent) { };
         ;
         ServerListener.prototype.onUpdatedLastAccessTime = function (dataEvent) { };
         ;
