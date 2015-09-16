@@ -95,6 +95,15 @@
 					        console.log("Private groups: ", res);
 					    }
 					});
+
+					server.getCompanyMembers((err, res) => {
+					    if (err || res === null) {
+					        console.error(err);
+					    }
+					    else {
+					        console.log("Company Members: ", res);
+					    }
+					});
 				}
 				else {
 					console.log(err);
