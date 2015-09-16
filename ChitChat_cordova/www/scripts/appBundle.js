@@ -684,6 +684,21 @@ var Services;
     })();
     Services.ServerListener = ServerListener;
 })(Services || (Services = {}));
+var DataManager = (function () {
+    function DataManager() {
+    }
+    DataManager.prototype.setMembers = function (data) {
+    };
+    DataManager.prototype.setCompanyInfo = function (data) {
+    };
+    DataManager.prototype.setOrganizeGroups = function (data) {
+    };
+    DataManager.prototype.setProjectBaseGroups = function (data) {
+    };
+    DataManager.prototype.setPrivateGroups = function (data) {
+    };
+    return DataManager;
+})();
 var Member = (function () {
     function Member() {
         this.role = MemberRole.member;
