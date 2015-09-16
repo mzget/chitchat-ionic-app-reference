@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
+
+<title>ChitChat App</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css" />
+<link rel="stylesheet" href="style.css" />
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="main-header" class="row-fluid">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="title">FRIENDS</div>
+			<div class="menu">
+				<a href="" class="fa fa-user-plus"></a>
+				<a href="" class="fa fa-search"></a>
+				<a href="" class="fa fa-bars"></a>
+			</div>			
+		</div>
+	</div>
+</div>
+
+<div id="main-menu" class="row-fluid">
+	<div class="container-fluid">
+		<div class="row">
+			<a href="list.html" class="col-xs-3">
+				<img src="images/icon-user.png" alt="" width="100%" /><br />FRIEND	
+			</a>
+			<a href="list-chat.html" class="col-xs-3 active">
+				<img src="images/icon-chat.png" alt="" width="100%" /><br />CHAT
+			</a>
+			<a href="timeline.html" class="col-xs-3">
+				<img src="images/icon-timeline.png" alt="" width="100%" /><br />TIMELINE	
+			</a>
+			<a id="btn-listmore" href="#" class="col-xs-3">
+				<img src="images/icon-more.png" alt="" width="100%" /><br />MORE	
+			</a>
+		</div>
+	</div>
+</div>
+
+<div id="list-chat" class="row-fluid">
+	<div class="container-fluid">
+	
+		<div class="row person">
+			<div class="pull-left">
+				<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=50&h=50" alt="" /> 
+				<div>
+					<strong>ATOMX</strong> <span class="receive">+99</span><br />
+					<span class="message">message message message. message message message. message message message.</span><br />
+					<span class="date">31 ก.พ. 2017</span>
+				</div>
+			</div>
+		</div>
+		<div class="row person">
+			<div class="pull-left">
+				<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=50&h=50" alt="" /> 
+				<div>
+					<strong>ATOMX</strong> <span class="receive">+99</span><br />
+					<span class="message">message message message. message message message. message message message.</span><br />
+					<span class="date">31 ก.พ. 2017</span>
+				</div>
+			</div>
+		</div>
+		<div class="row person">
+			<div class="pull-left">
+				<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=50&h=50" alt="" /> 
+				<div>
+					<strong>ATOMX</strong> <span class="receive">+99</span><br />
+					<span class="message">message message message. message message message. message message message.</span><br />
+					<span class="date">31 ก.พ. 2017</span>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+<div id="listmore" class="row-fluid">
+	<div class="col-xs-4">
+		<span class="fa fa-group"></span><br /><label>Create group</label>
+	</div>
+	<div class="col-xs-4">
+		<span class="fa fa-image"></span><br /><label>Theme</label>
+	</div>
+	<div class="col-xs-4">
+		<span class="fa fa-sign-out"></span><br /><label>Log out</label>
+	</div>
+</div>
+			
+			
+<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="js/cordova.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+app.initialize();
+
+$(function() {
+	
+	//alert( $.cookie('email') );
+	
+	border = $('#main-header').height() + $('#main-menu').height();
+    $(window).resize(function() {
+        $('#list-chat').height($(window).height() - border);
+    });
+    $(window).resize();
+	
+});
+
+</script>
+
+<script src="js/theme.js"></script>
+
+</body>
+</html>
