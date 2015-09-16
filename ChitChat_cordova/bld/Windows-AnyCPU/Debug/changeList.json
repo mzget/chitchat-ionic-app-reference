@@ -428,7 +428,9 @@
   "deletedPluginsIos": [],
   "changedFiles": [
     "www\\scripts\\appBundle.js.map",
-    "www\\scripts\\appBundle.js"
+    "www\\scripts\\appBundle.js",
+    "config.xml",
+    "www\\index.html"
   ],
   "deletedFiles": [],
   "addedPlugins": [],
