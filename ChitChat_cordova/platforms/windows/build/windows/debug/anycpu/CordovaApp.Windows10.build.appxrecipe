@@ -1,513 +1,513 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <Machine>ADMIN-PC</Machine>
-    <WindowsUser>Admin</WindowsUser>
+    <Machine>DESKTOP-67M6RIB</Machine>
+    <WindowsUser>nattapon</WindowsUser>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetOsVersion>10.0</TargetOsVersion>
     <TargetOsDescription>Windows 10.0</TargetOsDescription>
     <SolutionConfiguration>debug|anycpu</SolutionConfiguration>
     <PackageArchitecture>neutral</PackageArchitecture>
     <PackageIdentityName>e605cba0-5a93-11e5-a575-bf4757d61a49</PackageIdentityName>
-    <IntermediateOutputPath>C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\</IntermediateOutputPath>
+    <IntermediateOutputPath>C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <AppXManifest Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\AppxManifest.xml">
+    <AppXManifest Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\SplashScreen.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\SplashScreen.scale-100.png">
       <PackagePath>images\SplashScreen.scale-100.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square150x150Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square150x150Logo.scale-100.png">
       <PackagePath>images\Square150x150Logo.scale-100.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square30x30Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square30x30Logo.scale-100.png">
       <PackagePath>images\Square30x30Logo.scale-100.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square310x310Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square310x310Logo.scale-100.png">
       <PackagePath>images\Square310x310Logo.scale-100.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square44x44Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square44x44Logo.scale-100.png">
       <PackagePath>images\Square44x44Logo.scale-100.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square70x70Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square70x70Logo.scale-100.png">
       <PackagePath>images\Square70x70Logo.scale-100.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square71x71Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Square71x71Logo.scale-100.png">
       <PackagePath>images\Square71x71Logo.scale-100.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\StoreLogo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\StoreLogo.scale-100.png">
       <PackagePath>images\StoreLogo.scale-100.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Wide310x150Logo.scale-100.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Wide310x150Logo.scale-100.png">
       <PackagePath>images\Wide310x150Logo.scale-100.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\img\ionic.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\img\ionic.png">
       <PackagePath>www\img\ionic.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\img\logo-main.png">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\img\logo-main.png">
       <PackagePath>www\img\logo-main.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova.js">
       <PackagePath>www\cordova.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova_plugins.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova_plugins.js">
       <PackagePath>www\cordova_plugins.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\angular.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\angular.min.js">
       <PackagePath>www\js\angular.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\app.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\app.js">
       <PackagePath>www\js\app.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\bootstrap.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\bootstrap.js">
       <PackagePath>www\js\bootstrap.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\bootstrap.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\bootstrap.min.js">
       <PackagePath>www\js\bootstrap.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\controllers.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\controllers.js">
       <PackagePath>www\js\controllers.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\aes.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\aes.js">
       <PackagePath>www\js\crypto-js\aes.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\cipher-core.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\cipher-core.js">
       <PackagePath>www\js\crypto-js\cipher-core.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\core.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\core.js">
       <PackagePath>www\js\crypto-js\core.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\crypto-js.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\crypto-js.js">
       <PackagePath>www\js\crypto-js\crypto-js.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-base64.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-base64.js">
       <PackagePath>www\js\crypto-js\enc-base64.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-hex.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-hex.js">
       <PackagePath>www\js\crypto-js\enc-hex.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-latin1.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-latin1.js">
       <PackagePath>www\js\crypto-js\enc-latin1.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-utf16.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-utf16.js">
       <PackagePath>www\js\crypto-js\enc-utf16.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-utf8.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\enc-utf8.js">
       <PackagePath>www\js\crypto-js\enc-utf8.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\evpkdf.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\evpkdf.js">
       <PackagePath>www\js\crypto-js\evpkdf.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\format-hex.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\format-hex.js">
       <PackagePath>www\js\crypto-js\format-hex.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\format-openssl.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\format-openssl.js">
       <PackagePath>www\js\crypto-js\format-openssl.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-md5.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-md5.js">
       <PackagePath>www\js\crypto-js\hmac-md5.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-ripemd160.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-ripemd160.js">
       <PackagePath>www\js\crypto-js\hmac-ripemd160.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha1.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha1.js">
       <PackagePath>www\js\crypto-js\hmac-sha1.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha224.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha224.js">
       <PackagePath>www\js\crypto-js\hmac-sha224.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha256.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha256.js">
       <PackagePath>www\js\crypto-js\hmac-sha256.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha3.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha3.js">
       <PackagePath>www\js\crypto-js\hmac-sha3.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha384.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha384.js">
       <PackagePath>www\js\crypto-js\hmac-sha384.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha512.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac-sha512.js">
       <PackagePath>www\js\crypto-js\hmac-sha512.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\hmac.js">
       <PackagePath>www\js\crypto-js\hmac.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\index.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\index.js">
       <PackagePath>www\js\crypto-js\index.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\lib-typedarrays.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\lib-typedarrays.js">
       <PackagePath>www\js\crypto-js\lib-typedarrays.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\md5.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\md5.js">
       <PackagePath>www\js\crypto-js\md5.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-cfb.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-cfb.js">
       <PackagePath>www\js\crypto-js\mode-cfb.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ctr-gladman.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ctr-gladman.js">
       <PackagePath>www\js\crypto-js\mode-ctr-gladman.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ctr.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ctr.js">
       <PackagePath>www\js\crypto-js\mode-ctr.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ecb.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ecb.js">
       <PackagePath>www\js\crypto-js\mode-ecb.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ofb.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\mode-ofb.js">
       <PackagePath>www\js\crypto-js\mode-ofb.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-ansix923.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-ansix923.js">
       <PackagePath>www\js\crypto-js\pad-ansix923.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-iso10126.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-iso10126.js">
       <PackagePath>www\js\crypto-js\pad-iso10126.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-iso97971.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-iso97971.js">
       <PackagePath>www\js\crypto-js\pad-iso97971.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-nopadding.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-nopadding.js">
       <PackagePath>www\js\crypto-js\pad-nopadding.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-pkcs7.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-pkcs7.js">
       <PackagePath>www\js\crypto-js\pad-pkcs7.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-zeropadding.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pad-zeropadding.js">
       <PackagePath>www\js\crypto-js\pad-zeropadding.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pbkdf2.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\pbkdf2.js">
       <PackagePath>www\js\crypto-js\pbkdf2.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rabbit-legacy.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rabbit-legacy.js">
       <PackagePath>www\js\crypto-js\rabbit-legacy.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rabbit.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rabbit.js">
       <PackagePath>www\js\crypto-js\rabbit.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rc4.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\rc4.js">
       <PackagePath>www\js\crypto-js\rc4.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\ripemd160.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\ripemd160.js">
       <PackagePath>www\js\crypto-js\ripemd160.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha1.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha1.js">
       <PackagePath>www\js\crypto-js\sha1.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha224.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha224.js">
       <PackagePath>www\js\crypto-js\sha224.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha256.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha256.js">
       <PackagePath>www\js\crypto-js\sha256.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha3.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha3.js">
       <PackagePath>www\js\crypto-js\sha3.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha384.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha384.js">
       <PackagePath>www\js\crypto-js\sha384.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha512.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\sha512.js">
       <PackagePath>www\js\crypto-js\sha512.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\tripledes.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\tripledes.js">
       <PackagePath>www\js\crypto-js\tripledes.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\x64-core.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\x64-core.js">
       <PackagePath>www\js\crypto-js\x64-core.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\index.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\index.js">
       <PackagePath>www\js\index.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\jquery.cookie.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\jquery.cookie.min.js">
       <PackagePath>www\js\jquery.cookie.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\jquery.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\jquery.min.js">
       <PackagePath>www\js\jquery.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\npm.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\npm.js">
       <PackagePath>www\js\npm.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\pomelo\pomeloclient.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\pomelo\pomeloclient.js">
       <PackagePath>www\js\pomelo\pomeloclient.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\require.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\require.js">
       <PackagePath>www\js\require.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services.js">
       <PackagePath>www\js\services.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\socket.io.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\socket.io.js">
       <PackagePath>www\js\socket.io.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\template.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\template.js">
       <PackagePath>www\js\template.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\theme.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\theme.js">
       <PackagePath>www\js\theme.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.js">
       <PackagePath>www\lib\ionic\js\angular-ui\angular-ui-router.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular-ui\angular-ui-router.min.js">
       <PackagePath>www\lib\ionic\js\angular-ui\angular-ui-router.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-animate.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-animate.js">
       <PackagePath>www\lib\ionic\js\angular\angular-animate.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-animate.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-animate.min.js">
       <PackagePath>www\lib\ionic\js\angular\angular-animate.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-resource.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-resource.js">
       <PackagePath>www\lib\ionic\js\angular\angular-resource.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-resource.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-resource.min.js">
       <PackagePath>www\lib\ionic\js\angular\angular-resource.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.js">
       <PackagePath>www\lib\ionic\js\angular\angular-sanitize.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular-sanitize.min.js">
       <PackagePath>www\lib\ionic\js\angular\angular-sanitize.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular.js">
       <PackagePath>www\lib\ionic\js\angular\angular.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\angular\angular.min.js">
       <PackagePath>www\lib\ionic\js\angular\angular.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic-angular.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic-angular.js">
       <PackagePath>www\lib\ionic\js\ionic-angular.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic-angular.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic-angular.min.js">
       <PackagePath>www\lib\ionic\js\ionic-angular.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.bundle.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.bundle.js">
       <PackagePath>www\lib\ionic\js\ionic.bundle.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.bundle.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.bundle.min.js">
       <PackagePath>www\lib\ionic\js\ionic.bundle.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.js">
       <PackagePath>www\lib\ionic\js\ionic.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.min.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\js\ionic.min.js">
       <PackagePath>www\lib\ionic\js\ionic.min.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js">
       <PackagePath>www\scripts\appBundle.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\platformOverrides.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\platformOverrides.js">
       <PackagePath>www\scripts\platformOverrides.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\winstore-jscompat.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\winstore-jscompat.js">
       <PackagePath>www\scripts\winstore-jscompat.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\WinJS\js\base.js">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\WinJS\js\base.js">
       <PackagePath>www\WinJS\js\base.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\css\style.css">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\css\style.css">
       <PackagePath>www\css\style.css</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\css\ionic.css">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\css\ionic.css">
       <PackagePath>www\lib\ionic\css\ionic.css</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\css\ionic.min.css">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\css\ionic.min.css">
       <PackagePath>www\lib\ionic\css\ionic.min.css</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\favicon.ico">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\favicon.ico">
       <PackagePath>www\favicon.ico</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\index.html">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\index.html">
       <PackagePath>www\index.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\chat-detail.html">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\chat-detail.html">
       <PackagePath>www\templates\chat-detail.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-account.html">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-account.html">
       <PackagePath>www\templates\tab-account.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-chats.html">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-chats.html">
       <PackagePath>www\templates\tab-chats.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-group-detail.html">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-group-detail.html">
       <PackagePath>www\templates\tab-group-detail.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-group.html">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-group.html">
       <PackagePath>www\templates\tab-group.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-timeline.html">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-timeline.html">
       <PackagePath>www\templates\tab-timeline.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tabs.html">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tabs.html">
       <PackagePath>www\templates\tabs.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\app.js.bak">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\app.js.bak">
       <PackagePath>www\js\app.js.bak</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services.js.bak">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services.js.bak">
       <PackagePath>www\js\services.js.bak</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-timeline.html.bak">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-timeline.html.bak">
       <PackagePath>www\templates\tab-timeline.html.bak</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tabs.html.bak">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tabs.html.bak">
       <PackagePath>www\templates\tabs.html.bak</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\bower.json">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\bower.json">
       <PackagePath>www\js\crypto-js\bower.json</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\package.json">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\package.json">
       <PackagePath>www\js\crypto-js\package.json</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\version.json">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\version.json">
       <PackagePath>www\lib\ionic\version.json</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\CONTRIBUTING.md">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\CONTRIBUTING.md">
       <PackagePath>www\js\crypto-js\CONTRIBUTING.md</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\README.md">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\README.md">
       <PackagePath>www\js\crypto-js\README.md</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\docs\QuickStartGuide.wiki">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\docs\QuickStartGuide.wiki">
       <PackagePath>www\js\crypto-js\docs\QuickStartGuide.wiki</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.eot">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.eot">
       <PackagePath>www\lib\ionic\fonts\ionicons.eot</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.svg">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.svg">
       <PackagePath>www\lib\ionic\fonts\ionicons.svg</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.ttf">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.ttf">
       <PackagePath>www\lib\ionic\fonts\ionicons.ttf</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.woff">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\fonts\ionicons.woff">
       <PackagePath>www\lib\ionic\fonts\ionicons.woff</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionic.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionic.scss">
       <PackagePath>www\lib\ionic\scss\ionic.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\ionicons.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\ionicons.scss">
       <PackagePath>www\lib\ionic\scss\ionicons\ionicons.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-font.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-font.scss">
       <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-font.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-icons.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-icons.scss">
       <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-icons.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-variables.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\ionicons\_ionicons-variables.scss">
       <PackagePath>www\lib\ionic\scss\ionicons\_ionicons-variables.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_action-sheet.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_action-sheet.scss">
       <PackagePath>www\lib\ionic\scss\_action-sheet.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_animations.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_animations.scss">
       <PackagePath>www\lib\ionic\scss\_animations.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_backdrop.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_backdrop.scss">
       <PackagePath>www\lib\ionic\scss\_backdrop.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_badge.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_badge.scss">
       <PackagePath>www\lib\ionic\scss\_badge.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_bar.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_bar.scss">
       <PackagePath>www\lib\ionic\scss\_bar.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_button-bar.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_button-bar.scss">
       <PackagePath>www\lib\ionic\scss\_button-bar.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_button.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_button.scss">
       <PackagePath>www\lib\ionic\scss\_button.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_checkbox.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_checkbox.scss">
       <PackagePath>www\lib\ionic\scss\_checkbox.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_form.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_form.scss">
       <PackagePath>www\lib\ionic\scss\_form.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_grid.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_grid.scss">
       <PackagePath>www\lib\ionic\scss\_grid.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_items.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_items.scss">
       <PackagePath>www\lib\ionic\scss\_items.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_list.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_list.scss">
       <PackagePath>www\lib\ionic\scss\_list.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_loading.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_loading.scss">
       <PackagePath>www\lib\ionic\scss\_loading.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_menu.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_menu.scss">
       <PackagePath>www\lib\ionic\scss\_menu.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_mixins.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_mixins.scss">
       <PackagePath>www\lib\ionic\scss\_mixins.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_modal.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_modal.scss">
       <PackagePath>www\lib\ionic\scss\_modal.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_platform.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_platform.scss">
       <PackagePath>www\lib\ionic\scss\_platform.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_popover.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_popover.scss">
       <PackagePath>www\lib\ionic\scss\_popover.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_popup.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_popup.scss">
       <PackagePath>www\lib\ionic\scss\_popup.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_progress.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_progress.scss">
       <PackagePath>www\lib\ionic\scss\_progress.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_radio.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_radio.scss">
       <PackagePath>www\lib\ionic\scss\_radio.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_range.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_range.scss">
       <PackagePath>www\lib\ionic\scss\_range.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_refresher.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_refresher.scss">
       <PackagePath>www\lib\ionic\scss\_refresher.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_reset.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_reset.scss">
       <PackagePath>www\lib\ionic\scss\_reset.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_scaffolding.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_scaffolding.scss">
       <PackagePath>www\lib\ionic\scss\_scaffolding.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_select.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_select.scss">
       <PackagePath>www\lib\ionic\scss\_select.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_slide-box.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_slide-box.scss">
       <PackagePath>www\lib\ionic\scss\_slide-box.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_spinner.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_spinner.scss">
       <PackagePath>www\lib\ionic\scss\_spinner.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_tabs.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_tabs.scss">
       <PackagePath>www\lib\ionic\scss\_tabs.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_toggle.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_toggle.scss">
       <PackagePath>www\lib\ionic\scss\_toggle.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_transitions.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_transitions.scss">
       <PackagePath>www\lib\ionic\scss\_transitions.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_type.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_type.scss">
       <PackagePath>www\lib\ionic\scss\_type.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_util.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_util.scss">
       <PackagePath>www\lib\ionic\scss\_util.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_variables.scss">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\scss\_variables.scss">
       <PackagePath>www\lib\ionic\scss\_variables.scss</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js.map">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js.map">
       <PackagePath>www\scripts\appBundle.js.map</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\config.xml">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\config.xml">
       <PackagePath>config.xml</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\resources.pri">
+    <AppxPackagedFile Include="C:\Users\nattapon\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\resources.pri">
       <PackagePath>resources.pri</PackagePath>
     </AppxPackagedFile>
   </ItemGroup>
