@@ -430,13 +430,9 @@
   "deletedPluginsIos": [],
   "changedFiles": [
     "www\\scripts\\appBundle.js.map",
-    "www\\scripts\\appBundle.js",
-    "config.xml",
-    "www\\index.html"
+    "www\\scripts\\appBundle.js"
   ],
-  "deletedFiles": [
-    "scripts\\dataServices\\dataManager.ts"
-  ],
+  "deletedFiles": [],
   "addedPlugins": [],
   "deletedPlugins": []
 }
