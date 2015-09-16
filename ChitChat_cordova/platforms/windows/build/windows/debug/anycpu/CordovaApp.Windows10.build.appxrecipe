@@ -330,8 +330,11 @@
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-chats.html">
       <PackagePath>www\templates\tab-chats.html</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-dash.html">
-      <PackagePath>www\templates\tab-dash.html</PackagePath>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-group-detail.html">
+      <PackagePath>www\templates\tab-group-detail.html</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-group.html">
+      <PackagePath>www\templates\tab-group.html</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\templates\tab-timeline.html">
       <PackagePath>www\templates\tab-timeline.html</PackagePath>
