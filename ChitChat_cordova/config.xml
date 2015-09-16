@@ -1,5 +1,5 @@
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.ahoostudio.spartantalk" version="1.0.0">
-  <name>TEST1</name>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.ahoostudio.spartantalk" version="1.0.0" android-versionCode="1">
+  <name>ChitChat</name>
   <description>Hello World.</description>
   <author href="http://phonegap.com" email="support@phonegap.com">AhooStudio Team</author>
   <content src="index.html" />
@@ -16,7 +16,7 @@
   <preference name="show-splash-screen-spinner" value="true" />
   <preference name="auto-hide-splash-screen" value="true" />
   <preference name="disable-cursor" value="false" />
-  <preference name="android-minSdkVersion" value="14" />
+  <preference name="android-minSdkVersion" value="15" />
   <preference name="android-installLocation" value="auto" />
   <gap:plugin name="org.apache.cordova.battery-status" />
   <gap:plugin name="org.apache.cordova.camera" />
@@ -84,4 +84,6 @@
   <vs:platformSpecificValues xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps">
     <vs:platformSpecificWidget platformName="windows" version="0.0.0.1" />
   </vs:platformSpecificValues>
+  <preference name="android-maxSdkVersion" value="22" />
+  <preference name="android-targetSdkVersion" value="22" />
 </widget>
