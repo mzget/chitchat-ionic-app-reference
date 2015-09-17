@@ -1,4 +1,10 @@
 ﻿class DataManager {
+    public myProfile: User;
+
+
+    public setMyProfile(data: any) {
+        this.myProfile = JSON.parse(JSON.stringify(data));
+    }
 
     public setMembers(data: any) {
 

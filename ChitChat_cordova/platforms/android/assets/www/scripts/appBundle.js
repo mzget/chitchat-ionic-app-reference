@@ -41,7 +41,11 @@ requirejs.config({
 var Main = (function () {
     function Main() {
         this.serverListener = new ChatServer.ServerEventListener();
+        this.dataManager = new DataManager();
     }
+    Main.prototype.getDataManager = function () {
+        return this.dataManager;
+    };
     Main.prototype.startChatServerListener = function () {
         this.serverListener.addListenner();
     };
@@ -687,6 +691,9 @@ var Services;
 var DataManager = (function () {
     function DataManager() {
     }
+    DataManager.prototype.setMyProfile = function (data) {
+        this.myProfile = JSON.parse(JSON.stringify(data));
+    };
     DataManager.prototype.setMembers = function (data) {
     };
     DataManager.prototype.setCompanyInfo = function (data) {
@@ -699,6 +706,15 @@ var DataManager = (function () {
     };
     return DataManager;
 })();
+//<!--- Referrence by http://management.about.com/od/people/a/EEgradelevels.htm
+var JobLevel;
+(function (JobLevel) {
+    JobLevel[JobLevel["employees"] = 0] = "employees";
+    JobLevel[JobLevel["junior"] = 1] = "junior";
+    JobLevel[JobLevel["senior"] = 2] = "senior";
+    JobLevel[JobLevel["directors"] = 3] = "directors";
+    JobLevel[JobLevel["vice_president"] = 4] = "vice_president"; //Vice President,
+})(JobLevel || (JobLevel = {}));
 var Member = (function () {
     function Member() {
         this.role = MemberRole.member;
@@ -730,18 +746,29 @@ var RoomStatus;
     RoomStatus[RoomStatus["delete"] = 2] = "delete";
 })(RoomStatus || (RoomStatus = {}));
 ;
+var RoomAccessData = (function () {
+    function RoomAccessData() {
+    }
+    return RoomAccessData;
+})();
+;
 var TokenDecode = (function () {
     function TokenDecode() {
     }
     return TokenDecode;
 })();
-var Role;
-(function (Role) {
-    Role[Role["personnel"] = 0] = "personnel";
-    Role[Role["section_chief"] = 1] = "section_chief";
-    Role[Role["department_chief"] = 2] = "department_chief";
-    Role[Role["division_chief"] = 3] = "division_chief";
-    Role[Role["admin"] = 4] = "admin";
-})(Role || (Role = {}));
+var User = (function () {
+    function User() {
+    }
+    return User;
+})();
+var UserRole;
+(function (UserRole) {
+    UserRole[UserRole["personnel"] = 0] = "personnel";
+    UserRole[UserRole["section_chief"] = 1] = "section_chief";
+    UserRole[UserRole["department_chief"] = 2] = "department_chief";
+    UserRole[UserRole["division_chief"] = 3] = "division_chief";
+    UserRole[UserRole["admin"] = 4] = "admin";
+})(UserRole || (UserRole = {}));
 ;
 //# sourceMappingURL=appBundle.js.map
