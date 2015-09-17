@@ -694,6 +694,7 @@ var DataManager = (function () {
         this.orgGroups = {};
         this.projectBaseGroups = {};
         this.privateGroups = {};
+        this.orgMembers = {};
     }
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
@@ -712,6 +713,14 @@ var DataManager = (function () {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
+        var _this = this;
+        var member = JSON.parse(JSON.stringify(dataEvent));
+        member.forEach(function (value) {
+            if (!_this.orgMembers[value._id]) {
+                _this.orgMembers[value._id] = value;
+            }
+            console.log("org_member: ", value);
+        });
     };
     ;
     DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
@@ -814,4 +823,9 @@ var UserRole;
     UserRole[UserRole["admin"] = 4] = "admin";
 })(UserRole || (UserRole = {}));
 ;
+var OrgMember = (function () {
+    function OrgMember() {
+    }
+    return OrgMember;
+})();
 //# sourceMappingURL=appBundle.js.map

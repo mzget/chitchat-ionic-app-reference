@@ -1,12 +1,16 @@
 ﻿interface IRoomMap {
     [key: string]: Room;
 }
+interface IMemberMep {
+    [key: string]: OrgMember;
+}
 
 class DataManager implements Services.IFrontendServerListener {
     public myProfile: User;
     public orgGroups: IRoomMap = {};
     public projectBaseGroups: IRoomMap = {};
     public privateGroups: IRoomMap = {};
+    public orgMembers: IMemberMep = {};
 
 
     public setMyProfile(data: any) {
@@ -35,7 +39,15 @@ class DataManager implements Services.IFrontendServerListener {
 
 
     public onGetCompanyMemberComplete(dataEvent) {
+        var member: Array<OrgMember> = JSON.parse(JSON.stringify(dataEvent));
 
+        member.forEach(value => {
+            if (!this.orgMembers[value._id]) {
+                this.orgMembers[value._id] = value;
+            }
+
+            console.log("org_member: ", value);
+        });
     };
     public onGetOrganizeGroupsComplete(dataEvent) {
         var rooms: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
