@@ -62,7 +62,8 @@
 							console.error(err);
 						}
 						else {
-							main.getDataManager().setMyProfile(res);
+                            if(res.code === 200)
+							    main.getDataManager().setMyProfile(res.data);
 						}
 					});
 
