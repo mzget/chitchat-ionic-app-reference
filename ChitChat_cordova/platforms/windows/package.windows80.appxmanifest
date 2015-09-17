@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-    <Identity Name="com.ahoostudio.spartantalk" Publisher="CN=$username$" Version="1.0.0.0" />
+    <Identity Name="com.ahoostudio.spartantalk" Publisher="CN=$username$" Version="0.0.0.1" />
     <Properties>
         <DisplayName>TEST1</DisplayName>
         <PublisherDisplayName>AhooStudio Team</PublisherDisplayName>

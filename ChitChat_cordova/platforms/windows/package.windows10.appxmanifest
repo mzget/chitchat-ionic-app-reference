@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Package IgnorableNamespaces="uap mp" xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10">
-    <Identity Name="com.ahoostudio.spartantalk" Publisher="CN=$username$" Version="1.0.0.0" />
+    <Identity Name="com.ahoostudio.spartantalk" Publisher="CN=$username$" Version="0.0.0.1" />
     <mp:PhoneIdentity PhoneProductId="e605cba0-5a93-11e5-a575-bf4757d61a49" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
     <Properties>
         <DisplayName>TEST1</DisplayName>
