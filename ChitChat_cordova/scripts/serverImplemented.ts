@@ -510,10 +510,10 @@ module ChatServer {
         public static ON_GET_ORGANIZE_GROUPS: string = "onGetOrganizeGroups";
         public static ON_GET_PROJECT_BASE_GROUPS: string = "onGetProjectBaseGroups";
 
-        public onChatListener: Services.ChatServerListener;
-        public frontendListener: Services.FrontendServerListener;
-        public rtcCallListener: Services.RTCListener;
-        public serverListener: Services.ServerListener;
+        public onChatListener: Services.IOnChatListener;
+        public frontendListener: Services.IFrontendServerListener;
+        public rtcCallListener: Services.IRTCListener;
+        public serverListener: Services.IServerListener;
 
         constructor() {
             //this.frontendListener = new Services.FrontendServerListener();

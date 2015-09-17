@@ -615,79 +615,41 @@ var ChatServer;
 })(ChatServer || (ChatServer = {}));
 var Services;
 (function (Services) {
-    var ChatServerListener = (function () {
-        function ChatServerListener() {
+    var AbsChatServerListener = (function () {
+        function AbsChatServerListener() {
         }
-        ChatServerListener.prototype.onChatData = function (data) { };
+        AbsChatServerListener.prototype.onChatData = function (data) { };
         ;
-        ChatServerListener.prototype.onLeaveRoom = function (data) { };
+        AbsChatServerListener.prototype.onLeaveRoom = function (data) { };
         ;
-        ChatServerListener.prototype.onRoomJoin = function (data) { };
+        AbsChatServerListener.prototype.onRoomJoin = function (data) { };
         ;
-        ChatServerListener.prototype.onMessageRead = function (dataEvent) { };
+        AbsChatServerListener.prototype.onMessageRead = function (dataEvent) { };
         ;
-        ChatServerListener.prototype.onGetMessagesReaders = function (dataEvent) { };
+        AbsChatServerListener.prototype.onGetMessagesReaders = function (dataEvent) { };
         ;
-        return ChatServerListener;
+        return AbsChatServerListener;
     })();
-    Services.ChatServerListener = ChatServerListener;
-    var FrontendServerListener = (function () {
-        function FrontendServerListener() {
+    Services.AbsChatServerListener = AbsChatServerListener;
+    var AbsFrontendServerListener = (function () {
+        function AbsFrontendServerListener() {
         }
-        FrontendServerListener.prototype.onGetCompanyMemberComplete = function (dataEvent) { };
-        ;
-        FrontendServerListener.prototype.onGetPrivateGroupsComplete = function (dataEvent) { };
-        ;
-        FrontendServerListener.prototype.onGetOrganizeGroupsComplete = function (dataEvent) { };
-        ;
-        FrontendServerListener.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) { };
-        ;
-        return FrontendServerListener;
+        return AbsFrontendServerListener;
     })();
-    Services.FrontendServerListener = FrontendServerListener;
+    Services.AbsFrontendServerListener = AbsFrontendServerListener;
     ;
-    var RTCListener = (function () {
-        function RTCListener() {
+    var AbsRTCListener = (function () {
+        function AbsRTCListener() {
         }
-        RTCListener.prototype.onVideoCall = function (dataEvent) { };
-        ;
-        RTCListener.prototype.onVoiceCall = function (dataEvent) { };
-        ;
-        RTCListener.prototype.onHangupCall = function (dataEvent) { };
-        ;
-        RTCListener.prototype.onTheLineIsBusy = function (dataEvent) { };
-        ;
-        return RTCListener;
+        return AbsRTCListener;
     })();
-    Services.RTCListener = RTCListener;
-    var ServerListener = (function () {
-        function ServerListener() {
+    Services.AbsRTCListener = AbsRTCListener;
+    var AbsServerListener = (function () {
+        function AbsServerListener() {
         }
-        ServerListener.prototype.onAccessRoom = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onUpdatedLastAccessTime = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onAddRoomAccess = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onCreateGroupSuccess = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onEditedGroupMember = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onEditedGroupName = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onEditedGroupImage = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onNewGroupCreated = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onUserUpdateImageProfile = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onUserUpdateProfile = function (dataEvent) { };
-        ;
-        return ServerListener;
+        return AbsServerListener;
     })();
-    Services.ServerListener = ServerListener;
+    Services.AbsServerListener = AbsServerListener;
 })(Services || (Services = {}));
 var DataManager = (function () {
     function DataManager() {
