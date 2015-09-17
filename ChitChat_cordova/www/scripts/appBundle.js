@@ -727,7 +727,16 @@ var DataManager = (function () {
         });
     };
     ;
-    DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) { };
+    DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var groups = JSON.parse(JSON.stringify(dataEvent));
+        groups.forEach(function (value) {
+            if (!_this.projectBaseGroups[value._id]) {
+                _this.projectBaseGroups[value._id] = value;
+            }
+            console.log("project_base_groups: ", value);
+        });
+    };
     ;
     return DataManager;
 })();

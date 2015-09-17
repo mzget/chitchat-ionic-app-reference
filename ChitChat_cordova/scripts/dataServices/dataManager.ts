@@ -49,5 +49,15 @@ class DataManager implements Services.IFrontendServerListener {
             console.log("org_group: ", value);
         });
     };
-    public onGetProjectBaseGroupsComplete(dataEvent) { };
+    public onGetProjectBaseGroupsComplete(dataEvent) {
+        var groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
+
+        groups.forEach(value => {
+            if (!this.projectBaseGroups[value._id]) {
+                this.projectBaseGroups[value._id] = value;
+            }
+
+            console.log("project_base_groups: ", value);
+        });
+    };
 }
