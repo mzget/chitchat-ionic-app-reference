@@ -699,10 +699,13 @@ var DataManager = (function () {
     DataManager.prototype.setCompanyInfo = function (data) {
     };
     DataManager.prototype.setOrganizeGroups = function (data) {
+        this.orgGroups = JSON.parse(JSON.stringify(data));
     };
     DataManager.prototype.setProjectBaseGroups = function (data) {
+        this.projectBaseGroups = JSON.parse(JSON.stringify(data));
     };
     DataManager.prototype.setPrivateGroups = function (data) {
+        this.privateGroups = JSON.parse(JSON.stringify(data));
     };
     return DataManager;
 })();
