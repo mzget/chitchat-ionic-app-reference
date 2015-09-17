@@ -1,4 +1,4 @@
-;(function (root, factory, undef) {
+﻿;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
 		module.exports = exports = factory(require("./core"), require("./enc-base64"), require("./md5"), require("./evpkdf"), require("./cipher-core"));

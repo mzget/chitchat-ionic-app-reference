@@ -1,4 +1,4 @@
-;(function (root, factory, undef) {
+﻿;(function (root, factory, undef) {
 	if (typeof exports === "object") {
 		// CommonJS
 		module.exports = exports = factory(require("./core"), require("./sha256"), require("./sha224"), require("./hmac"));

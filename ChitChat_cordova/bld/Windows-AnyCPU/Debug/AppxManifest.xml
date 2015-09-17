@@ -7,11 +7,11 @@
 
     For more information on package manifest files, see http://go.microsoft.com/fwlink/?LinkID=241727
   -->
-  <Identity Name="com.ahoostudio.spartantalk" Publisher="CN=Apache Cordova Team" Version="1.0.0.0" ProcessorArchitecture="neutral" />
-  <mp:PhoneIdentity PhoneProductId="e605cba0-5a93-11e5-a575-bf4757d61a49" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="io.cordova.myappf0a690" Publisher="CN=Apache Cordova Team" Version="1.0.0.0" ProcessorArchitecture="neutral" />
+  <mp:PhoneIdentity PhoneProductId="704c7ef0-5d26-11e5-9646-01d18bed4fae" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>TEST1</DisplayName>
-    <PublisherDisplayName>AhooStudio Team</PublisherDisplayName>
+    <DisplayName>ChitChat</DisplayName>
+    <PublisherDisplayName>Apache Cordova Team</PublisherDisplayName>
     <Logo>images\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -21,15 +21,10 @@
     <Resource Language="EN-US" />
   </Resources>
   <Applications>
-    <Application Id="com.ahoostudio.spartantalk" StartPage="ms-appx-web:///www/index.html">
-      <uap:VisualElements BackgroundColor="#464646" Description="CordovaApp" DisplayName="TEST1" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png">
+    <Application Id="io.cordova.myappf0a690" StartPage="ms-appx-web:///www/index.html">
+      <uap:VisualElements BackgroundColor="#464646" Description="CordovaApp" DisplayName="ChitChat" Square150x150Logo="images\Square150x150Logo.png" Square44x44Logo="images\Square44x44Logo.png">
         <uap:SplashScreen Image="images\splashscreen.png" />
-        <uap:DefaultTile ShortName="TEST1" Square310x310Logo="images\Square310x310Logo.png" Square71x71Logo="images\Square71x71Logo.png" Wide310x150Logo="images\Wide310x150Logo.png" />
-        <uap:InitialRotationPreference>
-          <uap:Rotation Preference="portrait" />
-          <uap:Rotation Preference="landscape" />
-          <uap:Rotation Preference="landscapeFlipped" />
-        </uap:InitialRotationPreference>
+        <uap:DefaultTile ShortName="BlankCordovaApp1" Square310x310Logo="images\Square310x310Logo.png" Square71x71Logo="images\Square71x71Logo.png" Wide310x150Logo="images\Wide310x150Logo.png" />
       </uap:VisualElements>
       <uap:ApplicationContentUriRules>
         <uap:Rule Match="ms-appx-web:///" Type="include" WindowsRuntimeAccess="all" />
@@ -45,8 +40,8 @@
     <build:Item Name="VisualStudio" Version="14.0" />
     <build:Item Name="VisualStudioEdition" Value="Microsoft Visual Studio Community 2015" />
     <build:Item Name="OperatingSystem" Version="10.0.10240.16384 (th1.150709-1700)" />
-    <build:Item Name="Microsoft.Build.AppxPackage.dll" Version="14.0.23121.0" />
-    <build:Item Name="ProjectGUID" Value="dc24af26-f25a-42cb-b0cc-df00348e19f5" />
+    <build:Item Name="Microsoft.Build.AppxPackage.dll" Version="14.0.23311.4" />
+    <build:Item Name="ProjectGUID" Value="d421a916-28d5-4704-bfe8-56361621a886" />
     <build:Item Name="OptimizingToolset" Value="None" />
     <build:Item Name="TargetRuntime" Value="AppHost" />
     <build:Item Name="MakePri.exe" Version="10.0.10240.16384 (th1.150709-1700)" />

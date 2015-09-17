@@ -1,4 +1,4 @@
-
+﻿
 $('.row.title').click(function(){
 	show_list = $(this).attr('id').split('_')[1];
 	list_height = $('#list_'+show_list).height();

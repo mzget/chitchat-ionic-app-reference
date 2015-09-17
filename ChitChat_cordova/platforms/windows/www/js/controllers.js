@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+﻿angular.module('starter.controllers', [])
 
 .controller('GroupCtrl', function($scope, Chats) {
 	$scope.chats = Chats.all();

@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
 	var isArray = Array.isArray;
 
 	var root = this;
