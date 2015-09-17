@@ -714,8 +714,6 @@ var DataManager = (function () {
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
     };
     ;
-    DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) { };
-    ;
     DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
         var _this = this;
         var rooms = JSON.parse(JSON.stringify(dataEvent));
@@ -735,6 +733,17 @@ var DataManager = (function () {
                 _this.projectBaseGroups[value._id] = value;
             }
             console.log("project_base_groups: ", value);
+        });
+    };
+    ;
+    DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var groups = JSON.parse(JSON.stringify(dataEvent));
+        groups.forEach(function (value) {
+            if (!_this.privateGroups[value._id]) {
+                _this.privateGroups[value._id] = value;
+            }
+            console.log("private_groups: ", value);
         });
     };
     ;

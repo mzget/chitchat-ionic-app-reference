@@ -37,7 +37,6 @@ class DataManager implements Services.IFrontendServerListener {
     public onGetCompanyMemberComplete(dataEvent) {
 
     };
-    public onGetPrivateGroupsComplete(dataEvent) { };
     public onGetOrganizeGroupsComplete(dataEvent) {
         var rooms: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
 
@@ -58,6 +57,17 @@ class DataManager implements Services.IFrontendServerListener {
             }
 
             console.log("project_base_groups: ", value);
+        });
+    };
+    public onGetPrivateGroupsComplete(dataEvent) {
+        var groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
+
+        groups.forEach(value => {
+            if (!this.privateGroups[value._id]) {
+                this.privateGroups[value._id] = value;
+            }
+
+            console.log("private_groups: ", value);
         });
     };
 }
