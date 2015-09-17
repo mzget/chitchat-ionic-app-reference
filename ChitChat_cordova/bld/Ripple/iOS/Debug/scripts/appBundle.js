@@ -40,7 +40,7 @@ requirejs.config({
 //require(["../../scripts/server/serverImplemented"]);
 var Main = (function () {
     function Main() {
-        this.serverListener = ChatServer.ServerEventListener.prototype;
+        this.serverListener = new ChatServer.ServerEventListener();
     }
     Main.prototype.startChatServerListener = function () {
         this.serverListener.addListenner();
@@ -96,12 +96,12 @@ var ChatServer;
             pomelo.init({ host: _host, port: _port }, function (socket) {
                 console.log("client.init : ", socket);
                 callback();
-                pomelo.on("disconnect", function (dataEvent) {
-                    console.log("disconnect Event");
-                    //if (connectionListen != null) {
-                    //    connectionListen.connectionEvent("disconnect");
-                    //}
-                });
+                //pomelo.on("disconnect", function (dataEvent) {
+                //console.error("disconnect Event", dataEvent);
+                //if (connectionListen != null) {
+                //    connectionListen.connectionEvent("disconnect");
+                //}
+                //});
             });
         };
         // region <!-- Authentication...
@@ -192,14 +192,14 @@ var ChatServer;
             pomelo.request("connector.entryHandler.getLastAccessRooms", msg, function (result) {
             });
         };
-        ServerImplemented.prototype.GetMe = function (callback) {
+        ServerImplemented.prototype.getMe = function (callback) {
             var msg = {};
             msg["username"] = username;
             msg["password"] = password;
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
             pomelo.request("connector.entryHandler.getMe", msg, function (result) {
-                console.log("getMe: ", result);
+                console.log("getMe: ", JSON.stringify(result));
                 if (result.code === 500) {
                     callback(result.message, null);
                 }
@@ -230,7 +230,7 @@ var ChatServer;
             }
         };
         //endregion <!-- end user profile section. -->
-        //region <!-- Company data.
+        //region <!-- Company data. -->
         /// <summary>
         /// Gets the company info.
         /// Beware for data loading so mush. please load from cache before load from server.
@@ -239,7 +239,7 @@ var ChatServer;
             var msg = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getCompanyInfo", msg, function (result) {
-                console.log("getCompanyInfo", result.toString());
+                console.log("getCompanyInfo", JSON.stringify(result));
                 if (callBack != null)
                     callBack(null, result);
             });
@@ -252,7 +252,7 @@ var ChatServer;
             var msg = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getCompanyMember", msg, function (result) {
-                console.log("getCompanyMembers", result.toString());
+                console.log("getCompanyMembers", JSON.stringify(result));
                 if (callBack != null)
                     callBack(null, result);
             });
@@ -265,20 +265,29 @@ var ChatServer;
             var msg = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getCompanyChatRoom", msg, function (result) {
-                console.log("getOrganizationGroups: " + result.toString());
+                console.log("getOrganizationGroups: " + JSON.stringify(result));
                 if (callBack != null)
                     callBack(null, result);
             });
         };
         //endregion <!-- Company data. 
         //region <!-- Group && Project base. -->
+        ServerImplemented.prototype.getProjectBaseGroups = function (callback) {
+            var msg = {};
+            msg["token"] = this.authenData.token;
+            pomelo.request("connector.entryHandler.getProjectBaseGroups", msg, function (result) {
+                console.log("getProjectBaseGroups: " + JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
+            });
+        };
         ServerImplemented.prototype.requestCreateProjectBaseGroup = function (groupName, members, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["groupName"] = groupName;
             msg["members"] = JSON.stringify(members);
             pomelo.request("chat.chatRoomHandler.requestCreateProjectBase", msg, function (result) {
-                console.log("requestCreateProjectBaseGroup: " + result.toString());
+                console.log("requestCreateProjectBaseGroup: " + JSON.stringify(result));
                 if (callback != null)
                     callback(null, result);
             });
@@ -302,20 +311,11 @@ var ChatServer;
         /// Beware for data loading so mush. please load from cache before load from server.
         /// </summary>
         /// <param name="callback">Callback.</param>
-        ServerImplemented.prototype.getProjectBaseGroups = function (callback) {
-            var msg = {};
-            msg["token"] = this.authenData.token;
-            pomelo.request("connector.entryHandler.getProjectBaseGroups", msg, function (result) {
-                console.log("getProjectBaseGroups: " + result.toString());
-                if (callback != null)
-                    callback(null, result);
-            });
-        };
         ServerImplemented.prototype.getPrivateGroups = function (callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getMyPrivateGroupChat", msg, function (result) {
-                console.log("getPrivateGroups: " + result.toString());
+                console.log("getPrivateGroups: " + JSON.stringify(result));
                 if (callback != null) {
                     callback(null, result);
                 }
@@ -327,7 +327,7 @@ var ChatServer;
             msg["groupName"] = groupName;
             msg["memberIds"] = JSON.stringify(memberIds);
             pomelo.request("chat.chatRoomHandler.userCreateGroupChat", msg, function (result) {
-                console.log("RequestCreateGroupChat", result.toString());
+                console.log("RequestCreateGroupChat", JSON.stringify(result));
                 if (callback != null)
                     callback(null, result);
             });
@@ -338,7 +338,7 @@ var ChatServer;
             msg["groupId"] = groupId;
             msg["path"] = path;
             pomelo.request("chat.chatRoomHandler.updateGroupImage", msg, function (result) {
-                console.log("UpdatedGroupImage", result.toString());
+                console.log("UpdatedGroupImage", JSON.stringify(result));
                 if (callback != null) {
                     callback(null, result);
                 }
@@ -454,37 +454,150 @@ var ChatServer;
     ChatServer.ServerImplemented = ServerImplemented;
     var ServerEventListener = (function () {
         function ServerEventListener() {
+            this.frontendListener = new Services.FrontendServerListener();
+            this.onChatListener = new Services.ChatServerListener();
+            this.rtcCallListener = new Services.RTCListener();
+            this.serverListener = new Services.ServerListener();
         }
         ServerEventListener.prototype.addListenner = function () {
+            this.callFrontendServer();
+            this.callChatServer();
+            this.callRTCEvents();
+            this.callServerEvents();
+        };
+        ServerEventListener.prototype.callFrontendServer = function () {
             var self = this;
             //wait message from the server.
             pomelo.on(ServerEventListener.ON_GET_ORGANIZE_GROUPS, function (data) {
-                console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS, data);
+                console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS, JSON.stringify(data));
                 self.frontendListener.onGetOrganizeGroupsComplete(data);
             });
+            pomelo.on(ServerEventListener.ON_GET_COMPANY_MEMBERS, function (data) {
+                console.log(ServerEventListener.ON_GET_COMPANY_MEMBERS, JSON.stringify(data));
+                self.frontendListener.onGetCompanyMemberComplete(data);
+            });
+            pomelo.on(ServerEventListener.ON_GET_PRIVATE_GROUPS, function (data) {
+                console.log(ServerEventListener.ON_GET_PRIVATE_GROUPS, JSON.stringify(data));
+                self.frontendListener.onGetPrivateGroupsComplete(data);
+            });
+            pomelo.on(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS, function (data) {
+                console.log(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS, JSON.stringify(data));
+                self.frontendListener.onGetProjectBaseGroupsComplete(data);
+            });
+        };
+        ServerEventListener.prototype.callChatServer = function () {
+            var self = this;
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, data);
                 self.onChatListener.onChatData(data);
+            });
+            //pomelo.on(ServerEventListener.ON_ADD, (data) => {
+            //    console.log(ServerEventListener.ON_ADD, data);
+            //    self.onChatListener.on(data);
+            //});
+            pomelo.on(ServerEventListener.ON_LEAVE, function (data) {
+                console.log(ServerEventListener.ON_LEAVE, data);
+                self.onChatListener.onLeaveRoom(data);
+            });
+            pomelo.on(ServerEventListener.ON_MESSAGE_READ, function (data) {
+                console.log(ServerEventListener.ON_MESSAGE_READ, data);
+                self.onChatListener.onMessageRead(data);
+            });
+            pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, function (data) {
+                console.log(ServerEventListener.ON_GET_MESSAGES_READERS, data);
+                self.onChatListener.onGetMessagesReaders(data);
+            });
+        };
+        ServerEventListener.prototype.callRTCEvents = function () {
+            var self = this;
+            pomelo.on(ServerEventListener.ON_VIDEO_CALL, function (data) {
+                console.log(ServerEventListener.ON_VIDEO_CALL, data);
+                self.rtcCallListener.onVideoCall(data);
+            });
+            pomelo.on(ServerEventListener.ON_VOICE_CALL, function (data) {
+                console.log(ServerEventListener.ON_VOICE_CALL, data);
+                self.rtcCallListener.onVoiceCall(data);
+            });
+            pomelo.on(ServerEventListener.ON_HANGUP_CALL, function (data) {
+                console.log(ServerEventListener.ON_HANGUP_CALL, data);
+                self.rtcCallListener.onHangupCall(data);
+            });
+            pomelo.on(ServerEventListener.ON_THE_LINE_IS_BUSY, function (data) {
+                console.log(ServerEventListener.ON_THE_LINE_IS_BUSY, data);
+                self.rtcCallListener.onTheLineIsBusy(data);
+            });
+        };
+        ServerEventListener.prototype.callServerEvents = function () {
+            var self = this;
+            //<!-- AccessRoom Info -->
+            pomelo.on(ServerEventListener.ON_ACCESS_ROOMS, function (data) {
+                console.log(ServerEventListener.ON_ACCESS_ROOMS, data);
+                self.serverListener.onAccessRoom(data);
+            });
+            pomelo.on(ServerEventListener.ON_ADD_ROOM_ACCESS, function (data) {
+                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS, data);
+                self.serverListener.onAddRoomAccess(data);
+            });
+            pomelo.on(ServerEventListener.ON_UPDATED_LASTACCESSTIME, function (data) {
+                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, data);
+                self.serverListener.onUpdatedLastAccessTime(data);
+            });
+            //<!-- User profile -->
+            pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, function (data) {
+                console.log(ServerEventListener.ON_USER_UPDATE_PROFILE, data);
+                self.serverListener.onUserUpdateProfile(data);
+            });
+            pomelo.on(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, function (data) {
+                console.log(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, data);
+                self.serverListener.onUserUpdateImageProfile(data);
+            });
+            //<!-- Group -->
+            pomelo.on(ServerEventListener.ON_CREATE_GROUP_SUCCESS, function (data) {
+                console.log(ServerEventListener.ON_CREATE_GROUP_SUCCESS, data);
+                self.serverListener.onCreateGroupSuccess(data);
+            });
+            pomelo.on(ServerEventListener.ON_EDITED_GROUP_MEMBER, function (data) {
+                console.log(ServerEventListener.ON_EDITED_GROUP_MEMBER, data);
+                self.serverListener.onEditedGroupMember(data);
+            });
+            pomelo.on(ServerEventListener.ON_EDITED_GROUP_NAME, function (data) {
+                console.log(ServerEventListener.ON_EDITED_GROUP_NAME, data);
+                self.serverListener.onEditedGroupName(data);
+            });
+            pomelo.on(ServerEventListener.ON_EDITED_GROUP_IMAGE, function (data) {
+                console.log(ServerEventListener.ON_EDITED_GROUP_IMAGE, data);
+                self.serverListener.onEditedGroupImage(data);
+            });
+            pomelo.on(ServerEventListener.ON_NEW_GROUP_CREATED, function (data) {
+                console.log(ServerEventListener.ON_NEW_GROUP_CREATED, data);
+                self.serverListener.onNewGroupCreated(data);
+            });
+            pomelo.on(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, function (data) {
+                console.log(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, data);
+                self.serverListener.onUpdateMemberInfoInProjectBase(data);
             });
         };
         ServerEventListener.ON_ADD = "onAdd";
         ServerEventListener.ON_LEAVE = "onLeave";
         ServerEventListener.ON_CHAT = "onChat";
+        ServerEventListener.ON_MESSAGE_READ = "onMessageRead";
+        ServerEventListener.ON_GET_MESSAGES_READERS = "onGetMessagesReaders";
         ServerEventListener.ON_VIDEO_CALL = "onVideoCall";
         ServerEventListener.ON_VOICE_CALL = "onVoiceCall";
         ServerEventListener.ON_HANGUP_CALL = "onHangupCall";
         ServerEventListener.ON_THE_LINE_IS_BUSY = "onTheLineIsBusy";
+        //<!-- AccessRoom Info -->
         ServerEventListener.ON_ACCESS_ROOMS = "onAccessRooms";
         ServerEventListener.ON_ADD_ROOM_ACCESS = "onAddRoomAccess";
         ServerEventListener.ON_UPDATED_LASTACCESSTIME = "onUpdatedLastAccessTime";
+        //<!-- Group -->
         ServerEventListener.ON_CREATE_GROUP_SUCCESS = "onCreateGroupSuccess";
         ServerEventListener.ON_EDITED_GROUP_MEMBER = "onEditGroupMembers";
         ServerEventListener.ON_EDITED_GROUP_NAME = "onEditGroupName";
         ServerEventListener.ON_EDITED_GROUP_IMAGE = "onEditGroupImage";
         ServerEventListener.ON_NEW_GROUP_CREATED = "onNewGroupCreated";
         ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE = "onUpdateMemberInfoInProjectBase";
-        ServerEventListener.ON_MESSAGE_READ = "onMessageRead";
-        ServerEventListener.ON_GET_MESSAGES_READERS = "onGetMessagesReaders";
+        //<!-- User profile -->
         ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE = "onUserUpdateImgProfile";
         ServerEventListener.ON_USER_UPDATE_PROFILE = "onUserUpdateProfile";
         ServerEventListener.ON_GET_COMPANY_MEMBERS = "onGetCompanyMembers";
@@ -495,6 +608,97 @@ var ChatServer;
     })();
     ChatServer.ServerEventListener = ServerEventListener;
 })(ChatServer || (ChatServer = {}));
+var Services;
+(function (Services) {
+    var ChatServerListener = (function () {
+        function ChatServerListener() {
+        }
+        ChatServerListener.prototype.onChatData = function (data) { };
+        ;
+        ChatServerListener.prototype.onLeaveRoom = function (data) { };
+        ;
+        ChatServerListener.prototype.onRoomJoin = function (data) { };
+        ;
+        ChatServerListener.prototype.onMessageRead = function (dataEvent) { };
+        ;
+        ChatServerListener.prototype.onGetMessagesReaders = function (dataEvent) { };
+        ;
+        return ChatServerListener;
+    })();
+    Services.ChatServerListener = ChatServerListener;
+    var FrontendServerListener = (function () {
+        function FrontendServerListener() {
+        }
+        FrontendServerListener.prototype.onGetCompanyMemberComplete = function (dataEvent) { };
+        ;
+        FrontendServerListener.prototype.onGetPrivateGroupsComplete = function (dataEvent) { };
+        ;
+        FrontendServerListener.prototype.onGetOrganizeGroupsComplete = function (dataEvent) { };
+        ;
+        FrontendServerListener.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) { };
+        ;
+        return FrontendServerListener;
+    })();
+    Services.FrontendServerListener = FrontendServerListener;
+    ;
+    var RTCListener = (function () {
+        function RTCListener() {
+        }
+        RTCListener.prototype.onVideoCall = function (dataEvent) { };
+        ;
+        RTCListener.prototype.onVoiceCall = function (dataEvent) { };
+        ;
+        RTCListener.prototype.onHangupCall = function (dataEvent) { };
+        ;
+        RTCListener.prototype.onTheLineIsBusy = function (dataEvent) { };
+        ;
+        return RTCListener;
+    })();
+    Services.RTCListener = RTCListener;
+    var ServerListener = (function () {
+        function ServerListener() {
+        }
+        ServerListener.prototype.onAccessRoom = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onUpdatedLastAccessTime = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onAddRoomAccess = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onCreateGroupSuccess = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onEditedGroupMember = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onEditedGroupName = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onEditedGroupImage = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onNewGroupCreated = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onUserUpdateImageProfile = function (dataEvent) { };
+        ;
+        ServerListener.prototype.onUserUpdateProfile = function (dataEvent) { };
+        ;
+        return ServerListener;
+    })();
+    Services.ServerListener = ServerListener;
+})(Services || (Services = {}));
+var DataManager = (function () {
+    function DataManager() {
+    }
+    DataManager.prototype.setMembers = function (data) {
+    };
+    DataManager.prototype.setCompanyInfo = function (data) {
+    };
+    DataManager.prototype.setOrganizeGroups = function (data) {
+    };
+    DataManager.prototype.setProjectBaseGroups = function (data) {
+    };
+    DataManager.prototype.setPrivateGroups = function (data) {
+    };
+    return DataManager;
+})();
 var Member = (function () {
     function Member() {
         this.role = MemberRole.member;

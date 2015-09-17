@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link href="favicon.ico" type="image/x-icon" rel="shortcut icon" />
+
+<title>ChitChat App</title>
+
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+<link rel="stylesheet" href="css/font-awesome.min.css" />
+<link rel="stylesheet" href="style.css" />
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+<div id="freecall-bg" style="background-image:url(images/bg.jpg);"></div>
+<div id="freecall">
+	<div class="container">
+		<div class="person row">
+			<img src="http://stalk.animation-genius.com/timthumb.php?src=/uploads/profiles/medias/f9634ceadbc5e9a78f6dc795a947b927.115995610.jpg&w=150&h=150" alt="" /><br />
+			<strong>ATOMX ATOMX ATOMX ATOMX</strong><br />
+			<label>Incomming Call</label>
+		</div>
+		<div class="menu row">
+			<span id="speaker" class="fa fa-volume-down"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span id="mute" class="fa fa-microphone"></span>
+			<button class="btn btn-danger"><i class="fa fa-phone"></i> HANG UP</button>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="js/cordova.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script>
+app.initialize();
+
+$('#speaker').click(function(){
+	if( $(this).attr('class') == 'fa fa-volume-down' )
+	{
+		$(this).attr('class','fa fa-volume-up');
+	}else{
+		$(this).attr('class','fa fa-volume-down');
+	}
+}); 
+
+$('#mute').click(function(){
+	if( $(this).attr('class') == 'fa fa-microphone-slash' )
+	{
+		$(this).attr('class','fa fa-microphone');
+	}else{
+		$(this).attr('class','fa fa-microphone-slash');
+	}
+}); 
+
+</script>
+
+</body>
+</html>
