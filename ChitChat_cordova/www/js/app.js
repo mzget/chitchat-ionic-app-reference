@@ -80,6 +80,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 		}
 	})
 
+	.state('tab.message', {
+		url: '/message/:chatId',
+		views: {
+			'tab-message': {
+				templateUrl: 'templates/chat-detail.html',
+				controller: 'ChatDetailCtrl'
+			}
+		}
+	})
+	
 	.state('tab.timeline', {
 		url: '/timeline',
 		views: {
