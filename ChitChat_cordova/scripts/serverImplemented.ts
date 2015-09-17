@@ -516,10 +516,10 @@ module ChatServer {
         public serverListener: Services.ServerListener;
 
         constructor() {
-            this.frontendListener = new Services.FrontendServerListener();
-            this.onChatListener = new Services.ChatServerListener();
-            this.rtcCallListener = new Services.RTCListener();
-            this.serverListener = new Services.ServerListener();
+            //this.frontendListener = new Services.FrontendServerListener();
+            //this.onChatListener = new Services.ChatServerListener();
+            //this.rtcCallListener = new Services.RTCListener();
+            //this.serverListener = new Services.ServerListener();
         }
 
         public addListenner() {

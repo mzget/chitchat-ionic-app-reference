@@ -1,25 +1,25 @@
 ﻿module Services {
 
-    interface IOnChatListener {
+    export interface IOnChatListener {
         onChatData(data);
         onLeaveRoom(data);
         onRoomJoin(data);
         onMessageRead(dataEvent);
         onGetMessagesReaders(dataEvent);
     }
-    interface IFrontendServerListener {
+    export interface IFrontendServerListener {
         onGetCompanyMemberComplete(dataEvent);
         onGetPrivateGroupsComplete(dataEvent);
         onGetOrganizeGroupsComplete(dataEvent);
         onGetProjectBaseGroupsComplete(dataEvent);
     }
-    interface IRTCListener {
+    export interface IRTCListener {
         onVideoCall(dataEvent);
         onVoiceCall(dataEvent);
         onHangupCall(dataEvent);
         onTheLineIsBusy(dataEvent);
     }
-    interface IServerListener {
+    export interface IServerListener {
         onAccessRoom(dataEvent);
         onUpdatedLastAccessTime(dataEvent);
         onAddRoomAccess(dataEvent);

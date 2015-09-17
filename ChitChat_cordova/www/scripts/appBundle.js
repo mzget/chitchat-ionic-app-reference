@@ -47,6 +47,7 @@ var Main = (function () {
         return this.dataManager;
     };
     Main.prototype.startChatServerListener = function () {
+        this.serverListener.frontendListener = this.dataManager;
         this.serverListener.addListenner();
     };
     return Main;
@@ -458,10 +459,10 @@ var ChatServer;
     ChatServer.ServerImplemented = ServerImplemented;
     var ServerEventListener = (function () {
         function ServerEventListener() {
-            this.frontendListener = new Services.FrontendServerListener();
-            this.onChatListener = new Services.ChatServerListener();
-            this.rtcCallListener = new Services.RTCListener();
-            this.serverListener = new Services.ServerListener();
+            //this.frontendListener = new Services.FrontendServerListener();
+            //this.onChatListener = new Services.ChatServerListener();
+            //this.rtcCallListener = new Services.RTCListener();
+            //this.serverListener = new Services.ServerListener();
         }
         ServerEventListener.prototype.addListenner = function () {
             this.callFrontendServer();
@@ -690,6 +691,9 @@ var Services;
 })(Services || (Services = {}));
 var DataManager = (function () {
     function DataManager() {
+        this.orgGroups = {};
+        this.projectBaseGroups = {};
+        this.privateGroups = {};
     }
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
@@ -707,6 +711,24 @@ var DataManager = (function () {
     DataManager.prototype.setPrivateGroups = function (data) {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     };
+    DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
+    };
+    ;
+    DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) { };
+    ;
+    DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var rooms = JSON.parse(JSON.stringify(dataEvent));
+        rooms.forEach(function (value) {
+            if (!_this.orgGroups[value._id]) {
+                _this.orgGroups[value._id] = value;
+            }
+            console.log("org_group: ", value);
+        });
+    };
+    ;
+    DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) { };
+    ;
     return DataManager;
 })();
 //<!--- Referrence by http://management.about.com/od/people/a/EEgradelevels.htm
