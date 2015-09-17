@@ -54,10 +54,16 @@
 				if (!err && res !== null) {
 				    document.getElementById('login').style.display = 'none';
 
-				    var main = new Main().startChatServerListener();
-
+				    var main = new Main();
+				    main.startChatServerListener();
+                    
 					server.getMe((err, res) => {
-						console.log("get me: ", res);
+					    if (err || res === null) {
+					        console.error(err);
+					    }
+					    else {
+					        main.getDataManager().setMyProfile(res);
+					    }
 					});
 
 					server.getCompanyInfo((err, res) => {

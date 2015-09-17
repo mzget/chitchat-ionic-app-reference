@@ -12,6 +12,10 @@ requirejs.config({
 
 class Main {
     private serverListener = new ChatServer.ServerEventListener();
+    private dataManager = new DataManager();
+    public getDataManager(): DataManager {
+        return this.dataManager;
+    }
 
     constructor() { }
 
