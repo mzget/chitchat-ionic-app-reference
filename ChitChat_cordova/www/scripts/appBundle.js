@@ -54,7 +54,7 @@ var Main = (function () {
         var hashService = new HashGenerator();
         hashService.hashCompute(content, callback);
     };
-    Main.prototype.authenUser = function (server, email, password) {
+    Main.prototype.authenUser = function (server, email, password, callback) {
         var self = this;
         server.logIn(email, password, function (err, res) {
             if (!err && res !== null) {
@@ -65,8 +65,10 @@ var Main = (function () {
                         console.error(err);
                     }
                     else {
-                        if (res.code === 200)
+                        if (res.code === 200) {
                             self.dataManager.setMyProfile(res.data);
+                        }
+                        callback();
                     }
                 });
                 server.getCompanyInfo(function (err, res) {
@@ -153,6 +155,13 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
+        ServerImplemented.prototype.Logout = function () {
+            var msg = {};
+            msg["username"] = username;
+            if (pomelo != null)
+                pomelo.notify("connector.entryHandler.logout", msg);
+            this.disConnect();
+        };
         ServerImplemented.prototype.init = function (callback) {
             var self = this;
             if (pomelo !== null) {
@@ -187,10 +196,6 @@ var ChatServer;
         /// </summary>
         ServerImplemented.prototype.logIn = function (_username, _hash, callback) {
             var self = this;
-            //require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
-            //    var hash = CryptoJS.MD5(passwordHash);
-            //    var md = hash.toString(CryptoJS.enc.Hex);     
-            //});
             username = _username;
             password = _hash;
             localStorage.setItem("username", username);

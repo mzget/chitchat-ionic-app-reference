@@ -54,7 +54,9 @@
 		                password = $('body #login form input[name="password"]').val();
 
 		                main.getHashService(password, (err, res) => {
-		                    main.authenUser(server, email, res);
+		                    main.authenUser(server, email, res, function () {
+
+		                    });
 		                });
 		            });
 		        }
@@ -63,7 +65,9 @@
 		                if (!err && res !== null) {
 		                    console.log("Authen result: ", JSON.stringify(res));
 		                    if (res.success) {
-		                        main.authenUser(server, res.username, res.password);
+		                        main.authenUser(server, res.username, res.password, function () {
+
+		                        });
 		                    }
 		                }
 		            });
