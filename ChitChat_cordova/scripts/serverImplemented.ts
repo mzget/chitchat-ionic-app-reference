@@ -52,6 +52,15 @@ module ChatServer {
                 this.authenData = new AutheData();
             }
         }
+        
+        public Logout() {
+            var msg: IDictionary = {};
+            msg["username"] = username;
+            if (pomelo != null)
+                pomelo.notify("connector.entryHandler.logout", msg);
+
+            this.disConnect();
+        }
 
         public init(callback: Function) {
             var self = this;
@@ -93,11 +102,6 @@ module ChatServer {
         /// </summary>
         public logIn(_username: string, _hash: string, callback: (err, res) => void) {
             var self = this;
-
-            //require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
-            //    var hash = CryptoJS.MD5(passwordHash);
-            //    var md = hash.toString(CryptoJS.enc.Hex);     
-            //});
 
             username = _username;
             password = _hash;

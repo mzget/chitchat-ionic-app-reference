@@ -153,6 +153,13 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
+        ServerImplemented.prototype.Logout = function () {
+            var msg = {};
+            msg["username"] = username;
+            if (pomelo != null)
+                pomelo.notify("connector.entryHandler.logout", msg);
+            this.disConnect();
+        };
         ServerImplemented.prototype.init = function (callback) {
             var self = this;
             if (pomelo !== null) {
@@ -187,10 +194,6 @@ var ChatServer;
         /// </summary>
         ServerImplemented.prototype.logIn = function (_username, _hash, callback) {
             var self = this;
-            //require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
-            //    var hash = CryptoJS.MD5(passwordHash);
-            //    var md = hash.toString(CryptoJS.enc.Hex);     
-            //});
             username = _username;
             password = _hash;
             localStorage.setItem("username", username);
