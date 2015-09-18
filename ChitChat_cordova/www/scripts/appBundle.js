@@ -19,6 +19,9 @@ var BlankCordovaApp1;
         }
         function onPause() {
             // TODO: This application has been suspended. Save application state here.
+            var serverImp = new ChatServer.ServerImplemented();
+            serverImp.disConnect();
+            console.error("disConnect");
         }
         function onResume() {
             // TODO: This application has been reactivated. Restore application state here.
@@ -122,7 +125,7 @@ var Main = (function () {
 var pomelo;
 var username = "";
 var password = "";
-var getPomelo = require(['../js/pomelo/pomeloclient'], function (obj) {
+require(['../js/pomelo/pomeloclient'], function (obj) {
     pomelo = obj;
 });
 var ChatServer;
@@ -733,6 +736,9 @@ var DataManager = (function () {
     }
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
+    };
+    DataManager.prototype.getMyProfile = function () {
+        return this.myProfile;
     };
     DataManager.prototype.setMembers = function (data) {
     };
