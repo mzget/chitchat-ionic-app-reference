@@ -6,6 +6,7 @@ interface IMemberMep {
 }
 
 class DataManager implements Services.IFrontendServerListener {
+
     public myProfile: User;
     public orgGroups: IRoomMap = {};
     public projectBaseGroups: IRoomMap = {};
@@ -15,6 +16,9 @@ class DataManager implements Services.IFrontendServerListener {
 
     public setMyProfile(data: any) {
         this.myProfile = JSON.parse(JSON.stringify(data));
+    }
+    public getMyProfile(): User {
+        return this.myProfile;
     }
 
     public setMembers(data: any) {

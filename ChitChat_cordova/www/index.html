@@ -40,39 +40,39 @@
 		var authen = server.authenData;
 
 		setTimeout(() => {
-		    server.init(function () {
-		        console.log("token: ", authen.token);
-		        if (!authen.token) {
-		            formLogin();
+			server.init(function () {
+				console.log("token: ", authen.token);
+				if (!authen.token) {
+					formLogin();
 
-		            $('body #login #btn-login').click(function (event) {
+					$('body #login #btn-login').click(function (event) {
 
-		                event.preventDefault();
+						event.preventDefault();
 
-		                $('body #login input').attr('readonly', true);
-		                email = $('body #login form input[name="email"]').val();
-		                password = $('body #login form input[name="password"]').val();
+						$('body #login input').attr('readonly', true);
+						email = $('body #login form input[name="email"]').val();
+						password = $('body #login form input[name="password"]').val();
 
-		                main.getHashService(password, (err, res) => {
-		                    main.authenUser(server, email, res, function () {
-
-		                    });
-		                });
-		            });
-		        }
-		        else {
-		            server.TokenAuthen(authen.token, function (err, res) {
-		                if (!err && res !== null) {
-		                    console.log("Authen result: ", JSON.stringify(res));
-		                    if (res.success) {
-		                        main.authenUser(server, res.username, res.password, function () {
-
-		                        });
-		                    }
-		                }
-		            });
-		        }
-		    })
+						main.getHashService(password, (err, res) => {
+						    main.authenUser(server, email, res, function () {
+						        console.log("******************", main.getDataManager().myProfile.displayname);
+							});
+						});
+					});
+				}
+				else {
+					server.TokenAuthen(authen.token, function (err, res) {
+						if (!err && res !== null) {
+							console.log("Authen result: ", JSON.stringify(res));
+							if (res.success) {
+							    main.authenUser(server, res.username, res.password, function () {
+							        console.log("******************", main.getDataManager().myProfile.displayname);
+								});
+							}
+						}
+					});
+				}
+			})
 		}, 1000);
 	</script>
 

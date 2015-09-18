@@ -734,6 +734,9 @@ var DataManager = (function () {
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
     };
+    DataManager.prototype.getMyProfile = function () {
+        return this.myProfile;
+    };
     DataManager.prototype.setMembers = function (data) {
     };
     DataManager.prototype.setCompanyInfo = function (data) {
