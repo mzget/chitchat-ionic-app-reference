@@ -91,37 +91,37 @@ module ChatServer {
         /// <summary>
         /// Connect to gate server then get query of connector server.
         /// </summary>
-        public logIn(_username: string, passwordHash: string, callback: (err, res) => void) {
+        public logIn(_username: string, _hash: string, callback: (err, res) => void) {
             var self = this;
 
-            require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
-                var hash = CryptoJS.MD5(passwordHash);
-                var md = hash.toString(CryptoJS.enc.Hex);
+            //require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            //    var hash = CryptoJS.MD5(passwordHash);
+            //    var md = hash.toString(CryptoJS.enc.Hex);     
+            //});
 
-                username = _username;
-                password = md;
+            username = _username;
+            password = _hash;
 
-                localStorage.setItem("username", username);
-                localStorage.setItem("password", password);
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
 
-                if (pomelo !== null) {
-                    var msg = { uid: username };
+            if (pomelo !== null) {
+                var msg = { uid: username };
 
-                    pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
+                pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
 
-                        console.log("QueryConnectorServ", result);
+                    console.log("QueryConnectorServ", result);
 
-                        if (result.code === 200) {
-                            pomelo.disconnect();
+                    if (result.code === 200) {
+                        pomelo.disconnect();
 
-                            var port = result.port;
-                            self.connectSocketServer(self.host, port, () => {
-                                self.connectConnectorServer(callback);
-                            });
-                        }
-                    });
-                }
-            });
+                        var port = result.port;
+                        self.connectSocketServer(self.host, port, () => {
+                            self.connectConnectorServer(callback);
+                        });
+                    }
+                });
+            }
         }
 
         //<!-- Authentication. request for token sign.
