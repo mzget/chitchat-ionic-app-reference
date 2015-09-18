@@ -551,6 +551,27 @@ var ChatServer;
                     repalceMessageID(null, data.data);
             });
         };
+        ChatRoomApiProvider.prototype.chatFile = function (room_id, target, sender_id, fileUrl, contentType, setMessageID) {
+            console.log("Send file to ", target);
+            var message = {};
+            message["rid"] = room_id;
+            message["content"] = fileUrl;
+            message["from"] = sender_id;
+            message["target"] = target;
+            message["type"] = contentType.toString();
+            pomelo.request("chat.chatHandler.send", message, function (result) {
+                var data = JSON.parse(JSON.stringify(result));
+                console.log("chatFile callback: ", data);
+                if (data.code == 200) {
+                    if (setMessageID != null) {
+                        setMessageID(null, data.data);
+                    }
+                }
+                else {
+                    console.error("WTF", "WTF god only know.");
+                }
+            });
+        };
         return ChatRoomApiProvider;
     })();
     ChatServer.ChatRoomApiProvider = ChatRoomApiProvider;

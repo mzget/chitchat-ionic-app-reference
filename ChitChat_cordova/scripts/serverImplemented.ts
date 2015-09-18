@@ -504,8 +504,7 @@ module ChatServer {
                     repalceMessageID(null, data.data);
             });
         }
-
-        /*
+        
         public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: ContentType, setMessageID: (err, res) => void) {
             console.log("Send file to ", target);
 
@@ -516,20 +515,19 @@ module ChatServer {
             message["target"] = target;
             message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, (result) => {
-                Log.i("chat message callback: ", jsonObject.toString());
+                var data = JSON.parse(JSON.stringify(result));
+                console.log("chatFile callback: ", data);
 
-                if (jsonObject.getInt("code") == 200) {
-                    String messageid = jsonObject.getJSONObject("data").getString("messageId");
-                    //String messagetype = jsonObject.getString("type");
+                if (data.code == 200) {
                     if (setMessageID != null) {
-                        setMessageID.callback(messageid);
+                        setMessageID(null, data.data);
                     }
                 }
                 else {
-                    Log.i("WTF", "WTF god only know.");
+                    console.error("WTF", "WTF god only know.");
                 }
-    });
-}*/
+            });
+        }
     }
 
     export class ServerEventListener {
