@@ -129,7 +129,7 @@ module ChatServer {
         }
 
         //<!-- Authentication. request for token sign.
-        connectConnectorServer(callback: (err, res) => void) {
+        private connectConnectorServer(callback: (err, res) => void) {
             var self = this;
             var msg = { username: username, password: password };
 
@@ -484,6 +484,26 @@ module ChatServer {
         }
 
         //endregion <!-- Group && Private Chat Room... -->
+    }
+
+    export class ChatRoomApiProvider {
+        public chat(room_id: string, target: string, sender_id: string, content: string, contentType: ContentType, repalceMessageID: (err, res) => void) {
+            var message: IDictionary = {};
+            message["rid"] = room_id;
+            message["content"] = content;
+            message["from"] = sender_id;
+            message["target"] = target;
+            message["type"] = contentType.toString();
+            pomelo.request("chat.chatHandler.send", message, (result) => {
+                var data = JSON.parse(JSON.stringify(result));
+                console.log("Chat msg response: ", data);
+
+                if (repalceMessageID !== null)
+                    repalceMessageID(null, data.data);
+            });
+        }
+
+
     }
 
     export class ServerEventListener {
