@@ -47,6 +47,7 @@ var Main = (function () {
         return this.dataManager;
     };
     Main.prototype.startChatServerListener = function () {
+        this.serverListener.frontendListener = this.dataManager;
         this.serverListener.addListenner();
     };
     return Main;
@@ -458,10 +459,10 @@ var ChatServer;
     ChatServer.ServerImplemented = ServerImplemented;
     var ServerEventListener = (function () {
         function ServerEventListener() {
-            this.frontendListener = new Services.FrontendServerListener();
-            this.onChatListener = new Services.ChatServerListener();
-            this.rtcCallListener = new Services.RTCListener();
-            this.serverListener = new Services.ServerListener();
+            //this.frontendListener = new Services.FrontendServerListener();
+            //this.onChatListener = new Services.ChatServerListener();
+            //this.rtcCallListener = new Services.RTCListener();
+            //this.serverListener = new Services.ServerListener();
         }
         ServerEventListener.prototype.addListenner = function () {
             this.callFrontendServer();
@@ -614,82 +615,48 @@ var ChatServer;
 })(ChatServer || (ChatServer = {}));
 var Services;
 (function (Services) {
-    var ChatServerListener = (function () {
-        function ChatServerListener() {
+    var AbsChatServerListener = (function () {
+        function AbsChatServerListener() {
         }
-        ChatServerListener.prototype.onChatData = function (data) { };
+        AbsChatServerListener.prototype.onChatData = function (data) { };
         ;
-        ChatServerListener.prototype.onLeaveRoom = function (data) { };
+        AbsChatServerListener.prototype.onLeaveRoom = function (data) { };
         ;
-        ChatServerListener.prototype.onRoomJoin = function (data) { };
+        AbsChatServerListener.prototype.onRoomJoin = function (data) { };
         ;
-        ChatServerListener.prototype.onMessageRead = function (dataEvent) { };
+        AbsChatServerListener.prototype.onMessageRead = function (dataEvent) { };
         ;
-        ChatServerListener.prototype.onGetMessagesReaders = function (dataEvent) { };
+        AbsChatServerListener.prototype.onGetMessagesReaders = function (dataEvent) { };
         ;
-        return ChatServerListener;
+        return AbsChatServerListener;
     })();
-    Services.ChatServerListener = ChatServerListener;
-    var FrontendServerListener = (function () {
-        function FrontendServerListener() {
+    Services.AbsChatServerListener = AbsChatServerListener;
+    var AbsFrontendServerListener = (function () {
+        function AbsFrontendServerListener() {
         }
-        FrontendServerListener.prototype.onGetCompanyMemberComplete = function (dataEvent) { };
-        ;
-        FrontendServerListener.prototype.onGetPrivateGroupsComplete = function (dataEvent) { };
-        ;
-        FrontendServerListener.prototype.onGetOrganizeGroupsComplete = function (dataEvent) { };
-        ;
-        FrontendServerListener.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) { };
-        ;
-        return FrontendServerListener;
+        return AbsFrontendServerListener;
     })();
-    Services.FrontendServerListener = FrontendServerListener;
+    Services.AbsFrontendServerListener = AbsFrontendServerListener;
     ;
-    var RTCListener = (function () {
-        function RTCListener() {
+    var AbsRTCListener = (function () {
+        function AbsRTCListener() {
         }
-        RTCListener.prototype.onVideoCall = function (dataEvent) { };
-        ;
-        RTCListener.prototype.onVoiceCall = function (dataEvent) { };
-        ;
-        RTCListener.prototype.onHangupCall = function (dataEvent) { };
-        ;
-        RTCListener.prototype.onTheLineIsBusy = function (dataEvent) { };
-        ;
-        return RTCListener;
+        return AbsRTCListener;
     })();
-    Services.RTCListener = RTCListener;
-    var ServerListener = (function () {
-        function ServerListener() {
+    Services.AbsRTCListener = AbsRTCListener;
+    var AbsServerListener = (function () {
+        function AbsServerListener() {
         }
-        ServerListener.prototype.onAccessRoom = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onUpdatedLastAccessTime = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onAddRoomAccess = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onCreateGroupSuccess = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onEditedGroupMember = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onEditedGroupName = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onEditedGroupImage = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onNewGroupCreated = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onUserUpdateImageProfile = function (dataEvent) { };
-        ;
-        ServerListener.prototype.onUserUpdateProfile = function (dataEvent) { };
-        ;
-        return ServerListener;
+        return AbsServerListener;
     })();
-    Services.ServerListener = ServerListener;
+    Services.AbsServerListener = AbsServerListener;
 })(Services || (Services = {}));
 var DataManager = (function () {
     function DataManager() {
+        this.orgGroups = {};
+        this.projectBaseGroups = {};
+        this.privateGroups = {};
+        this.orgMembers = {};
     }
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
@@ -707,6 +674,50 @@ var DataManager = (function () {
     DataManager.prototype.setPrivateGroups = function (data) {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     };
+    DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
+        var _this = this;
+        var member = JSON.parse(JSON.stringify(dataEvent));
+        member.forEach(function (value) {
+            if (!_this.orgMembers[value._id]) {
+                _this.orgMembers[value._id] = value;
+            }
+            console.log("org_member: ", value);
+        });
+    };
+    ;
+    DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var rooms = JSON.parse(JSON.stringify(dataEvent));
+        rooms.forEach(function (value) {
+            if (!_this.orgGroups[value._id]) {
+                _this.orgGroups[value._id] = value;
+            }
+            console.log("org_group: ", value);
+        });
+    };
+    ;
+    DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var groups = JSON.parse(JSON.stringify(dataEvent));
+        groups.forEach(function (value) {
+            if (!_this.projectBaseGroups[value._id]) {
+                _this.projectBaseGroups[value._id] = value;
+            }
+            console.log("project_base_groups: ", value);
+        });
+    };
+    ;
+    DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var groups = JSON.parse(JSON.stringify(dataEvent));
+        groups.forEach(function (value) {
+            if (!_this.privateGroups[value._id]) {
+                _this.privateGroups[value._id] = value;
+            }
+            console.log("private_groups: ", value);
+        });
+    };
+    ;
     return DataManager;
 })();
 //<!--- Referrence by http://management.about.com/od/people/a/EEgradelevels.htm
@@ -774,4 +785,9 @@ var UserRole;
     UserRole[UserRole["admin"] = 4] = "admin";
 })(UserRole || (UserRole = {}));
 ;
+var OrgMember = (function () {
+    function OrgMember() {
+    }
+    return OrgMember;
+})();
 //# sourceMappingURL=appBundle.js.map
