@@ -54,7 +54,7 @@ var Main = (function () {
         var hashService = new HashGenerator();
         hashService.hashCompute(content, callback);
     };
-    Main.prototype.authenUser = function (server, email, password) {
+    Main.prototype.authenUser = function (server, email, password, callback) {
         var self = this;
         server.logIn(email, password, function (err, res) {
             if (!err && res !== null) {
@@ -65,8 +65,10 @@ var Main = (function () {
                         console.error(err);
                     }
                     else {
-                        if (res.code === 200)
+                        if (res.code === 200) {
                             self.dataManager.setMyProfile(res.data);
+                        }
+                        callback();
                     }
                 });
                 server.getCompanyInfo(function (err, res) {

@@ -29,7 +29,7 @@ class Main {
         hashService.hashCompute(content, callback);
     }
 
-    public authenUser(server, email, password) {
+    public authenUser(server, email, password, callback: Function) {
         var self = this;
         server.logIn(email, password, function (err, res) {
             if (!err && res !== null) {
@@ -41,8 +41,11 @@ class Main {
                         console.error(err);
                     }
                     else {
-                        if (res.code === 200)
+                        if (res.code === 200) {
                             self.dataManager.setMyProfile(res.data);
+                        }
+
+                        callback();
                     }
                 });
 
