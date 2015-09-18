@@ -59,6 +59,8 @@ module ChatServer {
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
 
+            localStorage.clear();
+
             this.disConnect();
         }
 
@@ -503,7 +505,31 @@ module ChatServer {
             });
         }
 
+        /*
+        public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: ContentType, setMessageID: (err, res) => void) {
+            console.log("Send file to ", target);
 
+            var message: IDictionary = {};
+            message["rid"] = room_id;
+            message["content"] = fileUrl;
+            message["from"] = sender_id;
+            message["target"] = target;
+            message["type"] = contentType.toString();
+            pomelo.request("chat.chatHandler.send", message, (result) => {
+                Log.i("chat message callback: ", jsonObject.toString());
+
+                if (jsonObject.getInt("code") == 200) {
+                    String messageid = jsonObject.getJSONObject("data").getString("messageId");
+                    //String messagetype = jsonObject.getString("type");
+                    if (setMessageID != null) {
+                        setMessageID.callback(messageid);
+                    }
+                }
+                else {
+                    Log.i("WTF", "WTF god only know.");
+                }
+    });
+}*/
     }
 
     export class ServerEventListener {

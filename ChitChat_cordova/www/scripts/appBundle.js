@@ -163,6 +163,7 @@ var ChatServer;
             msg["username"] = username;
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
+            localStorage.clear();
             this.disConnect();
         };
         ServerImplemented.prototype.init = function (callback) {
@@ -533,6 +534,26 @@ var ChatServer;
         return ServerImplemented;
     })();
     ChatServer.ServerImplemented = ServerImplemented;
+    var ChatRoomApiProvider = (function () {
+        function ChatRoomApiProvider() {
+        }
+        ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, repalceMessageID) {
+            var message = {};
+            message["rid"] = room_id;
+            message["content"] = content;
+            message["from"] = sender_id;
+            message["target"] = target;
+            message["type"] = contentType.toString();
+            pomelo.request("chat.chatHandler.send", message, function (result) {
+                var data = JSON.parse(JSON.stringify(result));
+                console.log("Chat msg response: ", data);
+                if (repalceMessageID !== null)
+                    repalceMessageID(null, data.data);
+            });
+        };
+        return ChatRoomApiProvider;
+    })();
+    ChatServer.ChatRoomApiProvider = ChatRoomApiProvider;
     var ServerEventListener = (function () {
         function ServerEventListener() {
             //this.frontendListener = new Services.FrontendServerListener();
@@ -799,6 +820,20 @@ var DataManager = (function () {
     ;
     return DataManager;
 })();
+/**
+ * Created by nattapon on 7/17/15 AD.
+ */
+var ContentType;
+(function (ContentType) {
+    ContentType[ContentType["Unload"] = 0] = "Unload";
+    ContentType[ContentType["File"] = 1] = "File";
+    ContentType[ContentType["Text"] = 2] = "Text";
+    ContentType[ContentType["Voice"] = 3] = "Voice";
+    ContentType[ContentType["Image"] = 4] = "Image";
+    ContentType[ContentType["Video"] = 5] = "Video";
+    ContentType[ContentType["Sticker"] = 6] = "Sticker";
+    ContentType[ContentType["Location"] = 7] = "Location";
+})(ContentType || (ContentType = {}));
 //<!--- Referrence by http://management.about.com/od/people/a/EEgradelevels.htm
 var JobLevel;
 (function (JobLevel) {
