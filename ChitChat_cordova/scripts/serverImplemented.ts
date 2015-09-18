@@ -2,7 +2,7 @@
 var username: string = "";
 var password: string = "";
 
-var getPomelo = require(['../js/pomelo/pomeloclient'], function (obj) {
+require(['../js/pomelo/pomeloclient'], function (obj) {
     pomelo = obj;
 });
 
