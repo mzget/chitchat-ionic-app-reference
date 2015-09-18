@@ -528,6 +528,19 @@ module ChatServer {
                 }
             });
         }
+
+
+        //public getSyncDateTime(callback: (err, res) => void) {
+        //    var message: IDictionary = {};
+        //    message["token"] = 
+        //    getServerImplemented().getClient().request("chat.chatHandler.getSyncDateTime", message, new DataCallBack() {
+        //                @Override
+        //    public void responseData(JSONObject jsonObject) {
+        //        if (callback != null) {
+        //            callback.callback(jsonObject);
+        //        }
+        //    }
+        //}
     }
 
     export class ServerEventListener {
