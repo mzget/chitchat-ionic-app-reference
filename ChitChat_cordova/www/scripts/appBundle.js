@@ -88,7 +88,14 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
-        ServerImplemented.prototype.init = function () { };
+        ServerImplemented.prototype.init = function (callback) {
+            var self = this;
+            if (pomelo !== null) {
+                self.connectSocketServer(self.host, self.port, function () {
+                    callback();
+                });
+            }
+        };
         ServerImplemented.prototype.disConnect = function () {
             if (pomelo !== null) {
                 pomelo.disconnect();
@@ -123,20 +130,16 @@ var ChatServer;
                 localStorage.setItem("username", username);
                 localStorage.setItem("password", password);
                 if (pomelo !== null) {
-                    self.connectSocketServer(self.host, self.port, function () {
-                        //if (!IsLoginSuccess) {       
-                        var msg = { uid: username };
-                        pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
-                            console.log("QueryConnectorServ", result);
-                            if (result.code === 200) {
-                                pomelo.disconnect();
-                                var port = result.port;
-                                self.connectSocketServer(self.host, port, function () {
-                                    self.connectConnectorServer(callback);
-                                });
-                            }
-                        });
-                        //        });
+                    var msg = { uid: username };
+                    pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
+                        console.log("QueryConnectorServ", result);
+                        if (result.code === 200) {
+                            pomelo.disconnect();
+                            var port = result.port;
+                            self.connectSocketServer(self.host, port, function () {
+                                self.connectConnectorServer(callback);
+                            });
+                        }
                     });
                 }
             });

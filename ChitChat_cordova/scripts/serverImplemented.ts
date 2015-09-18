@@ -53,7 +53,14 @@ module ChatServer {
             }
         }
 
-        public init() { }
+        public init(callback: Function) {
+            var self = this;
+            if (pomelo !== null) {
+                self.connectSocketServer(self.host, self.port, () => {
+                    callback();
+                });
+            }
+        }
 
         public disConnect() {
             if (pomelo !== null) {
@@ -98,24 +105,20 @@ module ChatServer {
                 localStorage.setItem("password", password);
 
                 if (pomelo !== null) {
-                    self.connectSocketServer(self.host, self.port, () => {
-                        //if (!IsLoginSuccess) {       
-                        var msg = { uid: username };
+                    var msg = { uid: username };
 
-                        pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
+                    pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
 
-                            console.log("QueryConnectorServ", result);
+                        console.log("QueryConnectorServ", result);
 
-                            if (result.code === 200) {
-                                pomelo.disconnect();
+                        if (result.code === 200) {
+                            pomelo.disconnect();
 
-                                var port = result.port;
-                                self.connectSocketServer(self.host, port, () => {
-                                    self.connectConnectorServer(callback);
-                                });
-                            }
-                        });
-                        //        });
+                            var port = result.port;
+                            self.connectSocketServer(self.host, port, () => {
+                                self.connectConnectorServer(callback);
+                            });
+                        }
                     });
                 }
             });

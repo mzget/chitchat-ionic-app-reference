@@ -37,87 +37,95 @@
 		var socket = io;
 		var server = new ChatServer.ServerImplemented();
 		var authen = server.authenData;
-	</script>
+		setTimeout(() => {
+		    server.init(function () {
+		        console.log("token: ", authen.token);
+		        if (!authen.token) {
+		            formLogin();
 
-	<script type="text/javascript">
-	formLogin();
-	
-		$('body #login #btn-login').click(function (event) {
-			
-			event.preventDefault();
+		            $('body #login #btn-login').click(function (event) {
 
-			$('body #login input').attr('readonly', true);
-			email = $('body #login form input[name="email"]').val();
-			password = $('body #login form input[name="password"]').val();
+		                event.preventDefault();
 
-			server.logIn(email, password, function(err, res){			
-				if (!err && res !== null) {
-					document.getElementById('login').style.display = 'none';
+		                $('body #login input').attr('readonly', true);
+		                email = $('body #login form input[name="email"]').val();
+		                password = $('body #login form input[name="password"]').val();
 
-					var main = new Main();
-					main.startChatServerListener();
-					
-					server.getMe(function(err, res){
-						if (err || res === null) {
-							console.error(err);
-						}
-						else {
-                            if(res.code === 200)
-							    main.getDataManager().setMyProfile(res.data);
-						}
-					});
+		                server.logIn(email, password, function (err, res) {
+		                    if (!err && res !== null) {
+		                        document.getElementById('login').style.display = 'none';
 
-					server.getCompanyInfo(function(err, res){
-						if (err || res === null) {
-							console.error(err);
-						}
-						else {
-							console.log("companyInfo: ", res);
-						}
-					});
+		                        var main = new Main();
+		                        main.startChatServerListener();
 
-					server.getOrganizationGroups(function(err, res){
-						if (err || res === null) {
-							console.error(err);
-						}
-						else {
-							console.log("organize groups: ", res);
-						}
-					});
+		                        server.getMe(function (err, res) {
+		                            if (err || res === null) {
+		                                console.error(err);
+		                            }
+		                            else {
+		                                if (res.code === 200)
+		                                    main.getDataManager().setMyProfile(res.data);
+		                            }
+		                        });
 
-					server.getProjectBaseGroups(function(err, res){
-						if (err || res === null) {
-							console.error(err);
-						}
-						else {
-							console.log("project base groups: ", res);
-						}
-					});
+		                        server.getCompanyInfo(function (err, res) {
+		                            if (err || res === null) {
+		                                console.error(err);
+		                            }
+		                            else {
+		                                console.log("companyInfo: ", res);
+		                            }
+		                        });
 
-					server.getPrivateGroups(function(err, res){
-						if (err || res === null) {
-							console.error(err);
-						}
-						else {
-							console.log("Private groups: ", res);
-						}
-					});
+		                        server.getOrganizationGroups(function (err, res) {
+		                            if (err || res === null) {
+		                                console.error(err);
+		                            }
+		                            else {
+		                                console.log("organize groups: ", res);
+		                            }
+		                        });
 
-					server.getCompanyMembers(function(err, res){
-						if (err || res === null) {
-							console.error(err);
-						}
-						else {
-							console.log("Company Members: ", res);
-						}
-					});
-				}
-				else {
-					console.log(err);
-				}
-			});
-		});
+		                        server.getProjectBaseGroups(function (err, res) {
+		                            if (err || res === null) {
+		                                console.error(err);
+		                            }
+		                            else {
+		                                console.log("project base groups: ", res);
+		                            }
+		                        });
 
+		                        server.getPrivateGroups(function (err, res) {
+		                            if (err || res === null) {
+		                                console.error(err);
+		                            }
+		                            else {
+		                                console.log("Private groups: ", res);
+		                            }
+		                        });
+
+		                        server.getCompanyMembers(function (err, res) {
+		                            if (err || res === null) {
+		                                console.error(err);
+		                            }
+		                            else {
+		                                console.log("Company Members: ", res);
+		                            }
+		                        });
+		                    }
+		                    else {
+		                        console.log(err);
+		                    }
+		                });
+		            });
+		        }
+		        else {
+		            server.TokenAuthen(authen.token, function (err, res) {
+		                console.log("Authen result: ", res);
+		            });
+		        }
+		    });
+		}, 1000);
 	</script>
 
 	<!--
