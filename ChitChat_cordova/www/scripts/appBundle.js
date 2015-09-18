@@ -50,6 +50,71 @@ var Main = (function () {
         this.serverListener.frontendListener = this.dataManager;
         this.serverListener.addListenner();
     };
+    Main.prototype.getHashService = function (content, callback) {
+        var hashService = new HashGenerator();
+        hashService.hashCompute(content, callback);
+    };
+    Main.prototype.authenUser = function (server, email, password) {
+        var self = this;
+        server.logIn(email, password, function (err, res) {
+            if (!err && res !== null) {
+                //<!-- Listen all event in the spartan world.
+                self.startChatServerListener();
+                server.getMe(function (err, res) {
+                    if (err || res === null) {
+                        console.error(err);
+                    }
+                    else {
+                        if (res.code === 200)
+                            self.dataManager.setMyProfile(res.data);
+                    }
+                });
+                server.getCompanyInfo(function (err, res) {
+                    if (err || res === null) {
+                        console.error(err);
+                    }
+                    else {
+                        console.log("companyInfo: ", res);
+                    }
+                });
+                server.getOrganizationGroups(function (err, res) {
+                    if (err || res === null) {
+                        console.error(err);
+                    }
+                    else {
+                        console.log("organize groups: ", res);
+                    }
+                });
+                server.getProjectBaseGroups(function (err, res) {
+                    if (err || res === null) {
+                        console.error(err);
+                    }
+                    else {
+                        console.log("project base groups: ", res);
+                    }
+                });
+                server.getPrivateGroups(function (err, res) {
+                    if (err || res === null) {
+                        console.error(err);
+                    }
+                    else {
+                        console.log("Private groups: ", res);
+                    }
+                });
+                server.getCompanyMembers(function (err, res) {
+                    if (err || res === null) {
+                        console.error(err);
+                    }
+                    else {
+                        console.log("Company Members: ", res);
+                    }
+                });
+            }
+            else {
+                console.log(err);
+            }
+        });
+    };
     return Main;
 })();
 var pomelo;
@@ -120,29 +185,29 @@ var ChatServer;
         /// <summary>
         /// Connect to gate server then get query of connector server.
         /// </summary>
-        ServerImplemented.prototype.logIn = function (_username, passwordHash, callback) {
+        ServerImplemented.prototype.logIn = function (_username, _hash, callback) {
             var self = this;
-            require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
-                var hash = CryptoJS.MD5(passwordHash);
-                var md = hash.toString(CryptoJS.enc.Hex);
-                username = _username;
-                password = md;
-                localStorage.setItem("username", username);
-                localStorage.setItem("password", password);
-                if (pomelo !== null) {
-                    var msg = { uid: username };
-                    pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
-                        console.log("QueryConnectorServ", result);
-                        if (result.code === 200) {
-                            pomelo.disconnect();
-                            var port = result.port;
-                            self.connectSocketServer(self.host, port, function () {
-                                self.connectConnectorServer(callback);
-                            });
-                        }
-                    });
-                }
-            });
+            //require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            //    var hash = CryptoJS.MD5(passwordHash);
+            //    var md = hash.toString(CryptoJS.enc.Hex);     
+            //});
+            username = _username;
+            password = _hash;
+            localStorage.setItem("username", username);
+            localStorage.setItem("password", password);
+            if (pomelo !== null) {
+                var msg = { uid: username };
+                pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
+                    console.log("QueryConnectorServ", result);
+                    if (result.code === 200) {
+                        pomelo.disconnect();
+                        var port = result.port;
+                        self.connectSocketServer(self.host, port, function () {
+                            self.connectConnectorServer(callback);
+                        });
+                    }
+                });
+            }
         };
         //<!-- Authentication. request for token sign.
         ServerImplemented.prototype.connectConnectorServer = function (callback) {
@@ -792,5 +857,17 @@ var OrgMember = (function () {
     function OrgMember() {
     }
     return OrgMember;
+})();
+var HashGenerator = (function () {
+    function HashGenerator() {
+    }
+    HashGenerator.prototype.hashCompute = function (content, callback) {
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            var hash = CryptoJS.MD5(content);
+            var md = hash.toString(CryptoJS.enc.Hex);
+            callback(null, md);
+        });
+    };
+    return HashGenerator;
 })();
 //# sourceMappingURL=appBundle.js.map

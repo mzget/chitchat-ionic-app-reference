@@ -35,8 +35,10 @@
 	<script src="js/socket.io.js"></script>
 	<script>
 		var socket = io;
+		var main = new Main();
 		var server = new ChatServer.ServerImplemented();
 		var authen = server.authenData;
+
 		setTimeout(() => {
 		    server.init(function () {
 		        console.log("token: ", authen.token);
@@ -51,80 +53,22 @@
 		                email = $('body #login form input[name="email"]').val();
 		                password = $('body #login form input[name="password"]').val();
 
-		                server.logIn(email, password, function (err, res) {
-		                    if (!err && res !== null) {
-		                        document.getElementById('login').style.display = 'none';
-
-		                        var main = new Main();
-		                        main.startChatServerListener();
-
-		                        server.getMe(function (err, res) {
-		                            if (err || res === null) {
-		                                console.error(err);
-		                            }
-		                            else {
-		                                if (res.code === 200)
-		                                    main.getDataManager().setMyProfile(res.data);
-		                            }
-		                        });
-
-		                        server.getCompanyInfo(function (err, res) {
-		                            if (err || res === null) {
-		                                console.error(err);
-		                            }
-		                            else {
-		                                console.log("companyInfo: ", res);
-		                            }
-		                        });
-
-		                        server.getOrganizationGroups(function (err, res) {
-		                            if (err || res === null) {
-		                                console.error(err);
-		                            }
-		                            else {
-		                                console.log("organize groups: ", res);
-		                            }
-		                        });
-
-		                        server.getProjectBaseGroups(function (err, res) {
-		                            if (err || res === null) {
-		                                console.error(err);
-		                            }
-		                            else {
-		                                console.log("project base groups: ", res);
-		                            }
-		                        });
-
-		                        server.getPrivateGroups(function (err, res) {
-		                            if (err || res === null) {
-		                                console.error(err);
-		                            }
-		                            else {
-		                                console.log("Private groups: ", res);
-		                            }
-		                        });
-
-		                        server.getCompanyMembers(function (err, res) {
-		                            if (err || res === null) {
-		                                console.error(err);
-		                            }
-		                            else {
-		                                console.log("Company Members: ", res);
-		                            }
-		                        });
-		                    }
-		                    else {
-		                        console.log(err);
-		                    }
+		                main.getHashService(password, (err, res) => {
+		                    main.authenUser(server, email, res);
 		                });
 		            });
 		        }
 		        else {
 		            server.TokenAuthen(authen.token, function (err, res) {
-		                console.log("Authen result: ", res);
+		                if (!err && res !== null) {
+		                    console.log("Authen result: ", JSON.stringify(res));
+		                    if (res.success) {
+		                        main.authenUser(server, res.username, res.password);
+		                    }
+		                }
 		            });
 		        }
-		    });
+		    })
 		}, 1000);
 	</script>
 
