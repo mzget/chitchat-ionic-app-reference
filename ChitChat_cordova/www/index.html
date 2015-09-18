@@ -50,14 +50,14 @@
 			email = $('body #login form input[name="email"]').val();
 			password = $('body #login form input[name="password"]').val();
 
-			server.logIn(email, password, (err, res) => {			
+			server.logIn(email, password, function(err, res){			
 				if (!err && res !== null) {
 					document.getElementById('login').style.display = 'none';
 
 					var main = new Main();
 					main.startChatServerListener();
 					
-					server.getMe((err, res) => {
+					server.getMe(function(err, res){
 						if (err || res === null) {
 							console.error(err);
 						}
@@ -66,7 +66,7 @@
 						}
 					});
 
-					server.getCompanyInfo((err, res) => {
+					server.getCompanyInfo(function(err, res){
 						if (err || res === null) {
 							console.error(err);
 						}
@@ -75,7 +75,7 @@
 						}
 					});
 
-					server.getOrganizationGroups((err, res) => {
+					server.getOrganizationGroups(function(err, res){
 						if (err || res === null) {
 							console.error(err);
 						}
@@ -84,7 +84,7 @@
 						}
 					});
 
-					server.getProjectBaseGroups((err, res) => {
+					server.getProjectBaseGroups(function(err, res){
 						if (err || res === null) {
 							console.error(err);
 						}
@@ -93,7 +93,7 @@
 						}
 					});
 
-					server.getPrivateGroups((err, res) => {
+					server.getPrivateGroups(function(err, res){
 						if (err || res === null) {
 							console.error(err);
 						}
@@ -102,7 +102,7 @@
 						}
 					});
 
-					server.getCompanyMembers((err, res) => {
+					server.getCompanyMembers(function(err, res){
 						if (err || res === null) {
 							console.error(err);
 						}
