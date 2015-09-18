@@ -227,11 +227,11 @@ var ChatServer;
                 var decode = data.decoded; //["decoded"];
                 var decodedModel = JSON.parse(JSON.stringify(decode));
                 if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(true, decodedModel.username, decodedModel.password);
+                    onSuccessCheckToken(null, { success: true, username: decodedModel.username, password: decodedModel.password });
             }
             else {
                 if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(false, null, null);
+                    onSuccessCheckToken(null, null);
             }
         };
         //endregion <!-- end user profile section. -->
