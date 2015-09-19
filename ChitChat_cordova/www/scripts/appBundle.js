@@ -184,7 +184,7 @@ var ChatServer;
             console.log("connecting to: ", _host, _port);
             var self = this;
             pomelo.init({ host: _host, port: _port }, function (socket) {
-                console.log("client.init : ", socket);
+                //console.log("client.init : ", socket);
                 callback();
                 //pomelo.on("disconnect", function (dataEvent) {
                 //console.error("disconnect Event", dataEvent);
@@ -222,7 +222,6 @@ var ChatServer;
         ServerImplemented.prototype.connectConnectorServer = function (callback) {
             var self = this;
             var msg = { username: username, password: password };
-            console.log("login:", msg.username, msg.password);
             //if (SpartanTalkApplication.getSharedAppData().contains(INSTALLATION_ID)) {
             //    msg.put(INSTALLATION_ID, SpartanTalkApplication.getSharedAppData().getString(INSTALLATION_ID, ""));
             //}
