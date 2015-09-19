@@ -59,8 +59,9 @@ var Main = (function () {
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
         var self = this;
-        server.logIn(email, password, function (err, res) {
-            if (!err && res !== null) {
+        server.logIn(email, password, function (err, loginRes) {
+            callback(null, loginRes);
+            if (!err && loginRes !== null) {
                 //<!-- Listen all event in the spartan world.
                 self.startChatServerListener();
                 server.getMe(function (err, res) {
@@ -71,7 +72,9 @@ var Main = (function () {
                         if (res.code === 200) {
                             self.dataManager.setMyProfile(res.data);
                         }
-                        callback();
+                        else {
+                            console.error("My user profile is empty. please check.");
+                        }
                     }
                 });
                 server.getCompanyInfo(function (err, res) {

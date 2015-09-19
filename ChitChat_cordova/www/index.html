@@ -54,8 +54,19 @@
 						password = $('body #login form input[name="password"]').val();
 
 						main.getHashService(password, (err, res) => {
-						    main.authenUser(server, email, res, function () {
-						        console.log("******************", main.getDataManager().myProfile.displayname);
+						    main.authenUser(server, email, res, function (err, res) {
+						        if (!err && res !== null) {
+						            if (res.code === 200) {
+						                console.log("Change page here...");
+						                document.getElementById('login').style.display = 'none';
+						            }
+						            else {
+						                //<!-- Authen fail.
+						            }
+						        }
+						        else {
+                                    //<!-- Authen fail.
+						        }
 							});
 						});
 					});
@@ -65,8 +76,19 @@
 						if (!err && res !== null) {
 							console.log("Authen result: ", JSON.stringify(res));
 							if (res.success) {
-							    main.authenUser(server, res.username, res.password, function () {
-							        console.log("******************", main.getDataManager().myProfile.displayname);
+							    main.authenUser(server, res.username, res.password, function (err, res) {
+							        if (!err && res !== null) {
+							            if (res.code === 200) {
+							                console.log("Change page here...");
+							                document.getElementById('login').style.display = 'none';
+							            }
+							            else {
+							                //<!-- Authen fail.
+							            }
+							        }
+							        else {
+							            //<!-- Authen fail.
+							        }
 								});
 							}
 						}
