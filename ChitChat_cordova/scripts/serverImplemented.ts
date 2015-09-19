@@ -52,7 +52,7 @@ module ChatServer {
                 this.authenData = new AutheData();
             }
         }
-        
+
         public Logout() {
             var msg: IDictionary = {};
             msg["username"] = username;
@@ -90,10 +90,10 @@ module ChatServer {
                 callback();
 
                 //pomelo.on("disconnect", function (dataEvent) {
-                    //console.error("disconnect Event", dataEvent);
-                    //if (connectionListen != null) {
-                    //    connectionListen.connectionEvent("disconnect");
-                    //}
+                //console.error("disconnect Event", dataEvent);
+                //if (connectionListen != null) {
+                //    connectionListen.connectionEvent("disconnect");
+                //}
                 //});
             });
         }
@@ -159,8 +159,31 @@ module ChatServer {
                 }
             });
         }
+
+        public TokenAuthen(tokenBearer: string, checkTokenCallback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = tokenBearer;
+            pomelo.request("gate.gateHandler.authenGateway", msg, (result) => {
+                this.OnTokenAuthenticate(result, checkTokenCallback);
+            });
+        }
+
+        private OnTokenAuthenticate(tokenRes: any, onSuccessCheckToken: (err, res) => void) {
+            if (tokenRes.code === 200) {
+                var data = tokenRes.data;
+                var decode = data.decoded; //["decoded"];
+                var decodedModel: TokenDecode = JSON.parse(JSON.stringify(decode));
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(null, { success: true, username: decodedModel.username, password: decodedModel.password });
+            }
+            else {
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(null, null);
+            }
+        }
         
         //region <!-- user profile -->
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public UpdateUserProfile(myId: string, profileFields: { [k: string]: string }, callback: (err, res) => void) {
             profileFields["token"] = this.authenData.token;
@@ -211,33 +234,48 @@ module ChatServer {
             });
         }
 
-        public TokenAuthen(tokenBearer: string, checkTokenCallback: (err, res) => void) {
+        public updateFavoriteMember(editType: string, member: string, callback: (err, ress) => void) {
             var msg: IDictionary = {};
-            msg["token"] = tokenBearer;
-            pomelo.request("gate.gateHandler.authenGateway", msg, (result) => {
-                this.OnTokenAuthenticate(result, checkTokenCallback);
+            msg["editType"] = editType;
+            msg["member"] = member;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.editFavoriteMembers", msg, (result) => {
+                console.log("updateFavoriteMember: ", JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
             });
         }
 
-        private OnTokenAuthenticate(tokenRes: any, onSuccessCheckToken: (err, res) => void) {
-            if (tokenRes.code === 200) {
-                var data = tokenRes.data;
-                var decode = data.decoded; //["decoded"];
-                var decodedModel: TokenDecode = JSON.parse(JSON.stringify(decode));
-                if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(null, { success: true, username: decodedModel.username, password: decodedModel.password });
-            }
-            else {
-                if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(null, null);
-            }
+        public updateFavoriteGroups(editType: string, group: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["editType"] = editType;
+            msg["group"] = group;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, (result) => {
+                console.log("updateFavoriteGroups: ", JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
+            });
         }
 
-        //endregion <!-- end user profile section. -->
+        public getMemberProfile(userId: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["userId"] = userId;
 
+            pomelo.request("auth.profileHandler.getMemberProfile", msg, (result) => {
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+        //endregion
 
 
         //region <!-- Company data. -->
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Gets the company info.
@@ -281,10 +319,11 @@ module ChatServer {
             });
         }
 
-        //endregion <!-- Company data. 
+        //endregion
 
 
-        //region <!-- Group && Project base. -->
+        //region <!-- Project base. -->
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public getProjectBaseGroups(callback: (err, res) => void) {
             var msg: IDictionary = {};
@@ -308,7 +347,6 @@ module ChatServer {
             });
         }
 
-
         public editMemberInfoInProjectBase(roomId: string, roomType: RoomType, member: Member, callback: (err, res) => void) {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
@@ -321,12 +359,11 @@ module ChatServer {
             });
         }
 
-        //endregion <!-- Group && Project base. -->
+        //endregion
 
 
-
-        //region <!-- Group && Private Chat Room... -->
-        //*********************************************************************************
+        //region <!-- Private Group Room... -->
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Gets the public group chat rooms.
@@ -483,7 +520,7 @@ module ChatServer {
             });
         }
 
-        //endregion <!-- Group && Private Chat Room... -->
+        //endregion <!-- Private Group Room... -->
     }
 
     export class ChatRoomApiProvider {

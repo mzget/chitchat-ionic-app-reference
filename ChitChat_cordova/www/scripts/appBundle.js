@@ -247,7 +247,29 @@ var ChatServer;
                 }
             });
         };
+        ServerImplemented.prototype.TokenAuthen = function (tokenBearer, checkTokenCallback) {
+            var _this = this;
+            var msg = {};
+            msg["token"] = tokenBearer;
+            pomelo.request("gate.gateHandler.authenGateway", msg, function (result) {
+                _this.OnTokenAuthenticate(result, checkTokenCallback);
+            });
+        };
+        ServerImplemented.prototype.OnTokenAuthenticate = function (tokenRes, onSuccessCheckToken) {
+            if (tokenRes.code === 200) {
+                var data = tokenRes.data;
+                var decode = data.decoded; //["decoded"];
+                var decodedModel = JSON.parse(JSON.stringify(decode));
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(null, { success: true, username: decodedModel.username, password: decodedModel.password });
+            }
+            else {
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(null, null);
+            }
+        };
         //region <!-- user profile -->
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ServerImplemented.prototype.UpdateUserProfile = function (myId, profileFields, callback) {
             profileFields["token"] = this.authenData.token;
             profileFields["_id"] = myId;
@@ -292,29 +314,42 @@ var ChatServer;
                 }
             });
         };
-        ServerImplemented.prototype.TokenAuthen = function (tokenBearer, checkTokenCallback) {
-            var _this = this;
+        ServerImplemented.prototype.updateFavoriteMember = function (editType, member, callback) {
             var msg = {};
-            msg["token"] = tokenBearer;
-            pomelo.request("gate.gateHandler.authenGateway", msg, function (result) {
-                _this.OnTokenAuthenticate(result, checkTokenCallback);
+            msg["editType"] = editType;
+            msg["member"] = member;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.editFavoriteMembers", msg, function (result) {
+                console.log("updateFavoriteMember: ", JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
             });
         };
-        ServerImplemented.prototype.OnTokenAuthenticate = function (tokenRes, onSuccessCheckToken) {
-            if (tokenRes.code === 200) {
-                var data = tokenRes.data;
-                var decode = data.decoded; //["decoded"];
-                var decodedModel = JSON.parse(JSON.stringify(decode));
-                if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(null, { success: true, username: decodedModel.username, password: decodedModel.password });
-            }
-            else {
-                if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(null, null);
-            }
+        ServerImplemented.prototype.updateFavoriteGroups = function (editType, group, callback) {
+            var msg = {};
+            msg["editType"] = editType;
+            msg["group"] = group;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, function (result) {
+                console.log("updateFavoriteGroups: ", JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
+            });
         };
-        //endregion <!-- end user profile section. -->
+        ServerImplemented.prototype.getMemberProfile = function (userId, callback) {
+            var msg = {};
+            msg["userId"] = userId;
+            pomelo.request("auth.profileHandler.getMemberProfile", msg, function (result) {
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        };
+        //endregion
         //region <!-- Company data. -->
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Gets the company info.
         /// Beware for data loading so mush. please load from cache before load from server.
@@ -354,8 +389,9 @@ var ChatServer;
                     callBack(null, result);
             });
         };
-        //endregion <!-- Company data. 
-        //region <!-- Group && Project base. -->
+        //endregion
+        //region <!-- Project base. -->
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ServerImplemented.prototype.getProjectBaseGroups = function (callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
@@ -387,9 +423,9 @@ var ChatServer;
                     callback(null, result);
             });
         };
-        //endregion <!-- Group && Project base. -->
-        //region <!-- Group && Private Chat Room... -->
-        //*********************************************************************************
+        //endregion
+        //region <!-- Private Group Room... -->
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>
         /// Gets the public group chat rooms.
         /// Beware for data loading so mush. please load from cache before load from server.
