@@ -609,6 +609,17 @@ var ChatServer;
                 }
             });
         };
+        ChatRoomApiProvider.prototype.getMessagesReaders = function () {
+            var message = {};
+            message["token"] = this.serverImp.authenData.token;
+            pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+        };
+        ChatRoomApiProvider.prototype.updateMessageReader = function (messageId, roomId) {
+            var message = {};
+            message["messageId"] = messageId;
+            message["roomId"] = roomId;
+            pomelo.notify("chat.chatHandler.updateWhoReadMessage", message);
+        };
         return ChatRoomApiProvider;
     })();
     ChatServer.ChatRoomApiProvider = ChatRoomApiProvider;

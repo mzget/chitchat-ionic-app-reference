@@ -568,8 +568,19 @@ module ChatServer {
                 }
             });
         }
+        
+        public getMessagesReaders() {
+            var message: IDictionary = {};
+            message["token"] = this.serverImp.authenData.token;
+            pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+        }
 
-
+        public updateMessageReader(messageId: string, roomId: string) {
+            var message: IDictionary = {};
+            message["messageId"] = messageId;
+            message["roomId"] = roomId;
+            pomelo.notify("chat.chatHandler.updateWhoReadMessage", message);
+        }
     }
 
     export class ServerEventListener {
