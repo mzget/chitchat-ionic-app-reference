@@ -520,7 +520,62 @@ module ChatServer {
             });
         }
 
-        //endregion <!-- Private Group Room... -->
+        //endregion
+
+
+        // region <!-- Web RTC Calling...
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Videos the call requesting.
+        /// - tell target client for your call requesting...
+        /// </summary>
+        public videoCallRequest(targetId: string, myRtcId: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["targetId"] = targetId;
+            msg["myRtcId"] = myRtcId;
+            pomelo.request("connector.entryHandler.videoCallRequest", msg, (result) => {
+                console.log("videoCallRequesting =>: " + JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
+        public voiceCallRequest(targetId: string, myRtcId: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["targetId"] = targetId;
+            msg["myRtcId"] = myRtcId;
+            pomelo.request("connector.entryHandler.voiceCallRequest", msg, (result) => {
+                console.log("voiceCallRequesting =>: " + JSON.stringify(result));
+
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
+        public hangupCall(myId: string, contactId: string) {
+            var msg: IDictionary = {};
+            msg["userId"] = myId;
+            msg["contactId"] = contactId;
+            msg["token"] = this.authenData.token;
+
+            pomelo.request("connector.entryHandler.hangupCall", msg, (result) => {
+                console.log("hangupCall: ", JSON.stringify(result));
+            });
+        }
+
+        public theLineIsBusy(contactId: string) {
+            var msg: IDictionary = {};
+            msg["contactId"] = contactId;
+
+            pomelo.request("connector.entryHandler.theLineIsBusy", msg, (result) => {
+                console.log("theLineIsBusy response: " + JSON.stringify(result));
+            });
+        }
+
+        //endregion
     }
 
     export class ChatRoomApiProvider {

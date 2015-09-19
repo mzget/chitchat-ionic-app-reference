@@ -569,6 +569,51 @@ var ChatServer;
                 }
             });
         };
+        //endregion
+        // region <!-- Web RTC Calling...
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>
+        /// Videos the call requesting.
+        /// - tell target client for your call requesting...
+        /// </summary>
+        ServerImplemented.prototype.videoCallRequest = function (targetId, myRtcId, callback) {
+            var msg = {};
+            msg["token"] = this.authenData.token;
+            msg["targetId"] = targetId;
+            msg["myRtcId"] = myRtcId;
+            pomelo.request("connector.entryHandler.videoCallRequest", msg, function (result) {
+                console.log("videoCallRequesting =>: " + JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
+            });
+        };
+        ServerImplemented.prototype.voiceCallRequest = function (targetId, myRtcId, callback) {
+            var msg = {};
+            msg["token"] = this.authenData.token;
+            msg["targetId"] = targetId;
+            msg["myRtcId"] = myRtcId;
+            pomelo.request("connector.entryHandler.voiceCallRequest", msg, function (result) {
+                console.log("voiceCallRequesting =>: " + JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
+            });
+        };
+        ServerImplemented.prototype.hangupCall = function (myId, contactId) {
+            var msg = {};
+            msg["userId"] = myId;
+            msg["contactId"] = contactId;
+            msg["token"] = this.authenData.token;
+            pomelo.request("connector.entryHandler.hangupCall", msg, function (result) {
+                console.log("hangupCall: ", JSON.stringify(result));
+            });
+        };
+        ServerImplemented.prototype.theLineIsBusy = function (contactId) {
+            var msg = {};
+            msg["contactId"] = contactId;
+            pomelo.request("connector.entryHandler.theLineIsBusy", msg, function (result) {
+                console.log("theLineIsBusy response: " + JSON.stringify(result));
+            });
+        };
         return ServerImplemented;
     })();
     ChatServer.ServerImplemented = ServerImplemented;
