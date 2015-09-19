@@ -487,6 +487,8 @@ module ChatServer {
     }
 
     export class ChatRoomApiProvider {
+        serverImp: ServerImplemented = ServerImplemented.prototype;
+        
         public chat(room_id: string, target: string, sender_id: string, content: string, contentType: ContentType, repalceMessageID: (err, res) => void) {
             var message: IDictionary = {};
             message["rid"] = room_id;
@@ -527,18 +529,15 @@ module ChatServer {
             });
         }
 
-
-        //public getSyncDateTime(callback: (err, res) => void) {
-        //    var message: IDictionary = {};
-        //    message["token"] = 
-        //    getServerImplemented().getClient().request("chat.chatHandler.getSyncDateTime", message, new DataCallBack() {
-        //                @Override
-        //    public void responseData(JSONObject jsonObject) {
-        //        if (callback != null) {
-        //            callback.callback(jsonObject);
-        //        }
-        //    }
-        //}
+        public getSyncDateTime(callback: (err, res) => void) {
+            var message: IDictionary = {};
+            message["token"] = this.serverImp.authenData.token;
+            pomelo.request("chat.chatHandler.getSyncDateTime", message, (result) => {
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
     }
 
     export class ServerEventListener {

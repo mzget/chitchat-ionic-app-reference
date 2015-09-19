@@ -535,6 +535,7 @@ var ChatServer;
     ChatServer.ServerImplemented = ServerImplemented;
     var ChatRoomApiProvider = (function () {
         function ChatRoomApiProvider() {
+            this.serverImp = ServerImplemented.prototype;
         }
         ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, repalceMessageID) {
             var message = {};
@@ -568,6 +569,15 @@ var ChatServer;
                 }
                 else {
                     console.error("WTF", "WTF god only know.");
+                }
+            });
+        };
+        ChatRoomApiProvider.prototype.getSyncDateTime = function (callback) {
+            var message = {};
+            message["token"] = this.serverImp.authenData.token;
+            pomelo.request("chat.chatHandler.getSyncDateTime", message, function (result) {
+                if (callback != null) {
+                    callback(null, result);
                 }
             });
         };
