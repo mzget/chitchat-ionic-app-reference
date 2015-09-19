@@ -581,6 +581,34 @@ var ChatServer;
                 }
             });
         };
+        /**
+         * getChatHistory function used for pull history chat record...
+         * Beware!!! please call before JoinChatRoom.
+         * @param room_id
+         * @param lastAccessTime
+         * @param callback
+         */
+        ChatRoomApiProvider.prototype.getChatHistory = function (room_id, lastAccessTime, callback) {
+            var message = {};
+            message["rid"] = room_id;
+            if (lastAccessTime != null) {
+                //<!-- Only first communication is has a problem.
+                message["lastAccessTime"] = lastAccessTime.toString();
+            }
+            pomelo.request("chat.chatHandler.getChatHistory", message, function (result) {
+                if (result.code === 200) {
+                    if (callback != null) {
+                        callback(null, result.data);
+                    }
+                }
+                else {
+                    console.warn("WTF god only know.");
+                    if (callback != null) {
+                        callback(null, result.message);
+                    }
+                }
+            });
+        };
         return ChatRoomApiProvider;
     })();
     ChatServer.ChatRoomApiProvider = ChatRoomApiProvider;
