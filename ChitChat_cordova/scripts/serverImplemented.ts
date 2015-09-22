@@ -52,7 +52,7 @@ module ChatServer {
                 this.authenData = new AutheData();
             }
         }
-        
+
         public Logout() {
             var msg: IDictionary = {};
             msg["username"] = username;
@@ -86,14 +86,14 @@ module ChatServer {
             var self = this;
 
             pomelo.init({ host: _host, port: _port }, function (socket) {
-                console.log("client.init : ", socket);
+                //console.log("client.init : ", socket);
                 callback();
 
                 //pomelo.on("disconnect", function (dataEvent) {
-                    //console.error("disconnect Event", dataEvent);
-                    //if (connectionListen != null) {
-                    //    connectionListen.connectionEvent("disconnect");
-                    //}
+                //console.error("disconnect Event", dataEvent);
+                //if (connectionListen != null) {
+                //    connectionListen.connectionEvent("disconnect");
+                //}
                 //});
             });
         }
@@ -135,8 +135,6 @@ module ChatServer {
             var self = this;
             var msg = { username: username, password: password };
 
-            console.log("login:", msg.username, msg.password);
-
             //if (SpartanTalkApplication.getSharedAppData().contains(INSTALLATION_ID)) {
             //    msg.put(INSTALLATION_ID, SpartanTalkApplication.getSharedAppData().getString(INSTALLATION_ID, ""));
             //}
@@ -161,8 +159,31 @@ module ChatServer {
                 }
             });
         }
+
+        public TokenAuthen(tokenBearer: string, checkTokenCallback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = tokenBearer;
+            pomelo.request("gate.gateHandler.authenGateway", msg, (result) => {
+                this.OnTokenAuthenticate(result, checkTokenCallback);
+            });
+        }
+
+        private OnTokenAuthenticate(tokenRes: any, onSuccessCheckToken: (err, res) => void) {
+            if (tokenRes.code === 200) {
+                var data = tokenRes.data;
+                var decode = data.decoded; //["decoded"];
+                var decodedModel: TokenDecode = JSON.parse(JSON.stringify(decode));
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(null, { success: true, username: decodedModel.username, password: decodedModel.password });
+            }
+            else {
+                if (onSuccessCheckToken != null)
+                    onSuccessCheckToken(null, null);
+            }
+        }
         
         //region <!-- user profile -->
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public UpdateUserProfile(myId: string, profileFields: { [k: string]: string }, callback: (err, res) => void) {
             profileFields["token"] = this.authenData.token;
@@ -213,33 +234,48 @@ module ChatServer {
             });
         }
 
-        public TokenAuthen(tokenBearer: string, checkTokenCallback: (err, res) => void) {
+        public updateFavoriteMember(editType: string, member: string, callback: (err, ress) => void) {
             var msg: IDictionary = {};
-            msg["token"] = tokenBearer;
-            pomelo.request("gate.gateHandler.authenGateway", msg, (result) => {
-                this.OnTokenAuthenticate(result, checkTokenCallback);
+            msg["editType"] = editType;
+            msg["member"] = member;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.editFavoriteMembers", msg, (result) => {
+                console.log("updateFavoriteMember: ", JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
             });
         }
 
-        private OnTokenAuthenticate(tokenRes: any, onSuccessCheckToken: (err, res) => void) {
-            if (tokenRes.code === 200) {
-                var data = tokenRes.data;
-                var decode = data.decoded; //["decoded"];
-                var decodedModel: TokenDecode = JSON.parse(JSON.stringify(decode));
-                if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(null, { success: true, username: decodedModel.username, password: decodedModel.password });
-            }
-            else {
-                if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(null, null);
-            }
+        public updateFavoriteGroups(editType: string, group: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["editType"] = editType;
+            msg["group"] = group;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, (result) => {
+                console.log("updateFavoriteGroups: ", JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
+            });
         }
 
-        //endregion <!-- end user profile section. -->
+        public getMemberProfile(userId: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["userId"] = userId;
 
+            pomelo.request("auth.profileHandler.getMemberProfile", msg, (result) => {
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+        //endregion
 
 
         //region <!-- Company data. -->
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Gets the company info.
@@ -283,10 +319,11 @@ module ChatServer {
             });
         }
 
-        //endregion <!-- Company data. 
+        //endregion
 
 
-        //region <!-- Group && Project base. -->
+        //region <!-- Project base. -->
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public getProjectBaseGroups(callback: (err, res) => void) {
             var msg: IDictionary = {};
@@ -310,7 +347,6 @@ module ChatServer {
             });
         }
 
-
         public editMemberInfoInProjectBase(roomId: string, roomType: RoomType, member: Member, callback: (err, res) => void) {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
@@ -323,12 +359,11 @@ module ChatServer {
             });
         }
 
-        //endregion <!-- Group && Project base. -->
+        //endregion
 
 
-
-        //region <!-- Group && Private Chat Room... -->
-        //*********************************************************************************
+        //region <!-- Private Group Room... -->
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Gets the public group chat rooms.
@@ -485,10 +520,67 @@ module ChatServer {
             });
         }
 
-        //endregion <!-- Group && Private Chat Room... -->
+        //endregion
+
+
+        // region <!-- Web RTC Calling...
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Videos the call requesting.
+        /// - tell target client for your call requesting...
+        /// </summary>
+        public videoCallRequest(targetId: string, myRtcId: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["targetId"] = targetId;
+            msg["myRtcId"] = myRtcId;
+            pomelo.request("connector.entryHandler.videoCallRequest", msg, (result) => {
+                console.log("videoCallRequesting =>: " + JSON.stringify(result));
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
+        public voiceCallRequest(targetId: string, myRtcId: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["token"] = this.authenData.token;
+            msg["targetId"] = targetId;
+            msg["myRtcId"] = myRtcId;
+            pomelo.request("connector.entryHandler.voiceCallRequest", msg, (result) => {
+                console.log("voiceCallRequesting =>: " + JSON.stringify(result));
+
+                if (callback != null)
+                    callback(null, result);
+            });
+        }
+
+        public hangupCall(myId: string, contactId: string) {
+            var msg: IDictionary = {};
+            msg["userId"] = myId;
+            msg["contactId"] = contactId;
+            msg["token"] = this.authenData.token;
+
+            pomelo.request("connector.entryHandler.hangupCall", msg, (result) => {
+                console.log("hangupCall: ", JSON.stringify(result));
+            });
+        }
+
+        public theLineIsBusy(contactId: string) {
+            var msg: IDictionary = {};
+            msg["contactId"] = contactId;
+
+            pomelo.request("connector.entryHandler.theLineIsBusy", msg, (result) => {
+                console.log("theLineIsBusy response: " + JSON.stringify(result));
+            });
+        }
+
+        //endregion
     }
 
     export class ChatRoomApiProvider {
+        serverImp: ServerImplemented = ServerImplemented.prototype;
+        
         public chat(room_id: string, target: string, sender_id: string, content: string, contentType: ContentType, repalceMessageID: (err, res) => void) {
             var message: IDictionary = {};
             message["rid"] = room_id;
@@ -504,8 +596,7 @@ module ChatServer {
                     repalceMessageID(null, data.data);
             });
         }
-
-        /*
+        
         public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: ContentType, setMessageID: (err, res) => void) {
             console.log("Send file to ", target);
 
@@ -516,20 +607,72 @@ module ChatServer {
             message["target"] = target;
             message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, (result) => {
-                Log.i("chat message callback: ", jsonObject.toString());
+                var data = JSON.parse(JSON.stringify(result));
+                console.log("chatFile callback: ", data);
 
-                if (jsonObject.getInt("code") == 200) {
-                    String messageid = jsonObject.getJSONObject("data").getString("messageId");
-                    //String messagetype = jsonObject.getString("type");
+                if (data.code == 200) {
                     if (setMessageID != null) {
-                        setMessageID.callback(messageid);
+                        setMessageID(null, data.data);
                     }
                 }
                 else {
-                    Log.i("WTF", "WTF god only know.");
+                    console.error("WTF", "WTF god only know.");
                 }
-    });
-}*/
+            });
+        }
+
+        public getSyncDateTime(callback: (err, res) => void) {
+            var message: IDictionary = {};
+            message["token"] = this.serverImp.authenData.token;
+            pomelo.request("chat.chatHandler.getSyncDateTime", message, (result) => {
+                if (callback != null) {
+                    callback(null, result);
+                }
+            });
+        }
+
+
+        /**
+         * getChatHistory function used for pull history chat record...
+         * Beware!!! please call before JoinChatRoom.
+         * @param room_id
+         * @param lastAccessTime
+         * @param callback
+         */
+        public getChatHistory(room_id: string, lastAccessTime: Date, callback: (err, res) => void) {
+            var message: IDictionary = {};
+            message["rid"] = room_id;
+            if (lastAccessTime != null) {
+                //<!-- Only first communication is has a problem.
+                message["lastAccessTime"] = lastAccessTime.toString();
+            }
+
+            pomelo.request("chat.chatHandler.getChatHistory", message, (result) => {
+                if (result.code === 200) {
+                    if (callback != null) {
+                        callback(null, result.data);
+                    }
+                } else {
+                    console.warn("WTF god only know.");
+                    if (callback != null) {
+                        callback(null, result.message);
+                    }
+                }
+            });
+        }
+        
+        public getMessagesReaders() {
+            var message: IDictionary = {};
+            message["token"] = this.serverImp.authenData.token;
+            pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+        }
+
+        public updateMessageReader(messageId: string, roomId: string) {
+            var message: IDictionary = {};
+            message["messageId"] = messageId;
+            message["roomId"] = roomId;
+            pomelo.notify("chat.chatHandler.updateWhoReadMessage", message);
+        }
     }
 
     export class ServerEventListener {

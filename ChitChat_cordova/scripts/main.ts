@@ -29,10 +29,12 @@ class Main {
         hashService.hashCompute(content, callback);
     }
 
-    public authenUser(server, email, password, callback: Function) {
+    public authenUser(server, email, password, callback: (err, res) => void) {
         var self = this;
-        server.logIn(email, password, function (err, res) {
-            if (!err && res !== null) {
+        server.logIn(email, password, function (err, loginRes) {
+            callback(null, loginRes);
+
+            if (!err && loginRes !== null) {    
                 //<!-- Listen all event in the spartan world.
                 self.startChatServerListener();
 
@@ -44,8 +46,9 @@ class Main {
                         if (res.code === 200) {
                             self.dataManager.setMyProfile(res.data);
                         }
-
-                        callback();
+                        else {
+                            console.error("My user profile is empty. please check.");
+                        }
                     }
                 });
 
