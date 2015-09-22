@@ -142,6 +142,9 @@ var ChatServer;
         function ServerImplemented() {
             this.host = "git.animation-genius.com";
             this.port = 3014;
+            this._isInit = false;
+            this._isConnected = false;
+            this._isLogedin = false;
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
             var authen = localStorage.getItem("authen");
@@ -172,6 +175,7 @@ var ChatServer;
         ServerImplemented.prototype.init = function (callback) {
             var self = this;
             if (pomelo !== null) {
+                //<!-- Connecting gate server.
                 self.connectSocketServer(self.host, self.port, function () {
                     callback();
                 });
@@ -184,10 +188,9 @@ var ChatServer;
             this.authenData = null;
         };
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
-            console.log("connecting to: ", _host, _port);
+            console.log("socket init connecting to: ", _host, _port);
             var self = this;
             pomelo.init({ host: _host, port: _port }, function (socket) {
-                //console.log("client.init : ", socket);
                 callback();
                 //pomelo.on("disconnect", function (dataEvent) {
                 //console.error("disconnect Event", dataEvent);
@@ -207,22 +210,28 @@ var ChatServer;
             password = _hash;
             localStorage.setItem("username", username);
             localStorage.setItem("password", password);
-            if (pomelo !== null) {
+            if (pomelo !== null && this._isConnected === false) {
                 var msg = { uid: username };
+                //<!-- Quering connector server.
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
                     console.log("QueryConnectorServ", result);
                     if (result.code === 200) {
                         pomelo.disconnect();
                         var port = result.port;
+                        //<!-- Connecting to connector server.
                         self.connectSocketServer(self.host, port, function () {
-                            self.connectConnectorServer(callback);
+                            self._isConnected = true;
+                            self.authenForFrontendServer(callback);
                         });
                     }
                 });
             }
+            else if (pomelo !== null && this._isConnected) {
+                self.authenForFrontendServer(callback);
+            }
         };
         //<!-- Authentication. request for token sign.
-        ServerImplemented.prototype.connectConnectorServer = function (callback) {
+        ServerImplemented.prototype.authenForFrontendServer = function (callback) {
             var self = this;
             var msg = { username: username, password: password };
             //if (SpartanTalkApplication.getSharedAppData().contains(INSTALLATION_ID)) {
@@ -235,7 +244,6 @@ var ChatServer;
                     if (callback != null) {
                         callback(res.message, null);
                     }
-                    pomelo.disconnect();
                 }
                 else {
                     self.authenData.userId = res.uid;
