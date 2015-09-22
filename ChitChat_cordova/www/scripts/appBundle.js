@@ -31,7 +31,7 @@ var BlankCordovaApp1;
         Application.initialize();
     };
 })(BlankCordovaApp1 || (BlankCordovaApp1 = {}));
-/// <reference path="./typings/tsd.d.ts" />
+// <reference path="./typings/tsd.d.ts" />
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
@@ -125,7 +125,7 @@ var Main = (function () {
 var pomelo;
 var username = "";
 var password = "";
-require(['../js/pomelo/pomeloclient'], function (obj) {
+requirejs(['../js/pomelo/pomeloclient'], function (obj) {
     pomelo = obj;
 });
 var ChatServer;
@@ -165,6 +165,7 @@ var ChatServer;
                 pomelo.notify("connector.entryHandler.logout", msg);
             localStorage.clear();
             this.disConnect();
+            console.log('logout');
         };
         ServerImplemented.prototype.init = function (callback) {
             var self = this;
@@ -195,9 +196,9 @@ var ChatServer;
             });
         };
         // region <!-- Authentication...
-        /// <summary>
-        /// Connect to gate server then get query of connector server.
-        /// </summary>
+        // <summary>
+        // Connect to gate server then get query of connector server.
+        // </summary>
         ServerImplemented.prototype.logIn = function (_username, _hash, callback) {
             var self = this;
             username = _username;
@@ -313,10 +314,10 @@ var ChatServer;
         };
         //endregion <!-- end user profile section. -->
         //region <!-- Company data. -->
-        /// <summary>
-        /// Gets the company info.
-        /// Beware for data loading so mush. please load from cache before load from server.
-        /// </summary>
+        // <summary>
+        // Gets the company info.
+        // Beware for data loading so mush. please load from cache before load from server.
+        // </summary>
         ServerImplemented.prototype.getCompanyInfo = function (callBack) {
             var msg = {};
             msg["token"] = this.authenData.token;
@@ -326,10 +327,10 @@ var ChatServer;
                     callBack(null, result);
             });
         };
-        /// <summary>
-        /// Gets the company members.
-        /// Beware for data loading so mush. please load from cache before load from server.
-        /// </summary>
+        // <summary>
+        // Gets the company members.
+        // Beware for data loading so mush. please load from cache before load from server.
+        // </summary>
         ServerImplemented.prototype.getCompanyMembers = function (callBack) {
             var msg = {};
             msg["token"] = this.authenData.token;
@@ -339,10 +340,10 @@ var ChatServer;
                     callBack(null, result);
             });
         };
-        /// <summary>
-        /// Gets the company chat rooms.
-        /// Beware for data loading so mush. please load from cache before load from server.
-        /// </summary>
+        // <summary>
+        // Gets the company chat rooms.
+        // Beware for data loading so mush. please load from cache before load from server.
+        // </summary>
         ServerImplemented.prototype.getOrganizationGroups = function (callBack) {
             var msg = {};
             msg["token"] = this.authenData.token;
@@ -388,11 +389,11 @@ var ChatServer;
         //endregion <!-- Group && Project base. -->
         //region <!-- Group && Private Chat Room... -->
         //*********************************************************************************
-        /// <summary>
-        /// Gets the public group chat rooms.
-        /// Beware for data loading so mush. please load from cache before load from server.
-        /// </summary>
-        /// <param name="callback">Callback.</param>
+        // <summary>
+        // Gets the public group chat rooms.
+        // Beware for data loading so mush. please load from cache before load from server.
+        // </summary>
+        // <param name="callback">Callback.</param>
         ServerImplemented.prototype.getPrivateGroups = function (callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
@@ -467,11 +468,11 @@ var ChatServer;
                 }
             });
         };
-        /// <summary>
-        /// Gets Private Chat Room.
-        /// </summary>
-        /// <param name="myId">My identifier.</param>
-        /// <param name="myRoommateId">My roommate identifier.</param>
+        // <summary>
+        // Gets Private Chat Room.
+        // </summary>
+        // <param name="myId">My identifier.</param>
+        // <param name="myRoommateId">My roommate identifier.</param>
         ServerImplemented.prototype.getPrivateChatRoomId = function (myId, myRoommateId, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
@@ -507,10 +508,10 @@ var ChatServer;
                     callback(null, result);
             });
         };
-        /// <summary>
-        /// Gets the room info. For load Room info by room_id.
-        /// </summary>
-        /// <c> return data</c>
+        // <summary>
+        // Gets the room info. For load Room info by room_id.
+        // </summary>
+        // <c> return data</c>
         ServerImplemented.prototype.getRoomInfo = function (roomId, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
@@ -908,7 +909,7 @@ var HashGenerator = (function () {
     function HashGenerator() {
     }
     HashGenerator.prototype.hashCompute = function (content, callback) {
-        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+        requirejs(["../js/crypto-js/crypto-js"], function (CryptoJS) {
             var hash = CryptoJS.MD5(content);
             var md = hash.toString(CryptoJS.enc.Hex);
             callback(null, md);
