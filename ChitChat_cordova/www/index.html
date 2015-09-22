@@ -15,7 +15,7 @@
 	<script src="lib/ionic/js/ionic.bundle.js"></script>
 
 	<!-- cordova script (this will be a 404 during development) -->
-	<script src="cordova.js"></script>
+	<!--<script src="cordova.js"></script>-->
 
 	<!-- your app's js -->
 	<script src="js/app.js"></script>
@@ -31,41 +31,45 @@
 </head>
 <body ng-app="starter">    
 	
-	<!--    <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script> // Not support with newer version of socket.io -->
 	<script src="js/socket.io.js"></script>
 	<script>
 		var socket = io;
 		var main = new Main();
 		var server = new ChatServer.ServerImplemented();
 		var authen = server.authenData;
-
-		setTimeout(() => {
+		
+		setTimeout(function(){
 			server.init(function () {
 				console.log("token: ", authen.token);
 				if (!authen.token) {
-					formLogin();
-
+					$('#splash').css({'display':'none'});
+					
 					$('body #login #btn-login').click(function (event) {
-
-						event.preventDefault();
-
+						event.preventDefault();						
 						$('body #login input').attr('readonly', true);
 						email = $('body #login form input[name="email"]').val();
 						password = $('body #login form input[name="password"]').val();
 
-						main.getHashService(password, (err, res) => {
+						main.getHashService(password, function(err, res) {
 						    main.authenUser(server, email, res, function (err, res) {
 						        if (!err && res !== null) {
 						            if (res.code === 200) {
-						                console.log("Change page here...");
-						                document.getElementById('login').style.display = 'none';
+										console.log("Success Login User...");					                
+										setTimeout(function(){
+											$('#login').css('display','none');
+											$('.bar-stable').css({'display':''});
+											$('#splash').css({'display':'none'});
+											location.href = "#/tab/group";											
+										}, 2000);
 						            }
 						            else {
-						                //<!-- Authen fail.
+										$('body #login input').attr('readonly', false);
+										alert("LOGIN FAIL");
 						            }
 						        }
 						        else {
-                                    //<!-- Authen fail.
+									$('body #login input').attr('readonly', false);
+									alert("LOGIN FAIL");
 						        }
 							});
 						});
@@ -79,8 +83,13 @@
 							    main.authenUser(server, res.username, res.password, function (err, res) {
 							        if (!err && res !== null) {
 							            if (res.code === 200) {
-							                console.log("Change page here...");
-							                document.getElementById('login').style.display = 'none';
+							                console.log("Success Authen User...");
+											setTimeout(function(){
+												$('#login').css('display','none');
+												$('.bar-stable').css({'display':''});
+												$('#splash').css({'display':'none'});
+												location.href = "#/tab/group";											
+											}, 2000);
 							            }
 							            else {
 							                //<!-- Authen fail.
@@ -96,20 +105,22 @@
 				}
 			})
 		}, 1500);
+		
 	</script>
 
-	<!--
-	The nav bar that will be updated as we navigate between views.
-	-->
-	<ion-nav-bar class="bar-stable">
-		<ion-nav-back-button>
-		</ion-nav-back-button>
-	</ion-nav-bar>
-	<!--
-	The views will be rendered in the <ion-nav-view> directive below
-	Templates are in the /templates folder (but you could also
-	have templates inline in this html file if you'd like).
-	-->
-	<ion-nav-view></ion-nav-view>
+    <ion-nav-bar class="bar-stable" style="display:none;">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view></ion-nav-view>
+	
+	 
+	<div id="splash">
+		<div class="container">
+			<img class="login-logo" src="img/logo-main.png" width="30%" /><br /><br />
+			<ion-spinner icon="spiral"></ion-spinner>
+		</div>
+	</div>
+
 </body>
 </html>
