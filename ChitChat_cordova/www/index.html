@@ -15,7 +15,7 @@
 	<script src="lib/ionic/js/ionic.bundle.js"></script>
 
 	<!-- cordova script (this will be a 404 during development) -->
-	<script src="cordova.js"></script>
+	<!--<script src="cordova.js"></script>-->
 
 	<!-- your app's js -->
 	<script src="js/app.js"></script>
@@ -50,12 +50,17 @@
 						email = $('body #login form input[name="email"]').val();
 						password = $('body #login form input[name="password"]').val();
 
-						main.getHashService(password, (err, res) => {
+						main.getHashService(password, function(err, res) {
 						    main.authenUser(server, email, res, function (err, res) {
 						        if (!err && res !== null) {
 						            if (res.code === 200) {
-						                console.log("Change page here...");
-						                document.getElementById('login').style.display = 'none';
+							                console.log("Success Login User...");					                
+										setTimeout(function(){
+											document.getElementById('login').style.display = 'none';
+											$('.bar-stable').css({'display':''});
+											$('#splash').css({'display':'none'});
+											location.href = "#/tab/group";											
+										}, 2000);
 						            }
 						            else {
 						                //<!-- Authen fail.
@@ -76,8 +81,13 @@
 							    main.authenUser(server, res.username, res.password, function (err, res) {
 							        if (!err && res !== null) {
 							            if (res.code === 200) {
-							                console.log("Change page here...");
-							                document.getElementById('login').style.display = 'none';
+							                console.log("Success Authen User...");
+											setTimeout(function(){
+												document.getElementById('login').style.display = 'none';
+												$('.bar-stable').css({'display':''});
+												$('#splash').css({'display':'none'});
+												location.href = "#/tab/group";											
+											}, 2000);
 							            }
 							            else {
 							                //<!-- Authen fail.
@@ -96,11 +106,19 @@
 		
 	</script>
 
-    <ion-nav-bar class="bar-stable">
+    <ion-nav-bar class="bar-stable" style="display:none;">
         <ion-nav-back-button>
         </ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-view></ion-nav-view>
+	
+	 
+	<div id="splash">
+		<div class="container">
+			<img class="login-logo" src="img/logo-main.png" width="30%" /><br /><br />
+			<ion-spinner icon="spiral"></ion-spinner>
+		</div>
+	</div>
 
 </body>
 </html>
