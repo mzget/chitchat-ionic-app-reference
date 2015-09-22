@@ -31,31 +31,28 @@
 </head>
 <body ng-app="starter">    
 	
-	<!--    <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script> // Not support with newer version of socket.io -->
 	<script src="js/socket.io.js"></script>
 	<script>
 		var socket = io;
 		var main = new Main();
 		var server = new ChatServer.ServerImplemented();
 		var authen = server.authenData;
-
-		setTimeout(() => {
+		
+		setTimeout(function(){
 			server.init(function () {
 				console.log("token: ", authen.token);
 				if (!authen.token) {
-					formLogin();
-
+					//formLogin();
+					
 					$('body #login #btn-login').click(function (event) {
-
-						event.preventDefault();
-
+						event.preventDefault();						
 						$('body #login input').attr('readonly', true);
 						email = $('body #login form input[name="email"]').val();
 						password = $('body #login form input[name="password"]').val();
 
-						main.getHashService(password, (err, res) => {
+						main.getHashService(password, function(err, res) {
 						    main.authenUser(server, email, res, function () {
-						        console.log("******************", main.getDataManager().myProfile.displayname);
+						        console.log("Manual Login ******************", main.getDataManager().myProfile.displayname);
 							});
 						});
 					});
@@ -66,7 +63,12 @@
 							console.log("Authen result: ", JSON.stringify(res));
 							if (res.success) {
 							    main.authenUser(server, res.username, res.password, function () {
-							        console.log("******************", main.getDataManager().myProfile.displayname);
+							        console.log("Auto Login ******************", main.getDataManager().myProfile.displayname);
+									$('#login').css({'display':'none'});
+									$('.bar-stable.nav-bar-container').css({'display':''});
+									location.href = "#/tab/group";
+									
+									console.log('+++++++++++'+main.getDataManager().orgMembers);
 								});
 							}
 						}
@@ -74,20 +76,14 @@
 				}
 			})
 		}, 1500);
+		
 	</script>
 
-	<!--
-	The nav bar that will be updated as we navigate between views.
-	-->
-	<ion-nav-bar class="bar-stable">
-		<ion-nav-back-button>
-		</ion-nav-back-button>
-	</ion-nav-bar>
-	<!--
-	The views will be rendered in the <ion-nav-view> directive below
-	Templates are in the /templates folder (but you could also
-	have templates inline in this html file if you'd like).
-	-->
-	<ion-nav-view></ion-nav-view>
+    <ion-nav-bar class="bar-stable">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-nav-view></ion-nav-view>
+
 </body>
 </html>
