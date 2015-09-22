@@ -56,18 +56,20 @@
 						            if (res.code === 200) {
 										console.log("Success Login User...");					                
 										setTimeout(function(){
-											$('#login').style.display = 'none';
+											$('#login').css('display','none');
 											$('.bar-stable').css({'display':''});
 											$('#splash').css({'display':'none'});
 											location.href = "#/tab/group";											
 										}, 2000);
 						            }
 						            else {
-						                //<!-- Authen fail.
+										$('body #login input').attr('readonly', false);
+										alert("LOGIN FAIL");
 						            }
 						        }
 						        else {
-                                    //<!-- Authen fail.
+									$('body #login input').attr('readonly', false);
+									alert("LOGIN FAIL");
 						        }
 							});
 						});
@@ -83,7 +85,7 @@
 							            if (res.code === 200) {
 							                console.log("Success Authen User...");
 											setTimeout(function(){
-												$('#login').style.display = 'none';
+												$('#login').css('display','none');
 												$('.bar-stable').css({'display':''});
 												$('#splash').css({'display':'none'});
 												location.href = "#/tab/group";											
