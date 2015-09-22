@@ -42,7 +42,7 @@
 			server.init(function () {
 				console.log("token: ", authen.token);
 				if (!authen.token) {
-					//formLogin();
+					$('#splash').css({'display':'none'});
 					
 					$('body #login #btn-login').click(function (event) {
 						event.preventDefault();						
@@ -54,9 +54,9 @@
 						    main.authenUser(server, email, res, function (err, res) {
 						        if (!err && res !== null) {
 						            if (res.code === 200) {
-							                console.log("Success Login User...");					                
+										console.log("Success Login User...");					                
 										setTimeout(function(){
-											document.getElementById('login').style.display = 'none';
+											$('#login').style.display = 'none';
 											$('.bar-stable').css({'display':''});
 											$('#splash').css({'display':'none'});
 											location.href = "#/tab/group";											
@@ -83,7 +83,7 @@
 							            if (res.code === 200) {
 							                console.log("Success Authen User...");
 											setTimeout(function(){
-												document.getElementById('login').style.display = 'none';
+												$('#login').style.display = 'none';
 												$('.bar-stable').css({'display':''});
 												$('#splash').css({'display':'none'});
 												location.href = "#/tab/group";											
