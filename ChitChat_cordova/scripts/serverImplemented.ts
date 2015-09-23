@@ -24,6 +24,9 @@ module ChatServer {
         host: string = "git.animation-genius.com";
         port: number = 3014;
         authenData: AutheData;
+        _isInit: boolean = false;
+        _isConnected: boolean = false;
+        _isLogedin: boolean = false;
 
         public getClient() {
             var self = this;
@@ -67,6 +70,7 @@ module ChatServer {
         public init(callback: Function) {
             var self = this;
             if (pomelo !== null) {
+                //<!-- Connecting gate server.
                 self.connectSocketServer(self.host, self.port, () => {
                     callback();
                 });
@@ -82,11 +86,10 @@ module ChatServer {
         }
 
         private connectSocketServer(_host: string, _port: number, callback: Function) {
-            console.log("connecting to: ", _host, _port);
+            console.log("socket init connecting to: ", _host, _port);
             var self = this;
 
             pomelo.init({ host: _host, port: _port }, function (socket) {
-                //console.log("client.init : ", socket);
                 callback();
 
                 //pomelo.on("disconnect", function (dataEvent) {
@@ -111,9 +114,9 @@ module ChatServer {
             localStorage.setItem("username", username);
             localStorage.setItem("password", password);
 
-            if (pomelo !== null) {
+            if (pomelo !== null && this._isConnected === false) {
                 var msg = { uid: username };
-
+                //<!-- Quering connector server.
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
 
                     console.log("QueryConnectorServ", result);
@@ -122,16 +125,22 @@ module ChatServer {
                         pomelo.disconnect();
 
                         var port = result.port;
+                        //<!-- Connecting to connector server.
                         self.connectSocketServer(self.host, port, () => {
-                            self.connectConnectorServer(callback);
+                            self._isConnected = true;
+
+                            self.authenForFrontendServer(callback);
                         });
                     }
                 });
             }
+            else if (pomelo !== null && this._isConnected) {
+                self.authenForFrontendServer(callback);
+            }
         }
 
         //<!-- Authentication. request for token sign.
-        private connectConnectorServer(callback: (err, res) => void) {
+        private authenForFrontendServer(callback: (err, res) => void) {
             var self = this;
             var msg = { username: username, password: password };
 
@@ -146,7 +155,6 @@ module ChatServer {
                     if (callback != null) {
                         callback(res.message, null);
                     }
-                    pomelo.disconnect();
                 }
                 else {
                     self.authenData.userId = res.uid;
