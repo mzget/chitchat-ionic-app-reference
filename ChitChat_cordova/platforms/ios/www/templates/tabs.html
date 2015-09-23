@@ -1,34 +1,44 @@
-<!--
-Create tabs with an icon and label, using the tabs-positive style.
-Each tab's child <ion-nav-view> directive will have its own
-navigation history that also transitions its views in and out.
--->
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
-  <!-- Dashboard Tab -->
-  <ion-tab title="Group" icon-off="ion-ios-person-outline" icon-on="ion-ios-person" href="#/tab/group">
-    <ion-nav-view name="tab-group"></ion-nav-view>
-  </ion-tab>
+	<!-- Login Tab -->
+	<ion-tab title="Login" hidden="true" icon-off="ion-ios-person-outline" icon-on="ion-ios-person" href="#/tab/login">    
+		<div id="login">
+			<div class="container">
+				<img class="login-logo" src="img/logo-main.png" width="30%" /><br />
+				<form>
+					<label class="message">username or password is not valid.</label>
+					<input name="email" class="form-control" type="email" placeholder="Email" />
+					<input name="password" class="form-control" type="password" placeholder="Password" />
+					<button id="btn-login">Login</button>
+				</form>
+			</div>
+		</div>
+	</ion-tab>
 
-  <!-- Chats Tab -->
-  <ion-tab title="Chats" icon-off="ion-ios-chatbubble-outline" icon-on="ion-ios-chatbubble" href="#/tab/chats">
-    <ion-nav-view name="tab-chats"></ion-nav-view>
-  </ion-tab>
+	<!-- Dashboard Tab -->
+	<ion-tab title="Group" icon-off="ion-ios-person-outline" icon-on="ion-ios-person" href="#/tab/group">
+		<ion-nav-view name="tab-group"></ion-nav-view>
+	</ion-tab>
 
-  <!-- Message Tab -->
-  <ion-tab title="Message" hidden="true" icon-off="ion-ios-chatbubble-outline" icon-on="ion-ios-chatbubble" href="#/tab/message/0">
-    <ion-nav-view name="tab-message"></ion-nav-view>
-  </ion-tab>
+	<!-- Chats Tab -->
+	<ion-tab title="Chats" icon-off="ion-ios-chatbubble-outline" icon-on="ion-ios-chatbubble" href="#/tab/chats">
+		<ion-nav-view name="tab-chats"></ion-nav-view>
+	</ion-tab>
 
-  <!-- Timeline Tab -->
-  <ion-tab title="Timeline" icon-off="ion-ios-cloud-outline" icon-on="ion-ios-cloud" href="#/tab/timeline">
-    <ion-nav-view name="tab-timeline"></ion-nav-view>
-  </ion-tab>
+	<!-- Message Tab -->
+	<ion-tab title="Message" hidden="true" icon-off="ion-ios-chatbubble-outline" icon-on="ion-ios-chatbubble" href="#/tab/message/0">
+		<ion-nav-view name="tab-message"></ion-nav-view>
+	</ion-tab>
 
-  <!-- Account Tab -->
-  <ion-tab title="Option" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/account">
-    <ion-nav-view name="tab-account"></ion-nav-view>
-  </ion-tab>
+	<!-- Timeline Tab -->
+	<ion-tab title="Timeline" icon-off="ion-ios-cloud-outline" icon-on="ion-ios-cloud" href="#/tab/timeline">
+		<ion-nav-view name="tab-timeline"></ion-nav-view>
+	</ion-tab>
+
+	<!-- Account Tab -->
+	<ion-tab title="Option" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/account">
+		<ion-nav-view name="tab-account"></ion-nav-view>
+	</ion-tab>
 
 
 </ion-tabs>

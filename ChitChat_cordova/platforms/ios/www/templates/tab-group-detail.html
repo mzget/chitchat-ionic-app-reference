@@ -4,11 +4,11 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="{{chat.name}}">
+<ion-view view-title="{{chat.displayname}}">
 	<ion-content class="padding group-detail">
-		<img ng-src="{{chat.face}}" />
+		<img class="avatar" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}&w=150&h=150" />
 		<div class="group-menu">
-			<a href="#/tab/message/{{chat.id}}"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></a>
+			<a href="#/tab/message/{{chat._id}}"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></a>
 			<div><i class="ion-ios-telephone-outline" data-pack="default" data-tags="talk"></i><br /><span>FreeCall</span></div>
 			<div><i class="ion-videocamera" data-pack="default" data-tags="talk"></i><br /><span>VideoCall</span></div>
 		</div>
