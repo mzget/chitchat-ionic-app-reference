@@ -723,6 +723,9 @@ module ChatServer {
         public addFrontendListener(obj: Services.IFrontendServerListener): void {
             this.frontendListener = obj;
         }
+        public addServerListener(obj: Services.IServerListener): void {
+            this.serverListener = obj;
+        }
 
         constructor() {
             //this.frontendListener = new Services.FrontendServerListener();
@@ -763,7 +766,6 @@ module ChatServer {
 
                 self.frontendListener.onGetProjectBaseGroupsComplete(data);
             });
-
         }
 
         private callChatServer() {

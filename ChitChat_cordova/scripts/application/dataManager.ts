@@ -20,6 +20,9 @@ class DataManager implements Services.IFrontendServerListener {
     public getMyProfile(): User {
         return this.myProfile;
     }
+    public setRoomAccessForUser(data) {
+        this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
+    }
 
     public setMembers(data: any) {
 

@@ -12,15 +12,23 @@ requirejs.config({
 
 class Main {
     private serverListener = new ChatServer.ServerEventListener();
-    private dataManager = new DataManager();
+    private dataManager: DataManager;
     public getDataManager(): DataManager {
         return this.dataManager;
     }
+    private dataListener: DataListener;
+    public getDataListener(): DataListener {
+        return this.dataListener;
+    }
 
-    constructor() { }
+    constructor() {
+        this.dataManager = new DataManager();
+        this.dataListener = new DataListener(this.dataManager);
+    }
 
     public startChatServerListener() {
         this.serverListener.addFrontendListener(this.dataManager);
+        this.serverListener.addServerListener(this.dataListener);
         this.serverListener.addListenner();
     }
 
@@ -45,6 +53,10 @@ class Main {
                     else {
                         if (res.code === 200) {
                             self.dataManager.setMyProfile(res.data);
+                            
+                            server.getLastAccessRoomsInfo(function (err, res) {
+                                console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
+                            });
                         }
                         else {
                             console.error("My user profile is empty. please check.");
@@ -95,10 +107,6 @@ class Main {
                     else {
                         console.log("Company Members: ", res);
                     }
-                });
-
-                server.getLastAccessRoomsInfo(function (err, res) {
-                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
                 });
             }
             else {
