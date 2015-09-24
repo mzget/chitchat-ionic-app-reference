@@ -148,12 +148,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 		}
 	})
 
+	// CHAT : Message
 	.state('tab.message', {
 		url: '/message/:chatId',
 		views: {
 			'tab-message': {
 				templateUrl: 'templates/chat-detail.html',
 				controller: 'ChatDetailCtrl'
+			}
+		}
+	})
+
+	// Free Call
+	.state('tab.freecall', {
+		url: '/freecall/:chatId',
+		views: {
+			'tab-freecall': {
+				templateUrl: 'templates/tab-freecall.html',
+				controller: 'FreecallCtrl'
 			}
 		}
 	})

@@ -1,10 +1,13 @@
 ﻿var myprofile;
+var date = new Date();
+var now;
+var chatmessage;
+
 angular.module('starter.controllers', [])
 
 // GROUP
 .controller('GroupCtrl', function($scope, Chats) {
 	
-	myprofile = main.getDataManager().myProfile;
 	$scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
 	$scope.pjbGroups = main.getDataManager().projectBaseGroups;
@@ -57,6 +60,29 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
+	
+			
+    $scope.toggle = function(chatId) {        
+		server.JoinChatRoomRequest(chatId, function(err, res){
+			console.log('----------------------------------------------');
+			console.log(res);
+
+			if( res.code == 200 )
+			{
+				//now = date.toISOString();
+				now = '2015-09-23T08:00:00.000Z';
+				
+				chatroom.getChatHistory(chatId, now, function(err, res){
+					members = main.getDataManager().orgMembers;
+					console.log(res);
+					
+					chatmessage= res;
+					
+					location.href = '#/tab/message/'+chatId;
+				});
+			}
+		});
+    };
 })
 .controller('GroupDetailCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
@@ -96,38 +122,8 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-	members = main.getDataManager().orgMembers;
-	chat = [{
-		_id: 0,	// mongo id user id
-		rid: '55dc2d2ed202128e36c6d2b7', // room id
-		type: 'Text', // text, voice, image
-		body: 'FPvwdfzUhPCCDi+Hv+Af0w4RVL2kME8kc1tTHaD/+M16+mS9X6DbWy4UZ+AErOFI5BoY7Oz+q3N3XttCPmKDEqaHi7htU4QpTDNuRtOFRP8=', // enclip
-		sender: '55f25185d20212f9688b4567',
-		createTime: 'ISODate("2015-06-15T07:33:47.026Z")',
-	}, {
-		_id: 1,	// mongo id user id
-		rid: '55dc2d2ed202128e36c6d2b7', // room id
-		type: 'Text', // text, voice, image
-		body: 'FPvwdfzUhPCCDi+Hv+Af0w4RVL2kME8kc1tTHaD/+M16+mS9X6DbWy4UZ+AErOFI5BoY7Oz+q3N3XttCPmKDEqaHi7htU4QpTDNuRtOFRP8=', // enclip
-		sender: '55f25185d20212f9688b4567',
-		createTime: 'ISODate("2015-06-15T07:33:47.026Z")',
-	}, {
-		_id: 2,	// mongo id user id
-		rid: '55dc2d2ed202128e36c6d2b7', // room id
-		type: 'Text', // text, voice, image
-		body: 'FPvwdfzUhPCCDi+Hv+Af0w4RVL2kME8kc1tTHaD/+M16+mS9X6DbWy4UZ+AErOFI5BoY7Oz+q3N3XttCPmKDEqaHi7htU4QpTDNuRtOFRP8=', // enclip
-		sender: '55f25185d20212f9688b4567',
-		createTime: 'ISODate("2015-06-15T07:33:47.026Z")',
-	}, {
-		_id: 3,	// mongo id user id
-		rid: '55dc2d2ed202128e36c6d2b7', // room id
-		type: 'Text', // text, voice, image
-		body: 'FPvwdfzUhPCCDi+Hv+Af0w4RVL2kME8kc1tTHaD/+M16+mS9X6DbWy4UZ+AErOFI5BoY7Oz+q3N3XttCPmKDEqaHi7htU4QpTDNuRtOFRP8=', // enclip
-		sender: '55dc2d2ed202128e36c6d2b7',
-		createTime: 'ISODate("2015-06-15T07:33:47.026Z")',
-	}];
 	
-	//console.log('Message Length : '+chat.length);
+	chat = chatmessage;
 	for(i=0; i<chat.length; i++)
 	{
 		chat[i]['sender_displayname'] = members[chat[i]['sender']]['displayname'];
@@ -142,11 +138,15 @@ angular.module('starter.controllers', [])
 	$scope.chat = chat;
 })
 
+.controller('FreecallCtrl', function($scope, $stateParams) {
+	
+})
+
 .controller('AccountCtrl', function($scope) {
 	$scope.settings = {
 		logOut: true,
 	};
-});
+}); // <-- LAST CONTROLLER
 
 
 
@@ -160,7 +160,7 @@ function groupMembers(members, size)
 		max = size;
 
 	gmember = [];
-	console.log('ALL GROUP MEMBERS : '+members.length);	
+	//console.log('ALL GROUP MEMBERS : '+members.length);	
 	for(i=0; i<max; i++)
 	{
 		gmember[i] = main.getDataManager().orgMembers[members[i]['id']];
@@ -169,15 +169,6 @@ function groupMembers(members, size)
 	
 	return gmember;
 }
-
-
-
-
-
-
-
-
-
 
 
 
