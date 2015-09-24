@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -36,18 +36,17 @@
 		var socket = io;
 		var main = new Main();
 		var server = new ChatServer.ServerImplemented();
+		var chatroom = new ChatServer.ChatRoomApiProvider();
 		var authen = server.authenData;
-
-        
+		
 		setTimeout(function(){
 			server.init(function () {
- 
-                        
-                        
+				console.log("token: ", authen.token);
 				if (!authen.token) {
 					$('#splash').css({'display':'none'});
 					
 					$('body #login #btn-login').click(function (event) {
+						console.log('loging A');
 						event.preventDefault();						
 						$('body #login input').attr('readonly', true);
 						email = $('body #login form input[name="email"]').val();
@@ -57,13 +56,8 @@
 						    main.authenUser(server, email, res, function (err, res) {
 						        if (!err && res !== null) {
 						            if (res.code === 200) {
-										console.log("Success Login User...");					                
-										setTimeout(function(){
-											$('#login').css('display','none');
-											$('.bar-stable').css({'display':''});
-											$('#splash').css({'display':'none'});
-											location.href = "#/tab/group";											
-										}, 2000);
+										console.log("Success Login User...");		
+										waitProfile();
 						            }
 						            else {
 										$('body #login input').attr('readonly', false);
@@ -87,12 +81,7 @@
 							        if (!err && res !== null) {
 							            if (res.code === 200) {
 							                console.log("Success Authen User...");
-											setTimeout(function(){
-												$('#login').css('display','none');
-												$('.bar-stable').css({'display':''});
-												$('#splash').css({'display':'none'});
-												location.href = "#/tab/group";											
-											}, 2000);
+											waitProfile();
 							            }
 							            else {
 							                //<!-- Authen fail.
@@ -109,6 +98,23 @@
 			})
 		}, 1500);
 		
+		function waitProfile()
+		{
+			setTimeout(function(){
+				console.log('myProfile:::'+main.getDataManager().myProfile['displayname']);
+				if(main.getDataManager().myProfile['displayname'] != '')
+				{
+					console.log('goto group');
+					myprofile = main.getDataManager().myProfile;
+					$('#login').css('display','none');
+					$('.bar-stable').css({'display':''});
+					$('#splash').css({'display':'none'});
+					location.href = "#/tab/group";											
+				}else{
+					waitProfile();
+				}
+			}, 1000);
+		}		
 	</script>
 
     <ion-nav-bar class="bar-stable" style="display:none;">

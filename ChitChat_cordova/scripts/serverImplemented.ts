@@ -215,12 +215,14 @@ module ChatServer {
             });
         }
 
-        public GetLastAccessRoomsInfo(userId: string) {
+        public getLastAccessRoomsInfo(callback: Function) {
             var msg: IDictionary = {};
-            msg["id"] = userId;
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
             pomelo.request("connector.entryHandler.getLastAccessRooms", msg, (result) => {
+                if (callback !== null) {
+                    callback(null, result);
+                }
             });
         }
 
