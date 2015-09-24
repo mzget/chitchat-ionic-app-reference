@@ -45,12 +45,17 @@ var Main = (function () {
     function Main() {
         this.serverListener = new ChatServer.ServerEventListener();
         this.dataManager = new DataManager();
+        this.dataListener = new DataListener(this.dataManager);
     }
     Main.prototype.getDataManager = function () {
         return this.dataManager;
     };
+    Main.prototype.getDataListener = function () {
+        return this.dataListener;
+    };
     Main.prototype.startChatServerListener = function () {
-        this.serverListener.frontendListener = this.dataManager;
+        this.serverListener.addFrontendListener(this.dataManager);
+        this.serverListener.addServerListener(this.dataListener);
         this.serverListener.addListenner();
     };
     Main.prototype.getHashService = function (content, callback) {
@@ -71,6 +76,9 @@ var Main = (function () {
                     else {
                         if (res.code === 200) {
                             self.dataManager.setMyProfile(res.data);
+                            server.getLastAccessRoomsInfo(function (err, res) {
+                                console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
+                            });
                         }
                         else {
                             console.error("My user profile is empty. please check.");
@@ -116,9 +124,6 @@ var Main = (function () {
                     else {
                         console.log("Company Members: ", res);
                     }
-                });
-                server.getLastAccessRoomsInfo(function (err, res) {
-                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
                 });
             }
             else {
@@ -727,6 +732,12 @@ var ChatServer;
             //this.rtcCallListener = new Services.RTCListener();
             //this.serverListener = new Services.ServerListener();
         }
+        ServerEventListener.prototype.addFrontendListener = function (obj) {
+            this.frontendListener = obj;
+        };
+        ServerEventListener.prototype.addServerListener = function (obj) {
+            this.serverListener = obj;
+        };
         ServerEventListener.prototype.addListenner = function () {
             this.callFrontendServer();
             this.callChatServer();
@@ -914,6 +925,47 @@ var Services;
     })();
     Services.AbsServerListener = AbsServerListener;
 })(Services || (Services = {}));
+var DataListener = (function () {
+    function DataListener(dataManager) {
+        this.dataManager = dataManager;
+    }
+    DataListener.prototype.onAccessRoom = function (dataEvent) {
+        this.dataManager.setRoomAccessForUser(dataEvent);
+    };
+    DataListener.prototype.onUpdatedLastAccessTime = function (dataEvent) {
+    };
+    DataListener.prototype.onAddRoomAccess = function (dataEvent) {
+    };
+    DataListener.prototype.onCreateGroupSuccess = function (dataEvent) {
+    };
+    DataListener.prototype.onEditedGroupMember = function (dataEvent) {
+    };
+    DataListener.prototype.onEditedGroupName = function (dataEvent) {
+    };
+    DataListener.prototype.onEditedGroupImage = function (dataEvent) {
+    };
+    DataListener.prototype.onNewGroupCreated = function (dataEvent) {
+    };
+    DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
+    };
+    DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
+    };
+    DataListener.prototype.onUserUpdateProfile = function (dataEvent) {
+    };
+    /*******************************************************************************/
+    //<!-- chat room data listener.
+    DataListener.prototype.onChatData = function (data) { };
+    ;
+    DataListener.prototype.onLeaveRoom = function (data) { };
+    ;
+    DataListener.prototype.onRoomJoin = function (data) { };
+    ;
+    DataListener.prototype.onMessageRead = function (dataEvent) { };
+    ;
+    DataListener.prototype.onGetMessagesReaders = function (dataEvent) { };
+    ;
+    return DataListener;
+})();
 var DataManager = (function () {
     function DataManager() {
         this.orgGroups = {};
@@ -926,6 +978,9 @@ var DataManager = (function () {
     };
     DataManager.prototype.getMyProfile = function () {
         return this.myProfile;
+    };
+    DataManager.prototype.setRoomAccessForUser = function (data) {
+        this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
     };
     DataManager.prototype.setMembers = function (data) {
     };

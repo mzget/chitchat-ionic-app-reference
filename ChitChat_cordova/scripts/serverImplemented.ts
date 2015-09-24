@@ -716,10 +716,16 @@ module ChatServer {
         public static ON_GET_ORGANIZE_GROUPS: string = "onGetOrganizeGroups";
         public static ON_GET_PROJECT_BASE_GROUPS: string = "onGetProjectBaseGroups";
 
-        public onChatListener: Services.IOnChatListener;
-        public frontendListener: Services.IFrontendServerListener;
-        public rtcCallListener: Services.IRTCListener;
-        public serverListener: Services.IServerListener;
+        private onChatListener: Services.IOnChatListener;
+        private frontendListener: Services.IFrontendServerListener;
+        private rtcCallListener: Services.IRTCListener;
+        private serverListener: Services.IServerListener;
+        public addFrontendListener(obj: Services.IFrontendServerListener): void {
+            this.frontendListener = obj;
+        }
+        public addServerListener(obj: Services.IServerListener): void {
+            this.serverListener = obj;
+        }
 
         constructor() {
             //this.frontendListener = new Services.FrontendServerListener();
@@ -760,7 +766,6 @@ module ChatServer {
 
                 self.frontendListener.onGetProjectBaseGroupsComplete(data);
             });
-
         }
 
         private callChatServer() {
