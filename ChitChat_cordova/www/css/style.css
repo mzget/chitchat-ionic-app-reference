@@ -43,7 +43,7 @@
 .message-list .item p { padding:10px; background-color:rgba(0,0,0,0.1); border-radius:10px; white-space:normal; }
 .message-list .other img { top:0; left:10px; }
 .message-list .other h2 { margin-left:60px; }
-.message-list .other p { margin:0 40px 0 60px; text-align:right; border-top-left-radius:0; }
+.message-list .other p { margin:0 40px 0 60px; text-align:left; border-top-left-radius:0; }
 .message-list .owner p { margin:0 5px 0 95px; text-align:right; border-top-right-radius:0; }
 
 
