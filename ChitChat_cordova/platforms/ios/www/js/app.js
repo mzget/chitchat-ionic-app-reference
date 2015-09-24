@@ -40,6 +40,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
 	// Each tab has its own nav history stack:
 
+
+	// LOGIN
+	.state('tab.login', {
+		url: '/login',
+		views: {
+			'tab-login': {
+				templateUrl: 'templates/tab-login.html',
+				//controller: 'LoginCtrl'
+			}
+		}
+	})
+
+
+	// GROUP
 	.state('tab.group', {
 		url: '/group',
 		views: {
@@ -50,8 +64,50 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 		}
 	})
 	
+	// GROUP - Profile
+	.state('tab.group-myprofile', {
+		url: '/group/myprofile',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-group-myprofile.html',
+				controller: 'GroupMyprofileCtrl'
+			}
+		}
+	})
+	
+	// GROUP - Type
+	.state('tab.group-projectbasegroup', {
+		url: '/group/projectbasegroup/:chatId',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-group-orggroup.html',
+				controller: 'GroupProjectbaseCtrl'
+			}
+		}
+	})
+	
+	.state('tab.group-privategroup', {
+		url: '/group/privategroup/:chatId',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-group-orggroup.html',
+				controller: 'GroupPrivateCtrl'
+			}
+		}
+	})
+	
+	.state('tab.group-orggroup', {
+		url: '/group/orggroup/:chatId',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-group-orggroup.html',
+				controller: 'GroupOrggroupsCtrl'
+			}
+		}
+	})
+	
 	.state('tab.group-detail', {
-		url: '/group/:chatId',
+		url: '/group/detail/:chatId',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-detail.html',
@@ -59,7 +115,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 			}
 		}
 	})
-
+		
+	// GROUP - Members
+	.state('tab.group-members', {
+		url: '/group/members/:chatId',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-group-members.html',
+				controller: 'GroupMembersCtrl'
+			}
+		}
+	})
+	
+	// CHATS - Notification
 	.state('tab.chats', {
 		url: '/chats',
 		views: {
@@ -111,6 +179,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 	});
 
 	// if none of the above states are matched, use this as the fallback
-	$urlRouterProvider.otherwise('/tab/group');
+	$urlRouterProvider.otherwise('/tab/login');
 
 });

@@ -1,9 +1,11 @@
+﻿var myprofile;
 angular.module('starter.controllers', [])
 
 // GROUP
 .controller('GroupCtrl', function($scope, Chats) {
 	
-	$scope.myProfile = main.getDataManager().myProfile;
+	myprofile = main.getDataManager().myProfile;
+	$scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
 	$scope.pjbGroups = main.getDataManager().projectBaseGroups;
 	$scope.pvGroups = main.getDataManager().privateGroups;
@@ -68,6 +70,8 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members, members.length);
 	$scope.members_length = members.length;
+	
+	
 })
 
 
@@ -92,7 +96,50 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
+	members = main.getDataManager().orgMembers;
+	chat = [{
+		_id: 0,	// mongo id user id
+		rid: '55dc2d2ed202128e36c6d2b7', // room id
+		type: 'Text', // text, voice, image
+		body: 'FPvwdfzUhPCCDi+Hv+Af0w4RVL2kME8kc1tTHaD/+M16+mS9X6DbWy4UZ+AErOFI5BoY7Oz+q3N3XttCPmKDEqaHi7htU4QpTDNuRtOFRP8=', // enclip
+		sender: '55f25185d20212f9688b4567',
+		createTime: 'ISODate("2015-06-15T07:33:47.026Z")',
+	}, {
+		_id: 1,	// mongo id user id
+		rid: '55dc2d2ed202128e36c6d2b7', // room id
+		type: 'Text', // text, voice, image
+		body: 'FPvwdfzUhPCCDi+Hv+Af0w4RVL2kME8kc1tTHaD/+M16+mS9X6DbWy4UZ+AErOFI5BoY7Oz+q3N3XttCPmKDEqaHi7htU4QpTDNuRtOFRP8=', // enclip
+		sender: '55f25185d20212f9688b4567',
+		createTime: 'ISODate("2015-06-15T07:33:47.026Z")',
+	}, {
+		_id: 2,	// mongo id user id
+		rid: '55dc2d2ed202128e36c6d2b7', // room id
+		type: 'Text', // text, voice, image
+		body: 'FPvwdfzUhPCCDi+Hv+Af0w4RVL2kME8kc1tTHaD/+M16+mS9X6DbWy4UZ+AErOFI5BoY7Oz+q3N3XttCPmKDEqaHi7htU4QpTDNuRtOFRP8=', // enclip
+		sender: '55f25185d20212f9688b4567',
+		createTime: 'ISODate("2015-06-15T07:33:47.026Z")',
+	}, {
+		_id: 3,	// mongo id user id
+		rid: '55dc2d2ed202128e36c6d2b7', // room id
+		type: 'Text', // text, voice, image
+		body: 'FPvwdfzUhPCCDi+Hv+Af0w4RVL2kME8kc1tTHaD/+M16+mS9X6DbWy4UZ+AErOFI5BoY7Oz+q3N3XttCPmKDEqaHi7htU4QpTDNuRtOFRP8=', // enclip
+		sender: '55dc2d2ed202128e36c6d2b7',
+		createTime: 'ISODate("2015-06-15T07:33:47.026Z")',
+	}];
+	
+	//console.log('Message Length : '+chat.length);
+	for(i=0; i<chat.length; i++)
+	{
+		chat[i]['sender_displayname'] = members[chat[i]['sender']]['displayname'];
+		chat[i]['sender_image'] = members[chat[i]['sender']]['image'];
+		
+		if( chat[i]['sender'] == myprofile['_id'] )
+			chat[i]['msgowner'] = 'owner';
+		else
+			chat[i]['msgowner'] = 'other';
+	}
+	
+	$scope.chat = chat;
 })
 
 .controller('AccountCtrl', function($scope) {
