@@ -117,6 +117,9 @@ var Main = (function () {
                         console.log("Company Members: ", res);
                     }
                 });
+                server.getLastAccessRoomsInfo(function (err, res) {
+                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
+                });
             }
             else {
                 console.log(err);
@@ -128,7 +131,7 @@ var Main = (function () {
 var pomelo;
 var username = "";
 var password = "";
-requirejs(['../js/pomelo/pomeloclient'], function (obj) {
+require(['../js/pomelo/pomeloclient'], function (obj) {
     pomelo = obj;
 });
 var ChatServer;
@@ -140,7 +143,7 @@ var ChatServer;
     })();
     var ServerImplemented = (function () {
         function ServerImplemented() {
-            this.host = "animation-genius.com";
+            this.host = "git.animation-genius.com";
             this.port = 3014;
             this._isInit = false;
             this._isConnected = false;
@@ -298,12 +301,14 @@ var ChatServer;
                 }
             });
         };
-        ServerImplemented.prototype.GetLastAccessRoomsInfo = function (userId) {
+        ServerImplemented.prototype.getLastAccessRoomsInfo = function (callback) {
             var msg = {};
-            msg["id"] = userId;
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
             pomelo.request("connector.entryHandler.getLastAccessRooms", msg, function (result) {
+                if (callback !== null) {
+                    callback(null, result);
+                }
             });
         };
         ServerImplemented.prototype.getMe = function (callback) {

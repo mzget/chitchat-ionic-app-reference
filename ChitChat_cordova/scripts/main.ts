@@ -29,7 +29,7 @@ class Main {
         hashService.hashCompute(content, callback);
     }
 
-    public authenUser(server, email, password, callback: (err, res) => void) {
+    public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
             callback(null, loginRes);
@@ -95,6 +95,10 @@ class Main {
                     else {
                         console.log("Company Members: ", res);
                     }
+                });
+
+                server.getLastAccessRoomsInfo(function (err, res) {
+                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
                 });
             }
             else {

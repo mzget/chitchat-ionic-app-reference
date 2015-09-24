@@ -14,7 +14,7 @@
 			<a href="#/tab/group/members/{{chat._id}}" class="length">{{members_length}}</a>
 		</div>
 		<div class="group-menu">
-			<a href="#/tab/message/{{chat._id}}"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></a>
+			<div ng-click="toggle(chat._id)"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></div>
 			<div><i class="ion-ios-telephone-outline" data-pack="default" data-tags="talk"></i><br /><span>FreeCall</span></div>
 			<div><i class="ion-videocamera" data-pack="default" data-tags="talk"></i><br /><span>VideoCall</span></div>
 		</div>
