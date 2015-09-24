@@ -56,6 +56,7 @@ var Main = (function () {
     Main.prototype.startChatServerListener = function () {
         this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addServerListener(this.dataListener);
+        this.serverListener.addChatListener(this.dataListener);
         this.serverListener.addListenner();
     };
     Main.prototype.getHashService = function (content, callback) {
@@ -738,6 +739,12 @@ var ChatServer;
         ServerEventListener.prototype.addServerListener = function (obj) {
             this.serverListener = obj;
         };
+        ServerEventListener.prototype.addChatListener = function (obj) {
+            this.chatServerListener = obj;
+        };
+        ServerEventListener.prototype.addRTCListener = function (obj) {
+            this.rtcCallListener = obj;
+        };
         ServerEventListener.prototype.addListenner = function () {
             this.callFrontendServer();
             this.callChatServer();
@@ -767,8 +774,8 @@ var ChatServer;
         ServerEventListener.prototype.callChatServer = function () {
             var self = this;
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
-                console.log(ServerEventListener.ON_CHAT, data);
-                self.onChatListener.onChatData(data);
+                console.log(ServerEventListener.ON_CHAT, JSON.stringify(data));
+                self.chatServerListener.onChatData(data);
             });
             //pomelo.on(ServerEventListener.ON_ADD, (data) => {
             //    console.log(ServerEventListener.ON_ADD, data);
@@ -776,15 +783,15 @@ var ChatServer;
             //});
             pomelo.on(ServerEventListener.ON_LEAVE, function (data) {
                 console.log(ServerEventListener.ON_LEAVE, data);
-                self.onChatListener.onLeaveRoom(data);
+                self.chatServerListener.onLeaveRoom(data);
             });
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, function (data) {
                 console.log(ServerEventListener.ON_MESSAGE_READ, data);
-                self.onChatListener.onMessageRead(data);
+                self.chatServerListener.onMessageRead(data);
             });
             pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, function (data) {
                 console.log(ServerEventListener.ON_GET_MESSAGES_READERS, data);
-                self.onChatListener.onGetMessagesReaders(data);
+                self.chatServerListener.onGetMessagesReaders(data);
             });
         };
         ServerEventListener.prototype.callRTCEvents = function () {
@@ -954,7 +961,8 @@ var DataListener = (function () {
     };
     /*******************************************************************************/
     //<!-- chat room data listener.
-    DataListener.prototype.onChatData = function (data) { };
+    DataListener.prototype.onChatData = function (data) {
+    };
     ;
     DataListener.prototype.onLeaveRoom = function (data) { };
     ;

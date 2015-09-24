@@ -1,6 +1,6 @@
 ﻿module Services {
 
-    export interface IOnChatListener {
+    export interface IChatServerListener {
         onChatData(data);
         onLeaveRoom(data);
         onRoomJoin(data);
@@ -36,7 +36,7 @@
         onUserUpdateProfile(dataEvent);
     }
 
-    export abstract class AbsChatServerListener implements IOnChatListener {
+    export abstract class AbsChatServerListener implements IChatServerListener {
         onChatData(data) { };
         onLeaveRoom(data) { };
         onRoomJoin(data) { };

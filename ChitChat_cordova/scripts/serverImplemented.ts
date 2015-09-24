@@ -716,7 +716,7 @@ module ChatServer {
         public static ON_GET_ORGANIZE_GROUPS: string = "onGetOrganizeGroups";
         public static ON_GET_PROJECT_BASE_GROUPS: string = "onGetProjectBaseGroups";
 
-        private onChatListener: Services.IOnChatListener;
+        private chatServerListener: Services.IChatServerListener;
         private frontendListener: Services.IFrontendServerListener;
         private rtcCallListener: Services.IRTCListener;
         private serverListener: Services.IServerListener;
@@ -725,6 +725,12 @@ module ChatServer {
         }
         public addServerListener(obj: Services.IServerListener): void {
             this.serverListener = obj;
+        }
+        public addChatListener(obj: Services.IChatServerListener): void {
+            this.chatServerListener = obj;
+        }
+        public addRTCListener(obj: Services.IRTCListener): void {
+            this.rtcCallListener = obj;
         }
 
         constructor() {
@@ -770,10 +776,11 @@ module ChatServer {
 
         private callChatServer() {
             var self = this;
-            pomelo.on(ServerEventListener.ON_CHAT, function (data) {
-                console.log(ServerEventListener.ON_CHAT, data);
 
-                self.onChatListener.onChatData(data);
+            pomelo.on(ServerEventListener.ON_CHAT, function (data) {
+                console.log(ServerEventListener.ON_CHAT, JSON.stringify(data));
+
+                self.chatServerListener.onChatData(data);
             });
 
             //pomelo.on(ServerEventListener.ON_ADD, (data) => {
@@ -784,19 +791,19 @@ module ChatServer {
             pomelo.on(ServerEventListener.ON_LEAVE, (data) => {
                 console.log(ServerEventListener.ON_LEAVE, data);
 
-                self.onChatListener.onLeaveRoom(data);
+                self.chatServerListener.onLeaveRoom(data);
             });
 
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, (data) => {
                 console.log(ServerEventListener.ON_MESSAGE_READ, data);
 
-                self.onChatListener.onMessageRead(data);
+                self.chatServerListener.onMessageRead(data);
             });
 
             pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, (data) => {
                 console.log(ServerEventListener.ON_GET_MESSAGES_READERS, data);
 
-                self.onChatListener.onGetMessagesReaders(data);
+                self.chatServerListener.onGetMessagesReaders(data);
             });
         }
 

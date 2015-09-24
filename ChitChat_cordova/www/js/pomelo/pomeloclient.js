@@ -422,17 +422,19 @@ define(['jquery'], function (jq) {
 
 	//if no id then it should be a server push message
 	function processCall(msg) {
-	  var route = msg.route;
-	  if(!!route) {
-		if (!!msg.body) {
-		  var body = msg.body.body;
-		  if (!body) {body = msg.body;}
-		  pomelo.emit(route, body);
-		} else {
-		  pomelo.emit(route,msg);
-		}
+	    var route = msg.route;
+	    if (!!route) {
+	        if (!!msg.body) {
+	            pomelo.emit(route, msg.body);
+	        } else {
+	            var body = msg.body.body;
+	            if (!body) {
+	                body = msg.body;
+	            }
+	            pomelo.emit(route, body);
+	        }
 	  } else {
-		  pomelo.emit(msg.body.route,msg.body);
+	      pomelo.emit(msg.body.route, msg.body);
 	  }
 	}
   };
