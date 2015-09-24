@@ -20,7 +20,7 @@ class Main {
     constructor() { }
 
     public startChatServerListener() {
-        this.serverListener.frontendListener = this.dataManager;
+        this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addListenner();
     }
 

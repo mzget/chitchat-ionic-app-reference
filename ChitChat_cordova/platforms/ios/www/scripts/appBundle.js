@@ -50,7 +50,7 @@ var Main = (function () {
         return this.dataManager;
     };
     Main.prototype.startChatServerListener = function () {
-        this.serverListener.frontendListener = this.dataManager;
+        this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addListenner();
     };
     Main.prototype.getHashService = function (content, callback) {
@@ -727,6 +727,9 @@ var ChatServer;
             //this.rtcCallListener = new Services.RTCListener();
             //this.serverListener = new Services.ServerListener();
         }
+        ServerEventListener.prototype.addFrontendListener = function (obj) {
+            this.frontendListener = obj;
+        };
         ServerEventListener.prototype.addListenner = function () {
             this.callFrontendServer();
             this.callChatServer();
