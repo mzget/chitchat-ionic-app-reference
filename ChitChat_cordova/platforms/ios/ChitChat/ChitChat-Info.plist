@@ -6,7 +6,7 @@
     <dict>
       <key>NSExceptionDomains</key>
       <dict>
-        <key>animation-genius.com</key>
+        <key>git.animation-genius.com</key>
         <dict>
           <key>NSExceptionAllowsInsecureHTTPLoads</key>
           <true/>
@@ -17,6 +17,7 @@
         </dict>
       </dict>
     </dict>
+      
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleDisplayName</key>
@@ -64,7 +65,7 @@
       </dict>
     </dict>
     <key>CFBundleIdentifier</key>
-    <string>io.cordova.myappf0a690</string>
+    <string>com.ahoostudio.spartantalk</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>

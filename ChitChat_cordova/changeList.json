@@ -1,0 +1,16 @@
+{
+  "changedFilesIos": [
+    "www\\scripts\\appBundle.js.map",
+    "www\\scripts\\appBundle.js"
+  ],
+  "deletedFilesIos": [],
+  "addedPluginsIos": [],
+  "deletedPluginsIos": [],
+  "changedFiles": [
+    "www\\scripts\\appBundle.js.map",
+    "www\\scripts\\appBundle.js"
+  ],
+  "deletedFiles": [],
+  "addedPlugins": [],
+  "deletedPlugins": []
+}
