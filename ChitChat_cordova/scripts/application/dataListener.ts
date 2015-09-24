@@ -1,4 +1,4 @@
-﻿class DataListener implements Services.IServerListener, Services.IOnChatListener {
+﻿class DataListener implements Services.IServerListener, Services.IChatServerListener {
     private dataManager: DataManager;
 
     constructor(dataManager: DataManager) {
@@ -45,7 +45,9 @@
     /*******************************************************************************/
     //<!-- chat room data listener.
 
-    onChatData(data) { };
+    onChatData(data) {
+
+    };
     onLeaveRoom(data) { };
     onRoomJoin(data) { };
     onMessageRead(dataEvent) { };

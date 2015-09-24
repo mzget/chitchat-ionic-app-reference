@@ -29,6 +29,8 @@ class Main {
     public startChatServerListener() {
         this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addServerListener(this.dataListener);
+        this.serverListener.addChatListener(this.dataListener);
+        
         this.serverListener.addListenner();
     }
 
