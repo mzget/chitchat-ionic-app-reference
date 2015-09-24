@@ -1,4 +1,4 @@
-﻿<ion-view view-title="Group" cache-view="false">
+﻿<ion-view view-title="Members" cache-view="false">
 	<ion-content>
 	
 		<ion-list class="group-list">
@@ -15,8 +15,11 @@
 		</ion-list>
 		
 		<ion-list class="members-list">
-			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="member in members" type="item-text-wrap">
-				{{member.displayname}}
+			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="member in members" type="item-text-wrap" href="#/tab/group/detail/{{member._id}}">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{member.image}}&h=40&w=40" />
+				<h2>{{member.displayname}}</h2>
+				<p>{{member.status}}</p>
+				<i class="icon ion-chevron-right icon-accessory"></i>
 			</ion-item>
 		</ion-list>
 		
