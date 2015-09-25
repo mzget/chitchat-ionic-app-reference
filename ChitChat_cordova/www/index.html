@@ -30,9 +30,9 @@
 
 </head>
 <body ng-app="starter">    
-	
 	<script src="js/socket.io.js"></script>
 	<script>
+	
 		var socket = io;
 		var main = new Main();
 		var server = new ChatServer.ServerImplemented();
@@ -129,6 +129,15 @@
 			<img class="login-logo" src="img/logo-main.png" width="30%" /><br /><br />
 			<ion-spinner icon="spiral"></ion-spinner>
 		</div>
+	</div>
+	
+	
+		
+	<div id="send_message">
+		<input type="text" name="send_message" />
+	</div>
+	<div onclick="back()" id="chatroom_back">
+		<i class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i> <span style="font-weight:100;">Back</span>
 	</div>
 
 </body>
