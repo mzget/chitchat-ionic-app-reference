@@ -60,4 +60,7 @@
     <preference name="ShowTitle" value="True" />
     <preference name="InAppBrowserStorageEnabled" value="True" />
     <preference name="SuppressesIncrementalRendering" value="True" />
+    <feature name="Console">
+        <param name="ios-package" value="CDVLogger" />
+    </feature>
 </widget>
