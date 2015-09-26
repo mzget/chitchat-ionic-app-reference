@@ -35,8 +35,16 @@ class Main {
     }
 
     public getHashService(content: string, callback: (err, res) => void) {
-        var hashService = new HashGenerator();
+        var hashService = new SecureService();
         hashService.hashCompute(content, callback);
+    }
+    public encodeService(content: string, callback: Function) {
+        var crypto = new SecureService();
+        crypto.encryption(content, callback);
+    }
+    public decodeService(content: string, callback: Function) {
+        var crypto = new SecureService();
+        crypto.decryption(content, callback);
     }
 
     public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {

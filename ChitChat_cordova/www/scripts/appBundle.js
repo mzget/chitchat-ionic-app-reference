@@ -60,8 +60,16 @@ var Main = (function () {
         this.serverListener.addListenner();
     };
     Main.prototype.getHashService = function (content, callback) {
-        var hashService = new HashGenerator();
+        var hashService = new SecureService();
         hashService.hashCompute(content, callback);
+    };
+    Main.prototype.encodeService = function (content, callback) {
+        var crypto = new SecureService();
+        crypto.encryption(content, callback);
+    };
+    Main.prototype.decodeService = function (content, callback) {
+        var crypto = new SecureService();
+        crypto.decryption(content, callback);
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
         var self = this;
@@ -1141,16 +1149,34 @@ var OrgMember = (function () {
     }
     return OrgMember;
 })();
-var HashGenerator = (function () {
-    function HashGenerator() {
+var SecureService = (function () {
+    //    private passiv: string = "ThisIsUrPassword";
+    function SecureService() {
+        this.password = "CHITCHAT!@#$%^&*()_+|===";
     }
-    HashGenerator.prototype.hashCompute = function (content, callback) {
+    SecureService.prototype.hashCompute = function (content, callback) {
         require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
             var hash = CryptoJS.MD5(content);
             var md = hash.toString(CryptoJS.enc.Hex);
             callback(null, md);
         });
     };
-    return HashGenerator;
+    SecureService.prototype.encryption = function (content, callback) {
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            var ciphertext = CryptoJS.AES.encrypt(content, password);
+            callback(null, ciphertext.toString());
+        });
+    };
+    SecureService.prototype.decryption = function (content, callback) {
+        this.hashCompute(password, function (err, res) {
+            require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+                //   var words = CryptoJS.enc.Base64.parse(content);
+                var bytes = CryptoJS.AES.decrypt(content, password);
+                var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+                callback(null, plaintext);
+            });
+        });
+    };
+    return SecureService;
 })();
 //# sourceMappingURL=appBundle.js.map

@@ -76,9 +76,26 @@ angular.module('starter.controllers', [])
 	            chatMessages = [];
 	        }
 	        else {
-	            chatMessages = JSON.parse(chatLog);
-	            if (chatMessages === null || chatMessages instanceof Array === false)
+	            var arr_fromLog = JSON.parse(chatLog);
+	            if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
 	                chatMessages = [];
+	            }
+	            else {
+	                arr_fromLog.forEach(msg => {
+	                    var messageImp = msg;
+	                    if (messageImp.type === ContentType[ContentType.Text]) {
+	                        console.log(messageImp.body);
+	                        main.decodeService(messageImp.body, (err, res) => {
+	                            messageImp.body = res;
+	                            console.error(res);
+	                            chatMessages.push(messageImp);
+	                        });
+	                    }
+	                    else {
+	                        chatMessages.push(msg);
+	                    }
+ 	                });
+	            }
 	        }
 	    }
 	    else
