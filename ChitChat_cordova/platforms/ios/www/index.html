@@ -15,7 +15,7 @@
 	<script src="lib/ionic/js/ionic.bundle.js"></script>
 
 	<!-- cordova script (this will be a 404 during development) -->
-	<script src="cordova.js"></script>
+	<!--<script src="cordova.js"></script>-->
 
 	<!-- your app's js -->
 	<script src="js/app.js"></script>
@@ -30,9 +30,9 @@
 
 </head>
 <body ng-app="starter">    
-	
 	<script src="js/socket.io.js"></script>
 	<script>
+	
 		var socket = io;
 		var main = new Main();
 		var server = new ChatServer.ServerImplemented();
@@ -130,5 +130,15 @@
 			<ion-spinner icon="spiral"></ion-spinner>
 		</div>
 	</div>
+	
+	
+		
+	<div id="send_message">
+		<input type="text" name="send_message" />
+	</div>
+	<div onclick="back()" id="chatroom_back">
+		<i class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i> <span style="font-weight:100;">Back</span>
+	</div>
+
 </body>
 </html>

@@ -1,12 +1,16 @@
 ﻿var myprofile;
 var date = new Date();
 var now;
-var chatmessage;
+var chatMessages = [];
+var newchatmessage;
+var currentRoom;
 
 angular.module('starter.controllers', [])
 
 // GROUP
 .controller('GroupCtrl', function($scope, Chats) {
+
+	console.log( localStorage['55d177c2d20212737c46c685'] );
 	
 	$scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
@@ -62,21 +66,59 @@ angular.module('starter.controllers', [])
 	$scope.members_length = members.length;
 	
 			
-    $scope.toggle = function(chatId) {        
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+
+	    var chatLog = localStorage.getItem(chatId);
+	    console.log('local chatLog : ' + chatLog);
+	    if (!!chatLog) {
+	        if (JSON.stringify(chatLog) === "") {
+	            chatMessages = [];
+	        }
+	        else {
+	            chatMessages = JSON.parse(chatLog);
+	            if (chatMessages === null || chatMessages instanceof Array === false)
+	                chatMessages = [];
+	        }
+	    }
+	    else
+	        chatMessages = [];
+
+	    console.log("before join", JSON.stringify(chatMessages));
 		server.JoinChatRoomRequest(chatId, function(err, res){
 			console.log('----------------------------------------------');
 			console.log(res);
 
 			if( res.code == 200 )
 			{
-				//now = date.toISOString();
-				now = '2015-09-23T08:00:00.000Z';
+				console.log('Code 200');
+				access = date.toISOString();
 				
-				chatroom.getChatHistory(chatId, now, function(err, res){
+				allRoomAccess = myprofile.roomAccess.length;
+				for(i=0; i<allRoomAccess; i++)
+				{
+					if( myprofile.roomAccess[i].roomId == chatId )
+						access = myprofile.roomAccess[i].accessTime;
+				}				
+				
+				//now = date.toISOString();
+				//access = '2015-09-24T08:00:00.000Z';
+				
+				chatroom.getChatHistory(chatId, access, function(err, histories){
 					members = main.getDataManager().orgMembers;
-					console.log(res);
 					
-					chatmessage= res;
+					var his_length = histories.length;
+					if( his_length > 0 )
+					{
+						var chatMessages_length = chatMessages.length;
+						for(i=0; i< his_length; i++)
+						{
+							console.log(JSON.stringify(histories[i]));
+							chatMessages.push(histories[i]);
+						}
+
+						localStorage.setItem(chatId, JSON.stringify(chatMessages));
+					}
 					
 					location.href = '#/tab/message/'+chatId;
 				});
@@ -123,7 +165,7 @@ angular.module('starter.controllers', [])
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
 	
-	chat = chatmessage;
+    chat = chatMessages;
 	for(i=0; i<chat.length; i++)
 	{
 		chat[i]['sender_displayname'] = members[chat[i]['sender']]['displayname'];
@@ -134,8 +176,10 @@ angular.module('starter.controllers', [])
 		else
 			chat[i]['msgowner'] = 'other';
 	}
-	
+		
 	$scope.chat = chat;
+	$('#send_message').css({'display':'inline-block'});
+	$('#chatroom_back').css({'display':'inline-block'});
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
@@ -170,7 +214,16 @@ function groupMembers(members, size)
 	return gmember;
 }
 
+function back()
+{
+    server.LeaveChatRoomRequest(currentRoom, function (err, res) {
+        console.log("leave room", JSON.stringify(res))
+    });
+    currentRoom = "";
 
-
+    javascript: history.back();
+	$('#send_message').css({'display':'none'});
+	$('#chatroom_back').css({'display':'none'});
+}
 
 

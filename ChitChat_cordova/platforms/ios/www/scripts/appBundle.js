@@ -548,7 +548,7 @@ var ChatServer;
             msg["rid"] = room_id;
             msg["username"] = username;
             pomelo.request("connector.entryHandler.enterRoom", msg, function (result) {
-                console.log("JoinChatRequest: " + result);
+                console.log("JoinChatRoom: " + JSON.stringify(result));
                 if (callback !== null) {
                     callback(null, result);
                 }
@@ -782,7 +782,7 @@ var ChatServer;
             //    self.onChatListener.on(data);
             //});
             pomelo.on(ServerEventListener.ON_LEAVE, function (data) {
-                console.log(ServerEventListener.ON_LEAVE, data);
+                console.log(ServerEventListener.ON_LEAVE, JSON.stringify(data));
                 self.chatServerListener.onLeaveRoom(data);
             });
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, function (data) {
@@ -817,15 +817,15 @@ var ChatServer;
             var self = this;
             //<!-- AccessRoom Info -->
             pomelo.on(ServerEventListener.ON_ACCESS_ROOMS, function (data) {
-                console.log(ServerEventListener.ON_ACCESS_ROOMS, data);
+                console.log(ServerEventListener.ON_ACCESS_ROOMS, JSON.stringify(data));
                 self.serverListener.onAccessRoom(data);
             });
             pomelo.on(ServerEventListener.ON_ADD_ROOM_ACCESS, function (data) {
-                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS, data);
+                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS, JSON.stringify(data));
                 self.serverListener.onAddRoomAccess(data);
             });
             pomelo.on(ServerEventListener.ON_UPDATED_LASTACCESSTIME, function (data) {
-                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, data);
+                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, JSON.stringify(data));
                 self.serverListener.onUpdatedLastAccessTime(data);
             });
             //<!-- User profile -->
@@ -940,6 +940,7 @@ var DataListener = (function () {
         this.dataManager.setRoomAccessForUser(dataEvent);
     };
     DataListener.prototype.onUpdatedLastAccessTime = function (dataEvent) {
+        this.dataManager.updateRoomAccessForUser(dataEvent);
     };
     DataListener.prototype.onAddRoomAccess = function (dataEvent) {
     };
@@ -962,6 +963,7 @@ var DataListener = (function () {
     /*******************************************************************************/
     //<!-- chat room data listener.
     DataListener.prototype.onChatData = function (data) {
+        console.log("Implement chat msg hear..", JSON.stringify(data));
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) { };
@@ -990,6 +992,16 @@ var DataManager = (function () {
     DataManager.prototype.setRoomAccessForUser = function (data) {
         this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
     };
+    DataManager.prototype.updateRoomAccessForUser = function (data) {
+        console.info(JSON.stringify(data));
+        var arr = JSON.parse(JSON.stringify(data.roomAccess));
+        this.myProfile.roomAccess.forEach(function (value) {
+            if (value.roomId === arr[0].roomId) {
+                value.accessTime = arr[0].accessTime;
+                return;
+            }
+        });
+    };
     DataManager.prototype.setMembers = function (data) {
     };
     DataManager.prototype.setCompanyInfo = function (data) {
@@ -1010,7 +1022,6 @@ var DataManager = (function () {
             if (!_this.orgMembers[value._id]) {
                 _this.orgMembers[value._id] = value;
             }
-            console.log("org_member: ", value);
         });
     };
     ;
@@ -1021,7 +1032,6 @@ var DataManager = (function () {
             if (!_this.orgGroups[value._id]) {
                 _this.orgGroups[value._id] = value;
             }
-            console.log("org_group: ", value);
         });
     };
     ;
@@ -1032,7 +1042,6 @@ var DataManager = (function () {
             if (!_this.projectBaseGroups[value._id]) {
                 _this.projectBaseGroups[value._id] = value;
             }
-            console.log("project_base_groups: ", value);
         });
     };
     ;
@@ -1043,7 +1052,6 @@ var DataManager = (function () {
             if (!_this.privateGroups[value._id]) {
                 _this.privateGroups[value._id] = value;
             }
-            console.log("private_groups: ", value);
         });
     };
     ;

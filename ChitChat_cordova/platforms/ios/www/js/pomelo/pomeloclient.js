@@ -358,7 +358,7 @@ define(['jquery'], function (jq) {
 	});
 
 	socket.on('error', function(err) {
-	  console.log(JSON.stringify(err));
+	  console.error(JSON.stringify(err));
 	});
 
 	socket.on('disconnect', function(reason) {
