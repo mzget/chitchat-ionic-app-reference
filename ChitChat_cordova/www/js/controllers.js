@@ -1,7 +1,7 @@
 ﻿var myprofile;
 var date = new Date();
 var now;
-var chatmessage;
+var chatMessages = [];
 var newchatmessage;
 var currentRoom;
 
@@ -69,12 +69,22 @@ angular.module('starter.controllers', [])
 	$scope.toggle = function (chatId) {
 	    currentRoom = chatId;
 
-		if( localStorage[chatId] )
-			chatmessage = JSON.parse(localStorage[chatId]);
-		else
-			chatmessage = '';			
-		console.log( 'local messages : '+localStorage[chatId] );
-    
+	    var chatLog = localStorage.getItem(chatId);
+	    console.log('local chatLog : ' + chatLog);
+	    if (!!chatLog) {
+	        if (JSON.stringify(chatLog) === "") {
+	            chatMessages = [];
+	        }
+	        else {
+	            chatMessages = JSON.parse(chatLog);
+	            if (chatMessages === null || chatMessages instanceof Array === false)
+	                chatMessages = [];
+	        }
+	    }
+	    else
+	        chatMessages = [];
+
+	    console.log("before join", JSON.stringify(chatMessages));
 		server.JoinChatRoomRequest(chatId, function(err, res){
 			console.log('----------------------------------------------');
 			console.log(res);
@@ -94,22 +104,20 @@ angular.module('starter.controllers', [])
 				//now = date.toISOString();
 				//access = '2015-09-24T08:00:00.000Z';
 				
-				chatroom.getChatHistory(chatId, access, function(err, res){
-					console.log('new '+res.length);
+				chatroom.getChatHistory(chatId, access, function(err, histories){
 					members = main.getDataManager().orgMembers;
-					console.log(res);
 					
-					res_length = res.length;
-					if( res_length > 0 )
+					var his_length = histories.length;
+					if( his_length > 0 )
 					{
-						chatmessage_length = chatmessage.length;
-						for(i=0; i<res_length; i++)
+						var chatMessages_length = chatMessages.length;
+						for(i=0; i< his_length; i++)
 						{
-							chatmessage[chatmessage_length+i] = res[i];
+							console.log(JSON.stringify(histories[i]));
+							chatMessages.push(histories[i]);
 						}
-						//newchatmessage = res;
-						localStorage[chatId] = JSON.stringify(chatmessage);
-						//console.log(localStorage[chatId]);
+
+						localStorage.setItem(chatId, JSON.stringify(chatMessages));
 					}
 					
 					location.href = '#/tab/message/'+chatId;
@@ -157,7 +165,7 @@ angular.module('starter.controllers', [])
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
 	
-	chat = chatmessage;
+    chat = chatMessages;
 	for(i=0; i<chat.length; i++)
 	{
 		chat[i]['sender_displayname'] = members[chat[i]['sender']]['displayname'];

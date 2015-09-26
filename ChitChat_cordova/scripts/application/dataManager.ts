@@ -63,8 +63,6 @@ class DataManager implements Services.IFrontendServerListener {
             if (!this.orgMembers[value._id]) {
                 this.orgMembers[value._id] = value;
             }
-
-            console.log("org_member: ", value);
         });
     };
     public onGetOrganizeGroupsComplete(dataEvent) {
@@ -74,8 +72,6 @@ class DataManager implements Services.IFrontendServerListener {
             if (!this.orgGroups[value._id]) {
                 this.orgGroups[value._id] = value;
             }
-
-            console.log("org_group: ", value);
         });
     };
     public onGetProjectBaseGroupsComplete(dataEvent) {
@@ -85,8 +81,6 @@ class DataManager implements Services.IFrontendServerListener {
             if (!this.projectBaseGroups[value._id]) {
                 this.projectBaseGroups[value._id] = value;
             }
-
-            console.log("project_base_groups: ", value);
         });
     };
     public onGetPrivateGroupsComplete(dataEvent) {
@@ -96,8 +90,6 @@ class DataManager implements Services.IFrontendServerListener {
             if (!this.privateGroups[value._id]) {
                 this.privateGroups[value._id] = value;
             }
-
-            console.log("private_groups: ", value);
         });
     };
 }

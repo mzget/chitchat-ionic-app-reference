@@ -1022,7 +1022,6 @@ var DataManager = (function () {
             if (!_this.orgMembers[value._id]) {
                 _this.orgMembers[value._id] = value;
             }
-            console.log("org_member: ", value);
         });
     };
     ;
@@ -1033,7 +1032,6 @@ var DataManager = (function () {
             if (!_this.orgGroups[value._id]) {
                 _this.orgGroups[value._id] = value;
             }
-            console.log("org_group: ", value);
         });
     };
     ;
@@ -1044,7 +1042,6 @@ var DataManager = (function () {
             if (!_this.projectBaseGroups[value._id]) {
                 _this.projectBaseGroups[value._id] = value;
             }
-            console.log("project_base_groups: ", value);
         });
     };
     ;
@@ -1055,7 +1052,6 @@ var DataManager = (function () {
             if (!_this.privateGroups[value._id]) {
                 _this.privateGroups[value._id] = value;
             }
-            console.log("private_groups: ", value);
         });
     };
     ;
