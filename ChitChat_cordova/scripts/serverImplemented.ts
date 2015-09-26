@@ -485,7 +485,7 @@ module ChatServer {
             msg["rid"] = room_id;
             msg["username"] = username;
             pomelo.request("connector.entryHandler.enterRoom", msg, (result) => {
-                console.log("JoinChatRequest: " + result);
+                console.log("JoinChatRoom: " + JSON.stringify(result));
                 if (callback !== null) {
                     callback(null, result);
                 }
@@ -789,7 +789,7 @@ module ChatServer {
             //});
 
             pomelo.on(ServerEventListener.ON_LEAVE, (data) => {
-                console.log(ServerEventListener.ON_LEAVE, data);
+                console.log(ServerEventListener.ON_LEAVE, JSON.stringify(data));
 
                 self.chatServerListener.onLeaveRoom(data);
             });
@@ -837,17 +837,17 @@ module ChatServer {
 
             //<!-- AccessRoom Info -->
             pomelo.on(ServerEventListener.ON_ACCESS_ROOMS, (data) => {
-                console.log(ServerEventListener.ON_ACCESS_ROOMS, data);
+                console.log(ServerEventListener.ON_ACCESS_ROOMS, JSON.stringify(data));
 
                 self.serverListener.onAccessRoom(data);
             });
             pomelo.on(ServerEventListener.ON_ADD_ROOM_ACCESS, (data) => {
-                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS, data);
+                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS, JSON.stringify(data));
 
                 self.serverListener.onAddRoomAccess(data);
             });
             pomelo.on(ServerEventListener.ON_UPDATED_LASTACCESSTIME, (data) => {
-                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, data);
+                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, JSON.stringify(data));
 
                 self.serverListener.onUpdatedLastAccessTime(data);
             });

@@ -9,7 +9,7 @@
         this.dataManager.setRoomAccessForUser(dataEvent);
     }
     onUpdatedLastAccessTime(dataEvent) {
-
+        this.dataManager.updateRoomAccessForUser(dataEvent);
     }
     onAddRoomAccess(dataEvent) {
 
@@ -46,7 +46,7 @@
     //<!-- chat room data listener.
 
     onChatData(data) {
-
+        console.log("Implement chat msg hear..", JSON.stringify(data));
     };
     onLeaveRoom(data) { };
     onRoomJoin(data) { };

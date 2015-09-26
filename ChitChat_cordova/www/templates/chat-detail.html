@@ -1,7 +1,5 @@
 <ion-view view-title="CHAT MESSAGE" cache-view="false">
 	<ion-content >
-	
-	
 		<ion-list class="message-list" ng-repeat="message in chat">
 			<ion-item ng-if="message.msgowner == 'other'" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{message.sender_image}}&h=40&w=40" />

@@ -3,6 +3,7 @@ var date = new Date();
 var now;
 var chatmessage;
 var newchatmessage;
+var currentRoom;
 
 angular.module('starter.controllers', [])
 
@@ -65,7 +66,9 @@ angular.module('starter.controllers', [])
 	$scope.members_length = members.length;
 	
 			
-    $scope.toggle = function(chatId) {    
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+
 		if( localStorage[chatId] )
 			chatmessage = JSON.parse(localStorage[chatId]);
 		else
@@ -205,7 +208,12 @@ function groupMembers(members, size)
 
 function back()
 {
-	javascript:history.back();
+    server.LeaveChatRoomRequest(currentRoom, function (err, res) {
+        console.log("leave room", JSON.stringify(res))
+    });
+    currentRoom = "";
+
+    javascript: history.back();
 	$('#send_message').css({'display':'none'});
 	$('#chatroom_back').css({'display':'none'});
 }

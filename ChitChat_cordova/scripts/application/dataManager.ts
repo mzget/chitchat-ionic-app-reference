@@ -23,6 +23,17 @@ class DataManager implements Services.IFrontendServerListener {
     public setRoomAccessForUser(data) {
         this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
     }
+    public updateRoomAccessForUser(data) {
+        console.info(JSON.stringify(data));
+        var arr: Array<RoomAccessData> = JSON.parse(JSON.stringify(data.roomAccess));
+        this.myProfile.roomAccess.forEach(value => {
+            if (value.roomId === arr[0].roomId) {
+                value.accessTime = arr[0].accessTime;
+
+                return;
+            }
+        });
+    }
 
     public setMembers(data: any) {
 
