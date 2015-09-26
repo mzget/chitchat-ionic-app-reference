@@ -972,6 +972,11 @@ var DataListener = (function () {
     //<!-- chat room data listener.
     DataListener.prototype.onChatData = function (data) {
         console.log("Implement chat msg hear..", JSON.stringify(data));
+        var chatMessageImp = JSON.parse(JSON.stringify(data));
+        var secure = new SecureService();
+        secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
+            console.warn(res);
+        });
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) { };
@@ -1150,9 +1155,9 @@ var OrgMember = (function () {
     return OrgMember;
 })();
 var SecureService = (function () {
-    //    private passiv: string = "ThisIsUrPassword";
     function SecureService() {
-        this.password = "CHITCHAT!@#$%^&*()_+|===";
+        this.key = "CHITCHAT!@#$%^&*()_+|===";
+        this.passiv = "ThisIsUrPassword";
     }
     SecureService.prototype.hashCompute = function (content, callback) {
         require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
@@ -1162,19 +1167,36 @@ var SecureService = (function () {
         });
     };
     SecureService.prototype.encryption = function (content, callback) {
+        var self = this;
         require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
-            var ciphertext = CryptoJS.AES.encrypt(content, password);
+            var ciphertext = CryptoJS.AES.encrypt(content, self.key);
             callback(null, ciphertext.toString());
         });
     };
     SecureService.prototype.decryption = function (content, callback) {
-        this.hashCompute(password, function (err, res) {
-            require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
-                //   var words = CryptoJS.enc.Base64.parse(content);
-                var bytes = CryptoJS.AES.decrypt(content, password);
-                var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-                callback(null, plaintext);
-            });
+        var self = this;
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            //   var words = CryptoJS.enc.Base64.parse(content);
+            var bytes = CryptoJS.AES.decrypt(content, self.key);
+            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            callback(null, plaintext);
+        });
+    };
+    SecureService.prototype.encryptWithSecureRandom = function (content, callback) {
+        var self = this;
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            var ciphertext = CryptoJS.AES.encrypt(content, self.key, { iv: self.passiv });
+            callback(null, ciphertext.toString());
+        });
+    };
+    SecureService.prototype.decryptWithSecureRandom = function (content, callback) {
+        var self = this;
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            var key = CryptoJS.enc.Utf8.parse(self.key);
+            var iv = CryptoJS.enc.Utf8.parse(self.passiv);
+            var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv });
+            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            callback(null, plaintext);
         });
     };
     return SecureService;

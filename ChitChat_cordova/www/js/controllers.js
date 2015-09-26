@@ -130,7 +130,7 @@ angular.module('starter.controllers', [])
 						var chatMessages_length = chatMessages.length;
 						for(i=0; i< his_length; i++)
 						{
-							console.log(JSON.stringify(histories[i]));
+							console.log("new msg", JSON.stringify(histories[i]));
 							chatMessages.push(histories[i]);
 						}
 

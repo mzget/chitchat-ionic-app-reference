@@ -47,6 +47,12 @@
 
     onChatData(data) {
         console.log("Implement chat msg hear..", JSON.stringify(data));
+
+        var chatMessageImp = JSON.parse(JSON.stringify(data));
+        var secure = new SecureService();
+        secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
+            console.warn(res)
+        })
     };
     onLeaveRoom(data) { };
     onRoomJoin(data) { };
