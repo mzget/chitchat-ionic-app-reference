@@ -658,16 +658,8 @@ module ChatServer {
             }
 
             pomelo.request("chat.chatHandler.getChatHistory", message, (result) => {
-                if (result.code === 200) {
-                    if (callback != null) {
-                        callback(null, result.data);
-                    }
-                } else {
-                    console.warn("WTF god only know.");
-                    if (callback != null) {
-                        callback(null, result.message);
-                    }
-                }
+                if (callback !== null)
+                    callback(null, result);
             });
         }
         
