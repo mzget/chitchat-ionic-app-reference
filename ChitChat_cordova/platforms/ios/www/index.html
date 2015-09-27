@@ -22,6 +22,7 @@
 	<script src="js/controllers.js"></script>
 	<script src="js/services.js"></script>
 	<script src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/async.js"></script>
 	<script src="js/require.js" data-main="scripts/appBundle"></script>
 	
 	<script src="js/template.js"></script>
@@ -38,7 +39,15 @@
 		var server = new ChatServer.ServerImplemented();
 		var chatroom = new ChatServer.ChatRoomApiProvider();
 		var authen = server.authenData;
-		
+/* for test cryptoJs lib.
+		main.encodeService("hello", (err, res) => {
+		    console.log("encrypt", res);
+
+		    main.decodeService(res, (e, r) => {
+		        console.log("decrypt", r);
+		    })
+		});
+*/		
 		setTimeout(function(){
 			server.init(function () {
 				console.log("token: ", authen.token);
