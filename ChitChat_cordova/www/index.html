@@ -38,7 +38,7 @@
 		var server = new ChatServer.ServerImplemented();
 		var chatroom = new ChatServer.ChatRoomApiProvider();
 		var authen = server.authenData;
-
+/* for test cryptoJs lib.
 		main.encodeService("hello", (err, res) => {
 		    console.log("encrypt", res);
 
@@ -46,7 +46,7 @@
 		        console.log("decrypt", r);
 		    })
 		});
-		
+*/		
 		setTimeout(function(){
 			server.init(function () {
 				console.log("token: ", authen.token);

@@ -86,9 +86,12 @@ angular.module('starter.controllers', [])
 	                    if (messageImp.type === ContentType[ContentType.Text]) {
 	                        console.log(messageImp.body);
 	                        main.decodeService(messageImp.body, (err, res) => {
-	                            messageImp.body = res;
-	                            console.error(res);
-	                            chatMessages.push(messageImp);
+	                            if (err)
+	                                chatMessages.push(messageImp);
+	                            else {
+	                                messageImp.body = res;
+	                                chatMessages.push(messageImp);
+	                            }
 	                        });
 	                    }
 	                    else {
@@ -104,11 +107,10 @@ angular.module('starter.controllers', [])
 	    console.log("before join", JSON.stringify(chatMessages));
 		server.JoinChatRoomRequest(chatId, function(err, res){
 			console.log('----------------------------------------------');
-			console.log(res);
+			console.log(res.code);
 
 			if( res.code == 200 )
 			{
-				console.log('Code 200');
 				access = date.toISOString();
 				
 				allRoomAccess = myprofile.roomAccess.length;
@@ -125,13 +127,27 @@ angular.module('starter.controllers', [])
 					members = main.getDataManager().orgMembers;
 					
 					var his_length = histories.length;
-					if( his_length > 0 )
+					if (his_length > 0)
 					{
 						var chatMessages_length = chatMessages.length;
 						for(i=0; i< his_length; i++)
 						{
-							console.log("new msg", JSON.stringify(histories[i]));
-							chatMessages.push(histories[i]);
+						    var chatMessageImp = JSON.parse(JSON.stringify(histories[i]));
+						    if (chatMessageImp.type === ContentType[ContentType.Text]) {
+						        main.decodeService(chatMessageImp.body, (err, res) => {
+						            console.warn(res)
+						            if (err) {
+						                chatMessages.push(chatMessageImp);
+						            }
+						            else {
+						                chatMessageImp.body = res;
+						                chatMessages.push(chatMessageImp);
+						            }
+						        });
+						    }
+						    else {
+						        chatMessages.push(histories[i]);
+						    }
 						}
 
 						localStorage.setItem(chatId, JSON.stringify(chatMessages));
@@ -155,8 +171,6 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members, members.length);
 	$scope.members_length = members.length;
-	
-	
 })
 
 

@@ -47,8 +47,10 @@
             var iv = CryptoJS.enc.Utf8.parse(self.passiv);
             var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv });
             var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-
-            callback(null, plaintext);
+            if (!!plaintext)
+                callback(null, plaintext);
+            else
+                callback(new Error("cannot decrypt content"), content);
         });
     }
 }

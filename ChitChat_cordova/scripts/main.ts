@@ -40,11 +40,11 @@ class Main {
     }
     public encodeService(content: string, callback: Function) {
         var crypto = new SecureService();
-        crypto.encryption(content, callback);
+        crypto.encryptWithSecureRandom(content, callback);
     }
     public decodeService(content: string, callback: Function) {
         var crypto = new SecureService();
-        crypto.decryption(content, callback);
+        crypto.decryptWithSecureRandom(content, callback);
     }
 
     public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {
