@@ -65,11 +65,11 @@ var Main = (function () {
     };
     Main.prototype.encodeService = function (content, callback) {
         var crypto = new SecureService();
-        crypto.encryption(content, callback);
+        crypto.encryptWithSecureRandom(content, callback);
     };
     Main.prototype.decodeService = function (content, callback) {
         var crypto = new SecureService();
-        crypto.decryption(content, callback);
+        crypto.decryptWithSecureRandom(content, callback);
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
         var self = this;
@@ -1070,6 +1070,26 @@ var DataManager = (function () {
     ;
     return DataManager;
 })();
+var MessageType;
+(function (MessageType) {
+    MessageType[MessageType["Text"] = 0] = "Text";
+    MessageType[MessageType["Image"] = 1] = "Image";
+    MessageType[MessageType["Video"] = 2] = "Video";
+    MessageType[MessageType["Voice"] = 3] = "Voice";
+    MessageType[MessageType["Location"] = 4] = "Location";
+    MessageType[MessageType["Sticker"] = 5] = "Sticker";
+})(MessageType || (MessageType = {}));
+;
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+})();
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
+})();
 /**
  * Created by nattapon on 7/17/15 AD.
  */
@@ -1196,7 +1216,10 @@ var SecureService = (function () {
             var iv = CryptoJS.enc.Utf8.parse(self.passiv);
             var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv });
             var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-            callback(null, plaintext);
+            if (!!plaintext)
+                callback(null, plaintext);
+            else
+                callback(new Error("cannot decrypt content"), content);
         });
     };
     return SecureService;
