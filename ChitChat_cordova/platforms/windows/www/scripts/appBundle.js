@@ -60,8 +60,16 @@ var Main = (function () {
         this.serverListener.addListenner();
     };
     Main.prototype.getHashService = function (content, callback) {
-        var hashService = new HashGenerator();
+        var hashService = new SecureService();
         hashService.hashCompute(content, callback);
+    };
+    Main.prototype.encodeService = function (content, callback) {
+        var crypto = new SecureService();
+        crypto.encryptWithSecureRandom(content, callback);
+    };
+    Main.prototype.decodeService = function (content, callback) {
+        var crypto = new SecureService();
+        crypto.decryptWithSecureRandom(content, callback);
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
         var self = this;
@@ -782,7 +790,7 @@ var ChatServer;
             //    self.onChatListener.on(data);
             //});
             pomelo.on(ServerEventListener.ON_LEAVE, function (data) {
-                console.log(ServerEventListener.ON_LEAVE, data);
+                console.log(ServerEventListener.ON_LEAVE, JSON.stringify(data));
                 self.chatServerListener.onLeaveRoom(data);
             });
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, function (data) {
@@ -817,15 +825,15 @@ var ChatServer;
             var self = this;
             //<!-- AccessRoom Info -->
             pomelo.on(ServerEventListener.ON_ACCESS_ROOMS, function (data) {
-                console.log(ServerEventListener.ON_ACCESS_ROOMS, data);
+                console.log(ServerEventListener.ON_ACCESS_ROOMS, JSON.stringify(data));
                 self.serverListener.onAccessRoom(data);
             });
             pomelo.on(ServerEventListener.ON_ADD_ROOM_ACCESS, function (data) {
-                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS, data);
+                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS, JSON.stringify(data));
                 self.serverListener.onAddRoomAccess(data);
             });
             pomelo.on(ServerEventListener.ON_UPDATED_LASTACCESSTIME, function (data) {
-                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, data);
+                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, JSON.stringify(data));
                 self.serverListener.onUpdatedLastAccessTime(data);
             });
             //<!-- User profile -->
@@ -940,6 +948,7 @@ var DataListener = (function () {
         this.dataManager.setRoomAccessForUser(dataEvent);
     };
     DataListener.prototype.onUpdatedLastAccessTime = function (dataEvent) {
+        this.dataManager.updateRoomAccessForUser(dataEvent);
     };
     DataListener.prototype.onAddRoomAccess = function (dataEvent) {
     };
@@ -962,6 +971,12 @@ var DataListener = (function () {
     /*******************************************************************************/
     //<!-- chat room data listener.
     DataListener.prototype.onChatData = function (data) {
+        console.log("Implement chat msg hear..", JSON.stringify(data));
+        var chatMessageImp = JSON.parse(JSON.stringify(data));
+        var secure = new SecureService();
+        secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
+            console.warn(res);
+        });
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) { };
@@ -990,6 +1005,16 @@ var DataManager = (function () {
     DataManager.prototype.setRoomAccessForUser = function (data) {
         this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
     };
+    DataManager.prototype.updateRoomAccessForUser = function (data) {
+        console.info(JSON.stringify(data));
+        var arr = JSON.parse(JSON.stringify(data.roomAccess));
+        this.myProfile.roomAccess.forEach(function (value) {
+            if (value.roomId === arr[0].roomId) {
+                value.accessTime = arr[0].accessTime;
+                return;
+            }
+        });
+    };
     DataManager.prototype.setMembers = function (data) {
     };
     DataManager.prototype.setCompanyInfo = function (data) {
@@ -1010,7 +1035,6 @@ var DataManager = (function () {
             if (!_this.orgMembers[value._id]) {
                 _this.orgMembers[value._id] = value;
             }
-            console.log("org_member: ", value);
         });
     };
     ;
@@ -1021,7 +1045,6 @@ var DataManager = (function () {
             if (!_this.orgGroups[value._id]) {
                 _this.orgGroups[value._id] = value;
             }
-            console.log("org_group: ", value);
         });
     };
     ;
@@ -1032,7 +1055,6 @@ var DataManager = (function () {
             if (!_this.projectBaseGroups[value._id]) {
                 _this.projectBaseGroups[value._id] = value;
             }
-            console.log("project_base_groups: ", value);
         });
     };
     ;
@@ -1043,11 +1065,30 @@ var DataManager = (function () {
             if (!_this.privateGroups[value._id]) {
                 _this.privateGroups[value._id] = value;
             }
-            console.log("private_groups: ", value);
         });
     };
     ;
     return DataManager;
+})();
+var MessageType;
+(function (MessageType) {
+    MessageType[MessageType["Text"] = 0] = "Text";
+    MessageType[MessageType["Image"] = 1] = "Image";
+    MessageType[MessageType["Video"] = 2] = "Video";
+    MessageType[MessageType["Voice"] = 3] = "Voice";
+    MessageType[MessageType["Location"] = 4] = "Location";
+    MessageType[MessageType["Sticker"] = 5] = "Sticker";
+})(MessageType || (MessageType = {}));
+;
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+})();
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
 })();
 /**
  * Created by nattapon on 7/17/15 AD.
@@ -1133,16 +1174,54 @@ var OrgMember = (function () {
     }
     return OrgMember;
 })();
-var HashGenerator = (function () {
-    function HashGenerator() {
+var SecureService = (function () {
+    function SecureService() {
+        this.key = "CHITCHAT!@#$%^&*()_+|===";
+        this.passiv = "ThisIsUrPassword";
     }
-    HashGenerator.prototype.hashCompute = function (content, callback) {
+    SecureService.prototype.hashCompute = function (content, callback) {
         require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
             var hash = CryptoJS.MD5(content);
             var md = hash.toString(CryptoJS.enc.Hex);
             callback(null, md);
         });
     };
-    return HashGenerator;
+    SecureService.prototype.encryption = function (content, callback) {
+        var self = this;
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            var ciphertext = CryptoJS.AES.encrypt(content, self.key);
+            callback(null, ciphertext.toString());
+        });
+    };
+    SecureService.prototype.decryption = function (content, callback) {
+        var self = this;
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            //   var words = CryptoJS.enc.Base64.parse(content);
+            var bytes = CryptoJS.AES.decrypt(content, self.key);
+            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            callback(null, plaintext);
+        });
+    };
+    SecureService.prototype.encryptWithSecureRandom = function (content, callback) {
+        var self = this;
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            var ciphertext = CryptoJS.AES.encrypt(content, self.key, { iv: self.passiv });
+            callback(null, ciphertext.toString());
+        });
+    };
+    SecureService.prototype.decryptWithSecureRandom = function (content, callback) {
+        var self = this;
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+            var key = CryptoJS.enc.Utf8.parse(self.key);
+            var iv = CryptoJS.enc.Utf8.parse(self.passiv);
+            var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv });
+            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            if (!!plaintext)
+                callback(null, plaintext);
+            else
+                callback(new Error("cannot decrypt content"), content);
+        });
+    };
+    return SecureService;
 })();
 //# sourceMappingURL=appBundle.js.map

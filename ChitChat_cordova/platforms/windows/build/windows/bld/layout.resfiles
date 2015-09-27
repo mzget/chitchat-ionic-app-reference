@@ -8,8 +8,11 @@ images\Square70x70Logo.scale-100.png
 images\Square71x71Logo.scale-100.png
 images\StoreLogo.scale-100.png
 images\Wide310x150Logo.scale-100.png
+WinJS\js\base.js
 www\cordova.js
 www\cordova_plugins.js
+www\cordova-js-src\exec.js
+www\cordova-js-src\platform.js
 www\css\index.css
 www\css\style.css
 www\favicon.ico
@@ -165,4 +168,3 @@ www\templates\tab-login.html
 www\templates\tabs.html
 www\templates\tab-timeline.html
 www\templates\tab-timeline.html.bak
-www\WinJS\js\base.js

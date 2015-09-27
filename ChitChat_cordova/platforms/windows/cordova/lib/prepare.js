@@ -32,7 +32,7 @@ var ROOT = path.join(__dirname, '..', '..'),
     MANIFEST_WINDOWS    = 'package.windows.appxmanifest',
     MANIFEST_PHONE      = 'package.phone.appxmanifest',
     MANIFEST_WINDOWS10  = 'package.windows10.appxmanifest',
-    BASE_UAP_VERSION    = new Version(10, 0, 10240, 0),
+    BASE_UAP_VERSION    = new Version(10, 0, 10030, 0),
     UAP_RESTRICTED_CAPS = ['enterpriseAuthentication', 'sharedUserCertificates',
                            'documentsLibrary', 'musicLibrary', 'picturesLibrary',
                            'videosLibrary', 'removableStorage', 'internetClientClientServer',
@@ -54,17 +54,18 @@ module.exports.applyPlatformConfig = function() {
     // Apply appxmanifest changes
     [{ fileName: MANIFEST_WINDOWS,   namespacePrefix: 'm2:' },
      { fileName: MANIFEST_WINDOWS8,  namespacePrefix: '' },
-     { fileName: MANIFEST_WINDOWS10, namespacePrefix: 'uap:' },
      { fileName: MANIFEST_PHONE,     namespacePrefix: 'm3:' }].forEach(
         function(manifestFile) {
-            // Break out Windows 10-specific functionality because we also need to
-            // apply UAP versioning to Windows 10 appx-manifests.
-            var isTargetingWin10 = (manifestFile.fileName === MANIFEST_WINDOWS10);
-            updateManifestFile(config, path.join(ROOT, manifestFile.fileName), manifestFile.namespacePrefix, isTargetingWin10);
+            updateManifestFile(config, path.join(ROOT, manifestFile.fileName), manifestFile.namespacePrefix, null);
     });
 
-    if (process.platform === 'win32') {
-        applyUAPVersionToProject(path.join(ROOT, PROJECT_WINDOWS10), getUAPVersions());
+    // Break out Windows 10-specific functionality because we also need to
+    // apply UAP versioning to Windows 10 appx-manifests.
+    var uapVersionInfo = getUAPVersions();
+
+    if (uapVersionInfo) {
+        updateManifestFile(config, path.join(ROOT, MANIFEST_WINDOWS10), 'uap:', uapVersionInfo);
+        applyUAPVersionToProject(path.join(ROOT, PROJECT_WINDOWS10), uapVersionInfo);
     }
 
     copyImages(config);
@@ -126,7 +127,7 @@ module.exports.updateBuildConfig = function(buildConfig) {
     fs.writeFileSync(buildConfigFileName, TEMPLATE + buildConfigXML.write({indent: 2, xml_declaration: false}), 'utf-8');
 };
 
-function updateManifestFile (config, manifestPath, namespacePrefix, isTargetingWin10) {
+function updateManifestFile (config, manifestPath, namespacePrefix, uapVersionInfo) {
     var contents = fs.readFileSync(manifestPath, 'utf-8');
     if(contents) {
         //Windows is the BOM. Skip the Byte Order Mark.
@@ -135,15 +136,15 @@ function updateManifestFile (config, manifestPath, namespacePrefix, isTargetingW
 
     var manifest =  new et.ElementTree(et.XML(contents));
 
-    applyCoreProperties(config, manifest, manifestPath, namespacePrefix, isTargetingWin10);
+    applyCoreProperties(config, manifest, manifestPath, namespacePrefix, !!uapVersionInfo);
     // sort Capability elements as per CB-5350 Windows8 build fails due to invalid 'Capabilities' definition
     sortCapabilities(manifest);
-    applyAccessRules(config, manifest, isTargetingWin10);
+    applyAccessRules(config, manifest, !!uapVersionInfo);
     applyBackgroundColor(config, manifest, namespacePrefix);
     applyToastCapability(config, manifest, namespacePrefix);
 
-    if (isTargetingWin10) {
-        applyTargetPlatformVersion(config, manifest);
+    if (uapVersionInfo) {
+        applyTargetPlatformVersion(config, manifest, uapVersionInfo);
         checkForRestrictedCapabilities(config, manifest);
         ensureUapPrefixedCapabilities(manifest.find('.//Capabilities'));
     }
@@ -153,12 +154,9 @@ function updateManifestFile (config, manifestPath, namespacePrefix, isTargetingW
 }
 
 function applyCoreProperties(config, manifest, manifestPath, xmlnsPrefix, targetWin10) {
-    var version = fixConfigVersion(config.windows_packageVersion() || config.version());
+    var version = fixConfigVersion(config.version());
     var name = config.name();
-    // CB-9450: iOS/Android and Windows Store have an incompatibility here; Windows Store assigns the 
-    // package name that should be used for upload to the store.  However, this can't be set for typical
-    // Cordova apps.  So, we have to create a Windows-specific preference here.
-    var pkgName = config.getPreference('WindowsStoreIdentityName') || config.packageName();
+    var pkgName = config.packageName();
     var author = config.author();
 
     var identityNode = manifest.find('.//Identity');
@@ -184,11 +182,10 @@ function applyCoreProperties(config, manifest, manifestPath, xmlnsPrefix, target
         throw new Error('Invalid manifest file (no <Application> node): ' + manifestPath);
     }
 
-    var baselinePackageName = config.packageName();
-    if (baselinePackageName) {
+    if (pkgName) {
         // 64 symbols restriction goes from manifest schema definition
         // http://msdn.microsoft.com/en-us/library/windows/apps/br211415.aspx
-        var appId = baselinePackageName.length <= 64 ? baselinePackageName : baselinePackageName.substr(0, 64);
+        var appId = pkgName.length <= 64 ? pkgName : pkgName.substr(0, 64);
         app.attrib.Id = appId;
     }
 
@@ -204,24 +201,17 @@ function applyCoreProperties(config, manifest, manifestPath, xmlnsPrefix, target
         (visualElems.attrib.DisplayName = name);
     }
 
-    // CB-9410: Get a display name and publisher display name.  In the Windows Store, certain
-    // strings which are typically used in Cordova aren't valid for Store ingestion.
-    // Here, we check for Windows-specific preferences, and if we find it, prefer that over
-    // the Cordova <widget> areas.
-    var displayName = config.getPreference('WindowsStoreDisplayName') || name;
-    var publisherName = config.getPreference('WindowsStorePublisherName') || author;
-
     // Update properties
     var properties = manifest.find('.//Properties');
     if (properties && properties.find) {
         var displayNameElement = properties.find('.//DisplayName');
-        if (displayNameElement && displayName) {
-            displayNameElement.text = displayName;
+        if (displayNameElement && name) {
+            displayNameElement.text = name;
         }
 
         var publisherNameElement = properties.find('.//PublisherDisplayName');
-        if (publisherNameElement && publisherName) {
-            publisherNameElement.text = publisherName;
+        if (publisherNameElement && author) {
+            publisherNameElement.text = author;
         }
     }
 
@@ -589,9 +579,6 @@ function applyBackgroundColor (config, manifest, xmlnsPrefix) {
 }
 
 function applyUAPVersionToProject(projectFilePath, uapVersionInfo) {
-    // No uapVersionInfo means that there is no UAP SDKs installed and there is nothing to do for us
-    if (!uapVersionInfo) return;
-
     var fileContents = fs.readFileSync(projectFilePath).toString().trim();
     var xml = et.parse(fileContents);
     var tpv = xml.find('./PropertyGroup/TargetPlatformVersion');
@@ -603,7 +590,7 @@ function applyUAPVersionToProject(projectFilePath, uapVersionInfo) {
     fs.writeFileSync(projectFilePath, xml.write({ indent: 4 }), {});
 }
 
-function applyTargetPlatformVersion(config, manifest) {
+function applyTargetPlatformVersion(config, manifest, uapVersionInfo) {
     var dependencies = manifest.find('./Dependencies');
     while (dependencies.len() > 0) {
         dependencies.delItem(0);

@@ -8,10 +8,10 @@
     For more information on package manifest files, see http://go.microsoft.com/fwlink/?LinkID=241727
   -->
   <Identity Name="com.ahoostudio.spartantalk" Publisher="CN=Apache Cordova Team" Version="1.0.0.0" ProcessorArchitecture="neutral" />
-  <mp:PhoneIdentity PhoneProductId="456161e0-641c-11e5-8bbd-1d8ae9b4ba75" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <mp:PhoneIdentity PhoneProductId="d967efe0-64d4-11e5-97b6-c3aede9e6825" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ChitChat</DisplayName>
-    <PublisherDisplayName>Apache Cordova Team</PublisherDisplayName>
+    <PublisherDisplayName>AhooStudio</PublisherDisplayName>
     <Logo>images\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -33,6 +33,8 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <DeviceCapability Name="webcam" />
+    <DeviceCapability Name="microphone" />
   </Capabilities>
   <build:Metadata>
     <build:Item Name="SharedGUID" Value="9ebdb27f-d75b-4d8c-b53f-7be4a1fe89f9" />

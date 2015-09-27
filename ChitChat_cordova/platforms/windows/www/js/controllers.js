@@ -1,8 +1,9 @@
 ﻿var myprofile;
 var date = new Date();
 var now;
-var chatmessage;
+var chatMessages = [];
 var newchatmessage;
+var currentRoom;
 
 angular.module('starter.controllers', [])
 
@@ -65,20 +66,51 @@ angular.module('starter.controllers', [])
 	$scope.members_length = members.length;
 	
 			
-    $scope.toggle = function(chatId) {    
-		if( localStorage[chatId] )
-			chatmessage = JSON.parse(localStorage[chatId]);
-		else
-			chatmessage = '';			
-		console.log( 'local messages : '+localStorage[chatId] );
-    
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+
+	    var chatLog = localStorage.getItem(chatId);
+	    console.log('local chatLog : ' + chatLog);
+	    if (!!chatLog) {
+	        if (JSON.stringify(chatLog) === "") {
+	            chatMessages = [];
+	        }
+	        else {
+	            var arr_fromLog = JSON.parse(chatLog);
+	            if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
+	                chatMessages = [];
+	            }
+	            else {
+	                arr_fromLog.forEach(msg => {
+	                    var messageImp = msg;
+	                    if (messageImp.type === ContentType[ContentType.Text]) {
+	                        console.log(messageImp.body);
+	                        main.decodeService(messageImp.body, (err, res) => {
+	                            if (err)
+	                                chatMessages.push(messageImp);
+	                            else {
+	                                messageImp.body = res;
+	                                chatMessages.push(messageImp);
+	                            }
+	                        });
+	                    }
+	                    else {
+	                        chatMessages.push(msg);
+	                    }
+ 	                });
+	            }
+	        }
+	    }
+	    else
+	        chatMessages = [];
+
+	    console.log("before join", JSON.stringify(chatMessages));
 		server.JoinChatRoomRequest(chatId, function(err, res){
 			console.log('----------------------------------------------');
-			console.log(res);
+			console.log(res.code);
 
 			if( res.code == 200 )
 			{
-				console.log('Code 200');
 				access = date.toISOString();
 				
 				allRoomAccess = myprofile.roomAccess.length;
@@ -91,22 +123,34 @@ angular.module('starter.controllers', [])
 				//now = date.toISOString();
 				//access = '2015-09-24T08:00:00.000Z';
 				
-				chatroom.getChatHistory(chatId, access, function(err, res){
-					console.log('new '+res.length);
+				chatroom.getChatHistory(chatId, access, function(err, histories){
 					members = main.getDataManager().orgMembers;
-					console.log(res);
 					
-					res_length = res.length;
-					if( res_length > 0 )
+					var his_length = histories.length;
+					if (his_length > 0)
 					{
-						chatmessage_length = chatmessage.length;
-						for(i=0; i<res_length; i++)
+						var chatMessages_length = chatMessages.length;
+						for(i=0; i< his_length; i++)
 						{
-							chatmessage[chatmessage_length+i] = res[i];
+						    var chatMessageImp = JSON.parse(JSON.stringify(histories[i]));
+						    if (chatMessageImp.type === ContentType[ContentType.Text]) {
+						        main.decodeService(chatMessageImp.body, (err, res) => {
+						            console.warn(res)
+						            if (err) {
+						                chatMessages.push(chatMessageImp);
+						            }
+						            else {
+						                chatMessageImp.body = res;
+						                chatMessages.push(chatMessageImp);
+						            }
+						        });
+						    }
+						    else {
+						        chatMessages.push(histories[i]);
+						    }
 						}
-						//newchatmessage = res;
-						localStorage[chatId] = JSON.stringify(chatmessage);
-						//console.log(localStorage[chatId]);
+
+						localStorage.setItem(chatId, JSON.stringify(chatMessages));
 					}
 					
 					location.href = '#/tab/message/'+chatId;
@@ -127,8 +171,6 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members, members.length);
 	$scope.members_length = members.length;
-	
-	
 })
 
 
@@ -154,7 +196,7 @@ angular.module('starter.controllers', [])
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
 	
-	chat = chatmessage;
+    chat = chatMessages;
 	for(i=0; i<chat.length; i++)
 	{
 		chat[i]['sender_displayname'] = members[chat[i]['sender']]['displayname'];
@@ -205,7 +247,12 @@ function groupMembers(members, size)
 
 function back()
 {
-	javascript:history.back();
+    server.LeaveChatRoomRequest(currentRoom, function (err, res) {
+        console.log("leave room", JSON.stringify(res))
+    });
+    currentRoom = "";
+
+    javascript: history.back();
 	$('#send_message').css({'display':'none'});
 	$('#chatroom_back').css({'display':'none'});
 }

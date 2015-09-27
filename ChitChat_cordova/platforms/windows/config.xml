@@ -16,7 +16,7 @@
     <splash height="1920" src="res/screens/windows/SplashScreenPhone.scale-240.png" width="1152" />
     <name>ChitChat</name>
     <description>A blank project that uses Apache Cordova to help you build an app that targets multiple mobile platforms: Android, iOS, Windows, and Windows Phone.</description>
-    <author email="dev@cordova.apache.org" href="http://cordova.io">Apache Cordova Team</author>
+    <author email="dev@cordova.apache.org" href="http://cordova.io">AhooStudio</author>
     <content src="index.html" />
     <access origin="*" />
     <vs:features />

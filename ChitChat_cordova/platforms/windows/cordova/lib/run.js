@@ -22,8 +22,8 @@ var Q = require('q'),
     path  = require('path'),
     build = require('./build'),
     utils = require('./utils'),
-    packages = require('./package'),
-    execSync = require('child_process').execSync;
+    ConfigParser = require('./ConfigParser'),
+    packages = require('./package');
 
 var ROOT = path.join(__dirname, '..', '..');
 
@@ -32,15 +32,10 @@ module.exports.run = function (argv) {
         return Q.reject('Could not find project at ' + ROOT);
     }
 
-    // Check if ran from admin prompt and fail quickly if CLI has administrative permissions
-    // http://stackoverflow.com/a/11995662/64949
-    if (ranWithElevatedPermissions())
-        return Q.reject('Can not run this platform with administrative permissions. Please run from a non-admin prompt.');
-
     // parse arg
     var args  = nopt({'debug': Boolean, 'release': Boolean, 'nobuild': Boolean,
         'device': Boolean, 'emulator': Boolean, 'target': String, 'archs': String,
-        'phone': Boolean, 'win': Boolean, 'appx': String, 'win10tools': Boolean }, {'r' : '--release'}, argv);
+        'phone': Boolean, 'win': Boolean, 'appx': String}, {'r' : '--release'}, argv);
 
     // Validate args
     if (args.debug && args.release) {
@@ -56,62 +51,92 @@ module.exports.run = function (argv) {
     // Get build/deploy options
     var buildType    = args.release ? 'release' : 'debug',
         buildArchs   = args.archs ? args.archs.split(' ') : ['anycpu'],
-        deployTarget = args.target ? args.target : (args.emulator ? 'emulator' : 'device');
+        projectType  = args.phone ? 'phone' : 'windows',
+        deployTarget = args.target ? args.target : (args.emulator ? 'emulator' : 'device'),
+        projOverride = args.appx;
 
-     var buildTargets = build.getBuildTargets(args.win, args.phone, args.appx);
+    // for win switch we should correctly handle 8.0 and 8.1 version as per configuration
+    // as well as 10
+    var targetWindowsVersion = getWindowsTargetVersion();
+    if (projectType == 'windows') {
+        if (targetWindowsVersion == '8.0') {
+            projectType = 'windows80';
+        }
+        else if (targetWindowsVersion === '10.0') {
+            projectType = 'windows10';
+        }
+    }
+    else if (projectType === 'phone') {
+        if (targetWindowsVersion === '10.0' || targetWindowsVersion === 'UAP') {
+            projectType = 'windows10';
+        }
+    }
 
-     if (!buildTargets || buildTargets.lenght <= 0) {
-         return Q.reject('Unable to determine deploy target.');
-     }
+    if (projOverride) {
+        switch (projOverride) {
+            case '8.1-phone':
+                projectType = 'phone';
+                targetWindowsVersion = '8.1';
+                break;
+            case '8.1-win':
+                projectType = 'windows';
+                targetWindowsVersion = '8.1';
+                break;
+            case 'uap':
+                projectType = 'windows10';
+                break;
+            default:
+                console.warn('Unrecognized --appx parameter passed to run: "' + projOverride + '", ignoring.');
+                break;
+        }
+    }
 
-     // we deploy the first build target so we use buildTargets[0] to determine
-     // what project type we should deploy
-     var projectType = projFileToType(buildTargets[0]);
-
-    if (projectType === 'windows80' && argv.indexOf('--bundle') > -1) {
-        // Don't enable bundling for Windows 8.
-        // Assumes the commander only enters the --bundle param once
-        argv.splice(argv.indexOf('--bundle'), 1);
+    if (projectType == 'windows' && getWindowsTargetVersion() == '8.0') {
+        console.log('Warning: windows8 has been deprecated.  Please update you project to target windows8.1');
+        projectType = 'windows80';
     }
 
     // if --nobuild isn't specified then build app first
-    var buildPackages = args.nobuild ? packages.getPackage(projectType, buildType, buildArchs) : build.run(argv);
+    var buildPackages = args.nobuild ? Q() : build.run(argv);
 
-    // buildPackages also deploys bundles
-    return buildPackages.then(function(pkg) {
+    return buildPackages.then(function () {
+        return packages.getPackage(projectType, buildType, buildArchs[0]);
+    }).then(function(pkg) {
         console.log('\nDeploying ' + pkg.type + ' package to ' + deployTarget + ':\n' + pkg.appx);
         switch (pkg.type) {
             case 'phone':
-                return packages.deployToPhone(pkg, deployTarget, args.win10tools).catch(function(e) {
+                return packages.deployToPhone(pkg, deployTarget, false).catch(function(e) {
                     if (args.target || args.emulator || args.device) {
                         throw e; // Explicit target, carry on
                     }
+                    
                     // 'device' was inferred initially, because no target was specified
-                    return packages.deployToPhone(pkg, 'emulator', args.win10tools);
+                    return packages.deployToPhone(pkg, 'emulator', false);
                 });
+                
             case 'windows10':
                 if (args.phone) {
                     // Win10 emulator launch is not currently supported, always force device
                     if (args.emulator || args.target === 'emulator') {
-                        console.warn('Windows 10 Phone emulator is currently not supported.');
-                        console.warn('If you want to deploy to emulator, please use Visual Studio instead.');
-                        console.warn('Attempting to deploy to device...');
+                        console.warn('Windows 10 Phone emulator is not currently supported, attempting deploy to device.');
                     }
-                    return packages.deployToPhone(pkg, deployTarget, true);
+                    return packages.deployToPhone(pkg, 'device', true);
                 }
                 else {
                     return packages.deployToDesktop(pkg, deployTarget, projectType);
                 }
-                break;
+            
+                break;    
             default: // 'windows'
                 return packages.deployToDesktop(pkg, deployTarget, projectType);
+                
         }
     });
 };
 
 module.exports.help = function () {
     console.log('\nUsage: run [ --device | --emulator | --target=<id> ] [ --debug | --release | --nobuild ]');
-    console.log('           [ --x86 | --x64 | --arm | --archs="list" ] [--bundle] [--phone | --win]');
+    console.log('           [ --x86 | --x64 | --arm ] [--phone | --win]');
     console.log('    --device      : Deploys and runs the project on the connected device.');
     console.log('    --emulator    : Deploys and runs the project on an emulator.');
     console.log('    --target=<id> : Deploys and runs the project on the specified target.');
@@ -119,17 +144,12 @@ module.exports.help = function () {
     console.log('    --release     : Builds project in release mode.');
     console.log('    --nobuild     : Uses pre-built package, or errors if project is not built.');
     console.log('    --archs       : Specific chip architectures (`anycpu`, `arm`, `x86`, `x64`).');
-    console.log('                        Separate multiple choices with a space and, if choosing');
-    console.log('                        multiple choices, enclose in quotes (").');
-    console.log('    --bundle      : Generates an .appxbundle. Not valid if anycpu AND chip-specific');
-    console.log('                    architectures are used.');
     console.log('    --phone, --win');
     console.log('                  : Specifies project type to deploy');
     console.log('    --appx=<8.1-win|8.1-phone|uap>');
     console.log('                  : Overrides windows-target-version to build Windows 8.1, ');
     console.log('                              Windows Phone 8.1, or Windows 10.');
-    console.log('    --win10tools  : Uses Windows 10 deployment tools (used for a Windows 8.1 app when');
-    console.log('                         being deployed to a Windows 10 device)');
+    console.log('');
     console.log('Examples:');
     console.log('    run');
     console.log('    run --emulator');
@@ -137,35 +157,26 @@ module.exports.help = function () {
     console.log('    run --target=7988B8C3-3ADE-488d-BA3E-D052AC9DC710');
     console.log('    run --device --release');
     console.log('    run --emulator --debug');
-    console.log('    run --archs="x64 x86 arm" --no-bundle');
     console.log('    run --device --appx=phone-8.1');
-    console.log('    run --device --archs="x64 x86 arm"');
     console.log('');
 
     process.exit(0);
 };
 
-// Retrieves project type for the project file specified.
-// @param   {String}  projFile Project file, for example 'CordovaApp.Windows10.jsproj'
-// @returns {String}  Proejct type, for example 'windows10'
-function projFileToType(projFile) 
-{
-    return projFile.replace(/CordovaApp|jsproj|\./gi, '').toLowerCase();
-}
 
-/**
- * Checks if current process is an with administrative permissions (e.g. from
- *   elevated command prompt).
- *
- * @return  {Boolean}  true if elevated permissions detected, otherwise false
- */
-function ranWithElevatedPermissions () {
-    try {
-        // Check if ran from admin prompt and fail quickly if CLI has administrative permissions
-        // http://stackoverflow.com/a/11995662/64949
-        execSync('net session', {'stdio': 'ignore'});
-        return true;
-    } catch (e) {
-        return false;
+function getWindowsTargetVersion() {
+    var config = new ConfigParser(path.join(ROOT, 'config.xml'));
+    var windowsTargetVersion = config.getWindowsTargetVersion();
+    switch(windowsTargetVersion) {
+        case '8':
+        case '8.0':
+            return '8.0';
+        case '8.1':
+            return '8.1';
+        case '10.0':
+        case 'UAP':
+            return '10.0';
+        default:
+            throw new Error('Unsupported windows-target-version value: ' + windowsTargetVersion);
     }
 }

@@ -41,10 +41,6 @@
     <PropertyGroup Label="Globals">
         <ProjectGuid>31b67a35-9503-4213-857e-f44eb42ae549</ProjectGuid>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(CordovaBundlePlatforms)' != ''" Label="CordovaBuildParameters">
-        <AppxBundle>Always</AppxBundle>
-        <AppxBundlePlatforms>$(CordovaBundlePlatforms)</AppxBundlePlatforms>
-    </PropertyGroup>
     <Import Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
     <PropertyGroup Condition="'$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0'">
         <VisualStudioVersion>12.0</VisualStudioVersion>
@@ -69,9 +65,11 @@
     <Import Label="Shared" Project="CordovaApp.projitems" />
     <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\$(WMSJSProjectDirectory)\Microsoft.VisualStudio.$(WMSJSProject).targets" />
     <PropertyGroup>
+    </PropertyGroup>
+    <PropertyGroup>
         <PreBuildEvent>
       cd /d $(MSBuildThisFileDirectory)
-      node -e "require('C:\\Users\\nattapon\\AppData\\Roaming\\npm\\node_modules\\vs-tac\\lib\\hooks.js').updateAppxManifest('E:\\Documents\\chitchat-ios\\ChitChat_cordova\\platforms\\windows','E:\\Documents\\chitchat-ios\\ChitChat_cordova\\platforms\\windows\\..\\..\\')"
+      node -e "require('C:\\Users\\nattapon\\AppData\\Roaming\\npm\\node_modules\\vs-tac\\lib\\hooks.js').updateAppxManifest('C:\\Users\\nattapon\\Documents\\chitchat-ios\\ChitChat_cordova\\platforms\\windows','C:\\Users\\nattapon\\Documents\\chitchat-ios\\ChitChat_cordova\\platforms\\windows\\..\\..\\')"
     </PreBuildEvent>
     </PropertyGroup>
 </Project>
