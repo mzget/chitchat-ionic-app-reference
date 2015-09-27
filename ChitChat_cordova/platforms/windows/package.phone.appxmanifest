@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
     <Identity Name="com.ahoostudio.spartantalk" Publisher="CN=$username$" Version="1.0.0.0" />
-    <mp:PhoneIdentity PhoneProductId="456161e0-641c-11e5-8bbd-1d8ae9b4ba75" PhonePublisherId="db093ed5-53b1-45f7-af72-751e8f36ab80" />
+    <mp:PhoneIdentity PhoneProductId="d967efe0-64d4-11e5-97b6-c3aede9e6825" PhonePublisherId="db093ed5-53b1-45f7-af72-751e8f36ab80" />
     <Properties>
         <DisplayName>ChitChat</DisplayName>
-        <PublisherDisplayName>Apache Cordova Team</PublisherDisplayName>
+        <PublisherDisplayName>AhooStudio</PublisherDisplayName>
         <Logo>images\StoreLogo.png</Logo>
     </Properties>
     <Prerequisites>

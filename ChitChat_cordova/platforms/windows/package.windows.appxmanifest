@@ -3,7 +3,7 @@
     <Identity Name="com.ahoostudio.spartantalk" Publisher="CN=$username$" Version="1.0.0.0" />
     <Properties>
         <DisplayName>ChitChat</DisplayName>
-        <PublisherDisplayName>Apache Cordova Team</PublisherDisplayName>
+        <PublisherDisplayName>AhooStudio</PublisherDisplayName>
         <Logo>images\StoreLogo.png</Logo>
     </Properties>
     <Prerequisites>
