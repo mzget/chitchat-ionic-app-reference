@@ -1,10 +1,10 @@
 angular.module('starter.services', [])
 
 .factory('Chats', function() {
-	// Might use a resource here that returns a JSON array
+    // Might use a resource here that returns a JSON array
 
 	// Some fake testing data
-    var chats = (chatRoomControl.chatMessages) ? chatRoomControl.chatMessages : [];
+    var chats = chatRoomControl.chatMessages;
 
 	return {
 		all: function() {
