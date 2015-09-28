@@ -1,16 +1,17 @@
 ﻿var myprofile;
 var date = new Date();
 var now;
-var chatMessages = [];
 var newchatmessage;
+var chatRoomControl;
 var currentRoom;
+var chatMessages;
 
 angular.module('starter.controllers', [])
 
 // GROUP
 .controller('GroupCtrl', function($scope, Chats) {
 
-	console.log( localStorage['55d177c2d20212737c46c685'] );
+    console.log(localStorage['55d177c2d20212737c46c685']);
 	
 	$scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
@@ -64,12 +65,15 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
-	
+
+	chatRoomControl = new ChatRoomController();
+	main.dataListener.addListenerImp(chatRoomControl);
 			
 	$scope.toggle = function (chatId) {
 	    currentRoom = chatId;
 
-	    chatMessages = [];
+	    console.log(chatRoomControl.chatMessages.length)
+	    chatMessages = chatRoomControl.chatMessages;
 	    var chatLog = localStorage.getItem(chatId);
 	    console.log('local chatLog : ' + chatLog);
 	    async.waterfall([
@@ -169,6 +173,7 @@ angular.module('starter.controllers', [])
 	                                cb();
 	                            }
 	                        }, function (err) {
+	                            localStorage.removeItem(chatId);
 	                            localStorage.setItem(chatId, JSON.stringify(chatMessages));
 
 	                            location.href = '#/tab/message/' + chatId;
@@ -272,13 +277,16 @@ function groupMembers(members, size)
 function back()
 {
     server.LeaveChatRoomRequest(currentRoom, function (err, res) {
-        console.log("leave room", JSON.stringify(res))
+        console.log("leave room", JSON.stringify(res));
+        localStorage.removeItem(currentRoom);
+        localStorage.setItem(currentRoom, JSON.stringify(chatMessages));
+        console.warn("save", currentRoom,JSON.stringify(chatMessages));
+
+        currentRoom = "";
+        chatRoomControl.chatMessages = [];
     });
-    currentRoom = "";
 
     javascript: history.back();
 	$('#send_message').css({'display':'none'});
 	$('#chatroom_back').css({'display':'none'});
 }
-
-
