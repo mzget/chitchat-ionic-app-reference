@@ -836,6 +836,7 @@ var ChatRoomController = (function () {
     }
     ChatRoomController.prototype.onChat = function (chatMessageImp) {
         var _this = this;
+        console.log("Implement chat msg hear..", chatMessageImp);
         var secure = new SecureService();
         if (chatMessageImp.type === ContentType[ContentType.Text]) {
             secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
@@ -852,6 +853,14 @@ var ChatRoomController = (function () {
         else {
             this.chatMessages.push(chatMessageImp);
         }
+    };
+    ChatRoomController.prototype.onLeaveRoom = function (data) {
+    };
+    ChatRoomController.prototype.onRoomJoin = function (data) {
+    };
+    ChatRoomController.prototype.onMessageRead = function (dataEvent) {
+    };
+    ChatRoomController.prototype.onGetMessagesReaders = function (dataEvent) {
     };
     return ChatRoomController;
 })();
@@ -887,18 +896,24 @@ var DataListener = (function () {
     DataListener.prototype.onUserUpdateProfile = function (dataEvent) {
     };
     DataListener.prototype.onChatData = function (data) {
-        console.log("Implement chat msg hear..", JSON.stringify(data));
         var chatMessageImp = JSON.parse(JSON.stringify(data));
         this.listenerImp.onChat(chatMessageImp);
     };
     ;
-    DataListener.prototype.onLeaveRoom = function (data) { };
+    DataListener.prototype.onLeaveRoom = function (data) {
+        this.listenerImp.onLeaveRoom(data);
+    };
     ;
-    DataListener.prototype.onRoomJoin = function (data) { };
+    DataListener.prototype.onRoomJoin = function (data) {
+    };
     ;
-    DataListener.prototype.onMessageRead = function (dataEvent) { };
+    DataListener.prototype.onMessageRead = function (dataEvent) {
+        this.listenerImp.onMessageRead(dataEvent);
+    };
     ;
-    DataListener.prototype.onGetMessagesReaders = function (dataEvent) { };
+    DataListener.prototype.onGetMessagesReaders = function (dataEvent) {
+        this.listenerImp.onGetMessagesReaders(dataEvent);
+    };
     ;
     return DataListener;
 })();

@@ -51,13 +51,21 @@
     //<!-- chat room data listener.
 
     onChatData(data) {
-        console.log("Implement chat msg hear..", JSON.stringify(data));
-
         var chatMessageImp = JSON.parse(JSON.stringify(data));
         this.listenerImp.onChat(chatMessageImp);
     };
-    onLeaveRoom(data) { };
-    onRoomJoin(data) { };
-    onMessageRead(dataEvent) { };
-    onGetMessagesReaders(dataEvent) { };
+    onLeaveRoom(data) {
+        this.listenerImp.onLeaveRoom(data);
+    };
+    onRoomJoin(data) {
+
+    };
+
+    onMessageRead(dataEvent) {
+        this.listenerImp.onMessageRead(dataEvent);
+    };
+
+    onGetMessagesReaders(dataEvent) {
+        this.listenerImp.onGetMessagesReaders(dataEvent);
+    };
 }
