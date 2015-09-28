@@ -23,12 +23,28 @@
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
   </platform>
-  <platform name="android">
-    <icon src="res/icons/android/icon-36-ldpi.png" density="ldpi" />
-    <icon src="res/icons/android/icon-48-mdpi.png" density="mdpi" />
-    <icon src="res/icons/android/icon-72-hdpi.png" density="hdpi" />
-    <icon src="res/icons/android/icon-96-xhdpi.png" density="xhdpi" />
+  <platform name="ios">
+    <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+    <array>
+      <key>NSAppTransportSecurity</key>
+      <dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+          <key>animation-genius.com</key>
+          <dict>
+            <key>NSExceptionAllowsInsecureHTTPLoads</key>
+            <true/>
+            <key>NSIncludesSubdomains</key>
+            <true/>
+            <key>NSExceptionMinimumTLSVersion</key>
+            <string>TLSv1.1</string>
+          </dict>
+        </dict>
+      </dict>
+    </array>
+    </config-file>
   </platform>
+  
   <platform name="ios">
     <!-- iOS 8.0+ -->
     <!-- iPhone 6 Plus  -->
@@ -57,33 +73,6 @@
     <icon src="res/icons/ios/icon-50.png" width="50" height="50" />
     <icon src="res/icons/ios/icon-50-2x.png" width="100" height="100" />
   </platform>
-  <platform name="windows">
-    <icon src="res/icons/windows/Square150x150Logo.scale-100.png" width="150" height="150" />
-    <icon src="res/icons/windows/Square150x150Logo.scale-240.png" width="360" height="360" />
-    <icon src="res/icons/windows/Square30x30Logo.scale-100.png" width="30" height="30" />
-    <icon src="res/icons/windows/Square310x310Logo.scale-100.png" width="310" height="310" />
-    <icon src="res/icons/windows/Square44x44Logo.scale-240.png" width="106" height="106" />
-    <icon src="res/icons/windows/Square70x70Logo.scale-100.png" width="70" height="70" />
-    <icon src="res/icons/windows/Square71x71Logo.scale-240.png" width="170" height="170" />
-    <icon src="res/icons/windows/StoreLogo.scale-100.png" width="50" height="50" />
-    <icon src="res/icons/windows/StoreLogo.scale-240.png" width="120" height="120" />
-    <icon src="res/icons/windows/Wide310x150Logo.scale-100.png" width="310" height="150" />
-    <icon src="res/icons/windows/Wide310x150Logo.scale-240.png" width="744" height="360" />
-  </platform>
-  <platform name="wp8">
-    <icon src="res/icons/wp8/ApplicationIcon.png" width="62" height="62" />
-    <icon src="res/icons/wp8/Background.png" width="173" height="173" />
-  </platform>
-  <platform name="android">
-    <splash src="res/screens/android/screen-hdpi-landscape.png" density="land-hdpi" />
-    <splash src="res/screens/android/screen-ldpi-landscape.png" density="land-ldpi" />
-    <splash src="res/screens/android/screen-mdpi-landscape.png" density="land-mdpi" />
-    <splash src="res/screens/android/screen-xhdpi-landscape.png" density="land-xhdpi" />
-    <splash src="res/screens/android/screen-hdpi-portrait.png" density="port-hdpi" />
-    <splash src="res/screens/android/screen-ldpi-portrait.png" density="port-ldpi" />
-    <splash src="res/screens/android/screen-mdpi-portrait.png" density="port-mdpi" />
-    <splash src="res/screens/android/screen-xhdpi-portrait.png" density="port-xhdpi" />
-  </platform>
   <platform name="ios">
     <splash src="res/screens/ios/screen-iphone-portrait.png" width="320" height="480" />
     <splash src="res/screens/ios/screen-iphone-portrait-2x.png" width="640" height="960" />
@@ -95,14 +84,6 @@
     <splash src="res/screens/ios/screen-iphone-portrait-667h.png" width="750" height="1334" />
     <splash src="res/screens/ios/screen-iphone-portrait-736h.png" width="1242" height="2208" />
     <splash src="res/screens/ios/screen-iphone-landscape-736h.png" width="2208" height="1242" />
-  </platform>
-  <platform name="windows">
-    <splash src="res/screens/windows/SplashScreen.scale-100.png" width="620" height="300" />
-    <splash src="res/screens/windows/SplashScreen.scale-240.png" width="1152" height="1920" />
-    <splash src="res/screens/windows/SplashScreenPhone.scale-240.png" width="1152" height="1920" />
-  </platform>
-  <platform name="wp8">
-    <splash src="res/screens/wp8/SplashScreenImage.jpg" width="480" height="800" />
   </platform>
   <preference name="Fullscreen" value="True" />
   <preference name="KeepRunning" value="True" />
