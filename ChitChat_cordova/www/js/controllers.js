@@ -1,5 +1,4 @@
-﻿var webserver = 'http://stalk.animation-genius.com';
-var myprofile;
+﻿var myprofile;
 var date = new Date();
 var now;
 var newchatmessage;
@@ -50,8 +49,6 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
-				
-	$scope.toggle = getChatmessages; 
 })
 .controller('GroupPrivateCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().privateGroups[$stateParams.chatId];
@@ -60,8 +57,6 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
-				
-	$scope.toggle = getChatmessages; 
 })
 .controller('GroupOrggroupsCtrl', function($scope, $stateParams) {	
 	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
@@ -70,8 +65,11 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
-				
-	$scope.toggle = getChatmessages; 
+
+	chatRoomControl = new ChatRoomController();
+	main.dataListener.addListenerImp(chatRoomControl);
+			
+	$scope.toggle = getMessage; 
 })
 .controller('GroupDetailCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
@@ -125,6 +123,14 @@ angular.module('starter.controllers', [])
 	$scope.chat = chat;
 	$('#send_message').css({'display':'inline-block'});
 	$('#chatroom_back').css({'display':'inline-block'});
+	
+	
+	$('#send_message button').click(function(){
+		console.log( $('#send_message input').val() );		
+		
+		// Clear
+		$('#send_message input').val('')
+	});	
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
@@ -176,13 +182,12 @@ function back()
 	$('#chatroom_back').css({'display':'none'});
 }
 
-function getChatmessages(chatId) {
-	// Clear chatLog
-	localStorage.setItem(chatId, []);
-	
+
+function getMessage(chatId) {
 	currentRoom = chatId;
 
-	chatMessages = [];
+	//console.log(chatRoomControl.chatMessages.length)
+	chatMessages = chatRoomControl.chatMessages;
 	var chatLog = localStorage.getItem(chatId);
 	//console.log('local chatLog : ' + chatLog);
 	async.waterfall([
@@ -237,24 +242,23 @@ function getChatmessages(chatId) {
 	], function (err, res) {
 		server.JoinChatRoomRequest(chatId, function (err, res) {
 			if (res.code == 200) {
-			
-				// get access time
 				access = date.toISOString();
+
 				allRoomAccess = myprofile.roomAccess.length;
-				for (i=0; i<allRoomAccess; i++) {
+				for (i = 0; i < allRoomAccess; i++) {
 					if (myprofile.roomAccess[i].roomId == chatId)
 						access = myprofile.roomAccess[i].accessTime;
 				}
 
 				//now = date.toISOString();
-				access = '2015-09-24T08:00:00.000Z';
+				//access = '2015-09-24T08:00:00.000Z';
 
 				chatroom.getChatHistory(chatId, access, function (err, result) {
 					var histories = [];
 					if (result.code === 200) {
 						histories = result.data;
 					} else {
-						console.warn("WTF god only know.", result.message);
+						//console.warn("WTF god only know.", result.message);
 					}
 
 					members = main.getDataManager().orgMembers;
@@ -268,7 +272,6 @@ function getChatmessages(chatId) {
 							if (chatMessageImp.type === ContentType[ContentType.Text]) {
 								main.decodeService(chatMessageImp.body, function(err, res) {
 									if (!err) {
-										console.log(res);
 										chatMessageImp.body = res;
 										chatMessages.push(chatMessageImp);
 										cb();
@@ -280,11 +283,15 @@ function getChatmessages(chatId) {
 								});
 							}
 							else {
-								console.log(item);
+								if(item.type == 'File')
+								{
+									console.log('file');
+								}
 								chatMessages.push(item);
 								cb();
 							}
 						}, function (err) {
+							localStorage.removeItem(chatId);
 							localStorage.setItem(chatId, JSON.stringify(chatMessages));
 
 							location.href = '#/tab/message/' + chatId;
