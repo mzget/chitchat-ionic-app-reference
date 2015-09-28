@@ -35,7 +35,9 @@
     public encryptWithSecureRandom(content: string, callback: Function) {
         var self = this;
         require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
-            var ciphertext = CryptoJS.AES.encrypt(content, self.key, { iv: self.passiv });
+            var key = CryptoJS.enc.Utf8.parse(self.key);
+            var iv = CryptoJS.enc.Utf8.parse(self.passiv);
+            var ciphertext = CryptoJS.AES.encrypt(content, key, { iv: iv });
 
             callback(null, ciphertext.toString());
         });

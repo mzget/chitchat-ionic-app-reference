@@ -595,7 +595,7 @@ module ChatServer {
             var message: IDictionary = {};
             message["rid"] = room_id;
             message["content"] = content;
-            message["from"] = sender_id;
+            message["sender"] = sender_id;
             message["target"] = target;
             message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, (result) => {
@@ -613,7 +613,7 @@ module ChatServer {
             var message: IDictionary = {};
             message["rid"] = room_id;
             message["content"] = fileUrl;
-            message["from"] = sender_id;
+            message["sender"] = sender_id;
             message["target"] = target;
             message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, (result) => {

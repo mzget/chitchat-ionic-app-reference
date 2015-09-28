@@ -9,7 +9,7 @@ var chatMessages;
 angular.module('starter.controllers', [])
 
 // GROUP
-.controller('GroupCtrl', function($scope, Chats) {
+.controller('GroupCtrl', function($scope) {
 
     console.log(localStorage['55d177c2d20212737c46c685']);
 	
@@ -91,7 +91,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ChatsCtrl', function($scope, Chats) {
+.controller('ChatsCtrl', function($scope) {
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
 	// To listen for when this page is active (for example, to refresh data),
@@ -120,14 +120,29 @@ angular.module('starter.controllers', [])
 			chat[i]['msgowner'] = 'other';
 	}
 		
-	$scope.chat = chat;
+	$scope.chat = Chats.all();
 	$('#send_message').css({'display':'inline-block'});
 	$('#chatroom_back').css({'display':'inline-block'});
 	
 	
 	$('#send_message button').click(function(){
-		console.log( $('#send_message input').val() );		
-		
+	    var content = $('#send_message input').val();
+	    main.encodeService(content, (err, result) => {
+	        if (err) {
+	            console.error(err);
+	        }
+	        else {
+	            var myId = main.getDataManager().myProfile._id;
+	            chatRoomApi.chat(currentRoom, "*", myId, result, ContentType[ContentType.Text], (err, res) => {
+	                if (err || res === null) {
+	                    console.warn("send message fail.");
+	                }
+	                else {
+	                    console.log("send message:", res);
+	                }
+	            });
+	        }
+	    });
 		// Clear
 		$('#send_message input').val('')
 	});	
@@ -253,7 +268,7 @@ function getMessage(chatId) {
 				//now = date.toISOString();
 				//access = '2015-09-24T08:00:00.000Z';
 
-				chatroom.getChatHistory(chatId, access, function (err, result) {
+				chatRoomApi.getChatHistory(chatId, access, function (err, result) {
 					var histories = [];
 					if (result.code === 200) {
 						histories = result.data;

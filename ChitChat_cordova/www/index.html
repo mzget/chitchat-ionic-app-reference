@@ -37,7 +37,7 @@
 		var socket = io;
 		var main = new Main();
 		var server = new ChatServer.ServerImplemented();
-		var chatroom = new ChatServer.ChatRoomApiProvider();
+		var chatRoomApi = new ChatServer.ChatRoomApiProvider();
 		var authen = server.authenData;
 /* for test cryptoJs lib.
 		main.encodeService("hello", (err, res) => {

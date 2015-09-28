@@ -574,7 +574,7 @@ var ChatServer;
             var message = {};
             message["rid"] = room_id;
             message["content"] = content;
-            message["from"] = sender_id;
+            message["sender"] = sender_id;
             message["target"] = target;
             message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, function (result) {
@@ -589,7 +589,7 @@ var ChatServer;
             var message = {};
             message["rid"] = room_id;
             message["content"] = fileUrl;
-            message["from"] = sender_id;
+            message["sender"] = sender_id;
             message["target"] = target;
             message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, function (result) {
@@ -1129,7 +1129,9 @@ var SecureService = (function () {
     SecureService.prototype.encryptWithSecureRandom = function (content, callback) {
         var self = this;
         require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
-            var ciphertext = CryptoJS.AES.encrypt(content, self.key, { iv: self.passiv });
+            var key = CryptoJS.enc.Utf8.parse(self.key);
+            var iv = CryptoJS.enc.Utf8.parse(self.passiv);
+            var ciphertext = CryptoJS.AES.encrypt(content, key, { iv: iv });
             callback(null, ciphertext.toString());
         });
     };
