@@ -2,10 +2,6 @@
 var username: string = "";
 var password: string = "";
 
-require(['../js/pomelo/pomeloclient'], function (obj) {
-    pomelo = obj;
-});
-
 module ChatServer {
     interface IDictionary {
         [k: string]: string;
@@ -45,6 +41,10 @@ module ChatServer {
         }
 
         constructor() {
+            require(['../js/pomelo/pomeloclient'], function (obj) {
+                pomelo = obj;
+            });
+
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
             var authen = localStorage.getItem("authen");

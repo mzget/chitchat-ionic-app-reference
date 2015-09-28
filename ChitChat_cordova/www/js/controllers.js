@@ -2,16 +2,17 @@
 var myprofile;
 var date = new Date();
 var now;
-var chatMessages = [];
 var newchatmessage;
+var chatRoomControl;
 var currentRoom;
+var chatMessages;
 
 angular.module('starter.controllers', [])
 
 // GROUP
 .controller('GroupCtrl', function($scope, Chats) {
 
-	console.log( localStorage['55d177c2d20212737c46c685'] );
+    console.log(localStorage['55d177c2d20212737c46c685']);
 	
 	$scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
@@ -161,9 +162,14 @@ function groupMembers(members, size)
 function back()
 {
     server.LeaveChatRoomRequest(currentRoom, function (err, res) {
-        console.log("leave room", JSON.stringify(res))
+        console.log("leave room", JSON.stringify(res));
+        localStorage.removeItem(currentRoom);
+        localStorage.setItem(currentRoom, JSON.stringify(chatMessages));
+        console.warn("save", currentRoom,JSON.stringify(chatMessages));
+
+        currentRoom = "";
+        chatRoomControl.chatMessages = [];
     });
-    currentRoom = "";
 
     javascript: history.back();
 	$('#send_message').css({'display':'none'});

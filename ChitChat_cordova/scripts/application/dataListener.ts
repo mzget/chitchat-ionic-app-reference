@@ -1,8 +1,13 @@
 ﻿class DataListener implements Services.IServerListener, Services.IChatServerListener {
     private dataManager: DataManager;
+    private listenerImp;
 
     constructor(dataManager: DataManager) {
         this.dataManager = dataManager;
+    }
+
+    public addListenerImp(listener) {
+        this.listenerImp = listener;
     }
 
     onAccessRoom(dataEvent) {
@@ -49,10 +54,7 @@
         console.log("Implement chat msg hear..", JSON.stringify(data));
 
         var chatMessageImp = JSON.parse(JSON.stringify(data));
-        var secure = new SecureService();
-        secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
-            console.warn(res)
-        })
+        this.listenerImp.onChat(chatMessageImp);
     };
     onLeaveRoom(data) { };
     onRoomJoin(data) { };

@@ -134,9 +134,6 @@ var Main = (function () {
 var pomelo;
 var username = "";
 var password = "";
-require(['../js/pomelo/pomeloclient'], function (obj) {
-    pomelo = obj;
-});
 var ChatServer;
 (function (ChatServer) {
     var AutheData = (function () {
@@ -151,6 +148,9 @@ var ChatServer;
             this._isInit = false;
             this._isConnected = false;
             this._isLogedin = false;
+            require(['../js/pomelo/pomeloclient'], function (obj) {
+                pomelo = obj;
+            });
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
             var authen = localStorage.getItem("authen");
@@ -830,10 +830,38 @@ var Services;
     })();
     Services.AbsServerListener = AbsServerListener;
 })(Services || (Services = {}));
+var ChatRoomController = (function () {
+    function ChatRoomController() {
+        this.chatMessages = [];
+    }
+    ChatRoomController.prototype.onChat = function (chatMessageImp) {
+        var _this = this;
+        var secure = new SecureService();
+        if (chatMessageImp.type === ContentType[ContentType.Text]) {
+            secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
+                if (!err) {
+                    chatMessageImp.body = res;
+                    _this.chatMessages.push(chatMessageImp);
+                }
+                else {
+                    console.log(err, res);
+                    _this.chatMessages.push(chatMessageImp);
+                }
+            });
+        }
+        else {
+            this.chatMessages.push(chatMessageImp);
+        }
+    };
+    return ChatRoomController;
+})();
 var DataListener = (function () {
     function DataListener(dataManager) {
         this.dataManager = dataManager;
     }
+    DataListener.prototype.addListenerImp = function (listener) {
+        this.listenerImp = listener;
+    };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
     };
@@ -861,10 +889,7 @@ var DataListener = (function () {
     DataListener.prototype.onChatData = function (data) {
         console.log("Implement chat msg hear..", JSON.stringify(data));
         var chatMessageImp = JSON.parse(JSON.stringify(data));
-        var secure = new SecureService();
-        secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
-            console.warn(res);
-        });
+        this.listenerImp.onChat(chatMessageImp);
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) { };
