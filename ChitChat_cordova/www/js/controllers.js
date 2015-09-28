@@ -126,8 +126,16 @@ angular.module('starter.controllers', [])
 	
 	
 	$('#send_message button').click(function(){
-		console.log( $('#send_message input').val() );		
+	    var content =  $('#send_message input').val() ;	
 		
+	    chatRoomApi.chat(currentRoom, "*", main.dataManager.getMyProfile()._id, content, ContentType[ContentType.Text], (err, res)=> {
+	        if (err || res === null) {
+	            console.warn("send message fail.");
+	        }
+	        else {
+	            console.log("send message:", res);
+	        }
+	    });
 		// Clear
 		$('#send_message input').val('')
 	});	
@@ -253,7 +261,7 @@ function getMessage(chatId) {
 				//now = date.toISOString();
 				//access = '2015-09-24T08:00:00.000Z';
 
-				chatroom.getChatHistory(chatId, access, function (err, result) {
+				chatRoomApi.getChatHistory(chatId, access, function (err, result) {
 					var histories = [];
 					if (result.code === 200) {
 						histories = result.data;
