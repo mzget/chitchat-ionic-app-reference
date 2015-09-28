@@ -837,21 +837,28 @@ var ChatRoomController = (function () {
     ChatRoomController.prototype.onChat = function (chatMessageImp) {
         var _this = this;
         console.log("Implement chat msg hear..", chatMessageImp);
+        var self = this;
         var secure = new SecureService();
         if (chatMessageImp.type === ContentType[ContentType.Text]) {
             secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
                 if (!err) {
                     chatMessageImp.body = res;
-                    _this.chatMessages.push(chatMessageImp);
+                    self.chatMessages.push(chatMessageImp);
+                    if (!!_this.serviceListener)
+                        _this.serviceListener();
                 }
                 else {
                     console.log(err, res);
-                    _this.chatMessages.push(chatMessageImp);
+                    self.chatMessages.push(chatMessageImp);
+                    if (!!_this.serviceListener)
+                        _this.serviceListener();
                 }
             });
         }
         else {
-            this.chatMessages.push(chatMessageImp);
+            self.chatMessages.push(chatMessageImp);
+            if (!!this.serviceListener)
+                this.serviceListener();
         }
     };
     ChatRoomController.prototype.onLeaveRoom = function (data) {
