@@ -574,7 +574,7 @@ var ChatServer;
             var message = {};
             message["rid"] = room_id;
             message["content"] = content;
-            message["from"] = sender_id;
+            message["sender"] = sender_id;
             message["target"] = target;
             message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, function (result) {
@@ -589,7 +589,7 @@ var ChatServer;
             var message = {};
             message["rid"] = room_id;
             message["content"] = fileUrl;
-            message["from"] = sender_id;
+            message["sender"] = sender_id;
             message["target"] = target;
             message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, function (result) {

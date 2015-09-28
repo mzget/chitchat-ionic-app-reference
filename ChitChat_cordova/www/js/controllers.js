@@ -9,7 +9,7 @@ var chatMessages;
 angular.module('starter.controllers', [])
 
 // GROUP
-.controller('GroupCtrl', function($scope, Chats) {
+.controller('GroupCtrl', function($scope) {
 
     console.log(localStorage['55d177c2d20212737c46c685']);
 	
@@ -91,7 +91,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ChatsCtrl', function($scope, Chats) {
+.controller('ChatsCtrl', function($scope) {
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
 	// To listen for when this page is active (for example, to refresh data),
@@ -120,7 +120,7 @@ angular.module('starter.controllers', [])
 			chat[i]['msgowner'] = 'other';
 	}
 		
-	$scope.chat = chat;
+	$scope.chat = Chats.all();
 	$('#send_message').css({'display':'inline-block'});
 	$('#chatroom_back').css({'display':'inline-block'});
 	
@@ -132,7 +132,8 @@ angular.module('starter.controllers', [])
 	            console.error(err);
 	        }
 	        else {
-	            chatRoomApi.chat(currentRoom, "*", main.dataManager.getMyProfile()._id, result, ContentType[ContentType.Text], (err, res) => {
+	            var myId = main.getDataManager().myProfile._id;
+	            chatRoomApi.chat(currentRoom, "*", myId, result, ContentType[ContentType.Text], (err, res) => {
 	                if (err || res === null) {
 	                    console.warn("send message fail.");
 	                }
