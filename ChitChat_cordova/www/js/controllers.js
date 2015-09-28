@@ -126,14 +126,20 @@ angular.module('starter.controllers', [])
 	
 	
 	$('#send_message button').click(function(){
-	    var content =  $('#send_message input').val() ;	
-		
-	    chatRoomApi.chat(currentRoom, "*", main.dataManager.getMyProfile()._id, content, ContentType[ContentType.Text], (err, res)=> {
-	        if (err || res === null) {
-	            console.warn("send message fail.");
+	    var content = $('#send_message input').val();
+	    main.encodeService(content, (err, result) => {
+	        if (err) {
+	            console.error(err);
 	        }
 	        else {
-	            console.log("send message:", res);
+	            chatRoomApi.chat(currentRoom, "*", main.dataManager.getMyProfile()._id, result, ContentType[ContentType.Text], (err, res) => {
+	                if (err || res === null) {
+	                    console.warn("send message fail.");
+	                }
+	                else {
+	                    console.log("send message:", res);
+	                }
+	            });
 	        }
 	    });
 		// Clear
