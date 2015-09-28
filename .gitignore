@@ -3,9 +3,9 @@ ChitChat_cordova/bld/
 ChitChat_cordova/platforms/
 ChitChat_cordova/plugins/
 ChitChat_cordova/bin/
-.vs/ChitChat_cordova/v14/
+.vs/
 *.bak
 ChitChat_cordova/ChitChat_cordova.jsproj
-ChitChat_cordova/.vs/ChitChat/v14/.suo
-ChitChat_cordova/.vs/chitchat.cordova/v14/.suo
+ChitChat_cordova/.vs/
 ChitChat_cordova/chitchat.cordova.jsproj.user
+packages/
