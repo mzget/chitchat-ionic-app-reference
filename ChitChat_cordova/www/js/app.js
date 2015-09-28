@@ -75,6 +75,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 		}
 	})
 	
+	// View - Profile
+	.state('tab.group-viewprofile', {
+		url: '/group/myprofile/viewprofile',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-group-viewprofile.html',
+				controller: 'GroupMyprofileCtrl'
+			}
+		}
+	})
+	
 	// GROUP - Type
 	.state('tab.group-projectbasegroup', {
 		url: '/group/projectbasegroup/:chatId',

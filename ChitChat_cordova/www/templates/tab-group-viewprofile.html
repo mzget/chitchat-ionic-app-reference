@@ -1,0 +1,42 @@
+<ion-view view-title="Profile">
+  <ion-content>
+    <ion-list>
+    
+    <div class="padding group-detail">
+    	<img class="avatar" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}&w=150&h=150" />
+    </div>
+    
+      <div class="list">
+        <label class="item item-input">
+            <div class="input-label"> Display </div>
+            <input type="text" value="{{chat.displayname}}" disabled>
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Status </div>
+            <input type="text" value="{{chat.status}}" disabled>
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Name </div>
+            <input type="text" value="{{chat.firstname}} {{chat.lastname}}" disabled>
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> User Level </div>
+            <input type="text" value="{{chat.role}}" disabled>
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Tel. </div>
+            <input type="text" value="{{chat.tel}}" disabled>
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Email </div>
+            <input type="text" value="{{chat.mail}}" disabled>
+        </label>
+      </div>
+    </ion-list>
+  </ion-content>
+</ion-view>

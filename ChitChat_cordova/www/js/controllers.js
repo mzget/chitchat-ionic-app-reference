@@ -4,7 +4,6 @@ var now;
 var newchatmessage;
 var chatRoomControl;
 var currentRoom;
-var chatMessages;
 
 angular.module('starter.controllers', [])
 
@@ -41,6 +40,11 @@ angular.module('starter.controllers', [])
 	$scope.chat = main.getDataManager().myProfile;
 })
 
+// View - Profile
+.controller('GroupViewprofileCtrl', function($scope) {
+	$scope.chat = main.getDataManager().myProfile;
+})
+
 // GROUP - Type
 .controller('GroupProjectbaseCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().projectBaseGroups[$stateParams.chatId];
@@ -69,7 +73,10 @@ angular.module('starter.controllers', [])
 	chatRoomControl = new ChatRoomController();
 	main.dataListener.addListenerImp(chatRoomControl);
 			
-	$scope.toggle = getMessage; 
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+	    location.href = '#/tab/message/' + chatId;
+	};
 })
 .controller('GroupDetailCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
@@ -108,22 +115,35 @@ angular.module('starter.controllers', [])
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
 	
-    chat = chatMessages;
-	for(i=0; i<chat.length; i++)
-	{
-		chat[i]['sender_displayname'] = members[chat[i]['sender']]['displayname'];
-		chat[i]['sender_image'] = members[chat[i]['sender']]['image'];
+    //chat = chatMessages;
+	//for(i=0; i<chat.length; i++)
+	//{
+	//	chat[i]['sender_displayname'] = members[chat[i]['sender']]['displayname'];
+	//	chat[i]['sender_image'] = members[chat[i]['sender']]['image'];
 		
-		if( chat[i]['sender'] == myprofile['_id'] )
-			chat[i]['msgowner'] = 'owner';
-		else
-			chat[i]['msgowner'] = 'other';
-	}
-		
-	$scope.chat = Chats.all();
-	$('#send_message').css({'display':'inline-block'});
-	$('#chatroom_back').css({'display':'inline-block'});
-	
+	//	if( chat[i]['sender'] == myprofile['_id'] )
+	//		chat[i]['msgowner'] = 'owner';
+	//	else
+	//		chat[i]['msgowner'] = 'other';
+	//}
+    
+    chatRoomControl.serviceListener = function () {
+        Chats.set(chatRoomControl.chatMessages);
+    }
+    getMessage(currentRoom, Chats, function () {
+
+    });
+        
+    var chats = Chats.all();
+    chats.forEach(chat => {
+        console.log(chat);
+    });
+
+
+
+    $scope.chat = Chats.all();
+    $('#send_message').css({ 'display': 'inline-block' });
+    $('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	$('#send_message button').click(function(){
 	    var content = $('#send_message input').val();
@@ -185,8 +205,8 @@ function back()
     server.LeaveChatRoomRequest(currentRoom, function (err, res) {
         console.log("leave room", JSON.stringify(res));
         localStorage.removeItem(currentRoom);
-        localStorage.setItem(currentRoom, JSON.stringify(chatMessages));
-        console.warn("save", currentRoom,JSON.stringify(chatMessages));
+        localStorage.setItem(currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+        console.warn("save", currentRoom,JSON.stringify(chatRoomControl.chatMessages));
 
         currentRoom = "";
         chatRoomControl.chatMessages = [];
@@ -198,24 +218,22 @@ function back()
 }
 
 
-function getMessage(chatId) {
-	currentRoom = chatId;
-
+function getMessage(chatId, Chats, callback) {
 	//console.log(chatRoomControl.chatMessages.length)
-	chatMessages = chatRoomControl.chatMessages;
+//	chatRoomControl.loadAllMessage(currentRoom);
 	var chatLog = localStorage.getItem(chatId);
 	//console.log('local chatLog : ' + chatLog);
 	async.waterfall([
 		function (cb) {
 			if (!!chatLog) {
 				if (JSON.stringify(chatLog) === "") {
-					chatMessages = [];
+					chatRoomControl.chatMessages = [];
 					cb(null, null);
 				}
 				else {
 					var arr_fromLog = JSON.parse(chatLog);
 					if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
-						chatMessages = [];
+					    chatRoomControl.chatMessages = [];
 						cb(null, null);
 					}
 					else {
@@ -225,18 +243,18 @@ function getMessage(chatId) {
 								main.decodeService(messageImp.body, function(err, res) {
 									if (!err) {
 										messageImp.body = res;
-										chatMessages.push(messageImp);
+										chatRoomControl.chatMessages.push(messageImp);
 										cb();
 									}
 									else {
 										//console.log(err, res);
-										chatMessages.push(messageImp);
+									    chatRoomControl.chatMessages.push(messageImp);
 										cb();
 									}
 								});
 							}
 							else {
-								chatMessages.push(log);
+							    chatRoomControl.chatMessages.push(log);
 								cb();
 							}
 						}, function (err) {
@@ -246,7 +264,7 @@ function getMessage(chatId) {
 				}
 			}
 			else {
-				chatMessages = [];
+			    chatRoomControl.chatMessages = [];
 				cb(null, null);
 			}
 		},
@@ -281,14 +299,13 @@ function getMessage(chatId) {
 					var his_length = histories.length;
 					//console.log("new chat log", histories.length);
 					if (his_length > 0) {
-						var chatMessages_length = chatMessages.length;
 						async.eachSeries(histories, function (item, cb) {
 							var chatMessageImp = JSON.parse(JSON.stringify(item));
 							if (chatMessageImp.type === ContentType[ContentType.Text]) {
 								main.decodeService(chatMessageImp.body, function(err, res) {
 									if (!err) {
 										chatMessageImp.body = res;
-										chatMessages.push(chatMessageImp);
+										chatRoomControl.chatMessages.push(chatMessageImp);
 										cb();
 									}
 									else {
@@ -302,18 +319,23 @@ function getMessage(chatId) {
 								{
 									console.log('file');
 								}
-								chatMessages.push(item);
+								chatRoomControl.chatMessages.push(item);
 								cb();
 							}
 						}, function (err) {
-							localStorage.removeItem(chatId);
-							localStorage.setItem(chatId, JSON.stringify(chatMessages));
+						    Chats.set(chatRoomControl.chatMessages);
 
-							location.href = '#/tab/message/' + chatId;
+							localStorage.removeItem(chatId);
+							localStorage.setItem(chatId, JSON.stringify(chatRoomControl.chatMessages));
+
+//							location.href = '#/tab/message/' + chatId;
+							callback();
 						});
 					}
 					else {
-						location.href = '#/tab/message/' + chatId;
+					    //						location.href = '#/tab/message/' + chatId;
+					    Chats.set(chatRoomControl.chatMessages);
+					    callback();
 					}
 				});
 			}
