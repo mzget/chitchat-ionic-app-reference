@@ -41,6 +41,11 @@ angular.module('starter.controllers', [])
 	$scope.chat = main.getDataManager().myProfile;
 })
 
+// View - Profile
+.controller('GroupViewprofileCtrl', function($scope) {
+	$scope.chat = main.getDataManager().myProfile;
+})
+
 // GROUP - Type
 .controller('GroupProjectbaseCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().projectBaseGroups[$stateParams.chatId];
