@@ -1,1 +1,0 @@
-C:\Users\Admin\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\AppPackages\CordovaApp.Windows10_0.0.0.1_anycpu_debug_Test\CordovaApp.Windows10_0.0.0.1_anycpu_debug.appx
