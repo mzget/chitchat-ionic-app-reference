@@ -25,4 +25,31 @@ angular.module('starter.services', [])
 			chats = json;
 		}
 	};
+})
+
+.factory('Messages', function() {
+    // Might use a resource here that returns a JSON array
+
+	// Some fake testing data
+    var Messages;
+
+	return {
+		all: function() {
+			return Messages;
+		},
+		remove: function(chat) {
+			Messages.splice(Messages.indexOf(chat), 1);
+		},
+		get: function(chatId) {
+			for (var i = 0; i < Messages.length; i++) {
+				if (Messages[i].id === parseInt(chatId)) {
+					return Messages[i];
+				}
+			}
+			return null;
+		},
+		set: function(json) {
+			Messages = json;
+		}
+	};
 });
