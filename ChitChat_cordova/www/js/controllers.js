@@ -41,9 +41,25 @@ angular.module('starter.controllers', [])
 })
 
 // View - Profile
-.controller('GroupViewprofileCtrl', function($scope) {
-	$scope.chat = main.getDataManager().myProfile;
+.controller('GroupViewprofileCtrl', function($scope, $stateParams) {
+	if($stateParams.chatId==main.getDataManager().myProfile._id){
+		$scope.chat = main.getDataManager().myProfile;
+		$scope.title = "My Profile";
+		$('#viewprofile-input-display').removeAttr('disabled');
+		$('#viewprofile-input-status').removeAttr('disabled');
+		//document.getElementById("viewprofile-save").style.display = "none";
+		$scope.edit = 'true';
+	}else{
+		$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
+		$scope.title = $scope.chat.displayname+"'s Profile";
+		$('#viewprofile-input-display').attr('disabled','disabled');
+		$('#viewprofile-input-status').attr('disabled','disabled');
+		//document.getElementById("viewprofile-save").style.display = "none"
+		$scope.edit = 'false';
+	}
 })
+
+
 
 // GROUP - Type
 .controller('GroupProjectbaseCtrl', function($scope, $stateParams) {

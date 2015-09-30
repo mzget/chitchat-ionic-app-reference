@@ -77,11 +77,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 	
 	// View - Profile
 	.state('tab.group-viewprofile', {
-		url: '/group/myprofile/viewprofile',
+		url: '/group/member/:chatId',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: 'GroupMyprofileCtrl'
+				controller: 'GroupViewprofileCtrl'
 			}
 		}
 	})
