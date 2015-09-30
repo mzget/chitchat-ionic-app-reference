@@ -50,14 +50,6 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
-
-	chatRoomControl = new ChatRoomController();
-	main.dataListener.addListenerImp(chatRoomControl);
-			
-	$scope.toggle = function (chatId) {
-	    currentRoom = chatId;
-	    location.href = '#/tab/message/' + chatId;
-	};
 })
 .controller('GroupPrivateCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().privateGroups[$stateParams.chatId];
@@ -66,14 +58,6 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
-
-	chatRoomControl = new ChatRoomController();
-	main.dataListener.addListenerImp(chatRoomControl);
-			
-	$scope.toggle = function (chatId) {
-	    currentRoom = chatId;
-	    location.href = '#/tab/message/' + chatId;
-	};
 })
 .controller('GroupOrggroupsCtrl', function($scope, $stateParams) {	
 	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
@@ -128,9 +112,6 @@ angular.module('starter.controllers', [])
 
 .controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, Chats) 
 {    	
-	//localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, ''); // Clear Storage
-	$scope.chat = [];
-	
     chatRoomControl.serviceListener = function () {
         Chats.set(chatRoomControl.chatMessages);
     }
@@ -139,16 +120,15 @@ angular.module('starter.controllers', [])
     });
      
     var countUp = function () {		
-		if(currentRoom!='')
-		{
-			localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-			console.log('update with timeout fired');
-			$scope.chat = Chats.all();
-			console.log( 'Refresh' );
-			$timeout(countUp, 1000);
-		}
+        localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
+        localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+        console.log('update with timeout fired');
+		$scope.chat = Chats.all();
+		console.log( 'Refresh' );
+		
+        $timeout(countUp, 3000);
     }
-    $timeout(countUp, 1000);
+    $timeout(countUp, 3000);
 	
     var chats = Chats.all();
     /*chats.forEach(chat => {
