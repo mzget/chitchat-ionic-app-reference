@@ -120,15 +120,18 @@ angular.module('starter.controllers', [])
     });
      
     var countUp = function () {		
-        localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
-        localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-        console.log('update with timeout fired');
-		$scope.chat = Chats.all();
-		console.log( 'Refresh' );
-		
-        $timeout(countUp, 3000);
+		if( currentRoom != '' )
+		{
+			localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
+			localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			console.log('update with timeout fired');
+			$scope.chat = Chats.all();
+			console.log( 'Refresh' );
+			
+			$timeout(countUp, 1000);
+		}
     }
-    $timeout(countUp, 3000);
+    $timeout(countUp, 1000);
 	
     var chats = Chats.all();
     /*chats.forEach(chat => {

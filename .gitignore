@@ -7,3 +7,5 @@ ChitChat_cordova/ChitChat_cordova.jsproj
 ChitChat_cordova/.vs/
 ChitChat_cordova/chitchat.cordova.jsproj.user
 packages/
+ChitChat_cordova/platforms
+ChitChat_cordova/plugins/
