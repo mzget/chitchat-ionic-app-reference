@@ -22,7 +22,7 @@
 .group-detail .group-menu > * { float:left; display:inline; width:100%; max-width:33%; padding:20px 0; font-size:40px; cursor:pointer; text-decoration:none; color:#333; }
 .group-detail .group-menu > * span { font-size:14px; position:relative; top:-10px; }
 .group-detail .group-menu >:hover { background-color:rgba(0,0,0,0.05); }
-.group-pvgroup { float:left; display:inline; width:100%; margin-top:20px; text-align:center; }
+.group-pvgroup { float:left; display:inline; width:100%; margin-top:0; text-align:center; }
 .group-pvgroup span img { border-radius:50%; }
 .group-pvgroup .length { display:inline-block; min-width:30px; line-height:30px; vertical-align:top; text-align:center; box-shadow:0 0 1px 0 red inset; color:red; text-decoration:none; border-radius:50%; }
 
@@ -54,7 +54,7 @@
 #send_message input { display:inline; width:80%; height:39px; line-height:39px; margin:5px 0; padding:0 10px; }
 #send_message button { display:inline; width:10%; height:39px; border:none; position:relative; top:2px; }
 
-#chatroom_back { float:left; display:none; width:80px; height:44px; line-height:44px; position:fixed; top:20px; left:0; z-index:1000; text-align:center; font-size:23px; vertical-align:middle; color:#444; cursor:pointer; }
+#chatroom_back { float:left; display:none; width:80px; height:44px; line-height:44px; position:fixed; top:0; left:0; z-index:1000; text-align:center; font-size:23px; vertical-align:middle; color:#444; cursor:pointer; }
 
 
 
@@ -68,4 +68,4 @@
 
 
 .has-header { top:64px; }
-.nav-bar-block { margin-top:20px; }
+.nav-bar-block { margin-top:0; }

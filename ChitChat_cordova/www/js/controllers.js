@@ -4,13 +4,14 @@ var now;
 var newchatmessage;
 var chatRoomControl;
 var currentRoom;
+var allMembers;
 
 angular.module('starter.controllers', [])
 
 // GROUP
 .controller('GroupCtrl', function($scope) {
 
-    console.log(localStorage['55d177c2d20212737c46c685']);
+    //console.log(localStorage['55d177c2d20212737c46c685']);
 	
 	$scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
@@ -18,7 +19,8 @@ angular.module('starter.controllers', [])
 	$scope.pvGroups = main.getDataManager().privateGroups;
 
 	//$scope.chats = Chats.all();
-	$scope.chats = main.getDataManager().orgMembers;
+	allMembers = main.getDataManager().orgMembers;
+	$scope.chats = allMembers;
 	$scope.remove = function(chat) {
 		Chats.remove(chat);
 	};		
@@ -48,6 +50,14 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
+
+	chatRoomControl = new ChatRoomController();
+	main.dataListener.addListenerImp(chatRoomControl);
+			
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+	    location.href = '#/tab/message/' + chatId;
+	};
 })
 .controller('GroupPrivateCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().privateGroups[$stateParams.chatId];
@@ -56,6 +66,14 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
+
+	chatRoomControl = new ChatRoomController();
+	main.dataListener.addListenerImp(chatRoomControl);
+			
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+	    location.href = '#/tab/message/' + chatId;
+	};
 })
 .controller('GroupOrggroupsCtrl', function($scope, $stateParams) {	
 	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
@@ -108,58 +126,64 @@ angular.module('starter.controllers', [])
 	};
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
+.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, Chats) 
+{    	
+	//localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, ''); // Clear Storage
+	$scope.chat = [];
 	
-    //chat = chatMessages;
-	//for(i=0; i<chat.length; i++)
-	//{
-	//	chat[i]['sender_displayname'] = members[chat[i]['sender']]['displayname'];
-	//	chat[i]['sender_image'] = members[chat[i]['sender']]['image'];
-		
-	//	if( chat[i]['sender'] == myprofile['_id'] )
-	//		chat[i]['msgowner'] = 'owner';
-	//	else
-	//		chat[i]['msgowner'] = 'other';
-	//}
-    
     chatRoomControl.serviceListener = function () {
         Chats.set(chatRoomControl.chatMessages);
     }
     getMessage(currentRoom, Chats, function () {
 
     });
-        
+     
+    var countUp = function () {		
+		if(currentRoom!='')
+		{
+			localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			console.log('update with timeout fired');
+			$scope.chat = Chats.all();
+			console.log( 'Refresh' );
+			$timeout(countUp, 1000);
+		}
+    }
+    $timeout(countUp, 1000);
+	
     var chats = Chats.all();
-    chats.forEach(chat => {
+    /*chats.forEach(chat => {
         console.log(chat);
-    });
+    });*/
 
 
-
+	$scope.allMembers = allMembers;
     $scope.chat = Chats.all();
     $('#send_message').css({ 'display': 'inline-block' });
     $('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	$('#send_message button').click(function(){
 	    var content = $('#send_message input').val();
-	    main.encodeService(content, (err, result) => {
-	        if (err) {
-	            console.error(err);
-	        }
-	        else {
-	            var myId = main.getDataManager().myProfile._id;
-	            chatRoomApi.chat(currentRoom, "*", myId, result, ContentType[ContentType.Text], (err, res) => {
-	                if (err || res === null) {
-	                    console.warn("send message fail.");
-	                }
-	                else {
-	                    console.log("send message:", res);
-	                }
-	            });
-	        }
-	    });
-		// Clear
-		$('#send_message input').val('')
+		if( content != '' )
+		{
+			main.encodeService(content, function(err, result) {
+				if (err) {
+					console.error(err);
+				}
+				else {
+					var myId = main.getDataManager().myProfile._id;
+					chatRoomApi.chat(currentRoom, "*", myId, result, ContentType[ContentType.Text], function(err, res) {
+						if (err || res === null) {
+							console.warn("send message fail.");
+						}
+						else {
+							console.log("send message:", res);
+						}
+					});
+				}
+			});
+			// Clear
+			$('#send_message input').val('')
+		}
 	});	
 })
 
@@ -199,8 +223,8 @@ function back()
 {
     server.LeaveChatRoomRequest(currentRoom, function (err, res) {
         console.log("leave room", JSON.stringify(res));
-        localStorage.removeItem(currentRoom);
-        localStorage.setItem(currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+        localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
+        localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
         console.warn("save", currentRoom,JSON.stringify(chatRoomControl.chatMessages));
 
         currentRoom = "";
@@ -216,7 +240,7 @@ function back()
 function getMessage(chatId, Chats, callback) {
 	//console.log(chatRoomControl.chatMessages.length)
 //	chatRoomControl.loadAllMessage(currentRoom);
-	var chatLog = localStorage.getItem(chatId);
+	var chatLog = localStorage.getItem(myprofile.displayname_id+'_'+chatId);
 	//console.log('local chatLog : ' + chatLog);
 	async.waterfall([
 		function (cb) {
@@ -320,15 +344,15 @@ function getMessage(chatId, Chats, callback) {
 						}, function (err) {
 						    Chats.set(chatRoomControl.chatMessages);
 
-							localStorage.removeItem(chatId);
-							localStorage.setItem(chatId, JSON.stringify(chatRoomControl.chatMessages));
+							localStorage.removeItem(myprofile.displayname_id+'_'+chatId);
+							localStorage.setItem(myprofile.displayname_id+'_'+chatId, JSON.stringify(chatRoomControl.chatMessages));
 
-//							location.href = '#/tab/message/' + chatId;
+							// location.href = '#/tab/message/' + chatId;
 							callback();
 						});
 					}
 					else {
-					    //						location.href = '#/tab/message/' + chatId;
+					    // location.href = '#/tab/message/' + chatId;
 					    Chats.set(chatRoomControl.chatMessages);
 					    callback();
 					}
