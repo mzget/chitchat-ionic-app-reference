@@ -165,7 +165,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 		views: {
 			'tab-message': {
 				templateUrl: 'templates/chat-detail.html',
-				controller: 'ChatDetailCtrl'
+				controller: 'ChatMessageCtrl'
 			}
 		}
 	})

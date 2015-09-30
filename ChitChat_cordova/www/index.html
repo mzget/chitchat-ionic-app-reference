@@ -113,7 +113,7 @@
 		{
 			setTimeout(function(){
 				//console.log('myProfile:::'+main.getDataManager().myProfile['displayname']);
-				if(main.getDataManager().myProfile['displayname'] != '')
+				if( typeof main.getDataManager().myProfile != "undefined" )				
 				{
 					console.log('goto group');
 					myprofile = main.getDataManager().myProfile;
