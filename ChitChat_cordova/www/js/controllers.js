@@ -112,6 +112,8 @@ angular.module('starter.controllers', [])
 
 .controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, Chats) 
 {    	
+	$scope.chat = [];
+	
     chatRoomControl.serviceListener = function () {
         Chats.set(chatRoomControl.chatMessages);
     }
@@ -140,6 +142,7 @@ angular.module('starter.controllers', [])
 
 
 	$scope.allMembers = allMembers;
+	$scope.myprofile = myprofile;
     $scope.chat = Chats.all();
     $('#send_message').css({ 'display': 'inline-block' });
     $('#chatroom_back').css({ 'display': 'inline-block' });
@@ -153,8 +156,8 @@ angular.module('starter.controllers', [])
 					console.error(err);
 				}
 				else {
-					var myId = main.getDataManager().myProfile._id;
-					chatRoomApi.chat(currentRoom, "*", myId, result, ContentType[ContentType.Text], function(err, res) {
+					//var myId = myprofile._id;
+					chatRoomApi.chat(currentRoom, "*", myprofile._id, result, ContentType[ContentType.Text], function(err, res) {
 						if (err || res === null) {
 							console.warn("send message fail.");
 						}
