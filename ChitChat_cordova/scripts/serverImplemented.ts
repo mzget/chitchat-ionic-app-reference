@@ -597,7 +597,7 @@ module ChatServer {
             message["content"] = content;
             message["sender"] = sender_id;
             message["target"] = target;
-            message["type"] = contentType.toString();
+            message["type"] = ContentType[contentType];
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("Chat msg response: ", data);
@@ -615,7 +615,7 @@ module ChatServer {
             message["content"] = fileUrl;
             message["sender"] = sender_id;
             message["target"] = target;
-            message["type"] = contentType.toString();
+            message["type"] = ContentType[contentType];
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("chatFile callback: ", data);
