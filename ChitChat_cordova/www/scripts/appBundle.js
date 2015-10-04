@@ -34,15 +34,23 @@ requirejs.config({
 var Main = (function () {
     function Main() {
         this.serverListener = new ChatServer.ServerEventListener();
-        this.dataManager = new DataManager();
+        this.dataManager = DataManager.getInstance();
         this.dataListener = new DataListener(this.dataManager);
     }
-    Main.prototype.getDataManager = function () {
-        return this.dataManager;
-    };
-    Main.prototype.getDataListener = function () {
-        return this.dataListener;
-    };
+    Object.defineProperty(Main.prototype, "getDataManager", {
+        get: function () {
+            return this.dataManager;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Main.prototype, "getDataListener", {
+        get: function () {
+            return this.dataListener;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Main.prototype.startChatServerListener = function () {
         this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addServerListener(this.dataListener);
@@ -73,6 +81,7 @@ var Main = (function () {
                     }
                     else {
                         if (res.code === 200) {
+                            self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
                             self.dataManager.setMyProfile(res.data);
                             server.getLastAccessRoomsInfo(function (err, res) {
                                 console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
@@ -129,6 +138,10 @@ var Main = (function () {
             }
         });
     };
+    Main.prototype.onMyProfileReadyListener = function (dataManager) {
+        var dummy = new Dummy();
+        dummy.fireChatInRoom(dataManager.myProfile._id);
+    };
     return Main;
 })();
 var pomelo;
@@ -136,10 +149,10 @@ var username = "";
 var password = "";
 var ChatServer;
 (function (ChatServer) {
-    var AutheData = (function () {
-        function AutheData() {
+    var AuthenData = (function () {
+        function AuthenData() {
         }
-        return AutheData;
+        return AuthenData;
     })();
     var ServerImplemented = (function () {
         function ServerImplemented() {
@@ -158,9 +171,15 @@ var ChatServer;
                 this.authenData = JSON.parse(authen);
             }
             else {
-                this.authenData = new AutheData();
+                this.authenData = new AuthenData();
             }
         }
+        ServerImplemented.getInstance = function () {
+            if (!ServerImplemented.Instance) {
+                ServerImplemented.Instance = new ServerImplemented();
+            }
+            return ServerImplemented.Instance;
+        };
         ServerImplemented.prototype.getClient = function () {
             var self = this;
             if (pomelo !== null) {
@@ -568,7 +587,7 @@ var ChatServer;
     ChatServer.ServerImplemented = ServerImplemented;
     var ChatRoomApiProvider = (function () {
         function ChatRoomApiProvider() {
-            this.serverImp = ServerImplemented.prototype;
+            this.serverImp = ServerImplemented.getInstance();
         }
         ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, repalceMessageID) {
             var message = {};
@@ -904,22 +923,26 @@ var DataListener = (function () {
     };
     DataListener.prototype.onChatData = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
-        this.listenerImp.onChat(chatMessageImp);
+        if (!!this.listenerImp)
+            this.listenerImp.onChat(chatMessageImp);
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) {
-        this.listenerImp.onLeaveRoom(data);
+        if (!!this.listenerImp)
+            this.listenerImp.onLeaveRoom(data);
     };
     ;
     DataListener.prototype.onRoomJoin = function (data) {
     };
     ;
     DataListener.prototype.onMessageRead = function (dataEvent) {
-        this.listenerImp.onMessageRead(dataEvent);
+        if (!!this.listenerImp)
+            this.listenerImp.onMessageRead(dataEvent);
     };
     ;
     DataListener.prototype.onGetMessagesReaders = function (dataEvent) {
-        this.listenerImp.onGetMessagesReaders(dataEvent);
+        if (!!this.listenerImp)
+            this.listenerImp.onGetMessagesReaders(dataEvent);
     };
     ;
     return DataListener;
@@ -931,8 +954,16 @@ var DataManager = (function () {
         this.privateGroups = {};
         this.orgMembers = {};
     }
+    DataManager.getInstance = function () {
+        if (!DataManager.Instance) {
+            DataManager.Instance = new DataManager();
+        }
+        return DataManager.Instance;
+    };
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
+        if (!!this.onMyProfileReady)
+            this.onMyProfileReady(this);
     };
     DataManager.prototype.getMyProfile = function () {
         return this.myProfile;
@@ -1106,6 +1137,32 @@ var OrgMember = (function () {
     }
     return OrgMember;
 })();
+var Dummy = (function () {
+    function Dummy() {
+        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
+        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
+            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
+            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
+        this.serverApi = ChatServer.ServerImplemented.getInstance();
+    }
+    Dummy.prototype.getBot = function () {
+        var r = Math.floor((Math.random() * this.bots.length) + 1);
+        return this.bots[r];
+    };
+    Dummy.prototype.fireChatInRoom = function (myUid) {
+        var _this = this;
+        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
+            if (!err && res !== null) {
+                setInterval(function () {
+                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
+                        console.log(res);
+                    });
+                }, 1000);
+            }
+        });
+    };
+    return Dummy;
+})();
 var SecureService = (function () {
     function SecureService() {
         this.key = "CHITCHAT!@#$%^&*()_+|===";
@@ -1157,4 +1214,14 @@ var SecureService = (function () {
     };
     return SecureService;
 })();
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
+// for more information see the following page on the TypeScript wiki:
+// https://github.com/Microsoft/TypeScript/wiki/JSX
+/// <reference path="../typings/tsd.d.ts" />
+var CommentBox = React.createClass({
+    render: function () {
+        return (React.createElement("div", {"className": "commentBox"}, "Hello, world!I am a CommentBox."));
+    }
+});
+React.render(React.createElement(CommentBox, null), document.getElementById('content'));
 //# sourceMappingURL=appBundle.js.map

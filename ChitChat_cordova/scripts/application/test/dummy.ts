@@ -19,7 +19,7 @@
         this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", (err, res) => {
             if (!err && res !== null) {
                 setInterval(() => {
-                    this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType.Text, function (err, res) {
+                    this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
                 }, 1000);
