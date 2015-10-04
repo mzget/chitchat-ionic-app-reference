@@ -12,17 +12,17 @@ requirejs.config({
 
 class Main {
     private serverListener = new ChatServer.ServerEventListener();
-    private dataManager: DataManager;
-    public getDataManager(): DataManager {
+    private dataManager: DataManager = DataManager.getInstance();
+    public get getDataManager(): DataManager {
         return this.dataManager;
     }
     private dataListener: DataListener;
-    public getDataListener(): DataListener {
+    public get getDataListener(): DataListener {
         return this.dataListener;
     }
 
     constructor() {
-        this.dataManager = new DataManager();
+//        this.dataManager = DataManager.getInstance();
         this.dataListener = new DataListener(this.dataManager);
     }
 
@@ -62,6 +62,7 @@ class Main {
                     }
                     else {
                         if (res.code === 200) {
+                            self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
                             self.dataManager.setMyProfile(res.data);
                             
                             server.getLastAccessRoomsInfo(function (err, res) {
@@ -123,5 +124,10 @@ class Main {
                 console.log(err);
             }
         });
+    }
+
+    private onMyProfileReadyListener(dataManager: DataManager) {
+        var dummy = new Dummy();
+        dummy.fireChatInRoom(dataManager.myProfile._id);
     }
 }

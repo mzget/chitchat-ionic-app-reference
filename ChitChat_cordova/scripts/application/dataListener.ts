@@ -52,20 +52,25 @@
 
     onChatData(data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
-        this.listenerImp.onChat(chatMessageImp);
+
+        if (!!this.listenerImp)
+            this.listenerImp.onChat(chatMessageImp);
     };
     onLeaveRoom(data) {
-        this.listenerImp.onLeaveRoom(data);
+        if (!!this.listenerImp)
+            this.listenerImp.onLeaveRoom(data);
     };
     onRoomJoin(data) {
 
     };
 
     onMessageRead(dataEvent) {
-        this.listenerImp.onMessageRead(dataEvent);
+        if (!!this.listenerImp)
+            this.listenerImp.onMessageRead(dataEvent);
     };
 
     onGetMessagesReaders(dataEvent) {
-        this.listenerImp.onGetMessagesReaders(dataEvent);
+        if (!!this.listenerImp)
+            this.listenerImp.onGetMessagesReaders(dataEvent);
     };
 }

@@ -11,15 +11,24 @@ module ChatServer {
         userId: string;
         token: string;
     }
-    class AutheData implements IAuthenData {
+    class AuthenData implements IAuthenData {
         userId: string;
         token: string;
     }
 
     export class ServerImplemented {
+        private static Instance: ServerImplemented;
+        public static getInstance(): ServerImplemented {
+            if (!ServerImplemented.Instance) {
+                ServerImplemented.Instance = new ServerImplemented();
+            }
+
+            return ServerImplemented.Instance;
+        }
+
         host: string = "git.animation-genius.com";
         port: number = 3014;
-        authenData: AutheData;
+        authenData: AuthenData;
         _isInit: boolean = false;
         _isConnected: boolean = false;
         _isLogedin: boolean = false;
@@ -52,7 +61,7 @@ module ChatServer {
                 this.authenData = JSON.parse(authen);
             }
             else {
-                this.authenData = new AutheData();
+                this.authenData = new AuthenData();
             }
         }
 
@@ -589,15 +598,15 @@ module ChatServer {
     }
 
     export class ChatRoomApiProvider {
-        serverImp: ServerImplemented = ServerImplemented.prototype;
+        serverImp: ServerImplemented = ServerImplemented.getInstance();
         
-        public chat(room_id: string, target: string, sender_id: string, content: string, contentType: string, repalceMessageID: (err, res) => void) {
+        public chat(room_id: string, target: string, sender_id: string, content: string, contentType: ContentType, repalceMessageID: (err, res) => void) {
             var message: IDictionary = {};
             message["rid"] = room_id;
             message["content"] = content;
             message["sender"] = sender_id;
             message["target"] = target;
-            message["type"] = contentType;
+            message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("Chat msg response: ", data);
@@ -607,7 +616,7 @@ module ChatServer {
             });
         }
         
-        public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: string, setMessageID: (err, res) => void) {
+        public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: ContentType, setMessageID: (err, res) => void) {
             console.log("Send file to ", target);
 
             var message: IDictionary = {};
@@ -615,7 +624,7 @@ module ChatServer {
             message["content"] = fileUrl;
             message["sender"] = sender_id;
             message["target"] = target;
-            message["type"] = contentType;
+            message["type"] = contentType.toString();
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("chatFile callback: ", data);

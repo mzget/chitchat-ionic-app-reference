@@ -6,6 +6,14 @@ interface IMemberMep {
 }
 
 class DataManager implements Services.IFrontendServerListener {
+    private static Instance: DataManager;
+    public static getInstance(): DataManager {
+        if (!DataManager.Instance) {
+            DataManager.Instance = new DataManager();
+        }
+
+        return DataManager.Instance;
+    }
 
     public myProfile: User;
     public orgGroups: IRoomMap = {};
@@ -14,8 +22,13 @@ class DataManager implements Services.IFrontendServerListener {
     public orgMembers: IMemberMep = {};
 
 
+    public onMyProfileReady;
+
     public setMyProfile(data: any) {
         this.myProfile = JSON.parse(JSON.stringify(data));
+
+        if (!!this.onMyProfileReady)
+            this.onMyProfileReady(this);
     }
     public getMyProfile(): User {
         return this.myProfile;
