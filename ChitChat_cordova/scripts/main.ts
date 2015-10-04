@@ -1,4 +1,4 @@
-﻿/// <reference path="./typings/tsd.d.ts" />
+/// <reference path="./typings/tsd.d.ts" />
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
@@ -13,11 +13,11 @@ requirejs.config({
 class Main {
     private serverListener = new ChatServer.ServerEventListener();
     private dataManager: DataManager = DataManager.getInstance();
-    public get getDataManager(): DataManager {
+    public getDataManager(): DataManager {
         return this.dataManager;
     }
     private dataListener: DataListener;
-    public get getDataListener(): DataListener {
+    public getDataListener(): DataListener {
         return this.dataListener;
     }
 
@@ -126,8 +126,5 @@ class Main {
         });
     }
 
-    private onMyProfileReadyListener(dataManager: DataManager) {
-        var dummy = new Dummy();
-        dummy.fireChatInRoom(dataManager.myProfile._id);
-    }
+    public onMyProfileReadyListener:(dataManager: DataManager) => void;
 }

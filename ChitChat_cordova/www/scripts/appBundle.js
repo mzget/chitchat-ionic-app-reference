@@ -37,20 +37,12 @@ var Main = (function () {
         this.dataManager = DataManager.getInstance();
         this.dataListener = new DataListener(this.dataManager);
     }
-    Object.defineProperty(Main.prototype, "getDataManager", {
-        get: function () {
-            return this.dataManager;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Main.prototype, "getDataListener", {
-        get: function () {
-            return this.dataListener;
-        },
-        enumerable: true,
-        configurable: true
-    });
+    Main.prototype.getDataManager = function () {
+        return this.dataManager;
+    };
+    Main.prototype.getDataListener = function () {
+        return this.dataListener;
+    };
     Main.prototype.startChatServerListener = function () {
         this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addServerListener(this.dataListener);
@@ -137,10 +129,6 @@ var Main = (function () {
                 console.log(err);
             }
         });
-    };
-    Main.prototype.onMyProfileReadyListener = function (dataManager) {
-        var dummy = new Dummy();
-        dummy.fireChatInRoom(dataManager.myProfile._id);
     };
     return Main;
 })();
