@@ -591,13 +591,13 @@ module ChatServer {
     export class ChatRoomApiProvider {
         serverImp: ServerImplemented = ServerImplemented.prototype;
         
-        public chat(room_id: string, target: string, sender_id: string, content: string, contentType: ContentType, repalceMessageID: (err, res) => void) {
+        public chat(room_id: string, target: string, sender_id: string, content: string, contentType: string, repalceMessageID: (err, res) => void) {
             var message: IDictionary = {};
             message["rid"] = room_id;
             message["content"] = content;
             message["sender"] = sender_id;
             message["target"] = target;
-            message["type"] = ContentType[contentType];
+            message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("Chat msg response: ", data);
@@ -607,7 +607,7 @@ module ChatServer {
             });
         }
         
-        public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: ContentType, setMessageID: (err, res) => void) {
+        public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: string, setMessageID: (err, res) => void) {
             console.log("Send file to ", target);
 
             var message: IDictionary = {};
@@ -615,7 +615,7 @@ module ChatServer {
             message["content"] = fileUrl;
             message["sender"] = sender_id;
             message["target"] = target;
-            message["type"] = ContentType[contentType];
+            message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("chatFile callback: ", data);
