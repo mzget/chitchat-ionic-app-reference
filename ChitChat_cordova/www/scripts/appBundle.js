@@ -1220,7 +1220,17 @@ var SecureService = (function () {
 /// <reference path="../typings/tsd.d.ts" />
 var CommentBox = React.createClass({
     render: function () {
-        return (React.createElement("div", {"className": "commentBox"}, "Hello, world!I am a CommentBox."));
+        return (React.createElement("div", {"className": "commentBox"}, React.createElement("h1", null, "Comments"), React.createElement(CommentList, null), React.createElement(CommentForm, null)));
+    }
+});
+var CommentList = React.createClass({
+    render: function () {
+        return (React.createElement("div", {"className": "commentList"}, "Hello, world!I am a CommentList."));
+    }
+});
+var CommentForm = React.createClass({
+    render: function () {
+        return (React.createElement("div", {"className": "commentForm"}, "Hello, world!I am a CommentForm."));
     }
 });
 React.render(React.createElement(CommentBox, null), document.getElementById('content'));
