@@ -19,6 +19,9 @@
     },
     "react/react-global.d.ts": {
       "commit": "98d3168c2c570352a3a7393788e2ec9fbb08ade6"
+    },
+    "marked/marked.d.ts": {
+      "commit": "30daf61172ff7160cb191fbdca095f5b8e3f752b"
     }
   }
 }

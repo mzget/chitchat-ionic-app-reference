@@ -1220,19 +1220,36 @@ var SecureService = (function () {
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 /// <reference path="../typings/tsd.d.ts" />
+var data = [
+    { author: "Pete Hunt", text: "This is one comment" },
+    { author: "Jordan Walke", text: "This is *another* comment" },
+    { author: "Name Surname", text: "This is *another* comment" }
+];
 var CommentBox = React.createClass({
     render: function () {
-        return (React.createElement("div", {"className": "commentBox"}, React.createElement("h1", null, "Comments"), React.createElement(CommentList, null), React.createElement(CommentForm, null)));
+        return (React.createElement("div", {"className": "commentBox"}, React.createElement("h1", null, "Comments"), React.createElement(CommentList, {"data": data}), React.createElement(CommentForm, null)));
     }
 });
 var CommentList = React.createClass({
     render: function () {
-        return (React.createElement("div", {"className": "commentList"}, "Hello, world!I am a CommentList."));
+        var commentNodes = this.props.data.map(function (comment) {
+            return (React.createElement(Comment1, {"author": comment.author}, comment.text));
+        });
+        return (React.createElement("div", {"className": "commentList"}, commentNodes));
     }
 });
 var CommentForm = React.createClass({
     render: function () {
         return (React.createElement("div", {"className": "commentForm"}, "Hello, world!I am a CommentForm."));
+    }
+});
+var Comment1 = React.createClass({
+    rawMarkup: function () {
+        var rawMarkup = marked(this.props.children.toString(), { sanitize: true });
+        return { __html: rawMarkup };
+    },
+    render: function () {
+        return (React.createElement("div", {"className": "comment"}, React.createElement("h2", {"className": "commentAuthor"}, this.props.author), React.createElement("span", {"dangerouslySetInnerHTML": this.rawMarkup()})));
     }
 });
 React.render(React.createElement(CommentBox, null), document.getElementById('content'));
