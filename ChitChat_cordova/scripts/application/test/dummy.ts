@@ -1,6 +1,8 @@
 ﻿class Dummy {
     chatRoom: ChatServer.ChatRoomApiProvider = ChatServer.ChatRoomApiProvider.prototype;
     serverApi: ChatServer.ServerImplemented;
+    
+    counter: number = 0;
 
     constructor() {
         this.serverApi = ChatServer.ServerImplemented.getInstance();
@@ -19,7 +21,8 @@
         this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", (err, res) => {
             if (!err && res !== null) {
                 setInterval(() => {
-                    this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
+                    var temp = this.counter++;
+                    this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "bot chat" + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
                 }, 1000);

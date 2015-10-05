@@ -1140,6 +1140,7 @@ var OrgMember = (function () {
 var Dummy = (function () {
     function Dummy() {
         this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
+        this.counter = 0;
         this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
             { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
             { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
@@ -1154,7 +1155,8 @@ var Dummy = (function () {
         this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
             if (!err && res !== null) {
                 setInterval(function () {
-                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
+                    var temp = _this.counter++;
+                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "bot chat" + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
                 }, 1000);
