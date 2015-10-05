@@ -1226,8 +1226,27 @@ var data = [
     { author: "Name Surname", text: "This is *another* comment" }
 ];
 var CommentBox = React.createClass({
+    loadCommentsFromServer: function () {
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            cache: false,
+            success: function (data) {
+                this.setState({ data: data });
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    getInitialState: function () {
+        return { data: [] };
+    },
+    componentDidMount: function () {
+        this.setState({ data: this.props.data });
+    },
     render: function () {
-        return (React.createElement("div", {"className": "commentBox"}, React.createElement("h1", null, "Comments"), React.createElement(CommentList, {"data": data}), React.createElement(CommentForm, null)));
+        return (React.createElement("div", {"className": "commentBox"}, React.createElement("h1", null, "Comments"), React.createElement(CommentList, {"data": this.state.data}), React.createElement(CommentForm, null)));
     }
 });
 var CommentList = React.createClass({
@@ -1240,7 +1259,7 @@ var CommentList = React.createClass({
 });
 var CommentForm = React.createClass({
     render: function () {
-        return (React.createElement("div", {"className": "commentForm"}, "Hello, world!I am a CommentForm."));
+        return (React.createElement("form", {"className": "commentForm"}, React.createElement("input", {"type": "text", "placeholder": "Your name"}), React.createElement("input", {"type": "text", "placeholder": "Say something..."}), React.createElement("input", {"type": "submit", "value": "Post"})));
     }
 });
 var Comment1 = React.createClass({
@@ -1252,5 +1271,5 @@ var Comment1 = React.createClass({
         return (React.createElement("div", {"className": "comment"}, React.createElement("h2", {"className": "commentAuthor"}, this.props.author), React.createElement("span", {"dangerouslySetInnerHTML": this.rawMarkup()})));
     }
 });
-React.render(React.createElement(CommentBox, null), document.getElementById('content'));
+React.render(React.createElement(CommentBox, {"data": data}), document.getElementById('content'));
 //# sourceMappingURL=appBundle.js.map
