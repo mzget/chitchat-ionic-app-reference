@@ -33,7 +33,9 @@ requirejs.config({
 });
 var Main = (function () {
     function Main() {
+        this.serverImp = new ChatServer.ServerImplemented();
         this.serverListener = new ChatServer.ServerEventListener();
+        this.chatRoomApi = new ChatServer.ChatRoomApiProvider();
         this.dataManager = DataManager.getInstance();
         this.dataListener = new DataListener(this.dataManager);
     }
@@ -42,6 +44,12 @@ var Main = (function () {
     };
     Main.prototype.getDataListener = function () {
         return this.dataListener;
+    };
+    Main.prototype.getServerImp = function () {
+        return this.serverImp;
+    };
+    Main.prototype.getChatRoomApi = function () {
+        return this.chatRoomApi;
     };
     Main.prototype.startChatServerListener = function () {
         this.serverListener.addFrontendListener(this.dataManager);
@@ -838,8 +846,13 @@ var Services;
     Services.AbsServerListener = AbsServerListener;
 })(Services || (Services = {}));
 var ChatRoomController = (function () {
-    function ChatRoomController() {
+    function ChatRoomController(main) {
         this.chatMessages = [];
+        this.main = main;
+        this.serverImp = this.main.getServerImp();
+        this.chatRoomApi = this.main.getChatRoomApi();
+        this.dataManager = this.main.getDataManager();
+        console.log("constructor", this.dataManager.getMyProfile().displayname);
     }
     ChatRoomController.prototype.onChat = function (chatMessageImp) {
         var _this = this;
@@ -875,6 +888,116 @@ var ChatRoomController = (function () {
     ChatRoomController.prototype.onMessageRead = function (dataEvent) {
     };
     ChatRoomController.prototype.onGetMessagesReaders = function (dataEvent) {
+    };
+    ChatRoomController.prototype.getMessage = function (chatId, Chats, callback) {
+        var self = this;
+        var myProfile = self.dataManager.myProfile;
+        console.log(myProfile, self.dataManager);
+        var chatLog = localStorage.getItem(myProfile.displayname + '_' + chatId);
+        async.waterfall([
+            function (cb) {
+                if (!!chatLog) {
+                    if (JSON.stringify(chatLog) === "") {
+                        self.chatMessages = [];
+                        cb(null, null);
+                    }
+                    else {
+                        var arr_fromLog = JSON.parse(chatLog);
+                        if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
+                            self.chatMessages = [];
+                            cb(null, null);
+                        }
+                        else {
+                            async.eachSeries(arr_fromLog, function (log, cb) {
+                                var messageImp = log;
+                                if (messageImp.type === ContentType[ContentType.Text]) {
+                                    self.main.decodeService(messageImp.body, function (err, res) {
+                                        if (!err) {
+                                            messageImp.body = res;
+                                            self.chatMessages.push(messageImp);
+                                            cb();
+                                        }
+                                        else {
+                                            self.chatMessages.push(messageImp);
+                                            cb();
+                                        }
+                                    });
+                                }
+                                else {
+                                    self.chatMessages.push(log);
+                                    cb();
+                                }
+                            }, function (err) {
+                                cb(null, null);
+                            });
+                        }
+                    }
+                }
+                else {
+                    self.chatMessages = [];
+                    cb(null, null);
+                }
+            },
+            function (arg1, cb) {
+                cb(null, null);
+            }
+        ], function (err, res) {
+            self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
+                if (res.code == 200) {
+                    var access = new Date();
+                    var roomAccess = self.dataManager.myProfile.roomAccess;
+                    async.eachSeries(roomAccess, function iterator(item, cb) {
+                        if (item.roomId == chatId) {
+                            access = item.accessTime;
+                        }
+                        cb();
+                    }, function done() {
+                        self.chatRoomApi.getChatHistory(chatId, access, function (err, result) {
+                            var histories = [];
+                            if (result.code === 200) {
+                                histories = result.data;
+                            }
+                            else {
+                            }
+                            var his_length = histories.length;
+                            if (his_length > 0) {
+                                async.eachSeries(histories, function (item, cb) {
+                                    var chatMessageImp = JSON.parse(JSON.stringify(item));
+                                    if (chatMessageImp.type === ContentType[ContentType.Text]) {
+                                        self.main.decodeService(chatMessageImp.body, function (err, res) {
+                                            if (!err) {
+                                                chatMessageImp.body = res;
+                                                self.chatMessages.push(chatMessageImp);
+                                                cb();
+                                            }
+                                            else {
+                                                cb();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        if (item.type == 'File') {
+                                            console.log('file');
+                                        }
+                                        self.chatMessages.push(item);
+                                        cb();
+                                    }
+                                }, function (err) {
+                                    Chats.set(self.chatMessages);
+                                    localStorage.removeItem(myProfile.displayname + '_' + chatId);
+                                    localStorage.setItem(myProfile.displayname + '_' + chatId, JSON.stringify(self.chatMessages));
+                                    callback();
+                                });
+                            }
+                            else {
+                                Chats.set(self.chatMessages);
+                                callback();
+                            }
+                        });
+                    });
+                }
+            });
+        });
     };
     return ChatRoomController;
 })();
