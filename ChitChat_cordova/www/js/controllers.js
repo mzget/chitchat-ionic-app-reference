@@ -241,7 +241,7 @@ angular.module('starter.controllers', [])
     $scope.images = "http://placehold.it/50x50";
 })
 
-.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, ImageService, FileService) {
+.controller('ImageController', function($scope, $cordovaFile, $ionicPlatform, $ionicActionSheet, ImageService, FileService) {
  
   $ionicPlatform.ready(function() {
     $scope.images = FileService.images();
