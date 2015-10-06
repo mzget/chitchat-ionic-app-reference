@@ -1,4 +1,6 @@
-﻿var pomelo;
+﻿
+var appConfig;
+var pomelo;
 var username: string = "";
 var password: string = "";
 
@@ -26,8 +28,8 @@ module ChatServer {
             return ServerImplemented.Instance;
         }
 
-        host: string = "git.animation-genius.com";
-        port: number = 3014;
+        host: string;
+        port: number;
         authenData: AuthenData;
         _isInit: boolean = false;
         _isConnected: boolean = false;
@@ -49,11 +51,23 @@ module ChatServer {
             }
         }
 
-        constructor() {
+        loadComponents() {
             require(['../js/pomelo/pomeloclient'], function (obj) {
                 pomelo = obj;
             });
+            $.ajax({
+                url: "../configs/appconfig.json",
+                //force to handle it as text
+                dataType: "text",
+                success: function (appconfig) {
 
+                    //data downloaded so we call parseJSON function 
+                    //and pass downloaded data
+                    var json = $.parseJSON(appconfig);
+                    console.log(json);
+                    appConfig = JSON.parse(json);
+                }
+            });
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
             var authen = localStorage.getItem("authen");
@@ -63,6 +77,8 @@ module ChatServer {
             else {
                 this.authenData = new AuthenData();
             }
+
+            console.warn("serv imp.");
         }
 
         public Logout() {
@@ -77,7 +93,10 @@ module ChatServer {
         }
 
         public init(callback: Function) {
+            this.loadComponents();
             var self = this;
+            self.host = appConfig.socketHost;
+            self.port = appConfig.socketPort;
             if (pomelo !== null) {
                 //<!-- Connecting gate server.
                 self.connectSocketServer(self.host, self.port, () => {

@@ -28,7 +28,8 @@ var BlankCordovaApp1;
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
-        cryptojs: '../js/crypto-js/crypto-js'
+        cryptojs: '../js/crypto-js/crypto-js',
+        appconfig: '../configs/appconfig.json'
     }
 });
 var Main = (function () {
@@ -140,6 +141,7 @@ var Main = (function () {
     };
     return Main;
 })();
+var appConfig;
 var pomelo;
 var username = "";
 var password = "";
@@ -152,23 +154,9 @@ var ChatServer;
     })();
     var ServerImplemented = (function () {
         function ServerImplemented() {
-            this.host = "git.animation-genius.com";
-            this.port = 3014;
             this._isInit = false;
             this._isConnected = false;
             this._isLogedin = false;
-            require(['../js/pomelo/pomeloclient'], function (obj) {
-                pomelo = obj;
-            });
-            username = localStorage.getItem("username");
-            password = localStorage.getItem("password");
-            var authen = localStorage.getItem("authen");
-            if (authen !== null) {
-                this.authenData = JSON.parse(authen);
-            }
-            else {
-                this.authenData = new AuthenData();
-            }
         }
         ServerImplemented.getInstance = function () {
             if (!ServerImplemented.Instance) {
@@ -185,6 +173,30 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
+        ServerImplemented.prototype.loadComponents = function () {
+            require(['../js/pomelo/pomeloclient'], function (obj) {
+                pomelo = obj;
+            });
+            $.ajax({
+                url: "../configs/appconfig.json",
+                dataType: "text",
+                success: function (appconfig) {
+                    var json = $.parseJSON(appconfig);
+                    console.log(json);
+                    appConfig = JSON.parse(json);
+                }
+            });
+            username = localStorage.getItem("username");
+            password = localStorage.getItem("password");
+            var authen = localStorage.getItem("authen");
+            if (authen !== null) {
+                this.authenData = JSON.parse(authen);
+            }
+            else {
+                this.authenData = new AuthenData();
+            }
+            console.warn("serv imp.");
+        };
         ServerImplemented.prototype.Logout = function () {
             var msg = {};
             msg["username"] = username;
@@ -194,7 +206,10 @@ var ChatServer;
             this.disConnect();
         };
         ServerImplemented.prototype.init = function (callback) {
+            this.loadComponents();
             var self = this;
+            self.host = appConfig.socketHost;
+            self.port = appConfig.socketPort;
             if (pomelo !== null) {
                 self.connectSocketServer(self.host, self.port, function () {
                     callback();

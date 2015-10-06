@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -25,6 +25,7 @@
 	<script src="js/services.js"></script>
 	<script src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/async.js"></script>
+    <script type="text/javascript" src="js/promise/index.js"></script>
 	<script src="js/require.js" data-main="scripts/appBundle"></script>
 	
 	<script src="js/template.js"></script>
@@ -37,8 +38,8 @@
 	<script>
 	
 		var socket = io;
-		var main = new Main();
-		var server = main.getServerImp();
+		var main = Main.prototype;
+		var server = ChatServer.ServerImplemented.prototype;
 		var authen = server.authenData;
 		main.onMyProfileReadyListener = function(dataManager) {
 			console.warn('goto group');
@@ -47,65 +48,62 @@
 			$('#splash').css({'display':'none'});
 			location.href = "#/tab/group";					
 		};
-		
-		setTimeout(function(){
-			server.init(function () {
-				console.log("token: ", authen.token);
-				if (!authen.token) {
-					$('#splash').css({'display':'none'});
+		    server.init(function () {
+		        console.log("token: ", authen.token);
+		        if (!authen.token) {
+		            $('#splash').css({'display':'none'});
 					
-					$('body #login #btn-login').click(function (event) {
-						console.log('loging A');
-						event.preventDefault();						
-						$('body #login input').attr('readonly', true);
-						email = $('body #login form input[name="email"]').val();
-						password = $('body #login form input[name="password"]').val();
+		            $('body #login #btn-login').click(function (event) {
+		                console.log('loging A');
+		                event.preventDefault();						
+		                $('body #login input').attr('readonly', true);
+		                email = $('body #login form input[name="email"]').val();
+		                password = $('body #login form input[name="password"]').val();
 
-						main.getHashService(password, function(err, res) {
-						    main.authenUser(server, email, res, function (err, res) {
-						        if (!err && res !== null) {
-						            if (res.code === 200) {
-										console.log("Success Login User...");	
-						            }
-						            else {
-										$('body #login input').attr('readonly', false);
-										alert("LOGIN FAIL");
-						            }
-						        }
-						        else {
-									$('body #login input').attr('readonly', false);
-									alert("LOGIN FAIL");
-						        }
-							});
-						});
-					});
-				}
-				else {
-					server.TokenAuthen(authen.token, function (err, res) {
-						if (!err && res !== null) {
-							console.log("Authen result: ", JSON.stringify(res));
-							if (res.success) {
-							    main.authenUser(server, res.username, res.password, function (err, res) {
-							        if (!err && res !== null) {
-							            if (res.code === 200) {
-							                console.log("Success Authen User...");
-							            }
-							            else {
-							                //<!-- Authen fail.
-											server.Logout(); alert('logout'); location.href='';
-							            }
-							        }
-							        else {
-							            //<!-- Authen fail.
-										server.Logout(); alert('logout'); location.href='';
-							        }
-								});
-							}
-						}
-					});
-				}
-			})
-		}, 1500);
+		                main.getHashService(password, function(err, res) {
+		                    main.authenUser(server, email, res, function (err, res) {
+		                        if (!err && res !== null) {
+		                            if (res.code === 200) {
+		                                console.log("Success Login User...");	
+		                            }
+		                            else {
+		                                $('body #login input').attr('readonly', false);
+		                                alert("LOGIN FAIL");
+		                            }
+		                        }
+		                        else {
+		                            $('body #login input').attr('readonly', false);
+		                            alert("LOGIN FAIL");
+		                        }
+		                    });
+		                });
+		            });
+		        }
+		        else {
+		            server.TokenAuthen(authen.token, function (err, res) {
+		                if (!err && res !== null) {
+		                    console.log("Authen result: ", JSON.stringify(res));
+		                    if (res.success) {
+		                        main.authenUser(server, res.username, res.password, function (err, res) {
+		                            if (!err && res !== null) {
+		                                if (res.code === 200) {
+		                                    console.log("Success Authen User...");
+		                                }
+		                                else {
+		                                    //<!-- Authen fail.
+		                                    server.Logout(); alert('logout'); location.href='';
+		                                }
+		                            }
+		                            else {
+		                                //<!-- Authen fail.
+		                                server.Logout(); alert('logout'); location.href='';
+		                            }
+		                        });
+		                    }
+		                }
+		            });
+		        }
+		    });
 		
 //		function waitProfile()
 //		{
