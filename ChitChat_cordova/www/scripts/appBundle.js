@@ -1325,14 +1325,4 @@ var SecureService = (function () {
     };
     return SecureService;
 })();
-// A '.tsx' file enables JSX support in the TypeScript compiler, 
-// for more information see the following page on the TypeScript wiki:
-// https://github.com/Microsoft/TypeScript/wiki/JSX
-/// <reference path="../typings/tsd.d.ts" />
-var CommentBox = React.createClass({
-    render: function () {
-        return (React.createElement("div", {"className": "commentBox"}, "Hello, world!I am a CommentBox."));
-    }
-});
-React.render(React.createElement(CommentBox, null), document.getElementById('content'));
 //# sourceMappingURL=appBundle.js.map
