@@ -1,4 +1,4 @@
-﻿var myprofile;
+var myprofile;
 var date = new Date();
 var now;
 var newchatmessage;
@@ -178,11 +178,11 @@ angular.module('starter.controllers', [])
     var countUp = function () {		
 		if( currentRoom != '' )
 		{
-			localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
-			localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-			console.log('update with timeout fired');
+			// localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
+			// localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			// console.log('update with timeout fired');
 			$scope.chat = Chats.all();
-			console.log( 'Refresh' );
+			console.log( 'Refresh! by timeout fired...');
 
 			$timeout(countUp, 1000);
 		}
@@ -286,15 +286,21 @@ function groupMembers(members, size)
 	if( size )
 		max = size;
 
-	gmember = [];
-	//console.log('ALL GROUP MEMBERS : '+members.length);	
-	for(i=0; i<max; i++)
-	{
-		gmember[i] = main.getDataManager().orgMembers[members[i]['id']];
-		console.log('GROUP MEMBERS : '+main.getDataManager().orgMembers[members[i]['id']]['displayname']);
-	}
-	
-	return gmember;
+    var counter = 0;
+	var gmember = [];
+    for(var i = 0; i <= members.length; i++) {
+        if(!!members[i]) {
+            var mem_id = members[i].id;
+            var member = main.getDataManager().orgMembers[mem_id];
+             if(!!member) {
+                gmember.push(member);
+                counter += 1;
+
+                if(counter >= max) { break; }
+            }
+        }
+    }
+    return gmember;
 }
 
 function back()
