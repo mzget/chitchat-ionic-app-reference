@@ -8,7 +8,7 @@
 
 class ChatRoomController implements IChatRoomController {
     public chatMessages = [];
-    public serviceListener;
+    public serviceListener: (newMessage:any) => void;
     private dataManager: DataManager;
     private main: Main;
     private serverImp: ChatServer.ServerImplemented;
@@ -22,30 +22,30 @@ class ChatRoomController implements IChatRoomController {
         console.log("constructor", this.dataManager.getMyProfile().displayname);
     }
 
-    onChat(chatMessageImp) {
+    onChat(chatMessageImp: Message) {
         console.log("Implement chat msg hear..", chatMessageImp);
         var self = this;
         var secure = new SecureService();
-        if (chatMessageImp.type === ContentType[ContentType.Text]) {
+        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
             secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
                 if (!err) {
                     chatMessageImp.body = res;
                     self.chatMessages.push(chatMessageImp);
                     if (!!this.serviceListener)
-                        this.serviceListener();
+                        this.serviceListener(chatMessageImp);
                 }
                 else {
                     console.log(err, res);
                     self.chatMessages.push(chatMessageImp);
                     if (!!this.serviceListener)
-                        this.serviceListener();
+                        this.serviceListener(chatMessageImp);
                 }
             })
         }
         else {
             self.chatMessages.push(chatMessageImp);
             if (!!this.serviceListener)
-                this.serviceListener();
+                this.serviceListener(chatMessageImp);
         }
     }
 

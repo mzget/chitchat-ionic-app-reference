@@ -148,12 +148,6 @@ angular.module('starter.controllers', [])
 	$scope.members_length = members.length;
 })
 
-
-
-
-
-
-
 .controller('ChatsCtrl', function($scope) {
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
@@ -178,8 +172,12 @@ angular.module('starter.controllers', [])
 	var chatRoomControl = new ChatRoomController(main);
 	main.dataListener.addListenerImp(chatRoomControl);
 	var chatRoomApi = main.getChatRoomApi();
-    chatRoomControl.serviceListener = function () {
+    chatRoomControl.serviceListener = function (newMsg) {
         Chats.set(chatRoomControl.chatMessages);
+
+        if (newMsg.sender !== main.dataManager.myProfile._id) {
+            chatRoomApi.updateMessageReader(newMsg._id, currentRoom);
+        }
     }
     chatRoomControl.getMessage(currentRoom, Chats, function () {
         Chats.set(chatRoomControl.chatMessages);
