@@ -97,6 +97,14 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
+
+	chatRoomControl = new ChatRoomController();
+	main.dataListener.addListenerImp(chatRoomControl);
+			
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+	    location.href = '#/tab/message/' + chatId;
+	};
 })
 .controller('GroupPrivateCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().privateGroups[$stateParams.chatId];
@@ -105,6 +113,14 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
+
+	chatRoomControl = new ChatRoomController();
+	main.dataListener.addListenerImp(chatRoomControl);
+			
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+	    location.href = '#/tab/message/' + chatId;
+	};
 })
 .controller('GroupOrggroupsCtrl', function($scope, $stateParams) {	
 	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
@@ -157,8 +173,10 @@ angular.module('starter.controllers', [])
 	};
 })
 
-.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, Chats) 
+.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
 {    	
+	localStorage.setItem(myprofile._id+'_'+currentRoom, []); // Clear Storage
+	
 	$scope.chat = [];
 	
     chatRoomControl.serviceListener = function () {
@@ -171,11 +189,7 @@ angular.module('starter.controllers', [])
     var countUp = function () {		
 		if( currentRoom != '' )
 		{
-			localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
-			localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-			console.log('update with timeout fired');
-			$scope.chat = Chats.all();
-			console.log( 'Refresh' );
+			console.log( chatRoomControl.chatMessages.length );
 			
 			$timeout(countUp, 1000);
 		}
@@ -190,7 +204,7 @@ angular.module('starter.controllers', [])
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
-    $scope.chat = Chats.all();
+    $scope.chat = chatRoomControl.chatMessages;
     $('#send_message').css({ 'display': 'inline-block' });
     $('#chatroom_back').css({ 'display': 'inline-block' });
 	
@@ -242,11 +256,18 @@ function groupMembers(members, size)
 		max = size;
 
 	gmember = [];
-	//console.log('ALL GROUP MEMBERS : '+members.length);	
-	for(i=0; i<max; i++)
+	//console.log('ALL GROUP MEMBERS : '+members.length);
+	var j = 0;
+	for(var i=0; i<max+j; i++)
 	{
-		gmember[i] = main.getDataManager().orgMembers[members[i]['id']];
-		console.log('GROUP MEMBERS : '+main.getDataManager().orgMembers[members[i]['id']]['displayname']);
+		if( jQuery.type( main.getDataManager().orgMembers[members[i]['id']] ) == 'object' )
+		{
+			gmember[i-j] = main.getDataManager().orgMembers[members[i]['id']];
+			console.log('GROUP MEMBERS : '+main.getDataManager().orgMembers[members[i]['id']]['displayname']);
+		}
+		else{
+			j++;
+		}
 	}
 	
 	return gmember;
@@ -256,9 +277,8 @@ function back()
 {
     server.LeaveChatRoomRequest(currentRoom, function (err, res) {
         console.log("leave room", JSON.stringify(res));
-        localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
-        localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-        console.warn("save", currentRoom,JSON.stringify(chatRoomControl.chatMessages));
+        localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+        console.warn("save", myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 
         currentRoom = "";
         chatRoomControl.chatMessages = [];
@@ -272,8 +292,8 @@ function back()
 
 function getMessage(chatId, Chats, callback) {
 	//console.log(chatRoomControl.chatMessages.length)
-//	chatRoomControl.loadAllMessage(currentRoom);
-	var chatLog = localStorage.getItem(myprofile.displayname_id+'_'+chatId);
+	//hatRoomControl.loadAllMessage(currentRoom);
+	var chatLog = localStorage.getItem(myprofile._id+'_'+chatId);
 	//console.log('local chatLog : ' + chatLog);
 	async.waterfall([
 		function (cb) {
@@ -377,8 +397,8 @@ function getMessage(chatId, Chats, callback) {
 						}, function (err) {
 						    Chats.set(chatRoomControl.chatMessages);
 
-							localStorage.removeItem(myprofile.displayname_id+'_'+chatId);
-							localStorage.setItem(myprofile.displayname_id+'_'+chatId, JSON.stringify(chatRoomControl.chatMessages));
+							localStorage.removeItem(myprofile._id+'_'+chatId);
+							localStorage.setItem(myprofile._id+'_'+chatId, JSON.stringify(chatRoomControl.chatMessages));
 
 							// location.href = '#/tab/message/' + chatId;
 							callback();
