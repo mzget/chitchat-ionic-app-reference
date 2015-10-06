@@ -859,26 +859,26 @@ var ChatRoomController = (function () {
         console.log("Implement chat msg hear..", chatMessageImp);
         var self = this;
         var secure = new SecureService();
-        if (chatMessageImp.type === ContentType[ContentType.Text]) {
+        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
             secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
                 if (!err) {
                     chatMessageImp.body = res;
                     self.chatMessages.push(chatMessageImp);
                     if (!!_this.serviceListener)
-                        _this.serviceListener();
+                        _this.serviceListener(chatMessageImp);
                 }
                 else {
                     console.log(err, res);
                     self.chatMessages.push(chatMessageImp);
                     if (!!_this.serviceListener)
-                        _this.serviceListener();
+                        _this.serviceListener(chatMessageImp);
                 }
             });
         }
         else {
             self.chatMessages.push(chatMessageImp);
             if (!!this.serviceListener)
-                this.serviceListener();
+                this.serviceListener(chatMessageImp);
         }
     };
     ChatRoomController.prototype.onLeaveRoom = function (data) {
@@ -1147,16 +1147,6 @@ var DataManager = (function () {
     ;
     return DataManager;
 })();
-var MessageType;
-(function (MessageType) {
-    MessageType[MessageType["Text"] = 0] = "Text";
-    MessageType[MessageType["Image"] = 1] = "Image";
-    MessageType[MessageType["Video"] = 2] = "Video";
-    MessageType[MessageType["Voice"] = 3] = "Voice";
-    MessageType[MessageType["Location"] = 4] = "Location";
-    MessageType[MessageType["Sticker"] = 5] = "Sticker";
-})(MessageType || (MessageType = {}));
-;
 var MessageMeta = (function () {
     function MessageMeta() {
     }

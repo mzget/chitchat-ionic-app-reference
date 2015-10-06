@@ -51,7 +51,7 @@
     //<!-- chat room data listener.
 
     onChatData(data) {
-        var chatMessageImp = JSON.parse(JSON.stringify(data));
+        var chatMessageImp: Message = JSON.parse(JSON.stringify(data));
 
         if (!!this.listenerImp)
             this.listenerImp.onChat(chatMessageImp);
