@@ -40,7 +40,7 @@ angular.module('starter.controllers', [])
 })
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function($scope, $stateParams, $state, $cordovaProgress,FileService) {
+.controller('GroupViewprofileCtrl', function($scope, $stateParams, $state, FileService) {
 
 	
     //$cordovaProgress.showDeterminateWithLabel(true, 50000, "Loading")
