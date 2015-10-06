@@ -1,28 +1,30 @@
 angular.module('starter.services', [])
 
-
 .factory('FileService', function() {
   var images;
-  var IMAGE_STORAGE_KEY = 'images';
- 
-  function getImages() {
-    var img = window.localStorage.getItem(IMAGE_STORAGE_KEY);
-    if (img) {
-      images = JSON.parse(img);
-    } else {
-      images = [];
-    }
+
+  function getImages(){
     return images;
   };
+
+  function setImages() {
+    images = [];
+    return images;
+  };
+
+  function clearImages(){
+    images = [];
+  }
  
   function addImage(img) {
-    images.push(img);
-    window.localStorage.setItem(IMAGE_STORAGE_KEY, JSON.stringify(images));
+      images[0] = img;
   };
  
   return {
     storeImage: addImage,
-    images: getImages
+    images: setImages,
+    getImages: getImages,
+    clearImages: clearImages
   }
 })
 
