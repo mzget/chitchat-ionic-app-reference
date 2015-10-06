@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -17,7 +17,7 @@
 	<script src="lib/ngCordova/dist/ng-cordova.js"></script>
 
 	<!-- cordova script (this will be a 404 during development) -->
-	<script src="cordova.js"></script>
+	<!--<script src="cordova.js"></script>-->
 
 	<!-- your app's js -->
 	<script src="js/app.js"></script>
@@ -25,6 +25,7 @@
 	<script src="js/services.js"></script>
 	<script src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/async.js"></script>
+    <script src="https://www.promisejs.org/polyfills/promise-done-7.0.4.min.js"></script>
 	<script src="js/require.js" data-main="scripts/appBundle"></script>
 	
 	<script src="js/template.js"></script>
@@ -37,9 +38,13 @@
 	<script>
 	
 		var socket = io;
-		var main = new Main();
-		var server = main.getServerImp();
-		var authen = server.authenData;
+		var main = Main.prototype;
+		var server = ChatServer.ServerImplemented.prototype;
+		var serverEvents = ChatServer.ServerEventListener.prototype;
+		var dataManager = DataManager.prototype;
+		main.setDataManager(dataManager);
+		main.setServerListener(serverEvents);
+		main.setServerImp(server);
 		main.onMyProfileReadyListener = function(dataManager) {
 			console.warn('goto group');
 			$('#login').css('display','none');
@@ -47,65 +52,63 @@
 			$('#splash').css({'display':'none'});
 			location.href = "#/tab/group";					
 		};
-		
-		setTimeout(function(){
-			server.init(function () {
-				console.log("token: ", authen.token);
-				if (!authen.token) {
-					$('#splash').css({'display':'none'});
-					
-					$('body #login #btn-login').click(function (event) {
-						console.log('loging A');
-						event.preventDefault();						
-						$('body #login input').attr('readonly', true);
-						email = $('body #login form input[name="email"]').val();
-						password = $('body #login form input[name="password"]').val();
+		server.init(function (err, server) {
+		    var authen = server.authenData;
+		    console.log("token: ", authen.token);
+		    if (!authen.token) {
+		        $('#splash').css({ 'display': 'none' });
 
-						main.getHashService(password, function(err, res) {
-						    main.authenUser(server, email, res, function (err, res) {
-						        if (!err && res !== null) {
-						            if (res.code === 200) {
-										console.log("Success Login User...");	
-						            }
-						            else {
-										$('body #login input').attr('readonly', false);
-										alert("LOGIN FAIL");
-						            }
-						        }
-						        else {
-									$('body #login input').attr('readonly', false);
-									alert("LOGIN FAIL");
-						        }
-							});
-						});
-					});
-				}
-				else {
-					server.TokenAuthen(authen.token, function (err, res) {
-						if (!err && res !== null) {
-							console.log("Authen result: ", JSON.stringify(res));
-							if (res.success) {
-							    main.authenUser(server, res.username, res.password, function (err, res) {
-							        if (!err && res !== null) {
-							            if (res.code === 200) {
-							                console.log("Success Authen User...");
-							            }
-							            else {
-							                //<!-- Authen fail.
-											server.Logout(); alert('logout'); location.href='';
-							            }
-							        }
-							        else {
-							            //<!-- Authen fail.
-										server.Logout(); alert('logout'); location.href='';
-							        }
-								});
-							}
-						}
-					});
-				}
-			})
-		}, 1500);
+		        $('body #login #btn-login').click(function (event) {
+		            console.log('loging A');
+		            event.preventDefault();
+		            $('body #login input').attr('readonly', true);
+		            email = $('body #login form input[name="email"]').val();
+		            password = $('body #login form input[name="password"]').val();
+
+		            main.getHashService(password, function (err, res) {
+		                main.authenUser(server, email, res, function (err, res) {
+		                    if (!err && res !== null) {
+		                        if (res.code === 200) {
+		                            console.log("Success Login User...");
+		                        }
+		                        else {
+		                            $('body #login input').attr('readonly', false);
+		                            alert("LOGIN FAIL");
+		                        }
+		                    }
+		                    else {
+		                        $('body #login input').attr('readonly', false);
+		                        alert("LOGIN FAIL");
+		                    }
+		                });
+		            });
+		        });
+		    }
+		    else {
+		        server.TokenAuthen(authen.token, function (err, res) {
+		            if (!err && res !== null) {
+		                console.log("Authen result: ", JSON.stringify(res));
+		                if (res.success) {
+		                    main.authenUser(server, res.username, res.password, function (err, res) {
+		                        if (!err && res !== null) {
+		                            if (res.code === 200) {
+		                                console.log("Success Authen User...");
+		                            }
+		                            else {
+		                                //<!-- Authen fail.
+		                                server.Logout(); alert('logout'); location.href = '';
+		                            }
+		                        }
+		                        else {
+		                            //<!-- Authen fail.
+		                            server.Logout(); alert('logout'); location.href = '';
+		                        }
+		                    });
+		                }
+		            }
+		        });
+		    }
+		    });
 		
 //		function waitProfile()
 //		{
@@ -143,9 +146,6 @@
 	<div id="send_message">
 		<input type="text" name="send_message" />
 		<button><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
-	</div>
-	<div onclick="back()" id="chatroom_back">
-		<i class="ion-chevron-left" data-pack="default" data-tags="arrow, left"></i> <span style="font-weight:100;">Back</span>
 	</div>
 
 </body>

@@ -72,6 +72,8 @@ class DataManager implements Services.IFrontendServerListener {
     public onGetCompanyMemberComplete(dataEvent) {
         var member: Array<OrgMember> = JSON.parse(JSON.stringify(dataEvent));
 
+        if (!this.orgMembers) this.orgMembers = {};
+
         member.forEach(value => {
             if (!this.orgMembers[value._id]) {
                 this.orgMembers[value._id] = value;
@@ -80,6 +82,8 @@ class DataManager implements Services.IFrontendServerListener {
     };
     public onGetOrganizeGroupsComplete(dataEvent) {
         var rooms: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.orgGroups)
+            this.orgGroups = {};
 
         rooms.forEach(value => {
             if (!this.orgGroups[value._id]) {
@@ -90,6 +94,8 @@ class DataManager implements Services.IFrontendServerListener {
     public onGetProjectBaseGroupsComplete(dataEvent) {
         var groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
 
+        if (!this.projectBaseGroups) this.projectBaseGroups = {};
+
         groups.forEach(value => {
             if (!this.projectBaseGroups[value._id]) {
                 this.projectBaseGroups[value._id] = value;
@@ -98,6 +104,8 @@ class DataManager implements Services.IFrontendServerListener {
     };
     public onGetPrivateGroupsComplete(dataEvent) {
         var groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
+
+        if (!this.privateGroups) this.privateGroups = {};
 
         groups.forEach(value => {
             if (!this.privateGroups[value._id]) {
