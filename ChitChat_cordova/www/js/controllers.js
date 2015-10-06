@@ -43,13 +43,21 @@ angular.module('starter.controllers', [])
 })
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function($scope, $stateParams, $state) {
+.controller('GroupViewprofileCtrl', function($scope, $stateParams, $state, $cordovaProgress,FileService) {
+
+	
+    //$cordovaProgress.showDeterminateWithLabel(true, 50000, "Loading")
+  
+
 	if($stateParams.chatId==main.getDataManager().myProfile._id){
 		$scope.chat = main.getDataManager().myProfile;
 		$scope.title = "My Profile";
 		$('#viewprofile-input-display').removeAttr('disabled');
 		$('#viewprofile-input-status').removeAttr('disabled');
 		$scope.edit = 'true';
+		$scope.save = function() {
+			console.log(cordova.file.dataDirectory + FileService.getImages());
+		};
 	}else{
     	var member = main.getDataManager().orgMembers[$stateParams.chatId];
 		if(	member.firstname == null || member.firstname == "" &&
