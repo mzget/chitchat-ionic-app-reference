@@ -31,9 +31,9 @@ module ChatServer {
         host: string;
         port: number;
         authenData: AuthenData;
-        _isInit: boolean = false;
-        _isConnected: boolean = false;
-        _isLogedin: boolean = false;
+        _isInit = false;
+        _isConnected = false;
+        _isLogedin = false;
 
         public getClient() {
             var self = this;
@@ -51,34 +51,8 @@ module ChatServer {
             }
         }
 
-        loadComponents() {
-            require(['../js/pomelo/pomeloclient'], function (obj) {
-                pomelo = obj;
-            });
-            $.ajax({
-                url: "../configs/appconfig.json",
-                //force to handle it as text
-                dataType: "text",
-                success: function (appconfig) {
-
-                    //data downloaded so we call parseJSON function 
-                    //and pass downloaded data
-                    var json = $.parseJSON(appconfig);
-                    console.log(json);
-                    appConfig = JSON.parse(json);
-                }
-            });
-            username = localStorage.getItem("username");
-            password = localStorage.getItem("password");
-            var authen = localStorage.getItem("authen");
-            if (authen !== null) {
-                this.authenData = JSON.parse(authen);
-            }
-            else {
-                this.authenData = new AuthenData();
-            }
-
-            console.warn("serv imp.");
+        constructor() {
+            console.warn("serv imp. constructor");
         }
 
         public Logout() {
@@ -93,16 +67,66 @@ module ChatServer {
         }
 
         public init(callback: Function) {
-            this.loadComponents();
             var self = this;
-            self.host = appConfig.socketHost;
-            self.port = appConfig.socketPort;
-            if (pomelo !== null) {
-                //<!-- Connecting gate server.
-                self.connectSocketServer(self.host, self.port, () => {
-                    callback();
-                });
+
+            this._isConnected = false;
+            username = localStorage.getItem("username");
+            password = localStorage.getItem("password");
+            var authen = localStorage.getItem("authen");
+            if (authen !== null) {
+                this.authenData = JSON.parse(authen);
             }
+            else {
+                this.authenData = new AuthenData();
+            }
+
+            var promiseForSocket = new Promise(function (resolve, rejected) {
+                self.loadSocket(resolve, rejected);
+            }).then(function onfulfilled(value) {
+                self.loadConfig(callback);
+                }).catch(function onRejected(err) {
+                    console.error(err);
+                });
+        }
+
+        private loadSocket(resolve, rejected) {
+            require(['../js/pomelo/pomeloclient'], function (obj) {
+                pomelo = obj;
+                resolve();
+            });
+        }
+
+        private loadConfig(callback: Function) {
+            var self = this;
+            var promiseForFileConfig = new Promise(function (resolve, reject) {
+                // This only is an example to create asynchronism
+
+                $.ajax({
+                    url: "../configs/appconfig.json",
+                    dataType: "json",
+                    success: function (config) {
+                        appConfig = JSON.parse(JSON.stringify(config));
+
+                        resolve();
+                    }, error: function (jqXHR, textStatus, errorThrown) {
+                        reject(errorThrown);
+                    }
+                });
+            }).then(function resolve(val) {
+                self.host = appConfig.socketHost;
+                self.port = appConfig.socketPort;
+                if (!!pomelo) {
+                    //<!-- Connecting gate server.
+                    self.connectSocketServer(self.host, self.port, () => {
+                        callback(null, self);
+                    });
+                }
+                else {
+                    console.error("pomelo socket is un ready.");
+                }
+            }).catch(function onRejected(err) {
+                console.log(err)
+            });
         }
 
         public disConnect() {
@@ -760,11 +784,13 @@ module ChatServer {
             //this.serverListener = new Services.ServerListener();
         }
 
-        public addListenner() {
+        public addListenner(resolve, rejected) {
             this.callFrontendServer();
             this.callChatServer();
             this.callRTCEvents();
             this.callServerEvents();
+
+            resolve();
         }
 
         private callFrontendServer() {
