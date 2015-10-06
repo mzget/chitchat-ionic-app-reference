@@ -102,6 +102,11 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
+			
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+	    location.href = '#/tab/group/chat/' + chatId;
+	};
 })
 .controller('GroupPrivateCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().privateGroups[$stateParams.chatId];
@@ -110,6 +115,11 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
+			
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+	    location.href = '#/tab/group/chat/' + chatId;
+	};
 })
 .controller('GroupOrggroupsCtrl', function($scope, $stateParams) {	
 	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
@@ -121,7 +131,7 @@ angular.module('starter.controllers', [])
 			
 	$scope.toggle = function (chatId) {
 	    currentRoom = chatId;
-	    location.href = '#/tab/message/' + chatId;
+	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
 .controller('GroupDetailCtrl', function($scope, $stateParams) {
@@ -178,8 +188,8 @@ angular.module('starter.controllers', [])
     var countUp = function () {		
 		if( currentRoom != '' )
 		{
-			// localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
-			// localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
+			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 			// console.log('update with timeout fired');
 			$scope.chat = Chats.all();
 			console.log( 'Refresh! by timeout fired...');
@@ -198,9 +208,10 @@ angular.module('starter.controllers', [])
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
     $scope.chat = Chats.all();
-    $('#send_message').css({ 'display': 'inline-block' });
-    $('#chatroom_back').css({ 'display': 'inline-block' });
+    //$('#send_message').css({ 'display': 'inline-block' });
+    //$('#chatroom_back').css({ 'display': 'inline-block' });
 	
+	// Send Message btn
 	$('#send_message button').click(function(){
 	    var content = $('#send_message input').val();
 		if( content != '' )
@@ -224,7 +235,12 @@ angular.module('starter.controllers', [])
 			// Clear
 			$('#send_message input').val('')
 		}
-	});	
+	});
+	
+	// Back btn
+	$('.back-button').click(function(){
+	    currentRoom = '';
+	});
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
@@ -305,17 +321,6 @@ function groupMembers(members, size)
 
 function back()
 {
-    server.LeaveChatRoomRequest(currentRoom, function (err, res) {
-        console.log("leave room", JSON.stringify(res));
-        localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
-        localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-        console.warn("save", currentRoom,JSON.stringify(chatRoomControl.chatMessages));
-
-        currentRoom = "";
-        chatRoomControl.chatMessages = [];
-    });
-
-    javascript: history.back();
-	$('#send_message').css({'display':'none'});
-	$('#chatroom_back').css({'display':'none'});
+	//$('#send_message').css({'display':'none'});
+	//$('#chatroom_back').css({'display':'none'});
 }
