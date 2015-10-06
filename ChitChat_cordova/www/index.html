@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -38,12 +38,10 @@
 	
 		var socket = io;
 		var main = new Main();
-		var server = new ChatServer.ServerImplemented();
-		var chatRoomApi = new ChatServer.ChatRoomApiProvider();
+		var server = main.getServerImp();
 		var authen = server.authenData;
 		main.onMyProfileReadyListener = function(dataManager) {
 			console.warn('goto group');
-			myprofile = main.getDataManager().myProfile;
 			$('#login').css('display','none');
 			$('.bar-stable').css({'display':''});
 			$('#splash').css({'display':'none'});
