@@ -1,25 +1,27 @@
-<ion-view view-title="{{title}}">
+<ion-view view-title="{{title}}" ng-controller="ImageController">
 	<ion-nav-buttons side="right">
-        <button ng-show="edit == 'true'" class="button button-clear button-positive" id="viewprofile-save" ng-click="save()">Save</button>
+        <button ng-show="edit == 'true'" class="button button-clear button-positive" id="viewprofile-save" ng-click="uploadImg()">Save</button>
     </ion-nav-buttons>
 
-  <ion-content ng-controller="ImageController">
+  <ion-content>
     <ion-list>
-   
+
     <div class="padding group-detail">
-    	<img class="avatar" ng-show="!images.length" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}" ng-click="addMedia()"/>
-        <img class="avatar" ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" ng-click="addMedia()"/>
+    	<img class="avatar" ng-show="!images.length" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}" 
+        ng-click="edit!='true'||addImg()"/>
+        <img class="avatar" ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" 
+        ng-click="addImg()"/>
     </div>
 
       <div class="list">
         <label class="item item-input">
             <div class="input-label"> Display </div>
-            <input type="text" value="{{chat.displayname}}" id="viewprofile-input-display" disabled style="background:none;">
+            <input type="text" value="{{chat.displayname}}" id="viewprofile-input-display" disabled style="background:none;" data-ng-model="model.displayname">
         </label>
         
         <label class="item item-input">
             <div class="input-label"> Status </div>
-            <input type="text" value="{{chat.status}}" id="viewprofile-input-status" disabled style="background:none;">
+            <input type="text" value="{{chat.status}}" id="viewprofile-input-status" disabled style="background:none;" data-ng-model="model.status">
         </label>
         
         <label class="item item-input">
