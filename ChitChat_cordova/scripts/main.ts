@@ -11,8 +11,10 @@ requirejs.config({
 //require(["../../scripts/server/serverImplemented"]);
 
 class Main {
+    private serverImp = new ChatServer.ServerImplemented();
     private serverListener = new ChatServer.ServerEventListener();
-    private dataManager: DataManager = DataManager.getInstance();
+    private chatRoomApi = new ChatServer.ChatRoomApiProvider();
+    private dataManager: DataManager;
     public getDataManager(): DataManager {
         return this.dataManager;
     }
@@ -20,9 +22,15 @@ class Main {
     public getDataListener(): DataListener {
         return this.dataListener;
     }
+    public getServerImp(): ChatServer.ServerImplemented {
+        return this.serverImp;
+    }
+    public getChatRoomApi(): ChatServer.ChatRoomApiProvider {
+        return this.chatRoomApi;
+    }
 
     constructor() {
-//        this.dataManager = DataManager.getInstance();
+        this.dataManager = DataManager.getInstance();
         this.dataListener = new DataListener(this.dataManager);
     }
 

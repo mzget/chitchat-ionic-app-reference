@@ -2,7 +2,6 @@
 var date = new Date();
 var now;
 var newchatmessage;
-var chatRoomControl;
 var currentRoom;
 var allMembers;
 
@@ -10,10 +9,8 @@ angular.module('starter.controllers', [])
 
 // GROUP
 .controller('GroupCtrl', function($scope) {
-
-    //console.log(localStorage['55d177c2d20212737c46c685']);
-	
-	$scope.myProfile = myprofile;
+    myprofile = main.getDataManager().myProfile;
+    $scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
 	$scope.pjbGroups = main.getDataManager().projectBaseGroups;
 	$scope.pvGroups = main.getDataManager().privateGroups;
@@ -129,9 +126,6 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
-
-	chatRoomControl = new ChatRoomController();
-	main.dataListener.addListenerImp(chatRoomControl);
 			
 	$scope.toggle = function (chatId) {
 	    currentRoom = chatId;
@@ -178,18 +172,31 @@ angular.module('starter.controllers', [])
 	localStorage.setItem(myprofile._id+'_'+currentRoom, []); // Clear Storage
 	
 	$scope.chat = [];
-	
+
+    console.log(main.dataManager.getMyProfile())
+
+	var chatRoomControl = new ChatRoomController(main);
+	main.dataListener.addListenerImp(chatRoomControl);
+	var chatRoomApi = main.getChatRoomApi();
     chatRoomControl.serviceListener = function () {
         Chats.set(chatRoomControl.chatMessages);
     }
-    getMessage(currentRoom, Chats, function () {
-
+    chatRoomControl.getMessage(currentRoom, Chats, function () {
+        Chats.set(chatRoomControl.chatMessages);
     });
      
     var countUp = function () {		
 		if( currentRoom != '' )
 		{
 			console.log( chatRoomControl.chatMessages.length );
+			
+			/*
+			localStorage.removeItem(myprofile.displayname_id+'_'+currentRoom);
+			localStorage.setItem(myprofile.displayname_id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			console.log('update with timeout fired');
+			$scope.chat = Chats.all();
+			*/
+			console.log( 'Refresh' );
 			
 			$timeout(countUp, 1000);
 		}
@@ -242,6 +249,44 @@ angular.module('starter.controllers', [])
 	$scope.settings = {
 		logOut: true,
 	};
+})
+
+.controller('AccountCreate',function($scope) {
+    $scope.images = "http://placehold.it/50x50";
+})
+
+.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, ImageService, FileService) {
+ 
+  $ionicPlatform.ready(function() {
+    $scope.images = FileService.images();
+    $scope.$apply();
+  });
+ 
+  $scope.urlForImage = function(imageName) {
+    var trueOrigin = cordova.file.dataDirectory + imageName;
+    return trueOrigin;
+  }
+ 
+  $scope.addMedia = function() {
+    $scope.hideSheet = $ionicActionSheet.show({
+      buttons: [
+        { text: 'Take photo' },
+        { text: 'Photo from library' }
+      ],
+      titleText: 'Add images',
+      cancelText: 'Cancel',
+      buttonClicked: function(index) {
+        $scope.addImage(index);
+      }
+    });
+  }
+ 
+  $scope.addImage = function(type) {
+    $scope.hideSheet();
+    ImageService.handleMediaDialog(type).then(function() {
+      $scope.$apply();
+    });
+  }
 }); // <-- LAST CONTROLLER
 
 
@@ -288,7 +333,6 @@ function back()
 	$('#send_message').css({'display':'none'});
 	$('#chatroom_back').css({'display':'none'});
 }
-
 
 function getMessage(chatId, Chats, callback) {
 	//console.log(chatRoomControl.chatMessages.length)
