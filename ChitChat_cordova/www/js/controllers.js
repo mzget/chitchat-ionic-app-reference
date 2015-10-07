@@ -204,12 +204,18 @@ angular.module('starter.controllers', [])
 	var chatRoomControl = new ChatRoomController(main);
 	main.dataListener.addListenerImp(chatRoomControl);
 	var chatRoomApi = main.getChatRoomApi();
-    chatRoomControl.serviceListener = function (newMsg) {
-        Chats.set(chatRoomControl.chatMessages);
+	chatRoomControl.serviceListener = function (event, newMsg) {
+	    if (event === "onChat") {
+	        Chats.set(chatRoomControl.chatMessages);
 
-        if (newMsg.sender !== main.dataManager.myProfile._id) {
-            chatRoomApi.updateMessageReader(newMsg._id, currentRoom);
-        }
+	        if (newMsg.sender !== main.dataManager.myProfile._id) {
+	            chatRoomApi.updateMessageReader(newMsg._id, currentRoom);
+	        }
+	    }
+	    else if (event === "onMessageRead") {
+	        console.warn(newMsg);
+	        Chats.set(chatRoomControl.chatMessages);
+	    }
     }
     chatRoomControl.getMessage(currentRoom, Chats, function () {
         Chats.set(chatRoomControl.chatMessages);
@@ -266,6 +272,11 @@ angular.module('starter.controllers', [])
 			$('#send_message input').val('')
 		}
 	});
+	$scope.viewReader = function (readers) {
+	    readers.forEach(function iterator(member) {
+	        console.log(JSON.stringify(dataManager.orgMembers[member]));
+	    });
+	}
 	
 	// Back btn
 	$('.back-button').click(function(){
