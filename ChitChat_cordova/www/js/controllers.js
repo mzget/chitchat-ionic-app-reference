@@ -269,8 +269,19 @@ angular.module('starter.controllers', [])
 	
 	// Back btn
 	$('.back-button').click(function(){
-		$('#send_message').css({'display':'none'});
-	    currentRoom = '';
+	    $('#send_message').css({ 'display': 'none' });
+
+
+	    console.error("this back function is call many time.")
+
+		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
+		    localStorage.removeItem(myprofile.displayname_id + '_' + currentRoom);
+		    localStorage.setItem(myprofile.displayname_id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+		    console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+
+		    currentRoom = "";
+		    chatRoomControl.chatMessages = [];
+		});
 	});
 })
 

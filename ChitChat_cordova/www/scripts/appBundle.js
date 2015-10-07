@@ -1050,6 +1050,13 @@ var ChatRoomController = (function () {
             });
         });
     };
+    ChatRoomController.prototype.leaveRoom = function (room_id, callback) {
+        var self = this;
+        this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
+            console.log("leave room", JSON.stringify(res));
+            callback(err, res);
+        });
+    };
     return ChatRoomController;
 })();
 var DataListener = (function () {
