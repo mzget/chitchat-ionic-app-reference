@@ -7,6 +7,26 @@ var allMembers;
 
 angular.module('starter.controllers', [])
 
+.controller("LoginCtrl", function ($scope) {
+    console.warn('LoginCtrl');
+
+    $scope.confirmDialog = function () {
+        navigator.notification.confirm("Checkout this confirmation dialog", function (buttonIndex) {
+            switch (buttonIndex) {
+                case 1:
+                    console.log("Decline Pressed");
+                    break;
+                case 2:
+                    console.log("Dont Care Pressed");
+                    break;
+                case 3:
+                    console.log("Accept Pressed");
+                    break;
+            }
+        }, "Our Title", ["Decline", "Dont Care", "Accept"]);
+    }
+})
+
 // GROUP
 .controller('GroupCtrl', function($scope) {
     myprofile = main.getDataManager().myProfile;
@@ -384,8 +404,6 @@ angular.module('starter.controllers', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 }); // <-- LAST CONTROLLER
-
-
 
 function groupMembers(members, size)
 {

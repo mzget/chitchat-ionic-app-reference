@@ -65,10 +65,11 @@ class Main {
     }
 
     public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {
-        console.log(email, password, server)
+        console.log(email, password)
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
-            callback(null, loginRes);
+            console.warn(err, loginRes);
+            callback(err, loginRes);
 
             if (!err && loginRes !== null) {    
                 //<!-- Listen all event in the spartan world.
@@ -143,7 +144,7 @@ class Main {
                 });
             }
             else {
-                console.log(err);
+                console.error(err);
             }
         });
     }

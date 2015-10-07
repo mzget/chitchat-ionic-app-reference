@@ -72,12 +72,40 @@
 		                        }
 		                        else {
 		                            $('body #login input').attr('readonly', false);
-		                            alert("LOGIN FAIL");
+
+		                            console.error(err, res);
+		                            navigator.notification.confirm("Checkout this confirmation dialog", function (buttonIndex) {
+		                                switch (buttonIndex) {
+		                                    case 1:
+		                                        console.log("Decline Pressed");
+		                                        break;
+		                                    case 2:
+		                                        console.log("Dont Care Pressed");
+		                                        break;
+		                                    case 3:
+		                                        console.log("Accept Pressed");
+		                                        break;
+		                                }
+		                            }, "Our Title", ["Decline", "Dont Care", "Accept"]);
 		                        }
 		                    }
 		                    else {
 		                        $('body #login input').attr('readonly', false);
-		                        alert("LOGIN FAIL");
+
+		                        console.error(err, res);
+		                        navigator.notification.confirm("Checkout this confirmation dialog", function (buttonIndex) {
+		                            switch (buttonIndex) {
+		                                case 1:
+		                                    console.log("Decline Pressed");
+		                                    break;
+		                                case 2:
+		                                    console.log("Dont Care Pressed");
+		                                    break;
+		                                case 3:
+		                                    console.log("Accept Pressed");
+		                                    break;
+		                            }
+		                        }, "Our Title", ["Decline", "Dont Care", "Accept"]);
 		                    }
 		                });
 		            });
@@ -95,12 +123,18 @@
 		                            }
 		                            else {
 		                                //<!-- Authen fail.
-		                                server.Logout(); alert('logout'); location.href = '';
+		                                server.Logout();
+		                                location.href = '';
+
+		                                console.error(err, res);
 		                            }
 		                        }
 		                        else {
 		                            //<!-- Authen fail.
-		                            server.Logout(); alert('logout'); location.href = '';
+		                            server.Logout();
+		                            location.href = '';
+
+		                            console.error(err, res);
 		                        }
 		                    });
 		                }

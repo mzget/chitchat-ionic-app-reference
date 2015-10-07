@@ -203,7 +203,7 @@ module ChatServer {
 
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, (res) => {
-                console.log("login: ", JSON.stringify(res));
+                console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
                     if (callback != null) {
                         callback(res.message, null);

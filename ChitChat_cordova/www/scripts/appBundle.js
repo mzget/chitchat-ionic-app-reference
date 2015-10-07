@@ -78,10 +78,11 @@ var Main = (function () {
         crypto.decryptWithSecureRandom(content, callback);
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
-        console.log(email, password, server);
+        console.log(email, password);
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
-            callback(null, loginRes);
+            console.warn(err, loginRes);
+            callback(err, loginRes);
             if (!err && loginRes !== null) {
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);
@@ -148,7 +149,7 @@ var Main = (function () {
                 });
             }
             else {
-                console.log(err);
+                console.error(err);
             }
         });
     };
@@ -292,7 +293,7 @@ var ChatServer;
             var self = this;
             var msg = { username: username, password: password };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
-                console.log("login: ", JSON.stringify(res));
+                console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
                     if (callback != null) {
                         callback(res.message, null);
