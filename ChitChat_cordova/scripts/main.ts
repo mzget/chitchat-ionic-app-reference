@@ -68,10 +68,9 @@ class Main {
         console.log(email, password)
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
-            console.warn(err, loginRes);
             callback(err, loginRes);
 
-            if (!err && loginRes !== null) {    
+            if (!err && loginRes !== null && loginRes.code === 200) {    
                 //<!-- Listen all event in the spartan world.
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);

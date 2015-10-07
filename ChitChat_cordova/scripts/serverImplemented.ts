@@ -137,6 +137,15 @@ module ChatServer {
 
             this.authenData = null;
         }
+        
+        public kickMeAllSession(uid: string) {
+            if(pomelo !== null) {
+                var msg = { uid: uid };
+                pomelo.request("connector.entryHandler.kickMe", msg, function (result) { 
+                    console.log("kickMe", JSON.stringify(result));
+                });
+            }
+        }
 
         private connectSocketServer(_host: string, _port: number, callback: Function) {
             console.log("socket init connecting to: ", _host, _port);
@@ -207,6 +216,11 @@ module ChatServer {
                 if (res.code === 500) {
                     if (callback != null) {
                         callback(res.message, null);
+                    }
+                }
+                else if(res.code === 1004) {
+                    if(callback !== null) {
+                        callback(null, res);
                     }
                 }
                 else {

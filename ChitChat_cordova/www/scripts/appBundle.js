@@ -81,9 +81,8 @@ var Main = (function () {
         console.log(email, password);
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
-            console.warn(err, loginRes);
             callback(err, loginRes);
-            if (!err && loginRes !== null) {
+            if (!err && loginRes !== null && loginRes.code === 200) {
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);
                 }).then(function onFulfilled(value) {
@@ -258,6 +257,14 @@ var ChatServer;
             }
             this.authenData = null;
         };
+        ServerImplemented.prototype.kickMeAllSession = function (uid) {
+            if (pomelo !== null) {
+                var msg = { uid: uid };
+                pomelo.request("connector.entryHandler.kickMe", msg, function (result) {
+                    console.log("kickMe", JSON.stringify(result));
+                });
+            }
+        };
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
             console.log("socket init connecting to: ", _host, _port);
             var self = this;
@@ -297,6 +304,11 @@ var ChatServer;
                 if (res.code === 500) {
                     if (callback != null) {
                         callback(res.message, null);
+                    }
+                }
+                else if (res.code === 1004) {
+                    if (callback !== null) {
+                        callback(null, res);
                     }
                 }
                 else {
