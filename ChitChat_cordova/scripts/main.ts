@@ -11,12 +11,16 @@ requirejs.config({
 //require(["../../scripts/server/serverImplemented"]);
 
 class Main {
-    private serverImp = new ChatServer.ServerImplemented();
-    private serverListener = new ChatServer.ServerEventListener();
-    private chatRoomApi = new ChatServer.ChatRoomApiProvider();
+    private serverImp: ChatServer.ServerImplemented;
+    private serverListener: ChatServer.ServerEventListener;
+    private chatRoomApi: ChatServer.ChatRoomApiProvider;
     private dataManager: DataManager;
     public getDataManager(): DataManager {
         return this.dataManager;
+    }
+    public setDataManager(data: DataManager) {
+        this.dataManager = data;
+        this.dataListener = new DataListener(this.dataManager);
     }
     private dataListener: DataListener;
     public getDataListener(): DataListener {
@@ -25,21 +29,26 @@ class Main {
     public getServerImp(): ChatServer.ServerImplemented {
         return this.serverImp;
     }
+    public setServerImp(server: ChatServer.ServerImplemented) {
+        this.serverImp = server;
+    }
     public getChatRoomApi(): ChatServer.ChatRoomApiProvider {
+        if (!this.chatRoomApi) {
+            this.chatRoomApi = ChatServer.ChatRoomApiProvider.prototype;
+        }
+
         return this.chatRoomApi;
     }
-
-    constructor() {
-        this.dataManager = DataManager.getInstance();
-        this.dataListener = new DataListener(this.dataManager);
+    public setServerListener(server: ChatServer.ServerEventListener) {
+        this.serverListener = server;
     }
 
-    public startChatServerListener() {
+    public startChatServerListener(resolve, rejected) {
         this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addServerListener(this.dataListener);
         this.serverListener.addChatListener(this.dataListener);
-        
-        this.serverListener.addListenner();
+
+        this.serverListener.addListenner(resolve, rejected);
     }
 
     public getHashService(content: string, callback: (err, res) => void) {
@@ -56,76 +65,81 @@ class Main {
     }
 
     public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {
+        console.log(email, password, server)
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
             callback(null, loginRes);
 
             if (!err && loginRes !== null) {    
                 //<!-- Listen all event in the spartan world.
-                self.startChatServerListener();
-
-                server.getMe(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        if (res.code === 200) {
-                            self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                            self.dataManager.setMyProfile(res.data);
-                            
-                            server.getLastAccessRoomsInfo(function (err, res) {
-                                console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
-                            });
+                var promiseForAddListener = new Promise(function callback(resolve, rejected) {
+                    self.startChatServerListener(resolve, rejected);
+                }).then(function onFulfilled(value) {
+                    server.getMe(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
                         }
                         else {
-                            console.error("My user profile is empty. please check.");
+                            if (res.code === 200) {
+                                self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
+                                self.dataManager.setMyProfile(res.data);
+
+                                server.getLastAccessRoomsInfo(function (err, res) {
+                                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
+                                });
+                            }
+                            else {
+                                console.error("My user profile is empty. please check.");
+                            }
                         }
-                    }
-                });
+                    });
 
-                server.getCompanyInfo(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        console.log("companyInfo: ", res);
-                    }
-                });
+                    server.getCompanyInfo(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("companyInfo: ", res);
+                        }
+                    });
 
-                server.getOrganizationGroups(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        console.log("organize groups: ", res);
-                    }
-                });
+                    server.getOrganizationGroups(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("organize groups: ", res);
+                        }
+                    });
 
-                server.getProjectBaseGroups(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        console.log("project base groups: ", res);
-                    }
-                });
+                    server.getProjectBaseGroups(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("project base groups: ", res);
+                        }
+                    });
 
-                server.getPrivateGroups(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        console.log("Private groups: ", res);
-                    }
-                });
+                    server.getPrivateGroups(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("Private groups: ", res);
+                        }
+                    });
 
-                server.getCompanyMembers(function (err, res) {
-                    if (err || res === null) {
+                    server.getCompanyMembers(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("Company Members: ", res);
+                        }
+                    });
+                    }).catch(function onRejected(err) {
                         console.error(err);
-                    }
-                    else {
-                        console.log("Company Members: ", res);
-                    }
                 });
             }
             else {

@@ -40,21 +40,49 @@ angular.module('starter.controllers', [])
 })
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function($scope, $stateParams, $state, FileService) {
-
-	
-    //$cordovaProgress.showDeterminateWithLabel(true, 50000, "Loading")
-  
-
+.controller('GroupViewprofileCtrl', function($scope, $stateParams, $state, $cordovaProgress) {
 	if($stateParams.chatId==main.getDataManager().myProfile._id){
 		$scope.chat = main.getDataManager().myProfile;
+		$scope.model = {
+		    displayname: $scope.chat.displayname,
+		    status: $scope.chat.status
+		};
 		$scope.title = "My Profile";
 		$('#viewprofile-input-display').removeAttr('disabled');
 		$('#viewprofile-input-status').removeAttr('disabled');
 		$scope.edit = 'true';
-		$scope.save = function() {
-			console.log(cordova.file.dataDirectory + FileService.getImages());
-		};
+
+		$scope.$on('imgUrl', function(event, url) { 
+			if(url!=null){
+				server.ProfileImageChanged($stateParams.chatId,url,function(err,res){
+					main.getDataManager().myProfile.image = url;
+					if(main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+						main.getDataManager().myProfile.status != $scope.model.status){
+						saveProfile();
+					}else saveSuccess();
+				});
+			}else{
+				if(main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+						main.getDataManager().myProfile.status != $scope.model.status){
+					saveProfile();
+				}
+			}
+		});
+
+		function saveProfile(){
+			server.UpdateUserProfile($stateParams.chatId,$scope.model,function(err,res){
+				console.log(JSON.stringify(res));
+				main.getDataManager().myProfile.displayname = $scope.model.displayname;
+				main.getDataManager().myProfile.status = $scope.model.status;
+				saveSuccess();
+			});
+		}
+
+		function saveSuccess(){
+			$cordovaProgress.showSuccess(false, "Success!");
+	    	setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
+		}
+
 	}else{
     	var member = main.getDataManager().orgMembers[$stateParams.chatId];
 		if(	member.firstname == null || member.firstname == "" &&
@@ -79,6 +107,10 @@ angular.module('starter.controllers', [])
 			});
 		}
 		$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
+		$scope.model = {
+		    displayname: $scope.chat.displayname,
+		    status: $scope.chat.status
+		};
 		$scope.title = $scope.chat.displayname+"'s Profile";
 		$('#viewprofile-input-display').attr('disabled','disabled');
 		$('#viewprofile-input-status').attr('disabled','disabled');
@@ -256,38 +288,79 @@ angular.module('starter.controllers', [])
     $scope.images = "http://placehold.it/50x50";
 })
 
-.controller('ImageController', function($scope, $cordovaFile, $ionicPlatform, $ionicActionSheet, ImageService, FileService) {
+.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, ImageService, FileService) {
  
-  $ionicPlatform.ready(function() {
-    $scope.images = FileService.images();
-    $scope.$apply();
-  });
+  	$ionicPlatform.ready(function() {
+    	$scope.images = FileService.images();
+    	$scope.$apply();
+  	});
+
+  	$scope.urlForImage = function(imageName) {
+    	var trueOrigin = cordova.file.dataDirectory + imageName;
+    	return trueOrigin;
+  	}
  
-  $scope.urlForImage = function(imageName) {
-    var trueOrigin = cordova.file.dataDirectory + imageName;
-    return trueOrigin;
-  }
+	$scope.addImg = function() {
+	    $scope.hideSheet = $ionicActionSheet.show({
+	      buttons: [
+	        { text: 'Take photo' },
+	        { text: 'Photo from library' }
+	      ],
+	      titleText: 'Add images',
+	      cancelText: 'Cancel',
+	      buttonClicked: function(index) {
+	        $scope.addImage(index);
+	      }
+	    });
+	}
  
-  $scope.addMedia = function() {
-    $scope.hideSheet = $ionicActionSheet.show({
-      buttons: [
-        { text: 'Take photo' },
-        { text: 'Photo from library' }
-      ],
-      titleText: 'Add images',
-      cancelText: 'Cancel',
-      buttonClicked: function(index) {
-        $scope.addImage(index);
-      }
-    });
-  }
- 
-  $scope.addImage = function(type) {
-    $scope.hideSheet();
-    ImageService.handleMediaDialog(type).then(function() {
-      $scope.$apply();
-    });
-  }
+  	$scope.addImage = function(type) {
+    	$scope.hideSheet();
+    	ImageService.handleMediaDialog(type).then(function() {
+      		$scope.$apply();
+    	});
+  	}
+
+  	$scope.uploadImg = function() {
+  		if(FileService.getImages().length==0) { $scope.$emit('imgUrl',null); return; }
+	    var imageURI = cordova.file.dataDirectory + FileService.getImages();
+	    var options = new FileUploadOptions();
+	    options.fileKey = "fileToUpload";
+	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+	    options.mimeType = "image/jpeg";
+	    var params = new Object();
+	    options.params = params;
+	    options.chunkedMode = false;
+	    var ft = new FileTransfer();
+	    ft.onprogress = function(progressEvent){
+	    	if (progressEvent.lengthComputable) {
+		      $ionicLoading.show({
+			      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
+			  });
+		    } else {
+		      //loadingStatus.increment();
+		    }
+	    };
+	    ft.upload(imageURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
+	        options);
+	}
+
+	function win(r) {
+	    console.log("Code = " + r.responseCode);
+	    console.log("Response = " + r.response);
+	    console.log("Sent = " + r.bytesSent);
+	    $ionicLoading.hide();
+	    $scope.$emit('imgUrl', r.response);
+	    FileService.clearImages();
+	}
+
+	function fail(error) {
+	    alert("An error has occurred: Code = " + error.code);
+	    console.log("upload error source " + error.source);
+	    console.log("upload error target " + error.target);
+	    $cordovaProgress.showText(false, "Fail!", 'center');
+	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
+	}
 }); // <-- LAST CONTROLLER
 
 

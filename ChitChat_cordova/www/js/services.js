@@ -2,7 +2,7 @@ angular.module('starter.services', [])
 
 .factory('FileService', function() {
   var images;
-
+  
   function getImages(){
     return images;
   };
@@ -12,12 +12,12 @@ angular.module('starter.services', [])
     return images;
   };
 
-  function clearImages(){
-    images = [];
-  }
- 
   function addImage(img) {
       images[0] = img;
+  };
+
+  function clearImages(){
+    images = [];
   };
  
   return {
