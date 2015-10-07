@@ -238,7 +238,7 @@ angular.module('starter.controllers', [])
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
     $scope.chat = Chats.all();
-    //$('#send_message').css({ 'display': 'inline-block' });
+    $('#send_message').css({ 'display': 'inline-block' });
     //$('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	// Send Message btn
@@ -269,6 +269,7 @@ angular.module('starter.controllers', [])
 	
 	// Back btn
 	$('.back-button').click(function(){
+		$('#send_message').css({'display':'none'});
 	    currentRoom = '';
 	});
 })
