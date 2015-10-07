@@ -109,6 +109,7 @@ module ChatServer {
 
                         resolve();
                     }, error: function (jqXHR, textStatus, errorThrown) {
+                        console.error(jqXHR, textStatus, errorThrown);
                         reject(errorThrown);
                     }
                 });
@@ -841,13 +842,13 @@ module ChatServer {
             });
 
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, (data) => {
-                console.log(ServerEventListener.ON_MESSAGE_READ, data);
+                console.log(ServerEventListener.ON_MESSAGE_READ, JSON.stringify(data));
 
                 self.chatServerListener.onMessageRead(data);
             });
 
             pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, (data) => {
-                console.log(ServerEventListener.ON_GET_MESSAGES_READERS, data);
+                console.log(ServerEventListener.ON_GET_MESSAGES_READERS, JSON.stringify(data));
 
                 self.chatServerListener.onGetMessagesReaders(data);
             });
@@ -857,22 +858,22 @@ module ChatServer {
             var self = this;
 
             pomelo.on(ServerEventListener.ON_VIDEO_CALL, (data) => {
-                console.log(ServerEventListener.ON_VIDEO_CALL, data);
+                console.log(ServerEventListener.ON_VIDEO_CALL, JSON.stringify(data));
 
                 self.rtcCallListener.onVideoCall(data);
             });
             pomelo.on(ServerEventListener.ON_VOICE_CALL, (data) => {
-                console.log(ServerEventListener.ON_VOICE_CALL, data);
+                console.log(ServerEventListener.ON_VOICE_CALL, JSON.stringify(data));
 
                 self.rtcCallListener.onVoiceCall(data);
             });
             pomelo.on(ServerEventListener.ON_HANGUP_CALL, (data) => {
-                console.log(ServerEventListener.ON_HANGUP_CALL, data);
+                console.log(ServerEventListener.ON_HANGUP_CALL, JSON.stringify(data));
 
                 self.rtcCallListener.onHangupCall(data);
             });
             pomelo.on(ServerEventListener.ON_THE_LINE_IS_BUSY, (data) => {
-                console.log(ServerEventListener.ON_THE_LINE_IS_BUSY, data);
+                console.log(ServerEventListener.ON_THE_LINE_IS_BUSY, JSON.stringify(data));
 
                 self.rtcCallListener.onTheLineIsBusy(data);
             });
@@ -900,44 +901,44 @@ module ChatServer {
 
             //<!-- User profile -->
             pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, (data) => {
-                console.log(ServerEventListener.ON_USER_UPDATE_PROFILE, data);
+                console.log(ServerEventListener.ON_USER_UPDATE_PROFILE, JSON.stringify(data));
 
                 self.serverListener.onUserUpdateProfile(data);
             });
             pomelo.on(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, (data) => {
-                console.log(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, data);
+                console.log(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, JSON.stringify(data));
 
                 self.serverListener.onUserUpdateImageProfile(data);
             });
 
             //<!-- Group -->
             pomelo.on(ServerEventListener.ON_CREATE_GROUP_SUCCESS, (data) => {
-                console.log(ServerEventListener.ON_CREATE_GROUP_SUCCESS, data);
+                console.log(ServerEventListener.ON_CREATE_GROUP_SUCCESS, JSON.stringify(data));
 
                 self.serverListener.onCreateGroupSuccess(data);
             });
             pomelo.on(ServerEventListener.ON_EDITED_GROUP_MEMBER, (data) => {
-                console.log(ServerEventListener.ON_EDITED_GROUP_MEMBER, data);
+                console.log(ServerEventListener.ON_EDITED_GROUP_MEMBER, JSON.stringify(data));
 
                 self.serverListener.onEditedGroupMember(data);
             });
             pomelo.on(ServerEventListener.ON_EDITED_GROUP_NAME, (data) => {
-                console.log(ServerEventListener.ON_EDITED_GROUP_NAME, data);
+                console.log(ServerEventListener.ON_EDITED_GROUP_NAME, JSON.stringify(data));
 
                 self.serverListener.onEditedGroupName(data);
             });
             pomelo.on(ServerEventListener.ON_EDITED_GROUP_IMAGE, (data) => {
-                console.log(ServerEventListener.ON_EDITED_GROUP_IMAGE, data);
+                console.log(ServerEventListener.ON_EDITED_GROUP_IMAGE, JSON.stringify(data));
 
                 self.serverListener.onEditedGroupImage(data);
             });
             pomelo.on(ServerEventListener.ON_NEW_GROUP_CREATED, (data) => {
-                console.log(ServerEventListener.ON_NEW_GROUP_CREATED, data);
+                console.log(ServerEventListener.ON_NEW_GROUP_CREATED, JSON.stringify(data));
 
                 self.serverListener.onNewGroupCreated(data);
             });
             pomelo.on(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, (data) => {
-                console.log(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, data);
+                console.log(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, JSON.stringify(data));
 
                 self.serverListener.onUpdateMemberInfoInProjectBase(data);
             });
