@@ -7,8 +7,8 @@
 }
 
 class ChatRoomController implements IChatRoomController {
-    public chatMessages = [];
-    public serviceListener: (newMessage:any) => void;
+    public chatMessages: Array<Message> = [];
+    public serviceListener: (eventName: string, data: any) => void;
     private dataManager: DataManager;
     private main: Main;
     private serverImp: ChatServer.ServerImplemented;
@@ -32,20 +32,20 @@ class ChatRoomController implements IChatRoomController {
                     chatMessageImp.body = res;
                     self.chatMessages.push(chatMessageImp);
                     if (!!this.serviceListener)
-                        this.serviceListener(chatMessageImp);
+                        this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                 }
                 else {
                     console.log(err, res);
                     self.chatMessages.push(chatMessageImp);
                     if (!!this.serviceListener)
-                        this.serviceListener(chatMessageImp);
+                        this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                 }
             })
         }
         else {
             self.chatMessages.push(chatMessageImp);
             if (!!this.serviceListener)
-                this.serviceListener(chatMessageImp);
+                this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
         }
     }
 
@@ -58,7 +58,20 @@ class ChatRoomController implements IChatRoomController {
     }
 
     onMessageRead(dataEvent) {
+        console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
+        var self = this;
+        var newMsg: Message = JSON.parse(JSON.stringify(dataEvent.data));
 
+        this.chatMessages.some(function callback(value) {
+            if (value._id === newMsg._id) {
+                value.readers = newMsg.readers;
+
+                if (!!self.serviceListener)
+                    self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
+
+                return true;
+            }
+        });
     }
 
     onGetMessagesReaders(dataEvent) {
@@ -79,7 +92,7 @@ class ChatRoomController implements IChatRoomController {
                         cb(null, null);
                     }
                     else {
-                        var arr_fromLog = JSON.parse(chatLog);
+                        var arr_fromLog: Array<Message> = JSON.parse(chatLog);
                         if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
                             self.chatMessages = [];
                             cb(null, null);

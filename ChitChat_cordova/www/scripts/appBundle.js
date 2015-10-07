@@ -226,7 +226,7 @@ var ChatServer;
             var promiseForFileConfig = new Promise(function (resolve, reject) {
                 // This only is an example to create asynchronism
                 $.ajax({
-                    url: "../www/configs/appconfig.json",
+                    url: "../configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
                         appConfig = JSON.parse(JSON.stringify(config));
@@ -916,20 +916,20 @@ var ChatRoomController = (function () {
                     chatMessageImp.body = res;
                     self.chatMessages.push(chatMessageImp);
                     if (!!_this.serviceListener)
-                        _this.serviceListener(chatMessageImp);
+                        _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                 }
                 else {
                     console.log(err, res);
                     self.chatMessages.push(chatMessageImp);
                     if (!!_this.serviceListener)
-                        _this.serviceListener(chatMessageImp);
+                        _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                 }
             });
         }
         else {
             self.chatMessages.push(chatMessageImp);
             if (!!this.serviceListener)
-                this.serviceListener(chatMessageImp);
+                this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
         }
     };
     ChatRoomController.prototype.onLeaveRoom = function (data) {
@@ -937,6 +937,17 @@ var ChatRoomController = (function () {
     ChatRoomController.prototype.onRoomJoin = function (data) {
     };
     ChatRoomController.prototype.onMessageRead = function (dataEvent) {
+        console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
+        var self = this;
+        var newMsg = JSON.parse(JSON.stringify(dataEvent.data));
+        this.chatMessages.some(function callback(value) {
+            if (value._id === newMsg._id) {
+                value.readers = newMsg.readers;
+                if (!!self.serviceListener)
+                    self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
+                return true;
+            }
+        });
     };
     ChatRoomController.prototype.onGetMessagesReaders = function (dataEvent) {
     };
