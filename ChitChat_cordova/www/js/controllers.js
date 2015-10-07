@@ -291,7 +291,7 @@ angular.module('starter.controllers', [])
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
-    	$scope.$apply();
+    	if (!$scope.$$phase) { $scope.$apply(); }
   	});
 
   	$scope.urlForImage = function(imageName) {
