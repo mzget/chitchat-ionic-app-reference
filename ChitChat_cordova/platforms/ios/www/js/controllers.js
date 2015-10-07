@@ -7,6 +7,26 @@ var allMembers;
 
 angular.module('starter.controllers', [])
 
+.controller("LoginCtrl", function ($scope) {
+    console.warn('LoginCtrl');
+
+    $scope.confirmDialog = function () {
+        navigator.notification.confirm("Checkout this confirmation dialog", function (buttonIndex) {
+            switch (buttonIndex) {
+                case 1:
+                    console.log("Decline Pressed");
+                    break;
+                case 2:
+                    console.log("Dont Care Pressed");
+                    break;
+                case 3:
+                    console.log("Accept Pressed");
+                    break;
+            }
+        }, "Our Title", ["Decline", "Dont Care", "Accept"]);
+    }
+})
+
 // GROUP
 .controller('GroupCtrl', function($scope) {
     myprofile = main.getDataManager().myProfile;
@@ -204,12 +224,18 @@ angular.module('starter.controllers', [])
 	var chatRoomControl = new ChatRoomController(main);
 	main.dataListener.addListenerImp(chatRoomControl);
 	var chatRoomApi = main.getChatRoomApi();
-    chatRoomControl.serviceListener = function (newMsg) {
-        Chats.set(chatRoomControl.chatMessages);
+	chatRoomControl.serviceListener = function (event, newMsg) {
+	    if (event === "onChat") {
+	        Chats.set(chatRoomControl.chatMessages);
 
-        if (newMsg.sender !== main.dataManager.myProfile._id) {
-            chatRoomApi.updateMessageReader(newMsg._id, currentRoom);
-        }
+	        if (newMsg.sender !== main.dataManager.myProfile._id) {
+	            chatRoomApi.updateMessageReader(newMsg._id, currentRoom);
+	        }
+	    }
+	    else if (event === "onMessageRead") {
+	        console.warn(newMsg);
+	        Chats.set(chatRoomControl.chatMessages);
+	    }
     }
     chatRoomControl.getMessage(currentRoom, Chats, function () {
         Chats.set(chatRoomControl.chatMessages);
@@ -266,11 +292,27 @@ angular.module('starter.controllers', [])
 			$('#send_message input').val('')
 		}
 	});
+	$scope.viewReader = function (readers) {
+	    readers.forEach(function iterator(member) {
+	        console.log(JSON.stringify(dataManager.orgMembers[member]));
+	    });
+	}
 	
 	// Back btn
 	$('.back-button').click(function(){
-		$('#send_message').css({'display':'none'});
-	    currentRoom = '';
+	    $('#send_message').css({ 'display': 'none' });
+
+
+	    console.error("this back function is call many time.")
+
+		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
+		    localStorage.removeItem(myprofile.displayname_id + '_' + currentRoom);
+		    localStorage.setItem(myprofile.displayname_id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+		    console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+
+		    currentRoom = "";
+		    chatRoomControl.chatMessages = [];
+		});
 	});
 })
 
@@ -292,7 +334,7 @@ angular.module('starter.controllers', [])
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
-    	$scope.$apply();
+    	if (!$scope.$$phase) { $scope.$apply(); }
   	});
 
   	$scope.urlForImage = function(imageName) {
@@ -362,8 +404,6 @@ angular.module('starter.controllers', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 }); // <-- LAST CONTROLLER
-
-
 
 function groupMembers(members, size)
 {

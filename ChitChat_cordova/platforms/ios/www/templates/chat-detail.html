@@ -9,8 +9,9 @@
 				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
 			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
-				<p>{{message.body}}</p>
-				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+                <p>{{message.body}}</p>
+                <label style="clear:none;" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
+				<label> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
 		</ion-list>
 
