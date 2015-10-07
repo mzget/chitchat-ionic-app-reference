@@ -1,24 +1,24 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
-        "file": "plugins/org.apache.cordova.console/www/console-via-logger.js",
-        "id": "org.apache.cordova.console.console",
+        "file": "plugins/cordova-plugin-console/www/logger.js",
+        "id": "cordova-plugin-console.logger",
         "clobbers": [
-            "console"
+            "cordova.logger"
         ]
     },
     {
-        "file": "plugins/org.apache.cordova.console/www/logger.js",
-        "id": "org.apache.cordova.console.logger",
+        "file": "plugins/cordova-plugin-console/www/console-via-logger.js",
+        "id": "cordova-plugin-console.console",
         "clobbers": [
-            "cordova.logger"
+            "console"
         ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "org.apache.cordova.console": "0.2.13"
+    "cordova-plugin-console": "1.0.1"
 }
 // BOTTOM OF METADATA
 });

@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 'ngCordova'])
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {
@@ -74,14 +74,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 			}
 		}
 	})
-	
-	// View - Profile
-	.state('tab.group-viewprofile', {
-		url: '/group/myprofile/viewprofile',
+
+	// GROUP - View Profile
+	.state('tab.group-viewprofile',{
+		url: '/group/member/:chatId',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: 'GroupMyprofileCtrl'
+				controller: 'GroupViewprofileCtrl'
 			}
 		}
 	})
@@ -149,6 +149,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 	//	}
 	//})
 	
+	.state('tab.group-chat', {
+		url: '/group/chat/:chatId',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/chat-detail.html',
+				controller: 'ChatDetailCtrl'
+			}
+		}
+	})
+	
+	/*
 	.state('tab.chat-detail', {
 		url: '/chats/:chatId',
 		views: {
@@ -169,7 +180,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 			}
 		}
 	})
-
+	*/
+	
 	// Free Call
 	.state('tab.freecall', {
 		url: '/freecall/:chatId',
@@ -197,6 +209,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 			'tab-account': {
 				templateUrl: 'templates/tab-account.html',
 				controller: 'AccountCtrl'
+			}
+		}
+	})
+
+	.state('tab.account-create', {
+		url: '/account/create',
+		views: {
+			'tab-account': {
+				templateUrl: 'templates/tab-account-create.html',
+				controller: 'AccountCreate'
 			}
 		}
 	});

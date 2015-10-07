@@ -33,21 +33,37 @@ requirejs.config({
 });
 var Main = (function () {
     function Main() {
-        this.serverListener = new ChatServer.ServerEventListener();
-        this.dataManager = new DataManager();
-        this.dataListener = new DataListener(this.dataManager);
     }
     Main.prototype.getDataManager = function () {
         return this.dataManager;
     };
+    Main.prototype.setDataManager = function (data) {
+        this.dataManager = data;
+        this.dataListener = new DataListener(this.dataManager);
+    };
     Main.prototype.getDataListener = function () {
         return this.dataListener;
     };
-    Main.prototype.startChatServerListener = function () {
+    Main.prototype.getServerImp = function () {
+        return this.serverImp;
+    };
+    Main.prototype.setServerImp = function (server) {
+        this.serverImp = server;
+    };
+    Main.prototype.getChatRoomApi = function () {
+        if (!this.chatRoomApi) {
+            this.chatRoomApi = ChatServer.ChatRoomApiProvider.prototype;
+        }
+        return this.chatRoomApi;
+    };
+    Main.prototype.setServerListener = function (server) {
+        this.serverListener = server;
+    };
+    Main.prototype.startChatServerListener = function (resolve, rejected) {
         this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addServerListener(this.dataListener);
         this.serverListener.addChatListener(this.dataListener);
-        this.serverListener.addListenner();
+        this.serverListener.addListenner(resolve, rejected);
     };
     Main.prototype.getHashService = function (content, callback) {
         var hashService = new SecureService();
@@ -62,66 +78,73 @@ var Main = (function () {
         crypto.decryptWithSecureRandom(content, callback);
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
+        console.log(email, password, server);
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
             callback(null, loginRes);
             if (!err && loginRes !== null) {
-                self.startChatServerListener();
-                server.getMe(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        if (res.code === 200) {
-                            self.dataManager.setMyProfile(res.data);
-                            server.getLastAccessRoomsInfo(function (err, res) {
-                                console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
-                            });
+                var promiseForAddListener = new Promise(function callback(resolve, rejected) {
+                    self.startChatServerListener(resolve, rejected);
+                }).then(function onFulfilled(value) {
+                    server.getMe(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
                         }
                         else {
-                            console.error("My user profile is empty. please check.");
+                            if (res.code === 200) {
+                                self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
+                                self.dataManager.setMyProfile(res.data);
+                                server.getLastAccessRoomsInfo(function (err, res) {
+                                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
+                                });
+                            }
+                            else {
+                                console.error("My user profile is empty. please check.");
+                            }
                         }
-                    }
-                });
-                server.getCompanyInfo(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        console.log("companyInfo: ", res);
-                    }
-                });
-                server.getOrganizationGroups(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        console.log("organize groups: ", res);
-                    }
-                });
-                server.getProjectBaseGroups(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        console.log("project base groups: ", res);
-                    }
-                });
-                server.getPrivateGroups(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        console.log("Private groups: ", res);
-                    }
-                });
-                server.getCompanyMembers(function (err, res) {
-                    if (err || res === null) {
-                        console.error(err);
-                    }
-                    else {
-                        console.log("Company Members: ", res);
-                    }
+                    });
+                    server.getCompanyInfo(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("companyInfo: ", res);
+                        }
+                    });
+                    server.getOrganizationGroups(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("organize groups: ", res);
+                        }
+                    });
+                    server.getProjectBaseGroups(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("project base groups: ", res);
+                        }
+                    });
+                    server.getPrivateGroups(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("Private groups: ", res);
+                        }
+                    });
+                    server.getCompanyMembers(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("Company Members: ", res);
+                        }
+                    });
+                }).catch(function onRejected(err) {
+                    console.error(err);
                 });
             }
             else {
@@ -131,36 +154,30 @@ var Main = (function () {
     };
     return Main;
 })();
+var appConfig;
 var pomelo;
 var username = "";
 var password = "";
 var ChatServer;
 (function (ChatServer) {
-    var AutheData = (function () {
-        function AutheData() {
+    var AuthenData = (function () {
+        function AuthenData() {
         }
-        return AutheData;
+        return AuthenData;
     })();
     var ServerImplemented = (function () {
         function ServerImplemented() {
-            this.host = "git.animation-genius.com";
-            this.port = 3014;
             this._isInit = false;
             this._isConnected = false;
             this._isLogedin = false;
-            require(['../js/pomelo/pomeloclient'], function (obj) {
-                pomelo = obj;
-            });
-            username = localStorage.getItem("username");
-            password = localStorage.getItem("password");
-            var authen = localStorage.getItem("authen");
-            if (authen !== null) {
-                this.authenData = JSON.parse(authen);
-            }
-            else {
-                this.authenData = new AutheData();
-            }
+            console.warn("serv imp. constructor");
         }
+        ServerImplemented.getInstance = function () {
+            if (!ServerImplemented.Instance) {
+                ServerImplemented.Instance = new ServerImplemented();
+            }
+            return ServerImplemented.Instance;
+        };
         ServerImplemented.prototype.getClient = function () {
             var self = this;
             if (pomelo !== null) {
@@ -180,11 +197,58 @@ var ChatServer;
         };
         ServerImplemented.prototype.init = function (callback) {
             var self = this;
-            if (pomelo !== null) {
-                self.connectSocketServer(self.host, self.port, function () {
-                    callback();
-                });
+            this._isConnected = false;
+            username = localStorage.getItem("username");
+            password = localStorage.getItem("password");
+            var authen = localStorage.getItem("authen");
+            if (authen !== null) {
+                this.authenData = JSON.parse(authen);
             }
+            else {
+                this.authenData = new AuthenData();
+            }
+            var promiseForSocket = new Promise(function (resolve, rejected) {
+                self.loadSocket(resolve, rejected);
+            }).then(function onfulfilled(value) {
+                self.loadConfig(callback);
+            }).catch(function onRejected(err) {
+                console.error(err);
+            });
+        };
+        ServerImplemented.prototype.loadSocket = function (resolve, rejected) {
+            require(['../js/pomelo/pomeloclient'], function (obj) {
+                pomelo = obj;
+                resolve();
+            });
+        };
+        ServerImplemented.prototype.loadConfig = function (callback) {
+            var self = this;
+            var promiseForFileConfig = new Promise(function (resolve, reject) {
+                // This only is an example to create asynchronism
+                $.ajax({
+                    url: "../www/configs/appconfig.json",
+                    dataType: "json",
+                    success: function (config) {
+                        appConfig = JSON.parse(JSON.stringify(config));
+                        resolve();
+                    }, error: function (jqXHR, textStatus, errorThrown) {
+                        reject(errorThrown);
+                    }
+                });
+            }).then(function resolve(val) {
+                self.host = appConfig.socketHost;
+                self.port = appConfig.socketPort;
+                if (!!pomelo) {
+                    self.connectSocketServer(self.host, self.port, function () {
+                        callback(null, self);
+                    });
+                }
+                else {
+                    console.error("pomelo socket is un ready.");
+                }
+            }).catch(function onRejected(err) {
+                console.log(err);
+            });
         };
         ServerImplemented.prototype.disConnect = function () {
             if (pomelo !== null) {
@@ -568,7 +632,7 @@ var ChatServer;
     ChatServer.ServerImplemented = ServerImplemented;
     var ChatRoomApiProvider = (function () {
         function ChatRoomApiProvider() {
-            this.serverImp = ServerImplemented.prototype;
+            this.serverImp = ServerImplemented.getInstance();
         }
         ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, repalceMessageID) {
             var message = {};
@@ -576,7 +640,7 @@ var ChatServer;
             message["content"] = content;
             message["sender"] = sender_id;
             message["target"] = target;
-            message["type"] = contentType.toString();
+            message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("Chat msg response: ", data);
@@ -591,7 +655,7 @@ var ChatServer;
             message["content"] = fileUrl;
             message["sender"] = sender_id;
             message["target"] = target;
-            message["type"] = contentType.toString();
+            message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("chatFile callback: ", data);
@@ -654,11 +718,12 @@ var ChatServer;
         ServerEventListener.prototype.addRTCListener = function (obj) {
             this.rtcCallListener = obj;
         };
-        ServerEventListener.prototype.addListenner = function () {
+        ServerEventListener.prototype.addListenner = function (resolve, rejected) {
             this.callFrontendServer();
             this.callChatServer();
             this.callRTCEvents();
             this.callServerEvents();
+            resolve();
         };
         ServerEventListener.prototype.callFrontendServer = function () {
             var self = this;
@@ -831,34 +896,39 @@ var Services;
     Services.AbsServerListener = AbsServerListener;
 })(Services || (Services = {}));
 var ChatRoomController = (function () {
-    function ChatRoomController() {
+    function ChatRoomController(main) {
         this.chatMessages = [];
+        this.main = main;
+        this.serverImp = this.main.getServerImp();
+        this.chatRoomApi = this.main.getChatRoomApi();
+        this.dataManager = this.main.getDataManager();
+        console.log("constructor", this.dataManager.getMyProfile().displayname);
     }
     ChatRoomController.prototype.onChat = function (chatMessageImp) {
         var _this = this;
         console.log("Implement chat msg hear..", chatMessageImp);
         var self = this;
         var secure = new SecureService();
-        if (chatMessageImp.type === ContentType[ContentType.Text]) {
+        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
             secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
                 if (!err) {
                     chatMessageImp.body = res;
                     self.chatMessages.push(chatMessageImp);
                     if (!!_this.serviceListener)
-                        _this.serviceListener();
+                        _this.serviceListener(chatMessageImp);
                 }
                 else {
                     console.log(err, res);
                     self.chatMessages.push(chatMessageImp);
                     if (!!_this.serviceListener)
-                        _this.serviceListener();
+                        _this.serviceListener(chatMessageImp);
                 }
             });
         }
         else {
             self.chatMessages.push(chatMessageImp);
             if (!!this.serviceListener)
-                this.serviceListener();
+                this.serviceListener(chatMessageImp);
         }
     };
     ChatRoomController.prototype.onLeaveRoom = function (data) {
@@ -868,6 +938,116 @@ var ChatRoomController = (function () {
     ChatRoomController.prototype.onMessageRead = function (dataEvent) {
     };
     ChatRoomController.prototype.onGetMessagesReaders = function (dataEvent) {
+    };
+    ChatRoomController.prototype.getMessage = function (chatId, Chats, callback) {
+        var self = this;
+        var myProfile = self.dataManager.myProfile;
+        console.log(myProfile, self.dataManager);
+        var chatLog = localStorage.getItem(myProfile.displayname + '_' + chatId);
+        async.waterfall([
+            function (cb) {
+                if (!!chatLog) {
+                    if (JSON.stringify(chatLog) === "") {
+                        self.chatMessages = [];
+                        cb(null, null);
+                    }
+                    else {
+                        var arr_fromLog = JSON.parse(chatLog);
+                        if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
+                            self.chatMessages = [];
+                            cb(null, null);
+                        }
+                        else {
+                            async.eachSeries(arr_fromLog, function (log, cb) {
+                                var messageImp = log;
+                                if (messageImp.type === ContentType[ContentType.Text]) {
+                                    self.main.decodeService(messageImp.body, function (err, res) {
+                                        if (!err) {
+                                            messageImp.body = res;
+                                            self.chatMessages.push(messageImp);
+                                            cb();
+                                        }
+                                        else {
+                                            self.chatMessages.push(messageImp);
+                                            cb();
+                                        }
+                                    });
+                                }
+                                else {
+                                    self.chatMessages.push(log);
+                                    cb();
+                                }
+                            }, function (err) {
+                                cb(null, null);
+                            });
+                        }
+                    }
+                }
+                else {
+                    self.chatMessages = [];
+                    cb(null, null);
+                }
+            },
+            function (arg1, cb) {
+                cb(null, null);
+            }
+        ], function (err, res) {
+            self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
+                if (res.code == 200) {
+                    var access = new Date();
+                    var roomAccess = self.dataManager.myProfile.roomAccess;
+                    async.eachSeries(roomAccess, function iterator(item, cb) {
+                        if (item.roomId == chatId) {
+                            access = item.accessTime;
+                        }
+                        cb();
+                    }, function done() {
+                        self.chatRoomApi.getChatHistory(chatId, access, function (err, result) {
+                            var histories = [];
+                            if (result.code === 200) {
+                                histories = result.data;
+                            }
+                            else {
+                            }
+                            var his_length = histories.length;
+                            if (his_length > 0) {
+                                async.eachSeries(histories, function (item, cb) {
+                                    var chatMessageImp = JSON.parse(JSON.stringify(item));
+                                    if (chatMessageImp.type === ContentType[ContentType.Text]) {
+                                        self.main.decodeService(chatMessageImp.body, function (err, res) {
+                                            if (!err) {
+                                                chatMessageImp.body = res;
+                                                self.chatMessages.push(chatMessageImp);
+                                                cb();
+                                            }
+                                            else {
+                                                cb();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        if (item.type == 'File') {
+                                            console.log('file');
+                                        }
+                                        self.chatMessages.push(item);
+                                        cb();
+                                    }
+                                }, function (err) {
+                                    Chats.set(self.chatMessages);
+                                    localStorage.removeItem(myProfile.displayname + '_' + chatId);
+                                    localStorage.setItem(myProfile.displayname + '_' + chatId, JSON.stringify(self.chatMessages));
+                                    callback();
+                                });
+                            }
+                            else {
+                                Chats.set(self.chatMessages);
+                                callback();
+                            }
+                        });
+                    });
+                }
+            });
+        });
     };
     return ChatRoomController;
 })();
@@ -904,22 +1084,26 @@ var DataListener = (function () {
     };
     DataListener.prototype.onChatData = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
-        this.listenerImp.onChat(chatMessageImp);
+        if (!!this.listenerImp)
+            this.listenerImp.onChat(chatMessageImp);
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) {
-        this.listenerImp.onLeaveRoom(data);
+        if (!!this.listenerImp)
+            this.listenerImp.onLeaveRoom(data);
     };
     ;
     DataListener.prototype.onRoomJoin = function (data) {
     };
     ;
     DataListener.prototype.onMessageRead = function (dataEvent) {
-        this.listenerImp.onMessageRead(dataEvent);
+        if (!!this.listenerImp)
+            this.listenerImp.onMessageRead(dataEvent);
     };
     ;
     DataListener.prototype.onGetMessagesReaders = function (dataEvent) {
-        this.listenerImp.onGetMessagesReaders(dataEvent);
+        if (!!this.listenerImp)
+            this.listenerImp.onGetMessagesReaders(dataEvent);
     };
     ;
     return DataListener;
@@ -931,8 +1115,16 @@ var DataManager = (function () {
         this.privateGroups = {};
         this.orgMembers = {};
     }
+    DataManager.getInstance = function () {
+        if (!DataManager.Instance) {
+            DataManager.Instance = new DataManager();
+        }
+        return DataManager.Instance;
+    };
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
+        if (!!this.onMyProfileReady)
+            this.onMyProfileReady(this);
     };
     DataManager.prototype.getMyProfile = function () {
         return this.myProfile;
@@ -966,6 +1158,8 @@ var DataManager = (function () {
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
         var _this = this;
         var member = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.orgMembers)
+            this.orgMembers = {};
         member.forEach(function (value) {
             if (!_this.orgMembers[value._id]) {
                 _this.orgMembers[value._id] = value;
@@ -976,6 +1170,8 @@ var DataManager = (function () {
     DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
         var _this = this;
         var rooms = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.orgGroups)
+            this.orgGroups = {};
         rooms.forEach(function (value) {
             if (!_this.orgGroups[value._id]) {
                 _this.orgGroups[value._id] = value;
@@ -986,6 +1182,8 @@ var DataManager = (function () {
     DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) {
         var _this = this;
         var groups = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.projectBaseGroups)
+            this.projectBaseGroups = {};
         groups.forEach(function (value) {
             if (!_this.projectBaseGroups[value._id]) {
                 _this.projectBaseGroups[value._id] = value;
@@ -996,6 +1194,8 @@ var DataManager = (function () {
     DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) {
         var _this = this;
         var groups = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.privateGroups)
+            this.privateGroups = {};
         groups.forEach(function (value) {
             if (!_this.privateGroups[value._id]) {
                 _this.privateGroups[value._id] = value;
@@ -1005,16 +1205,6 @@ var DataManager = (function () {
     ;
     return DataManager;
 })();
-var MessageType;
-(function (MessageType) {
-    MessageType[MessageType["Text"] = 0] = "Text";
-    MessageType[MessageType["Image"] = 1] = "Image";
-    MessageType[MessageType["Video"] = 2] = "Video";
-    MessageType[MessageType["Voice"] = 3] = "Voice";
-    MessageType[MessageType["Location"] = 4] = "Location";
-    MessageType[MessageType["Sticker"] = 5] = "Sticker";
-})(MessageType || (MessageType = {}));
-;
 var MessageMeta = (function () {
     function MessageMeta() {
     }
@@ -1105,6 +1295,32 @@ var OrgMember = (function () {
     function OrgMember() {
     }
     return OrgMember;
+})();
+var Dummy = (function () {
+    function Dummy() {
+        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
+        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
+            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
+            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
+        this.serverApi = ChatServer.ServerImplemented.getInstance();
+    }
+    Dummy.prototype.getBot = function () {
+        var r = Math.floor((Math.random() * this.bots.length) + 1);
+        return this.bots[r];
+    };
+    Dummy.prototype.fireChatInRoom = function (myUid) {
+        var _this = this;
+        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
+            if (!err && res !== null) {
+                setInterval(function () {
+                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
+                        console.log(res);
+                    });
+                }, 1000);
+            }
+        });
+    };
+    return Dummy;
 })();
 var SecureService = (function () {
     function SecureService() {

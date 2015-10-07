@@ -1,5 +1,4 @@
-﻿enum MessageType { Text = 0, Image = 1, Video = 2, Voice = 3, Location = 4, Sticker = 5 };
-class MessageMeta {
+﻿class MessageMeta {
     duration: string;
     thumbnail:string;
     name: string;
@@ -10,7 +9,7 @@ class MessageMeta {
 class Message {
     _id: string;
     rid: string;
-    type: MessageType;
+    type: ContentType;
     body: string;
     sender: string;
     duration: string;

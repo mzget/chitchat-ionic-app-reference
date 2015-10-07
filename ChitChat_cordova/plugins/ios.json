@@ -18,7 +18,7 @@
         }
     },
     "installed_plugins": {
-        "org.apache.cordova.console": {
+        "cordova-plugin-console": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },

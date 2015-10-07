@@ -1,18 +1,18 @@
 <ion-view view-title="CHAT MESSAGE" cache-view="false">
-	<ion-content >
+	<ion-content delegate-handle="mainScroll">
+	
 		<ion-list class="message-list" ng-repeat="message in chat">
-			<!--<ion-item
-                       ng-if="message.msgowner == 'other'" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
-				<!--<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{message.sender_image}}&h=40&w=40" />-->
-				<h2>{{message._id}}</h2>
-				<!--<p>{{message.body}}</p>-->
-<!--				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
-			</ion-item>
-			<ion-item ng-if="message.msgowner == 'owner'" class="owner item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+			<ion-item ng-if="message.sender != myprofile._id" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
+				<h2>{{allMembers[message.sender]['displayname']}}</h2>
 				<p>{{message.body}}</p>
 				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
-			</ion-item> -->
-		--></ion-list>
+			</ion-item>
+			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+				<p>{{message.body}}</p>
+				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+			</ion-item>
+		</ion-list>
 
 	</ion-content>
 </ion-view>

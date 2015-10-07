@@ -1,24 +1,23 @@
-﻿var myprofile;
+var myprofile;
 var date = new Date();
 var now;
 var newchatmessage;
-var chatRoomControl;
 var currentRoom;
+var allMembers;
 
 angular.module('starter.controllers', [])
 
 // GROUP
 .controller('GroupCtrl', function($scope) {
-
-    console.log(localStorage['55d177c2d20212737c46c685']);
-	
-	$scope.myProfile = myprofile;
+    myprofile = main.getDataManager().myProfile;
+    $scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
 	$scope.pjbGroups = main.getDataManager().projectBaseGroups;
 	$scope.pvGroups = main.getDataManager().privateGroups;
 
 	//$scope.chats = Chats.all();
-	$scope.chats = main.getDataManager().orgMembers;
+	allMembers = main.getDataManager().orgMembers;
+	$scope.chats = allMembers;
 	$scope.remove = function(chat) {
 		Chats.remove(chat);
 	};		
@@ -40,10 +39,92 @@ angular.module('starter.controllers', [])
 	$scope.chat = main.getDataManager().myProfile;
 })
 
-// View - Profile
-.controller('GroupViewprofileCtrl', function($scope) {
-	$scope.chat = main.getDataManager().myProfile;
+// Group - View Profile
+.controller('GroupViewprofileCtrl', function($scope, $stateParams, $state, $cordovaProgress) {
+	if($stateParams.chatId==main.getDataManager().myProfile._id){
+		$scope.chat = main.getDataManager().myProfile;
+		$scope.model = {
+		    displayname: $scope.chat.displayname,
+		    status: $scope.chat.status
+		};
+		$scope.title = "My Profile";
+		$('#viewprofile-input-display').removeAttr('disabled');
+		$('#viewprofile-input-status').removeAttr('disabled');
+		$scope.edit = 'true';
+
+		$scope.$on('imgUrl', function(event, url) { 
+			if(url!=null){
+				server.ProfileImageChanged($stateParams.chatId,url,function(err,res){
+					main.getDataManager().myProfile.image = url;
+					if(main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+						main.getDataManager().myProfile.status != $scope.model.status){
+						saveProfile();
+					}else saveSuccess();
+				});
+			}else{
+				if(main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+						main.getDataManager().myProfile.status != $scope.model.status){
+					saveProfile();
+				}
+			}
+		});
+
+		function saveProfile(){
+			server.UpdateUserProfile($stateParams.chatId,$scope.model,function(err,res){
+				console.log(JSON.stringify(res));
+				main.getDataManager().myProfile.displayname = $scope.model.displayname;
+				main.getDataManager().myProfile.status = $scope.model.status;
+				saveSuccess();
+			});
+		}
+
+		function saveSuccess(){
+			$cordovaProgress.showSuccess(false, "Success!");
+	    	setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
+		}
+
+	}else{
+    	var member = main.getDataManager().orgMembers[$stateParams.chatId];
+		if(	member.firstname == null || member.firstname == "" &&
+			member.lastname == null || member.lastname == "" &&
+			member.mail == null || member.mail == "" && 
+			member.role == null || member.role == "" &&
+			member.tel == null || member.tel == ""){
+			server.getMemberProfile($stateParams.chatId, function(err, res) {
+				if (!err) {
+					console.log(JSON.stringify(res));
+					console.log(res["data"]);
+					member.firstname = res["data"].firstname;
+					member.lastname = res["data"].lastname;
+					member.mail = res["data"].mail;
+					member.role = res["data"].role;
+					member.tel = res["data"].tel;
+					$state.go($state.current, {}, {reload: true});
+				}
+				else {
+					console.warn(err, res);
+				}
+			});
+		}
+		$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
+		$scope.model = {
+		    displayname: $scope.chat.displayname,
+		    status: $scope.chat.status
+		};
+		$scope.title = $scope.chat.displayname+"'s Profile";
+		$('#viewprofile-input-display').attr('disabled','disabled');
+		$('#viewprofile-input-status').attr('disabled','disabled');
+		$scope.edit = 'false';
+	}
 })
+
+.factory('getProfileMember',function(){
+	var result;
+	function _all(){
+
+	}
+})
+
 
 // GROUP - Type
 .controller('GroupProjectbaseCtrl', function($scope, $stateParams) {
@@ -53,6 +134,11 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
+			
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+	    location.href = '#/tab/group/chat/' + chatId;
+	};
 })
 .controller('GroupPrivateCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().privateGroups[$stateParams.chatId];
@@ -61,6 +147,11 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
+			
+	$scope.toggle = function (chatId) {
+	    currentRoom = chatId;
+	    location.href = '#/tab/group/chat/' + chatId;
+	};
 })
 .controller('GroupOrggroupsCtrl', function($scope, $stateParams) {	
 	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
@@ -69,13 +160,10 @@ angular.module('starter.controllers', [])
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	$scope.members = groupMembers(members);
 	$scope.members_length = members.length;
-
-	chatRoomControl = new ChatRoomController();
-	main.dataListener.addListenerImp(chatRoomControl);
 			
 	$scope.toggle = function (chatId) {
 	    currentRoom = chatId;
-	    location.href = '#/tab/message/' + chatId;
+	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
 .controller('GroupDetailCtrl', function($scope, $stateParams) {
@@ -92,12 +180,6 @@ angular.module('starter.controllers', [])
 	$scope.members_length = members.length;
 })
 
-
-
-
-
-
-
 .controller('ChatsCtrl', function($scope) {
 	// With the new view caching in Ionic, Controllers are only called
 	// when they are recreated or on app start, instead of every page change.
@@ -113,59 +195,83 @@ angular.module('starter.controllers', [])
 	};
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-	
-    //chat = chatMessages;
-	//for(i=0; i<chat.length; i++)
-	//{
-	//	chat[i]['sender_displayname'] = members[chat[i]['sender']]['displayname'];
-	//	chat[i]['sender_image'] = members[chat[i]['sender']]['image'];
-		
-	//	if( chat[i]['sender'] == myprofile['_id'] )
-	//		chat[i]['msgowner'] = 'owner';
-	//	else
-	//		chat[i]['msgowner'] = 'other';
-	//}
-    
-    chatRoomControl.serviceListener = function () {
+.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, Chats) 
+{    	
+	$scope.chat = [];
+
+    console.log(main.dataManager.getMyProfile())
+
+	var chatRoomControl = new ChatRoomController(main);
+	main.dataListener.addListenerImp(chatRoomControl);
+	var chatRoomApi = main.getChatRoomApi();
+    chatRoomControl.serviceListener = function (newMsg) {
         Chats.set(chatRoomControl.chatMessages);
+
+        if (newMsg.sender !== main.dataManager.myProfile._id) {
+            chatRoomApi.updateMessageReader(newMsg._id, currentRoom);
+        }
     }
-    getMessage(currentRoom, Chats, function () {
-
+    chatRoomControl.getMessage(currentRoom, Chats, function () {
+        Chats.set(chatRoomControl.chatMessages);
     });
-        
+     
+    var countUp = function () {		
+		if( currentRoom != '' )
+		{
+			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
+			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			// console.log('update with timeout fired');
+			$scope.chat = Chats.all();
+			console.log( 'Refresh! by timeout fired...');
+
+			$timeout(countUp, 1000);
+		}
+    }
+    $timeout(countUp, 1000);
+	
     var chats = Chats.all();
-    chats.forEach(chat => {
+    /*chats.forEach(chat => {
         console.log(chat);
-    });
+    });*/
 
 
-
+	$scope.allMembers = allMembers;
+	$scope.myprofile = myprofile;
     $scope.chat = Chats.all();
     $('#send_message').css({ 'display': 'inline-block' });
-    $('#chatroom_back').css({ 'display': 'inline-block' });
+    //$('#chatroom_back').css({ 'display': 'inline-block' });
 	
+	// Send Message btn
 	$('#send_message button').click(function(){
 	    var content = $('#send_message input').val();
-	    main.encodeService(content, (err, result) => {
-	        if (err) {
-	            console.error(err);
-	        }
-	        else {
-	            var myId = main.getDataManager().myProfile._id;
-	            chatRoomApi.chat(currentRoom, "*", myId, result, ContentType[ContentType.Text], (err, res) => {
-	                if (err || res === null) {
-	                    console.warn("send message fail.");
-	                }
-	                else {
-	                    console.log("send message:", res);
-	                }
-	            });
-	        }
-	    });
-		// Clear
-		$('#send_message input').val('')
-	});	
+		if( content != '' )
+		{
+			main.encodeService(content, function(err, result) {
+				if (err) {
+					console.error(err);
+				}
+				else {
+					//var myId = myprofile._id;
+					chatRoomApi.chat(currentRoom, "*", myprofile._id, result, ContentType[ContentType.Text], function(err, res) {
+						if (err || res === null) {
+							console.warn("send message fail.");
+						}
+						else {
+							console.log("send message:", res);
+						}
+					});
+				}
+			});
+			// Clear
+			$('#send_message input').val('')
+		}
+	});
+	
+	// Back btn
+	$('.back-button').click(function(){
+		$('#send_message').css({'display':'none'});
+	    currentRoom = '';
+	});
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
@@ -176,6 +282,85 @@ angular.module('starter.controllers', [])
 	$scope.settings = {
 		logOut: true,
 	};
+})
+
+.controller('AccountCreate',function($scope) {
+    $scope.images = "http://placehold.it/50x50";
+})
+
+.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, ImageService, FileService) {
+ 
+  	$ionicPlatform.ready(function() {
+    	$scope.images = FileService.images();
+    	$scope.$apply();
+  	});
+
+  	$scope.urlForImage = function(imageName) {
+    	var trueOrigin = cordova.file.dataDirectory + imageName;
+    	return trueOrigin;
+  	}
+ 
+	$scope.addImg = function() {
+	    $scope.hideSheet = $ionicActionSheet.show({
+	      buttons: [
+	        { text: 'Take photo' },
+	        { text: 'Photo from library' }
+	      ],
+	      titleText: 'Add images',
+	      cancelText: 'Cancel',
+	      buttonClicked: function(index) {
+	        $scope.addImage(index);
+	      }
+	    });
+	}
+ 
+  	$scope.addImage = function(type) {
+    	$scope.hideSheet();
+    	ImageService.handleMediaDialog(type).then(function() {
+      		$scope.$apply();
+    	});
+  	}
+
+  	$scope.uploadImg = function() {
+  		if(FileService.getImages().length==0) { $scope.$emit('imgUrl',null); return; }
+	    var imageURI = cordova.file.dataDirectory + FileService.getImages();
+	    var options = new FileUploadOptions();
+	    options.fileKey = "fileToUpload";
+	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+	    options.mimeType = "image/jpeg";
+	    var params = new Object();
+	    options.params = params;
+	    options.chunkedMode = false;
+	    var ft = new FileTransfer();
+	    ft.onprogress = function(progressEvent){
+	    	if (progressEvent.lengthComputable) {
+		      $ionicLoading.show({
+			      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
+			  });
+		    } else {
+		      //loadingStatus.increment();
+		    }
+	    };
+	    ft.upload(imageURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
+	        options);
+	}
+
+	function win(r) {
+	    console.log("Code = " + r.responseCode);
+	    console.log("Response = " + r.response);
+	    console.log("Sent = " + r.bytesSent);
+	    $ionicLoading.hide();
+	    $scope.$emit('imgUrl', r.response);
+	    FileService.clearImages();
+	}
+
+	function fail(error) {
+	    alert("An error has occurred: Code = " + error.code);
+	    console.log("upload error source " + error.source);
+	    console.log("upload error target " + error.target);
+	    $cordovaProgress.showText(false, "Fail!", 'center');
+	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
+	}
 }); // <-- LAST CONTROLLER
 
 
@@ -189,156 +374,25 @@ function groupMembers(members, size)
 	if( size )
 		max = size;
 
-	gmember = [];
-	//console.log('ALL GROUP MEMBERS : '+members.length);	
-	for(i=0; i<max; i++)
-	{
-		gmember[i] = main.getDataManager().orgMembers[members[i]['id']];
-		console.log('GROUP MEMBERS : '+main.getDataManager().orgMembers[members[i]['id']]['displayname']);
-	}
-	
-	return gmember;
+    var counter = 0;
+	var gmember = [];
+    for(var i = 0; i <= members.length; i++) {
+        if(!!members[i]) {
+            var mem_id = members[i].id;
+            var member = main.getDataManager().orgMembers[mem_id];
+             if(!!member) {
+                gmember.push(member);
+                counter += 1;
+
+                if(counter >= max) { break; }
+            }
+        }
+    }
+    return gmember;
 }
 
 function back()
 {
-    server.LeaveChatRoomRequest(currentRoom, function (err, res) {
-        console.log("leave room", JSON.stringify(res));
-        localStorage.removeItem(currentRoom);
-        localStorage.setItem(currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-        console.warn("save", currentRoom,JSON.stringify(chatRoomControl.chatMessages));
-
-        currentRoom = "";
-        chatRoomControl.chatMessages = [];
-    });
-
-    javascript: history.back();
-	$('#send_message').css({'display':'none'});
-	$('#chatroom_back').css({'display':'none'});
-}
-
-
-function getMessage(chatId, Chats, callback) {
-	//console.log(chatRoomControl.chatMessages.length)
-//	chatRoomControl.loadAllMessage(currentRoom);
-	var chatLog = localStorage.getItem(chatId);
-	//console.log('local chatLog : ' + chatLog);
-	async.waterfall([
-		function (cb) {
-			if (!!chatLog) {
-				if (JSON.stringify(chatLog) === "") {
-					chatRoomControl.chatMessages = [];
-					cb(null, null);
-				}
-				else {
-					var arr_fromLog = JSON.parse(chatLog);
-					if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
-					    chatRoomControl.chatMessages = [];
-						cb(null, null);
-					}
-					else {
-						async.eachSeries(arr_fromLog, function (log, cb) {
-							var messageImp = log;
-							if (messageImp.type === ContentType[ContentType.Text]) {
-								main.decodeService(messageImp.body, function(err, res) {
-									if (!err) {
-										messageImp.body = res;
-										chatRoomControl.chatMessages.push(messageImp);
-										cb();
-									}
-									else {
-										//console.log(err, res);
-									    chatRoomControl.chatMessages.push(messageImp);
-										cb();
-									}
-								});
-							}
-							else {
-							    chatRoomControl.chatMessages.push(log);
-								cb();
-							}
-						}, function (err) {
-							cb(null, null);
-						});
-					}
-				}
-			}
-			else {
-			    chatRoomControl.chatMessages = [];
-				cb(null, null);
-			}
-		},
-		function (arg1, cb) {
-			//console.log("before join", JSON.stringify(chatMessages));
-			cb(null, null);
-		}
-	], function (err, res) {
-		server.JoinChatRoomRequest(chatId, function (err, res) {
-			if (res.code == 200) {
-				access = date.toISOString();
-
-				allRoomAccess = myprofile.roomAccess.length;
-				for (i = 0; i < allRoomAccess; i++) {
-					if (myprofile.roomAccess[i].roomId == chatId)
-						access = myprofile.roomAccess[i].accessTime;
-				}
-
-				//now = date.toISOString();
-				//access = '2015-09-24T08:00:00.000Z';
-
-				chatRoomApi.getChatHistory(chatId, access, function (err, result) {
-					var histories = [];
-					if (result.code === 200) {
-						histories = result.data;
-					} else {
-						//console.warn("WTF god only know.", result.message);
-					}
-
-					members = main.getDataManager().orgMembers;
-
-					var his_length = histories.length;
-					//console.log("new chat log", histories.length);
-					if (his_length > 0) {
-						async.eachSeries(histories, function (item, cb) {
-							var chatMessageImp = JSON.parse(JSON.stringify(item));
-							if (chatMessageImp.type === ContentType[ContentType.Text]) {
-								main.decodeService(chatMessageImp.body, function(err, res) {
-									if (!err) {
-										chatMessageImp.body = res;
-										chatRoomControl.chatMessages.push(chatMessageImp);
-										cb();
-									}
-									else {
-										//console.warn(err, res);
-										cb();
-									}
-								});
-							}
-							else {
-								if(item.type == 'File')
-								{
-									console.log('file');
-								}
-								chatRoomControl.chatMessages.push(item);
-								cb();
-							}
-						}, function (err) {
-						    Chats.set(chatRoomControl.chatMessages);
-
-							localStorage.removeItem(chatId);
-							localStorage.setItem(chatId, JSON.stringify(chatRoomControl.chatMessages));
-
-//							location.href = '#/tab/message/' + chatId;
-							callback();
-						});
-					}
-					else {
-					    //						location.href = '#/tab/message/' + chatId;
-					    Chats.set(chatRoomControl.chatMessages);
-					    callback();
-					}
-				});
-			}
-		});
-	});
+	//$('#send_message').css({'display':'none'});
+	//$('#chatroom_back').css({'display':'none'});
 }

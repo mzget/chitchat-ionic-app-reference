@@ -26,6 +26,9 @@
 .group-pvgroup span img { border-radius:50%; }
 .group-pvgroup .length { display:inline-block; min-width:30px; line-height:30px; vertical-align:top; text-align:center; box-shadow:0 0 1px 0 red inset; color:red; text-decoration:none; border-radius:50%; }
 
+.group-create .avatar { border-radius: 50%; float: left; margin: 0 10px; height: 30px; width: 30px;}
+.group-create .img-group { border-radius: 50%; float: left; margin: 0 10px; height: 100px; width: 100px; }
+
 .btn-nav { background-color:rgba(0,0,0,0.05); }
 .btn-nav .button { border:none; background-color:transparent; color:#ccc; }
 .btn-nav .button.activated { box-shadow:none; }

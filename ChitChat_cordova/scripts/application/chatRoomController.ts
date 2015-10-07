@@ -8,32 +8,44 @@
 
 class ChatRoomController implements IChatRoomController {
     public chatMessages = [];
-    public serviceListener;
+    public serviceListener: (newMessage:any) => void;
+    private dataManager: DataManager;
+    private main: Main;
+    private serverImp: ChatServer.ServerImplemented;
+    private chatRoomApi: ChatServer.ChatRoomApiProvider;
 
-    onChat(chatMessageImp) {
+    constructor(main: Main) {
+        this.main = main;
+        this.serverImp = this.main.getServerImp();
+        this.chatRoomApi = this.main.getChatRoomApi();
+        this.dataManager = this.main.getDataManager();
+        console.log("constructor", this.dataManager.getMyProfile().displayname);
+    }
+
+    onChat(chatMessageImp: Message) {
         console.log("Implement chat msg hear..", chatMessageImp);
         var self = this;
         var secure = new SecureService();
-        if (chatMessageImp.type === ContentType[ContentType.Text]) {
+        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
             secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
                 if (!err) {
                     chatMessageImp.body = res;
                     self.chatMessages.push(chatMessageImp);
                     if (!!this.serviceListener)
-                        this.serviceListener();
+                        this.serviceListener(chatMessageImp);
                 }
                 else {
                     console.log(err, res);
                     self.chatMessages.push(chatMessageImp);
                     if (!!this.serviceListener)
-                        this.serviceListener();
+                        this.serviceListener(chatMessageImp);
                 }
             })
         }
         else {
             self.chatMessages.push(chatMessageImp);
             if (!!this.serviceListener)
-                this.serviceListener();
+                this.serviceListener(chatMessageImp);
         }
     }
 
@@ -53,11 +65,12 @@ class ChatRoomController implements IChatRoomController {
 
     }
 
-    /*
-    public loadAllMessages(roomId: string) {
+    public getMessage(chatId, Chats, callback) {
         var self = this;
-        var chatLog = localStorage.getItem(chatId);
-        //console.log('local chatLog : ' + chatLog);
+        var myProfile = self.dataManager.myProfile;
+        console.log(myProfile, self.dataManager);
+        var chatLog = localStorage.getItem(myProfile.displayname + '_' + chatId);
+
         async.waterfall([
             function (cb) {
                 if (!!chatLog) {
@@ -73,9 +86,9 @@ class ChatRoomController implements IChatRoomController {
                         }
                         else {
                             async.eachSeries(arr_fromLog, function (log, cb) {
-                                var messageImp = log;
+                                var messageImp: any = log;
                                 if (messageImp.type === ContentType[ContentType.Text]) {
-                                    main.decodeService(messageImp.body, function (err, res) {
+                                    self.main.decodeService(messageImp.body, function (err, res) {
                                         if (!err) {
                                             messageImp.body = res;
                                             self.chatMessages.push(messageImp);
@@ -108,70 +121,77 @@ class ChatRoomController implements IChatRoomController {
                 cb(null, null);
             }
         ], function (err, res) {
-            server.JoinChatRoomRequest(chatId, function (err, res) {
+            self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
                 if (res.code == 200) {
-                    access = date.toISOString();
-
-                    allRoomAccess = myprofile.roomAccess.length;
-                    for (i = 0; i < allRoomAccess; i++) {
-                        if (myprofile.roomAccess[i].roomId == chatId)
-                            access = myprofile.roomAccess[i].accessTime;
-                    }
-
-                    //now = date.toISOString();
-                    //access = '2015-09-24T08:00:00.000Z';
-
-                    chatRoomApi.getChatHistory(chatId, access, function (err, result) {
-                        var histories = [];
-                        if (result.code === 200) {
-                            histories = result.data;
-                        } else {
-                            //console.warn("WTF god only know.", result.message);
+                    var access = new Date();
+                    var roomAccess = self.dataManager.myProfile.roomAccess;
+                    async.eachSeries(roomAccess, function iterator(item, cb) {
+                        if (item.roomId == chatId) {
+                            access = item.accessTime;
                         }
 
-                        members = main.getDataManager().orgMembers;
+                        cb();
+                    }, function done() {
+                        self.chatRoomApi.getChatHistory(chatId, access, function (err, result) {
+                            var histories = [];
+                            if (result.code === 200) {
+                                histories = result.data;
+                            } else {
+                                //console.warn("WTF god only know.", result.message);
+                            }
 
-                        var his_length = histories.length;
-                        //console.log("new chat log", histories.length);
-                        if (his_length > 0) {
-                            var chatMessages_length = chatMessages.length;
-                            async.eachSeries(histories, function (item, cb) {
-                                var chatMessageImp = JSON.parse(JSON.stringify(item));
-                                if (chatMessageImp.type === ContentType[ContentType.Text]) {
-                                    main.decodeService(chatMessageImp.body, function (err, res) {
-                                        if (!err) {
-                                            chatMessageImp.body = res;
-                                            chatMessages.push(chatMessageImp);
-                                            cb();
-                                        }
-                                        else {
-                                            //console.warn(err, res);
-                                            cb();
-                                        }
-                                    });
-                                }
-                                else {
-                                    if (item.type == 'File') {
-                                        console.log('file');
+                            var his_length = histories.length;
+                            //console.log("new chat log", histories.length);
+                            if (his_length > 0) {
+                                async.eachSeries(histories, function (item, cb) {
+                                    var chatMessageImp = JSON.parse(JSON.stringify(item));
+                                    if (chatMessageImp.type === ContentType[ContentType.Text]) {
+                                        self.main.decodeService(chatMessageImp.body, function (err, res) {
+                                            if (!err) {
+                                                chatMessageImp.body = res;
+                                                self.chatMessages.push(chatMessageImp);
+                                                cb();
+                                            }
+                                            else {
+                                                //console.warn(err, res);
+                                                cb();
+                                            }
+                                        });
                                     }
-                                    chatMessages.push(item);
-                                    cb();
-                                }
-                            }, function (err) {
-                                localStorage.removeItem(chatId);
-                                localStorage.setItem(chatId, JSON.stringify(chatMessages));
+                                    else {
+                                        if (item.type == 'File') {
+                                            console.log('file');
+                                        }
+                                        self.chatMessages.push(item);
+                                        cb();
+                                    }
+                                }, function (err) {
+                                    Chats.set(self.chatMessages);
 
-                                location.href = '#/tab/message/' + chatId;
-                            });
-                        }
-                        else {
-                            location.href = '#/tab/message/' + chatId;
-                        }
+                                    localStorage.removeItem(myProfile.displayname + '_' + chatId);
+                                    localStorage.setItem(myProfile.displayname + '_' + chatId, JSON.stringify(self.chatMessages));
+
+                                    // location.href = '#/tab/message/' + chatId;
+                                    callback();
+                                });
+                            }
+                            else {
+                                // location.href = '#/tab/message/' + chatId;
+                                Chats.set(self.chatMessages);
+                                callback();
+                            }
+                        });
                     });
                 }
             });
         });
     }
 
-    */
+    public leaveRoom(room_id, callback: (err, res) => void) {
+        var self = this;
+        this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
+            console.log("leave room", JSON.stringify(res));
+            callback(err, res);
+        });
+    }
 }
