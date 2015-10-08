@@ -7,13 +7,48 @@ var allMembers;
 
 angular.module('starter.controllers', [])
 
+.controller("LoginCtrl", function ($scope) {
+    console.warn('LoginCtrl');
+
+    $scope.confirmDialog = function () {
+        navigator.notification.confirm("Checkout this confirmation dialog", function (buttonIndex) {
+            switch (buttonIndex) {
+                case 1:
+                    console.log("Decline Pressed");
+                    break;
+                case 2:
+                    console.log("Dont Care Pressed");
+                    break;
+                case 3:
+                    console.log("Accept Pressed");
+                    break;
+            }
+        }, "Our Title", ["Decline", "Dont Care", "Accept"]);
+    }
+})
+
 // GROUP
-.controller('GroupCtrl', function($scope) {
+.controller('GroupCtrl', function($scope, $timeout) {
+	
     myprofile = main.getDataManager().myProfile;
     $scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
 	$scope.pjbGroups = main.getDataManager().projectBaseGroups;
 	$scope.pvGroups = main.getDataManager().privateGroups;
+	
+    var reload = function () {		
+		if( currentRoom != '' )
+		{	
+			myprofile = main.getDataManager().myProfile;
+			$scope.myProfile = myprofile;
+			$scope.orgGroups = main.getDataManager().orgGroups;
+			$scope.pjbGroups = main.getDataManager().projectBaseGroups;
+			$scope.pvGroups = main.getDataManager().privateGroups;
+
+			$timeout(reload, 1000);
+		}
+    }
+    $timeout(reload, 1000);
 
 	//$scope.chats = Chats.all();
 	allMembers = main.getDataManager().orgMembers;
@@ -278,22 +313,25 @@ angular.module('starter.controllers', [])
 	    });
 	}
 	
-	// Back btn
-	$('.back-button').click(function(){
-	    $('#send_message').css({ 'display': 'none' });
+	$scope.back = function () {
+		// Back btn
+		$('.back-button').click(function(){
+			$('#send_message').css({ 'display': 'none' });
 
 
-	    console.error("this back function is call many time.")
+			console.error("this back function is call many time.")
 
-		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
-		    localStorage.removeItem(myprofile.displayname_id + '_' + currentRoom);
-		    localStorage.setItem(myprofile.displayname_id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-		    console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
+				localStorage.removeItem(myprofile.displayname_id + '_' + currentRoom);
+				localStorage.setItem(myprofile.displayname_id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+				console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 
-		    currentRoom = "";
-		    chatRoomControl.chatMessages = [];
+				currentRoom = "";
+				chatRoomControl.chatMessages = [];
+			});
 		});
-	});
+	}
+	$scope.back();
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
@@ -384,8 +422,6 @@ angular.module('starter.controllers', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 }); // <-- LAST CONTROLLER
-
-
 
 function groupMembers(members, size)
 {
