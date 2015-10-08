@@ -283,7 +283,7 @@ angular.module('starter.controllers', [])
     //$('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	// Send Message btn
-	$('#send_message button').click(function(){
+	$('#sendMsg').click(function(){
 	    var content = $('#send_message input').val();
 		if( content != '' )
 		{
@@ -307,6 +307,18 @@ angular.module('starter.controllers', [])
 			$('#send_message input').val('')
 		}
 	});
+
+	// Chat Menu
+	$('#chatMenu').click(function(){
+		$scope.$broadcast('addImg', 'addImg');
+	});
+	// Recivce ImageUri from Gallery then send to other people
+	$scope.$on('imgUri', function(event, args) { 
+		$scope.chat.push(
+			{"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id}
+		);
+	});
+
 	$scope.viewReader = function (readers) {
 	    readers.forEach(function iterator(member) {
 	        console.log(JSON.stringify(dataManager.orgMembers[member]));
@@ -355,6 +367,8 @@ angular.module('starter.controllers', [])
     	if (!$scope.$$phase) { $scope.$apply(); }
   	});
 
+  	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
+
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.dataDirectory + imageName;
     	return trueOrigin;
@@ -376,8 +390,9 @@ angular.module('starter.controllers', [])
  
   	$scope.addImage = function(type) {
     	$scope.hideSheet();
-    	ImageService.handleMediaDialog(type).then(function() {
-      		$scope.$apply();
+    	ImageService.handleMediaDialog(type).then(function() { 
+    		$scope.$apply(); 
+    		$scope.$emit('imgUri',FileService.getImages());
     	});
   	}
 
