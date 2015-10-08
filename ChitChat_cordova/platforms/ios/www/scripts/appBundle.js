@@ -78,11 +78,11 @@ var Main = (function () {
         crypto.decryptWithSecureRandom(content, callback);
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
-        console.log(email, password, server);
+        console.log(email, password);
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
-            callback(null, loginRes);
-            if (!err && loginRes !== null) {
+            callback(err, loginRes);
+            if (!err && loginRes !== null && loginRes.code === 200) {
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);
                 }).then(function onFulfilled(value) {
@@ -148,7 +148,7 @@ var Main = (function () {
                 });
             }
             else {
-                console.log(err);
+                console.error(err);
             }
         });
     };
@@ -232,6 +232,7 @@ var ChatServer;
                         appConfig = JSON.parse(JSON.stringify(config));
                         resolve();
                     }, error: function (jqXHR, textStatus, errorThrown) {
+                        console.error(jqXHR, textStatus, errorThrown);
                         reject(errorThrown);
                     }
                 });
@@ -255,6 +256,14 @@ var ChatServer;
                 pomelo.disconnect();
             }
             this.authenData = null;
+        };
+        ServerImplemented.prototype.kickMeAllSession = function (uid) {
+            if (pomelo !== null) {
+                var msg = { uid: uid };
+                pomelo.request("connector.entryHandler.kickMe", msg, function (result) {
+                    console.log("kickMe", JSON.stringify(result));
+                });
+            }
         };
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
             console.log("socket init connecting to: ", _host, _port);
@@ -291,10 +300,15 @@ var ChatServer;
             var self = this;
             var msg = { username: username, password: password };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
-                console.log("login: ", JSON.stringify(res));
+                console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
                     if (callback != null) {
                         callback(res.message, null);
+                    }
+                }
+                else if (res.code === 1004) {
+                    if (callback !== null) {
+                        callback(null, res);
                     }
                 }
                 else {
@@ -755,30 +769,30 @@ var ChatServer;
                 self.chatServerListener.onLeaveRoom(data);
             });
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, function (data) {
-                console.log(ServerEventListener.ON_MESSAGE_READ, data);
+                console.log(ServerEventListener.ON_MESSAGE_READ, JSON.stringify(data));
                 self.chatServerListener.onMessageRead(data);
             });
             pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, function (data) {
-                console.log(ServerEventListener.ON_GET_MESSAGES_READERS, data);
+                console.log(ServerEventListener.ON_GET_MESSAGES_READERS, JSON.stringify(data));
                 self.chatServerListener.onGetMessagesReaders(data);
             });
         };
         ServerEventListener.prototype.callRTCEvents = function () {
             var self = this;
             pomelo.on(ServerEventListener.ON_VIDEO_CALL, function (data) {
-                console.log(ServerEventListener.ON_VIDEO_CALL, data);
+                console.log(ServerEventListener.ON_VIDEO_CALL, JSON.stringify(data));
                 self.rtcCallListener.onVideoCall(data);
             });
             pomelo.on(ServerEventListener.ON_VOICE_CALL, function (data) {
-                console.log(ServerEventListener.ON_VOICE_CALL, data);
+                console.log(ServerEventListener.ON_VOICE_CALL, JSON.stringify(data));
                 self.rtcCallListener.onVoiceCall(data);
             });
             pomelo.on(ServerEventListener.ON_HANGUP_CALL, function (data) {
-                console.log(ServerEventListener.ON_HANGUP_CALL, data);
+                console.log(ServerEventListener.ON_HANGUP_CALL, JSON.stringify(data));
                 self.rtcCallListener.onHangupCall(data);
             });
             pomelo.on(ServerEventListener.ON_THE_LINE_IS_BUSY, function (data) {
-                console.log(ServerEventListener.ON_THE_LINE_IS_BUSY, data);
+                console.log(ServerEventListener.ON_THE_LINE_IS_BUSY, JSON.stringify(data));
                 self.rtcCallListener.onTheLineIsBusy(data);
             });
         };
@@ -797,35 +811,35 @@ var ChatServer;
                 self.serverListener.onUpdatedLastAccessTime(data);
             });
             pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, function (data) {
-                console.log(ServerEventListener.ON_USER_UPDATE_PROFILE, data);
+                console.log(ServerEventListener.ON_USER_UPDATE_PROFILE, JSON.stringify(data));
                 self.serverListener.onUserUpdateProfile(data);
             });
             pomelo.on(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, function (data) {
-                console.log(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, data);
+                console.log(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, JSON.stringify(data));
                 self.serverListener.onUserUpdateImageProfile(data);
             });
             pomelo.on(ServerEventListener.ON_CREATE_GROUP_SUCCESS, function (data) {
-                console.log(ServerEventListener.ON_CREATE_GROUP_SUCCESS, data);
+                console.log(ServerEventListener.ON_CREATE_GROUP_SUCCESS, JSON.stringify(data));
                 self.serverListener.onCreateGroupSuccess(data);
             });
             pomelo.on(ServerEventListener.ON_EDITED_GROUP_MEMBER, function (data) {
-                console.log(ServerEventListener.ON_EDITED_GROUP_MEMBER, data);
+                console.log(ServerEventListener.ON_EDITED_GROUP_MEMBER, JSON.stringify(data));
                 self.serverListener.onEditedGroupMember(data);
             });
             pomelo.on(ServerEventListener.ON_EDITED_GROUP_NAME, function (data) {
-                console.log(ServerEventListener.ON_EDITED_GROUP_NAME, data);
+                console.log(ServerEventListener.ON_EDITED_GROUP_NAME, JSON.stringify(data));
                 self.serverListener.onEditedGroupName(data);
             });
             pomelo.on(ServerEventListener.ON_EDITED_GROUP_IMAGE, function (data) {
-                console.log(ServerEventListener.ON_EDITED_GROUP_IMAGE, data);
+                console.log(ServerEventListener.ON_EDITED_GROUP_IMAGE, JSON.stringify(data));
                 self.serverListener.onEditedGroupImage(data);
             });
             pomelo.on(ServerEventListener.ON_NEW_GROUP_CREATED, function (data) {
-                console.log(ServerEventListener.ON_NEW_GROUP_CREATED, data);
+                console.log(ServerEventListener.ON_NEW_GROUP_CREATED, JSON.stringify(data));
                 self.serverListener.onNewGroupCreated(data);
             });
             pomelo.on(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, function (data) {
-                console.log(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, data);
+                console.log(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, JSON.stringify(data));
                 self.serverListener.onUpdateMemberInfoInProjectBase(data);
             });
         };
@@ -915,20 +929,20 @@ var ChatRoomController = (function () {
                     chatMessageImp.body = res;
                     self.chatMessages.push(chatMessageImp);
                     if (!!_this.serviceListener)
-                        _this.serviceListener(chatMessageImp);
+                        _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                 }
                 else {
                     console.log(err, res);
                     self.chatMessages.push(chatMessageImp);
                     if (!!_this.serviceListener)
-                        _this.serviceListener(chatMessageImp);
+                        _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                 }
             });
         }
         else {
             self.chatMessages.push(chatMessageImp);
             if (!!this.serviceListener)
-                this.serviceListener(chatMessageImp);
+                this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
         }
     };
     ChatRoomController.prototype.onLeaveRoom = function (data) {
@@ -936,6 +950,17 @@ var ChatRoomController = (function () {
     ChatRoomController.prototype.onRoomJoin = function (data) {
     };
     ChatRoomController.prototype.onMessageRead = function (dataEvent) {
+        console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
+        var self = this;
+        var newMsg = JSON.parse(JSON.stringify(dataEvent.data));
+        this.chatMessages.some(function callback(value) {
+            if (value._id === newMsg._id) {
+                value.readers = newMsg.readers;
+                if (!!self.serviceListener)
+                    self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
+                return true;
+            }
+        });
     };
     ChatRoomController.prototype.onGetMessagesReaders = function (dataEvent) {
     };
@@ -1047,6 +1072,13 @@ var ChatRoomController = (function () {
                     });
                 }
             });
+        });
+    };
+    ChatRoomController.prototype.leaveRoom = function (room_id, callback) {
+        var self = this;
+        this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
+            console.log("leave room", JSON.stringify(res));
+            callback(err, res);
         });
     };
     return ChatRoomController;
@@ -1373,4 +1405,3 @@ var SecureService = (function () {
     };
     return SecureService;
 })();
-//# sourceMappingURL=appBundle.js.map

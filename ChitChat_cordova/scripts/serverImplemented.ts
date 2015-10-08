@@ -102,7 +102,7 @@ module ChatServer {
                 // This only is an example to create asynchronism
 
                 $.ajax({
-                    url: "../configs/appconfig.json",
+                    url: "../www/configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
                         appConfig = JSON.parse(JSON.stringify(config));
@@ -136,6 +136,15 @@ module ChatServer {
             }
 
             this.authenData = null;
+        }
+        
+        public kickMeAllSession(uid: string) {
+            if(pomelo !== null) {
+                var msg = { uid: uid };
+                pomelo.request("connector.entryHandler.kickMe", msg, function (result) { 
+                    console.log("kickMe", JSON.stringify(result));
+                });
+            }
         }
 
         private connectSocketServer(_host: string, _port: number, callback: Function) {
@@ -203,10 +212,15 @@ module ChatServer {
 
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, (res) => {
-                console.log("login: ", JSON.stringify(res));
+                console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
                     if (callback != null) {
                         callback(res.message, null);
+                    }
+                }
+                else if(res.code === 1004) {
+                    if(callback !== null) {
+                        callback(null, res);
                     }
                 }
                 else {

@@ -78,11 +78,11 @@ var Main = (function () {
         crypto.decryptWithSecureRandom(content, callback);
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
-        console.log(email, password, server);
+        console.log(email, password);
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
-            callback(null, loginRes);
-            if (!err && loginRes !== null) {
+            callback(err, loginRes);
+            if (!err && loginRes !== null && loginRes.code === 200) {
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);
                 }).then(function onFulfilled(value) {
@@ -148,7 +148,7 @@ var Main = (function () {
                 });
             }
             else {
-                console.log(err);
+                console.error(err);
             }
         });
     };
@@ -226,7 +226,7 @@ var ChatServer;
             var promiseForFileConfig = new Promise(function (resolve, reject) {
                 // This only is an example to create asynchronism
                 $.ajax({
-                    url: "../configs/appconfig.json",
+                    url: "../www/configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
                         appConfig = JSON.parse(JSON.stringify(config));
@@ -256,6 +256,14 @@ var ChatServer;
                 pomelo.disconnect();
             }
             this.authenData = null;
+        };
+        ServerImplemented.prototype.kickMeAllSession = function (uid) {
+            if (pomelo !== null) {
+                var msg = { uid: uid };
+                pomelo.request("connector.entryHandler.kickMe", msg, function (result) {
+                    console.log("kickMe", JSON.stringify(result));
+                });
+            }
         };
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
             console.log("socket init connecting to: ", _host, _port);
@@ -292,10 +300,15 @@ var ChatServer;
             var self = this;
             var msg = { username: username, password: password };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
-                console.log("login: ", JSON.stringify(res));
+                console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
                     if (callback != null) {
                         callback(res.message, null);
+                    }
+                }
+                else if (res.code === 1004) {
+                    if (callback !== null) {
+                        callback(null, res);
                     }
                 }
                 else {
@@ -1392,4 +1405,3 @@ var SecureService = (function () {
     };
     return SecureService;
 })();
-//# sourceMappingURL=appBundle.js.map
