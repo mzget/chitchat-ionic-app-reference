@@ -35,6 +35,7 @@ angular.module('starter.controllers', [])
 	$scope.orgGroups = main.getDataManager().orgGroups;
 	$scope.pjbGroups = main.getDataManager().projectBaseGroups;
 	$scope.pvGroups = main.getDataManager().privateGroups;
+	$scope.chats = main.getDataManager().orgMembers;
 	
     var reload = function () {		
 		if( currentRoom != '' )
@@ -44,6 +45,8 @@ angular.module('starter.controllers', [])
 			$scope.orgGroups = main.getDataManager().orgGroups;
 			$scope.pjbGroups = main.getDataManager().projectBaseGroups;
 			$scope.pvGroups = main.getDataManager().privateGroups;
+			allMembers = main.getDataManager().orgMembers;
+			$scope.chats = allMembers;
 
 			$timeout(reload, 1000);
 		}
@@ -51,8 +54,6 @@ angular.module('starter.controllers', [])
     $timeout(reload, 1000);
 
 	//$scope.chats = Chats.all();
-	allMembers = main.getDataManager().orgMembers;
-	$scope.chats = allMembers;
 	$scope.remove = function(chat) {
 		Chats.remove(chat);
 	};		
@@ -230,11 +231,11 @@ angular.module('starter.controllers', [])
 	};
 })
 
-.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, Chats) 
+.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
 {    	
 	$scope.chat = [];
-
-    console.log(main.dataManager.getMyProfile())
+	
+    //console.log(main.dataManager.getMyProfile())
 
 	var chatRoomControl = new ChatRoomController(main);
 	main.dataListener.addListenerImp(chatRoomControl);
@@ -264,7 +265,17 @@ angular.module('starter.controllers', [])
 			// console.log('update with timeout fired');
 			$scope.chat = Chats.all();
 			console.log( 'Refresh! by timeout fired...');
-
+			
+			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
+			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
+			//console.log( $('#main-chat .scroll').height() ); // Max scroll
+			
+			scrolling = $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top;
+			maxscroll = ($('#main-chat .scroll').height() - $('#main-chat').height());
+			
+			if( scrolling-3 >= maxscroll && scrolling+3 >= maxscroll )
+				$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom()
+				
 			$timeout(countUp, 1000);
 		}
     }
@@ -287,6 +298,9 @@ angular.module('starter.controllers', [])
 	    var content = $('#send_message input').val();
 		if( content != '' )
 		{
+			// Clear Message
+			$('#send_message input').val('')
+			
 			main.encodeService(content, function(err, result) {
 				if (err) {
 					console.error(err);
@@ -303,8 +317,6 @@ angular.module('starter.controllers', [])
 					});
 				}
 			});
-			// Clear
-			$('#send_message input').val('')
 		}
 	});
 
@@ -325,25 +337,31 @@ angular.module('starter.controllers', [])
 	    });
 	}
 	
-	$scope.back = function () {
-		// Back btn
-		$('.back-button').click(function(){
-			$('#send_message').css({ 'display': 'none' });
+    $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
+        console.log("App view (menu) entered.");
+        console.log(arguments); 
+		
+		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
+    });
 
+    $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
+        console.log("App view (menu) leaved.");
+        console.log(arguments);
+				
+		$('#send_message').css({ 'display': 'none' });
 
-			console.error("this back function is call many time.")
+		console.error("this back function is call many time.")
 
-			chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
-				localStorage.removeItem(myprofile.displayname_id + '_' + currentRoom);
-				localStorage.setItem(myprofile.displayname_id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-				console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
+			localStorage.removeItem(myprofile._id + '_' + currentRoom);
+			localStorage.setItem(myprofile._id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 
-				currentRoom = "";
-				chatRoomControl.chatMessages = [];
-			});
+			currentRoom = "";
+			chatRoomControl.chatMessages = [];
 		});
-	}
-	$scope.back();
+    });
+	
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
