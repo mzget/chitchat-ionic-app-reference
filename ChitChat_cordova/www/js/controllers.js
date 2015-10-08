@@ -313,25 +313,29 @@ angular.module('starter.controllers', [])
 	    });
 	}
 	
-	$scope.back = function () {
-		// Back btn
-		$('.back-button').click(function(){
-			$('#send_message').css({ 'display': 'none' });
+    $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
+        console.log("App view (menu) entered.");
+        console.log(arguments); 
+    });
 
+    $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
+        console.log("App view (menu) leaved.");
+        console.log(arguments);
+				
+		$('#send_message').css({ 'display': 'none' });
 
-			console.error("this back function is call many time.")
+		console.error("this back function is call many time.")
 
-			chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
-				localStorage.removeItem(myprofile.displayname_id + '_' + currentRoom);
-				localStorage.setItem(myprofile.displayname_id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-				console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
+			localStorage.removeItem(myprofile.displayname_id + '_' + currentRoom);
+			localStorage.setItem(myprofile.displayname_id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 
-				currentRoom = "";
-				chatRoomControl.chatMessages = [];
-			});
+			currentRoom = "";
+			chatRoomControl.chatMessages = [];
 		});
-	}
-	$scope.back();
+    });
+	
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
