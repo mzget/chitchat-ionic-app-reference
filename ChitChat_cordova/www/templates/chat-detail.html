@@ -1,7 +1,7 @@
 <ion-view view-title="CHAT MESSAGE" cache-view="false">
-	<ion-content delegate-handle="mainScroll">
+	<ion-content id="main-chat" delegate-handle="mainScroll">
 	
-		<ion-list class="message-list" ng-repeat="message in chat">
+		<ion-list class="message-list" ng-repeat="message in chat track by $index">
 			<ion-item ng-if="message.sender != myprofile._id" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 				<h2>{{allMembers[message.sender]['displayname']}}</h2>
