@@ -225,10 +225,7 @@ angular.module('starter.controllers', [])
 	//$scope.$on('$ionicView.enter', function(e) {
 	//});
 
-	$scope.chats = Chats.all();
-	$scope.remove = function(chat) {
-		Chats.remove(chat);
-	};
+	$scope.roomAccess = myprofile.roomAccess;
 })
 
 .controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
@@ -273,7 +270,7 @@ angular.module('starter.controllers', [])
 			scrolling = $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top;
 			maxscroll = ($('#main-chat .scroll').height() - $('#main-chat').height());
 			
-			if( scrolling-3 >= maxscroll && scrolling+3 >= maxscroll )
+			if( scrolling-5 <= maxscroll && scrolling+5 >= maxscroll )
 				$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom()
 				
 			$timeout(countUp, 1000);
