@@ -237,7 +237,7 @@ angular.module('starter.controllers', [])
 	
     //console.log(main.dataManager.getMyProfile())
 
-	var chatRoomControl = new ChatRoomController(main);
+	var chatRoomControl = new ChatRoomController(main, currentRoom);
 	main.dataListener.addListenerImp(chatRoomControl);
 	var chatRoomApi = main.getChatRoomApi();
 	chatRoomControl.serviceListener = function (event, newMsg) {
@@ -368,9 +368,6 @@ angular.module('starter.controllers', [])
         console.log(arguments);
 				
 		$('#send_message').css({ 'display': 'none' });
-
-		console.error("this back function is call many time.")
-
 		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
 			localStorage.removeItem(myprofile._id + '_' + currentRoom);
 			localStorage.setItem(myprofile._id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
@@ -378,6 +375,7 @@ angular.module('starter.controllers', [])
 
 			currentRoom = "";
 			chatRoomControl.chatMessages = [];
+			main.dataListener.removeListener(chatRoomControl);
 		});
     });
 	
