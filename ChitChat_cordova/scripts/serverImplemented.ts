@@ -742,6 +742,13 @@ module ChatServer {
             message["roomId"] = roomId;
             pomelo.notify("chat.chatHandler.updateWhoReadMessage", message);
         }
+        
+        public updateMessageReaders(messageIds:string[], roomId:string) {
+            var message : IDictionary = {};
+            message["messageIds"] = JSON.stringify(messageIds);
+            message["roomId"] = roomId;
+            pomelo.notify("chat.chatHandler.updateWhoReadMessages", message);
+        }
     }
 
     export class ServerEventListener {

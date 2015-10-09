@@ -714,6 +714,12 @@ var ChatServer;
             message["roomId"] = roomId;
             pomelo.notify("chat.chatHandler.updateWhoReadMessage", message);
         };
+        ChatRoomApiProvider.prototype.updateMessageReaders = function (messageIds, roomId) {
+            var message = {};
+            message["messageIds"] = JSON.stringify(messageIds);
+            message["roomId"] = roomId;
+            pomelo.notify("chat.chatHandler.updateWhoReadMessages", message);
+        };
         return ChatRoomApiProvider;
     })();
     ChatServer.ChatRoomApiProvider = ChatRoomApiProvider;
