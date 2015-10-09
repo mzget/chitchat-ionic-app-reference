@@ -323,7 +323,7 @@ angular.module('starter.controllers', [])
 	// Chat Menu
 	$('#chatMenu').click(function(){
 		//$scope.$broadcast('addImg', 'addImg');
-		$scope.$broadcast('captureAudio', 'captureAudio');
+		$scope.$broadcast('recordAudio', 'recordAudio');
 	});
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('imgUri', function(event, args) {
@@ -475,17 +475,25 @@ angular.module('starter.controllers', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 })
-.controller('AudioRecorder', function($scope, $cordovaCapture) {
-	$scope.$on('captureAudio', function(event, args) { $scope.captureAudio(); });
-	$scope.captureAudio = function() {
-		var options = { limit: 3, duration: 10 };
-	    $cordovaCapture.captureAudio(options).then(function(audioData) {
-	      // Success! Audio data is here
-	    }, function(err) {
-	      // An error occurred. Show a message to the user
-	    });
-	  }
+.controller('MyCtrl', function($scope, $cordovaMedia) {
 
+	$scope.$on('recordAudio', function(event, args) { console.log(args); $scope.recordAudio(); });
+
+	$scope.recordAudio = function(){
+		var src = "myrecording.mp3";
+		var mediaRec = $cordovaMedia.newMedia(src,
+			function() {
+				console.log("OKKKKKKK");
+			},
+			function(err){
+				console.log("ERRRRRRRRORRRRRR");
+		});
+		mediaRec.startRecord();
+
+		setTimeout(function() {
+	        mediaRec.stopRecord();
+	    }, 5000);
+	}
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size)
