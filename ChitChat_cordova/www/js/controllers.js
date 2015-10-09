@@ -473,25 +473,37 @@ angular.module('starter.controllers', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 })
-.controller('MyCtrl', function($scope, $cordovaMedia) {
+.controller('MyCtrl', function($scope, $cordovaCapture) {
+	$scope.$on('recordAudio', function(event, args) { $scope.captureAudio(); });
 
-	$scope.$on('recordAudio', function(event, args) { console.log(args); $scope.recordAudio(); });
+	var url;
 
-	$scope.recordAudio = function(){
-		var src = "myrecording.mp3";
-		var mediaRec = $cordovaMedia.newMedia(src,
-			function() {
-				console.log("OKKKKKKK");
-			},
-			function(err){
-				console.log("ERRRRRRRRORRRRRR");
-		});
-		mediaRec.startRecord();
-
-		setTimeout(function() {
-	        mediaRec.stopRecord();
-	    }, 5000);
-	}
+	$scope.captureAudio = function() {
+    var options = { limit: 3, duration: 10 };
+	    $cordovaCapture.captureAudio(options).then(function(audioData) {
+	      console.log(audioData);
+	      url = audioData.localURL;
+	      $scope.playAudio();
+	    }, function(err) {
+	      console.log('Error');
+	    });
+  	}
+  	$scope.playAudio = function() {
+  		// Play the audio file at url
+	    var my_media = new Media(url,
+	        // success callback
+	        function () {
+	            console.log("playAudio():Audio Success");
+	        },
+	        // error callback
+	        function (err) {
+	            console.log("playAudio():Audio Error: " + err);
+	        }
+	    );
+	    // Play audio
+	    my_media.play();
+  	}
+	
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size)
