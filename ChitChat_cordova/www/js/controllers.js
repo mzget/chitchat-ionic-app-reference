@@ -480,13 +480,19 @@ angular.module('starter.controllers', [])
 
 	$scope.captureAudio = function() {
     var options = { limit: 3, duration: 10 };
-	    $cordovaCapture.captureAudio(options).then(function(audioData) {
-	      console.log(audioData);
-	      url = audioData.localURL;
+            $cordovaCapture.captureAudio(options).then(function(audioData) {
+                                                       console.log("gg", audioData);
+                                                       console.log("gg", JSON.stringify(audioData));
+                                           //        var audios = JSON.Parse(JSON.stringify(audioData));
+                                             //      console.log("gg", audioData);
+                                                   console.log("ff", audioData[0].localURL);
+	      url = audioData[0].localURL;
 	      $scope.playAudio(url);
 	    }, function(err) {
 	      console.log('Error');
-	    });
+                                                   }).catch(function onRejected(reason) {
+                                                            console.log("reject", reason);
+                                                            });
   	}
   	$scope.playAudio = function(url) {
   		// Play the audio file at url

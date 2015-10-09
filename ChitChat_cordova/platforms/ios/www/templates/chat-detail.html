@@ -1,4 +1,4 @@
-<ion-view view-title="CHAT MESSAGE" cache-view="false" ng-controller="ImageController">
+<ion-view view-title="CHAT MESSAGE" cache-view="false" ng-controller="MyCtrl"> <!-- ng-controller="ImageController; -->
 	<ion-content delegate-handle="mainScroll">
 		<ion-list class="message-list" ng-repeat="message in chat">
 			<ion-item ng-if="message.sender != myprofile._id" class="other item-remove-animate item-icon-right" type="item-text-wrap">

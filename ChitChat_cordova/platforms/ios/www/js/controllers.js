@@ -264,7 +264,7 @@ angular.module('starter.controllers', [])
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 			// console.log('update with timeout fired');
 			$scope.chat = Chats.all();
-			console.log( 'Refresh! by timeout fired...');
+			console.log( 'Refresh! by timeout fired...', Chats.all().length);
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
 			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
@@ -322,7 +322,8 @@ angular.module('starter.controllers', [])
 
 	// Chat Menu
 	$('#chatMenu').click(function(){
-		$scope.$broadcast('addImg', 'addImg');
+		//$scope.$broadcast('addImg', 'addImg');
+		$scope.$broadcast('recordAudio', 'recordAudio');
 	});
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('imgUri', function(event, args) {
@@ -471,6 +472,45 @@ angular.module('starter.controllers', [])
 	    $cordovaProgress.showText(false, "Fail!", 'center');
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
+})
+.controller('MyCtrl', function($scope, $cordovaCapture) {
+	$scope.$on('recordAudio', function(event, args) { $scope.captureAudio(); });
+
+	var url;
+
+	$scope.captureAudio = function() {
+    var options = { limit: 3, duration: 10 };
+            $cordovaCapture.captureAudio(options).then(function(audioData) {
+                                                       console.log("gg", audioData);
+                                                       console.log("gg", JSON.stringify(audioData));
+                                           //        var audios = JSON.Parse(JSON.stringify(audioData));
+                                             //      console.log("gg", audioData);
+                                                   console.log("ff", audioData[0].localURL);
+	      url = audioData[0].localURL;
+	      $scope.playAudio(url);
+	    }, function(err) {
+	      console.log('Error');
+                                                   }).catch(function onRejected(reason) {
+                                                            console.log("reject", reason);
+                                                            });
+  	}
+  	$scope.playAudio = function(url) {
+  		// Play the audio file at url
+  		console.log(url);
+	    var my_media = new Media(url,
+	        // success callback
+	        function () {
+	            console.log("playAudio():Audio Success");
+	        },
+	        // error callback
+	        function (err) {
+	            console.log("playAudio():Audio Error: " + err);
+	        }
+	    );
+	    // Play audio
+	    my_media.play();
+  	}
+	
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size)
