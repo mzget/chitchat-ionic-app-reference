@@ -90,8 +90,8 @@ angular.module('starter.controllers', [])
 
 		$scope.$on('imgUrl', function(event, url) { 
 			if(url!=null){
-				server.ProfileImageChanged($stateParams.chatId,url,function(err,res){
-					main.getDataManager().myProfile.image = url;
+				server.ProfileImageChanged($stateParams.chatId,url[0],function(err,res){
+					main.getDataManager().myProfile.image = url[0];
 					if(main.getDataManager().myProfile.displayname != $scope.model.displayname ||
 						main.getDataManager().myProfile.status != $scope.model.status){
 						saveProfile();
@@ -269,7 +269,7 @@ angular.module('starter.controllers', [])
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
 			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
 			//console.log( $('#main-chat .scroll').height() ); // Max scroll
-			
+
 			scrolling = $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top;
 			maxscroll = ($('#main-chat .scroll').height() - $('#main-chat').height());
 			
@@ -325,10 +325,28 @@ angular.module('starter.controllers', [])
 		$scope.$broadcast('addImg', 'addImg');
 	});
 	// Recivce ImageUri from Gallery then send to other people
-	$scope.$on('imgUri', function(event, args) { 
-		$scope.chat.push(
-			{"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id}
-		);
+	$scope.$on('imgUri', function(event, args) {
+		$scope.chat.push( {"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id,"_id":args,"temp":"true"});
+		$scope.$broadcast('uploadImg', 'uploadImg');
+		$.each($scope.chat, function(index, value){
+			console.log(value._id,args);
+		});
+		
+	});
+	// Send Image and remove temp Image
+	$scope.$on('imgUrl', function(event,args){
+		chatRoomApi.chat(currentRoom, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
+			if (err || res === null) {
+				console.warn("send message fail.");
+			}
+			else {
+				console.log("send message:", JSON.stringify(res));
+				$.each($scope.chat, function(index, value){
+					console.log(value._id,args[1]);
+					if(value._id == args[1]) { $scope.chat[index] = new Object; }
+				});
+			}
+		});
 	});
 
 	$scope.viewReader = function (readers) {
@@ -386,6 +404,7 @@ angular.module('starter.controllers', [])
   	});
 
   	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
+  	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
 
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.dataDirectory + imageName;
@@ -443,7 +462,7 @@ angular.module('starter.controllers', [])
 	    console.log("Response = " + r.response);
 	    console.log("Sent = " + r.bytesSent);
 	    $ionicLoading.hide();
-	    $scope.$emit('imgUrl', r.response);
+	    $scope.$emit('imgUrl', [r.response,FileService.getImages()]);
 	    FileService.clearImages();
 	}
 
