@@ -224,7 +224,6 @@ var ChatServer;
         ServerImplemented.prototype.loadConfig = function (callback) {
             var self = this;
             var promiseForFileConfig = new Promise(function (resolve, reject) {
-                // This only is an example to create asynchronism
                 $.ajax({
                     url: "../www/configs/appconfig.json",
                     dataType: "json",
@@ -240,8 +239,8 @@ var ChatServer;
                 self.host = appConfig.socketHost;
                 self.port = appConfig.socketPort;
                 if (!!pomelo) {
-                    self.connectSocketServer(self.host, self.port, function () {
-                        callback(null, self);
+                    self.connectSocketServer(self.host, self.port, function (err, res) {
+                        callback(err, self);
                     });
                 }
                 else {
@@ -268,8 +267,9 @@ var ChatServer;
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
             console.log("socket init connecting to: ", _host, _port);
             var self = this;
-            pomelo.init({ host: _host, port: _port }, function (socket) {
-                callback();
+            pomelo.init({ host: _host, port: _port }, function (err, socket) {
+                console.info("socket init result: ", err, socket);
+                callback(err, socket);
             });
         };
         ServerImplemented.prototype.logIn = function (_username, _hash, callback) {

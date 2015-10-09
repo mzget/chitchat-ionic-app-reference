@@ -125,9 +125,6 @@
         "cordova-plugin-media-capture": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
         "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
