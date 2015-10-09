@@ -28,16 +28,32 @@ angular.module('starter.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function($scope) {
+.controller('GroupCtrl', function($scope, $timeout) {
+	
     myprofile = main.getDataManager().myProfile;
     $scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
 	$scope.pjbGroups = main.getDataManager().projectBaseGroups;
 	$scope.pvGroups = main.getDataManager().privateGroups;
+	$scope.chats = main.getDataManager().orgMembers;
+	
+    var reload = function () {		
+		if( currentRoom != '' )
+		{	
+			myprofile = main.getDataManager().myProfile;
+			$scope.myProfile = myprofile;
+			$scope.orgGroups = main.getDataManager().orgGroups;
+			$scope.pjbGroups = main.getDataManager().projectBaseGroups;
+			$scope.pvGroups = main.getDataManager().privateGroups;
+			allMembers = main.getDataManager().orgMembers;
+			$scope.chats = allMembers;
+
+			$timeout(reload, 1000);
+		}
+    }
+    $timeout(reload, 1000);
 
 	//$scope.chats = Chats.all();
-	allMembers = main.getDataManager().orgMembers;
-	$scope.chats = allMembers;
 	$scope.remove = function(chat) {
 		Chats.remove(chat);
 	};		
@@ -74,8 +90,8 @@ angular.module('starter.controllers', [])
 
 		$scope.$on('imgUrl', function(event, url) { 
 			if(url!=null){
-				server.ProfileImageChanged($stateParams.chatId,url,function(err,res){
-					main.getDataManager().myProfile.image = url;
+				server.ProfileImageChanged($stateParams.chatId,url[0],function(err,res){
+					main.getDataManager().myProfile.image = url[0];
 					if(main.getDataManager().myProfile.displayname != $scope.model.displayname ||
 						main.getDataManager().myProfile.status != $scope.model.status){
 						saveProfile();
@@ -215,13 +231,13 @@ angular.module('starter.controllers', [])
 	};
 })
 
-.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, Chats) 
+.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
 {    	
 	$scope.chat = [];
+	
+    //console.log(main.dataManager.getMyProfile())
 
-    console.log(main.dataManager.getMyProfile())
-
-	var chatRoomControl = new ChatRoomController(main);
+	var chatRoomControl = new ChatRoomController(main, currentRoom);
 	main.dataListener.addListenerImp(chatRoomControl);
 	var chatRoomApi = main.getChatRoomApi();
 	chatRoomControl.serviceListener = function (event, newMsg) {
@@ -249,7 +265,17 @@ angular.module('starter.controllers', [])
 			// console.log('update with timeout fired');
 			$scope.chat = Chats.all();
 			console.log( 'Refresh! by timeout fired...');
+			
+			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
+			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
+			//console.log( $('#main-chat .scroll').height() ); // Max scroll
 
+			scrolling = $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top;
+			maxscroll = ($('#main-chat .scroll').height() - $('#main-chat').height());
+			
+			if( scrolling-3 >= maxscroll && scrolling+3 >= maxscroll )
+				$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom()
+				
 			$timeout(countUp, 1000);
 		}
     }
@@ -268,10 +294,13 @@ angular.module('starter.controllers', [])
     //$('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	// Send Message btn
-	$('#send_message button').click(function(){
+	$('#sendMsg').click(function(){
 	    var content = $('#send_message input').val();
 		if( content != '' )
 		{
+			// Clear Message
+			$('#send_message input').val('')
+			
 			main.encodeService(content, function(err, result) {
 				if (err) {
 					console.error(err);
@@ -288,32 +317,67 @@ angular.module('starter.controllers', [])
 					});
 				}
 			});
-			// Clear
-			$('#send_message input').val('')
 		}
 	});
+
+	// Chat Menu
+	$('#chatMenu').click(function(){
+		$scope.$broadcast('addImg', 'addImg');
+	});
+	// Recivce ImageUri from Gallery then send to other people
+	$scope.$on('imgUri', function(event, args) {
+		$scope.chat.push( {"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id,"_id":args,"temp":"true"});
+		$scope.$broadcast('uploadImg', 'uploadImg');
+		$.each($scope.chat, function(index, value){
+			console.log(value._id,args);
+		});
+		
+	});
+	// Send Image and remove temp Image
+	$scope.$on('imgUrl', function(event,args){
+		chatRoomApi.chat(currentRoom, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
+			if (err || res === null) {
+				console.warn("send message fail.");
+			}
+			else {
+				console.log("send message:", JSON.stringify(res));
+				$.each($scope.chat, function(index, value){
+					console.log(value._id,args[1]);
+					if(value._id == args[1]) { $scope.chat[index] = new Object; }
+				});
+			}
+		});
+	});
+
 	$scope.viewReader = function (readers) {
 	    readers.forEach(function iterator(member) {
 	        console.log(JSON.stringify(dataManager.orgMembers[member]));
 	    });
 	}
 	
-	// Back btn
-	$('.back-button').click(function(){
-	    $('#send_message').css({ 'display': 'none' });
+    $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
+        console.log("App view (menu) entered.");
+        console.log(arguments); 
+		
+		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
+    });
 
-
-	    console.error("this back function is call many time.")
-
+    $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
+        console.log("App view (menu) leaved.");
+        console.log(arguments);
+				
+		$('#send_message').css({ 'display': 'none' });
 		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
-		    localStorage.removeItem(myprofile.displayname_id + '_' + currentRoom);
-		    localStorage.setItem(myprofile.displayname_id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-		    console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			localStorage.removeItem(myprofile._id + '_' + currentRoom);
+			localStorage.setItem(myprofile._id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+			console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 
-		    currentRoom = "";
-		    chatRoomControl.chatMessages = [];
+			currentRoom = "";
+			chatRoomControl.chatMessages = [];
+			main.dataListener.removeListener(chatRoomControl);
 		});
-	});
+    });
+	
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
@@ -337,6 +401,9 @@ angular.module('starter.controllers', [])
     	if (!$scope.$$phase) { $scope.$apply(); }
   	});
 
+  	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
+  	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
+
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.dataDirectory + imageName;
     	return trueOrigin;
@@ -358,8 +425,9 @@ angular.module('starter.controllers', [])
  
   	$scope.addImage = function(type) {
     	$scope.hideSheet();
-    	ImageService.handleMediaDialog(type).then(function() {
-      		$scope.$apply();
+    	ImageService.handleMediaDialog(type).then(function() { 
+    		$scope.$apply(); 
+    		$scope.$emit('imgUri',FileService.getImages());
     	});
   	}
 
@@ -392,7 +460,7 @@ angular.module('starter.controllers', [])
 	    console.log("Response = " + r.response);
 	    console.log("Sent = " + r.bytesSent);
 	    $ionicLoading.hide();
-	    $scope.$emit('imgUrl', r.response);
+	    $scope.$emit('imgUrl', [r.response,FileService.getImages()]);
 	    FileService.clearImages();
 	}
 
