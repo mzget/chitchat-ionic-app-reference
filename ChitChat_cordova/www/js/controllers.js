@@ -322,7 +322,8 @@ angular.module('starter.controllers', [])
 
 	// Chat Menu
 	$('#chatMenu').click(function(){
-		$scope.$broadcast('addImg', 'addImg');
+		//$scope.$broadcast('addImg', 'addImg');
+		$scope.$broadcast('captureAudio', 'captureAudio');
 	});
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('imgUri', function(event, args) {
@@ -473,6 +474,18 @@ angular.module('starter.controllers', [])
 	    $cordovaProgress.showText(false, "Fail!", 'center');
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
+})
+.controller('AudioRecorder', function($scope, $cordovaCapture) {
+	$scope.$on('captureAudio', function(event, args) { $scope.captureAudio(); });
+	$scope.captureAudio = function() {
+		var options = { limit: 3, duration: 10 };
+	    $cordovaCapture.captureAudio(options).then(function(audioData) {
+	      // Success! Audio data is here
+	    }, function(err) {
+	      // An error occurred. Show a message to the user
+	    });
+	  }
+
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size)
