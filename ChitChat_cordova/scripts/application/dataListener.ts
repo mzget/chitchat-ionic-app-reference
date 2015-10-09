@@ -9,6 +9,9 @@
     public addListenerImp(listener) {
         this.listenerImp = listener;
     }
+    public removeListener(listener) {
+        this.listenerImp = null;
+    }
 
     onAccessRoom(dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);

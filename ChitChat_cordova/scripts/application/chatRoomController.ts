@@ -21,7 +21,8 @@ class ChatRoomController implements IChatRoomController {
         this.chatRoomApi = this.main.getChatRoomApi();
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
-        console.log("constructor", this.dataManager.getMyProfile().displayname);
+        
+        console.log("constructor ChatRoomController");
     }
 
     onChat(chatMessageImp: Message) {
@@ -89,8 +90,7 @@ class ChatRoomController implements IChatRoomController {
     public getMessage(chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
-        console.log(myProfile, self.dataManager);
-        var chatLog = localStorage.getItem(myProfile.displayname + '_' + chatId);
+        var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
 
         async.waterfall([
             function (cb) {
@@ -189,8 +189,8 @@ class ChatRoomController implements IChatRoomController {
                                 }, function (err) {
                                     Chats.set(self.chatMessages);
 
-                                    localStorage.removeItem(myProfile.displayname + '_' + chatId);
-                                    localStorage.setItem(myProfile.displayname + '_' + chatId, JSON.stringify(self.chatMessages));
+                                    localStorage.removeItem(myProfile._id + '_' + chatId);
+                                    localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
 
                                     // location.href = '#/tab/message/' + chatId;
                                     callback();

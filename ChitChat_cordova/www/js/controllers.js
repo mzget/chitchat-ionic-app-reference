@@ -264,7 +264,7 @@ angular.module('starter.controllers', [])
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 			// console.log('update with timeout fired');
 			$scope.chat = Chats.all();
-			console.log( 'Refresh! by timeout fired...');
+			console.log( 'Refresh! by timeout fired...', Chats.all().length);
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
 			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position

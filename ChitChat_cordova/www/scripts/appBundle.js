@@ -923,7 +923,7 @@ var ChatRoomController = (function () {
         this.chatRoomApi = this.main.getChatRoomApi();
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
-        console.log("constructor", this.dataManager.getMyProfile().displayname);
+        console.log("constructor ChatRoomController");
     }
     ChatRoomController.prototype.onChat = function (chatMessageImp) {
         var _this = this;
@@ -979,8 +979,7 @@ var ChatRoomController = (function () {
     ChatRoomController.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
-        console.log(myProfile, self.dataManager);
-        var chatLog = localStorage.getItem(myProfile.displayname + '_' + chatId);
+        var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
         async.waterfall([
             function (cb) {
                 if (!!chatLog) {
@@ -1071,8 +1070,8 @@ var ChatRoomController = (function () {
                                     }
                                 }, function (err) {
                                     Chats.set(self.chatMessages);
-                                    localStorage.removeItem(myProfile.displayname + '_' + chatId);
-                                    localStorage.setItem(myProfile.displayname + '_' + chatId, JSON.stringify(self.chatMessages));
+                                    localStorage.removeItem(myProfile._id + '_' + chatId);
+                                    localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
                                     callback();
                                 });
                             }
@@ -1101,6 +1100,9 @@ var DataListener = (function () {
     }
     DataListener.prototype.addListenerImp = function (listener) {
         this.listenerImp = listener;
+    };
+    DataListener.prototype.removeListener = function (listener) {
+        this.listenerImp = null;
     };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
