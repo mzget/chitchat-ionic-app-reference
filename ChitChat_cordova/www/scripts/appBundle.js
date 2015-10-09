@@ -916,39 +916,45 @@ var Services;
     Services.AbsServerListener = AbsServerListener;
 })(Services || (Services = {}));
 var ChatRoomController = (function () {
-    function ChatRoomController(main) {
+    function ChatRoomController(main, room_id) {
         this.chatMessages = [];
         this.main = main;
         this.serverImp = this.main.getServerImp();
         this.chatRoomApi = this.main.getChatRoomApi();
         this.dataManager = this.main.getDataManager();
-        console.log("constructor", this.dataManager.getMyProfile().displayname);
+        this.roomId = room_id;
+        console.log("constructor ChatRoomController");
     }
     ChatRoomController.prototype.onChat = function (chatMessageImp) {
         var _this = this;
-        console.log("Implement chat msg hear..", chatMessageImp);
         var self = this;
-        var secure = new SecureService();
-        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
-            secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
-                if (!err) {
-                    chatMessageImp.body = res;
-                    self.chatMessages.push(chatMessageImp);
-                    if (!!_this.serviceListener)
-                        _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                }
-                else {
-                    console.log(err, res);
-                    self.chatMessages.push(chatMessageImp);
-                    if (!!_this.serviceListener)
-                        _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                }
-            });
+        if (this.roomId === chatMessageImp.rid) {
+            console.log("Implement chat msg hear..", chatMessageImp);
+            var secure = new SecureService();
+            if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
+                secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
+                    if (!err) {
+                        chatMessageImp.body = res;
+                        self.chatMessages.push(chatMessageImp);
+                        if (!!_this.serviceListener)
+                            _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                    }
+                    else {
+                        console.log(err, res);
+                        self.chatMessages.push(chatMessageImp);
+                        if (!!_this.serviceListener)
+                            _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                    }
+                });
+            }
+            else {
+                self.chatMessages.push(chatMessageImp);
+                if (!!this.serviceListener)
+                    this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+            }
         }
         else {
-            self.chatMessages.push(chatMessageImp);
-            if (!!this.serviceListener)
-                this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+            console.info("this msg come from other room.");
         }
     };
     ChatRoomController.prototype.onLeaveRoom = function (data) {
@@ -973,8 +979,7 @@ var ChatRoomController = (function () {
     ChatRoomController.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
-        console.log(myProfile, self.dataManager);
-        var chatLog = localStorage.getItem(myProfile.displayname + '_' + chatId);
+        var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
         async.waterfall([
             function (cb) {
                 if (!!chatLog) {
@@ -1065,8 +1070,8 @@ var ChatRoomController = (function () {
                                     }
                                 }, function (err) {
                                     Chats.set(self.chatMessages);
-                                    localStorage.removeItem(myProfile.displayname + '_' + chatId);
-                                    localStorage.setItem(myProfile.displayname + '_' + chatId, JSON.stringify(self.chatMessages));
+                                    localStorage.removeItem(myProfile._id + '_' + chatId);
+                                    localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
                                     callback();
                                 });
                             }
@@ -1095,6 +1100,9 @@ var DataListener = (function () {
     }
     DataListener.prototype.addListenerImp = function (listener) {
         this.listenerImp = listener;
+    };
+    DataListener.prototype.removeListener = function (listener) {
+        this.listenerImp = null;
     };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
