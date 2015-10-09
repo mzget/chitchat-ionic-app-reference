@@ -483,13 +483,14 @@ angular.module('starter.controllers', [])
 	    $cordovaCapture.captureAudio(options).then(function(audioData) {
 	      console.log(audioData);
 	      url = audioData.localURL;
-	      $scope.playAudio();
+	      $scope.playAudio(url);
 	    }, function(err) {
 	      console.log('Error');
 	    });
   	}
-  	$scope.playAudio = function() {
+  	$scope.playAudio = function(url) {
   		// Play the audio file at url
+  		console.log(url);
 	    var my_media = new Media(url,
 	        // success callback
 	        function () {
