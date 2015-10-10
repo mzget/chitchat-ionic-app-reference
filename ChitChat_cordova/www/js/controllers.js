@@ -90,8 +90,8 @@ angular.module('starter.controllers', [])
 
 		$scope.$on('imgUrl', function(event, url) { 
 			if(url!=null){
-				server.ProfileImageChanged($stateParams.chatId,url,function(err,res){
-					main.getDataManager().myProfile.image = url;
+				server.ProfileImageChanged($stateParams.chatId,url[0],function(err,res){
+					main.getDataManager().myProfile.image = url[0];
 					if(main.getDataManager().myProfile.displayname != $scope.model.displayname ||
 						main.getDataManager().myProfile.status != $scope.model.status){
 						saveProfile();
@@ -234,7 +234,7 @@ angular.module('starter.controllers', [])
 	
     //console.log(main.dataManager.getMyProfile())
 
-	var chatRoomControl = new ChatRoomController(main);
+	var chatRoomControl = new ChatRoomController(main, currentRoom);
 	main.dataListener.addListenerImp(chatRoomControl);
 	var chatRoomApi = main.getChatRoomApi();
 	chatRoomControl.serviceListener = function (event, newMsg) {
@@ -261,12 +261,12 @@ angular.module('starter.controllers', [])
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 			// console.log('update with timeout fired');
 			$scope.chat = Chats.all();
-			console.log( 'Refresh! by timeout fired...');
+			console.log( 'Refresh! by timeout fired...', Chats.all().length);
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
 			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
 			//console.log( $('#main-chat .scroll').height() ); // Max scroll
-			
+
 			scrolling = $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top;
 			maxscroll = ($('#main-chat .scroll').height() - $('#main-chat').height());
 			
@@ -319,13 +319,32 @@ angular.module('starter.controllers', [])
 
 	// Chat Menu
 	$('#chatMenu').click(function(){
-		$scope.$broadcast('addImg', 'addImg');
+		//$scope.$broadcast('addImg', 'addImg');
+		$scope.$broadcast('recordAudio', 'recordAudio');
 	});
 	// Recivce ImageUri from Gallery then send to other people
-	$scope.$on('imgUri', function(event, args) { 
-		$scope.chat.push(
-			{"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id}
-		);
+	$scope.$on('imgUri', function(event, args) {
+		$scope.chat.push( {"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id,"_id":args,"temp":"true"});
+		$scope.$broadcast('uploadImg', 'uploadImg');
+		$.each($scope.chat, function(index, value){
+			console.log(value._id,args);
+		});
+		
+	});
+	// Send Image and remove temp Image
+	$scope.$on('imgUrl', function(event,args){
+		chatRoomApi.chat(currentRoom, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
+			if (err || res === null) {
+				console.warn("send message fail.");
+			}
+			else {
+				console.log("send message:", JSON.stringify(res));
+				$.each($scope.chat, function(index, value){
+					console.log(value._id,args[1]);
+					if(value._id == args[1]) { $scope.chat[index] = new Object; }
+				});
+			}
+		});
 	});
 
 	$scope.viewReader = function (readers) {
@@ -346,9 +365,6 @@ angular.module('starter.controllers', [])
         console.log(arguments);
 				
 		$('#send_message').css({ 'display': 'none' });
-
-		console.error("this back function is call many time.")
-
 		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
 			localStorage.removeItem(myprofile._id + '_' + currentRoom);
 			localStorage.setItem(myprofile._id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
@@ -356,6 +372,7 @@ angular.module('starter.controllers', [])
 
 			currentRoom = "";
 			chatRoomControl.chatMessages = [];
+			main.dataListener.removeListener(chatRoomControl);
 		});
     });
 	
@@ -383,6 +400,7 @@ angular.module('starter.controllers', [])
   	});
 
   	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
+  	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
 
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.dataDirectory + imageName;
@@ -440,7 +458,7 @@ angular.module('starter.controllers', [])
 	    console.log("Response = " + r.response);
 	    console.log("Sent = " + r.bytesSent);
 	    $ionicLoading.hide();
-	    $scope.$emit('imgUrl', r.response);
+	    $scope.$emit('imgUrl', [r.response,FileService.getImages()]);
 	    FileService.clearImages();
 	}
 
@@ -451,6 +469,45 @@ angular.module('starter.controllers', [])
 	    $cordovaProgress.showText(false, "Fail!", 'center');
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
+})
+.controller('MyCtrl', function($scope, $cordovaCapture) {
+	$scope.$on('recordAudio', function(event, args) { $scope.captureAudio(); });
+
+	var url;
+
+	$scope.captureAudio = function() {
+    var options = { limit: 3, duration: 10 };
+            $cordovaCapture.captureAudio(options).then(function(audioData) {
+                                                       console.log("gg", audioData);
+                                                       console.log("gg", JSON.stringify(audioData));
+                                           //        var audios = JSON.Parse(JSON.stringify(audioData));
+                                             //      console.log("gg", audioData);
+                                                   console.log("ff", audioData[0].localURL);
+	      url = audioData[0].localURL;
+	      $scope.playAudio(url);
+	    }, function(err) {
+	      console.log('Error');
+                                                   }).catch(function onRejected(reason) {
+                                                            console.log("reject", reason);
+                                                            });
+  	}
+  	$scope.playAudio = function(url) {
+  		// Play the audio file at url
+  		console.log(url);
+	    var my_media = new Media(url,
+	        // success callback
+	        function () {
+	            console.log("playAudio():Audio Success");
+	        },
+	        // error callback
+	        function (err) {
+	            console.log("playAudio():Audio Error: " + err);
+	        }
+	    );
+	    // Play audio
+	    my_media.play();
+  	}
+	
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size)

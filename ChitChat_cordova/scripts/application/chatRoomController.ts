@@ -13,39 +13,48 @@ class ChatRoomController implements IChatRoomController {
     private main: Main;
     private serverImp: ChatServer.ServerImplemented;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;
+    private roomId : string;
 
-    constructor(main: Main) {
+    constructor(main: Main, room_id: string) {
         this.main = main;
         this.serverImp = this.main.getServerImp();
         this.chatRoomApi = this.main.getChatRoomApi();
         this.dataManager = this.main.getDataManager();
-        console.log("constructor", this.dataManager.getMyProfile().displayname);
+        this.roomId = room_id;
+        
+        console.log("constructor ChatRoomController");
     }
 
     onChat(chatMessageImp: Message) {
-        console.log("Implement chat msg hear..", chatMessageImp);
         var self = this;
-        var secure = new SecureService();
-        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
-            secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
-                if (!err) {
-                    chatMessageImp.body = res;
-                    self.chatMessages.push(chatMessageImp);
-                    if (!!this.serviceListener)
-                        this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                }
-                else {
-                    console.log(err, res);
-                    self.chatMessages.push(chatMessageImp);
-                    if (!!this.serviceListener)
-                        this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                }
-            })
+        
+        if(this.roomId === chatMessageImp.rid) {
+            console.log("Implement chat msg hear..", chatMessageImp);
+            var secure = new SecureService();
+            if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
+                secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
+                    if (!err) {
+                        chatMessageImp.body = res;
+                        self.chatMessages.push(chatMessageImp);
+                        if (!!this.serviceListener)
+                            this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                    }
+                    else {
+                        console.log(err, res);
+                        self.chatMessages.push(chatMessageImp);
+                        if (!!this.serviceListener)
+                            this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                    }
+                })
+            }
+            else {
+                self.chatMessages.push(chatMessageImp);
+                if (!!this.serviceListener)
+                    this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+            }
         }
         else {
-            self.chatMessages.push(chatMessageImp);
-            if (!!this.serviceListener)
-                this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+            console.info("this msg come from other room.");
         }
     }
 
@@ -81,8 +90,7 @@ class ChatRoomController implements IChatRoomController {
     public getMessage(chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
-        console.log(myProfile, self.dataManager);
-        var chatLog = localStorage.getItem(myProfile.displayname + '_' + chatId);
+        var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
 
         async.waterfall([
             function (cb) {
@@ -181,8 +189,8 @@ class ChatRoomController implements IChatRoomController {
                                 }, function (err) {
                                     Chats.set(self.chatMessages);
 
-                                    localStorage.removeItem(myProfile.displayname + '_' + chatId);
-                                    localStorage.setItem(myProfile.displayname + '_' + chatId, JSON.stringify(self.chatMessages));
+                                    localStorage.removeItem(myProfile._id + '_' + chatId);
+                                    localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
 
                                     // location.href = '#/tab/message/' + chatId;
                                     callback();

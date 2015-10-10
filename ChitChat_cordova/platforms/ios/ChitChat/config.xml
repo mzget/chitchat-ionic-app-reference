@@ -19,11 +19,17 @@
     <feature name="FileTransfer">
         <param name="ios-package" value="CDVFileTransfer" />
     </feature>
-    <feature name="ProgressIndicator">
-        <param name="ios-package" value="ProgressIndicator" />
+    <feature name="Capture">
+        <param name="ios-package" value="CDVCapture" />
     </feature>
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
+    </feature>
+    <feature name="Media">
+        <param name="ios-package" value="CDVSound" />
+    </feature>
+    <feature name="ProgressIndicator">
+        <param name="ios-package" value="ProgressIndicator" />
     </feature>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />

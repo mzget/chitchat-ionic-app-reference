@@ -203,10 +203,52 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/org.pbernasconi.progressindicator/www/progressIndicator.js",
-        "id": "org.pbernasconi.progressindicator.ProgressIndicator",
+        "file": "plugins/cordova-plugin-media-capture/www/CaptureAudioOptions.js",
+        "id": "cordova-plugin-media-capture.CaptureAudioOptions",
         "clobbers": [
-            "ProgressIndicator"
+            "CaptureAudioOptions"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-media-capture/www/CaptureImageOptions.js",
+        "id": "cordova-plugin-media-capture.CaptureImageOptions",
+        "clobbers": [
+            "CaptureImageOptions"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-media-capture/www/CaptureVideoOptions.js",
+        "id": "cordova-plugin-media-capture.CaptureVideoOptions",
+        "clobbers": [
+            "CaptureVideoOptions"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-media-capture/www/CaptureError.js",
+        "id": "cordova-plugin-media-capture.CaptureError",
+        "clobbers": [
+            "CaptureError"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-media-capture/www/MediaFileData.js",
+        "id": "cordova-plugin-media-capture.MediaFileData",
+        "clobbers": [
+            "MediaFileData"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-media-capture/www/MediaFile.js",
+        "id": "cordova-plugin-media-capture.MediaFile",
+        "clobbers": [
+            "MediaFile"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-media-capture/www/capture.js",
+        "id": "cordova-plugin-media-capture.capture",
+        "clobbers": [
+            "navigator.device.capture"
         ]
     },
     {
@@ -214,6 +256,27 @@ module.exports = [
         "id": "org.apache.cordova.dialogs.notification",
         "merges": [
             "navigator.notification"
+        ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.media/www/MediaError.js",
+        "id": "org.apache.cordova.media.MediaError",
+        "clobbers": [
+            "window.MediaError"
+        ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.media/www/Media.js",
+        "id": "org.apache.cordova.media.Media",
+        "clobbers": [
+            "window.Media"
+        ]
+    },
+    {
+        "file": "plugins/org.pbernasconi.progressindicator/www/progressIndicator.js",
+        "id": "org.pbernasconi.progressindicator.ProgressIndicator",
+        "clobbers": [
+            "ProgressIndicator"
         ]
     }
 ];
@@ -224,8 +287,11 @@ module.exports.metadata =
     "cordova-plugin-console": "1.0.1",
     "cordova-plugin-file": "3.0.0",
     "cordova-plugin-file-transfer": "1.3.0",
+    "cordova-plugin-media-capture": "1.0.1",
+    "org.apache.cordova.dialogs": "0.3.0",
+    "org.apache.cordova.media": "0.2.16",
     "org.pbernasconi.progressindicator": "1.1.0",
-    "org.apache.cordova.dialogs": "0.3.0"
+    "cordova-plugin-whitelist": "1.0.0"
 }
 // BOTTOM OF METADATA
 });

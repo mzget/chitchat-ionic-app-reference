@@ -66,7 +66,7 @@ module ChatServer {
             this.disConnect();
         }
 
-        public init(callback: Function) {
+        public init(callback: (err, res) => void) {
             var self = this;
 
             this._isConnected = false;
@@ -96,11 +96,10 @@ module ChatServer {
             });
         }
 
-        private loadConfig(callback: Function) {
+        private loadConfig(callback: (err, res) => void) {
             var self = this;
             var promiseForFileConfig = new Promise(function (resolve, reject) {
                 // This only is an example to create asynchronism
-
                 $.ajax({
                     url: "../www/configs/appconfig.json",
                     dataType: "json",
@@ -118,8 +117,8 @@ module ChatServer {
                 self.port = appConfig.socketPort;
                 if (!!pomelo) {
                     //<!-- Connecting gate server.
-                    self.connectSocketServer(self.host, self.port, () => {
-                        callback(null, self);
+                    self.connectSocketServer(self.host, self.port, (err, res) => {
+                        callback(err, self);
                     });
                 }
                 else {
@@ -147,12 +146,13 @@ module ChatServer {
             }
         }
 
-        private connectSocketServer(_host: string, _port: number, callback: Function) {
+        private connectSocketServer(_host: string, _port: number, callback: (err, res) => void) {
             console.log("socket init connecting to: ", _host, _port);
             var self = this;
 
-            pomelo.init({ host: _host, port: _port }, function (socket) {
-                callback();
+            pomelo.init({ host: _host, port: _port }, function (err, socket) {
+                console.info("socket init result: ", err, socket);
+                callback(err, socket);
 
                 //pomelo.on("disconnect", function (dataEvent) {
                 //console.error("disconnect Event", dataEvent);
@@ -741,6 +741,13 @@ module ChatServer {
             message["messageId"] = messageId;
             message["roomId"] = roomId;
             pomelo.notify("chat.chatHandler.updateWhoReadMessage", message);
+        }
+        
+        public updateMessageReaders(messageIds:string[], roomId:string) {
+            var message : IDictionary = {};
+            message["messageIds"] = JSON.stringify(messageIds);
+            message["roomId"] = roomId;
+            pomelo.notify("chat.chatHandler.updateWhoReadMessages", message);
         }
     }
 

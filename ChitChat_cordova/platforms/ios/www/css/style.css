@@ -26,8 +26,9 @@
 .group-pvgroup span img { border-radius:50%; }
 .group-pvgroup .length { display:inline-block; min-width:30px; line-height:30px; vertical-align:top; text-align:center; box-shadow:0 0 1px 0 red inset; color:red; text-decoration:none; border-radius:50%; }
 
-.group-create .avatar { border-radius: 50%; float: left; margin: 0 10px; height: 30px; width: 30px;}
+.group-create .avatar { border-radius: 50%; float: left; margin: 0 10px; height: 50px; width: 50px;}
 .group-create .img-group { border-radius: 50%; float: left; margin: 0 10px; height: 100px; width: 100px; }
+.nav-bar { padding-top: 2px; padding-bottom: 2px; font-size: 14px; }
 
 .btn-nav { background-color:rgba(0,0,0,0.05); }
 .btn-nav .button { border:none; background-color:transparent; color:#ccc; }
@@ -44,21 +45,25 @@
 
 .message-list .item { border:none; padding:0; margin:10px 0; }
 .message-list .item p { padding:10px; background-color:rgba(0,0,0,0.1); border-radius:10px; white-space:normal; }
+
 .message-list .other > * { float:left; display:inline; clear:both; }
-.message-list .other img { top:0; left:10px; }
+.message-list .other .avatar { top:0; left:10px; position: absolute; border-radius: 50%; }
 .message-list .other h2 { margin-left:60px; }
 .message-list .other label { margin-left:60px; font-size:10px; line-height:10px; color:#aaa; }
 .message-list .other p { margin:0 40px 0 60px; text-align:left; border-top-left-radius:0; }
 .message-list .other p a { font-size:60px; color:#666; }
+.message-list .other .type-img { width: 160px; height: 160px; margin:0 40px 0 60px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 
 .message-list .owner > * { float:right; display:inline; clear:both; }
 .message-list .owner p { margin:0 5px 0 95px; text-align:right; border-top-right-radius:0; }
 .message-list .owner p a { font-size:60px; color:#666; }
 .message-list .owner label {margin:0 5px 0 95px; font-size:10px; line-height:10px; color:#aaa; }
+.message-list .owner .type-img { width: 160px; height: 160px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
+
 
 #send_message { float:left; display:none; width:100%; height:49px; line-height:46px; position:fixed; bottom:0px; background-color:#ccc; z-index:1000; text-align:center; }
-#send_message input { display:inline; width:80%; height:39px; line-height:39px; margin:5px 0; padding:0 10px; }
-#send_message button { display:inline; width:10%; height:39px; border:none; position:relative; top:2px; }
+#send_message input { display:inline; width:70%; height:39px; line-height:39px; margin:5px 0; padding:0 10px; }
+#send_message button { display:inline; height:39px; border:none; position:relative; top:2px; }
 
 #chatroom_back { float:left; display:none; width:80px; height:44px; line-height:44px; position:fixed; top:0; left:0; z-index:1000; text-align:center; font-size:23px; vertical-align:middle; color:#444; cursor:pointer; }
 
