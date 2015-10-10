@@ -1,16 +1,23 @@
-<ion-view view-title="CHAT MESSAGE" cache-view="false">
+<ion-view view-title="CHAT MESSAGE" cache-view="false" ng-controller="MyCtrl"> <!-- ng-controller="ImageController; -->
 	<ion-content delegate-handle="mainScroll">
-	
 		<ion-list class="message-list" ng-repeat="message in chat">
-			<ion-item ng-if="message.sender != myprofile._id" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
-				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
+			<ion-item ng-if="message.sender != myprofile._id" class="other item-remove-animate item-icon-right" type="item-text-wrap">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" class="avatar"/>
 				<h2>{{allMembers[message.sender]['displayname']}}</h2>
-				<p>{{message.body}}</p>
+
+				<p ng-if="message.type=='Text'">{{message.body}}</p>
+				<img class="type-img" ng-if="message.type=='Image'" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
+
 				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
-			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
-				<p>{{message.body}}</p>
-				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
+
+                <p ng-if="message.type=='Text'">{{message.body}}</p>
+                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-src="{{message.body}}"/>
+				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
+
+                <label style="clear:none;" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
+				<label> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
 		</ion-list>
 

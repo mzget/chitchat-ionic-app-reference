@@ -338,7 +338,7 @@ define(['jquery'], function (jq) {
 	socket.on('connect', function(){
 	  console.log('[pomeloclient.init] websocket connected!');
 	  if (cb) {
-		cb(socket);
+		cb(null, socket);
 	  }
 	});
 
@@ -358,11 +358,15 @@ define(['jquery'], function (jq) {
 	});
 
 	socket.on('error', function(err) {
-	  console.error(JSON.stringify(err));
+	  	console.error(JSON.stringify(err));
+	  
+	 	if (cb) {
+			cb("error: " + JSON.stringify(err), null);
+	  	}
 	});
 
 	socket.on('disconnect', function(reason) {
-	  pomelo.emit('disconnect', reason);
+	  	pomelo.emit('disconnect', reason);	
 	});
   };
 
@@ -379,7 +383,7 @@ define(['jquery'], function (jq) {
 	  }
 	  var msg = {};
 	  var cb;
-	  arguments = Array.prototype.slice.apply(arguments);
+	  var arguments = Array.prototype.slice.apply(arguments);
 	  if (arguments.length === 2) {
 		  if (typeof arguments[1] === 'function') {
 			  cb = arguments[1];
