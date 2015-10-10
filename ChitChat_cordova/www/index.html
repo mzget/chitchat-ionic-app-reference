@@ -3,8 +3,9 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
-	<title></title>
-
+	
+	<title>SpartanTalk</title>
+	
 	<link href="lib/ionic/css/ionic.css" rel="stylesheet" />
 	<link href="css/style.css" rel="stylesheet" />
 
@@ -17,7 +18,7 @@
 	<script src="lib/ngCordova/dist/ng-cordova.js"></script>
 
 	<!-- cordova script (this will be a 404 during development) -->
-	<script src="cordova.js"></script>
+	<!--<script src="cordova.js"></script>-->
 
 	<!-- your app's js -->
 	<script src="js/app.js"></script>
@@ -26,15 +27,20 @@
 	<script src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/async.js"></script>
     <script src="https://www.promisejs.org/polyfills/promise-done-7.0.4.min.js"></script>
-	<script src="js/require.js" data-main="scripts/appBundle"></script>
-	
 	<script src="js/template.js"></script>
 	
-	<script src="scripts/appBundle.js"></script>
+	<script src="https://fb.me/react-with-addons-0.14.0.min.js"></script>
+	<script src="https://fb.me/react-dom-0.14.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
 
 </head>
 <body ng-app="starter">    
-	<script src="js/socket.io.js"></script>
+	<div id="content"></div>
+    <script src="js/socket.io.js"></script>
+	<script src="js/require.js" data-main="scripts/appBundle"></script>	
+	<script src="scripts/appBundle.js"></script>
+	<script src="../scripts/react/example.js"></script>
 	<script>
 		var socket = io;
 		var main = Main.prototype;
@@ -49,11 +55,11 @@
 		main.setServerListener(serverEvents);
 		main.setServerImp(server);
 		main.onMyProfileReadyListener = function(dataManager) {
-			console.warn('goto group');
-			$('#login').css('display','none');
-			$('.bar-stable').css({'display':''});
-			$('#splash').css({'display':'none'});
-			location.href = "#/tab/group";		
+			console.warn('goto home activity.');
+			 $('#login').css('display','none');
+			 $('.bar-stable').css({'display':''});
+			 $('#splash').css({'display':'none'});
+			location.href = "#/tab/bot";	
 			dummy.fireChatInRoom(dataManager.myProfile._id);
 		};
 		
@@ -146,13 +152,12 @@
 				navigator.notification.alert(errMessage, function callback() {}, "Connecting to server fail!", "OK");
 			}
 	</script>
-
+    
     <ion-nav-bar class="bar-stable" style="display:none;">
         <ion-nav-back-button>
         </ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-view></ion-nav-view>
-	
 	 
 	<div id="splash">
 		<div class="container">
@@ -166,5 +171,6 @@
 		<input type="text" name="send_message" />
 		<button id="sendMsg"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
 	</div>
+    
 </body>
 </html>
