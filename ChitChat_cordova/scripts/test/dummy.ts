@@ -9,8 +9,9 @@
     }
 
     public bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
-        { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
-        { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
+        { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, 
+        { name: "test5@rfl.com", pass: "1234" }, { name: "test6@rfl.com", pass: "1234" },
+        { name: "test7@rfl.com", pass: "1234" }];
 
     public getBot() {
         var r = Math.floor((Math.random() * this.bots.length) + 1);
@@ -22,7 +23,7 @@
             if (!err && res !== null) {
                 setInterval(() => {
                     var temp = this.counter++;
-                    this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "bot chat" + temp, ContentType[ContentType.Text], function (err, res) {
+                    this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
                 }, 1000);

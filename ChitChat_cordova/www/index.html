@@ -41,6 +41,10 @@
 		var server = ChatServer.ServerImplemented.prototype;
 		var serverEvents = ChatServer.ServerEventListener.prototype;
 		var dataManager = DataManager.prototype;
+		
+		var dummy = new Dummy();
+		var bot = dummy.getBot();
+		
 		main.setDataManager(dataManager);
 		main.setServerListener(serverEvents);
 		main.setServerImp(server);
@@ -49,8 +53,10 @@
 			$('#login').css('display','none');
 			$('.bar-stable').css({'display':''});
 			$('#splash').css({'display':'none'});
-			location.href = "#/tab/group";					
+			location.href = "#/tab/group";		
+			dummy.fireChatInRoom(dataManager.myProfile._id);
 		};
+		
 		server.init(function (err, server) {
 			console.info("init server connection", err, server);
 			if(err) {
@@ -61,13 +67,10 @@
 				console.log("token: ", authen.token);
 				if (!authen.token) {
 					$('#splash').css({ 'display': 'none' });
-	
-					$('body #login #btn-login').click(function (event) {
-						console.log('loging A');
-						event.preventDefault();
-						$('body #login input').attr('readonly', true);
-						email = $('body #login form input[name="email"]').val();
-						password = $('body #login form input[name="password"]').val();
+					$('body #login input').attr('readonly', true);
+						
+						email = bot.name;
+						password = bot.pass;
 	
 						main.getHashService(password, function (err, res) {
 							main.authenUser(server, email, res, function (err, res) {
@@ -88,7 +91,6 @@
 								}
 							});
 						});
-					});
 				}
 				else {
 					server.TokenAuthen(authen.token, function (err, res) {
