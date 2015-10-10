@@ -2,7 +2,7 @@
     "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-whitelist@1"
+            "id": "cordova-plugin-whitelist"
         },
         "is_top_level": true,
         "variables": {}
@@ -37,6 +37,14 @@
             "id": "org.apache.cordova.file"
         },
         "is_top_level": false,
+        "variables": {}
+    },
+    "cordova-plugin-dialogs": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-dialogs"
+        },
+        "is_top_level": true,
         "variables": {}
     }
 }

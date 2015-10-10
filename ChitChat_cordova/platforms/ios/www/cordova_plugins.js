@@ -290,7 +290,8 @@ module.exports.metadata =
     "cordova-plugin-media-capture": "1.0.1",
     "org.apache.cordova.dialogs": "0.3.0",
     "org.apache.cordova.media": "0.2.16",
-    "org.pbernasconi.progressindicator": "1.1.0"
+    "org.pbernasconi.progressindicator": "1.1.0",
+    "cordova-plugin-whitelist": "1.0.0"
 }
 // BOTTOM OF METADATA
 });

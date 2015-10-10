@@ -133,6 +133,9 @@
         },
         "org.pbernasconi.progressindicator": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
     "dependent_plugins": {}

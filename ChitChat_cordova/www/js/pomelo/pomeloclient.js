@@ -367,10 +367,6 @@ define(['jquery'], function (jq) {
 
 	socket.on('disconnect', function(reason) {
 	  	pomelo.emit('disconnect', reason);	
-	  
-	    if (cb) {
-			cb("disconnect: " + reason, null);
-	  	}
 	});
   };
 
@@ -387,7 +383,7 @@ define(['jquery'], function (jq) {
 	  }
 	  var msg = {};
 	  var cb;
-	  arguments = Array.prototype.slice.apply(arguments);
+	  var arguments = Array.prototype.slice.apply(arguments);
 	  if (arguments.length === 2) {
 		  if (typeof arguments[1] === 'function') {
 			  cb = arguments[1];
