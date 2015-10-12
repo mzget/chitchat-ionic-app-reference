@@ -29,10 +29,10 @@ angular.module('starter.controllers', [])
 
 // GROUP
 .controller('GroupCtrl', function($rootScope, $scope, $timeout) 
-{
-    $scope.$on('$ionicView.enter', function(){ 
+{	
+	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;
-    });
+	});
 	
     myprofile = main.getDataManager().myProfile;
     $scope.myProfile = myprofile;
@@ -236,8 +236,41 @@ angular.module('starter.controllers', [])
 	$scope.roomAccess = myprofile.roomAccess;
 })
 
-.controller('ChatDetailCtrl', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
+.controller('ChatDetailCtrl', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats) 
 {    	
+	$scope.contact = {
+      name: 'Mittens Cat',
+      info: 'Tap anywhere on the card to open the modal'
+    }
+
+    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal
+    })
+
+    $scope.openModal = function() {
+      $scope.modal.show()
+    }
+
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+	
+	$('#chatMenu').click(function(){
+		$scope.modal.show();
+	});
+	
+	
+	
+	
+	
+	
 	$scope.chat = [];
 	
     //console.log(main.dataManager.getMyProfile())
