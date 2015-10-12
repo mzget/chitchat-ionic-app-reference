@@ -164,7 +164,8 @@ angular.module('starter.controllers', [])
 
 // GROUP - Type
 .controller('GroupProjectbaseCtrl', function($scope, $stateParams) {
-	$scope.chat = main.getDataManager().projectBaseGroups[$stateParams.chatId];
+	var room = main.getDataManager().projectBaseGroups[$stateParams.chatId];
+	$scope.chat = room;
 	
 	members = main.getDataManager().projectBaseGroups[$stateParams.chatId].members;
 	console.log('ALL GROUP MEMBERS : '+members.length);
@@ -172,7 +173,7 @@ angular.module('starter.controllers', [])
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
-	    currentRoom = chatId;
+		currentRoom = main.getDataManager().projectBaseGroups[chatId];
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
@@ -185,7 +186,7 @@ angular.module('starter.controllers', [])
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
-	    currentRoom = chatId;
+	    currentRoom = main.getDataManager().privateGroups[chatId];
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
@@ -198,10 +199,11 @@ angular.module('starter.controllers', [])
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
-	    currentRoom = chatId;
+	    currentRoom = main.getDataManager().orgGroups[chatId];
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
+
 .controller('GroupDetailCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
 	
@@ -210,7 +212,7 @@ angular.module('starter.controllers', [])
 		var roomInfo = JSON.parse(JSON.stringify(res.data));
 
 		$scope.toggle = function () {
-			currentRoom = roomInfo._id;
+			currentRoom = roomInfo;
 			location.href = '#/tab/group/chat/' + roomInfo._id;
 		};
 	});
@@ -244,10 +246,11 @@ angular.module('starter.controllers', [])
 .controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
 {    	
 	$scope.chat = [];
+	$scope.title = currentRoom.name;
 	
     //console.log(main.dataManager.getMyProfile())
 
-	var chatRoomControl = new ChatRoomController(main, currentRoom);
+	var chatRoomControl = new ChatRoomController(main, currentRoom._id);
 	main.dataListener.addListenerImp(chatRoomControl);
 	var chatRoomApi = main.getChatRoomApi();
 	chatRoomControl.serviceListener = function (event, newMsg) {
@@ -255,7 +258,7 @@ angular.module('starter.controllers', [])
 	        Chats.set(chatRoomControl.chatMessages);
 
 	        if (newMsg.sender !== main.dataManager.myProfile._id) {
-	            chatRoomApi.updateMessageReader(newMsg._id, currentRoom);
+	            chatRoomApi.updateMessageReader(newMsg._id, currentRoom._id);
 	        }
 	    }
 	    else if (event === "onMessageRead") {
@@ -263,7 +266,7 @@ angular.module('starter.controllers', [])
 	        Chats.set(chatRoomControl.chatMessages);
 	    }
     }
-    chatRoomControl.getMessage(currentRoom, Chats, function () {
+    chatRoomControl.getMessage(currentRoom._id, Chats, function () {
         Chats.set(chatRoomControl.chatMessages);
     });
      
@@ -317,7 +320,7 @@ angular.module('starter.controllers', [])
 				}
 				else {
 					//var myId = myprofile._id;
-					chatRoomApi.chat(currentRoom, "*", myprofile._id, result, ContentType[ContentType.Text], function(err, res) {
+					chatRoomApi.chat(currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], function(err, res) {
 						if (err || res === null) {
 							console.warn("send message fail.");
 						}
@@ -336,6 +339,7 @@ angular.module('starter.controllers', [])
 		
 		if($('#chatMenu').is(".recording")){
 			$('#chatMenu').removeClass("recording");
+            $scope.$broadcast('stopRecord', 'stopRecord');
 		}else{
 			$('#chatMenu').addClass("recording");
 			$scope.$broadcast('startRecord', 'startRecord');
@@ -343,7 +347,7 @@ angular.module('starter.controllers', [])
 	});
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('imgUri', function(event, args) {
-		$scope.chat.push( {"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id,"_id":args,"temp":"true"});
+		$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id,"_id":args,"temp":"true"});
 		$scope.$broadcast('uploadImg', 'uploadImg');
 		$.each($scope.chat, function(index, value){
 			console.log(value._id,args);
@@ -352,7 +356,7 @@ angular.module('starter.controllers', [])
 	});
 	// Send Image and remove temp Image
 	$scope.$on('imgUrl', function(event,args){
-		chatRoomApi.chat(currentRoom, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
+		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
 			if (err || res === null) {
 				console.warn("send message fail.");
 			}
@@ -384,10 +388,10 @@ angular.module('starter.controllers', [])
         console.log(arguments);
 				
 		$('#send_message').css({ 'display': 'none' });
-		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
-			localStorage.removeItem(myprofile._id + '_' + currentRoom);
-			localStorage.setItem(myprofile._id + '_' + currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-			console.warn("save", currentRoom, JSON.stringify(chatRoomControl.chatMessages));
+		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
+			localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
+			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomControl.chatMessages));
+			console.warn("save", currentRoom.name, JSON.stringify(chatRoomControl.chatMessages));
 
 			currentRoom = "";
 			chatRoomControl.chatMessages = [];
@@ -492,13 +496,15 @@ angular.module('starter.controllers', [])
 .controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, GenerateID) {
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
-	$scope.$on('stopRecord', function(event, args) { $scope.startRecord(); });
+	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
 
+    var fileName;
 	var src;
 	var mediaRec;
 
 	$scope.startRecord = function() {
-		src = "documents://"+ GenerateID.makeid()+ ".wav";
+        fileName = GenerateID.makeid();
+		src = "documents://"+ fileName + ".wav";
 	    mediaRec = new Media(src,
 	        function() { console.log("recordAudio():Audio Success"); },
 	        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
@@ -508,11 +514,12 @@ angular.module('starter.controllers', [])
 
 	$scope.stopRecord = function(){
 		mediaRec.stopRecord();
-		$scope.uploadVoice();
+        $scope.uploadVoice();
 	}
 
 	$scope.uploadVoice = function() {
-	    var imageURI = src;
+	    var imageURI = cordova.file.documentsDirectory + fileName + ".wav";
+        console.log(imageURI);
 	    var options = new FileUploadOptions();
 	    options.fileKey = "fileToUpload";
 	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
