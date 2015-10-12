@@ -204,6 +204,16 @@ angular.module('starter.controllers', [])
 })
 .controller('GroupDetailCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
+	
+	server.getPrivateChatRoomId(dataManager.myProfile._id, $stateParams.chatId, function result(err, res) {
+		console.log(JSON.stringify(res));
+		var roomInfo = JSON.parse(JSON.stringify(res.data));
+
+		$scope.toggle = function () {
+			currentRoom = roomInfo._id;
+			location.href = '#/tab/group/chat/' + roomInfo._id;
+		};
+	});
 })
 
 // GROUP - Type
