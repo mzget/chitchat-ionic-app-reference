@@ -236,7 +236,7 @@ angular.module('starter.controllers', [])
 	$scope.roomAccess = myprofile.roomAccess;
 })
 
-.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
+.controller('ChatDetailCtrl', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
 {    	
 	$scope.chat = [];
 	
@@ -299,12 +299,13 @@ angular.module('starter.controllers', [])
     //$('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	// Send Message btn
-	$('#sendMsg').click(function(){
-	    var content = $('#send_message input').val();
+	$('#sendMsg').click(function()
+	{
+	    var content = $('#send_message').val();
 		if( content != '' )
 		{
 			// Clear Message
-			$('#send_message input').val('')
+			$('#send_message').val('')
 			
 			main.encodeService(content, function(err, result) {
 				if (err) {
@@ -365,6 +366,7 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) entered.");
         console.log(arguments); 
 		
+		$rootScope.hideChat = true;
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
     });
 
@@ -372,6 +374,7 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) leaved.");
         console.log(arguments);
 				
+		$rootScope.hideChat = false;
 		$('#send_message').css({ 'display': 'none' });
 		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
 			localStorage.removeItem(myprofile._id + '_' + currentRoom);
