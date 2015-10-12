@@ -8,9 +8,6 @@
         <param name="ios-package" value="CDVCamera" />
     </feature>
     <preference name="CameraUsesGeolocation" value="false" />
-    <feature name="Console">
-        <param name="ios-package" value="CDVLogger" />
-    </feature>
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <feature name="File">
         <param name="ios-package" value="CDVFile" />
@@ -30,6 +27,15 @@
     </feature>
     <feature name="ProgressIndicator">
         <param name="ios-package" value="ProgressIndicator" />
+    </feature>
+    <feature name="Keyboard">
+        <param name="ios-package" onload="true" value="IonicKeyboard" />
+    </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
+    <feature name="Console">
+        <param name="ios-package" value="CDVLogger" />
     </feature>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
@@ -88,4 +94,8 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <preference name="ShowTitle" value="True" />
+    <preference name="android-minSdkVersion" value="15" />
+    <preference name="android-maxSdkVersion" value="23" />
+    <preference name="android-targetSdkVersion" value="23" />
 </widget>

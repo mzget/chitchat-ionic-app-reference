@@ -1,3 +1,4 @@
+
 var myprofile;
 var date = new Date();
 var now;
@@ -511,6 +512,11 @@ angular.module('starter.controllers', [])
 	    my_media.play();
   	}
 	
+})
+.controller('BotController', function($scope) {
+	// require(['js/bundle.js'], function ready(example) {
+	// 	example.setActive();
+	// });
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size)

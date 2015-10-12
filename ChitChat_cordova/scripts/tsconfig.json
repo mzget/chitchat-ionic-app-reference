@@ -9,6 +9,8 @@
       "jsx": "react"
     },
     "exclude": [
-        "react"
+        "react",
+        "node_modules",
+        "www"
     ]
 }

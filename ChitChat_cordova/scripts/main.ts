@@ -1,16 +1,20 @@
 /// <reference path="./typings/tsd.d.ts" />
+
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
-        cryptojs: '../js/crypto-js/crypto-js'
+        // cryptojs: '../js/crypto-js/crypto-js',
     }
 });
 
 // Directly call the RequireJS require() function and from here
 // TypeScript's external module support takes over
-//require(["../../scripts/server/serverImplemented"]);
+// require(["serverImplemented"]);
 
 class Main {
+    public static node_module: string = '../../node_modules/';
+
+
     private serverImp: ChatServer.ServerImplemented;
     private serverListener: ChatServer.ServerEventListener;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;

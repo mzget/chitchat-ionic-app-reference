@@ -5,7 +5,10 @@
 
 /// <reference path="../typings/tsd.d.ts" />
 
-var data = [
+var ReactDom = require('react-dom');
+//var FlatButton = require('material-ui/lib/flat-button');
+
+    var data = [
     { author: "Pete Hunt", text: "This is one comment" },
     { author: "Jordan Walke", text: "This is *another* comment" },
     { author: "Name Surname", text: "This is *another* comment" }
@@ -16,8 +19,8 @@ interface ICommentBox {
     //pollInterval: number;
     data: Array<any>;
 }
-var CommentBox = React.createClass<ICommentBox, any>({
-    loadCommentsFromServer: function () {
+var CommentBox = React.createClass<any, any>({
+    loadCommentsFromServer () {
         $.ajax({
             url: this.props.url,
             dataType: 'json',
@@ -30,20 +33,35 @@ var CommentBox = React.createClass<ICommentBox, any>({
             }.bind(this)
         });
     },
-    getInitialState: function () {
+    handleCommentSubmit (comment) {
+        // TODO: submit to the server and refresh the list
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            type: 'POST',
+            data: comment,
+            success: function (data) {
+                this.setState({ data: data });
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    getInitialState () {
         return { data: [] };
     },
-    componentDidMount: function () {
+    componentDidMount () {
         this.setState({ data: this.props.data });
         //this.loadCommentsFromServer();
         //setInterval(this.loadCommentsFromServer, this.props.pollInterval);
     },
-    render: function () {
+    render () {
         return (
             <div className="commentBox">
         <h1>Comments</h1>
         <CommentList data={this.state.data} />
-        <CommentForm />
+        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
         </div>
         );
     }
@@ -69,17 +87,21 @@ var CommentList = React.createClass<ICommentList, any>({
         }
         });
 
-var CommentForm = React.createClass({
+interface ICommentForm {
+    onCommentSubmit();
+}
+var CommentForm = React.createClass<ICommentForm, any>({
     handleSubmit: function (e) {
         e.preventDefault();
-        var author = React.findDOMNode(this.refs.author).value.trim();
-        var text = React.findDOMNode(this.refs.text).value.trim();
+        var author = this.refs.author.value.trim();
+        var text = this.refs.text.value.trim();
         if (!text || !author) {
             return;
         }
         // TODO: send request to the server
-        React.findDOMNode(this.refs.author).value = '';
-        React.findDOMNode(this.refs.text).value = '';
+        this.props.onCommentSubmit({ author: author, text: text });
+        this.refs.author.value = '';
+        this.refs.text.value = '';
         return;
     },
     render: function () {
@@ -88,7 +110,7 @@ var CommentForm = React.createClass({
             <input type="text" placeholder="Your name" ref="author" />
             < input type= "text" placeholder= "Say something..." ref= "text" />
             <input type="submit" value="Post" />
-            </form >
+                </form >
         );
     }
 });
@@ -115,8 +137,15 @@ var Comment1 = React.createClass<Comment1Prop, any>({
     }
 });
 
-React.render(
-    <CommentBox data= {data} />,
-    document.getElementById('content')
-);
-
+// var DefaultButton = React.createClass ({
+//     render() {
+//         return (
+//             <FlatButton label="Default" />
+//             );
+//     }
+// });
+ 
+  ReactDom.render(
+                <CommentBox data={data} />,
+                document.getElementById('content')
+            );

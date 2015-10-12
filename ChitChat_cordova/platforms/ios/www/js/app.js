@@ -221,6 +221,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 				controller: 'AccountCreate'
 			}
 		}
+	})
+	.state('tab.bot', {
+		url: '/bot',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-bot.html',
+				controller: 'BotController'
+			}
+		}
 	});
 
 	// if none of the above states are matched, use this as the fallback

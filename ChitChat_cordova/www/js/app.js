@@ -227,7 +227,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-bot.html',
-				// controller: 'BotController'
+				controller: 'BotController'
 			}
 		}
 	});

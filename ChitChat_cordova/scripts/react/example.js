@@ -2,6 +2,8 @@
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 /// <reference path="../typings/tsd.d.ts" />
+var ReactDom = require('react-dom');
+//var FlatButton = require('material-ui/lib/flat-button');
 var data = [
     { author: "Pete Hunt", text: "This is one comment" },
     { author: "Jordan Walke", text: "This is *another* comment" },
@@ -21,6 +23,21 @@ var CommentBox = React.createClass({
             }.bind(this)
         });
     },
+    handleCommentSubmit: function (comment) {
+        // TODO: submit to the server and refresh the list
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            type: 'POST',
+            data: comment,
+            success: function (data) {
+                this.setState({ data: data });
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
     getInitialState: function () {
         return { data: [] };
     },
@@ -30,7 +47,7 @@ var CommentBox = React.createClass({
         //setInterval(this.loadCommentsFromServer, this.props.pollInterval);
     },
     render: function () {
-        return (React.createElement("div", {"className": "commentBox"}, React.createElement("h1", null, "Comments"), React.createElement(CommentList, {"data": this.state.data}), React.createElement(CommentForm, null)));
+        return (React.createElement("div", {"className": "commentBox"}, React.createElement("h1", null, "Comments"), React.createElement(CommentList, {"data": this.state.data}), React.createElement(CommentForm, {"onCommentSubmit": this.handleCommentSubmit})));
     }
 });
 var CommentList = React.createClass({
@@ -44,14 +61,15 @@ var CommentList = React.createClass({
 var CommentForm = React.createClass({
     handleSubmit: function (e) {
         e.preventDefault();
-        var author = React.findDOMNode(this.refs.author).value.trim();
-        var text = React.findDOMNode(this.refs.text).value.trim();
+        var author = this.refs.author.value.trim();
+        var text = this.refs.text.value.trim();
         if (!text || !author) {
             return;
         }
         // TODO: send request to the server
-        React.findDOMNode(this.refs.author).value = '';
-        React.findDOMNode(this.refs.text).value = '';
+        this.props.onCommentSubmit({ author: author, text: text });
+        this.refs.author.value = '';
+        this.refs.text.value = '';
         return;
     },
     render: function () {
@@ -67,4 +85,11 @@ var Comment1 = React.createClass({
         return (React.createElement("div", {"className": "comment"}, React.createElement("h2", {"className": "commentAuthor"}, this.props.author), React.createElement("span", {"dangerouslySetInnerHTML": this.rawMarkup()})));
     }
 });
-React.render(React.createElement(CommentBox, {"data": data}), document.getElementById('content'));
+// var DefaultButton = React.createClass ({
+//     render() {
+//         return (
+//             <FlatButton label="Default" />
+//             );
+//     }
+// });
+ReactDom.render(React.createElement(CommentBox, {"data": data}), document.getElementById('content'));

@@ -28,7 +28,6 @@ var BlankCordovaApp1;
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
-        cryptojs: '../js/crypto-js/crypto-js'
     }
 });
 var Main = (function () {
@@ -152,6 +151,7 @@ var Main = (function () {
             }
         });
     };
+    Main.node_module = '../../node_modules/';
     return Main;
 })();
 var appConfig;

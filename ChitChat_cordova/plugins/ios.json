@@ -63,10 +63,6 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
                             "count": 1
                         },
@@ -93,6 +89,18 @@
                         {
                             "xml": "<feature name=\"ProgressIndicator\"><param name=\"ios-package\" value=\"ProgressIndicator\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"IonicKeyboard\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -111,9 +119,6 @@
     },
     "installed_plugins": {
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
-        "cordova-plugin-console": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "cordova-plugin-file": {
@@ -135,6 +140,15 @@
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "cordova-plugin-console": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },

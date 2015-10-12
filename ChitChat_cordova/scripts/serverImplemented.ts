@@ -1,5 +1,4 @@
-﻿
-var appConfig;
+﻿var appConfig;
 var pomelo;
 var username: string = "";
 var password: string = "";
