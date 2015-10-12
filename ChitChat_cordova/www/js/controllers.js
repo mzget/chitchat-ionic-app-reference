@@ -88,7 +88,7 @@ angular.module('starter.controllers', [])
 		$('#viewprofile-input-status').removeAttr('disabled');
 		$scope.edit = 'true';
 
-		$scope.$on('imgUrl', function(event, url) { 
+		$scope.$on('fileUrl', function(event, url) { 
 			if(url!=null){
 				server.ProfileImageChanged($stateParams.chatId,url[0],function(err,res){
 					main.getDataManager().myProfile.image = url[0];
@@ -346,24 +346,34 @@ angular.module('starter.controllers', [])
 		if(args[1] == "Image"){
 			$scope.chat.push( {"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}else if(args[1] == "Voice"){
-			//$scope.chat.push( {"rid":currentRoom,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
-			$scope.chat.push( {"rid":currentRoom,"type":"Voice","body":"http://download.wavetlan.com/SVV/Media/HTTP/WAV/Media-Convert/Media-Convert_test7_PCM_Stereo_VBR_16SS_22050Hz.wav","sender":myprofile._id,"_id":"test","temp":"true"});
+			$scope.chat.push( {"rid":currentRoom,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}
 		
 	});
 	// Send Image and remove temp Image
-	$scope.$on('imgUrl', function(event,args){
-		chatRoomApi.chat(currentRoom, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
-			if (err || res === null) {
-				console.warn("send message fail.");
-			}
-			else {
-				console.log("send message:", JSON.stringify(res));
-				$.each($scope.chat, function(index, value){
-					console.log(value._id,args[1]);
-					if(value._id == args[1]) { $scope.chat[index] = new Object; }
-				});
-			}
+	$scope.$on('fileUrl', function(event,args){
+		if(args[2]=="Image"){
+			chatRoomApi.chat(currentRoom, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
+				if (err || res === null) {
+					console.warn("send message fail.");
+				}
+				else {
+					console.log("send message:", JSON.stringify(res));
+				}
+			});
+		}else if(args[2]=="Voice"){
+			chatRoomApi.chat(currentRoom, "*", myprofile._id, args[0], ContentType[ContentType.Voice], function(err, res) {
+				if (err || res === null) {
+					console.warn("send message fail.");
+				}
+				else {
+					console.log("send message:", JSON.stringify(res));
+				}
+			});
+		}
+		$.each($scope.chat, function(index, value){
+			console.log(value._id,args[1]);
+			if(value._id == args[1]) { $scope.chat[index] = new Object; }
 		});
 	});
 
@@ -450,7 +460,7 @@ angular.module('starter.controllers', [])
   	}
 
   	$scope.uploadImg = function() {
-  		if(FileService.getImages().length==0) { $scope.$emit('imgUrl',null); return; }
+  		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
 	    var imageURI = cordova.file.dataDirectory + FileService.getImages();
 	    var options = new FileUploadOptions();
 	    options.fileKey = "fileToUpload";
@@ -478,7 +488,7 @@ angular.module('starter.controllers', [])
 	    console.log("Response = " + r.response);
 	    console.log("Sent = " + r.bytesSent);
 	    $ionicLoading.hide();
-	    $scope.$emit('imgUrl', [r.response,FileService.getImages()]);
+	    $scope.$emit('fileUrl', [r.response,FileService.getImages(),"Image"]);
 	    FileService.clearImages();
 	}
 
@@ -501,7 +511,6 @@ angular.module('starter.controllers', [])
 	$scope.playing = 'false';
 
 	$scope.startRecord = function() {
-		/*
         fileName = GenerateID.makeid();
 		src = "documents://"+ fileName + ".wav";
 	    mediaRec = new Media(src,
@@ -509,13 +518,12 @@ angular.module('starter.controllers', [])
 	        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
 	    });
 	    mediaRec.startRecord();
-	    */
 	}
 
 	$scope.stopRecord = function(){
-		//mediaRec.stopRecord();
+		mediaRec.stopRecord();
 		$scope.$emit('fileUri',[fileName + ".wav","Voice"]);
-		//$scope.uploadVoice();
+		$scope.uploadVoice();
 	}
 
 
