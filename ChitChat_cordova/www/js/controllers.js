@@ -369,16 +369,21 @@ angular.module('starter.controllers', [])
 		}
 	});
 
-	// Chat Menu
-	$('#chatMenu').click(function(){
-		//$scope.$broadcast('addImg', 'addImg');
-		if($('#chatMenu').is(".recording")){
-			$('#chatMenu').removeClass("recording");
+	$scope.voice = function(){
+		if($('.ion-android-microphone').is(".recording")){
+			$('.ion-android-microphone').removeClass("recording");
             $scope.$broadcast('stopRecord', 'stopRecord');
 		}else{
-			$('#chatMenu').addClass("recording");
+			$('.ion-android-microphone').addClass("recording");
 			$scope.$broadcast('startRecord', 'startRecord');
 		}
+	}
+
+	// Chat Menu
+	$('#chatMenu').click(function(){/*
+		//$scope.$broadcast('addImg', 'addImg');
+		
+		*/
 	});
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
