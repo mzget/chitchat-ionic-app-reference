@@ -326,6 +326,7 @@ angular.module('starter.controllers', [])
 		
 		if($('#chatMenu').is(".recording")){
 			$('#chatMenu').removeClass("recording");
+            $scope.$broadcast('stopRecord', 'stopRecord');
 		}else{
 			$('#chatMenu').addClass("recording");
 			$scope.$broadcast('startRecord', 'startRecord');
@@ -482,13 +483,15 @@ angular.module('starter.controllers', [])
 .controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, GenerateID) {
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
-	$scope.$on('stopRecord', function(event, args) { $scope.startRecord(); });
+	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
 
+    var fileName;
 	var src;
 	var mediaRec;
 
 	$scope.startRecord = function() {
-		src = "documents://"+ GenerateID.makeid()+ ".wav";
+        fileName = GenerateID.makeid();
+		src = "documents://"+ fileName + ".wav";
 	    mediaRec = new Media(src,
 	        function() { console.log("recordAudio():Audio Success"); },
 	        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
@@ -498,11 +501,12 @@ angular.module('starter.controllers', [])
 
 	$scope.stopRecord = function(){
 		mediaRec.stopRecord();
-		$scope.uploadVoice();
+        $scope.uploadVoice();
 	}
 
 	$scope.uploadVoice = function() {
-	    var imageURI = src;
+	    var imageURI = cordova.file.documentsDirectory + fileName + ".wav";
+        console.log(imageURI);
 	    var options = new FileUploadOptions();
 	    options.fileKey = "fileToUpload";
 	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
