@@ -614,6 +614,7 @@ angular.module('starter.controllers', [])
 	    console.log("Response = " + r.response);
 	    console.log("Sent = " + r.bytesSent);
 	    $ionicLoading.hide();
+        $scope.$emit('fileUrl', [r.response,fileName + ".wav","Voice"]);
 	}
 
 	function fail(error) {
