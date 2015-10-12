@@ -473,12 +473,33 @@ angular.module('starter.controllers', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 })
-.controller('MyCtrl', function($scope, $cordovaCapture) {
+.controller('MyCtrl', function($scope, $cordovaCapture, , $cordovaMedia) {
 	$scope.$on('recordAudio', function(event, args) { $scope.captureAudio(); });
 
-	var url;
+	//var url;
 
 	$scope.captureAudio = function() {
+		var src = 'cdvfile://localhost/temporary/recording.mp3';
+	    var mediaRec = $cordovaMedia.newMedia(src,
+	        // success callback
+	        function() {
+	            console.log("recordAudio():Audio Success");
+	        },
+
+	        // error callback
+	        function(err) {
+	            console.log("recordAudio():Audio Error: "+ err.code);
+	        });
+
+	    // Record audio
+	    mediaRec.startRecord();
+
+	    // Pause after 10 seconds
+	    setTimeout(function () {
+	        mediaRec.pause();
+	    }, 3000x);
+
+		/*
     var options = { limit: 3, duration: 10 };
             $cordovaCapture.captureAudio(options).then(function(audioData) {
                                                        console.log("gg", audioData);
@@ -509,7 +530,9 @@ angular.module('starter.controllers', [])
 	    );
 	    // Play audio
 	    my_media.play();
+	    */
   	}
+
 	
 }); // <-- LAST CONTROLLER
 
