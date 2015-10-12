@@ -28,7 +28,11 @@ angular.module('starter.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function($scope, $timeout) {
+.controller('GroupCtrl', function($rootScope, $scope, $timeout) 
+{
+    $scope.$on('$ionicView.enter', function(){ 
+		$rootScope.hideTabs = false;
+    });
 	
     myprofile = main.getDataManager().myProfile;
     $scope.myProfile = myprofile;
@@ -68,6 +72,10 @@ angular.module('starter.controllers', [])
 			$('#list-'+list+' .list').css({'height':'auto'});
 		}
 	};
+	
+	$scope.hideTab = function(){		
+		$rootScope.hideTabs = true;
+	}
 })
 
 // GROUP - Profile
@@ -540,4 +548,10 @@ function back()
 {
 	//$('#send_message').css({'display':'none'});
 	//$('#chatroom_back').css({'display':'none'});
+}
+
+
+function testfunc()
+{
+	return 'tabs-item-hide';
 }
