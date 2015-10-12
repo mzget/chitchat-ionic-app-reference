@@ -323,7 +323,13 @@ angular.module('starter.controllers', [])
 	// Chat Menu
 	$('#chatMenu').click(function(){
 		//$scope.$broadcast('addImg', 'addImg');
-		$scope.$broadcast('recordAudio', 'recordAudio');
+		
+		if($('#chatMenu').is(".recording")){
+			$('#chatMenu').removeClass("recording");
+		}else{
+			$('#chatMenu').addClass("recording");
+			$scope.$broadcast('startRecord', 'startRecord');
+		}
 	});
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('imgUri', function(event, args) {
@@ -473,78 +479,66 @@ angular.module('starter.controllers', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 })
-.controller('MyCtrl', function($scope, $cordovaCapture, $cordovaMedia) {
-	$scope.$on('recordAudio', function(event, args) { $scope.captureAudio(); });
+.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, GenerateID) {
 
-	//var url;
+	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
+	$scope.$on('stopRecord', function(event, args) { $scope.startRecord(); });
 
-	$scope.captureAudio = function() {
-		var src = "documents://beer.wav";
-	    var mediaRec = new Media(src,
-	        // success callback
-	        function() {
-	            console.log("recordAudio():Audio Success"); 
-	        },
+	var src;
+	var mediaRec;
 
-	        // error callback
-	        function(err) {
-	            console.log("recordAudio():Audio Error: "+ err.code);
-	        });
-
-	    // Record audio
+	$scope.startRecord = function() {
+		src = "documents://"+ GenerateID.makeid()+ ".wav";
+	    mediaRec = new Media(src,
+	        function() { console.log("recordAudio():Audio Success"); },
+	        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
+	    });
 	    mediaRec.startRecord();
+	}
 
-	    // Pause after 10 seconds
-	    setTimeout(function () {
-	        mediaRec.stopRecord();
-            mediaRec.play();
-	    }, 3000);
-        
-         
-        
-       
+	$scope.stopRecord = function(){
+		mediaRec.stopRecord();
+		$scope.uploadVoice();
+	}
 
-		/*
-    var options = { limit: 3, duration: 10 };
-            $cordovaCapture.captureAudio(options).then(function(audioData) {
-                                                       console.log("gg", audioData);
-                                                       console.log("gg", JSON.stringify(audioData));
-                                           //        var audios = JSON.Parse(JSON.stringify(audioData));
-                                             //      console.log("gg", audioData);
-                                                   console.log("ff", audioData[0].localURL);
-	      url = audioData[0].localURL;
-	      $scope.playAudio(url);
-	    }, function(err) {
-	      console.log('Error');
-                                                   }).catch(function onRejected(reason) {
-                                                            console.log("reject", reason);
-                                                            });
-  	}
-  	$scope.playAudio = function(url) {
-  		// Play the audio file at url
-  		console.log(url);
-	    var my_media = new Media(url,
-	        // success callback
-	        function () {
-	            console.log("playAudio():Audio Success");
-	        },
-	        // error callback
-	        function (err) {
-	            console.log("playAudio():Audio Error: " + err);
-	        }
-	    );
-	    // Play audio
-	    my_media.play();
-	    */
-  	}
-    
-     $scope.playAudio = function() {
-  		console.log("PLAYYY");
-	    // Play audio
-	    
-    }
+	$scope.uploadVoice = function() {
+	    var imageURI = src;
+	    var options = new FileUploadOptions();
+	    options.fileKey = "fileToUpload";
+	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+	    options.mimeType = "audio/wav";
+	    var params = new Object();
+	    options.params = params;
+	    options.chunkedMode = false;
+	    var ft = new FileTransfer();
+	    ft.onprogress = function(progressEvent){
+	    	if (progressEvent.lengthComputable) {
+		      $ionicLoading.show({
+			      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
+			  });
+		    } else {
+		      //loadingStatus.increment();
+		    }
+	    };
+	    ft.upload(imageURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
+        options);
+	}
 
-	
+	function win(r) {
+	    console.log("Code = " + r.responseCode);
+	    console.log("Response = " + r.response);
+	    console.log("Sent = " + r.bytesSent);
+	    $ionicLoading.hide();
+	}
+
+	function fail(error) {
+	    alert("An error has occurred: Code = " + error.code);
+	    console.log("upload error source " + error.source);
+	    console.log("upload error target " + error.target);
+	    $cordovaProgress.showText(false, "Fail!", 'center');
+	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
+	}
+
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size)
