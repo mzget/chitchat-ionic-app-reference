@@ -323,7 +323,6 @@ angular.module('starter.controllers', [])
 	// Chat Menu
 	$('#chatMenu').click(function(){
 		//$scope.$broadcast('addImg', 'addImg');
-		
 		if($('#chatMenu').is(".recording")){
 			$('#chatMenu').removeClass("recording");
             $scope.$broadcast('stopRecord', 'stopRecord');
@@ -333,12 +332,13 @@ angular.module('starter.controllers', [])
 		}
 	});
 	// Recivce ImageUri from Gallery then send to other people
-	$scope.$on('imgUri', function(event, args) {
-		$scope.chat.push( {"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id,"_id":args,"temp":"true"});
-		$scope.$broadcast('uploadImg', 'uploadImg');
-		$.each($scope.chat, function(index, value){
-			console.log(value._id,args);
-		});
+	$scope.$on('fileUri', function(event, args) {
+		if(args[1] == "Image"){
+			$scope.chat.push( {"rid":currentRoom,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+		}else if(args[1] == "Voice"){
+			//$scope.chat.push( {"rid":currentRoom,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+			$scope.chat.push( {"rid":currentRoom,"type":"Voice","body":"http://download.wavetlan.com/SVV/Media/HTTP/WAV/Media-Convert/Media-Convert_test7_PCM_Stereo_VBR_16SS_22050Hz.wav","sender":myprofile._id,"_id":"test","temp":"true"});
+		}
 		
 	});
 	// Send Image and remove temp Image
@@ -410,7 +410,6 @@ angular.module('starter.controllers', [])
   	});
 
   	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
-  	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
 
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.dataDirectory + imageName;
@@ -435,7 +434,8 @@ angular.module('starter.controllers', [])
     	$scope.hideSheet();
     	ImageService.handleMediaDialog(type).then(function() { 
     		$scope.$apply(); 
-    		$scope.$emit('imgUri',FileService.getImages());
+    		$scope.$emit('fileUri',[FileService.getImages(),"Image"]);
+    		$scope.uploadImg();
     	});
   	}
 
@@ -488,8 +488,10 @@ angular.module('starter.controllers', [])
     var fileName;
 	var src;
 	var mediaRec;
+	$scope.playing = 'false';
 
 	$scope.startRecord = function() {
+		/*
         fileName = GenerateID.makeid();
 		src = "documents://"+ fileName + ".wav";
 	    mediaRec = new Media(src,
@@ -497,19 +499,34 @@ angular.module('starter.controllers', [])
 	        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
 	    });
 	    mediaRec.startRecord();
+	    */
 	}
 
 	$scope.stopRecord = function(){
-		mediaRec.stopRecord();
-        $scope.uploadVoice();
+		//mediaRec.stopRecord();
+		$scope.$emit('fileUri',[fileName + ".wav","Voice"]);
+		//$scope.uploadVoice();
+	}
+
+
+	var audio;
+	$scope.play = function(url){
+		console.log(url);
+		$scope.playing = 'true';
+		audio = new Media(url);
+		audio.play();
+	}
+	$scope.pause = function(){
+		$scope.playing = 'false';
+		audio.stop();
 	}
 
 	$scope.uploadVoice = function() {
-	    var imageURI = cordova.file.documentsDirectory + fileName + ".wav";
-        console.log(imageURI);
+	    var voiceURI = cordova.file.documentsDirectory + fileName + ".wav";
+        console.log(voiceURI);
 	    var options = new FileUploadOptions();
 	    options.fileKey = "fileToUpload";
-	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+	    options.fileName = voiceURI.substr(voiceURI.lastIndexOf('/') + 1);
 	    options.mimeType = "audio/wav";
 	    var params = new Object();
 	    options.params = params;
@@ -524,7 +541,7 @@ angular.module('starter.controllers', [])
 		      //loadingStatus.increment();
 		    }
 	    };
-	    ft.upload(imageURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
+	    ft.upload(voiceURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
         options);
 	}
 

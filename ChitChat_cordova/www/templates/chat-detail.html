@@ -16,6 +16,11 @@
                 <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-src="{{message.body}}"/>
 				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
 
+				<div class="type-voice" ng-if="message.type=='Voice'">
+					<i class="ion-play" ng-show="playing == 'false'" ng-click="play(message.body)"></i>
+					<i class="ion-pause" ng-show="playing == 'true'" ng-click="pause()"></i>
+				</div>
+
                 <label style="clear:none;" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
 				<label> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
