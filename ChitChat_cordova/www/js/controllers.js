@@ -28,7 +28,11 @@ angular.module('starter.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function($scope, $timeout) {
+.controller('GroupCtrl', function($rootScope, $scope, $timeout) 
+{	
+	$scope.$on('$ionicView.enter', function(){ 
+		$rootScope.hideTabs = false;
+	});
 	
     myprofile = main.getDataManager().myProfile;
     $scope.myProfile = myprofile;
@@ -68,6 +72,10 @@ angular.module('starter.controllers', [])
 			$('#list-'+list+' .list').css({'height':'auto'});
 		}
 	};
+	
+	$scope.hideTab = function(){		
+		$rootScope.hideTabs = true;
+	}
 })
 
 // GROUP - Profile
@@ -235,14 +243,44 @@ angular.module('starter.controllers', [])
 	//$scope.$on('$ionicView.enter', function(e) {
 	//});
 
-	$scope.chats = Chats.all();
-	$scope.remove = function(chat) {
-		Chats.remove(chat);
-	};
+	$scope.roomAccess = myprofile.roomAccess;
 })
 
-.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
+.controller('ChatDetailCtrl', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats) 
 {    	
+	$scope.contact = {
+      name: 'Mittens Cat',
+      info: 'Tap anywhere on the card to open the modal'
+    }
+
+    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal
+    })
+
+    $scope.openModal = function() {
+      $scope.modal.show()
+    }
+
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+	
+	$('#chatMenu').click(function(){
+		$scope.modal.show();
+	});
+	
+	
+	
+	
+	
+	
 	$scope.chat = [];
 	
     //console.log(main.dataManager.getMyProfile())
@@ -283,7 +321,7 @@ angular.module('starter.controllers', [])
 			scrolling = $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top;
 			maxscroll = ($('#main-chat .scroll').height() - $('#main-chat').height());
 			
-			if( scrolling-3 >= maxscroll && scrolling+3 >= maxscroll )
+			if( scrolling-5 <= maxscroll && scrolling+5 >= maxscroll )
 				$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom()
 				
 			$timeout(countUp, 1000);
@@ -304,12 +342,13 @@ angular.module('starter.controllers', [])
     //$('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	// Send Message btn
-	$('#sendMsg').click(function(){
-	    var content = $('#send_message input').val();
+	$('#sendMsg').click(function()
+	{
+	    var content = $('#send_message').val();
 		if( content != '' )
 		{
 			// Clear Message
-			$('#send_message input').val('')
+			$('#send_message').val('')
 			
 			main.encodeService(content, function(err, result) {
 				if (err) {
@@ -387,6 +426,7 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) entered.");
         console.log(arguments); 
 		
+		$rootScope.hideChat = true;
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
     });
 
@@ -394,6 +434,7 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) leaved.");
         console.log(arguments);
 				
+		$rootScope.hideChat = false;
 		$('#send_message').css({ 'display': 'none' });
 		chatRoomControl.leaveRoom(currentRoom, function callback(err, res) {
 			localStorage.removeItem(myprofile._id + '_' + currentRoom);
@@ -610,4 +651,10 @@ function back()
 {
 	//$('#send_message').css({'display':'none'});
 	//$('#chatroom_back').css({'display':'none'});
+}
+
+
+function testfunc()
+{
+	return 'tabs-item-hide';
 }
