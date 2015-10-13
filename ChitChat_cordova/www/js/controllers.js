@@ -5,7 +5,7 @@ var newchatmessage;
 var currentRoom;
 var allMembers;
 
-angular.module('starter.controllers', [])
+angular.module('spartan.controllers', [])
 
 .controller("LoginCtrl", function ($scope) {
     console.warn('LoginCtrl');
