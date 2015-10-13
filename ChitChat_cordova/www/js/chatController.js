@@ -6,19 +6,7 @@ angular.module('spartan.chat', [])
 
 
 .controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats) 
-{    	
-	$scope.contact = {
-      name: 'Mittens Cat',
-      info: 'Tap anywhere on the card to open the modal'
-    }
-
-    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.modal = modal
-    })
-
+{    
     $scope.openModal = function() {
       $scope.modal.show();
     }
@@ -207,6 +195,13 @@ angular.module('spartan.chat', [])
         console.log(arguments); 
 		
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
+			
+		$ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modal = modal
+		})
     });
 
     $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
