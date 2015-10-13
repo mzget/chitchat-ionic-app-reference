@@ -1,8 +1,6 @@
-var myprofile;
 var date = new Date();
 var now;
 var newchatmessage;
-var allMembers;
 
 angular.module('spartan.controllers', [])
 
@@ -27,15 +25,15 @@ angular.module('spartan.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function($rootScope, $scope, $timeout, roomInfo) 
+.controller('GroupCtrl', function($rootScope, $scope, $timeout, roomSelected) 
 {	
-	var currentRoom = roomInfo.getRoom();
+	var currentRoom = roomSelected.getRoom();
 	
 	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;
 	});
 	
-    myprofile = main.getDataManager().myProfile;
+    var myprofile = main.getDataManager().myProfile;
     $scope.myProfile = myprofile;
 	$scope.orgGroups = main.getDataManager().orgGroups;
 	$scope.pjbGroups = main.getDataManager().projectBaseGroups;
@@ -50,8 +48,7 @@ angular.module('spartan.controllers', [])
 			$scope.orgGroups = main.getDataManager().orgGroups;
 			$scope.pjbGroups = main.getDataManager().projectBaseGroups;
 			$scope.pvGroups = main.getDataManager().privateGroups;
-			allMembers = main.getDataManager().orgMembers;
-			$scope.chats = allMembers;
+			$scope.chats =  main.getDataManager().orgMembers;
 
 			$timeout(reload, 1000);
 		}
@@ -171,58 +168,83 @@ angular.module('spartan.controllers', [])
 })
 
 // GROUP - Type
-.controller('GroupProjectbaseCtrl', function($scope, $stateParams, roomInfo) {
-	var room = main.getDataManager().projectBaseGroups[$stateParams.chatId];
-	$scope.chat = room;
+
+.controller('GroupOrggroupsCtrl', function ($scope, $stateParams, roomSelected) {
+    var group = main.getDataManager().orgGroups[$stateParams.chatId];
+    roomSelected.setRoom(group);
+    $scope.chat = group;
+
+    var members = group.members;
+    console.log('ALL GROUP MEMBERS : ' + members.length);
+    groupMembers(members, null, function done(members) {
+        $scope.members = members;
+    });
+    $scope.members_length = members.length;
+
+    //<!-- Join chat room.
+    $scope.toggle = function (chatId) {
+        location.href = '#/tab/group/chat/' + chatId;
+    };
+})
+.controller('GroupProjectbaseCtrl', function($scope, $stateParams, roomSelected) {
+	var group = main.getDataManager().projectBaseGroups[$stateParams.chatId];
+	roomSelected.setRoom(group);
+	$scope.chat = group;
 	
-	members = main.getDataManager().projectBaseGroups[$stateParams.chatId].members;
+	var members = group.members;
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	groupMembers(members, null, function done(members) {
-		$scope.members = members;
+	    $scope.members = members;
+	    $scope.members_length = members.length;
 	});
-	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
-		var currentRoom = main.getDataManager().projectBaseGroups[chatId];
-		roomInfo.setRoom(currentRoom);
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
-.controller('GroupPrivateCtrl', function($scope, $stateParams, roomInfo) {
-	$scope.chat = main.getDataManager().privateGroups[$stateParams.chatId];
+.controller('GroupPrivateCtrl', function ($scope, $stateParams, roomSelected) {
+    var group = main.getDataManager().privateGroups[$stateParams.chatId];
+    roomSelected.setRoom(group);
+    $scope.chat = group;
 	
-	members = main.getDataManager().privateGroups[$stateParams.chatId].members;
+	var members = group.members;
 	console.log('ALL GROUP MEMBERS : '+members.length);
 	groupMembers(members, null, function done(members) {
-		$scope.members = members;
+	    $scope.members = members;
+	    $scope.members_length = members.length;
 	});
-	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
-	    var currentRoom = main.getDataManager().privateGroups[chatId];
-		roomInfo.setRoom(currentRoom);
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
+.controller('GroupMembersCtrl', function ($scope, $stateParams, roomSelected) {
+    var room = roomSelected.getRoom();
+    var group = null;
+    switch (room.type) {
+        case 0:
+            group = main.getDataManager().orgGroups[$stateParams.chatId];
+            break;
+        case 1:
+            group = main.getDataManager().projectBaseGroups[$stateParams.chatId];
+            break;
+        case 2:
+            group = main.getDataManager().privateGroups[$stateParams.chatId];
+            break;
+        default:
+            break;
+    }
 
-.controller('GroupOrggroupsCtrl', function($scope, $stateParams, roomInfo) {	
-	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
-	
-	members = main.getDataManager().orgGroups[$stateParams.chatId].members;
-	console.log('ALL GROUP MEMBERS : ' + members.length);
-	groupMembers(members, null, function done(members) {
-		$scope.members = members;
-	});
-	$scope.members_length = members.length;
-			
-	$scope.toggle = function (chatId) {
-	   	var currentRoom = main.getDataManager().orgGroups[chatId];
-		roomInfo.setRoom(currentRoom);
-	    location.href = '#/tab/group/chat/' + chatId;
-	};
+    var gMembers = group.members;
+
+    $scope.chat = group;
+    groupMembers(gMembers, gMembers.length, function done(members) {
+        $scope.members = members;
+        $scope.members_length = members.length;
+    });
 })
 
-.controller('GroupDetailCtrl', function($scope, $stateParams, roomInfo) {
+.controller('GroupDetailCtrl', function($scope, $stateParams, roomSelected) {
 	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
 	
 	server.getPrivateChatRoomId(dataManager.myProfile._id, $stateParams.chatId, function result(err, res) {
@@ -230,22 +252,11 @@ angular.module('spartan.controllers', [])
 		var room = JSON.parse(JSON.stringify(res.data));
 
 		$scope.toggle = function () {
-			roomInfo.setRoom(room);
+			console.debug("GroupDetailCtrl", room);
+			roomSelected.setRoom(room);
 			location.href = '#/tab/group/chat/' + room._id;
 		};
 	});
-})
-
-// GROUP - Type
-.controller('GroupMembersCtrl', function($scope, $stateParams) {	
-	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
-	
-	members = main.getDataManager().orgGroups[$stateParams.chatId].members;
-	console.log('ALL GROUP MEMBERS : '+members.length);
-	groupMembers(members, members.length, function done(members) {
-		$scope.members = members;
-	});
-	$scope.members_length = members.length;
 })
 
 .controller('ChatsCtrl', function($scope) {

@@ -5,9 +5,12 @@ angular.module('spartan.chat', [])
 })
 
 
-.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats, roomInfo) 
+.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats, roomSelected) 
 {    	
-	var currentRoom = roomInfo.getRoom();
+    var currentRoom = roomSelected.getRoom();
+    var myprofile = main.getDataManager().myProfile;
+    var allMembers = main.getDataManager().orgMembers;
+	console.debug("chatController", currentRoom.name, currentRoom._id);
 	
 	// Modal - Chat menu 
 	$ionicModal.fromTemplateUrl('templates/reader-view.html', {
@@ -94,9 +97,8 @@ angular.module('spartan.chat', [])
         console.log(chat);
     });*/
 
-
-	$scope.allMembers = allMembers;
-	$scope.myprofile = myprofile;
+    $scope.allMembers = allMembers;
+    $scope.myprofile = myprofile;
     $scope.chat = Chats.all();
     $('#send_message').css({ 'display': 'inline-block' });
     //$('#chatroom_back').css({ 'display': 'inline-block' });
@@ -222,7 +224,7 @@ angular.module('spartan.chat', [])
 			console.warn("save", currentRoom.name, JSON.stringify(chatRoomControl.chatMessages));
 
 			currentRoom = null;
-			roomInfo.setRoom(currentRoom);
+			roomSelected.setRoom(currentRoom);
 			chatRoomControl.chatMessages = [];
 			main.dataListener.removeListener(chatRoomControl);
 		});
