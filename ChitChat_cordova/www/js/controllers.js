@@ -578,7 +578,10 @@ angular.module('starter.controllers', [])
 		$('.ion-play').css({ 'display': 'inline' });
 		$('#' + id + '-voice-play').css({ 'display': 'none' });
 		$('#' + id + '-voice-pause').css({ 'display': 'inline' });
-		audio = new Media(url);
+		audio = new Media(url,
+                         function() { $('#' + id + '-voice-play').css({ 'display': 'inline' }); $('#' + id + '-voice-pause').css({ 'display': 'none' }); },
+                         function(err){ console.log("playAudio(): Error: "+ err.code) }
+                         );
 		audio.play();
 	}
 	$scope.pause = function(id){
