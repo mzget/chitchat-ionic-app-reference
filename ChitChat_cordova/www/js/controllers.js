@@ -435,22 +435,44 @@ function groupMembers(members, size)
 		
 	if( size )
 		max = size;
-
     var counter = 0;
 	var gmember = [];
-    for(var i = 0; i <= members.length; i++) {
-        if(!!members[i]) {
-            var mem_id = members[i].id;
-            var member = main.getDataManager().orgMembers[mem_id];
-             if(!!member) {
-                gmember.push(member);
-                counter += 1;
-
-                if(counter >= max) { break; }
-            }
-        }
-    }
-    return gmember;
+	var getGroupMembers = function() {
+		for(var i = 0; i <= members.length; i++) {
+			if(!!members[i]) {
+				var mem_id = members[i].id;
+				var member = main.getDataManager().orgMembers[mem_id];
+				if(!!member) {
+					gmember.push(member);
+					counter += 1;
+	
+					if(counter >= max) { break; }
+				}
+			}
+		}
+		
+		if(gmember.length === 0 && !dataManager.isOrgMemberReady) {
+			waitForOrgMembers();
+		}
+		else {
+			console.debug('done', gmember);
+    		return gmember;
+		}
+	}
+	var waitForOrgMembers = function() {
+		setTimeout(function() {
+			getGroupMembers();
+		}, 500);
+	}
+	
+	if(dataManager.isOrgMemberReady) {
+		getGroupMembers();
+	}
+	else {
+		waitForOrgMembers();
+	}
+	
+	console.debug(gmember);
 }
 
 function back()

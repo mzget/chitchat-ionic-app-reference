@@ -12,24 +12,24 @@ angular.module('spartan.chat', [])
       info: 'Tap anywhere on the card to open the modal'
     }
 
-    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.modal = modal
-    })
+    // $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+    //   scope: $scope,
+    //   animation: 'slide-in-up'
+    // }).then(function(modal) {
+    //   $scope.modal = modal
+    // })
 
-    $scope.openModal = function() {
-      $scope.modal.show();
-    }
+    // $scope.openModal = function() {
+    //   $scope.modal.show();
+    // }
 
-    $scope.closeModal = function() {
-      $scope.modal.hide();
-    };
+    // $scope.closeModal = function() {
+    //   $scope.modal.hide();
+    // };
 
-    $scope.$on('$destroy', function() {
-      $scope.modal.remove();
-    });
+    // $scope.$on('$destroy', function() {
+    //   $scope.modal.remove();
+    // });
 	
 	
 	$ionicModal.fromTemplateUrl('templates/reader-view.html', {
