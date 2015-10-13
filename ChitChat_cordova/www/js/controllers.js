@@ -177,7 +177,9 @@ angular.module('spartan.controllers', [])
 	
 	members = main.getDataManager().projectBaseGroups[$stateParams.chatId].members;
 	console.log('ALL GROUP MEMBERS : '+members.length);
-	$scope.members = groupMembers(members);
+	groupMembers(members, null, function done(members) {
+		$scope.members = members;
+	});
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
@@ -190,7 +192,9 @@ angular.module('spartan.controllers', [])
 	
 	members = main.getDataManager().privateGroups[$stateParams.chatId].members;
 	console.log('ALL GROUP MEMBERS : '+members.length);
-	$scope.members = groupMembers(members);
+	groupMembers(members, null, function done(members) {
+		$scope.members = members;
+	});
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
@@ -202,8 +206,10 @@ angular.module('spartan.controllers', [])
 	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
 	
 	members = main.getDataManager().orgGroups[$stateParams.chatId].members;
-	console.log('ALL GROUP MEMBERS : '+members.length);
-	$scope.members = groupMembers(members);
+	console.log('ALL GROUP MEMBERS : ' + members.length);
+	groupMembers(members, null, function done(members) {
+		$scope.members = members;
+	});
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
@@ -231,7 +237,9 @@ angular.module('spartan.controllers', [])
 	
 	members = main.getDataManager().orgGroups[$stateParams.chatId].members;
 	console.log('ALL GROUP MEMBERS : '+members.length);
-	$scope.members = groupMembers(members, members.length);
+	groupMembers(members, members.length, function done(members) {
+		$scope.members = members;
+	});
 	$scope.members_length = members.length;
 })
 
@@ -427,7 +435,7 @@ angular.module('spartan.controllers', [])
 
 }); // <-- LAST CONTROLLER
 
-function groupMembers(members, size)
+function groupMembers(members, size, callback)
 {
 	var max = members.length;
 	if( max > 5 )
@@ -455,8 +463,7 @@ function groupMembers(members, size)
 			waitForOrgMembers();
 		}
 		else {
-			console.debug('done', gmember);
-    		return gmember;
+			callback(gmember);
 		}
 	}
 	var waitForOrgMembers = function() {
@@ -471,8 +478,6 @@ function groupMembers(members, size)
 	else {
 		waitForOrgMembers();
 	}
-	
-	console.debug(gmember);
 }
 
 function back()
