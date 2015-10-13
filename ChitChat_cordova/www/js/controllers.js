@@ -262,7 +262,7 @@ angular.module('starter.controllers', [])
     })
 
     $scope.openModal = function() {
-      $scope.modal.show()
+      $scope.modal.show();
     }
 
     $scope.closeModal = function() {
@@ -272,10 +272,6 @@ angular.module('starter.controllers', [])
     $scope.$on('$destroy', function() {
       $scope.modal.remove();
     });
-	
-	$('#chatMenu').click(function(){
-		$scope.modal.show();
-	});
 	
 	
 	
@@ -429,7 +425,6 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) entered.");
         console.log(arguments); 
 		
-		$rootScope.hideChat = true;
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
     });
 
@@ -437,7 +432,6 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) leaved.");
         console.log(arguments);
 				
-		$rootScope.hideChat = false;
 		$('#send_message').css({ 'display': 'none' });
 		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
 			localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
@@ -669,3 +663,8 @@ function testfunc()
 {
 	return 'tabs-item-hide';
 }
+
+	
+$('#chatMenu').click(function(){
+	alert("OK");
+});

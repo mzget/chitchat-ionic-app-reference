@@ -71,7 +71,9 @@
 #chatroom_back { float:left; display:none; width:80px; height:44px; line-height:44px; position:fixed; top:0; left:0; z-index:1000; text-align:center; font-size:23px; vertical-align:middle; color:#444; cursor:pointer; }
 */
 
-.modal-chatmenu > * { text-align:center; } 
+.modal-chatmenu { background-color:#fff; }
+.modal-chatmenu > * { text-align:center; padding:10px 0; } 
+.modal-chatmenu > *:active { background-color:rgba(0,0,0,0.1); }
 .modal-chatmenu i { font-size:30px; }
 
 
