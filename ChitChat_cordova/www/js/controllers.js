@@ -380,13 +380,10 @@ angular.module('starter.controllers', [])
 			$scope.$broadcast('startRecord', 'startRecord');
 		}
 	}
+    $scope.image = function(){
+        $scope.$broadcast('addImg', 'addImg');
+    }
 
-	// Chat Menu
-	$('#chatMenu').click(function(){/*
-		//$scope.$broadcast('addImg', 'addImg');
-		
-		*/
-	});
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
 		if(args[1] == "Image"){
