@@ -2,7 +2,6 @@ var myprofile;
 var date = new Date();
 var now;
 var newchatmessage;
-var currentRoom;
 var allMembers;
 
 angular.module('spartan.controllers', [])
@@ -28,8 +27,10 @@ angular.module('spartan.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function($rootScope, $scope, $timeout) 
+.controller('GroupCtrl', function($rootScope, $scope, $timeout, roomInfo) 
 {	
+	var currentRoom = roomInfo.getRoom();
+	
 	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;
 	});
@@ -42,7 +43,7 @@ angular.module('spartan.controllers', [])
 	$scope.chats = main.getDataManager().orgMembers;
 	
     var reload = function () {		
-		if( currentRoom != '' )
+		if(currentRoom != null)
 		{	
 			myprofile = main.getDataManager().myProfile;
 			$scope.myProfile = myprofile;
@@ -169,9 +170,8 @@ angular.module('spartan.controllers', [])
 	}
 })
 
-
 // GROUP - Type
-.controller('GroupProjectbaseCtrl', function($scope, $stateParams) {
+.controller('GroupProjectbaseCtrl', function($scope, $stateParams, roomInfo) {
 	var room = main.getDataManager().projectBaseGroups[$stateParams.chatId];
 	$scope.chat = room;
 	
@@ -183,11 +183,12 @@ angular.module('spartan.controllers', [])
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
-		currentRoom = main.getDataManager().projectBaseGroups[chatId];
+		var currentRoom = main.getDataManager().projectBaseGroups[chatId];
+		roomInfo.setRoom(currentRoom);
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
-.controller('GroupPrivateCtrl', function($scope, $stateParams) {
+.controller('GroupPrivateCtrl', function($scope, $stateParams, roomInfo) {
 	$scope.chat = main.getDataManager().privateGroups[$stateParams.chatId];
 	
 	members = main.getDataManager().privateGroups[$stateParams.chatId].members;
@@ -198,11 +199,13 @@ angular.module('spartan.controllers', [])
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
-	    currentRoom = main.getDataManager().privateGroups[chatId];
+	    var currentRoom = main.getDataManager().privateGroups[chatId];
+		roomInfo.setRoom(currentRoom);
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
-.controller('GroupOrggroupsCtrl', function($scope, $stateParams) {	
+
+.controller('GroupOrggroupsCtrl', function($scope, $stateParams, roomInfo) {	
 	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
 	
 	members = main.getDataManager().orgGroups[$stateParams.chatId].members;
@@ -213,20 +216,21 @@ angular.module('spartan.controllers', [])
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
-	    currentRoom = main.getDataManager().orgGroups[chatId];
+	   	var currentRoom = main.getDataManager().orgGroups[chatId];
+		roomInfo.setRoom(currentRoom);
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
-.controller('GroupDetailCtrl', function($scope, $stateParams) {
+.controller('GroupDetailCtrl', function($scope, $stateParams, roomInfo) {
 	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
 	
 	server.getPrivateChatRoomId(dataManager.myProfile._id, $stateParams.chatId, function result(err, res) {
 		console.log(JSON.stringify(res));
-		var roomInfo = JSON.parse(JSON.stringify(res.data));
+		var room = JSON.parse(JSON.stringify(res.data));
 
 		$scope.toggle = function () {
-			currentRoom = roomInfo;
-			location.href = '#/tab/group/chat/' + roomInfo._id;
+			roomInfo.setRoom(room);
+			location.href = '#/tab/group/chat/' + room._id;
 		};
 	});
 })

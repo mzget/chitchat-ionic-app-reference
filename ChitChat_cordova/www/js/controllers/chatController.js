@@ -5,8 +5,10 @@ angular.module('spartan.chat', [])
 })
 
 
-.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats) 
+.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats, roomInfo) 
 {    	
+	var currentRoom = roomInfo.getRoom();
+	
 	$scope.contact = {
       name: 'Mittens Cat',
       info: 'Tap anywhere on the card to open the modal'
@@ -219,7 +221,8 @@ angular.module('spartan.chat', [])
 			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomControl.chatMessages));
 			console.warn("save", currentRoom.name, JSON.stringify(chatRoomControl.chatMessages));
 
-			currentRoom = "";
+			currentRoom = null;
+			roomInfo.setRoom(currentRoom);
 			chatRoomControl.chatMessages = [];
 			main.dataListener.removeListener(chatRoomControl);
 		});
