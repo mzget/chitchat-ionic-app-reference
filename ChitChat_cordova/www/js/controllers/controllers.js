@@ -245,14 +245,14 @@ angular.module('spartan.controllers', [])
 })
 
 .controller('GroupDetailCtrl', function($scope, $stateParams, roomSelected) {
-	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
+	var contact = main.getDataManager().orgMembers[$stateParams.chatId];
+	$scope.chat = contact;
 	
 	server.getPrivateChatRoomId(dataManager.myProfile._id, $stateParams.chatId, function result(err, res) {
 		console.log(JSON.stringify(res));
 		var room = JSON.parse(JSON.stringify(res.data));
 
 		$scope.toggle = function () {
-			console.debug("GroupDetailCtrl", room);
 			roomSelected.setRoom(room);
 			location.href = '#/tab/group/chat/' + room._id;
 		};
