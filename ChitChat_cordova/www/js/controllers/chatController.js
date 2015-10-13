@@ -5,8 +5,10 @@ angular.module('spartan.chat', [])
 })
 
 
-.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats) 
+.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats, roomInfo) 
 {    	
+	var currentRoom = roomInfo.getRoom();
+	
 	// Modal - Chat menu 
 	$ionicModal.fromTemplateUrl('templates/reader-view.html', {
 		scope: $scope,
@@ -64,7 +66,7 @@ angular.module('spartan.chat', [])
     });
      
     var countUp = function () {		
-		if( currentRoom != '' )
+		if( currentRoom != null )
 		{
 			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
@@ -219,7 +221,8 @@ angular.module('spartan.chat', [])
 			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomControl.chatMessages));
 			console.warn("save", currentRoom.name, JSON.stringify(chatRoomControl.chatMessages));
 
-			currentRoom = "";
+			currentRoom = null;
+			roomInfo.setRoom(currentRoom);
 			chatRoomControl.chatMessages = [];
 			main.dataListener.removeListener(chatRoomControl);
 		});
