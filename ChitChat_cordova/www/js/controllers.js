@@ -177,7 +177,9 @@ angular.module('spartan.controllers', [])
 	
 	members = main.getDataManager().projectBaseGroups[$stateParams.chatId].members;
 	console.log('ALL GROUP MEMBERS : '+members.length);
-	$scope.members = groupMembers(members);
+	groupMembers(members, null, function done(members) {
+		$scope.members = members;
+	});
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
@@ -190,7 +192,9 @@ angular.module('spartan.controllers', [])
 	
 	members = main.getDataManager().privateGroups[$stateParams.chatId].members;
 	console.log('ALL GROUP MEMBERS : '+members.length);
-	$scope.members = groupMembers(members);
+	groupMembers(members, null, function done(members) {
+		$scope.members = members;
+	});
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
@@ -202,8 +206,10 @@ angular.module('spartan.controllers', [])
 	$scope.chat = main.getDataManager().orgGroups[$stateParams.chatId];
 	
 	members = main.getDataManager().orgGroups[$stateParams.chatId].members;
-	console.log('ALL GROUP MEMBERS : '+members.length);
-	$scope.members = groupMembers(members);
+	console.log('ALL GROUP MEMBERS : ' + members.length);
+	groupMembers(members, null, function done(members) {
+		$scope.members = members;
+	});
 	$scope.members_length = members.length;
 			
 	$scope.toggle = function (chatId) {
@@ -231,7 +237,9 @@ angular.module('spartan.controllers', [])
 	
 	members = main.getDataManager().orgGroups[$stateParams.chatId].members;
 	console.log('ALL GROUP MEMBERS : '+members.length);
-	$scope.members = groupMembers(members, members.length);
+	groupMembers(members, members.length, function done(members) {
+		$scope.members = members;
+	});
 	$scope.members_length = members.length;
 })
 
@@ -259,175 +267,9 @@ angular.module('spartan.controllers', [])
 
 .controller('AccountCreate',function($scope) {
     $scope.images = "http://placehold.it/50x50";
-})
-
-.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, ImageService, FileService) {
- 
-  	$ionicPlatform.ready(function() {
-    	$scope.images = FileService.images();
-    	if (!$scope.$$phase) { $scope.$apply(); }
-  	});
-
-  	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
-
-  	$scope.urlForImage = function(imageName) {
-    	var trueOrigin = cordova.file.dataDirectory + imageName;
-    	return trueOrigin;
-  	}
- 
-	$scope.addImg = function() {
-	    $scope.hideSheet = $ionicActionSheet.show({
-	      buttons: [
-	        { text: 'Take photo' },
-	        { text: 'Photo from library' }
-	      ],
-	      titleText: 'Add images',
-	      cancelText: 'Cancel',
-	      buttonClicked: function(index) {
-	        $scope.addImage(index);
-	      }
-	    });
-	}
- 
-  	$scope.addImage = function(type) {
-    	$scope.hideSheet();
-    	ImageService.handleMediaDialog(type).then(function() { 
-    		$scope.$apply(); 
-    		$scope.$emit('fileUri',[FileService.getImages(),"Image"]);
-    		$scope.uploadImg();
-    	});
-  	}
-
-  	$scope.uploadImg = function() {
-  		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
-	    var imageURI = cordova.file.dataDirectory + FileService.getImages();
-	    var options = new FileUploadOptions();
-	    options.fileKey = "fileToUpload";
-	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-	    options.mimeType = "image/jpeg";
-	    var params = new Object();
-	    options.params = params;
-	    options.chunkedMode = false;
-	    var ft = new FileTransfer();
-	    ft.onprogress = function(progressEvent){
-	    	if (progressEvent.lengthComputable) {
-		      $ionicLoading.show({
-			      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
-			  });
-		    } else {
-		      //loadingStatus.increment();
-		    }
-	    };
-	    ft.upload(imageURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
-	        options);
-	}
-
-	function win(r) {
-	    console.log("Code = " + r.responseCode);
-	    console.log("Response = " + r.response);
-	    console.log("Sent = " + r.bytesSent);
-	    $ionicLoading.hide();
-	    $scope.$emit('fileUrl', [r.response,FileService.getImages(),"Image"]);
-	    FileService.clearImages();
-	}
-
-	function fail(error) {
-	    alert("An error has occurred: Code = " + error.code);
-	    console.log("upload error source " + error.source);
-	    console.log("upload error target " + error.target);
-	    $cordovaProgress.showText(false, "Fail!", 'center');
-	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
-	}
-})
-.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, GenerateID) {
-
-	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
-	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
-
-    var fileName;
-	var src;
-	var mediaRec;
-	$scope.playing = 'false';
-
-	$scope.startRecord = function() {
-        fileName = GenerateID.makeid();
-		src = "documents://"+ fileName + ".wav";
-	    mediaRec = new Media(src,
-	        function() { console.log("recordAudio():Audio Success"); },
-	        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
-	    });
-	    mediaRec.startRecord();
-	}
-
-	$scope.stopRecord = function(){
-		mediaRec.stopRecord();
-		$scope.$emit('fileUri',[fileName + ".wav","Voice"]);
-		$scope.uploadVoice();
-	}
-
-
-	var audio;
-	$scope.play = function(id,url){
-		console.log(url);
-		$('.ion-pause').css({ 'display': 'none' });
-		$('.ion-play').css({ 'display': 'inline' });
-		$('#' + id + '-voice-play').css({ 'display': 'none' });
-		$('#' + id + '-voice-pause').css({ 'display': 'inline' });
-		audio = new Media(url,
-                         function() { $('#' + id + '-voice-play').css({ 'display': 'inline' }); $('#' + id + '-voice-pause').css({ 'display': 'none' }); },
-                         function(err){ console.log("playAudio(): Error: "+ err.code) }
-                         );
-		audio.play();
-	}
-	$scope.pause = function(id){
-		$('#' + id + '-voice-play').css({ 'display': 'inline' });
-		$('#' + id + '-voice-pause').css({ 'display': 'none' });
-		audio.stop();
-	}
-
-	$scope.uploadVoice = function() {
-	    var voiceURI = cordova.file.documentsDirectory + fileName + ".wav";
-        console.log(voiceURI);
-	    var options = new FileUploadOptions();
-	    options.fileKey = "fileToUpload";
-	    options.fileName = voiceURI.substr(voiceURI.lastIndexOf('/') + 1);
-	    options.mimeType = "audio/wav";
-	    var params = new Object();
-	    options.params = params;
-	    options.chunkedMode = false;
-	    var ft = new FileTransfer();
-	    ft.onprogress = function(progressEvent){
-	    	if (progressEvent.lengthComputable) {
-		      $ionicLoading.show({
-			      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
-			  });
-		    } else {
-		      //loadingStatus.increment();
-		    }
-	    };
-	    ft.upload(voiceURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
-        options);
-	}
-
-	function win(r) {
-	    console.log("Code = " + r.responseCode);
-	    console.log("Response = " + r.response);
-	    console.log("Sent = " + r.bytesSent);
-	    $ionicLoading.hide();
-        $scope.$emit('fileUrl', [r.response,fileName + ".wav","Voice"]);
-	}
-
-	function fail(error) {
-	    alert("An error has occurred: Code = " + error.code);
-	    console.log("upload error source " + error.source);
-	    console.log("upload error target " + error.target);
-	    $cordovaProgress.showText(false, "Fail!", 'center');
-	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
-	}
-
 }); // <-- LAST CONTROLLER
 
-function groupMembers(members, size)
+function groupMembers(members, size, callback)
 {
 	var max = members.length;
 	if( max > 5 )
@@ -435,22 +277,41 @@ function groupMembers(members, size)
 		
 	if( size )
 		max = size;
-
     var counter = 0;
 	var gmember = [];
-    for(var i = 0; i <= members.length; i++) {
-        if(!!members[i]) {
-            var mem_id = members[i].id;
-            var member = main.getDataManager().orgMembers[mem_id];
-             if(!!member) {
-                gmember.push(member);
-                counter += 1;
-
-                if(counter >= max) { break; }
-            }
-        }
-    }
-    return gmember;
+	var getGroupMembers = function() {
+		for(var i = 0; i <= members.length; i++) {
+			if(!!members[i]) {
+				var mem_id = members[i].id;
+				var member = main.getDataManager().orgMembers[mem_id];
+				if(!!member) {
+					gmember.push(member);
+					counter += 1;
+	
+					if(counter >= max) { break; }
+				}
+			}
+		}
+		
+		if(gmember.length === 0 && !dataManager.isOrgMemberReady) {
+			waitForOrgMembers();
+		}
+		else {
+			callback(gmember);
+		}
+	}
+	var waitForOrgMembers = function() {
+		setTimeout(function() {
+			getGroupMembers();
+		}, 500);
+	}
+	
+	if(dataManager.isOrgMemberReady) {
+		getGroupMembers();
+	}
+	else {
+		waitForOrgMembers();
+	}
 }
 
 function back()
