@@ -154,7 +154,7 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'star
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
-				controller: 'ChatDetailCtrl'
+				controller: 'chatController'
 			}
 		}
 	})
