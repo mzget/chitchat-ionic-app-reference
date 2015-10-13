@@ -299,7 +299,6 @@ angular.module('starter.controllers', [])
 	        }
 	    }
 	    else if (event === "onMessageRead") {
-	        console.warn(newMsg);
 	        Chats.set(chatRoomControl.chatMessages);
 	    }
     }

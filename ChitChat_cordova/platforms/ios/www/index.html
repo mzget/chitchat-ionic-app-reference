@@ -150,6 +150,15 @@
         </ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-view></ion-nav-view>
+	<ion-footer-bar align-title="left" class="bar-light" ng-show="$root.hideChat" style="z-index:100;">
+		<div class="buttons">
+			<button id="chatMenu" class="button" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
+		</div>
+		<input id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
+		<div class="buttons">
+			<button id="sendMsg" class="button" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
+		</div>
+	</ion-footer-bar>
 	
 	 
 	<div id="splash">
@@ -159,10 +168,13 @@
 		</div>
 	</div>
 	
+	<!--
 	<div id="send_message">
 		<button id="chatMenu"><i class="ion-ios-plus-outline"></i></button>
 		<input type="text" name="send_message" />
 		<button id="sendMsg"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
 	</div>
+	-->
+	
 </body>
 </html>

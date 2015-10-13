@@ -69,7 +69,7 @@ class ChatRoomController implements IChatRoomController {
     onMessageRead(dataEvent) {
         console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
         var self = this;
-        var newMsg: Message = JSON.parse(JSON.stringify(dataEvent));
+        var newMsg: Message = JSON.parse(JSON.stringify(dataEvent.data));
 
         this.chatMessages.some(function callback(value) {
             if (value._id === newMsg._id) {
