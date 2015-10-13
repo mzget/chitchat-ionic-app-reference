@@ -262,7 +262,7 @@ angular.module('starter.controllers', [])
     })
 
     $scope.openModal = function() {
-      $scope.modal.show()
+      $scope.modal.show();
     }
 
     $scope.closeModal = function() {
@@ -272,10 +272,6 @@ angular.module('starter.controllers', [])
     $scope.$on('$destroy', function() {
       $scope.modal.remove();
     });
-	
-	$('#chatMenu').click(function(){
-		$scope.modal.show();
-	});
 	
 	
 	
@@ -379,12 +375,10 @@ angular.module('starter.controllers', [])
 			$scope.$broadcast('startRecord', 'startRecord');
 		}
 	}
+    $scope.image = function(){
+        $scope.$broadcast('addImg', 'addImg');
+    }
 
-	// Chat Menu
-	$('#chatMenu').click(function(){/*
-		//$scope.$broadcast('addImg', 'addImg');
-		*/
-	});
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
 		if(args[1] == "Image"){
@@ -424,7 +418,6 @@ angular.module('starter.controllers', [])
 	$scope.viewReader = function (readers) {
 	    readers.forEach(function iterator(member) {
 	        console.log(JSON.stringify(dataManager.orgMembers[member]));
-	    	location.href = '#/tab/chat/readers';
 	    });
 	}
 	
@@ -432,7 +425,6 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) entered.");
         console.log(arguments); 
 		
-		$rootScope.hideChat = true;
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
     });
 
@@ -440,7 +432,6 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) leaved.");
         console.log(arguments);
 				
-		$rootScope.hideChat = false;
 		$('#send_message').css({ 'display': 'none' });
 		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
 			localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
@@ -581,7 +572,10 @@ angular.module('starter.controllers', [])
 		$('.ion-play').css({ 'display': 'inline' });
 		$('#' + id + '-voice-play').css({ 'display': 'none' });
 		$('#' + id + '-voice-pause').css({ 'display': 'inline' });
-		audio = new Media(url);
+		audio = new Media(url,
+                         function() { $('#' + id + '-voice-play').css({ 'display': 'inline' }); $('#' + id + '-voice-pause').css({ 'display': 'none' }); },
+                         function(err){ console.log("playAudio(): Error: "+ err.code) }
+                         );
 		audio.play();
 	}
 	$scope.pause = function(id){
@@ -669,3 +663,8 @@ function testfunc()
 {
 	return 'tabs-item-hide';
 }
+
+	
+$('#chatMenu').click(function(){
+	alert("OK");
+});

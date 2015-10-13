@@ -53,6 +53,8 @@
 .message-list .other p { margin:0 40px 0 60px; text-align:left; border-top-left-radius:0; }
 .message-list .other p a { font-size:60px; color:#666; }
 .message-list .other .type-img { width: 160px; height: 160px; margin:0 40px 0 60px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
+.message-list .other .type-voice { width: 60px; height: 60px; margin:0 40px 0 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
+.message-list .other .type-voice > * { line-height: 60px; }
 
 .message-list .owner > * { float:right; display:inline; clear:both; }
 .message-list .owner p { margin:0 5px 0 95px; text-align:right; border-top-right-radius:0; }
@@ -69,7 +71,9 @@
 #chatroom_back { float:left; display:none; width:80px; height:44px; line-height:44px; position:fixed; top:0; left:0; z-index:1000; text-align:center; font-size:23px; vertical-align:middle; color:#444; cursor:pointer; }
 */
 
-.modal-chatmenu > * { text-align:center; } 
+.modal-chatmenu { background-color:#fff; }
+.modal-chatmenu > * { text-align:center; padding:10px 0; } 
+.modal-chatmenu > *:active { background-color:rgba(0,0,0,0.1); }
 .modal-chatmenu i { font-size:30px; }
 
 
