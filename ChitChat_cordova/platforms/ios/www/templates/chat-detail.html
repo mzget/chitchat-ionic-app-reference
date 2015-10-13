@@ -1,24 +1,41 @@
 <ion-view view-title="{{title}}" cache-view="false" ng-controller="VoiceController"> <!-- ng-controller="ImageController; -->
 	<ion-content delegate-handle="mainScroll">
-		<ion-list class="message-list" ng-repeat="message in chat">
-			<ion-item ng-if="message.sender != myprofile._id" class="other item-remove-animate item-icon-right" type="item-text-wrap">
-				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" class="avatar"/>
+		<ion-list class="message-list" ng-repeat="message in chat track by $index">
+
+			<ion-item ng-if="message.sender != myprofile._id" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 				<h2>{{allMembers[message.sender]['displayname']}}</h2>
 
-				<p ng-if="message.type=='Text'">{{message.body}}</p>
-				<img class="type-img" ng-if="message.type=='Image'" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
+				<p id="{{message._id}}" ng-if="message.type=='Text'">{{message.body}}</p>
+				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
+				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
+					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
+					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
+				</div>
 
 				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
-			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
 
+			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
                 <p ng-if="message.type=='Text'">{{message.body}}</p>
                 <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-src="{{message.body}}"/>
 				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
 
+				<div class="type-voice" ng-if="message.type=='Voice'">
+					<div id="{{message._id}}" ng-show="message.temp=='true'">
+						<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
+						<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)"></i>
+					</div>
+					<div id="{{message._id}}" ng-show="message.temp=='null'">
+						<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://stalk.animation-genius.com'+message.body)"></i>
+						<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)"></i>
+					</div>
+				</div>
+
                 <label style="clear:none;" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
 				<label> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
+
 		</ion-list>
 
 	</ion-content>

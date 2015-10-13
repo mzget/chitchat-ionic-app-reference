@@ -28,7 +28,11 @@ angular.module('starter.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function($scope, $timeout) {
+.controller('GroupCtrl', function($rootScope, $scope, $timeout) 
+{	
+	$scope.$on('$ionicView.enter', function(){ 
+		$rootScope.hideTabs = false;
+	});
 	
     myprofile = main.getDataManager().myProfile;
     $scope.myProfile = myprofile;
@@ -68,6 +72,10 @@ angular.module('starter.controllers', [])
 			$('#list-'+list+' .list').css({'height':'auto'});
 		}
 	};
+	
+	$scope.hideTab = function(){		
+		$rootScope.hideTabs = true;
+	}
 })
 
 // GROUP - Profile
@@ -88,7 +96,7 @@ angular.module('starter.controllers', [])
 		$('#viewprofile-input-status').removeAttr('disabled');
 		$scope.edit = 'true';
 
-		$scope.$on('imgUrl', function(event, url) { 
+		$scope.$on('fileUrl', function(event, url) { 
 			if(url!=null){
 				server.ProfileImageChanged($stateParams.chatId,url[0],function(err,res){
 					main.getDataManager().myProfile.image = url[0];
@@ -203,7 +211,6 @@ angular.module('starter.controllers', [])
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
-
 .controller('GroupDetailCtrl', function($scope, $stateParams) {
 	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
 	
@@ -237,14 +244,44 @@ angular.module('starter.controllers', [])
 	//$scope.$on('$ionicView.enter', function(e) {
 	//});
 
-	$scope.chats = Chats.all();
-	$scope.remove = function(chat) {
-		Chats.remove(chat);
-	};
+	$scope.roomAccess = myprofile.roomAccess;
 })
 
-.controller('ChatDetailCtrl', function($scope, $timeout, $stateParams, $ionicScrollDelegate, Chats) 
+.controller('ChatDetailCtrl', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats) 
 {    	
+	$scope.contact = {
+      name: 'Mittens Cat',
+      info: 'Tap anywhere on the card to open the modal'
+    }
+
+    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal
+    })
+
+    $scope.openModal = function() {
+      $scope.modal.show()
+    }
+
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+	
+	$('#chatMenu').click(function(){
+		$scope.modal.show();
+	});
+	
+	
+	
+	
+	
+	
 	$scope.chat = [];
 	$scope.title = currentRoom.name;
 	
@@ -286,7 +323,7 @@ angular.module('starter.controllers', [])
 			scrolling = $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top;
 			maxscroll = ($('#main-chat .scroll').height() - $('#main-chat').height());
 			
-			if( scrolling-3 >= maxscroll && scrolling+3 >= maxscroll )
+			if( scrolling-5 <= maxscroll && scrolling+5 >= maxscroll )
 				$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom()
 				
 			$timeout(countUp, 1000);
@@ -307,12 +344,13 @@ angular.module('starter.controllers', [])
     //$('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	// Send Message btn
-	$('#sendMsg').click(function(){
-	    var content = $('#send_message input').val();
+	$('#sendMsg').click(function()
+	{
+	    var content = $('#send_message').val();
 		if( content != '' )
 		{
 			// Clear Message
-			$('#send_message input').val('')
+			$('#send_message').val('')
 			
 			main.encodeService(content, function(err, result) {
 				if (err) {
@@ -333,40 +371,55 @@ angular.module('starter.controllers', [])
 		}
 	});
 
-	// Chat Menu
-	$('#chatMenu').click(function(){
-		//$scope.$broadcast('addImg', 'addImg');
-		
-		if($('#chatMenu').is(".recording")){
-			$('#chatMenu').removeClass("recording");
+	$scope.voice = function(){
+		if($('.ion-android-microphone').is(".recording")){
+			$('.ion-android-microphone').removeClass("recording");
             $scope.$broadcast('stopRecord', 'stopRecord');
 		}else{
-			$('#chatMenu').addClass("recording");
+			$('.ion-android-microphone').addClass("recording");
 			$scope.$broadcast('startRecord', 'startRecord');
 		}
+	}
+
+	// Chat Menu
+	$('#chatMenu').click(function(){/*
+		//$scope.$broadcast('addImg', 'addImg');
+		
+		*/
 	});
 	// Recivce ImageUri from Gallery then send to other people
-	$scope.$on('imgUri', function(event, args) {
-		$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args,"sender":myprofile._id,"_id":args,"temp":"true"});
-		$scope.$broadcast('uploadImg', 'uploadImg');
-		$.each($scope.chat, function(index, value){
-			console.log(value._id,args);
-		});
+	$scope.$on('fileUri', function(event, args) {
+		if(args[1] == "Image"){
+			$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+		}else if(args[1] == "Voice"){
+			$scope.chat.push( {"rid":currentRoom._id,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+		}
 		
 	});
 	// Send Image and remove temp Image
-	$scope.$on('imgUrl', function(event,args){
-		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
-			if (err || res === null) {
-				console.warn("send message fail.");
-			}
-			else {
-				console.log("send message:", JSON.stringify(res));
-				$.each($scope.chat, function(index, value){
-					console.log(value._id,args[1]);
-					if(value._id == args[1]) { $scope.chat[index] = new Object; }
-				});
-			}
+	$scope.$on('fileUrl', function(event,args){
+		if(args[2]=="Image"){
+			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
+				if (err || res === null) {
+					console.warn("send message fail.");
+				}
+				else {
+					console.log("send message:", JSON.stringify(res));
+				}
+			});
+		}else if(args[2]=="Voice"){
+			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], function(err, res) {
+				if (err || res === null) {
+					console.warn("send message fail.");
+				}
+				else {
+					console.log("send message:", JSON.stringify(res));
+				}
+			});
+		}
+		$.each($scope.chat, function(index, value){
+			console.log(value._id,args[1]);
+			if(value._id == args[1]) { $scope.chat[index] = new Object; }
 		});
 	});
 
@@ -380,6 +433,7 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) entered.");
         console.log(arguments); 
 		
+		$rootScope.hideChat = true;
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
     });
 
@@ -387,6 +441,7 @@ angular.module('starter.controllers', [])
         console.log("App view (menu) leaved.");
         console.log(arguments);
 				
+		$rootScope.hideChat = false;
 		$('#send_message').css({ 'display': 'none' });
 		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
 			localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
@@ -423,7 +478,6 @@ angular.module('starter.controllers', [])
   	});
 
   	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
-  	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
 
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.dataDirectory + imageName;
@@ -448,12 +502,13 @@ angular.module('starter.controllers', [])
     	$scope.hideSheet();
     	ImageService.handleMediaDialog(type).then(function() { 
     		$scope.$apply(); 
-    		$scope.$emit('imgUri',FileService.getImages());
+    		$scope.$emit('fileUri',[FileService.getImages(),"Image"]);
+    		$scope.uploadImg();
     	});
   	}
 
   	$scope.uploadImg = function() {
-  		if(FileService.getImages().length==0) { $scope.$emit('imgUrl',null); return; }
+  		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
 	    var imageURI = cordova.file.dataDirectory + FileService.getImages();
 	    var options = new FileUploadOptions();
 	    options.fileKey = "fileToUpload";
@@ -481,7 +536,7 @@ angular.module('starter.controllers', [])
 	    console.log("Response = " + r.response);
 	    console.log("Sent = " + r.bytesSent);
 	    $ionicLoading.hide();
-	    $scope.$emit('imgUrl', [r.response,FileService.getImages()]);
+	    $scope.$emit('fileUrl', [r.response,FileService.getImages(),"Image"]);
 	    FileService.clearImages();
 	}
 
@@ -501,6 +556,7 @@ angular.module('starter.controllers', [])
     var fileName;
 	var src;
 	var mediaRec;
+	$scope.playing = 'false';
 
 	$scope.startRecord = function() {
         fileName = GenerateID.makeid();
@@ -514,15 +570,33 @@ angular.module('starter.controllers', [])
 
 	$scope.stopRecord = function(){
 		mediaRec.stopRecord();
-        $scope.uploadVoice();
+		$scope.$emit('fileUri',[fileName + ".wav","Voice"]);
+		$scope.uploadVoice();
+	}
+
+
+	var audio;
+	$scope.play = function(id,url){
+		console.log(url);
+		$('.ion-pause').css({ 'display': 'none' });
+		$('.ion-play').css({ 'display': 'inline' });
+		$('#' + id + '-voice-play').css({ 'display': 'none' });
+		$('#' + id + '-voice-pause').css({ 'display': 'inline' });
+		audio = new Media(url);
+		audio.play();
+	}
+	$scope.pause = function(id){
+		$('#' + id + '-voice-play').css({ 'display': 'inline' });
+		$('#' + id + '-voice-pause').css({ 'display': 'none' });
+		audio.stop();
 	}
 
 	$scope.uploadVoice = function() {
-	    var imageURI = cordova.file.documentsDirectory + fileName + ".wav";
-        console.log(imageURI);
+	    var voiceURI = cordova.file.documentsDirectory + fileName + ".wav";
+        console.log(voiceURI);
 	    var options = new FileUploadOptions();
 	    options.fileKey = "fileToUpload";
-	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+	    options.fileName = voiceURI.substr(voiceURI.lastIndexOf('/') + 1);
 	    options.mimeType = "audio/wav";
 	    var params = new Object();
 	    options.params = params;
@@ -537,7 +611,7 @@ angular.module('starter.controllers', [])
 		      //loadingStatus.increment();
 		    }
 	    };
-	    ft.upload(imageURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
+	    ft.upload(voiceURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
         options);
 	}
 
@@ -546,6 +620,7 @@ angular.module('starter.controllers', [])
 	    console.log("Response = " + r.response);
 	    console.log("Sent = " + r.bytesSent);
 	    $ionicLoading.hide();
+        $scope.$emit('fileUrl', [r.response,fileName + ".wav","Voice"]);
 	}
 
 	function fail(error) {
@@ -588,4 +663,10 @@ function back()
 {
 	//$('#send_message').css({'display':'none'});
 	//$('#chatroom_back').css({'display':'none'});
+}
+
+
+function testfunc()
+{
+	return 'tabs-item-hide';
 }

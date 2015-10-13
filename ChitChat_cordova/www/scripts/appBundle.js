@@ -964,7 +964,7 @@ var ChatRoomController = (function () {
     ChatRoomController.prototype.onMessageRead = function (dataEvent) {
         console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
         var self = this;
-        var newMsg = JSON.parse(JSON.stringify(dataEvent));
+        var newMsg = JSON.parse(JSON.stringify(dataEvent.data));
         this.chatMessages.some(function callback(value) {
             if (value._id === newMsg._id) {
                 value.readers = newMsg.readers;
