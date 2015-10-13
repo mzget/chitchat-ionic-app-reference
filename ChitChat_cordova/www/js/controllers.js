@@ -295,7 +295,6 @@ angular.module('starter.controllers', [])
 	        }
 	    }
 	    else if (event === "onMessageRead") {
-	        console.warn(newMsg);
 	        Chats.set(chatRoomControl.chatMessages);
 	    }
     }
@@ -376,13 +375,10 @@ angular.module('starter.controllers', [])
 			$scope.$broadcast('startRecord', 'startRecord');
 		}
 	}
+    $scope.image = function(){
+        $scope.$broadcast('addImg', 'addImg');
+    }
 
-	// Chat Menu
-	$('#chatMenu').click(function(){/*
-		//$scope.$broadcast('addImg', 'addImg');
-		
-		*/
-	});
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
 		if(args[1] == "Image"){
@@ -570,14 +566,18 @@ angular.module('starter.controllers', [])
 
 
 	var audio;
-	$scope.play = function(url){
+	$scope.play = function(id,url){
 		console.log(url);
-		$scope.playing = 'true';
+		$('.ion-pause').css({ 'display': 'none' });
+		$('.ion-play').css({ 'display': 'inline' });
+		$('#' + id + '-voice-play').css({ 'display': 'none' });
+		$('#' + id + '-voice-pause').css({ 'display': 'inline' });
 		audio = new Media(url);
 		audio.play();
 	}
-	$scope.pause = function(){
-		$scope.playing = 'false';
+	$scope.pause = function(id){
+		$('#' + id + '-voice-play').css({ 'display': 'inline' });
+		$('#' + id + '-voice-pause').css({ 'display': 'none' });
 		audio.stop();
 	}
 

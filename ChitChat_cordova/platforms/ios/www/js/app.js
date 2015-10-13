@@ -159,17 +159,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 		}
 	})
 	
-	/*
-	.state('tab.chat-detail', {
-		url: '/chats/:chatId',
+	.state('tab.chats', {
+		url: '/chats',
 		views: {
 			'tab-chats': {
-				templateUrl: 'templates/chat-detail.html',
-				controller: 'ChatDetailCtrl'
+				templateUrl: 'templates/tab-chats.html',
+				controller: 'ChatsCtrl'
 			}
 		}
 	})
 
+	/*
 	// CHAT : Message
 	.state('tab.message', {
 		url: '/message/:chatId',
