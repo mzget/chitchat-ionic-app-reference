@@ -383,7 +383,6 @@ angular.module('starter.controllers', [])
 	// Chat Menu
 	$('#chatMenu').click(function(){/*
 		//$scope.$broadcast('addImg', 'addImg');
-		
 		*/
 	});
 	// Recivce ImageUri from Gallery then send to other people
@@ -425,6 +424,7 @@ angular.module('starter.controllers', [])
 	$scope.viewReader = function (readers) {
 	    readers.forEach(function iterator(member) {
 	        console.log(JSON.stringify(dataManager.orgMembers[member]));
+	    	location.href = '#/tab/chat/readers';
 	    });
 	}
 	

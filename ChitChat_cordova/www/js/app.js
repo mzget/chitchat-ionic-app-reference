@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 'ngCordova'])
+angular.module('starter', ['ionic', 'starter.controllers', 'testApp', 'starter.services' , 'ngCordova'])
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {
@@ -221,6 +221,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 				controller: 'AccountCreate'
 			}
 		}
+	})
+	
+	.state('tab.chat.readers', {
+		url: '/group/chat/readers',
+		views: {
+			'tab-group' : {
+				templateUrl : 'templates/reader-view.html',
+				controller: 'chatController'
+			}
+		}	
 	});
 
 	// if none of the above states are matched, use this as the fallback
