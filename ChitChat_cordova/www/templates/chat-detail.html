@@ -1,12 +1,11 @@
-<ion-view view-title="{{title}}" cache-view="false" ImageController VoiceController>
+<ion-view view-title="{{title}}" cache-view="false">
 	<ion-content delegate-handle="mainScroll">
         
-        <div ng-controller="ImageController"></div>
-        <div ng-controller="VoiceController"></div>
+        <div ng-controller="ImageController">
+        	<div ng-controller="VoiceController">
 
         
 		<ion-list class="message-list" ng-repeat="message in chat track by $index">
-            
 			<ion-item ng-if="message.sender != myprofile._id && !!message.sender" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 				<h2>{{allMembers[message.sender]['displayname']}}</h2>
@@ -39,8 +38,10 @@
                 <label style="clear:none;" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
 				<label> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
-
 		</ion-list>
+
+			</div>
+		</div>
 
 	</ion-content>
 </ion-view>

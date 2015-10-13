@@ -230,17 +230,3 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 	$urlRouterProvider.otherwise('/tab/login');
 
 });
-
-
-    
-app.directive('ImageController',function(){
-    return {
-        controller: 'ImageController'
-    }
-});
-
-app.directive('VoiceController',function(){
-    return {
-        controller: 'VoiceController'
-    }
-});
