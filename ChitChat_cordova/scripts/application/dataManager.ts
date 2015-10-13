@@ -20,6 +20,7 @@ class DataManager implements Services.IFrontendServerListener {
     public projectBaseGroups: IRoomMap = {};
     public privateGroups: IRoomMap = {};
     public orgMembers: IMemberMep = {};
+    public isOrgMembersReady :boolean = false;
 
 
     public onMyProfileReady;
@@ -70,14 +71,19 @@ class DataManager implements Services.IFrontendServerListener {
 
 
     public onGetCompanyMemberComplete(dataEvent) {
-        var member: Array<OrgMember> = JSON.parse(JSON.stringify(dataEvent));
+        var self = this;
+        var members: Array<OrgMember> = JSON.parse(JSON.stringify(dataEvent));
 
         if (!this.orgMembers) this.orgMembers = {};
 
-        member.forEach(value => {
-            if (!this.orgMembers[value._id]) {
-                this.orgMembers[value._id] = value;
+        async.eachSeries(members, function iterator(item, cb) {
+            if (!self.orgMembers[item._id]) {
+                self.orgMembers[item._id] = item;
             }
+            
+            cb();
+        }, function done(err) {
+            self.isOrgMembersReady = true;
         });
     };
     public onGetOrganizeGroupsComplete(dataEvent) {

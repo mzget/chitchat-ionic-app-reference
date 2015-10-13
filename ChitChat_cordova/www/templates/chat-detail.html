@@ -34,8 +34,8 @@
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
                 </div>
 				
-
-                <label style="clear:none;" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
+						
+                <label style="clear:none;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
 				<label> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
 		</ion-list>
