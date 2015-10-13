@@ -221,6 +221,7 @@ angular.module('spartan.controllers', [])
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
 })
+
 .controller('GroupDetailCtrl', function($scope, $stateParams, roomInfo) {
 	$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
 	
