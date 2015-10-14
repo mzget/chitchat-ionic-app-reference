@@ -10,7 +10,7 @@ angular.module('spartan.chat', [])
     var currentRoom = roomSelected.getRoom();
     var myprofile = main.getDataManager().myProfile;
     var allMembers = main.getDataManager().orgMembers;
-	console.debug("chatController", currentRoom.name, currentRoom._id);
+	//console.debug("chatController", currentRoom.name, currentRoom._id);
 	
 	modalcount = 0;	
 	// Modal - Chat menu 
@@ -23,8 +23,8 @@ angular.module('spartan.chat', [])
 	$scope.openModal = function() {
 		modalcount++;
 		$scope.modal.show();
-		$('#chatMessage').animate({'bottom':'192px'}, 350);
-		$('#chatDetail').animate({'top':'-192px'}, 350);
+		$('#chatMessage').animate({'bottom':'272px'}, 350);
+		$('#chatDetail').animate({'top':'-272px'}, 350);
 	};
 	
 	// Modal - Sticker
@@ -32,11 +32,24 @@ angular.module('spartan.chat', [])
 		scope: $scope,
 		animation: 'slide-in-up'
 	}).then(function(modal) {
-		$scope.modelSticker = modal;
+		$scope.modalSticker = modal;
 	});
 	$scope.openModalSticker = function() {
 		modalcount++;
-		$scope.modelSticker.show();
+		$scope.modalSticker.show();
+	};
+	$scope.sendSticker = function(sticker) {
+		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, sticker, "Sticker", function(err, res) {
+			if (err || res === null) {
+				console.warn("send message fail.");
+			}
+			else {
+				console.log("send message:", res);
+			}
+		});
+		
+		$scope.modalSticker.hide();
+		$scope.modal.hide();
 	};
 				
 	// Modal Hidden		
@@ -210,7 +223,7 @@ angular.module('spartan.chat', [])
 			scope: $scope,
 			animation: 'slide-in-up'
 		}).then(function(modal) {
-			$scope.modelSticker = modal;
+			$scope.modalSticker = modal;
 		})
 		
     });

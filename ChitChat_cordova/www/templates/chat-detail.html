@@ -12,6 +12,7 @@
 
 				<p id="{{message._id}}" ng-if="message.type=='Text'">{{message.body}}</p>
 				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
+				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
 					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://stalk.animation-genius.com'+message.body)"></i>
 					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
@@ -24,6 +25,7 @@
                 <p ng-if="message.type=='Text'">{{message.body}}</p>
                 <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-src="{{message.body}}"/>
 				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
+				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'">
                     <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
