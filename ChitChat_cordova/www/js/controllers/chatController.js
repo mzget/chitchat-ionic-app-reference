@@ -148,6 +148,9 @@ angular.module('spartan.chat', [])
     $scope.image = function(){
         $scope.$broadcast('addImg', 'addImg');
     }
+    $scope.video = function(){
+        $scope.$broadcast('captureVideo', 'captureVideo');
+    }
 
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
@@ -155,6 +158,8 @@ angular.module('spartan.chat', [])
 			$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}else if(args[1] == "Voice"){
 			$scope.chat.push( {"rid":currentRoom._id,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+		}else if(args[1] == "Video"){
+
 		}
 		
 	});
@@ -178,9 +183,18 @@ angular.module('spartan.chat', [])
 					console.log("send message:", JSON.stringify(res));
 				}
 			});
+		}else if(args[2]=="Video"){
+			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], function(err, res) {
+				if (err || res === null) {
+					console.warn("send message fail.");
+				}
+				else {
+					console.log("send message:", JSON.stringify(res));
+				}
+			});
 		}
 		$.each($scope.chat, function(index, value){
-			console.log(value._id,args[1]);
+			//console.log(value._id,args[1]);
 			if(value._id == args[1]) { $scope.chat[index] = new Object; }
 		});
 	});
