@@ -38,16 +38,18 @@ angular.module('spartan.chat', [])
 		
 		$scope.modalSticker.hide();
 		$scope.modal.hide();
-	};
-				
+	}
+	
 	// Modal Hidden		
 	$scope.$on('modal.hidden', function() {
 		modalcount--;
-		if( modalcount == 0 )
+		
+		if( modalcount == 1 )
 		{
-			$('#chatMessage').animate({'bottom':'0'}, 350);
-			$('#chatDetail').animate({'top':'0'}, 350);		
+			$scope.modal.hide();			
 		}
+		$('#chatMessage').animate({'bottom':'0'}, 350);
+		$('#chatDetail').animate({'top':'0'}, 350);		
 	});
 	$scope.openReaderModal = function() {
 		$scope.readerViewModal.show();
@@ -56,6 +58,14 @@ angular.module('spartan.chat', [])
 		$scope.readerViewModal.hide();
 	};
 	
+	// WebView
+	$scope.webview = function(uri){
+		http = '';
+		if( uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp' )
+			http = 'http://';
+		http += uri;
+		window.open(http, '_blank');
+	};
 	
 	$scope.chat = [];
 	$scope.title = currentRoom.name;	
@@ -165,7 +175,7 @@ angular.module('spartan.chat', [])
 		}else if(args[1] == "Voice"){
 			$scope.chat.push( {"rid":currentRoom._id,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}else if(args[1] == "Video"){
-
+			$scope.chat.push( {"rid":currentRoom._id,"type":"Video","body":cordova.file.tempDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}
 		
 	});
@@ -221,6 +231,14 @@ angular.module('spartan.chat', [])
         console.log("map");
         location.href = "#/tap/chat/map";
     }
+	
+	$scope.isValidURI = function(uri) {
+		if( uri.substr(0, 3) == 'www' || uri.substr(0, 4) == 'http' || uri.substr(0, 3) == 'ftp' )
+			if( uri.split(".").length > 2 && uri.split(".")[1] != '' && uri.split(".")[2] != '' )
+				return true;
+		
+		return false;
+	};
 	
 	// ON ENTER 
     $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
