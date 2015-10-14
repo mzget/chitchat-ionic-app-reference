@@ -64,7 +64,7 @@ angular.module('spartan.chat', [])
 		if( uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp' )
 			http = 'http://';
 		http += uri;
-		window.open(http, '_self');
+		window.open(http, '_blank', 'location=no');
 	};
 	
 	$scope.chat = [];
