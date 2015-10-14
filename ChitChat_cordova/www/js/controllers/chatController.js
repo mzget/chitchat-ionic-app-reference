@@ -14,12 +14,6 @@ angular.module('spartan.chat', [])
 	
 	modalcount = 0;	
 	// Modal - Chat menu 
-	$ionicModal.fromTemplateUrl('templates/reader-view.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.modal = modal;
-	});
 	$scope.openModal = function() {
 		modalcount++;
 		$scope.modal.show();
@@ -28,12 +22,6 @@ angular.module('spartan.chat', [])
 	};
 	
 	// Modal - Sticker
-	$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.modelSticker = modal;
-	});
 	$scope.openModalSticker = function() {
 		modalcount++;
 		$scope.modelSticker.show();
@@ -48,6 +36,12 @@ angular.module('spartan.chat', [])
 			$('#chatDetail').animate({'top':'0'}, 350);		
 		}
 	});
+	$scope.openReaderModal = function() {
+		$scope.readerViewModal.show();
+	};
+	$scope.closeReaderModal = function() {
+		$scope.readerViewModal.hide();
+	};
 	
 	
 	$scope.chat = [];
@@ -189,6 +183,8 @@ angular.module('spartan.chat', [])
 	    readers.forEach(function iterator(member) {
 	        console.log(JSON.stringify(dataManager.orgMembers[member]));
 	    });
+		
+		$scope.openReaderModal();
 	}
 	
 	// ON ENTER 
@@ -213,6 +209,13 @@ angular.module('spartan.chat', [])
 			$scope.modelSticker = modal;
 		})
 		
+		// Reader view modal.
+		$ionicModal.fromTemplateUrl('templates/reader-view.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.readerViewModal = modal;
+		});
     });
 
 	// ON LEAVE
