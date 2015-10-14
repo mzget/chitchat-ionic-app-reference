@@ -167,7 +167,7 @@ angular.module('spartan.chat', [])
 		}else if(args[1] == "Voice"){
 			$scope.chat.push( {"rid":currentRoom._id,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}else if(args[1] == "Video"){
-
+			$scope.chat.push( {"rid":currentRoom._id,"type":"Video","body":cordova.file.tempDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}
 		
 	});
