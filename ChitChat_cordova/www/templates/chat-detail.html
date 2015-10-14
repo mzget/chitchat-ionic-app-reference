@@ -13,7 +13,7 @@
 				<p id="{{message._id}}" ng-if="message.type=='Text'">{{message.body}}</p>
 				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
-					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
+					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://stalk.animation-genius.com'+message.body)"></i>
 					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
 

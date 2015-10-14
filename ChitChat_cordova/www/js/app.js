@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'starter.services' , 'ngCordova'])
+angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spartan.media', 'starter.services', 'ngCordova'])
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {
@@ -116,16 +116,6 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'star
 			}
 		}
 	})
-	
-	.state('tab.group-detail', {
-		url: '/group/detail/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-detail.html',
-				controller: 'chatController'
-			}
-		}
-	})
 		
 	// GROUP - Members
 	.state('tab.group-members', {
@@ -136,6 +126,16 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'star
 				controller: 'GroupMembersCtrl'
 			}
 		}
+	})
+
+	.state('tab.group-detail', {
+	    url: '/group/detail/:chatId',
+	    views: {
+	        'tab-group': {
+	            templateUrl: 'templates/tab-group-detail.html',
+	            controller: 'MemberDetailCtrl'
+	        }
+	    }
 	})
 	
 	// CHATS - Notification

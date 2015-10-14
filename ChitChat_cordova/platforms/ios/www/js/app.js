@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 'ngCordova'])
+angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spartan.media', 'starter.services', 'ngCordova'])
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {
@@ -116,16 +116,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 			}
 		}
 	})
-	
-	.state('tab.group-detail', {
-		url: '/group/detail/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-detail.html',
-				controller: 'GroupDetailCtrl'
-			}
-		}
-	})
 		
 	// GROUP - Members
 	.state('tab.group-members', {
@@ -136,6 +126,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 				controller: 'GroupMembersCtrl'
 			}
 		}
+	})
+
+	.state('tab.group-detail', {
+	    url: '/group/detail/:chatId',
+	    views: {
+	        'tab-group': {
+	            templateUrl: 'templates/tab-group-detail.html',
+	            controller: 'MemberDetailCtrl'
+	        }
+	    }
 	})
 	
 	// CHATS - Notification
@@ -154,7 +154,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
-				controller: 'ChatDetailCtrl'
+				controller: 'chatController'
 			}
 		}
 	})
@@ -221,6 +221,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 				controller: 'AccountCreate'
 			}
 		}
+	})
+	
+	.state('tab.chat.readers', {
+		url: '/group/chat/readers',
+		views: {
+			'tab-group' : {
+				templateUrl : 'templates/reader-view.html',
+				controller: 'chatController'
+			}
+		}	
 	});
 
 	// if none of the above states are matched, use this as the fallback

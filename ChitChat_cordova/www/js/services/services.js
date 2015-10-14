@@ -168,4 +168,21 @@ angular.module('starter.services', [])
 			chats = json;
 		}
 	};
+})
+.factory('roomSelected', function () {
+    var room;
+
+    function getRoom() {
+        return room;
+    };
+
+    function setRoom(_room) {
+        room = _room;
+        console.debug("setRoom", room);
+    };
+
+    return {
+        getRoom: getRoom,
+        setRoom: setRoom
+    }
 });

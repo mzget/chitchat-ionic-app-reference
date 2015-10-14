@@ -5,10 +5,14 @@ angular.module('spartan.chat', [])
 })
 
 
-.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats) 
-{    	
-	modalcount = 0;
+.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats, roomSelected) 
+{    		
+    var currentRoom = roomSelected.getRoom();
+    var myprofile = main.getDataManager().myProfile;
+    var allMembers = main.getDataManager().orgMembers;
+	console.debug("chatController", currentRoom.name, currentRoom._id);
 	
+	modalcount = 0;	
 	// Modal - Chat menu 
 	$ionicModal.fromTemplateUrl('templates/reader-view.html', {
 		scope: $scope,
@@ -70,7 +74,7 @@ angular.module('spartan.chat', [])
     });
      
     var countUp = function () {		
-		if( currentRoom != '' )
+		if( currentRoom != null )
 		{
 			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
@@ -98,9 +102,8 @@ angular.module('spartan.chat', [])
         console.log(chat);
     });*/
 
-
-	$scope.allMembers = allMembers;
-	$scope.myprofile = myprofile;
+    $scope.allMembers = allMembers;
+    $scope.myprofile = myprofile;
     $scope.chat = Chats.all();
     $('#send_message').css({ 'display': 'inline-block' });
     //$('#chatroom_back').css({ 'display': 'inline-block' });
@@ -191,7 +194,6 @@ angular.module('spartan.chat', [])
 	// ON ENTER 
     $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
         console.log("App view (menu) entered.");
-        console.log(arguments); 
 		
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
 			
@@ -224,7 +226,8 @@ angular.module('spartan.chat', [])
 			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomControl.chatMessages));
 			console.warn("save", currentRoom.name, JSON.stringify(chatRoomControl.chatMessages));
 
-			currentRoom = "";
+			currentRoom = null;
+			roomSelected.setRoom(currentRoom);
 			chatRoomControl.chatMessages = [];
 			main.dataListener.removeListener(chatRoomControl);
 		});
