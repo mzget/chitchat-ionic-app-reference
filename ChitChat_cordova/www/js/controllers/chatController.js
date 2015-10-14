@@ -10,21 +10,34 @@ angular.module('spartan.chat', [])
     var currentRoom = roomSelected.getRoom();
     var myprofile = main.getDataManager().myProfile;
     var allMembers = main.getDataManager().orgMembers;
-	console.debug("chatController", currentRoom.name, currentRoom._id);
+	//console.debug("chatController", currentRoom.name, currentRoom._id);
 	
 	modalcount = 0;	
 	// Modal - Chat menu 
 	$scope.openModal = function() {
 		modalcount++;
 		$scope.modal.show();
-		$('#chatMessage').animate({'bottom':'192px'}, 350);
-		$('#chatDetail').animate({'top':'-192px'}, 350);
+		$('#chatMessage').animate({'bottom':'272px'}, 350);
+		$('#chatDetail').animate({'top':'-272px'}, 350);
 	};
 	
 	// Modal - Sticker
 	$scope.openModalSticker = function() {
 		modalcount++;
-		$scope.modelSticker.show();
+		$scope.modalSticker.show();
+	};
+	$scope.sendSticker = function(sticker) {
+		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, sticker, "Sticker", function(err, res) {
+			if (err || res === null) {
+				console.warn("send message fail.");
+			}
+			else {
+				console.log("send message:", res);
+			}
+		});
+		
+		$scope.modalSticker.hide();
+		$scope.modal.hide();
 	};
 				
 	// Modal Hidden		
@@ -141,6 +154,9 @@ angular.module('spartan.chat', [])
     $scope.image = function(){
         $scope.$broadcast('addImg', 'addImg');
     }
+    $scope.video = function(){
+        $scope.$broadcast('captureVideo', 'captureVideo');
+    }
 
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
@@ -148,6 +164,8 @@ angular.module('spartan.chat', [])
 			$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}else if(args[1] == "Voice"){
 			$scope.chat.push( {"rid":currentRoom._id,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+		}else if(args[1] == "Video"){
+
 		}
 		
 	});
@@ -171,9 +189,18 @@ angular.module('spartan.chat', [])
 					console.log("send message:", JSON.stringify(res));
 				}
 			});
+		}else if(args[2]=="Video"){
+			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], function(err, res) {
+				if (err || res === null) {
+					console.warn("send message fail.");
+				}
+				else {
+					console.log("send message:", JSON.stringify(res));
+				}
+			});
 		}
 		$.each($scope.chat, function(index, value){
-			console.log(value._id,args[1]);
+			//console.log(value._id,args[1]);
 			if(value._id == args[1]) { $scope.chat[index] = new Object; }
 		});
 	});
@@ -214,7 +241,7 @@ angular.module('spartan.chat', [])
 			scope: $scope,
 			animation: 'slide-in-up'
 		}).then(function(modal) {
-			$scope.modelSticker = modal;
+			$scope.modalSticker = modal;
 		})
 		
 		// Reader view modal.
