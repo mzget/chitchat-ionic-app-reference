@@ -43,11 +43,13 @@ angular.module('spartan.chat', [])
 	// Modal Hidden		
 	$scope.$on('modal.hidden', function() {
 		modalcount--;
-		if( modalcount == 0 )
+		
+		if( modalcount == 1 )
 		{
-			$('#chatMessage').animate({'bottom':'0'}, 350);
-			$('#chatDetail').animate({'top':'0'}, 350);		
+			$scope.modal.hide();			
 		}
+		$('#chatMessage').animate({'bottom':'0'}, 350);
+		$('#chatDetail').animate({'top':'0'}, 350);		
 	});
 	$scope.openReaderModal = function() {
 		$scope.readerViewModal.show();
@@ -221,6 +223,14 @@ angular.module('spartan.chat', [])
         console.log("map");
         location.href = "#/tap/chat/map";
     }
+	
+	$scope.isValidURI = function(uri) {
+		if( uri.substr(0, 3) == 'www' || uri.substr(0, 4) == 'http' || uri.substr(0, 3) == 'ftp' )
+			if( uri.split(".").length > 2 && uri.split(".")[1] != '' && uri.split(".")[2] != '' )
+				return true;
+		
+		return false;
+	};
 	
 	// ON ENTER 
     $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
