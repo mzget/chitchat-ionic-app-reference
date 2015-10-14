@@ -12,13 +12,33 @@ angular.module('spartan.chat', [])
     var allMembers = main.getDataManager().orgMembers;
 	console.debug("chatController", currentRoom.name, currentRoom._id);
 	
+	
+    $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
+        console.log("App view (menu) entered.");
+		
+		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
+			
+		// Reload Modal - Chat menu
+		$ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modal = modal;
+		})
+		
+		// Reload Modal - Sticker
+		$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modelSticker = modal;
+		})
+	
+		$scope.sticker = function(){
+			alert("OK");
+		}
+    });
 	// Modal - Chat menu 
-	$ionicModal.fromTemplateUrl('templates/reader-view.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.modal = modal;
-	});
 	$scope.openModal = function() {
 		$scope.modal.show();
 		$('#chatMessage').animate({'bottom':'192px'}, 300);
@@ -30,12 +50,6 @@ angular.module('spartan.chat', [])
 	});
 	
 	// Modal - Sticker
-	$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.modelSticker = modal;
-	});
 	$scope.openModalSticker = function() {
 		$scope.modal.hide();
 		$scope.modelSticker.show();
@@ -185,32 +199,6 @@ angular.module('spartan.chat', [])
 	        console.log(JSON.stringify(dataManager.orgMembers[member]));
 	    });
 	}
-	
-    $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
-        console.log("App view (menu) entered.");
-		
-		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
-			
-		// Reload Modal - Chat menu
-		$ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.modal = modal;
-		})
-		
-		// Reload Modal - Sticker
-		$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.modelSticker = modal;
-		})
-	
-		$scope.sticker = function(){
-			alert("OK");
-		}
-    });
 
     $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
         console.log("App view (menu) leaved.");
