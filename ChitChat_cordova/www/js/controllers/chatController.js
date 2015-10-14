@@ -85,7 +85,7 @@ angular.module('spartan.chat', [])
 		{
 			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-			// console.log('update with timeout fired');
+			console.info('update with timeout fired');
 			$scope.chat = Chats.all();
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
@@ -267,8 +267,6 @@ angular.module('spartan.chat', [])
 			roomSelected.setRoom(currentRoom);
 			chatRoomControl.chatMessages = [];
 			main.dataListener.removeListener(chatRoomControl);
-			
-			Location.href = '#/tap/group';
 		});
     });
 });

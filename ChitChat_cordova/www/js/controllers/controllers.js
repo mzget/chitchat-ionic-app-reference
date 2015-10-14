@@ -25,7 +25,7 @@ angular.module('spartan.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function($rootScope, $scope, $timeout) 
+.controller('GroupCtrl', function ($rootScope, $scope, $timeout, $ionicModal, roomSelected)
 {	
 	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;
@@ -44,6 +44,13 @@ angular.module('spartan.controllers', [])
 		$scope.refreshView();
 	
 		$scope.interval = setInterval(function() { $scope.refreshView(); }, 1000);
+		
+		$ionicModal.fromTemplateUrl('templates/tab-group-orggroup.html', {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+		}).then(function (modal) {
+		    $scope.orgModal = modal;
+		});
 	});
 	
 	$scope.$on('$ionicView.leave', function() {
@@ -69,6 +76,14 @@ angular.module('spartan.controllers', [])
 	$scope.hideTab = function(){		
 		$rootScope.hideTabs = true;
 	}
+	$scope.openOrgModal = function (groupId) {
+	    initOrgModal($scope, groupId, roomSelected, function () {
+	        $scope.orgModal.show();
+	    });
+	};
+	$scope.closeOrgModal = function () {
+	    $scope.orgModal.hide();
+	};
 })
 
 // GROUP - Profile
@@ -164,7 +179,7 @@ angular.module('spartan.controllers', [])
 
 // GROUP - Type
 
-.controller('GroupOrggroupsCtrl', function ($scope, $stateParams, roomSelected) {
+.controller('GroupOrggroupsCtrl', function ($scope, $stateParams , $ionicModal, roomSelected) {
     var group = main.getDataManager().orgGroups[$stateParams.chatId];
     roomSelected.setRoom(group);
     $scope.chat = group;
@@ -194,6 +209,31 @@ angular.module('spartan.controllers', [])
 	$scope.toggle = function (chatId) {
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
+	
+		$ionicModal.fromTemplateUrl('my-modal.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.modal = modal;
+	});
+	$scope.openModal = function() {
+		$scope.modal.show();
+	};
+	$scope.closeModal = function() {
+		$scope.modal.hide();
+	};
+	//Cleanup the modal when we're done with it!
+	$scope.$on('$destroy', function() {
+		$scope.modal.remove();
+	});
+	// Execute action on hide modal
+	$scope.$on('modal.hidden', function() {
+		// Execute action
+	});
+	// Execute action on remove modal
+	$scope.$on('modal.removed', function() {
+		// Execute action
+	});
 })
 .controller('GroupPrivateCtrl', function ($scope, $stateParams, roomSelected) {
     var group = main.getDataManager().privateGroups[$stateParams.chatId];
@@ -331,4 +371,26 @@ function back()
 function testfunc()
 {
 	return 'tabs-item-hide';
+}
+
+
+var initOrgModal = function ($scope, groupId, roomSelected, done) {
+    var group = main.getDataManager().orgGroups[groupId];
+    roomSelected.setRoom(group);
+    $scope.chat = group;
+
+    var members = group.members;
+    $scope.members_length = members.length;
+    groupMembers(members, null, function done(members) {
+        $scope.members = members;
+        $scope.$apply();
+    });
+
+    //<!-- Join chat room.
+    $scope.toggle = function (chatId) {
+        $scope.closeOrgModal();
+        location.href = '#/tab/group/chat/' + chatId;
+    };
+
+    done();
 }
