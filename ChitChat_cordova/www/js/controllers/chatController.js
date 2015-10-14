@@ -188,7 +188,6 @@ angular.module('spartan.chat', [])
 	
     $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
         console.log("App view (menu) entered.");
-        console.log(arguments); 
 		
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
 			

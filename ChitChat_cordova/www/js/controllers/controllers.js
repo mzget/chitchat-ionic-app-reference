@@ -175,11 +175,10 @@ angular.module('spartan.controllers', [])
     $scope.chat = group;
 
     var members = group.members;
-    console.log('ALL GROUP MEMBERS : ' + members.length);
+    $scope.members_length = members.length;
     groupMembers(members, null, function done(members) {
         $scope.members = members;
     });
-    $scope.members_length = members.length;
 
     //<!-- Join chat room.
     $scope.toggle = function (chatId) {
@@ -192,10 +191,9 @@ angular.module('spartan.controllers', [])
 	$scope.chat = group;
 	
 	var members = group.members;
-	console.log('ALL GROUP MEMBERS : '+members.length);
+	$scope.members_length = members.length;
 	groupMembers(members, null, function done(members) {
 	    $scope.members = members;
-	    $scope.members_length = members.length;
 	});
 			
 	$scope.toggle = function (chatId) {
@@ -207,16 +205,29 @@ angular.module('spartan.controllers', [])
     roomSelected.setRoom(group);
     $scope.chat = group;
 	
-	var members = group.members;
-	console.log('ALL GROUP MEMBERS : '+members.length);
+    var members = group.members;
+    $scope.members_length = members.length;
 	groupMembers(members, null, function done(members) {
 	    $scope.members = members;
-	    $scope.members_length = members.length;
 	});
 			
 	$scope.toggle = function (chatId) {
 	    location.href = '#/tab/group/chat/' + chatId;
 	};
+})
+.controller('MemberDetailCtrl', function ($scope, $stateParams, roomSelected) {
+    var contact = main.getDataManager().orgMembers[$stateParams.chatId];
+    $scope.chat = contact;
+
+    server.getPrivateChatRoomId(dataManager.myProfile._id, $stateParams.chatId, function result(err, res) {
+        console.log(JSON.stringify(res));
+        var room = JSON.parse(JSON.stringify(res.data));
+
+        $scope.toggle = function () {
+            roomSelected.setRoom(room);
+            location.href = '#/tab/group/chat/' + room._id;
+        };
+    });
 })
 .controller('GroupMembersCtrl', function ($scope, $stateParams, roomSelected) {
     var room = roomSelected.getRoom();
@@ -240,23 +251,8 @@ angular.module('spartan.controllers', [])
     $scope.chat = group;
     groupMembers(gMembers, gMembers.length, function done(members) {
         $scope.members = members;
-        $scope.members_length = members.length;
     });
-})
-
-.controller('GroupDetailCtrl', function($scope, $stateParams, roomSelected) {
-	var contact = main.getDataManager().orgMembers[$stateParams.chatId];
-	$scope.chat = contact;
-	
-	server.getPrivateChatRoomId(dataManager.myProfile._id, $stateParams.chatId, function result(err, res) {
-		console.log(JSON.stringify(res));
-		var room = JSON.parse(JSON.stringify(res.data));
-
-		$scope.toggle = function () {
-			roomSelected.setRoom(room);
-			location.href = '#/tab/group/chat/' + room._id;
-		};
-	});
+    $scope.members_length = gMembers.length;
 })
 
 .controller('ChatsCtrl', function($scope) {
