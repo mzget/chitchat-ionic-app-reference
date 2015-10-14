@@ -38,8 +38,8 @@ angular.module('spartan.chat', [])
 		
 		$scope.modalSticker.hide();
 		$scope.modal.hide();
-	};
-				
+	}
+	
 	// Modal Hidden		
 	$scope.$on('modal.hidden', function() {
 		modalcount--;
@@ -58,6 +58,14 @@ angular.module('spartan.chat', [])
 		$scope.readerViewModal.hide();
 	};
 	
+	// WebView
+	$scope.webview = function(uri){
+		http = '';
+		if( uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp' )
+			http = 'http://';
+		http += uri;
+		window.open(http, '_self');
+	};
 	
 	$scope.chat = [];
 	$scope.title = currentRoom.name;	

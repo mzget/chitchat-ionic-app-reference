@@ -82,7 +82,7 @@
 
 .stickerhead { width:100%; padding:5px 0; margin-bottom:10px; border-bottom:1px solid #ccc; white-space:nowrap; overflow-x:auto; overflow-y:hidden; cursor:pointer; position:relative; z-index:100; background-color:#fff; }
 .stickerhead > * { float:left; display:inline-block; width:33px; height:33px; margin:0 0 0 10px; background-size:contain; background-repeat:no-repeat; background-position:50% 50%; opacity:0.5; }
-.stickertab { width:100%; display:inline-block; text-align:center; margin-top:44px; }
+.stickertab { width:100%; display:none; text-align:center; margin-top:44px; }
 .stickertab > * { display:inline-block; width:105px; height:105px; background-size:contain; background-repeat:no-repeat; background-position:50% 50%; cursor:pointer; }
 
 

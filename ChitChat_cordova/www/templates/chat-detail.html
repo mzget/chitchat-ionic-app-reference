@@ -15,9 +15,9 @@
 					{{message.body}}
 				</p>
 				<p id="{{message._id}}" ng-if="message.type=='Text' && isValidURI(message.body)">
-					<a href="#" ng-onclick="window.open('{{message.body}}', '_blank', 'location=no'); return false;">
+					<u ng-click="webview(message.body)">
 						{{message.body}}
-					</a>
+					</u>
 				</p>
 				
 				
@@ -40,9 +40,9 @@
 					{{message.body}}
 				</p>
 				<p id="{{message._id}}" ng-if="message.type=='Text' && isValidURI(message.body)">
-					<a href="#" ng-onclick="window.open('{{message.body}}', '_blank', 'location=no'); return false;">
+					<u ng-click="webview(message.body)">
 						{{message.body}}
-					</a>
+					</u>
 				</p>
 				
                 <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-src="{{message.body}}"/>
