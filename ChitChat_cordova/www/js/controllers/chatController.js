@@ -10,33 +10,34 @@ angular.module('spartan.chat', [])
     var currentRoom = roomSelected.getRoom();
     var myprofile = main.getDataManager().myProfile;
     var allMembers = main.getDataManager().orgMembers;
-	console.debug("chatController", currentRoom.name, currentRoom._id);
+	//console.debug("chatController", currentRoom.name, currentRoom._id);
 	
 	modalcount = 0;	
 	// Modal - Chat menu 
-	$ionicModal.fromTemplateUrl('templates/reader-view.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.modal = modal;
-	});
 	$scope.openModal = function() {
 		modalcount++;
 		$scope.modal.show();
-		$('#chatMessage').animate({'bottom':'192px'}, 350);
-		$('#chatDetail').animate({'top':'-192px'}, 350);
+		$('#chatMessage').animate({'bottom':'272px'}, 350);
+		$('#chatDetail').animate({'top':'-272px'}, 350);
 	};
 	
 	// Modal - Sticker
-	$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.modelSticker = modal;
-	});
 	$scope.openModalSticker = function() {
 		modalcount++;
-		$scope.modelSticker.show();
+		$scope.modalSticker.show();
+	};
+	$scope.sendSticker = function(sticker) {
+		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, sticker, "Sticker", function(err, res) {
+			if (err || res === null) {
+				console.warn("send message fail.");
+			}
+			else {
+				console.log("send message:", res);
+			}
+		});
+		
+		$scope.modalSticker.hide();
+		$scope.modal.hide();
 	};
 				
 	// Modal Hidden		
@@ -48,6 +49,12 @@ angular.module('spartan.chat', [])
 			$('#chatDetail').animate({'top':'0'}, 350);		
 		}
 	});
+	$scope.openReaderModal = function() {
+		$scope.readerViewModal.show();
+	};
+	$scope.closeReaderModal = function() {
+		$scope.readerViewModal.hide();
+	};
 	
 	
 	$scope.chat = [];
@@ -80,7 +87,6 @@ angular.module('spartan.chat', [])
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 			// console.log('update with timeout fired');
 			$scope.chat = Chats.all();
-			console.log( 'Refresh! by timeout fired...', Chats.all().length);
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
 			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
@@ -200,10 +206,21 @@ angular.module('spartan.chat', [])
 	});
 
 	$scope.viewReader = function (readers) {
-	    readers.forEach(function iterator(member) {
-	        console.log(JSON.stringify(dataManager.orgMembers[member]));
-	    });
+		var members = [];
+		async.eachSeries(readers, function iterator(item, cb) {
+			var member = dataManager.orgMembers[item];
+			members.push(member);
+			cb();
+		}, function done(err) {
+			$scope.readers = members;
+			$scope.openReaderModal();
+		});
 	}
+    
+    $scope.openMap = function() {
+        console.log("map");
+        location.href = "#/tap/chat/map";
+    }
 	
 	// ON ENTER 
     $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
@@ -224,15 +241,21 @@ angular.module('spartan.chat', [])
 			scope: $scope,
 			animation: 'slide-in-up'
 		}).then(function(modal) {
-			$scope.modelSticker = modal;
+			$scope.modalSticker = modal;
 		})
 		
+		// Reader view modal.
+		$ionicModal.fromTemplateUrl('templates/reader-view.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.readerViewModal = modal;
+		});
     });
 
 	// ON LEAVE
     $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
         console.log("App view (menu) leaved.");
-        console.log(arguments);
 				
 		$('#send_message').css({ 'display': 'none' });
 		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
@@ -244,6 +267,8 @@ angular.module('spartan.chat', [])
 			roomSelected.setRoom(currentRoom);
 			chatRoomControl.chatMessages = [];
 			main.dataListener.removeListener(chatRoomControl);
+			
+			Location.href = '#/tap/group';
 		});
     });
 });
