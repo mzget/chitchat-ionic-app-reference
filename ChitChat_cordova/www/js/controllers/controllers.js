@@ -31,21 +31,20 @@ angular.module('spartan.controllers', [])
 		$rootScope.hideTabs = false;
 	});
 	
-	var refreshView = function () {
+	$scope.refreshView = function () {
 		console.debug("GroupCtrl : refreshView");
+	
 		var dataManager = main.getDataManager();
-        
         $scope.myProfile = dataManager.myProfile;
         $scope.orgGroups = dataManager.orgGroups;
         $scope.pjbGroups = dataManager.projectBaseGroups;
         $scope.pvGroups = dataManager.privateGroups;
         $scope.chats = dataManager.orgMembers;
-		$scope.$apply();
 	};
 
-    refreshView();
+    $scope.refreshView();
 
-    setInterval(function() { refreshView(); }, 1000);
+    setInterval(function() { $scope.refreshView(); }, 1000);
 
 	//$scope.chats = Chats.all();
 	$scope.remove = function(chat) {
