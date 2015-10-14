@@ -190,6 +190,11 @@ angular.module('spartan.chat', [])
 			$scope.openReaderModal();
 		});
 	}
+    
+    $scope.openMap = function() {
+        console.log("map");
+        location.href = "#/tap/chat/map";
+    }
 	
 	// ON ENTER 
     $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
