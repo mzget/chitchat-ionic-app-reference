@@ -10,7 +10,10 @@
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 				<h2>{{allMembers[message.sender]['displayname']}}</h2>
 
-				<p id="{{message._id}}" ng-if="message.type=='Text'">{{message.body}}</p>
+				<p id="{{message._id}}" ng-if="message.type=='Text'">
+					{{isValidURI(message.body)}}				
+				</p>
+				
 				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
@@ -22,7 +25,15 @@
 			</ion-item>
 
 			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
-                <p ng-if="message.type=='Text'">{{message.body}}</p>
+				<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
+					{{message.body}}
+				</p>
+				<p id="{{message._id}}" ng-if="message.type=='Text' && isValidURI(message.body)">
+					<a href="#" onclick="window.open('{{message.body}}', '_system', 'location=yes'); return false;">
+						{{message.body}}
+					</a>
+				</p>
+				
                 <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-src="{{message.body}}"/>
 				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://stalk.animation-genius.com{{message.body}}"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
