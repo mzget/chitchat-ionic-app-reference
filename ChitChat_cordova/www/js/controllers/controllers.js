@@ -30,10 +30,11 @@ angular.module('spartan.controllers', [])
 	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;
 	});
-	console.debug("GroupCtrl");
-	var refreshView = function () {
+	
+	$scope.refreshView = function () {
+		console.debug("GroupCtrl : refreshView");
+	
 		var dataManager = main.getDataManager();
-        
         $scope.myProfile = dataManager.myProfile;
         $scope.orgGroups = dataManager.orgGroups;
         $scope.pjbGroups = dataManager.projectBaseGroups;
@@ -41,9 +42,9 @@ angular.module('spartan.controllers', [])
         $scope.chats = dataManager.orgMembers;
 	};
 
-    refreshView();
+    $scope.refreshView();
 
-    setInterval(function() { refreshView(); }, 1000);
+    setInterval(function() { $scope.refreshView(); }, 1000);
 
 	//$scope.chats = Chats.all();
 	$scope.remove = function(chat) {

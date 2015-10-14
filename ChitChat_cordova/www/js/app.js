@@ -168,6 +168,15 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			}
 		}
 	})
+    .state('tap.chat.map', {
+        url: '/chat/map',
+        views: {
+            'tab-chats': {
+				templateUrl: 'templates/map.html',
+				controller: 'chatController'
+			}
+        }
+    })
 
 	/*
 	// CHAT : Message
