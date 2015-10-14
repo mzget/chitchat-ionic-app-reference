@@ -30,8 +30,9 @@ angular.module('spartan.controllers', [])
 	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;
 	});
-	console.debug("GroupCtrl");
+	
 	var refreshView = function () {
+		console.debug("GroupCtrl : refreshView");
 		var dataManager = main.getDataManager();
         
         $scope.myProfile = dataManager.myProfile;

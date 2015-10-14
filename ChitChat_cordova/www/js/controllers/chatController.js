@@ -180,11 +180,15 @@ angular.module('spartan.chat', [])
 	});
 
 	$scope.viewReader = function (readers) {
-	    readers.forEach(function iterator(member) {
-	        console.log(JSON.stringify(dataManager.orgMembers[member]));
-	    });
-		
-		$scope.openReaderModal();
+		var members = [];
+		async.eachSeries(readers, function iterator(item, cb) {
+			var member = dataManager.orgMembers[item];
+			members.push(member);
+			cb();
+		}, function done(err) {
+			$scope.readers = members;
+			$scope.openReaderModal();
+		});
 	}
 	
 	// ON ENTER 
