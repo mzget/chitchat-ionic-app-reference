@@ -42,12 +42,6 @@
                             "xml": false,
                             "count": 1
                         }
-                    ],
-                    "AudioToolbox.framework": [
-                        {
-                            "xml": true,
-                            "count": 1
-                        }
                     ]
                 }
             },
@@ -79,19 +73,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Capture\"><param name=\"ios-package\" value=\"CDVCapture\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Media\"><param name=\"ios-package\" value=\"CDVSound\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"ProgressIndicator\"><param name=\"ios-package\" value=\"ProgressIndicator\" /></feature>",
+                            "xml": "<feature name=\"Capture\"><param name=\"ios-package\" value=\"CDVCapture\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -122,19 +108,10 @@
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
+        "cordova-plugin-media": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
         "cordova-plugin-media-capture": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
-        "org.apache.cordova.dialogs": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
-        "org.apache.cordova.media": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
-        "org.pbernasconi.progressindicator": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
-        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
