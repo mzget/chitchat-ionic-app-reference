@@ -40,6 +40,7 @@ angular.module('spartan.controllers', [])
         $scope.pjbGroups = dataManager.projectBaseGroups;
         $scope.pvGroups = dataManager.privateGroups;
         $scope.chats = dataManager.orgMembers;
+		$scope.$apply();
 	};
 
     refreshView();

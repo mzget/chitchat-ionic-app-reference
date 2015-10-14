@@ -74,7 +74,6 @@ angular.module('spartan.chat', [])
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 			// console.log('update with timeout fired');
 			$scope.chat = Chats.all();
-			console.log( 'Refresh! by timeout fired...', Chats.all().length);
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
 			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
@@ -230,7 +229,6 @@ angular.module('spartan.chat', [])
 	// ON LEAVE
     $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
         console.log("App view (menu) leaved.");
-        console.log(arguments);
 				
 		$('#send_message').css({ 'display': 'none' });
 		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
@@ -242,6 +240,8 @@ angular.module('spartan.chat', [])
 			roomSelected.setRoom(currentRoom);
 			chatRoomControl.chatMessages = [];
 			main.dataListener.removeListener(chatRoomControl);
+			
+			Location.href = '#/tap/group';
 		});
     });
 });
