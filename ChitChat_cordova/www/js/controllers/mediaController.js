@@ -1,7 +1,5 @@
 angular.module('spartan.media', [])
 
-
-
 .controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, ImageService, FileService) {
  
   	$ionicPlatform.ready(function() {
@@ -80,6 +78,88 @@ angular.module('spartan.media', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 })
+.controller('VideoController', function($scope, $cordovaCapture, $ionicLoading, $cordovaProgress,$cordovaFile,GenerateID) {
+
+	$scope.$on('captureVideo', function(event, args) { $scope.captureVideo(); });
+	var videoURI;
+	var videoName;
+	$scope.captureVideo = function() {
+	    var options = { limit: 1, duration: 15 };
+	    $cordovaCapture.captureVideo(options).then(function(videoData) {
+	    	console.log(videoData);
+	      	moveVideoToTmp(videoData[0].localURL);
+	    }, function(err) {
+	      // An error occurred. Show a message to the user
+	    });
+	}
+
+	function moveVideoToTmp(uri){
+		videoName = GenerateID.makeid() + 'MOV';
+		var name = uri.substr(uri.lastIndexOf('/') + 1);
+        var namePath = uri.substr(0, uri.lastIndexOf('/') + 1);
+        var namePathTrim = namePath.substring(0,namePath.length - 1);
+        var folderFile = namePathTrim.substr(namePathTrim.lastIndexOf('/') + 1);
+        
+        $cordovaFile.moveFile(namePath,name,cordova.file.tempDirectory,videoName)
+        .then(function(success) {
+        	console.log(success);
+        	delectFolderTmp(folderFile);
+        	videoURI = cordova.file.tempDirectory + videoName;
+        	$scope.uploadVideo();
+          }, function(error) {
+          	console.log(error);
+          });
+		
+	}
+
+	function delectFolderTmp(nameFolder){
+		$cordovaFile.removeDir(cordova.file.tempDirectory, nameFolder)
+	      .then(function (success) {
+	        console.log(success);
+	      }, function (error) {
+	        console.log(error);
+	      });
+	}
+
+	$scope.uploadVideo = function() {
+	    console.log(videoURI);
+	    var options = new FileUploadOptions();
+	    options.fileKey = "fileToUpload";
+	    options.fileName = videoURI.substr(videoURI.lastIndexOf('/') + 1);
+	    options.mimeType = "video/quicktime";
+	    var params = new Object();
+	    options.params = params;
+	    options.chunkedMode = false;
+	    var ft = new FileTransfer();
+	    ft.onprogress = function(progressEvent){
+	    	if (progressEvent.lengthComputable) {
+		      $ionicLoading.show({
+			      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
+			  });
+		    } else {
+		      //loadingStatus.increment();
+		    }
+	    };
+	    ft.upload(videoURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
+        options);
+	}
+
+	function win(r) {
+	    console.log("Code = " + r.responseCode);
+	    console.log("Response = " + r.response);
+	    console.log("Sent = " + r.bytesSent);
+	    $ionicLoading.hide();
+        $scope.$emit('fileUrl', [r.response,videoName,"Video"]);
+	}
+
+	function fail(error) {
+	    alert("An error has occurred: Code = " + error.code);
+	    console.log("upload error source " + error.source);
+	    console.log("upload error target " + error.target);
+	    $cordovaProgress.showText(false, "Fail!", 'center');
+	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
+	}
+})
 .controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, GenerateID) {
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
@@ -88,7 +168,6 @@ angular.module('spartan.media', [])
     var fileName;
 	var src;
 	var mediaRec;
-	$scope.playing = 'false';
 
 	$scope.startRecord = function() {
         fileName = GenerateID.makeid();
@@ -105,7 +184,6 @@ angular.module('spartan.media', [])
 		$scope.$emit('fileUri',[fileName + ".wav","Voice"]);
 		$scope.uploadVoice();
 	}
-
 
 	var audio;
 	$scope.play = function(id,url){

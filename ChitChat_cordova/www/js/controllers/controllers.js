@@ -29,22 +29,26 @@ angular.module('spartan.controllers', [])
 {	
 	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;
+	
+		$scope.refreshView = function () {
+			console.debug("GroupCtrl : refreshView");
+		
+			var dataManager = main.getDataManager();
+			$scope.myProfile = dataManager.myProfile;
+			$scope.orgGroups = dataManager.orgGroups;
+			$scope.pjbGroups = dataManager.projectBaseGroups;
+			$scope.pvGroups = dataManager.privateGroups;
+			$scope.chats = dataManager.orgMembers;
+		};
+	
+		$scope.refreshView();
+	
+		$scope.interval = setInterval(function() { $scope.refreshView(); }, 1000);
 	});
 	
-	$scope.refreshView = function () {
-		console.debug("GroupCtrl : refreshView");
-	
-		var dataManager = main.getDataManager();
-        $scope.myProfile = dataManager.myProfile;
-        $scope.orgGroups = dataManager.orgGroups;
-        $scope.pjbGroups = dataManager.projectBaseGroups;
-        $scope.pvGroups = dataManager.privateGroups;
-        $scope.chats = dataManager.orgMembers;
-	};
-
-    $scope.refreshView();
-
-    setInterval(function() { $scope.refreshView(); }, 1000);
+	$scope.$on('$ionicView.leave', function() {
+		clearInterval($scope.interval);
+	});
 
 	//$scope.chats = Chats.all();
 	$scope.remove = function(chat) {
