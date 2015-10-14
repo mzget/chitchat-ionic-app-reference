@@ -51,7 +51,7 @@
 .message-list .other h2 { margin-left:60px; }
 .message-list .other label { margin-left:60px; font-size:10px; line-height:10px; color:#aaa; }
 .message-list .other p { margin:0 40px 0 60px; text-align:left; border-top-left-radius:0; }
-.message-list .other p a { font-size:60px; color:#666; }
+.message-list .other p a { color:#666; }
 .message-list .other .type-img { width: 160px; height: 160px; margin:0 40px 0 60px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 .message-list .other .type-voice { width: 60px; height: 60px; margin:0 40px 0 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .other .type-voice > * { line-height: 60px; }
