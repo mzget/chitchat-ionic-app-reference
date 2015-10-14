@@ -25,35 +25,25 @@ angular.module('spartan.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function($rootScope, $scope, $timeout, roomSelected) 
+.controller('GroupCtrl', function($rootScope, $scope, $timeout) 
 {	
-	var currentRoom = roomSelected.getRoom();
-	
 	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;
 	});
-	
-    var myprofile = main.getDataManager().myProfile;
-    $scope.myProfile = myprofile;
-	$scope.orgGroups = main.getDataManager().orgGroups;
-	$scope.pjbGroups = main.getDataManager().projectBaseGroups;
-	$scope.pvGroups = main.getDataManager().privateGroups;
-	$scope.chats = main.getDataManager().orgMembers;
-	
-    var reload = function () {		
-		if(currentRoom != null)
-		{	
-			myprofile = main.getDataManager().myProfile;
-			$scope.myProfile = myprofile;
-			$scope.orgGroups = main.getDataManager().orgGroups;
-			$scope.pjbGroups = main.getDataManager().projectBaseGroups;
-			$scope.pvGroups = main.getDataManager().privateGroups;
-			$scope.chats =  main.getDataManager().orgMembers;
+	console.debug("GroupCtrl");
+	var refreshView = function () {
+		var dataManager = main.getDataManager();
+        
+        $scope.myProfile = dataManager.myProfile;
+        $scope.orgGroups = dataManager.orgGroups;
+        $scope.pjbGroups = dataManager.projectBaseGroups;
+        $scope.pvGroups = dataManager.privateGroups;
+        $scope.chats = dataManager.orgMembers;
+	};
 
-			$timeout(reload, 1000);
-		}
-    }
-    $timeout(reload, 1000);
+    refreshView();
+
+    setInterval(function() { refreshView(); }, 1000);
 
 	//$scope.chats = Chats.all();
 	$scope.remove = function(chat) {

@@ -1160,6 +1160,7 @@ var DataManager = (function () {
         this.projectBaseGroups = {};
         this.privateGroups = {};
         this.orgMembers = {};
+        this.isOrgMembersReady = false;
     }
     DataManager.getInstance = function () {
         if (!DataManager.Instance) {
@@ -1202,14 +1203,17 @@ var DataManager = (function () {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
-        var _this = this;
-        var member = JSON.parse(JSON.stringify(dataEvent));
+        var self = this;
+        var members = JSON.parse(JSON.stringify(dataEvent));
         if (!this.orgMembers)
             this.orgMembers = {};
-        member.forEach(function (value) {
-            if (!_this.orgMembers[value._id]) {
-                _this.orgMembers[value._id] = value;
+        async.eachSeries(members, function iterator(item, cb) {
+            if (!self.orgMembers[item._id]) {
+                self.orgMembers[item._id] = item;
             }
+            cb();
+        }, function done(err) {
+            self.isOrgMembersReady = true;
         });
     };
     ;
@@ -1419,4 +1423,3 @@ var SecureService = (function () {
     };
     return SecureService;
 })();
-//# sourceMappingURL=appBundle.js.map
