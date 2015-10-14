@@ -76,6 +76,7 @@
 .modal-chatmenu > *:active { background-color:rgba(0,0,0,0.1); }
 .modal-chatmenu i { font-size:30px; }
 
+.stickerhead { display:inline-block; width:33px; height:33px; margin-right:5px; background-size:contain; background-repeat:no-repeat; background-position:50% 50%; opacity:0.5; }
 
 
 

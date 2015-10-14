@@ -7,6 +7,8 @@ angular.module('spartan.chat', [])
 
 .controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats) 
 {    	
+	modalcount = 0;
+	
 	// Modal - Chat menu 
 	$ionicModal.fromTemplateUrl('templates/reader-view.html', {
 		scope: $scope,
@@ -15,14 +17,11 @@ angular.module('spartan.chat', [])
 		$scope.modal = modal;
 	});
 	$scope.openModal = function() {
+		modalcount++;
 		$scope.modal.show();
-		$('#chatMessage').animate({'bottom':'192px'}, 300);
-		$('#chatDetail').animate({'top':'-148px'}, 300);
+		$('#chatMessage').animate({'bottom':'192px'}, 350);
+		$('#chatDetail').animate({'top':'-192px'}, 350);
 	};
-	$scope.$on('modal.hidden', function() {
-		$('#chatMessage').animate({'bottom':'0'}, 300);
-		$('#chatDetail').animate({'top':'0'}, 300);
-	});
 	
 	// Modal - Sticker
 	$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
@@ -32,12 +31,19 @@ angular.module('spartan.chat', [])
 		$scope.modelSticker = modal;
 	});
 	$scope.openModalSticker = function() {
-		$scope.modal.hide();
+		modalcount++;
 		$scope.modelSticker.show();
 	};
-	$scope.closeModalSticker = function() {
-		$scope.modelSticker.hide();
-	};
+				
+	// Modal Hidden		
+	$scope.$on('modal.hidden', function() {
+		modalcount--;
+		if( modalcount == 0 )
+		{
+			$('#chatMessage').animate({'bottom':'0'}, 350);
+			$('#chatDetail').animate({'top':'0'}, 350);		
+		}
+	});
 	
 	
 	$scope.chat = [];
@@ -182,6 +188,7 @@ angular.module('spartan.chat', [])
 	    });
 	}
 	
+	// ON ENTER 
     $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
         console.log("App view (menu) entered.");
         console.log(arguments); 
@@ -203,12 +210,10 @@ angular.module('spartan.chat', [])
 		}).then(function(modal) {
 			$scope.modelSticker = modal;
 		})
-	
-		$scope.sticker = function(){
-			alert("OK");
-		}
+		
     });
 
+	// ON LEAVE
     $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
         console.log("App view (menu) leaved.");
         console.log(arguments);
