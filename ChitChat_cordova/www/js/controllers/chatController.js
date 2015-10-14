@@ -6,57 +6,48 @@ angular.module('spartan.chat', [])
 
 
 .controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats, roomSelected) 
-{    	
+{    		
     var currentRoom = roomSelected.getRoom();
     var myprofile = main.getDataManager().myProfile;
     var allMembers = main.getDataManager().orgMembers;
 	console.debug("chatController", currentRoom.name, currentRoom._id);
 	
-	
-    $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
-        console.log("App view (menu) entered.");
-		
-		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
-			
-		// Reload Modal - Chat menu
-		$ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.modal = modal;
-		})
-		
-		// Reload Modal - Sticker
-		$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.modelSticker = modal;
-		})
-	
-		$scope.sticker = function(){
-			alert("OK");
-		}
-    });
+	modalcount = 0;	
 	// Modal - Chat menu 
-	$scope.openModal = function() {
-		$scope.modal.show();
-		$('#chatMessage').animate({'bottom':'192px'}, 300);
-		$('#chatDetail').animate({'top':'-148px'}, 300);
-	};
-	$scope.$on('modal.hidden', function() {
-		$('#chatMessage').animate({'bottom':'0'}, 300);
-		$('#chatDetail').animate({'top':'0'}, 300);
+	$ionicModal.fromTemplateUrl('templates/reader-view.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.modal = modal;
 	});
+	$scope.openModal = function() {
+		modalcount++;
+		$scope.modal.show();
+		$('#chatMessage').animate({'bottom':'192px'}, 350);
+		$('#chatDetail').animate({'top':'-192px'}, 350);
+	};
 	
 	// Modal - Sticker
+	$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.modelSticker = modal;
+	});
 	$scope.openModalSticker = function() {
-		$scope.modal.hide();
+		modalcount++;
 		$scope.modelSticker.show();
 	};
-	$scope.closeModalSticker = function() {
-		$scope.modelSticker.hide();
-	};
+				
+	// Modal Hidden		
+	$scope.$on('modal.hidden', function() {
+		modalcount--;
+		if( modalcount == 0 )
+		{
+			$('#chatMessage').animate({'bottom':'0'}, 350);
+			$('#chatDetail').animate({'top':'0'}, 350);		
+		}
+	});
 	
 	
 	$scope.chat = [];
@@ -199,7 +190,32 @@ angular.module('spartan.chat', [])
 	        console.log(JSON.stringify(dataManager.orgMembers[member]));
 	    });
 	}
+	
+	// ON ENTER 
+    $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
+        console.log("App view (menu) entered.");
+		
+		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
+			
+		// Reload Modal - Chat menu
+		$ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modal = modal;
+		})
+		
+		// Reload Modal - Sticker
+		$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modelSticker = modal;
+		})
+		
+    });
 
+	// ON LEAVE
     $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
         console.log("App view (menu) leaved.");
         console.log(arguments);
