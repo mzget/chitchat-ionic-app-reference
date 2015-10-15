@@ -66,12 +66,20 @@ angular.module('spartan.controllers', [])
 		}).then(function (modal) {
 		    $scope.pvgModal = modal;
 		});
+	    //<!-- Contact modal.
+		$ionicModal.fromTemplateUrl('templates/tab-group-contact.html', {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+		}).then(function (modal) {
+		    $scope.contactModal = modal;
+		});
 
 	    //Cleanup the modal when we're done with it!
 		$scope.$on('$destroy', function () {
 		    $scope.orgModal.remove();
 		    $scope.pjbModal.remove();
 		    $scope.pvgModal.remove();
+			$scope.contactModal.remove();
 		});
 	    // Execute action on hide modal
 		$scope.$on('modal.hidden', function () {
@@ -108,6 +116,7 @@ angular.module('spartan.controllers', [])
 	$scope.hideTab = function(){		
 		$rootScope.hideTabs = true;
 	}
+	//<!-- Org group modal ////////////////////////////////////////
 	$scope.openOrgModal = function (groupId) {
 	    initOrgModal($scope, groupId, roomSelected, function () {
 	        $scope.orgModal.show();
@@ -116,6 +125,7 @@ angular.module('spartan.controllers', [])
 	$scope.closeOrgModal = function () {
 	    $scope.orgModal.hide();
 	};
+	//<!-- Project base group modal /////////////////////////////////////////
 	$scope.openPjbModal = function (groupId) {
 	    initPjbModal($scope, groupId, roomSelected, function () {
 	        $scope.pjbModal.show();
@@ -124,6 +134,7 @@ angular.module('spartan.controllers', [])
 	$scope.closePjbModal = function () {
 	    $scope.pjbModal.hide();
 	}
+	//<!-- Private group modal ////////////////////////////////////////////
 	$scope.openPvgModal = function (groupId) {
 	    initPvgModal($scope, groupId, roomSelected, function () {
 	        $scope.pvgModal.show();
@@ -132,6 +143,15 @@ angular.module('spartan.controllers', [])
 	$scope.closePvgModal = function () {
 	    $scope.pvgModal.hide();
 	}
+	//<!-- Contact modal -------------------------->
+	$scope.openContactModal = function(contactId) {
+		initContactModal($scope, contactId, roomSelected, function done() {
+			$scope.contactModal.show();
+		});
+	};
+	$scope.closeContactModal = function() {
+		$scope.contactModal.hide();	
+	};
 })
 
 // GROUP - Profile
@@ -223,21 +243,6 @@ angular.module('spartan.controllers', [])
 	function _all(){
 
 	}
-})
-
-.controller('MemberDetailCtrl', function ($scope, $stateParams, roomSelected) {
-    var contact = main.getDataManager().orgMembers[$stateParams.chatId];
-    $scope.chat = contact;
-
-    server.getPrivateChatRoomId(dataManager.myProfile._id, $stateParams.chatId, function result(err, res) {
-        console.log(JSON.stringify(res));
-        var room = JSON.parse(JSON.stringify(res.data));
-
-        $scope.toggle = function () {
-            roomSelected.setRoom(room);
-            location.href = '#/tab/group/chat/' + room._id;
-        };
-    });
 })
 .controller('GroupMembersCtrl', function ($scope, $stateParams, roomSelected) {
     var room = roomSelected.getRoom();
@@ -408,4 +413,21 @@ var initPvgModal = function ($scope, groupId, roomSelected, done) {
     };
 
     done();
+}
+
+var initContactModal = function ($scope, contactId, roomSelected, done) {
+	var contact = main.getDataManager().orgMembers[contactId];
+    $scope.chat = contact;
+
+    server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
+        console.log(JSON.stringify(res));
+        var room = JSON.parse(JSON.stringify(res.data));
+
+        $scope.chat = function () {
+            roomSelected.setRoom(room);
+            location.href = '#/tab/group/chat/' + room._id;
+        };
+    });
+	
+	done();
 }
