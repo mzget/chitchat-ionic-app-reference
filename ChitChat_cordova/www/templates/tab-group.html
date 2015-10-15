@@ -23,7 +23,7 @@
 			</button>
 		</div>
 		<ion-list id="list-orgGroups" class="group-list">
-			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="orgGroup in orgGroups" ng-click="hideTab(); openOrgModal(orgGroup._id)" type="item-text-wrap">
+			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="orgGroup in orgGroups" ng-click="openOrgModal(orgGroup._id)" type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{orgGroup.image}}&h=40&w=40" />
 				<h2>{{orgGroup.name}}</h2>
 				<p>{{orgGroup.description}}</p>
@@ -42,7 +42,7 @@
 			</button>
 		</div>
 		<ion-list id="list-pjbGroups" class="group-list">
-			<ion-item ng-click="hideTab()" class="item-remove-animate item-avatar item-icon-right" ng-repeat="pjbGroup in pjbGroups" type="item-text-wrap" href="#/tab/group/projectbasegroup/{{pjbGroup._id}}">
+			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="pjbGroup in pjbGroups" ng-click="openPjbModal(pjbGroup._id)" type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{pjbGroup.image}}&h=40&w=40" />
 				<h2>{{pjbGroup.name}}</h2>
 				<p>{{pjbGroup.description}}</p>
