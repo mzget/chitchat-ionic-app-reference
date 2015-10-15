@@ -36,6 +36,8 @@
 			</ion-item>
 
 			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
+				<label style="clear:none; cursor:pointer;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
+			
 				<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
 					{{message.body}}
 				</p>
@@ -66,7 +68,7 @@
                 </div>
 				
 						
-                <label style="clear:none;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
+                <br />
 				<label> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
 		</ion-list>

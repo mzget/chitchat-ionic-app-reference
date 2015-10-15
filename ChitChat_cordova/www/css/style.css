@@ -59,11 +59,12 @@
 .message-list .other .type-video { width: 100px; height: 100px; margin:0 40px 0 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .other .type-video > * { line-height: 100px; background-color: rgb(204, 204, 204); border: 1px solid rgb(204, 204, 204); border-radius: 50%; padding: 0 10px 0 15px; }
 
-.message-list .owner > * { float:right; display:inline; clear:both; }
+.message-list .owner { text-align:right; }
+.message-list .owner > * { display:inline-block; }
 .message-list .owner p { margin:0 5px 0 0; text-align:right; border-top-right-radius:0; }
 .message-list .owner p a { color:#666; }
 .message-list .owner p u { cursor:pointer; }
-.message-list .owner label {margin:0 5px 0 95px; font-size:10px; line-height:10px; color:#aaa; }
+.message-list .owner label { margin:0 5px 0 0; font-size:10px; line-height:10px; color:#aaa; }
 .message-list .owner .type-img { width: 160px; height: 160px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 .message-list .owner .type-voice { width: 60px; height: 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .owner .type-voice > * { line-height: 60px; }
