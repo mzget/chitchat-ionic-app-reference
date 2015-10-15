@@ -124,6 +124,14 @@ angular.module('spartan.controllers', [])
 	$scope.closePjbModal = function () {
 	    $scope.pjbModal.hide();
 	}
+	$scope.openPvgModal = function (groupId) {
+	    initPvgModal($scope, groupId, roomSelected, function () {
+	        $scope.pvgModal.show();
+	    });
+	};
+	$scope.closePvgModal = function () {
+	    $scope.pvgModal.hide();
+	}
 })
 
 // GROUP - Profile
@@ -217,21 +225,6 @@ angular.module('spartan.controllers', [])
 	}
 })
 
-.controller('GroupPrivateCtrl', function ($scope, $stateParams, roomSelected) {
-    var group = main.getDataManager().privateGroups[$stateParams.chatId];
-    roomSelected.setRoom(group);
-    $scope.chat = group;
-	
-    var members = group.members;
-    $scope.members_length = members.length;
-	groupMembers(members, null, function done(members) {
-	    $scope.members = members;
-	});
-			
-	$scope.toggle = function (chatId) {
-	    location.href = '#/tab/group/chat/' + chatId;
-	};
-})
 .controller('MemberDetailCtrl', function ($scope, $stateParams, roomSelected) {
     var contact = main.getDataManager().orgMembers[$stateParams.chatId];
     $scope.chat = contact;
@@ -391,6 +384,26 @@ var initPjbModal = function ($scope, groupId, roomSelected, done) {
 
     $scope.toggle = function (chatId) {
         $scope.closePjbModal();
+        location.href = '#/tab/group/chat/' + chatId;
+    };
+
+    done();
+}
+
+var initPvgModal = function ($scope, groupId, roomSelected, done) {
+    var group = main.getDataManager().privateGroups[groupId];
+    roomSelected.setRoom(group);
+    $scope.chat = group;
+
+    var members = group.members;
+    $scope.members_length = members.length;
+    groupMembers(members, null, function done(members) {
+        $scope.members = members;
+        $scope.$apply();
+    });
+
+    $scope.chat = function (chatId) {
+        $scope.closePvgModal();
         location.href = '#/tab/group/chat/' + chatId;
     };
 
