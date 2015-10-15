@@ -128,16 +128,6 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			}
 		}
 	})
-
-	.state('tab.group-detail', {
-	    url: '/group/detail/:chatId',
-	    views: {
-	        'tab-group': {
-	            templateUrl: 'templates/tab-group-detail.html',
-	            controller: 'MemberDetailCtrl'
-	        }
-	    }
-	})
 	
 	// CHATS - Notification
 	//.state('tab.chats', {
