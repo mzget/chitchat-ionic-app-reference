@@ -8,7 +8,7 @@
 			</button>
 		</div>
 		<ion-list id="list-myProfile" class="group-list">
-			<ion-item ng-click="hideTab()" class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap" href="#/tab/group/myprofile">
+			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-click="openProfileModal()"  type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{myProfile.image}}&h=40&w=40" />
 				<h2>{{myProfile.displayname}}</h2>
 				<p>{{myProfile.status}}</p>

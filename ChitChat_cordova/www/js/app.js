@@ -63,17 +63,6 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			}
 		}
 	})
-	
-	// GROUP - Profile
-	.state('tab.group-myprofile', {
-		url: '/group/myprofile',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-myprofile.html',
-				controller: 'GroupMyprofileCtrl'
-			}
-		}
-	})
 
 	// GROUP - View Profile
 	.state('tab.group-viewprofile',{
