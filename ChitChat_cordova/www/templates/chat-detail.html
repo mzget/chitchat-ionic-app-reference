@@ -28,8 +28,8 @@
 					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
 
-				<div id="{{message._id}}" class="type-video" ng-if="message.type=='Video'">
-					<i class="ion-play"></i>
+				<div class="type-video" ng-if="message.type=='Video'">
+					<video id="{{message._id}}" src="http://stalk.animation-genius.com{{message.body}}"></video>
 				</div>
 
 				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
@@ -58,11 +58,11 @@
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
                 </div>
 
-                <div id="{{message._id}}" class="type-video" ng-if="message.type=='Video' && message.temp=='true'">
-                    <i class="ion-play"></i>
+                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'">
+                	<video id="{{message._id}}" src="{{message.body}}"></video>
 				</div>
-                <div id="{{message._id}}" class="type-video" ng-if="message.type=='Video' && message.temp==null">
-                    <i class="ion-play"></i>
+                <div class="type-video" ng-if="message.type=='Video' && message.temp==null">
+                	<video id="{{message._id}}" src="http://stalk.animation-genius.com{{message.body}}"></video>
                 </div>
 				
 						
