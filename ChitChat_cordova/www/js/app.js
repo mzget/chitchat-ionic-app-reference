@@ -59,7 +59,7 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group.html',
-				controller: 'GroupCtrl'
+				controller: 'homeController'
 			}
 		}
 	})

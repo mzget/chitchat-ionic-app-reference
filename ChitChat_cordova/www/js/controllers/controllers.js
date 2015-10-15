@@ -25,7 +25,7 @@ angular.module('spartan.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function ($rootScope, $scope, $timeout, $ionicModal, roomSelected)
+.controller('homeController', function ($rootScope, $scope, $timeout, $ionicModal, roomSelected)
 {	
 	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;
@@ -58,6 +58,20 @@ angular.module('spartan.controllers', [])
 		    animation: 'slide-in-up'
 		}).then(function (modal) {
 		    $scope.pjbModal = modal;
+		});
+
+	    //Cleanup the modal when we're done with it!
+		$scope.$on('$destroy', function () {
+		    $scope.orgModal.remove();
+		    $scope.pjbModal.remove();
+		});
+	    // Execute action on hide modal
+		$scope.$on('modal.hidden', function () {
+		    // Execute action
+		});
+	    // Execute action on remove modal
+		$scope.$on('modal.removed', function () {
+		    // Execute action
 		});
 	});
 	
