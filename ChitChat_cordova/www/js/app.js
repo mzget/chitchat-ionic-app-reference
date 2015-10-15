@@ -150,6 +150,16 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 		}
 	})
 	
+	.state('tab.group-map', {
+		url: '/group/chat/:chatId/map',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/map.html',
+				controller: 'MapCtrl'
+			}
+		}
+	})
+	
 	.state('tab.chats', {
 		url: '/chats',
 		views: {
@@ -159,6 +169,9 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			}
 		}
 	})
+	
+	
+	/*
     .state('tap.chat.map', {
         url: '/chat/map',
         views: {
@@ -168,7 +181,7 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			}
         }
     })
-
+	*/
 	/*
 	// CHAT : Message
 	.state('tab.message', {

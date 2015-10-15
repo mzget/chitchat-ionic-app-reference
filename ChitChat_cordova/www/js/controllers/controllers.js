@@ -282,6 +282,10 @@ angular.module('spartan.controllers', [])
 	$scope.roomAccess = myprofile.roomAccess;
 })
 
+.controller('MapCtrl', function ($scope, $stateParams) {
+	
+})
+
 .controller('FreecallCtrl', function($scope, $stateParams) {
 	
 })
