@@ -44,30 +44,36 @@ angular.module('spartan.controllers', [])
 		$scope.refreshView();
 	
 		$scope.interval = setInterval(function () { $scope.refreshView(); }, 1000);
-
+		//<!-- My profile.
+		$ionicModal.fromTemplateUrl('templates/modal-myprofile.html', {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+		}).then(function (modal) {
+		    $scope.myProfileModal = modal;
+		});
 		//<!-- Org modal.
-		$ionicModal.fromTemplateUrl('templates/tab-group-orggroup.html', {
+		$ionicModal.fromTemplateUrl('templates/modal-orggroup.html', {
 		    scope: $scope,
 		    animation: 'slide-in-up'
 		}).then(function (modal) {
 		    $scope.orgModal = modal;
 		});
         //<!-- Projectbase modal.
-		$ionicModal.fromTemplateUrl('templates/tab-group-projectbasegroup.html', {
+		$ionicModal.fromTemplateUrl('templates/modal-projectbasegroup.html', {
 		    scope: $scope,
 		    animation: 'slide-in-up'
 		}).then(function (modal) {
 		    $scope.pjbModal = modal;
 		});
 	    //<!-- Private group modal.
-		$ionicModal.fromTemplateUrl('templates/tab-group-privategroup.html', {
+		$ionicModal.fromTemplateUrl('templates/modal-privategroup.html', {
 		    scope: $scope,
 		    animation: 'slide-in-up'
 		}).then(function (modal) {
 		    $scope.pvgModal = modal;
 		});
 	    //<!-- Contact modal.
-		$ionicModal.fromTemplateUrl('templates/tab-group-contact.html', {
+		$ionicModal.fromTemplateUrl('templates/modal-contact.html', {
 		    scope: $scope,
 		    animation: 'slide-in-up'
 		}).then(function (modal) {
@@ -76,6 +82,7 @@ angular.module('spartan.controllers', [])
 
 	    //Cleanup the modal when we're done with it!
 		$scope.$on('$destroy', function () {
+			$scope.myProfileModal.remove();
 		    $scope.orgModal.remove();
 		    $scope.pjbModal.remove();
 		    $scope.pvgModal.remove();
@@ -116,6 +123,15 @@ angular.module('spartan.controllers', [])
 	$scope.hideTab = function(){		
 		$rootScope.hideTabs = true;
 	}
+	//<!-- My profile modal. -->
+	$scope.openProfileModal = function (groupId) {
+		initMyProfileModal($scope, function done(){
+	    	$scope.myProfileModal.show();
+		});
+	};
+	$scope.closeProfileModal = function () {
+	    $scope.myProfileModal.hide();
+	};
 	//<!-- Org group modal ////////////////////////////////////////
 	$scope.openOrgModal = function (groupId) {
 	    initOrgModal($scope, groupId, roomSelected, function () {
@@ -154,13 +170,10 @@ angular.module('spartan.controllers', [])
 	};
 })
 
-// GROUP - Profile
-.controller('GroupMyprofileCtrl', function($scope) {
-	$scope.chat = main.getDataManager().myProfile;
-})
-
 // Group - View Profile
 .controller('GroupViewprofileCtrl', function($scope, $stateParams, $state, $cordovaProgress) {
+	console.debug($stateParams)
+	
 	if($stateParams.chatId==main.getDataManager().myProfile._id){
 		$scope.chat = main.getDataManager().myProfile;
 		$scope.model = {
@@ -280,6 +293,10 @@ angular.module('spartan.controllers', [])
 	//});
 
 	$scope.roomAccess = myprofile.roomAccess;
+})
+
+.controller('MapCtrl', function ($scope, $stateParams) {
+	
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
@@ -417,7 +434,8 @@ var initPvgModal = function ($scope, groupId, roomSelected, done) {
 
 var initContactModal = function ($scope, contactId, roomSelected, done) {
 	var contact = main.getDataManager().orgMembers[contactId];
-    $scope.chat = contact;
+	console.debug(contact);
+    $scope.contact = contact;
 
     server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
         console.log(JSON.stringify(res));
@@ -427,7 +445,19 @@ var initContactModal = function ($scope, contactId, roomSelected, done) {
             roomSelected.setRoom(room);
             location.href = '#/tab/group/chat/' + room._id;
         };
+		
+		$scope.openViewContactProfile = function(id) {
+        	location.href = '#/tab/group/member/' + id;
+		}
+		
+		$scope.$apply();
     });
+	
+	done();
+}
+
+var initMyProfileModal = function($scope, done) {
+	$scope.chat = main.getDataManager().myProfile;
 	
 	done();
 }

@@ -63,17 +63,6 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			}
 		}
 	})
-	
-	// GROUP - Profile
-	.state('tab.group-myprofile', {
-		url: '/group/myprofile',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-myprofile.html',
-				controller: 'GroupMyprofileCtrl'
-			}
-		}
-	})
 
 	// GROUP - View Profile
 	.state('tab.group-viewprofile',{
@@ -82,38 +71,6 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			'tab-group': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
 				controller: 'GroupViewprofileCtrl'
-			}
-		}
-	})
-	
-	// GROUP - Type
-	
-	.state('tab.group-orggroup', {
-		url: '/group/orggroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupOrggroupsCtrl'
-			}
-		}
-	})
-	
-	.state('tab.group-projectbasegroup', {
-		url: '/group/projectbasegroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupProjectbaseCtrl'
-			}
-		}
-	})
-	
-	.state('tab.group-privategroup', {
-		url: '/group/privategroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupPrivateCtrl'
 			}
 		}
 	})
@@ -150,6 +107,16 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 		}
 	})
 	
+	.state('tab.group-map', {
+		url: '/group/chat/:chatId/map',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/map.html',
+				controller: 'MapCtrl'
+			}
+		}
+	})
+	
 	.state('tab.chats', {
 		url: '/chats',
 		views: {
@@ -159,6 +126,9 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			}
 		}
 	})
+	
+	
+	/*
     .state('tap.chat.map', {
         url: '/chat/map',
         views: {
@@ -168,7 +138,7 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			}
         }
     })
-
+	*/
 	/*
 	// CHAT : Message
 	.state('tab.message', {

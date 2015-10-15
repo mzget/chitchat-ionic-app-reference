@@ -249,7 +249,7 @@ angular.module('spartan.chat', [])
     
     $scope.openMap = function() {
         console.log("map");
-        location.href = "#/tap/chat/map";
+		location.href='#/tab/group/chat/'+currentRoom._id+'/map';
     }
 	
 	$scope.isValidURI = function(uri) {
