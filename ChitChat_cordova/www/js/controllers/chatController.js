@@ -45,6 +45,9 @@ angular.module('spartan.chat', [])
 		modalcount++;
 		$scope.modalWebview.show();
 	};
+	$scope.closeModalWebview = function() {
+		$scope.modalWebview.hide();
+	};
 	
 	// Modal Hidden		 
 	$scope.$on('modal.hidden', function() {
@@ -72,11 +75,17 @@ angular.module('spartan.chat', [])
 		http += uri;
 		//window.open(http, '_blank');
 		
-		window.open(encodeURI(http), '_blank', 'location=yes');
+		//window.open(encodeURI(http), '_blank', 'location=yes');
 		
-		//$scope.webviewUrl = uri;
-		//$scope.openModalWebview();
+		//$scope.webviewUrl = 'http://www.google.com';
+		$scope.webviewUrl = $sce.trustAsResourceUrl(http);
+		$scope.webviewTitle = uri;
+		$scope.openModalWebview();
 	};
+		
+		$("#modal-webview-iframe").on('load',function() {
+			alert( $(this).contentDocument.title );
+		});
 	
 	$scope.chat = [];
 	$scope.title = currentRoom.name;	
