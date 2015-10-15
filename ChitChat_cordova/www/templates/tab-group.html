@@ -79,7 +79,7 @@
 			</button>
 		</div>
 		<ion-list id="list-orgmembers" class="group-list">
-			<ion-item ng-click="hideTab()" ng-repeat="chat in chats" ng-if="chat._id != myProfile._id" class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap" href="#/tab/group/detail/{{chat._id}}">
+			<ion-item ng-repeat="chat in chats" ng-if="chat._id != myProfile._id" class="item-remove-animate item-avatar item-icon-right" ng-click="openContactModal(chat._id)" type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}&h=40&w=40" />
 				<h2>{{chat.displayname}}</h2>
 				<p>{{chat.status}}</p>
