@@ -56,8 +56,8 @@
 .message-list .other .type-img { width: 160px; height: 160px; margin:0 40px 0 60px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 .message-list .other .type-voice { width: 60px; height: 60px; margin:0 40px 0 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .other .type-voice > * { line-height: 60px; }
-.message-list .other .type-video { width: 100px; height: 100px; margin:0 40px 0 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
-.message-list .other .type-video > * { line-height: 100px; background-color: rgb(204, 204, 204); border: 1px solid rgb(204, 204, 204); border-radius: 50%; padding: 0 10px 0 15px; }
+.message-list .other .type-video { width: 160px; height: 160px; margin:0 40px 0 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
+.message-list .other .type-video > * { width: 140px; height: 155px; }
 
 .message-list .owner { text-align:right; }
 .message-list .owner > * { display:inline-block; }
@@ -68,8 +68,8 @@
 .message-list .owner .type-img { width: 160px; height: 160px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 .message-list .owner .type-voice { width: 60px; height: 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .owner .type-voice > * { line-height: 60px; }
-.message-list .owner .type-video { width: 100px; height: 100px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
-.message-list .owner .type-video > * { line-height: 100px; background-color: rgb(204, 204, 204); border: 1px solid rgb(204, 204, 204); border-radius: 50%; padding: 0 10px 0 15px; }
+.message-list .owner .type-video { width: 160px; height: 160px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
+.message-list .owner .type-video > * { width: 140px; height: 155px; }
 
 /*
 #send_message { float:left; display:none; width:100%; height:49px; line-height:46px; position:fixed; bottom:0px; background-color:#ccc; z-index:1000; text-align:center; }

@@ -44,6 +44,52 @@ angular.module('starter.services', [])
   }
 })
 
+.factory('VideoService', function($cordovaCamera, FileService, $q, $cordovaFile, GenerateID){
+
+  var videoUri = "";
+
+  function getVideoUri(){
+    return videoUri;
+  }
+
+  function setVideoUri(name){
+    videoUri = cordova.file.tempDirectory + name;
+  }
+
+  function optionType(){
+    return {
+      destinationType: Camera.DestinationType.FILE_URI,
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+      allowEdit: false,
+      mediaType: Camera.MediaType.VIDEO,
+      popoverOptions: CameraPopoverOptions,
+      saveToPhotoAlbum: false
+    };
+  }
+  function saveMedia() {
+    return $q(function(resolve, reject) {
+      var options = optionType();
+      $cordovaCamera.getPicture(options).then(function(imageUrl) {
+        var name = imageUrl.substr(imageUrl.lastIndexOf('/') + 1);
+        var namePath = imageUrl.substr(0, imageUrl.lastIndexOf('/') + 1);
+        console.log(imageUrl,namePath);
+        var newName = GenerateID.makeid() + name;
+        $cordovaFile.copyFile(namePath, name, cordova.file.tempDirectory, newName)
+          .then(function(info) {
+            setVideoUri(newName);
+            resolve();
+          }, function(e) {
+            reject();
+          });
+      });
+    })
+  }
+  return {
+    handleMediaDialog: saveMedia,
+    getVideoUri: getVideoUri
+  }
+})
+
 
 .factory('ImageService', function($cordovaCamera, FileService, $q, $cordovaFile, GenerateID) {
  
@@ -61,6 +107,7 @@ angular.module('starter.services', [])
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: source,
       allowEdit: false,
+      encodingType: Camera.EncodingType.JPEG,
       popoverOptions: CameraPopoverOptions,
       saveToPhotoAlbum: false
     };
@@ -90,7 +137,7 @@ angular.module('starter.services', [])
   }
 })
 
-.factory('Chats', function() {
+.factory('Chats', function($sce) {
     // Might use a resource here that returns a JSON array
 
 	// Some fake testing data
@@ -113,6 +160,11 @@ angular.module('starter.services', [])
 		},
 		set: function(json) {
 			chats = json;
+      for (var i = 0; i < chats.length; i++){
+        if(chats[i].type=='Video'){
+          chats[i].bodyUrl = $sce.trustAsResourceUrl('http://stalk.animation-genius.com'+chats[i].body);
+        }
+      }
 		}
 	};
 })
