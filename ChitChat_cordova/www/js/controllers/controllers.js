@@ -25,7 +25,7 @@ angular.module('spartan.controllers', [])
 })
 
 // GROUP
-.controller('GroupCtrl', function ($rootScope, $scope, $timeout, $ionicModal, roomSelected)
+.controller('homeController', function ($rootScope, $scope, $timeout, $ionicModal, roomSelected)
 {	
 	$scope.$on('$ionicView.enter', function(){ 
 		$rootScope.hideTabs = false;

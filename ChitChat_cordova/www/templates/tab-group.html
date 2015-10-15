@@ -61,7 +61,7 @@
 			</button>
 		</div>
 		<ion-list id="list-pvGroups" class="group-list">
-			<ion-item ng-click="hideTab()" class="item-remove-animate item-avatar item-icon-right" ng-repeat="pvGroup in pvGroups" type="item-text-wrap" href="#/tab/group/privategroup/{{pvGroup._id}}">
+			<ion-item ng-click="hideTab()" class="item-remove-animate item-avatar item-icon-right" ng-repeat="pvGroup in pvGroups" ng-click="openPvGroupModal(pvGroup._id)" type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{pvGroup.image}}&h=40&w=40" />
 				<h2>{{pvGroup.name}}</h2>
 				<i class="icon ion-chevron-right icon-accessory"></i>
