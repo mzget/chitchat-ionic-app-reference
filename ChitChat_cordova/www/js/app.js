@@ -74,38 +74,6 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			}
 		}
 	})
-	
-	// GROUP - Type
-	
-	.state('tab.group-orggroup', {
-		url: '/group/orggroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupOrggroupsCtrl'
-			}
-		}
-	})
-	
-	.state('tab.group-projectbasegroup', {
-		url: '/group/projectbasegroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupProjectbaseCtrl'
-			}
-		}
-	})
-	
-	.state('tab.group-privategroup', {
-		url: '/group/privategroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupPrivateCtrl'
-			}
-		}
-	})
 		
 	// GROUP - Members
 	.state('tab.group-members', {

@@ -434,7 +434,8 @@ var initPvgModal = function ($scope, groupId, roomSelected, done) {
 
 var initContactModal = function ($scope, contactId, roomSelected, done) {
 	var contact = main.getDataManager().orgMembers[contactId];
-    $scope.chat = contact;
+	console.debug(contact);
+    $scope.contact = contact;
 
     server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
         console.log(JSON.stringify(res));
@@ -445,9 +446,11 @@ var initContactModal = function ($scope, contactId, roomSelected, done) {
             location.href = '#/tab/group/chat/' + room._id;
         };
 		
-		$scope.openViewContactProfile = function(contactId) {
-        	location.href = '#/tab/group/member/' + contactId;
+		$scope.openViewContactProfile = function(id) {
+        	location.href = '#/tab/group/member/' + id;
 		}
+		
+		$scope.$apply();
     });
 	
 	done();
