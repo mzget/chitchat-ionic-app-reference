@@ -59,11 +59,19 @@ angular.module('spartan.controllers', [])
 		}).then(function (modal) {
 		    $scope.pjbModal = modal;
 		});
+	    //<!-- Private group modal.
+		$ionicModal.fromTemplateUrl('templates/tab-group-privategroup.html', {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+		}).then(function (modal) {
+		    $scope.pvgModal = modal;
+		});
 
 	    //Cleanup the modal when we're done with it!
 		$scope.$on('$destroy', function () {
 		    $scope.orgModal.remove();
 		    $scope.pjbModal.remove();
+		    $scope.pvgModal.remove();
 		});
 	    // Execute action on hide modal
 		$scope.$on('modal.hidden', function () {
