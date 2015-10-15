@@ -43,18 +43,28 @@ angular.module('spartan.controllers', [])
 	
 		$scope.refreshView();
 	
-		$scope.interval = setInterval(function() { $scope.refreshView(); }, 1000);
-		
+		$scope.interval = setInterval(function () { $scope.refreshView(); }, 1000);
+
+		//<!-- Org modal.
 		$ionicModal.fromTemplateUrl('templates/tab-group-orggroup.html', {
 		    scope: $scope,
 		    animation: 'slide-in-up'
 		}).then(function (modal) {
 		    $scope.orgModal = modal;
 		});
+        //<!-- Projectbase modal.
+		$ionicModal.fromTemplateUrl('templates/tab-group-projectbasegroup.html', {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+		}).then(function (modal) {
+		    $scope.pjbModal = modal;
+		});
 	});
 	
 	$scope.$on('$ionicView.leave', function() {
-		clearInterval($scope.interval);
+	    clearInterval($scope.interval);
+
+	    $rootScope.hideTabs = true;
 	});
 
 	//$scope.chats = Chats.all();
@@ -84,6 +94,14 @@ angular.module('spartan.controllers', [])
 	$scope.closeOrgModal = function () {
 	    $scope.orgModal.hide();
 	};
+	$scope.openPjbModal = function (groupId) {
+	    initPjbModal($scope, groupId, roomSelected, function () {
+	        $scope.pjbModal.show();
+	    });
+	};
+	$scope.closePjbModal = function () {
+	    $scope.pjbModal.hide();
+	}
 })
 
 // GROUP - Profile
@@ -177,64 +195,6 @@ angular.module('spartan.controllers', [])
 	}
 })
 
-// GROUP - Type
-
-.controller('GroupOrggroupsCtrl', function ($scope, $stateParams , $ionicModal, roomSelected) {
-    var group = main.getDataManager().orgGroups[$stateParams.chatId];
-    roomSelected.setRoom(group);
-    $scope.chat = group;
-
-    var members = group.members;
-    $scope.members_length = members.length;
-    groupMembers(members, null, function done(members) {
-        $scope.members = members;
-    });
-
-    //<!-- Join chat room.
-    $scope.toggle = function (chatId) {
-        location.href = '#/tab/group/chat/' + chatId;
-    };
-})
-.controller('GroupProjectbaseCtrl', function($scope, $stateParams, roomSelected) {
-	var group = main.getDataManager().projectBaseGroups[$stateParams.chatId];
-	roomSelected.setRoom(group);
-	$scope.chat = group;
-	
-	var members = group.members;
-	$scope.members_length = members.length;
-	groupMembers(members, null, function done(members) {
-	    $scope.members = members;
-	});
-			
-	$scope.toggle = function (chatId) {
-	    location.href = '#/tab/group/chat/' + chatId;
-	};
-	
-		$ionicModal.fromTemplateUrl('my-modal.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.modal = modal;
-	});
-	$scope.openModal = function() {
-		$scope.modal.show();
-	};
-	$scope.closeModal = function() {
-		$scope.modal.hide();
-	};
-	//Cleanup the modal when we're done with it!
-	$scope.$on('$destroy', function() {
-		$scope.modal.remove();
-	});
-	// Execute action on hide modal
-	$scope.$on('modal.hidden', function() {
-		// Execute action
-	});
-	// Execute action on remove modal
-	$scope.$on('modal.removed', function() {
-		// Execute action
-	});
-})
 .controller('GroupPrivateCtrl', function ($scope, $stateParams, roomSelected) {
     var group = main.getDataManager().privateGroups[$stateParams.chatId];
     roomSelected.setRoom(group);
@@ -389,6 +349,26 @@ var initOrgModal = function ($scope, groupId, roomSelected, done) {
     //<!-- Join chat room.
     $scope.toggle = function (chatId) {
         $scope.closeOrgModal();
+        location.href = '#/tab/group/chat/' + chatId;
+    };
+
+    done();
+}
+
+var initPjbModal = function ($scope, groupId, roomSelected, done) {
+    var group = main.getDataManager().projectBaseGroups[groupId];
+    roomSelected.setRoom(group);
+    $scope.chat = group;
+
+    var members = group.members;
+    $scope.members_length = members.length;
+    groupMembers(members, null, function done(members) {
+        $scope.members = members;
+        $scope.$apply();
+    });
+
+    $scope.toggle = function (chatId) {
+        $scope.closePjbModal();
         location.href = '#/tab/group/chat/' + chatId;
     };
 

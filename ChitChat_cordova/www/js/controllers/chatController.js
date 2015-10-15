@@ -5,7 +5,7 @@ angular.module('spartan.chat', [])
 })
 
 
-.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, Chats, roomSelected) 
+.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, $sce, Chats, roomSelected) 
 {    		
     var currentRoom = roomSelected.getRoom();
     var myprofile = main.getDataManager().myProfile;
@@ -40,7 +40,13 @@ angular.module('spartan.chat', [])
 		$scope.modal.hide();
 	}
 	
-	// Modal Hidden		
+	// Modal - Webview 
+	$scope.openModalWebview = function() {
+		modalcount++;
+		$scope.modalWebview.show();
+	};
+	
+	// Modal Hidden		 
 	$scope.$on('modal.hidden', function() {
 		modalcount--;
 		
@@ -64,7 +70,12 @@ angular.module('spartan.chat', [])
 		if( uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp' )
 			http = 'http://';
 		http += uri;
-		window.open(http, '_blank');
+		//window.open(http, '_blank');
+		
+		window.open(encodeURI(http), '_blank', 'location=yes');
+		
+		//$scope.webviewUrl = uri;
+		//$scope.openModalWebview();
 	};
 	
 	$scope.chat = [];
@@ -260,6 +271,14 @@ angular.module('spartan.chat', [])
 			animation: 'slide-in-up'
 		}).then(function(modal) {
 			$scope.modalSticker = modal;
+		})
+		
+		// Reload Modal - WebView
+		$ionicModal.fromTemplateUrl('templates/modal-webview.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modalWebview = modal;
 		})
 		
 		// Reader view modal.
