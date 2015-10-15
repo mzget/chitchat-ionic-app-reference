@@ -62,7 +62,9 @@ angular.module('spartan.controllers', [])
 	});
 	
 	$scope.$on('$ionicView.leave', function() {
-		clearInterval($scope.interval);
+	    clearInterval($scope.interval);
+
+	    $rootScope.hideTabs = true;
 	});
 
 	//$scope.chats = Chats.all();
