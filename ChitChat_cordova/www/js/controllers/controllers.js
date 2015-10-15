@@ -415,7 +415,7 @@ var initPjbModal = function ($scope, groupId, roomSelected, done) {
 var initPvgModal = function ($scope, groupId, roomSelected, done) {
     var group = main.getDataManager().privateGroups[groupId];
     roomSelected.setRoom(group);
-    $scope.chat = group;
+    $scope.group = group;
 
     var members = group.members;
     $scope.members_length = members.length;
