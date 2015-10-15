@@ -1,6 +1,6 @@
 angular.module('spartan.media', [])
 
-.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, ImageService, FileService) {
+.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
@@ -77,6 +77,23 @@ angular.module('spartan.media', [])
 	    $cordovaProgress.showText(false, "Fail!", 'center');
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
+
+		$ionicModal.fromTemplateUrl('templates/modal-image.html', function($ionicModal) {
+	    	$scope.modalImage = $ionicModal;
+	  	}, {
+		    scope: $scope,
+		    animation: 'slide-in-up'
+	  	});
+	
+
+	$scope.viewImage = function(src){
+		$scope.src = src;
+		$scope.modalImage.show();
+	}
+	$scope.closeImage = function(){
+		$scope.modalImage.hide();
+	}
+
 })
 .controller('VideoController', function($scope, $cordovaCapture, $ionicLoading, $ionicActionSheet, $cordovaProgress,$cordovaFile,GenerateID,VideoService) {
 

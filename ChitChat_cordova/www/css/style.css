@@ -91,7 +91,7 @@
 
 
 
-
+.modal-img-view {  background-size: contain; background-repeat: no-repeat; background-position: 50% center; }
 .recording { background-color: red; }
 /*.has-header { top:64px; }*/
 .nav-bar-block { margin-top:0; }
