@@ -29,7 +29,7 @@
 				</div>
 
 				<div class="type-video" ng-if="message.type=='Video'">
-					<video id="{{message._id}}" src="http://stalk.animation-genius.com{{message.body}}"></video>
+					<video id="{{message._id}}" src="{{message.bodyUrl}}"></video>
 				</div>
 
 				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
@@ -62,7 +62,7 @@
                 	<video id="{{message._id}}" src="{{message.body}}"></video>
 				</div>
                 <div class="type-video" ng-if="message.type=='Video' && message.temp==null">
-                	<video id="{{message._id}}" src="http://stalk.animation-genius.com{{message.body}}"></video>
+                	<video id="{{message._id}}" src="{{message.bodyUrl}}"></video>
                 </div>
 				
 						

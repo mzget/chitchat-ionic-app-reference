@@ -78,12 +78,40 @@ angular.module('spartan.media', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 })
-.controller('VideoController', function($scope, $cordovaCapture, $ionicLoading, $cordovaProgress,$cordovaFile,GenerateID) {
+.controller('VideoController', function($scope, $cordovaCapture, $ionicLoading, $ionicActionSheet, $cordovaProgress,$cordovaFile,GenerateID,VideoService) {
 
-	$scope.$on('captureVideo', function(event, args) { $scope.captureVideo(); });
+	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
 	var videoURI;
 	var videoName;
+
+	$scope.addVideo = function() {
+	    $scope.hideSheet = $ionicActionSheet.show({
+	      buttons: [
+	        { text: 'Record Video' },
+	        { text: 'Video from library' }
+	      ],
+	      titleText: 'Add video',
+	      cancelText: 'Cancel',
+	      buttonClicked: function(index) {
+	      	if(index==0){ $scope.captureVideo(); }
+	      	else{ 
+	      		$scope.hideSheet();
+	      		VideoService.handleMediaDialog().then(function() { 
+		    		$scope.$apply(); 
+		    		videoURI = VideoService.getVideoUri();
+		    		videoName = videoURI.substr(videoURI.lastIndexOf('/') + 1);
+		    		$scope.$emit('fileUri',[videoName,"Video"]);
+		    		$scope.uploadVideo();
+		    	});
+	      	}
+	      }
+	    });
+	}
+
+
+
 	$scope.captureVideo = function() {
+		$scope.hideSheet();
 	    var options = { limit: 1, duration: 15 };
 	    $cordovaCapture.captureVideo(options).then(function(videoData) {
 	    	console.log(videoData);
@@ -94,7 +122,7 @@ angular.module('spartan.media', [])
 	}
 
 	function moveVideoToTmp(uri){
-		videoName = GenerateID.makeid() + 'MOV';
+		videoName = GenerateID.makeid() + '.MOV';
 		var name = uri.substr(uri.lastIndexOf('/') + 1);
         var namePath = uri.substr(0, uri.lastIndexOf('/') + 1);
         var namePathTrim = namePath.substring(0,namePath.length - 1);
@@ -105,6 +133,7 @@ angular.module('spartan.media', [])
         	console.log(success);
         	delectFolderTmp(folderFile);
         	videoURI = cordova.file.tempDirectory + videoName;
+        	$scope.$emit('fileUri',[videoURI,"Video"]);
         	$scope.uploadVideo();
           }, function(error) {
           	console.log(error);
