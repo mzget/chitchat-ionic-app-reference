@@ -42,6 +42,12 @@
                             "xml": false,
                             "count": 1
                         }
+                    ],
+                    "AudioToolbox.framework": [
+                        {
+                            "xml": true,
+                            "count": 1
+                        }
                     ]
                 }
             },
@@ -58,6 +64,10 @@
                         },
                         {
                             "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
                             "count": 1
                         },
                         {
@@ -78,6 +88,18 @@
                         },
                         {
                             "xml": "<feature name=\"Capture\"><param name=\"ios-package\" value=\"CDVCapture\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"IonicKeyboard\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"ProgressIndicator\"><param name=\"ios-package\" value=\"ProgressIndicator\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -102,6 +124,9 @@
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
@@ -112,6 +137,18 @@
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "org.pbernasconi.progressindicator": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },

@@ -43,6 +43,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-device/www/device.js",
+        "id": "cordova-plugin-device.device",
+        "clobbers": [
+            "device"
+        ]
+    },
+    {
         "file": "plugins/cordova-plugin-file/www/DirectoryEntry.js",
         "id": "cordova-plugin-file.DirectoryEntry",
         "clobbers": [
@@ -203,6 +210,20 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-media/www/MediaError.js",
+        "id": "cordova-plugin-media.MediaError",
+        "clobbers": [
+            "window.MediaError"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-media/www/Media.js",
+        "id": "cordova-plugin-media.Media",
+        "clobbers": [
+            "window.Media"
+        ]
+    },
+    {
         "file": "plugins/cordova-plugin-media-capture/www/CaptureAudioOptions.js",
         "id": "cordova-plugin-media-capture.CaptureAudioOptions",
         "clobbers": [
@@ -252,24 +273,18 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/ionic-plugin-keyboard/www/ios/keyboard.js",
+        "id": "ionic-plugin-keyboard.keyboard",
+        "clobbers": [
+            "cordova.plugins.Keyboard"
+        ],
+        "runs": true
+    },
+    {
         "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
         "id": "org.apache.cordova.dialogs.notification",
         "merges": [
             "navigator.notification"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.media/www/MediaError.js",
-        "id": "org.apache.cordova.media.MediaError",
-        "clobbers": [
-            "window.MediaError"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.media/www/Media.js",
-        "id": "org.apache.cordova.media.Media",
-        "clobbers": [
-            "window.Media"
         ]
     },
     {
@@ -285,13 +300,15 @@ module.exports.metadata =
 {
     "cordova-plugin-camera": "1.2.0",
     "cordova-plugin-console": "1.0.1",
+    "cordova-plugin-device": "1.0.1",
     "cordova-plugin-file": "3.0.0",
     "cordova-plugin-file-transfer": "1.3.0",
+    "cordova-plugin-media": "1.0.1",
     "cordova-plugin-media-capture": "1.0.1",
+    "cordova-plugin-whitelist": "1.0.0",
+    "ionic-plugin-keyboard": "1.0.7",
     "org.apache.cordova.dialogs": "0.3.0",
-    "org.apache.cordova.media": "0.2.16",
-    "org.pbernasconi.progressindicator": "1.1.0",
-    "cordova-plugin-whitelist": "1.0.0"
+    "org.pbernasconi.progressindicator": "1.1.0"
 }
 // BOTTOM OF METADATA
 });

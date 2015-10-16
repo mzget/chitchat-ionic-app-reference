@@ -11,6 +11,9 @@
     <feature name="Console">
         <param name="ios-package" value="CDVLogger" />
     </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <feature name="File">
         <param name="ios-package" value="CDVFile" />
@@ -19,14 +22,17 @@
     <feature name="FileTransfer">
         <param name="ios-package" value="CDVFileTransfer" />
     </feature>
+    <feature name="Media">
+        <param name="ios-package" value="CDVSound" />
+    </feature>
     <feature name="Capture">
         <param name="ios-package" value="CDVCapture" />
     </feature>
+    <feature name="Keyboard">
+        <param name="ios-package" onload="true" value="IonicKeyboard" />
+    </feature>
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
-    </feature>
-    <feature name="Media">
-        <param name="ios-package" value="CDVSound" />
     </feature>
     <feature name="ProgressIndicator">
         <param name="ios-package" value="ProgressIndicator" />
