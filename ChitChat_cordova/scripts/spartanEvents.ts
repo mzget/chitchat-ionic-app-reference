@@ -1,25 +1,25 @@
 ﻿module Services {
 
-    interface IOnChatListener {
+    export interface IChatServerListener {
         onChatData(data);
         onLeaveRoom(data);
         onRoomJoin(data);
         onMessageRead(dataEvent);
         onGetMessagesReaders(dataEvent);
     }
-    interface IFrontendServerListener {
+    export interface IFrontendServerListener {
         onGetCompanyMemberComplete(dataEvent);
         onGetPrivateGroupsComplete(dataEvent);
         onGetOrganizeGroupsComplete(dataEvent);
         onGetProjectBaseGroupsComplete(dataEvent);
     }
-    interface IRTCListener {
+    export interface IRTCListener {
         onVideoCall(dataEvent);
         onVoiceCall(dataEvent);
         onHangupCall(dataEvent);
         onTheLineIsBusy(dataEvent);
     }
-    interface IServerListener {
+    export interface IServerListener {
         onAccessRoom(dataEvent);
         onUpdatedLastAccessTime(dataEvent);
         onAddRoomAccess(dataEvent);
@@ -36,7 +36,7 @@
         onUserUpdateProfile(dataEvent);
     }
 
-    export class ChatServerListener implements IOnChatListener {
+    export abstract class AbsChatServerListener implements IChatServerListener {
         onChatData(data) { };
         onLeaveRoom(data) { };
         onRoomJoin(data) { };
@@ -44,34 +44,34 @@
         onGetMessagesReaders(dataEvent) { };
     }
 
-    export class FrontendServerListener implements IFrontendServerListener {
-        onGetCompanyMemberComplete(dataEvent) { };
-        onGetPrivateGroupsComplete(dataEvent) { };
-        onGetOrganizeGroupsComplete(dataEvent) { };
-        onGetProjectBaseGroupsComplete(dataEvent) { };
+    export abstract class AbsFrontendServerListener implements IFrontendServerListener {
+        abstract onGetCompanyMemberComplete(dataEvent);
+        abstract onGetPrivateGroupsComplete(dataEvent);
+        abstract onGetOrganizeGroupsComplete(dataEvent);
+        abstract onGetProjectBaseGroupsComplete(dataEvent);
     };
 
-    export class RTCListener implements IRTCListener {
-        onVideoCall(dataEvent) { };
-        onVoiceCall(dataEvent) { };
-        onHangupCall(dataEvent) { };
-        onTheLineIsBusy(dataEvent) { };
+    export abstract class AbsRTCListener implements IRTCListener {
+        abstract onVideoCall(dataEvent);
+        abstract onVoiceCall(dataEvent);
+        abstract onHangupCall(dataEvent);
+        abstract onTheLineIsBusy(dataEvent);
     }
 
-    export class ServerListener implements IServerListener {
-        onAccessRoom(dataEvent) { };
-        onUpdatedLastAccessTime(dataEvent) { };
-        onAddRoomAccess(dataEvent) { };
+    export abstract class AbsServerListener implements IServerListener {
+        abstract onAccessRoom(dataEvent);
+        abstract onUpdatedLastAccessTime(dataEvent);
+        abstract onAddRoomAccess(dataEvent);
 
-        onCreateGroupSuccess(dataEvent) { };
-        onEditedGroupMember(dataEvent) { };
-        onEditedGroupName(dataEvent) { };
-        onEditedGroupImage(dataEvent) { };
-        onNewGroupCreated(dataEvent) { };
+        abstract onCreateGroupSuccess(dataEvent);
+        abstract onEditedGroupMember(dataEvent);
+        abstract onEditedGroupName(dataEvent);
+        abstract onEditedGroupImage(dataEvent);
+        abstract onNewGroupCreated(dataEvent);
 
-        onUpdateMemberInfoInProjectBase(dataEvent) { };
+        abstract onUpdateMemberInfoInProjectBase(dataEvent);
 
-        onUserUpdateImageProfile(dataEvent) { };
-        onUserUpdateProfile(dataEvent) { };
+        abstract onUserUpdateImageProfile(dataEvent);
+        abstract onUserUpdateProfile(dataEvent);
     }
 }

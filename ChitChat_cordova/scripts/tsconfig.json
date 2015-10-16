@@ -2,9 +2,10 @@
     "compilerOptions": { 
         "noImplicitAny": false,
         "noEmitOnError": true,
-        "removeComments": false,
-        "sourceMap": true,
+        "removeComments": true,
+        "sourceMap": false,
         "out": "www/scripts/appBundle.js",
-        "target": "es5"
+      "target": "ES5",
+      "jsx": "react"
     }
 }
