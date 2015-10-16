@@ -6,8 +6,14 @@
 -->
 <ion-modal-view>
 	<ion-content class="padding group-detail">
-        <a class="button button-icon icon ion-ios-close-empty" ng-click="closePvgModal()"></a>
 		<img class="avatar" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{group.image}}&w=150&h=150" />
+        <a class="button button-icon icon ion-ios-close-empty" ng-click="closePvgModal()"></a>
+		 <div class="group-pvgroup">
+                <span ng-repeat="member in members">
+                    <img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{member.image}}&h=30&w=30" />
+                </span>
+                <a href="#/tab/group/members/{{ group._id }}" class="length">{{ members_length }}</a>
+            </div>
 		<div class="group-menu">
 			<a ng-click="chat(group._id)"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></a>
 			<div><i class="ion-ios-telephone-outline" data-pack="default" data-tags="talk"></i><br /><span>FreeCall</span></div>
