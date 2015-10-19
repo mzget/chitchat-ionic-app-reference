@@ -5,8 +5,13 @@ angular.module('spartan.chat', [])
 })
 
 
-.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, $sce, Chats, roomSelected) 
+.controller('chatController', function($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, $sce, Chats, roomSelected) 
 {    		
+	// Hide nav-tab # in chat detail
+	navHide();
+	$('#chatMessage').animate({'bottom':'0'}, 350);
+	
+	
     var currentRoom = roomSelected.getRoom();
     var myprofile = main.getDataManager().myProfile;
     var allMembers = main.getDataManager().orgMembers;
