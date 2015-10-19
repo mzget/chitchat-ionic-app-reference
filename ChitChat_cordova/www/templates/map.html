@@ -1,8 +1,15 @@
 
 
+  <body ng-app="starter" ng-mapcontroller="MapCtrl">
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">Map</h1>
+    </ion-header-bar>
 
-<ion-view>
-    <ion-content>
-        <div class="map" data-tap-disabled="true"></div>
+    <ion-content scroll="false">
+      <map on-create="mapCreated(map)"></map>
     </ion-content>
-</ion-view>
+
+    <ion-footer-bar class="bar-stable">
+      <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></a>
+    </ion-footer-bar>
+  </body>
