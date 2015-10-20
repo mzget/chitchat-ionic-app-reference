@@ -6,7 +6,5 @@
     "promise": "7.0.4"
   },
   "cordovaPlugins": [],
-  "cordovaPlatforms": [
-    "ios"
-  ]
+  "cordovaPlatforms": []
 }
