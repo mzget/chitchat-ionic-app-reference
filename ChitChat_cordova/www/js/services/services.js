@@ -136,6 +136,42 @@ angular.module('starter.services', [])
     handleMediaDialog: saveMedia
   }
 })
+.factory('CreateGroup',function(){
+
+  var id_checked = [];
+  var members = main.getDataManager().orgMembers;
+  var allmembers = [];
+  
+  console.log(JSON.stringify(members));
+
+
+
+
+
+
+  function getAllMember(){
+    for(var i=0; i<members.length; i++){
+      if(id_checked.length == 0){
+        allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":false } );
+      }
+      else{
+        for(var x=0; x<id_checked.length; x++){
+          if(id_checked[x] == members[i]._id){
+            allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":true } );
+          }else{
+            allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":false } );
+          }
+        }
+      }
+      console.log(allmembers);
+    }
+
+    return allmembers;
+  }
+  return{
+    getAllMember: getAllMember
+  }
+})
 
 .factory('Chats', function($sce) {
     // Might use a resource here that returns a JSON array

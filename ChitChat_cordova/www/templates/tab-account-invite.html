@@ -1,0 +1,10 @@
+<ion-view view-title="Invite Members">
+  <ion-content>
+    <ion-list class="create-group-invite-list-member">
+        <ion-checkbox ng-repeat="member in allmembers track by $index" ng-if="myProfile._id!=member._id" ng-model="member.checked" ng-change="checked()" id="{{member._id}}"> 
+            <img ng-src="http://stalk.animation-genius.com{{member.image}}"/> 
+            <div class="member-name"> {{member.displayname}} </div> 
+        </ion-checkbox>
+    </ion-list>
+  </ion-content>
+</ion-view>

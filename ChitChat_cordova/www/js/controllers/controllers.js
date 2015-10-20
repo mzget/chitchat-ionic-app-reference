@@ -310,7 +310,37 @@ angular.module('spartan.controllers', [])
 })
 
 .controller('AccountCreate',function($scope) {
-    $scope.images = "http://placehold.it/50x50";
+	$scope.members = [];
+	$scope.members.push( {"id":"Add","image":"Add","name":"Add"});
+	var myProfile = main.getDataManager().myProfile;
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+
+	//main.getDataManager().myProfile._id
+    //$scope.images = "http://placehold.it/50x50";
+})
+
+
+.controller('AccountInvite',function($scope,CreateGroup) {
+	$scope.myProfile = main.getDataManager().myProfile;
+	$scope.allmembers = CreateGroup.getAllMember();
+	console.log($scope.allmembers);
+	$scope.checked = function(){
+		console.log($scope.allmembers.checked);
+	}
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size, callback)
