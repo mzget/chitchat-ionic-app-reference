@@ -267,6 +267,7 @@ angular.module('spartan.chat', [])
     
     $scope.openMap = function() {
         console.log("map");
+        $scope.modal.hide();
 		location.href='#/tab/group/chat/'+currentRoom._id+'/map';
     }
 	

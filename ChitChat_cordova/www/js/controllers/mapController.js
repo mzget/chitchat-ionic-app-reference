@@ -1,4 +1,4 @@
-angular.module('starter.MapCtrl', [])
+angular.module('starter.MapCtrl', ['ionic'])
 
 .controller('MapCtrl', function($scope, $ionicLoading) {
   $scope.mapCreated = function(map) {

@@ -1,3 +1,4 @@
+
 angular.module('starter.directives', [])
 
 .directive('map', function() {
@@ -29,6 +30,7 @@ angular.module('starter.directives', [])
       } else {
         google.maps.event.addDomListener(window, 'load', initialize);
       }
+               
     }
   }
 });
