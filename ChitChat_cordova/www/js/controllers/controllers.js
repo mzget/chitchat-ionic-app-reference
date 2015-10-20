@@ -25,10 +25,10 @@ angular.module('spartan.controllers', [])
 })
 
 // GROUP
-.controller('homeController', function ($rootScope, $scope, $timeout, $ionicModal, roomSelected)
+.controller('homeController', function ($scope, $timeout, $ionicModal, roomSelected)
 {	
 	$scope.$on('$ionicView.enter', function(){ 
-		$rootScope.hideTabs = false;
+		navShow();
 	
 		$scope.refreshView = function () {
 			console.debug("GroupCtrl : refreshView");
@@ -100,8 +100,6 @@ angular.module('spartan.controllers', [])
 	
 	$scope.$on('$ionicView.leave', function() {
 	    clearInterval($scope.interval);
-
-	    $rootScope.hideTabs = true;
 	});
 
 	//$scope.chats = Chats.all();
@@ -120,9 +118,6 @@ angular.module('spartan.controllers', [])
 		}
 	};
 	
-	$scope.hideTab = function(){		
-		$rootScope.hideTabs = true;
-	}
 	//<!-- My profile modal. -->
 	$scope.openProfileModal = function (groupId) {
 		initMyProfileModal($scope, function done(){
@@ -292,7 +287,9 @@ angular.module('spartan.controllers', [])
 	//$scope.$on('$ionicView.enter', function(e) {
 	//});
 
-	$scope.roomAccess = myprofile.roomAccess;
+	$scope.roomAccess = dataManager.myProfile['roomAccess'];
+	
+	console.log( dataManager.myProfile['roomAccess'] );
 })
 
 .controller('MapCtrl', function ($scope, $stateParams) {
@@ -400,6 +397,17 @@ function testfunc()
 	return 'tabs-item-hide';
 }
 
+function navHide()
+{
+	$('.tab-nav.tabs').css({'display':'none'});
+	$('[name="tab-group"] .has-tabs').css({'bottom':'0px'})
+}
+
+function navShow()
+{
+	$('.tab-nav.tabs').css({'display':'flex'});
+	$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
+}
 
 var initOrgModal = function ($scope, groupId, roomSelected, done) {
     var group = main.getDataManager().orgGroups[groupId];
