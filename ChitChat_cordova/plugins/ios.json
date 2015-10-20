@@ -83,6 +83,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Media\"><param name=\"ios-package\" value=\"CDVSound\" /></feature>",
                             "count": 1
                         },
@@ -100,10 +104,6 @@
                         },
                         {
                             "xml": "<feature name=\"ProgressIndicator\"><param name=\"ios-package\" value=\"ProgressIndicator\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -137,6 +137,9 @@
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
         "cordova-plugin-media": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
@@ -153,9 +156,6 @@
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "org.pbernasconi.progressindicator": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
-        "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
