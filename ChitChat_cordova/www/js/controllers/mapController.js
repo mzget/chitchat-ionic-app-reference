@@ -1,8 +1,15 @@
-angular.module('starter.MapCtrl', ['ionic'])
+angular.module('starter.MapCtrl', [])
 
 .controller('MapCtrl', function($scope, $ionicLoading) {
+  $scope.$on('$ionicView.enter', function(){
+    // Anything you can think of
+    console.log('MapCtrl');
+    setInterval(function run() {
+      console.debug('MapController'); },
+     500);
+  });
   
-  console.debug('MapCon');
+    console.log('MapCtrl out');
   
   $scope.mapCreated = function(map) {
     $scope.map = map;

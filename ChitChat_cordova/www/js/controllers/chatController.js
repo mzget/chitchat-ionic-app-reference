@@ -37,7 +37,7 @@ angular.module('spartan.chat', [])
 	// Modal - Chat menu 
 	$scope.openModal = function() {
 		modalcount++;
-		$scope.modal.show();
+		$scope.chatMenuModal.show();
 		$('#chatMessage').animate({'bottom':'272px'}, 350);
 		$('#chatDetail').animate({'top':'-272px'}, 350);
 	};
@@ -58,7 +58,7 @@ angular.module('spartan.chat', [])
 		});
 		
 		$scope.modalSticker.hide();
-		$scope.modal.hide();
+		$scope.chatMenuModal.hide();
 	}
 	
 	// Modal - Webview 
@@ -76,7 +76,7 @@ angular.module('spartan.chat', [])
 		
 		if( modalcount == 1 )
 		{
-			$scope.modal.hide();			
+			$scope.chatMenuModal.hide();			
 		}
 		$('#chatMessage').animate({'bottom':'0'}, 350);
 		$('#chatDetail').animate({'top':'0'}, 350);		
@@ -266,10 +266,16 @@ angular.module('spartan.chat', [])
 	}
     
     $scope.openMap = function() {
-        console.log("map");
-        $scope.modal.hide();
-		location.href='#/tab/group/chat/'+currentRoom._id+'/map';
+        console.log("openMap");
+		$scope.openMapModal();
+//		location.href='#/tab/group/chat/'+currentRoom._id+'/map';
     }
+	$scope.openMapModal = function() {
+		$scope.mapViewModal.show();
+	};
+	$scope.closeMapModal = function() {
+		$scope.mapViewModal.hide();
+	};
 	
 	$scope.isValidURI = function(uri) {
 		if( uri.substr(0, 3) == 'www' || uri.substr(0, 4) == 'http' || uri.substr(0, 3) == 'ftp' )
@@ -290,7 +296,7 @@ angular.module('spartan.chat', [])
 			scope: $scope,
 			animation: 'slide-in-up'
 		}).then(function(modal) {
-			$scope.modal = modal;
+			$scope.chatMenuModal = modal;
 		})
 		
 		// Reload Modal - Sticker
@@ -315,6 +321,31 @@ angular.module('spartan.chat', [])
 			animation: 'slide-in-up'
 		}).then(function(modal) {
 			$scope.readerViewModal = modal;
+		});
+		
+		// Map modal view modal.
+		$ionicModal.fromTemplateUrl('templates/map.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.mapViewModal = modal;
+		});
+		
+	    //Cleanup the modal when we're done with it!
+		$scope.$on('$destroy', function () {
+			$scope.chatMenuModal.remove();
+		    $scope.modalSticker.remove();
+		    $scope.modalWebview.remove();
+		    $scope.readerViewModal.remove();
+			$scope.mapViewModal.remove();
+		});
+	    // Execute action on hide modal
+		$scope.$on('modal.hidden', function () {
+		    // Execute action
+		});
+	    // Execute action on remove modal
+		$scope.$on('modal.removed', function () {
+		    // Execute action
 		});
     });
 
