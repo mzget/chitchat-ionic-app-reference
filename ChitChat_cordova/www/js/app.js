@@ -192,6 +192,16 @@ angular.module('starter', ['ionic','starter.MapCtrl', 'spartan.controllers', 'st
 			}
 		}
 	})
+
+	.state('tab.account-invite', {
+		url: '/account/create/invite',
+		views: {
+			'tab-account': {
+				templateUrl: 'templates/tab-account-invite.html',
+				controller: 'AccountInvite'
+			}
+		}
+	})
 	
 	.state('tab.chat.readers', {
 		url: '/group/chat/readers',
