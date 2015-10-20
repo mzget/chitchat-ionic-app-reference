@@ -16,7 +16,7 @@
                     "CoreLocation.framework": [
                         {
                             "xml": false,
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "CoreGraphics.framework": [
@@ -101,6 +101,10 @@
                         {
                             "xml": "<feature name=\"ProgressIndicator\"><param name=\"ios-package\" value=\"ProgressIndicator\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -110,7 +114,7 @@
                     "NSLocationWhenInUseUsageDescription": [
                         {
                             "xml": "<string />",
-                            "count": 1
+                            "count": 2
                         }
                     ]
                 }
@@ -149,6 +153,9 @@
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "org.pbernasconi.progressindicator": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
