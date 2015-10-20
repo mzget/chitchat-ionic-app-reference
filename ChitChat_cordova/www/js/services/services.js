@@ -139,37 +139,59 @@ angular.module('starter.services', [])
 .factory('CreateGroup',function(){
 
   var id_checked = [];
-  var members = main.getDataManager().orgMembers;
   var allmembers = [];
+  var members = main.getDataManager().orgMembers;
   
-  console.log(JSON.stringify(members));
-
-
-
-
-
-
   function getAllMember(){
-    for(var i=0; i<members.length; i++){
-      if(id_checked.length == 0){
-        allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":false } );
-      }
-      else{
-        for(var x=0; x<id_checked.length; x++){
-          if(id_checked[x] == members[i]._id){
-            allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":true } );
-          }else{
-            allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":false } );
-          }
-        }
-      }
-      console.log(allmembers);
+    allmembers = [];
+    for(var i in members){
+      allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":getChecked(i) } );
     }
-
     return allmembers;
   }
+  function getSelectedMember(){
+    var selectedMember = [];
+    selectedMember.push( {"_id":"Add","image":"Add","displayname":"Add"});
+    var count = 0;
+    for(var i in members){
+      if(id_checked[count]==i)
+        selectedMember.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image } );
+      count++;
+    }
+    return selectedMember;
+  }
+
+  function getSelectedIdWithMe(){ 
+    var id = id_checked;
+    id[id.length] = main.getDataManager().myProfile._id;
+    return id; 
+  }
+
+  function getChecked(id){
+    var checked = false;
+    for(var x=0; x<id_checked.length; x++){
+      if(id==id_checked[x]){
+        checked = true;
+      }
+    }
+    return checked;
+  }
+
+  function setMemberSelected(id,selected){
+    if(selected){
+      id_checked[id_checked.length] = id;
+    }else{
+      for(var i=0; i<id_checked.length; i++){
+        if(id_checked[i]==id){ id_checked.splice( i, 1 ); }
+      }
+    }
+  }
+
   return{
-    getAllMember: getAllMember
+    getAllMember: getAllMember,
+    getSelectedMember: getSelectedMember,
+    getSelectedIdWithMe: getSelectedIdWithMe,
+    setMemberSelected: setMemberSelected
   }
 })
 

@@ -167,8 +167,6 @@ angular.module('spartan.controllers', [])
 
 // Group - View Profile
 .controller('GroupViewprofileCtrl', function($scope, $stateParams, $state, $cordovaProgress) {
-	console.debug($stateParams)
-	
 	if($stateParams.chatId==main.getDataManager().myProfile._id){
 		$scope.chat = main.getDataManager().myProfile;
 		$scope.model = {
@@ -306,38 +304,39 @@ angular.module('spartan.controllers', [])
 	};
 })
 
-.controller('AccountCreate',function($scope) {
-	$scope.members = [];
-	$scope.members.push( {"id":"Add","image":"Add","name":"Add"});
+.controller('AccountCreate',function($scope,$rootScope,$state,CreateGroup) {
 	var myProfile = main.getDataManager().myProfile;
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
-	$scope.members.push( {"id":myProfile._id,"image":myProfile.image,"name":myProfile.displayname});
+	$rootScope.members = CreateGroup.getSelectedMember();
+	$scope.model = { groupname: "" };
+	$scope.submit = function(){
+		server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
+			if (!err) {
+				console.log(JSON.stringify(res));
+				$state.go('tab.group');
+			}
+			else {
+				console.warn(err, res);
+			}
+		});
+	}
 
-	//main.getDataManager().myProfile._id
-    //$scope.images = "http://placehold.it/50x50";
+
 })
 
 
-.controller('AccountInvite',function($scope,CreateGroup) {
+.controller('AccountInvite',function($scope,$rootScope,CreateGroup) {
+
 	$scope.myProfile = main.getDataManager().myProfile;
 	$scope.allmembers = CreateGroup.getAllMember();
 	console.log($scope.allmembers);
-	$scope.checked = function(){
-		console.log($scope.allmembers.checked);
+	$scope.checked = function(id,selected){
+		CreateGroup.setMemberSelected(id,selected);
 	}
+
+	$scope.$on('$ionicView.beforeLeave', function(){ 
+		console.log('1');
+		$rootScope.members = CreateGroup.getSelectedMember();
+    });
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size, callback)
