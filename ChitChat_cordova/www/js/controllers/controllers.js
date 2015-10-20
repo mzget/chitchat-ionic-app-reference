@@ -334,7 +334,7 @@ angular.module('spartan.controllers', [])
 	}
 
 	$scope.$on('$ionicView.beforeLeave', function(){ 
-		console.log('1');
+		console.log('Back to Previously');
 		$rootScope.members = CreateGroup.getSelectedMember();
     });
 }); // <-- LAST CONTROLLER
