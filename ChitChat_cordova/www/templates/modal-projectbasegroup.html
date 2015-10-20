@@ -5,10 +5,10 @@
   The Friends service returns an array of friend data
 -->
 
-<ion-modal-view style="width:80%; left:10%; right:10%; top:10%; bottom:10%; min-height:300px; box-shadow:0 0 0 100vh rgba(0,0,0,0.6)">
+<ion-modal-view style="width:80%; left:10%; right:10%; top:10%; bottom:10%; min-height:300px;">
     <ion-pane class="padding group-detail"  padding ="false">
-        <a class="button button-icon icon ion-ios-close-empty" ng-click="closePjbModal()"></a>
         <img class="avatar" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}&w=150&h=150" />
+        <a class="button button-icon icon ion-ios-close-empty" ng-click="closePjbModal()"></a>
         <div class="group-pvgroup">
             <span ng-repeat="member in members">
                 <img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{member.image}}&h=30&w=30" />
@@ -22,3 +22,5 @@
         </div>
     </ion-pane>
 </ion-modal-view>
+
+<a ng-click="closePjbModal()" style="position:fixed; top:0; left:0; width:100%; height:100vh; background-color:rgba(0,0,0,0.6);"></a>

@@ -5,11 +5,32 @@ angular.module('spartan.chat', [])
 })
 
 
-.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, $sce, Chats, roomSelected) 
+.controller('chatController', function($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, $sce, Chats, roomSelected) 
 {    		
+	// Hide nav-tab # in chat detail
+	navHide();
+	$('#chatMessage').animate({'bottom':'0'}, 350);
+	
+	
     var currentRoom = roomSelected.getRoom();
     var myprofile = main.getDataManager().myProfile;
     var allMembers = main.getDataManager().orgMembers;
+    
+    $scope.chat = [];
+    //<!-- Set up roomname for display title of chatroom.
+    var roomName = currentRoom.name;
+    if (!roomName || roomName === "") {
+        if (currentRoom.type === RoomType.privateChat) {
+            currentRoom.members.some(function iterator(member) {
+                if (member.id !== myprofile._id) {
+                    currentRoom.name = allMembers[member.id].displayname;
+                    return true;
+                }
+            });
+        }
+    }
+	$scope.title = currentRoom.name;	
+    //console.log(main.dataManager.getMyProfile())
 	//console.debug("chatController", currentRoom.name, currentRoom._id);
 	
 	modalcount = 0;	
@@ -87,9 +108,6 @@ angular.module('spartan.chat', [])
 			alert( $(this).contentDocument.title );
 		});
 	
-	$scope.chat = [];
-	$scope.title = currentRoom.name;	
-    //console.log(main.dataManager.getMyProfile())
 
 	var chatRoomControl = new ChatRoomController(main, currentRoom._id);
 	main.dataListener.addListenerImp(chatRoomControl);

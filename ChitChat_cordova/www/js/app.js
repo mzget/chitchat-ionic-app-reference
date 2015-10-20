@@ -63,17 +63,6 @@ angular.module('starter', ['ionic','starter.MapCtrl', 'spartan.controllers', 'st
 			}
 		}
 	})
-	
-	// GROUP - Profile
-	.state('tab.group-myprofile', {
-		url: '/group/myprofile',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-myprofile.html',
-				controller: 'GroupMyprofileCtrl'
-			}
-		}
-	})
 
 	// GROUP - View Profile
 	.state('tab.group-viewprofile',{
@@ -82,38 +71,6 @@ angular.module('starter', ['ionic','starter.MapCtrl', 'spartan.controllers', 'st
 			'tab-group': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
 				controller: 'GroupViewprofileCtrl'
-			}
-		}
-	})
-	
-	// GROUP - Type
-	
-	.state('tab.group-orggroup', {
-		url: '/group/orggroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupOrggroupsCtrl'
-			}
-		}
-	})
-	
-	.state('tab.group-projectbasegroup', {
-		url: '/group/projectbasegroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupProjectbaseCtrl'
-			}
-		}
-	})
-	
-	.state('tab.group-privategroup', {
-		url: '/group/privategroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupPrivateCtrl'
 			}
 		}
 	})

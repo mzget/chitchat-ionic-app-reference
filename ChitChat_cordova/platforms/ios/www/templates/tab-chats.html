@@ -2,15 +2,10 @@
 	<ion-content>
 		<ion-list>
 			<ion-item class="item-remove-animate item-avatar item-icon-right" 
-                      ng-repeat="chat in chats" type="item-text-wrap" href="#/tab/message/{{chat._id}}">
-				<img ng-src="{{chat.image}}" />
-				<h2>{{chat.displayname}}</h2>
-				<p>{{chat.status}}</p>
+				ng-repeat="access in roomAccess track by $index" type="item-text-wrap" href="#/tab/group/chat/{{access.roomId}}">
+				<h2>{{access.roomId}}</h2>
+				<p>{{access.accessTime}}</p>
 				<i class="icon ion-chevron-right icon-accessory"></i>
-
-				<ion-option-button class="button-assertive" ng-click="remove(chat)">
-					Delete
-				</ion-option-button>
 			</ion-item>
 		</ion-list>
 	</ion-content>
