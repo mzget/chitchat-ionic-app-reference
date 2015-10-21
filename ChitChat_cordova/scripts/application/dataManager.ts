@@ -20,8 +20,8 @@ class DataManager implements Services.IFrontendServerListener {
     public projectBaseGroups: IRoomMap = {};
     public privateGroups: IRoomMap = {};
     public orgMembers: IMemberMep = {};
-    public isOrgMembersReady :boolean = false;
-
+    public isOrgMembersReady: boolean = false;
+    public companyInfo: CompanyInfo;
 
     public onMyProfileReady;
 
@@ -54,7 +54,7 @@ class DataManager implements Services.IFrontendServerListener {
     }
 
     public setCompanyInfo(data: any) {
-
+          this.companyInfo = JSON.parse(JSON.stringify(data));
     }
 
     public setOrganizeGroups(data: any) {
