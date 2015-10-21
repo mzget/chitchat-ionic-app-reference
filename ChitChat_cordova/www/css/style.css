@@ -109,3 +109,8 @@
 .recording { background-color: red; }
 /*.has-header { top:64px; }*/
 .nav-bar-block { margin-top:0; }
+map{display:block;
+    width:100%;
+    height:100%;
+}
+.scroll{height:100%;}

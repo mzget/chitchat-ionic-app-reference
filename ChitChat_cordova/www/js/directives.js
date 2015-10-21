@@ -5,18 +5,28 @@ angular.module('starter.directives', [])
   return {
     restrict: 'E',
     scope: {
-      onCreate: '&'
+      setup: '='
     },
     link: function ($scope, $element, $attr) {
-      function initialize() {
+        var zValue = $scope.$eval($attr.zoom);
+        var lat = $scope.$eval($attr.lat);
+        var lng = $scope.$eval($attr.lng);
+        var currPoint = new google.maps.LatLng(lat, lng);
+        
+      function setup(data) {
+        currPoint = new google.maps.LatLng(data.lat, data.long);
+        
         var mapOptions = {
-          center: new google.maps.LatLng(43.07493, -89.381388),
-          zoom: 16,
+          center: currPoint,
+          zoom: zValue,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map($element[0], mapOptions);
-  
-        $scope.onCreate({map: map});
+        var marker = new google.maps.Marker({
+            position: currPoint,
+            map: map,
+            draggable: false
+        });
 
         // Stop the side bar from dragging when mousedown/tapdown on the map
         google.maps.event.addDomListener($element[0], 'mousedown', function (e) {
@@ -24,13 +34,20 @@ angular.module('starter.directives', [])
           return false;
         });
       }
+      
+      $scope.$on('onInitMap', function(event, data) {
+        setup(data);
+      });
+
+      function initialize() {
+        console.info('map directive is initialized');
+      }
 
       if (document.readyState === "complete") {
         initialize();
       } else {
         google.maps.event.addDomListener(window, 'load', initialize);
-      }
-               
+      }     
     }
   }
 });

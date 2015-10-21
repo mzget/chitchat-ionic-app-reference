@@ -5,7 +5,7 @@ angular.module('spartan.chat', [])
 })
 
 
-.controller('chatController', function($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, $sce, Chats, roomSelected) 
+.controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal, $sce, $cordovaGeolocation, Chats, roomSelected)
 {    		
 	// Hide nav-tab # in chat detail
 	navHide();
@@ -271,6 +271,7 @@ angular.module('spartan.chat', [])
 //		location.href='#/tab/group/chat/'+currentRoom._id+'/map';
     }
 	$scope.openMapModal = function() {
+	    callGeolocation($scope, $cordovaGeolocation, $ionicLoading);
 		$scope.mapViewModal.show();
 	};
 	$scope.closeMapModal = function() {
@@ -366,3 +367,42 @@ angular.module('spartan.chat', [])
 		});
     });
 });
+
+var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading) {
+    $scope.centerOnMe = function () {
+		
+    }
+
+	$scope.loading = $ionicLoading.show({
+		content: 'Getting current location...',
+		showBackdrop: false
+	});
+
+	var posOptions = { timeout: 10000, enableHighAccuracy: false };
+	$cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
+			$scope.$broadcast('onInitMap',{ lat :position.coords.latitude, long: position.coords.longitude});
+			$ionicLoading.hide();
+		}, function (err) {
+			// error
+			console.error(err);
+		});
+
+
+    var watchOptions = {
+        timeout: 3000,
+        enableHighAccuracy: false // may cause errors if true
+    };
+
+    var watch = $cordovaGeolocation.watchPosition(watchOptions);
+    watch.then(
+      null,
+      function (err) {
+          // error
+      },
+      function (position) {
+          var lat = position.coords.latitude
+          var long = position.coords.longitude
+      });
+
+    watch.clearWatch();
+}
