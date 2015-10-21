@@ -369,11 +369,7 @@ angular.module('spartan.chat', [])
 });
 
 var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading) {
-    $scope.centerOnMe = function () {
-		
-    }
-
-	$scope.loading = $ionicLoading.show({
+    $scope.loading = $ionicLoading.show({
 		content: 'Getting current location...',
 		showBackdrop: false
 	});
@@ -382,6 +378,10 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading) {
 	$cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
 			$scope.$broadcast('onInitMap',{ lat :position.coords.latitude, long: position.coords.longitude});
 			$ionicLoading.hide();
+			
+			$scope.share = function () {
+				
+    		}
 		}, function (err) {
 			// error
 			console.error(err);

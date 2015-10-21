@@ -1,7 +1,7 @@
 <ion-modal-view ng-controller="MapCtrl">
-    <a class="button button-icon icon ion-ios-close-empty" ng-click="closeMapModal()"></a>
 
     <ion-header-bar class="bar-stable">
+        <a class="button button-icon icon ion-ios-close-empty" ng-click="closeMapModal()"></a>
         <h1 class="title">Map</h1>
     </ion-header-bar>
     <ion-content scroll="false">
@@ -9,7 +9,7 @@
     </ion-content>
 
     <ion-footer-bar class="bar-stable">
-        <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></a>
+        <a ng-click="share()" class="button button-icon icon ion-share"></a>
     </ion-footer-bar>
 </ion-modal-view>
 
@@ -19,6 +19,4 @@
         <div id="map" lat="43.07493" lng="-89.381388" zoom="8" on-create="mapCreated(map)" map>
         </div>
               center: new google.maps.LatLng(43.07493, -89.381388),
-
-
   </body>-->
