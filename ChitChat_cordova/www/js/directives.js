@@ -29,7 +29,7 @@ angular.module('starter.directives', [])
         var service = new google.maps.places.PlacesService(map);
         service.nearbySearch({
           location: currPoint,
-          radius: 500
+          radius: 1000
         }, callback);
         
         function callback(results, status) {
