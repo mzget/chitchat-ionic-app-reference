@@ -1,24 +1,15 @@
-<ion-modal-view ng-controller="MapCtrl">
-    <a class="button button-icon icon ion-ios-close-empty" ng-click="closeMapModal()"></a>
 
+
+  <body ng-app="starter" ng-mapcontroller="MapCtrl">
     <ion-header-bar class="bar-stable">
-        <h1 class="title">Map</h1>
+      <h1 class="title">Map</h1>
     </ion-header-bar>
+
     <ion-content scroll="false">
-        <map lat="43.07493" lng="-89.381388" zoom="16"></map>
+      <map on-create="mapCreated(map)"></map>
     </ion-content>
 
     <ion-footer-bar class="bar-stable">
-        <a ng-click="centerOnMe()" class="button button-icon icon ion-navigate"></a>
+      <a ng-click="centerOnMe()" ng-controller="MapCtrl" class="button button-icon icon ion-navigate"></a>
     </ion-footer-bar>
-</ion-modal-view>
-
-
-  <!--<body ng-app="starter" ng-mapcontroller="MapCtrl">
-
-        <div id="map" lat="43.07493" lng="-89.381388" zoom="8" on-create="mapCreated(map)" map>
-        </div>
-              center: new google.maps.LatLng(43.07493, -89.381388),
-
-
-  </body>-->
+  </body>
