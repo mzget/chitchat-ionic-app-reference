@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic','starter.MapCtrl', 'spartan.controllers', 'starter.directives', 'spartan.chat', 'spartan.media', 'starter.services', 'ngCordova'])
+angular.module('starter', ['ionic', 'spartan.controllers', 'starter.directives', 'spartan.chat', 'spartan.media', 'starter.services', 'ngCordova'])
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {
@@ -103,16 +103,6 @@ angular.module('starter', ['ionic','starter.MapCtrl', 'spartan.controllers', 'st
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
 				controller: 'chatController'
-			}
-		}
-	})
-	
-	.state('tab.group-map', {
-		url: '/group/chat/:chatId/map',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/map.html',
-				controller: 'MapCtrl'
 			}
 		}
 	})
