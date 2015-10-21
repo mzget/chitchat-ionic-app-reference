@@ -5,7 +5,8 @@ angular.module('starter.directives', [])
   return {
     restrict: 'E',
     scope: {
-      setup: '='
+        setup: '=',
+        selectedPlace: '&selectedPlace'
     },
     link: function ($scope, $element, $attr) {
         var zValue = $scope.$eval($attr.zoom);
@@ -22,11 +23,6 @@ angular.module('starter.directives', [])
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map($element[0], mapOptions);
-        // var marker = new google.maps.Marker({
-        //     position: currPoint,
-        //     map: map,
-        //     draggable: false
-        // });
         
         var infowindow = new google.maps.InfoWindow();
 
@@ -37,24 +33,26 @@ angular.module('starter.directives', [])
         }, callback);
         
         function callback(results, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for (var i = 0; i < results.length; i++) {
-              createMarker(results[i]);
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; i++) {
+                    createMarker(results[i]);
+                }
             }
-          }
         }
         
         function createMarker(place) {
-          var placeLoc = place.geometry.location;
-          var marker = new google.maps.Marker({
-            map: map,
-            position: place.geometry.location
-          });
-        
-          google.maps.event.addListener(marker, 'click', function() {
-            infowindow.setContent(place.name);
-            infowindow.open(map, this);
-          });
+            var placeLoc = place.geometry.location;
+            var marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location
+            });
+
+            google.maps.event.addListener(marker, 'click', function () {
+                infowindow.setContent(place.name);
+                infowindow.open(map, this);
+
+                $scope.selectedPlace({ data: place });
+            });
         }
 
         // Stop the side bar from dragging when mousedown/tapdown on the map

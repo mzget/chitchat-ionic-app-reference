@@ -1,11 +1,7 @@
 angular.module('spartan.chat', [])
 
-.controller('readers', function($scope, $ionicModal) {
-  
-})
-
-
-.controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal, $sce, $cordovaGeolocation, Chats, roomSelected)
+.controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
+    $sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected)
 {    		
 	// Hide nav-tab # in chat detail
 	navHide();
@@ -266,16 +262,15 @@ angular.module('spartan.chat', [])
 	}
     
     $scope.openMap = function() {
-        console.log("openMap");
+        $scope.chatMenuModal.hide();
 		$scope.openMapModal();
-//		location.href='#/tab/group/chat/'+currentRoom._id+'/map';
     }
 	$scope.openMapModal = function() {
-	    callGeolocation($scope, $cordovaGeolocation, $ionicLoading);
+	    callGeolocation($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs);
 		$scope.mapViewModal.show();
 	};
 	$scope.closeMapModal = function() {
-		$scope.mapViewModal.hide();
+	    $scope.mapViewModal.hide();
 	};
 	
 	$scope.isValidURI = function(uri) {
@@ -368,7 +363,27 @@ angular.module('spartan.chat', [])
     });
 });
 
-var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading) {
+var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs) {
+    $scope.place = "";
+    $scope.selectedPlace = function (place) {
+        console.debug('onSelectMarker', place)
+        $scope.place = place.name;
+        $scope.myLocation = place;
+    };
+
+    $scope.share = function () {
+        if (!$scope.place) {
+            $cordovaDialogs.alert('Missing place information', 'Share location', 'OK')
+               .then(function () {
+                   // callback success
+               });
+
+            return;
+        }
+
+        $scope.closeMapModal();
+    }
+
     $scope.loading = $ionicLoading.show({
 		content: 'Getting current location...',
 		showBackdrop: false
@@ -376,17 +391,12 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading) {
 
 	var posOptions = { timeout: 10000, enableHighAccuracy: false };
 	$cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
-			$scope.$broadcast('onInitMap',{ lat :position.coords.latitude, long: position.coords.longitude});
-			$ionicLoading.hide();
-			
-			$scope.share = function () {
-				
-    		}
-		}, function (err) {
-			// error
-			console.error(err);
-		});
-
+	    $scope.$broadcast('onInitMap', { lat: position.coords.latitude, long: position.coords.longitude });
+	    $ionicLoading.hide();
+	}, function (err) {
+	    // error
+	    console.error(err);
+	});
 
     var watchOptions = {
         timeout: 3000,
