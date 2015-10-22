@@ -38,12 +38,16 @@
     onEditedGroupMember(dataEvent) {
 
     }
+    
     onEditedGroupName(dataEvent) {
 
     }
+    
     onEditedGroupImage(dataEvent) {
-
+        var obj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupImage(obj);
     }
+    
     onNewGroupCreated(dataEvent) {
 
     }
