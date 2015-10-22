@@ -42,7 +42,9 @@
 
     }
     onEditedGroupImage(dataEvent) {
-
+        var 
+            JSONObject body = dataEvent.getMessage().getJSONObject("body");
+            SpartanTalkApplication.getDataManager().getGroup(body.getString("_id")).setUrl(body.getString("image"));
     }
     onNewGroupCreated(dataEvent) {
 
