@@ -1112,8 +1112,15 @@ var DataListener = (function () {
         this.dataManager.updateRoomAccessForUser(dataEvent);
     };
     DataListener.prototype.onAddRoomAccess = function (dataEvent) {
+        var data = JSON.parse(JSON.stringify(dataEvent));
+        var roomAccess = data.roomAccess;
+        if (roomAccess !== null && roomAccess.length !== 0) {
+            this.dataManager.setRoomAccessForUser(dataEvent);
+        }
     };
     DataListener.prototype.onCreateGroupSuccess = function (dataEvent) {
+        var group = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.addGroup(group);
     };
     DataListener.prototype.onEditedGroupMember = function (dataEvent) {
     };
@@ -1203,6 +1210,28 @@ var DataManager = (function () {
     };
     DataManager.prototype.setPrivateGroups = function (data) {
         this.privateGroups = JSON.parse(JSON.stringify(data));
+    };
+    DataManager.prototype.addGroup = function (data) {
+        switch (data.type) {
+            case RoomType.organizationGroup:
+                if (!this.orgGroups[data._id]) {
+                    this.orgGroups[data._id] = data;
+                }
+                break;
+            case RoomType.projectBaseGroup:
+                if (!this.projectBaseGroups[data._id]) {
+                    this.projectBaseGroups[data._id] = data;
+                }
+                break;
+            case RoomType.privateGroup:
+                if (!this.privateGroups[data._id]) {
+                    this.privateGroups[data._id] = data;
+                }
+                break;
+            default:
+                console.info("new room is not a group type.");
+                break;
+        }
     };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
         var self = this;

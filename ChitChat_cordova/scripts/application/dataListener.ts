@@ -9,6 +9,7 @@
     public addListenerImp(listener) {
         this.listenerImp = listener;
     }
+
     public removeListener(listener) {
         this.listenerImp = null;
     }
@@ -16,16 +17,24 @@
     onAccessRoom(dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
     }
+
     onUpdatedLastAccessTime(dataEvent) {
         this.dataManager.updateRoomAccessForUser(dataEvent);
     }
-    onAddRoomAccess(dataEvent) {
 
+    onAddRoomAccess(dataEvent) {
+        var data = JSON.parse(JSON.stringify(dataEvent));
+        var roomAccess: RoomAccessData[] = data.roomAccess;
+        if (roomAccess !== null && roomAccess.length !== 0) {
+            this.dataManager.setRoomAccessForUser(dataEvent);
+        }
     }
 
     onCreateGroupSuccess(dataEvent) {
-
+        var group: Room = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.addGroup(group);
     }
+
     onEditedGroupMember(dataEvent) {
 
     }
