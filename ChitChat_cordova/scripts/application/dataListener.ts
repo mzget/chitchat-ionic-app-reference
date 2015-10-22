@@ -38,14 +38,16 @@
     onEditedGroupMember(dataEvent) {
 
     }
+    
     onEditedGroupName(dataEvent) {
 
     }
+    
     onEditedGroupImage(dataEvent) {
-        var 
-            JSONObject body = dataEvent.getMessage().getJSONObject("body");
-            SpartanTalkApplication.getDataManager().getGroup(body.getString("_id")).setUrl(body.getString("image"));
+        var obj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupImage(obj);
     }
+    
     onNewGroupCreated(dataEvent) {
 
     }

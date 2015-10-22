@@ -1127,6 +1127,8 @@ var DataListener = (function () {
     DataListener.prototype.onEditedGroupName = function (dataEvent) {
     };
     DataListener.prototype.onEditedGroupImage = function (dataEvent) {
+        var obj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupImage(obj);
     };
     DataListener.prototype.onNewGroupCreated = function (dataEvent) {
     };
@@ -1231,6 +1233,17 @@ var DataManager = (function () {
             default:
                 console.info("new room is not a group type.");
                 break;
+        }
+    };
+    DataManager.prototype.updateGroupImage = function (data) {
+        if (!!this.orgGroups[data._id]) {
+            this.orgGroups[data._id].image = data.image;
+        }
+        else if (!!this.projectBaseGroups[data._id]) {
+            this.projectBaseGroups[data._id].image = data.image;
+        }
+        else if (!!this.privateGroups[data._id]) {
+            this.privateGroups[data._id].image = data.image;
         }
     };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
