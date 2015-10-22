@@ -1303,6 +1303,11 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
+var MinLocation = (function () {
+    function MinLocation() {
+    }
+    return MinLocation;
+})();
 var Room = (function () {
     function Room() {
     }

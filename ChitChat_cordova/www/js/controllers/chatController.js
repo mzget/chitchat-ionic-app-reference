@@ -1,11 +1,7 @@
 angular.module('spartan.chat', [])
 
-.controller('readers', function($scope, $ionicModal) {
-  
-})
-
-
-.controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal, $sce, $cordovaGeolocation, Chats, roomSelected)
+.controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
+    $sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected)
 {    		
 	// Hide nav-tab # in chat detail
 	navHide();
@@ -30,8 +26,6 @@ angular.module('spartan.chat', [])
         }
     }
 	$scope.title = currentRoom.name;	
-    //console.log(main.dataManager.getMyProfile())
-	//console.debug("chatController", currentRoom.name, currentRoom._id);
 	
 	modalcount = 0;	
 	// Modal - Chat menu 
@@ -104,7 +98,7 @@ angular.module('spartan.chat', [])
 		$scope.openModalWebview();
 	};
 		
-		$("#modal-webview-iframe").on('load',function() {
+	$("#modal-webview-iframe").on('load',function() {
 			alert( $(this).contentDocument.title );
 		});
 	
@@ -152,9 +146,6 @@ angular.module('spartan.chat', [])
     $timeout(countUp, 1000);
 	
     var chats = Chats.all();
-    /*chats.forEach(chat => {
-        console.log(chat);
-    });*/
 
     $scope.allMembers = allMembers;
     $scope.myprofile = myprofile;
@@ -266,16 +257,17 @@ angular.module('spartan.chat', [])
 	}
     
     $scope.openMap = function() {
-        console.log("openMap");
+        $scope.chatMenuModal.hide();
 		$scope.openMapModal();
-//		location.href='#/tab/group/chat/'+currentRoom._id+'/map';
     }
 	$scope.openMapModal = function() {
-	    callGeolocation($scope, $cordovaGeolocation, $ionicLoading);
+	    callGeolocation($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, function (locationObj) {
+	        sendLocation(chatRoomApi, locationObj, currentRoom, myprofile);
+	    });
 		$scope.mapViewModal.show();
 	};
 	$scope.closeMapModal = function() {
-		$scope.mapViewModal.hide();
+	    $scope.mapViewModal.hide();
 	};
 	
 	$scope.isValidURI = function(uri) {
@@ -368,25 +360,47 @@ angular.module('spartan.chat', [])
     });
 });
 
-var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading) {
-    $scope.centerOnMe = function () {
-		
+var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, done) {
+    var locationObj = new MinLocation();
+
+    $scope.place = "";
+    $scope.selectedPlace = function (place) {
+        console.debug('onSelectMarker', place)
+        $scope.place = place.name;
+        $scope.myLocation = place;
+    };
+
+    $scope.share = function () {
+        if (!$scope.place) {
+            $cordovaDialogs.alert('Missing place information', 'Share location', 'OK')
+               .then(function () {
+                   // callback success
+               });
+
+            return;
+        }
+
+        locationObj.name = $scope.myLocation.name;
+        locationObj.address = $scope.myLocation.vicinity;
+        done(locationObj);
+        $scope.closeMapModal();
     }
 
-	$scope.loading = $ionicLoading.show({
+    $scope.loading = $ionicLoading.show({
 		content: 'Getting current location...',
 		showBackdrop: false
 	});
 
 	var posOptions = { timeout: 10000, enableHighAccuracy: false };
 	$cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
-			$scope.$broadcast('onInitMap',{ lat :position.coords.latitude, long: position.coords.longitude});
-			$ionicLoading.hide();
-		}, function (err) {
-			// error
-			console.error(err);
-		});
-
+	    locationObj.latitude = position.coords.latitude;
+	    locationObj.longitude = position.coords.longitude;
+	    $scope.$broadcast('onInitMap', { lat: position.coords.latitude, long: position.coords.longitude });
+	    $ionicLoading.hide();
+	}, function (err) {
+	    // error
+	    console.error(err);
+	});
 
     var watchOptions = {
         timeout: 3000,
@@ -405,4 +419,15 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading) {
       });
 
     watch.clearWatch();
+}
+
+var sendLocation = function (chatRoomApi, locationObj, currentRoom, myprofile) {
+    chatRoomApi.chat(currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], function (err, res) {
+        if (err || res === null) {
+            console.warn("send message fail.");
+        }
+        else {
+            console.log("send message:", JSON.stringify(res));
+        }
+    });
 }

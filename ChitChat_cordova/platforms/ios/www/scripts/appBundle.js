@@ -109,6 +109,7 @@ var Main = (function () {
                         }
                         else {
                             console.log("companyInfo: ", res);
+                            self.dataManager.setCompanyInfo(res.data);
                         }
                     });
                     server.getOrganizationGroups(function (err, res) {
@@ -1192,6 +1193,7 @@ var DataManager = (function () {
     DataManager.prototype.setMembers = function (data) {
     };
     DataManager.prototype.setCompanyInfo = function (data) {
+        this.companyInfo = JSON.parse(JSON.stringify(data));
     };
     DataManager.prototype.setOrganizeGroups = function (data) {
         this.orgGroups = JSON.parse(JSON.stringify(data));
@@ -1264,6 +1266,11 @@ var Message = (function () {
     function Message() {
     }
     return Message;
+})();
+var CompanyInfo = (function () {
+    function CompanyInfo() {
+    }
+    return CompanyInfo;
 })();
 var ContentType;
 (function (ContentType) {
