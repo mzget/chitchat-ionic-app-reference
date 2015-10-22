@@ -298,11 +298,33 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', function($scope,$ionicModal,$timeout ) {
 	$scope.settings = {
 		logOut: true,
 	};
+    
+    $ionicModal.fromTemplateUrl('templates/modal-theme.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.thememodal = modal
+  })  
+
+  $scope.openThemeModal = function() {
+    $scope.thememodal.show()
+  }
+
+  $scope.closeThemeModal = function() {
+    $scope.thememodal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.thememodal.remove();
+  });
+
+
 })
+
 
 .controller('AccountCreate',function($scope,$rootScope,$state,CreateGroup) {
 	var myProfile = main.getDataManager().myProfile;
