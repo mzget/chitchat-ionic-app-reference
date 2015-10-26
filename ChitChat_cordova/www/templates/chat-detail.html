@@ -77,8 +77,14 @@
                 </div>
 				
 				
-				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation()">
-					{{message.body}}
+				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
+					<div class="card">
+						<div class="item item-text-wrap">
+							{{message.locationName}}     
+                           <br /> {{message.locationAddress}}
+                            <br /> {{message.lat}} , {{message.long}}
+						</div>
+					</div>
 				</div>
 						
                 <br />
