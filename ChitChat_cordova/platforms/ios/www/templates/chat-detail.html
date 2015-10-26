@@ -32,6 +32,10 @@
 				<div class="type-video" ng-if="message.type=='Video'">
 					<video id="{{message._id}}" src="{{message.bodyUrl}}"></video>
 				</div>
+				
+				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation()">
+					{{message.body}}
+				</div>
 
 				<div id="{{message._id}}-download-contain" class="download-contain hide"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
 				</br>
@@ -72,6 +76,16 @@
                 	<video id="{{message._id}}" src="{{message.bodyUrl}}"></video>
                 </div>
 				
+				
+				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
+					<div class="card">
+						<div class="item item-text-wrap">
+							{{message.locationName}}     
+                           <br /> {{message.locationAddress}}
+                            <br /> {{message.lat}} , {{message.long}}
+						</div>
+					</div>
+				</div>
 						
                 <br />
 				<label> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
