@@ -365,8 +365,8 @@ angular.module('spartan.chat', [])
 });
 
 var viewLocation = function ($scope, message, $ionicLoading) {
-    console.info(message);
     $scope.viewOnly = true;
+	$scope.place = message.locationName;
     $scope.$broadcast('onInitMap', { lat: message.lat, long: message.long });
 }
 
