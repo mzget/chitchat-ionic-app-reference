@@ -344,7 +344,7 @@ angular.module('starter.services', [])
 		},
 		get: function(chatId) {
 			for (var i = 0; i < chats.length; i++) {
-				if (chats[i].id === parseInt(chatId)) {
+				if (chats[i]._id === chatId) {
 					return chats[i];
 				}
 			}
