@@ -298,17 +298,39 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope,CreateGroup) {
+.controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup) {
+	$scope.settings = {
+		logOut: true,
+	};
+
 	$scope.createType = function(type){
 		CreateGroup.createType = type;
 		location.href = '#/tab/account/create'
 		console.log(CreateGroup.createType);
 	}
+    
+    $ionicModal.fromTemplateUrl('templates/modal-theme.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.thememodal = modal
+  })  
 
-	$scope.settings = {
-		logOut: true,
-	};
+  $scope.openThemeModal = function() {
+    $scope.thememodal.show()
+  }
+
+  $scope.closeThemeModal = function() {
+    $scope.thememodal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.thememodal.remove();
+  });
+
+
 })
+
 
 .controller('AccountCreate',function($scope,$rootScope,$state,CreateGroup) {
 	console.log('AccountCreate',CreateGroup.createType);
