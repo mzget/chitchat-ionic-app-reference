@@ -2,7 +2,8 @@
 
     <ion-header-bar class="bar-stable">
         <a class="button button-icon icon ion-ios-close-empty" ng-click="closeMapModal()"></a>
-        <h1 class="title">Map</h1>
+        <h1 ng-if="viewOnly == true" class="title">Map Viewer</h1>
+        <h1 ng-if="viewOnly == false" class="title">Share Location</h1>
         <a ng-if="viewOnly == false" ng-click="share()" class="button button-icon icon ion-share"></a>
     </ion-header-bar>
     <ion-content scroll="false">
