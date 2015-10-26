@@ -290,10 +290,6 @@ angular.module('spartan.controllers', [])
 	console.log( dataManager.myProfile['roomAccess'] );
 })
 
-.controller('MapCtrl', function ($scope, $stateParams) {
-	
-})
-
 .controller('FreecallCtrl', function($scope, $stateParams) {
 	
 })
