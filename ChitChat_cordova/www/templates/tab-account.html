@@ -4,7 +4,14 @@
 
 			<div class="item item-button-right">
 				Create Group
-				<button class="button" onclick="location.href='#/tab/account/create';">
+				<button class="button" ng-click="createType('PrivateGroup')">
+					<i class="ion-android-person-add"></i>
+				</button>
+			</div>
+
+			<div class="item item-button-right" ng-controller="CreateProjectBase">
+				Create ProjectBase
+				<button class="button" ng-click="createType('ProjectBase')">
 					<i class="ion-android-person-add"></i>
 				</button>
 			</div>

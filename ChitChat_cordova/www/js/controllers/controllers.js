@@ -298,45 +298,105 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', function($scope,CreateGroup) {
+	$scope.createType = function(type){
+		CreateGroup.createType = type;
+		location.href = '#/tab/account/create'
+		console.log(CreateGroup.createType);
+	}
+
 	$scope.settings = {
 		logOut: true,
 	};
 })
 
 .controller('AccountCreate',function($scope,$rootScope,$state,CreateGroup) {
+	console.log('AccountCreate',CreateGroup.createType);
 	var myProfile = main.getDataManager().myProfile;
 	$rootScope.members = CreateGroup.getSelectedMember();
 	$scope.model = { groupname: "" };
 	$scope.submit = function(){
-		server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
-			if (!err) {
-				console.log(JSON.stringify(res));
-				$state.go('tab.group');
-			}
-			else {
-				console.warn(err, res);
-			}
-		});
+		if(CreateGroup.createType=="PrivateGroup"){
+			server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
+				if (!err) {
+					console.log(JSON.stringify(res));
+					$state.go('tab.group');
+				}
+				else {
+					console.warn(err, res);
+				}
+			});
+		}else{
+			console.log("CreateGroup")
+			server.requestCreateProjectBaseGroup($scope.model.groupname,CreateGroup.getSelectedMemberProjectBaseWithMe(), function(err, res) {
+				if (!err) {
+					console.log(JSON.stringify(res));
+					$state.go('tab.group');
+				}
+				else {
+					console.warn(err, res);
+				}
+			});
+		}
 	}
-
-
+	$scope.$on('$ionicView.leave', function(){
+		CreateGroup.clear();
+    });
 })
 
-
 .controller('AccountInvite',function($scope,$rootScope,CreateGroup) {
-
+	$scope.createType = CreateGroup.createType;
 	$scope.myProfile = main.getDataManager().myProfile;
 	$scope.allmembers = CreateGroup.getAllMember();
-	console.log($scope.allmembers);
+
 	$scope.checked = function(id,selected){
 		CreateGroup.setMemberSelected(id,selected);
 	}
 
-	$scope.$on('$ionicView.beforeLeave', function(){ 
+	$scope.$on('$ionicView.beforeLeave', function(){
 		console.log('Back to Previously');
 		$rootScope.members = CreateGroup.getSelectedMember();
     });
+})
+
+
+.controller('CreateProjectBase',function($scope,$ionicModal,CreateGroup,ProjectBase) {
+	if(CreateGroup.createType!='ProjectBase'){ return; }
+		$scope.jobPosition=[];
+		$scope.rolePosition = [
+			{"role": MemberRole[MemberRole.member]},
+			{"role": MemberRole[MemberRole.admin]}];
+		for(x=0; x<main.getDataManager().companyInfo.jobPosition.length; x++){
+			$scope.jobPosition.push({"job":main.getDataManager().companyInfo.jobPosition[x]});
+		}
+		$scope.targetId = "";
+	
+		$scope.savePosition = function(role,job){
+			ProjectBase.setRolePosition($scope.targetId,role,job);
+		}
+
+		$scope.openSelectRole = function(id){
+			$scope.targetId = id;
+			var index = ProjectBase.getRolePositionIndex(id);
+			$scope.job = $scope.jobPosition[index[1]];
+			$scope.role = $scope.rolePosition[index[0]];
+			$scope.modal.show();
+		};
+		$scope.closeSelectRole = function() {
+		    $scope.modal.remove();
+		    createModalSlectPosition();
+		};
+	
+		createModalSlectPosition();
+		function createModalSlectPosition(){
+			$ionicModal.fromTemplateUrl('templates/modal-select-role-projectbase.html', {
+			    scope: $scope,
+			    animation: 'slide-in-up'
+			}).then(function(modal) {
+			    $scope.modal = modal;
+			});
+		};
+
 }); // <-- LAST CONTROLLER
 
 function groupMembers(members, size, callback)
