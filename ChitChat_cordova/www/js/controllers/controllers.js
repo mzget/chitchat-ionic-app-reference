@@ -566,7 +566,6 @@ var initContactModal = function ($scope, contactId, roomSelected, done) {
         };
 		
 		$scope.openViewContactProfile = function(id) {
-			$scope.hideTab();
         	location.href = '#/tab/group/member/' + id;
 		}
 		
