@@ -10,6 +10,7 @@
     groupDetailController.$inject = ['$location']; 
 
     var requestReload = false;
+    var id_checked = [];
 
     function groupDetailController($location) {
         /* jshint validthis:true */
@@ -21,10 +22,9 @@
         function activate() { }
     }
 
-    function editMemberGroup($scope, $stateParams, $ionicHistory, CreateGroup, roomSelected){
-        var id_checked = [];
-        
-        $scope.createType = 'PrivateGroup'
+    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicModal, CreateGroup, roomSelected){
+        id_checked = [];
+        $scope.invite = true;
         $scope.myProfile = main.getDataManager().myProfile;
         $scope.allmembers = CreateGroup.getAllMember();
 
@@ -49,7 +49,8 @@
             server.editGroupMembers("add",room._id,RoomType[room.type],id_checked, function(err, res) {
                 if (!err) {
                     console.log(JSON.stringify(res));
-                    addMember();
+                    requestReload = true;
+                    $ionicHistory.goBack(-1);
                 }
                 else {
                     console.warn(err, res);
@@ -66,18 +67,9 @@
               }
             }
         }
-
-        function addMember(){
-            for(var i=0; i<id_checked.length; i++){
-                $scope.member = { "id":id_checked[i] };
-                group.members[length] = $scope.member;
-            }
-            requestReload = true;
-            $ionicHistory.goBack(-1);
-        }
     }
     
-    function viewGroupMembersCtrl($scope, $stateParams, $state, $ionicModal, roomSelected) {
+    function viewGroupMembersCtrl($scope, $stateParams, $ionicModal, roomSelected) {
         navHide();
         $scope.$on('$ionicView.enter', function () {
             //<!-- Contact modal.
@@ -101,8 +93,12 @@
                 // Execute action
             });
 
-            if(requestReload){
-                $state.go($state.current, {}, {reload: true});
+            if(requestReload){   
+                var member = [];
+                for(var i=0; i<id_checked.length; i++){
+                    var member = main.getDataManager().orgMembers[id_checked[i]];
+                    $scope.members.push(member);
+                }
                 requestReload = false;
             }
         });
@@ -125,9 +121,21 @@
         var gMembers = group.members;
 
         $scope.chat = group;
-        groupMembers(gMembers, gMembers.length, function done(members) {
-            $scope.members = members;
-        });
+
+        if(room.type==2){
+            groupMembers(gMembers, gMembers.length, function done(members) {
+                $scope.members = members;
+            });
+        }else if(room.type==1){
+            for(var x=0; x<room.members.length; x++){
+                room.members[x].displayname = main.getDataManager().orgMembers[room.members[x].id].displayname;
+                room.members[x].image = main.getDataManager().orgMembers[room.members[x].id].image;
+                if(room.members[x].role == null) { room.members[x].role = MemberRole[MemberRole.member]; }
+                if(room.members[x].jobPosition == null) { room.members[x].jobPosition = main.getDataManager().companyInfo.jobPosition[0]; }
+            }
+            $scope.members = room.members;
+        }
+
         $scope.members_length = gMembers.length;
 
         $scope.InviteMembers = function () {

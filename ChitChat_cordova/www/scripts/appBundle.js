@@ -1125,6 +1125,21 @@ var DataListener = (function () {
     DataListener.prototype.onEditedGroupMember = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         var members = jsonObj.members;
+        var group = null;
+        switch (jsonObj.type) {
+            case 0:
+                group = this.dataManager.orgGroups[jsonObj._id];
+                break;
+            case 1:
+                group = this.dataManager.projectBaseGroups[jsonObj._id];
+                break;
+            case 2:
+                group = this.dataManager.privateGroups[jsonObj._id];
+                break;
+            default:
+                break;
+        }
+        group.members = members;
     };
     DataListener.prototype.onEditedGroupName = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));

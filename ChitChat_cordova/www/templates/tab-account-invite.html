@@ -1,13 +1,14 @@
 <ion-view view-title="Invite Members">
 
     <ion-nav-buttons side="right">
-        <button class="button button-clear button-positive" ng-click='invite()'>Invite</button>
+        <button class="button button-clear button-positive" ng-if='invite' ng-click='invite()'>Invite</button>
     </ion-nav-buttons>
 
   <ion-content>
     <ion-list class="create-group-invite-list-member" ng-controller="CreateProjectBase">
         
-        <ion-item class="item item-checkbox item-button-right" ng-repeat="member in allmembers track by $index" ng-if="createType=='PrivateGroup' && myProfile._id!=member._id" id="{{member._id}}">
+        <ion-item class="item item-checkbox item-button-right" ng-repeat="member in allmembers track by $index" 
+        ng-if=" createType=='PrivateGroup' && myProfile._id!=member._id || invite && myProfile._id!=member._id" id="{{member._id}}">
             <label class="checkbox">
               <input type="checkbox" ng-model="member.checked" ng-click="checked(member._id,member.checked)"/>
             </label>

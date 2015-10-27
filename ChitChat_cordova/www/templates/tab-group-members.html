@@ -17,20 +17,26 @@
 		<ion-list class="members-list">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="member in members" type="item-text-wrap" ng-click="viewContact(member._id)">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{member.image}}&h=40&w=40" />
-				<h2>{{member.displayname}}</h2>
-				<p>{{member.status}}</p>
-				<i class="icon ion-chevron-right icon-accessory"></i>
+
+				<div ng-if="chat.type==2">
+					<h2>{{member.displayname}}</h2>
+					<p>{{member.status}}</p>
+				</div>
+
+				<div ng-if="chat.type==1">
+					<h2>{{member.displayname}}</h2>
+					<p style="float:right">{{member.role}}</p>
+					<p>{{member.jobPosition}}</p>
+				</div>
+
 			</ion-item>
 		</ion-list>
-		
 
-		
 	</ion-content>
 </ion-view>
 
 <div class="bar bar-footer bar-positive">
   <div class="title" ng-click='InviteMembers()'>Invite</div> 
-
 </div>
 
 

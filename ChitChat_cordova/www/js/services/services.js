@@ -264,11 +264,9 @@ angular.module('starter.services', [])
     }else{
       editPositionMember.push( { "_id":id,"role":role,"position":position } );
     }
-    console.log(getRolePosition(id));
   }
   function getRolePosition(id){
     var positionRole = [];
-    var defaultRole = MemberRole[MemberRole.member];
     if(containID(id)){
       for(var x=0; x<editPositionMember.length; x++){
         if(editPositionMember[x]._id == id){
@@ -276,7 +274,10 @@ angular.module('starter.services', [])
         }
       }
     }else{
-      positionRole = [defaultRole,main.getDataManager().companyInfo.jobPosition[0]];
+      if(id==main.getDataManager().myProfile._id){
+        positionRole = [MemberRole[MemberRole.admin],main.getDataManager().companyInfo.jobPosition[0]];
+      }else
+        positionRole = [MemberRole[MemberRole.member],main.getDataManager().companyInfo.jobPosition[0]];
     }
     return positionRole;
   }
