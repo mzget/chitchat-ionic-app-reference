@@ -3,8 +3,7 @@
     public displayname: string;
     public status: string;
     public image: string;
-    
-    public setUrl(path:string) {
+    set setUrl(path:string) {
         this.image = path;
     }
 }

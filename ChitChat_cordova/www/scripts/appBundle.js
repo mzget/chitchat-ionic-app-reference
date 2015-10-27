@@ -1168,9 +1168,12 @@ var DataListener = (function () {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         var _id = jsonObj._id;
         var path = jsonObj.path;
-        this.dataManager.orgMembers[_id].setUrl(path);
+        this.dataManager.updateContactImage(_id, path);
     };
     DataListener.prototype.onUserUpdateProfile = function (dataEvent) {
+        var jsonobj = JSON.parse(JSON.stringify(dataEvent));
+        var params = jsonobj.params;
+        var _id = jsonobj._id;
     };
     DataListener.prototype.onChatData = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
@@ -1302,6 +1305,11 @@ var DataManager = (function () {
             this.privateGroups[data._id].name = data.name;
         }
     };
+    DataManager.prototype.updateContactImage = function (contactId, url) {
+        if (!!this.orgMembers[contactId]) {
+            this.orgMembers[contactId].image = url;
+        }
+    };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
         var self = this;
         var members = JSON.parse(JSON.stringify(dataEvent));
@@ -1373,9 +1381,13 @@ var CompanyInfo = (function () {
 var ContactInfo = (function () {
     function ContactInfo() {
     }
-    ContactInfo.prototype.setUrl = function (path) {
-        this.image = path;
-    };
+    Object.defineProperty(ContactInfo.prototype, "setUrl", {
+        set: function (path) {
+            this.image = path;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return ContactInfo;
 })();
 var ContentType;

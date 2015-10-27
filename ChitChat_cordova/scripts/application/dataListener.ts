@@ -89,11 +89,23 @@
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         var _id = jsonObj._id;
         var path = jsonObj.path;
-        this.dataManager.orgMembers[_id].setUrl(path);
+        
+        this.dataManager.updateContactImage(_id, path);
     }
     
     onUserUpdateProfile(dataEvent) {
+        var jsonobj = JSON.parse(JSON.stringify(dataEvent));
+        var params = jsonobj.params;
+        var _id = jsonobj._id;
 
+            // if(params.has("displayname")){
+            //     String displayname = params.getString("displayname");
+            //     SpartanTalkApplication . getDataManager().getMember(_id).displayName = displayname;
+            // }
+            // if(params.has("status")){
+            //     String status = params.getString("status");
+            //     SpartanTalkApplication.getDataManager().getMember(_id).displayText = status;
+            // }
     }
 
     /*******************************************************************************/
