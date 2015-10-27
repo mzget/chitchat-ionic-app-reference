@@ -67,7 +67,8 @@
     }
     
     onNewGroupCreated(dataEvent) {
-
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.addGroup(jsonObj);
     }
 
     onUpdateMemberInfoInProjectBase(dataEvent) {

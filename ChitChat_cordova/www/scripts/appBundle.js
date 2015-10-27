@@ -1150,6 +1150,8 @@ var DataListener = (function () {
         this.dataManager.updateGroupImage(obj);
     };
     DataListener.prototype.onNewGroupCreated = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.addGroup(jsonObj);
     };
     DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
     };
