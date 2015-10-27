@@ -406,7 +406,8 @@ function groupMembers(members, size, callback)
 		max = 5;
 		
 	if( size )
-		max = size;
+	    max = size;
+
     var counter = 0;
 	var gmember = [];
 	var getGroupMembers = function() {
