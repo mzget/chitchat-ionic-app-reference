@@ -131,6 +131,17 @@ class DataManager implements Services.IFrontendServerListener {
            this.orgMembers[contactId].image = url;
         }
     }
+    public updateContactProfile(contactId:string, params: any) {
+        if(!!this.orgMembers[contactId]) {
+            var jsonObj = JSON.parse(JSON.stringify(params));
+            if(!!jsonObj.displayname) {
+                this.orgMembers[contactId].displayname = jsonObj.displayname;
+            }
+            if(!!jsonObj.status) {
+                this.orgMembers[contactId].status = jsonObj.status;
+            }
+        }
+    }
     
 
     public onGetCompanyMemberComplete(dataEvent) {
