@@ -251,6 +251,7 @@ angular.module('spartan.controllers', [])
 	}
 })
 .controller('GroupMembersCtrl', function ($scope, $stateParams, roomSelected) {
+	navHide();
     var room = roomSelected.getRoom();
     var group = null;
     switch (room.type) {
@@ -266,7 +267,6 @@ angular.module('spartan.controllers', [])
         default:
             break;
     }
-
     var gMembers = group.members;
 
     $scope.chat = group;
@@ -274,6 +274,33 @@ angular.module('spartan.controllers', [])
         $scope.members = members;
     });
     $scope.members_length = gMembers.length;
+
+    $scope.InviteMembers = function(){
+    	location.href = '#/tab/group/members/' + $scope.chat._id +'/invite';
+    }
+})
+
+.controller('EditMemberGroup',function($scope, $stateParams, CreateGroup, roomSelected) {
+	$scope.createType = 'PrivateGroup'
+	$scope.myProfile = main.getDataManager().myProfile;
+
+	$scope.allmembers = CreateGroup.getAllMember();
+
+	var room = roomSelected.getRoom();
+
+
+	for(var i=0; i<room.members.length; i++){
+		var x;
+		$.each($scope.allmembers, function(index, result) {
+			if(result._id == room.members[i].id){
+				x = index;
+			}
+	   	});
+	   	$scope.allmembers.splice(x,1);
+	}
+
+	console.log($scope.allmembers);
+
 })
 
 .controller('ChatsCtrl', function($scope) {
@@ -299,6 +326,7 @@ angular.module('spartan.controllers', [])
 })
 
 .controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup) {
+
 	$scope.settings = {
 		logOut: true,
 	};
@@ -332,8 +360,15 @@ angular.module('spartan.controllers', [])
 })
 
 
-.controller('AccountCreate',function($scope,$rootScope,$state,CreateGroup) {
-	console.log('AccountCreate',CreateGroup.createType);
+.controller('AccountCreate',function($scope,$rootScope,$ionicHistory,$state,CreateGroup) {
+
+	$rootScope.$ionicGoBack = function() {
+		if($state.current.name=='tab.account-create'){
+			CreateGroup.clear();
+		}
+		$ionicHistory.goBack(-1);
+   	};
+
 	var myProfile = main.getDataManager().myProfile;
 	$rootScope.members = CreateGroup.getSelectedMember();
 	$scope.model = { groupname: "" };
@@ -361,12 +396,10 @@ angular.module('spartan.controllers', [])
 			});
 		}
 	}
-	$scope.$on('$ionicView.leave', function(){
-		CreateGroup.clear();
-    });
 })
 
 .controller('AccountInvite',function($scope,$rootScope,CreateGroup) {
+
 	$scope.createType = CreateGroup.createType;
 	$scope.myProfile = main.getDataManager().myProfile;
 	$scope.allmembers = CreateGroup.getAllMember();

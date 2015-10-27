@@ -85,6 +85,16 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'starter.directives',
 			}
 		}
 	})
+
+	.state('tab.group-members-invite', {
+		url: '/group/members/:chatId/invite',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-account-invite.html',
+				controller: 'EditMemberGroup'
+			}
+		}
+	})
 	
 	// CHATS - Notification
 	//.state('tab.chats', {

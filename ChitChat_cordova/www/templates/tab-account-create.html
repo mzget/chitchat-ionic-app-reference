@@ -1,11 +1,13 @@
-<ion-view view-title="Create Group">
+<ion-view view-title="Create Group" ng-controller="ImageController">
 
 	<ion-nav-buttons side="right">
         <button class="button button-clear button-positive" id="viewprofile-save" ng-click="submit()">Save</button>
     </ion-nav-buttons>
 
 	<ion-content class="bar bar-subheader group-create" scroll="false" style="height:120px;">
-		<img class="img-group" src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"/>
+
+		<img class="img-group" ng-show="!images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" ng-click="addImg()"/>
+		<img class="img-group" ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" ng-click="addImg()"/>
 
 		<div class="list list-inset">
 			<label class="item item-input">
