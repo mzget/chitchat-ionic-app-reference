@@ -251,28 +251,7 @@ angular.module('spartan.controllers', [])
 	}
 })
 
-.controller('EditMemberGroup',function($scope, $stateParams, CreateGroup, roomSelected) {
-	$scope.createType = 'PrivateGroup'
-	$scope.myProfile = main.getDataManager().myProfile;
 
-	$scope.allmembers = CreateGroup.getAllMember();
-
-	var room = roomSelected.getRoom();
-
-
-	for(var i=0; i<room.members.length; i++){
-		var x;
-		$.each($scope.allmembers, function(index, result) {
-			if(result._id == room.members[i].id){
-				x = index;
-			}
-	   	});
-	   	$scope.allmembers.splice(x,1);
-	}
-
-	console.log($scope.allmembers);
-
-})
 
 .controller('ChatsCtrl', function($scope) {
 	// With the new view caching in Ionic, Controllers are only called
