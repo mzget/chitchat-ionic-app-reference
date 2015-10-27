@@ -1154,6 +1154,15 @@ var DataListener = (function () {
         this.dataManager.addGroup(jsonObj);
     };
     DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+        var groupMember = new Member();
+        groupMember.id = editMember.id;
+        var role = editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+        this.dataManager.getGroup(roomId).editMember(groupMember);
     };
     DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
     };
@@ -1233,6 +1242,17 @@ var DataManager = (function () {
     };
     DataManager.prototype.setPrivateGroups = function (data) {
         this.privateGroups = JSON.parse(JSON.stringify(data));
+    };
+    DataManager.prototype.getGroup = function (id) {
+        if (!!this.orgGroups[id]) {
+            return this.orgGroups[id];
+        }
+        else if (!!this.projectBaseGroups[id]) {
+            return this.projectBaseGroups[id];
+        }
+        else if (!!this.privateGroups[id]) {
+            return this.privateGroups[id];
+        }
     };
     DataManager.prototype.addGroup = function (data) {
         switch (data.type) {
@@ -1382,11 +1402,6 @@ var MinLocation = (function () {
     }
     return MinLocation;
 })();
-var Room = (function () {
-    function Room() {
-    }
-    return Room;
-})();
 var RoomType;
 (function (RoomType) {
     RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
@@ -1402,6 +1417,18 @@ var RoomStatus;
     RoomStatus[RoomStatus["delete"] = 2] = "delete";
 })(RoomStatus || (RoomStatus = {}));
 ;
+var Room = (function () {
+    function Room() {
+    }
+    Room.prototype.editMember = function (member) {
+        this.members.forEach(function (value) {
+            if (value.id == member.id) {
+                value = member;
+            }
+        });
+    };
+    return Room;
+})();
 var RoomAccessData = (function () {
     function RoomAccessData() {
     }

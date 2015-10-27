@@ -72,7 +72,17 @@
     }
 
     onUpdateMemberInfoInProjectBase(dataEvent) {
-
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+        
+        var groupMember : Member = new Member();
+        groupMember.id = editMember.id;
+        var role = <string>editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+        
+        this.dataManager.getGroup(roomId).editMember(groupMember);
     }
 
     onUserUpdateImageProfile(dataEvent) {

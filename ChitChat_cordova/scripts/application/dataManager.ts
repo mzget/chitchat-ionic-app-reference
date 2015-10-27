@@ -69,6 +69,17 @@ class DataManager implements Services.IFrontendServerListener {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     }
 
+    public getGroup(id:string) : Room {
+        if(!!this.orgGroups[id]) {
+            return this.orgGroups[id];
+        }
+        else if(!!this.projectBaseGroups[id]) {
+            return this.projectBaseGroups[id];
+        }
+        else if(!!this.privateGroups[id]) {
+            return this.privateGroups[id];
+        }
+    }
     public addGroup(data: Room) {
         switch (data.type) {
             case RoomType.organizationGroup:
