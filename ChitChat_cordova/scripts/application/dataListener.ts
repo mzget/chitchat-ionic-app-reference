@@ -36,7 +36,41 @@
     }
 
     onEditedGroupMember(dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var members = jsonObj.members;
 
+        GroupMember[] groupMembers = new GroupMember[member.length()];
+        DataManager dataManager = SpartanTalkApplication.getDataManager();
+
+        List < String > memberId = new ArrayList<>();
+
+        for (int x= 0; x < member.length(); x++){
+            JSONObject mObj = member.getJSONObject(x);
+            GroupMember gMember = new GroupMember(mObj);
+            groupMembers[x] = gMember;
+            memberId.add(groupMembers[x].id);
+        }
+        if (memberId.contains(dataManager.getSelfProfileId())) {
+            // Add My User to Group
+            if (dataManager.getGroup(body.getString("_id")) == null) {
+                Group group = new Group();
+                group.setMembers(groupMembers);
+                group.setName(body.getString("name"));
+                group.setId(body.getString("_id"));
+                group.setType(RoomType.values()[body.getInt("type")]);
+                group.setUrl(body.getString("image"));
+                dataManager.createPrivateGroup(body.getString("_id"), group);
+            } else {
+                //Add or Remove Other User
+                dataManager.getGroup(body.getString("_id")).setMembers(groupMembers);
+            }
+        } else {
+            // Remove My User
+            if (dataManager.getGroup(body.getString("_id")) != null) {
+                dataManager.getGroup(body.getString("_id")).setIsInvisible(true);
+                //dataManager.removePrivateGroup(body.getString("_id"));
+            }
+        }
     }
     
     onEditedGroupName(dataEvent) {
