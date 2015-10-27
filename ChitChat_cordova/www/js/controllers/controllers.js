@@ -250,35 +250,6 @@ angular.module('spartan.controllers', [])
 
 	}
 })
-.controller('GroupMembersCtrl', function ($scope, $stateParams, roomSelected) {
-	navHide();
-    var room = roomSelected.getRoom();
-    var group = null;
-    switch (room.type) {
-        case 0:
-            group = main.getDataManager().orgGroups[$stateParams.chatId];
-            break;
-        case 1:
-            group = main.getDataManager().projectBaseGroups[$stateParams.chatId];
-            break;
-        case 2:
-            group = main.getDataManager().privateGroups[$stateParams.chatId];
-            break;
-        default:
-            break;
-    }
-    var gMembers = group.members;
-
-    $scope.chat = group;
-    groupMembers(gMembers, gMembers.length, function done(members) {
-        $scope.members = members;
-    });
-    $scope.members_length = gMembers.length;
-
-    $scope.InviteMembers = function(){
-    	location.href = '#/tab/group/members/' + $scope.chat._id +'/invite';
-    }
-})
 
 .controller('EditMemberGroup',function($scope, $stateParams, CreateGroup, roomSelected) {
 	$scope.createType = 'PrivateGroup'
@@ -315,10 +286,6 @@ angular.module('spartan.controllers', [])
 	$scope.roomAccess = dataManager.myProfile['roomAccess'];
 	
 	console.log( dataManager.myProfile['roomAccess'] );
-})
-
-.controller('MapCtrl', function ($scope, $stateParams) {
-	
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
@@ -359,15 +326,15 @@ angular.module('spartan.controllers', [])
 
 })
 
-
 .controller('AccountCreate',function($scope,$rootScope,$ionicHistory,$state,CreateGroup) {
-
+	
 	$rootScope.$ionicGoBack = function() {
 		if($state.current.name=='tab.account-create'){
 			CreateGroup.clear();
 		}
 		$ionicHistory.goBack(-1);
    	};
+
 
 	var myProfile = main.getDataManager().myProfile;
 	$rootScope.members = CreateGroup.getSelectedMember();
@@ -413,7 +380,6 @@ angular.module('spartan.controllers', [])
 		$rootScope.members = CreateGroup.getSelectedMember();
     });
 })
-
 
 .controller('CreateProjectBase',function($scope,$ionicModal,CreateGroup,ProjectBase) {
 	if(CreateGroup.createType!='ProjectBase'){ return; }
@@ -599,7 +565,6 @@ var initContactModal = function ($scope, contactId, roomSelected, done) {
         };
 		
 		$scope.openViewContactProfile = function(id) {
-			$scope.hideTab();
         	location.href = '#/tab/group/member/' + id;
 		}
 		

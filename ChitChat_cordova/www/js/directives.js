@@ -12,18 +12,19 @@ angular.module('starter.directives', [])
         var zValue = $scope.$eval($attr.zoom);
         var lat = $scope.$eval($attr.lat);
         var lng = $scope.$eval($attr.lng);
-        var currPoint = new google.maps.LatLng(lat, lng);
+ //       var currPoint = new google.maps.LatLng(lat, lng);
+        var currPoint = {lat: lat, lng: lng};
+
         
       function setup(data) {
-        currPoint = new google.maps.LatLng(data.lat, data.long);
-        
+        currPoint = { lat: data.lat, lng: data.long };
         var mapOptions = {
           center: currPoint,
           zoom: zValue,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map($element[0], mapOptions);
-        
+        map.setCenter(currPoint);
         var infowindow = new google.maps.InfoWindow();
 
         var service = new google.maps.places.PlacesService(map);

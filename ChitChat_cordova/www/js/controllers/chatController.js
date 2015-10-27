@@ -7,7 +7,6 @@ angular.module('spartan.chat', [])
 	navHide();
 	$('#chatMessage').animate({'bottom':'0'}, 350);
 	
-	
     var currentRoom = roomSelected.getRoom();
     var myprofile = main.getDataManager().myProfile;
     var allMembers = main.getDataManager().orgMembers;
@@ -255,7 +254,12 @@ angular.module('spartan.chat', [])
 			$scope.openReaderModal();
 		});
 	}
-    
+	$scope.viewLocation = function (messageId) {
+	    console.info('viewLocation');
+	    var message = Chats.get(messageId);
+	    viewLocation($scope, message);
+	    $scope.mapViewModal.show();
+	}
     $scope.openMap = function() {
         $scope.chatMenuModal.hide();
 		$scope.openMapModal();
@@ -360,9 +364,15 @@ angular.module('spartan.chat', [])
     });
 });
 
+var viewLocation = function ($scope, message, $ionicLoading) {
+    $scope.viewOnly = true;
+	$scope.place = message.locationName;
+    $scope.$broadcast('onInitMap', { lat: message.lat, long: message.long });
+}
+
 var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, done) {
     var locationObj = new MinLocation();
-
+    $scope.viewOnly = false;
     $scope.place = "";
     $scope.selectedPlace = function (place) {
         console.debug('onSelectMarker', place)

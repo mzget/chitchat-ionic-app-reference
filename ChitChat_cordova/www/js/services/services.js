@@ -344,7 +344,7 @@ angular.module('starter.services', [])
 		},
 		get: function(chatId) {
 			for (var i = 0; i < chats.length; i++) {
-				if (chats[i].id === parseInt(chatId)) {
+				if (chats[i]._id === chatId) {
 					return chats[i];
 				}
 			}
@@ -352,14 +352,23 @@ angular.module('starter.services', [])
 		},
 		set: function(json) {
 			chats = json;
-      for (var i = 0; i < chats.length; i++){
-        if(chats[i].type=='Video'){
-          chats[i].bodyUrl = $sce.trustAsResourceUrl('http://stalk.animation-genius.com'+chats[i].body);
-        }
-      }
+			for (var i = 0; i < chats.length; i++) {
+			    if (chats[i].type == 'Video') {
+			        chats[i].bodyUrl = $sce.trustAsResourceUrl('http://stalk.animation-genius.com' + chats[i].body);
+			    }
+			    else if (chats[i].type === ContentType[ContentType.Location]) {
+			        var location = JSON.parse(chats[i].body);
+
+			        chats[i].locationName = location.name;
+			        chats[i].locationAddress = location.address;
+			        chats[i].lat = location.latitude;
+			        chats[i].long = location.longitude;
+			    }
+			}
 		}
 	};
 })
+
 .factory('roomSelected', function () {
     var room;
 
