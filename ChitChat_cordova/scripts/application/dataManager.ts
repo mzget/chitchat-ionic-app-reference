@@ -69,6 +69,41 @@ class DataManager implements Services.IFrontendServerListener {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     }
 
+    public addGroup(data: Room) {
+        switch (data.type) {
+            case RoomType.organizationGroup:
+                if (!this.orgGroups[data._id]) {
+                    this.orgGroups[data._id] = data;
+                }
+                break;
+            case RoomType.projectBaseGroup:
+                if (!this.projectBaseGroups[data._id]) {
+                    this.projectBaseGroups[data._id] = data;
+                }
+                break;
+            case RoomType.privateGroup:
+                if (!this.privateGroups[data._id]) {
+                    this.privateGroups[data._id] = data;
+                }
+                break;
+            default:
+                console.info("new room is not a group type.");
+            break;
+        }
+    }
+    
+    public updateGroupImage(data: Room) {
+        if(!!this.orgGroups[data._id]) {
+            this.orgGroups[data._id].image = data.image;
+        }
+        else if(!!this.projectBaseGroups[data._id]) {
+            this.projectBaseGroups[data._id].image = data.image;
+        }
+        else if(!!this.privateGroups[data._id]) {
+            this.privateGroups[data._id].image = data.image;
+        }
+    }
+    
 
     public onGetCompanyMemberComplete(dataEvent) {
         var self = this;
