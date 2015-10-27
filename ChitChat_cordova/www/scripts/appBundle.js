@@ -1123,8 +1123,12 @@ var DataListener = (function () {
         this.dataManager.addGroup(group);
     };
     DataListener.prototype.onEditedGroupMember = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var members = jsonObj.members;
     };
     DataListener.prototype.onEditedGroupName = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupName(jsonObj);
     };
     DataListener.prototype.onEditedGroupImage = function (dataEvent) {
         var obj = JSON.parse(JSON.stringify(dataEvent));
@@ -1244,6 +1248,17 @@ var DataManager = (function () {
         }
         else if (!!this.privateGroups[data._id]) {
             this.privateGroups[data._id].image = data.image;
+        }
+    };
+    DataManager.prototype.updateGroupName = function (data) {
+        if (!!this.orgGroups[data._id]) {
+            this.orgGroups[data._id].name = data.name;
+        }
+        else if (!!this.projectBaseGroups[data._id]) {
+            this.projectBaseGroups[data._id].name = data.name;
+        }
+        else if (!!this.privateGroups[data._id]) {
+            this.privateGroups[data._id].name = data.name;
         }
     };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {

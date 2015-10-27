@@ -103,6 +103,17 @@ class DataManager implements Services.IFrontendServerListener {
             this.privateGroups[data._id].image = data.image;
         }
     }
+    public updateGroupName(data: Room) {
+        if (!!this.orgGroups[data._id]) {
+            this.orgGroups[data._id].name = data.name;
+        }
+        else if (!!this.projectBaseGroups[data._id]) {
+            this.projectBaseGroups[data._id].name = data.name;
+        }
+        else if (!!this.privateGroups[data._id]) {
+            this.privateGroups[data._id].name = data.name;
+        }
+    }
     
 
     public onGetCompanyMemberComplete(dataEvent) {
