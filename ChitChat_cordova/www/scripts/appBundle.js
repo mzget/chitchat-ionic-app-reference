@@ -1165,6 +1165,10 @@ var DataListener = (function () {
         this.dataManager.getGroup(roomId).editMember(groupMember);
     };
     DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var _id = jsonObj._id;
+        var path = jsonObj.path;
+        this.dataManager.orgMembers[_id].setUrl(path);
     };
     DataListener.prototype.onUserUpdateProfile = function (dataEvent) {
     };
@@ -1366,6 +1370,14 @@ var CompanyInfo = (function () {
     }
     return CompanyInfo;
 })();
+var ContactInfo = (function () {
+    function ContactInfo() {
+    }
+    ContactInfo.prototype.setUrl = function (path) {
+        this.image = path;
+    };
+    return ContactInfo;
+})();
 var ContentType;
 (function (ContentType) {
     ContentType[ContentType["Unload"] = 0] = "Unload";
@@ -1454,11 +1466,6 @@ var UserRole;
     UserRole[UserRole["admin"] = 4] = "admin";
 })(UserRole || (UserRole = {}));
 ;
-var OrgMember = (function () {
-    function OrgMember() {
-    }
-    return OrgMember;
-})();
 var Dummy = (function () {
     function Dummy() {
         this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;

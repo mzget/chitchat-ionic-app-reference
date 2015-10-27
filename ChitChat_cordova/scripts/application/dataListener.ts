@@ -86,8 +86,12 @@
     }
 
     onUserUpdateImageProfile(dataEvent) {
-
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var _id = jsonObj._id;
+        var path = jsonObj.path;
+        this.dataManager.orgMembers[_id].setUrl(path);
     }
+    
     onUserUpdateProfile(dataEvent) {
 
     }

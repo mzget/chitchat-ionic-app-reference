@@ -2,7 +2,7 @@
     [key: string]: Room;
 }
 interface IMemberMep {
-    [key: string]: OrgMember;
+    [key: string]: ContactInfo;
 }
 
 class DataManager implements Services.IFrontendServerListener {
@@ -129,7 +129,7 @@ class DataManager implements Services.IFrontendServerListener {
 
     public onGetCompanyMemberComplete(dataEvent) {
         var self = this;
-        var members: Array<OrgMember> = JSON.parse(JSON.stringify(dataEvent));
+        var members: Array<ContactInfo> = JSON.parse(JSON.stringify(dataEvent));
 
         if (!this.orgMembers) this.orgMembers = {};
 
