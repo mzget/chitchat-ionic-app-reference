@@ -76,11 +76,50 @@
             $ionicHistory.goBack(-1);
         }
     }
-
-
     
-    function viewGroupMembersCtrl($scope, $stateParams, $state, roomSelected) {
+    function viewGroupMembersCtrl($scope, $stateParams, $state, $ionicModal, roomSelected) {
         navHide();
+        $scope.$on('$ionicView.enter', function () {
+            //<!-- Contact modal.
+            $ionicModal.fromTemplateUrl('templates/modal-contact.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function (modal) {
+                $scope.contactModal = modal;
+            });
+
+            //Cleanup the modal when we're done with it!
+            $scope.$on('$destroy', function () {
+                $scope.contactModal.remove();
+            });
+            // Execute action on hide modal
+            $scope.$on('modal.hidden', function () {
+                // Execute action
+            });
+            // Execute action on remove modal
+            $scope.$on('modal.removed', function () {
+                // Execute action
+            });
+
+            if(requestReload){
+                $state.go($state.current, {}, {reload: true});
+                requestReload = false;
+            }
+        });
+        $scope.$on('$ionicView.leave', function () {
+            console.debug("leave controller.");
+        });
+        $scope.$on('$ionicView.unloaded', function () {
+            console.info("unloaded controller.");
+        });
+        $scope.$on('$ionicView.beforeLeave', function () {
+            console.info("beforeLeave controller.");
+            $scope.contactModal.hide();
+        });
+        $scope.$on('$ionicView.afterLeave', function () {
+            console.info("afterLeave controller.");
+        });
+
         var room = roomSelected.getRoom();
         var group = getGroup(room.type,$stateParams.chatId);
         var gMembers = group.members;
@@ -91,16 +130,23 @@
         });
         $scope.members_length = gMembers.length;
 
-        $scope.InviteMembers = function(){
-            location.href = '#/tab/group/members/' + $scope.chat._id +'/invite';
+        $scope.InviteMembers = function () {
+            location.href = '#/tab/group/members/' + $scope.chat._id + '/invite';
         }
 
-        $scope.$on('$ionicView.enter', function(){
-            if(requestReload){
-                $state.go($state.current, {}, {reload: true});
-                requestReload = false;
-            }
-        });
+        $scope.viewContact = function (contactId) {
+            console.debug("viewContact", contactId);
+            $scope.openContactModal(contactId);
+        }
+        //<!-- Contact modal -------------------------->
+        $scope.openContactModal = function (contactId) {
+            initContactModal($scope, contactId, roomSelected, function done() {
+                $scope.contactModal.show();
+            });
+        };
+        $scope.closeContactModal = function () {
+            $scope.contactModal.hide();
+        };
     }
 
     function getGroup(type,chatId){
