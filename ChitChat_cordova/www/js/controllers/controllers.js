@@ -1,5 +1,3 @@
-'use strict';
-
 var date = new Date();
 var now;
 var newchatmessage;
