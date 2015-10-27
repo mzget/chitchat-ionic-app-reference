@@ -4,8 +4,7 @@
     angular
         .module('spartan.group', [])
         .controller('groupDetailController', groupDetailController)
-        .controller('viewGroupMembersCtrl', viewGroupMembersCtrl)
-        .controller('editMemberGroup', editMemberGroup);
+        .controller('viewGroupMembersCtrl', viewGroupMembersCtrl);
 
     groupDetailController.$inject = ['$location']; 
 
@@ -18,31 +17,45 @@
 
         function activate() { }
     }
-
-    function editMemberGroup($scope, $stateParams, CreateGroup, roomSelected){
-        $scope.createType = 'PrivateGroup'
-        $scope.myProfile = main.getDataManager().myProfile;
-
-        $scope.allmembers = CreateGroup.getAllMember();
-
-        var room = roomSelected.getRoom();
-
-
-        for(var i=0; i<room.members.length; i++){
-            var x;
-            $.each($scope.allmembers, function(index, result) {
-                if(result._id == room.members[i].id){
-                    x = index;
-                }
-            });
-            $scope.allmembers.splice(x,1);
-        }
-
-        console.log($scope.allmembers);
-    }
     
-    function viewGroupMembersCtrl($scope, $stateParams, roomSelected) {
-        navHide();
+    function viewGroupMembersCtrl($scope, $stateParams, $ionicModal, roomSelected) {
+        $scope.$on('$ionicView.enter', function () {
+            //<!-- Contact modal.
+            $ionicModal.fromTemplateUrl('templates/modal-contact.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function (modal) {
+                $scope.contactModal = modal;
+            });
+
+
+            //Cleanup the modal when we're done with it!
+            $scope.$on('$destroy', function () {
+                $scope.contactModal.remove();
+            });
+            // Execute action on hide modal
+            $scope.$on('modal.hidden', function () {
+                // Execute action
+            });
+            // Execute action on remove modal
+            $scope.$on('modal.removed', function () {
+                // Execute action
+            });
+        });
+        $scope.$on('$ionicView.leave', function () {
+            console.debug("leave controller.");
+        });
+        $scope.$on('$ionicView.unloaded', function () {
+            console.info("unloaded controller.");
+        });
+        $scope.$on('$ionicView.beforeLeave', function () {
+            console.info("beforeLeave controller.");
+            $scope.contactModal.hide();
+        });
+        $scope.$on('$ionicView.afterLeave', function () {
+            console.info("afterLeave controller.");
+        });
+
         var room = roomSelected.getRoom();
         var group = null;
         switch (room.type) {
@@ -67,8 +80,23 @@
         });
         $scope.members_length = gMembers.length;
 
-        $scope.InviteMembers = function(){
-            location.href = '#/tab/group/members/' + $scope.chat._id +'/invite';
+        $scope.InviteMembers = function () {
+            location.href = '#/tab/group/members/' + $scope.chat._id + '/invite';
         }
+
+        $scope.viewContact = function (contactId) {
+            console.debug("viewContact", contactId);
+            $scope.openContactModal(contactId);
+        }
+
+        //<!-- Contact modal -------------------------->
+        $scope.openContactModal = function (contactId) {
+            initContactModal($scope, contactId, roomSelected, function done() {
+                $scope.contactModal.show();
+            });
+        };
+        $scope.closeContactModal = function () {
+            $scope.contactModal.hide();
+        };
     }
 })();

@@ -1,28 +1,10 @@
+'use strict';
+
 var date = new Date();
 var now;
 var newchatmessage;
 
 angular.module('spartan.controllers', [])
-
-.controller("LoginCtrl", function ($scope) {
-    console.warn('LoginCtrl');
-
-    $scope.confirmDialog = function () {
-        navigator.notification.confirm("Checkout this confirmation dialog", function (buttonIndex) {
-            switch (buttonIndex) {
-                case 1:
-                    console.log("Decline Pressed");
-                    break;
-                case 2:
-                    console.log("Dont Care Pressed");
-                    break;
-                case 3:
-                    console.log("Accept Pressed");
-                    break;
-            }
-        }, "Our Title", ["Decline", "Dont Care", "Accept"]);
-    }
-})
 
 // GROUP
 .controller('homeController', function ($scope, $timeout, $ionicModal, roomSelected)
@@ -166,82 +148,82 @@ angular.module('spartan.controllers', [])
 })
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function($scope, $stateParams, $state, $cordovaProgress) {
-	if($stateParams.chatId==main.getDataManager().myProfile._id){
-		$scope.chat = main.getDataManager().myProfile;
-		$scope.model = {
-		    displayname: $scope.chat.displayname,
-		    status: $scope.chat.status
-		};
-		$scope.title = "My Profile";
-		$('#viewprofile-input-display').removeAttr('disabled');
-		$('#viewprofile-input-status').removeAttr('disabled');
-		$scope.edit = 'true';
+.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $state, $cordovaProgress) {
+    if ($stateParams.chatId == main.getDataManager().myProfile._id) {
+        $scope.chat = main.getDataManager().myProfile;
+        $scope.model = {
+            displayname: $scope.chat.displayname,
+            status: $scope.chat.status
+        };
+        $scope.title = "My Profile";
+        $('#viewprofile-input-display').removeAttr('disabled');
+        $('#viewprofile-input-status').removeAttr('disabled');
+        $scope.edit = 'true';
+        //<!-- edit profile image.
+        $scope.$on('fileUrl', function (event, url) {
+            if (url != null) {
+                server.ProfileImageChanged($stateParams.chatId, url[0], function (err, res) {
+                    main.getDataManager().myProfile.image = url[0];
+                    if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+						main.getDataManager().myProfile.status != $scope.model.status) {
+                        saveProfile();
+                    } else saveSuccess();
+                });
+            } else {
+                if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+						main.getDataManager().myProfile.status != $scope.model.status) {
+                    saveProfile();
+                }
+            }
+        });
 
-		$scope.$on('fileUrl', function(event, url) { 
-			if(url!=null){
-				server.ProfileImageChanged($stateParams.chatId,url[0],function(err,res){
-					main.getDataManager().myProfile.image = url[0];
-					if(main.getDataManager().myProfile.displayname != $scope.model.displayname ||
-						main.getDataManager().myProfile.status != $scope.model.status){
-						saveProfile();
-					}else saveSuccess();
-				});
-			}else{
-				if(main.getDataManager().myProfile.displayname != $scope.model.displayname ||
-						main.getDataManager().myProfile.status != $scope.model.status){
-					saveProfile();
-				}
-			}
-		});
+        function saveProfile() {
+            server.UpdateUserProfile($stateParams.chatId, $scope.model, function (err, res) {
+                console.log(JSON.stringify(res));
+                main.getDataManager().myProfile.displayname = $scope.model.displayname;
+                main.getDataManager().myProfile.status = $scope.model.status;
+                saveSuccess();
+            });
+        }
 
-		function saveProfile(){
-			server.UpdateUserProfile($stateParams.chatId,$scope.model,function(err,res){
-				console.log(JSON.stringify(res));
-				main.getDataManager().myProfile.displayname = $scope.model.displayname;
-				main.getDataManager().myProfile.status = $scope.model.status;
-				saveSuccess();
-			});
-		}
+        function saveSuccess() {
+            $cordovaProgress.showSuccess(false, "Success!");
+            setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+        }
 
-		function saveSuccess(){
-			$cordovaProgress.showSuccess(false, "Success!");
-	    	setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
-		}
-
-	}else{
-    	var member = main.getDataManager().orgMembers[$stateParams.chatId];
-		if(	member.firstname == null || member.firstname == "" &&
+    } else {
+        var member = main.getDataManager().orgMembers[$stateParams.chatId];
+        if (member.firstname == null || member.firstname == "" &&
 			member.lastname == null || member.lastname == "" &&
-			member.mail == null || member.mail == "" && 
+			member.mail == null || member.mail == "" &&
 			member.role == null || member.role == "" &&
-			member.tel == null || member.tel == ""){
-			server.getMemberProfile($stateParams.chatId, function(err, res) {
-				if (!err) {
-					console.log(JSON.stringify(res));
-					console.log(res["data"]);
-					member.firstname = res["data"].firstname;
-					member.lastname = res["data"].lastname;
-					member.mail = res["data"].mail;
-					member.role = res["data"].role;
-					member.tel = res["data"].tel;
-					$state.go($state.current, {}, {reload: true});
-				}
-				else {
-					console.warn(err, res);
-				}
-			});
-		}
-		$scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
-		$scope.model = {
-		    displayname: $scope.chat.displayname,
-		    status: $scope.chat.status
-		};
-		$scope.title = $scope.chat.displayname+"'s Profile";
-		$('#viewprofile-input-display').attr('disabled','disabled');
-		$('#viewprofile-input-status').attr('disabled','disabled');
-		$scope.edit = 'false';
-	}
+			member.tel == null || member.tel == "") {
+            server.getMemberProfile($stateParams.chatId, function (err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    console.log(res["data"]);
+                    member.firstname = res["data"].firstname;
+                    member.lastname = res["data"].lastname;
+                    member.mail = res["data"].mail;
+                    member.role = res["data"].role;
+                    member.tel = res["data"].tel;
+                    $state.go($state.current, {}, { reload: true });
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }
+        $scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
+        $scope.model = {
+            displayname: $scope.chat.displayname,
+            status: $scope.chat.status
+        };
+        $scope.title = $scope.chat.displayname + "'s Profile";
+        $('#viewprofile-input-display').attr('disabled', 'disabled');
+        $('#viewprofile-input-status').attr('disabled', 'disabled');
+        $scope.edit = 'false';
+    }
 })
 
 .factory('getProfileMember',function(){
@@ -250,8 +232,6 @@ angular.module('spartan.controllers', [])
 
 	}
 })
-
-
 
 .controller('ChatsCtrl', function($scope) {
 	// With the new view caching in Ionic, Controllers are only called
@@ -272,7 +252,6 @@ angular.module('spartan.controllers', [])
 })
 
 .controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup) {
-
 	$scope.settings = {
 		logOut: true,
 	};
@@ -305,16 +284,8 @@ angular.module('spartan.controllers', [])
 
 })
 
-.controller('AccountCreate',function($scope,$rootScope,$ionicHistory,$state,CreateGroup) {
-	
-	$rootScope.$ionicGoBack = function() {
-		if($state.current.name=='tab.account-create'){
-			CreateGroup.clear();
-		}
-		$ionicHistory.goBack(-1);
-   	};
-
-
+.controller('AccountCreate',function($scope,$rootScope,$state,CreateGroup) {
+	console.log('AccountCreate',CreateGroup.createType);
 	var myProfile = main.getDataManager().myProfile;
 	$rootScope.members = CreateGroup.getSelectedMember();
 	$scope.model = { groupname: "" };
@@ -342,10 +313,12 @@ angular.module('spartan.controllers', [])
 			});
 		}
 	}
+	$scope.$on('$ionicView.leave', function(){
+		CreateGroup.clear();
+    });
 })
 
 .controller('AccountInvite',function($scope,$rootScope,CreateGroup) {
-
 	$scope.createType = CreateGroup.createType;
 	$scope.myProfile = main.getDataManager().myProfile;
 	$scope.allmembers = CreateGroup.getAllMember();
@@ -545,7 +518,8 @@ var initContactModal = function ($scope, contactId, roomSelected, done) {
         };
 		
 		$scope.openViewContactProfile = function(id) {
-        	location.href = '#/tab/group/member/' + id;
+		    location.href = '#/tab/group/member/' + id;
+		    //$state.go("tab.group-members", { chatId: id}, { inherit: false });
 		}
 		
 		$scope.$apply();
