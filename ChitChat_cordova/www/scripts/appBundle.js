@@ -1285,33 +1285,47 @@ var DataManager = (function () {
         }
     };
     DataManager.prototype.updateGroupMembers = function (data) {
-        if (!!this.orgGroups[data._id]) {
-            var hasMe = this.checkMySelfInNewMembersReceived(data);
-            if (hasMe) {
-                this.orgGroups[data._id].members = data.members;
+        var hasMe = this.checkMySelfInNewMembersReceived(data);
+        if (data.type === RoomType.organizationGroup) {
+            if (!!this.orgGroups[data._id]) {
+                if (hasMe) {
+                    this.orgGroups[data._id].members = data.members;
+                }
+                else {
+                    console.warn("this org group is not contain me in members list.");
+                }
             }
             else {
-                console.warn("this org group is not contain me in members list.");
+                this.orgGroups[data._id] = data;
             }
         }
-        else if (!!this.projectBaseGroups[data._id]) {
-            var hasMe = this.checkMySelfInNewMembersReceived(data);
-            if (hasMe) {
-                this.projectBaseGroups[data._id].visibility = true;
-                this.projectBaseGroups[data._id].members = data.members;
+        else if (data.type === RoomType.projectBaseGroup) {
+            if (!!this.projectBaseGroups[data._id]) {
+                if (hasMe) {
+                    this.projectBaseGroups[data._id].visibility = true;
+                    this.projectBaseGroups[data._id].members = data.members;
+                }
+                else {
+                    this.projectBaseGroups[data._id].visibility = false;
+                }
             }
             else {
-                this.projectBaseGroups[data._id].visibility = false;
+                this.projectBaseGroups[data._id] = data;
             }
         }
-        else if (!!this.privateGroups[data._id]) {
-            var hasMe = this.checkMySelfInNewMembersReceived(data);
-            if (hasMe) {
-                this.privateGroups[data._id].visibility = true;
-                this.privateGroups[data._id].members = data.members;
+        else if (data.type === RoomType.privateGroup) {
+            if (!!this.privateGroups[data._id]) {
+                if (hasMe) {
+                    this.privateGroups[data._id].visibility = true;
+                    this.privateGroups[data._id].members = data.members;
+                }
+                else {
+                    this.privateGroups[data._id].visibility = false;
+                }
             }
             else {
-                this.privateGroups[data._id].visibility = false;
+                console.debug("new group", data.name);
+                this.privateGroups[data._id] = data;
             }
         }
     };
@@ -1336,7 +1350,7 @@ var DataManager = (function () {
         var hasMe = data.members.some(function isMySelfId(element, index, array) {
             return element.id === self.myProfile._id;
         });
-        console.debug("Hasme", hasMe);
+        console.debug("New data has me", hasMe);
         return hasMe;
     };
     DataManager.prototype.updateContactImage = function (contactId, url) {
