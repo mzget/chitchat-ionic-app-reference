@@ -8,12 +8,13 @@ angular.module('spartan.controllers', [])
 .controller('homeController', function ($scope, $timeout, $ionicModal, roomSelected)
 {	
 	$scope.$on('$ionicView.enter', function(){ 
-		navShow();
+	    navShow();
 	
 		$scope.refreshView = function () {
-			console.debug("GroupCtrl : refreshView");
-		
-			var dataManager = main.getDataManager();
+		    console.debug("homeController : refreshView");
+
+		    var dataManager = main.getDataManager();
+
 			$scope.myProfile = dataManager.myProfile;
 			$scope.orgGroups = dataManager.orgGroups;
 			$scope.pjbGroups = dataManager.projectBaseGroups;

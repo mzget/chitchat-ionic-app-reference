@@ -1124,22 +1124,7 @@ var DataListener = (function () {
     };
     DataListener.prototype.onEditedGroupMember = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        var members = jsonObj.members;
-        var group = null;
-        switch (jsonObj.type) {
-            case 0:
-                group = this.dataManager.orgGroups[jsonObj._id];
-                break;
-            case 1:
-                group = this.dataManager.projectBaseGroups[jsonObj._id];
-                break;
-            case 2:
-                group = this.dataManager.privateGroups[jsonObj._id];
-                break;
-            default:
-                break;
-        }
-        group.members = members;
+        this.dataManager.updateGroupMembers(jsonObj);
     };
     DataListener.prototype.onEditedGroupName = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
@@ -1306,6 +1291,45 @@ var DataManager = (function () {
             this.privateGroups[data._id].name = data.name;
         }
     };
+    DataManager.prototype.updateGroupMembers = function (data) {
+        if (!!this.orgGroups[data._id]) {
+            var hasMe = this.checkMySelfInNewMembersReceived(data);
+            if (hasMe) {
+                this.orgGroups[data._id].members = data.members;
+            }
+            else {
+                console.warn("this org group is not contain me in members list.");
+            }
+        }
+        else if (!!this.projectBaseGroups[data._id]) {
+            var hasMe = this.checkMySelfInNewMembersReceived(data);
+            if (hasMe) {
+                this.projectBaseGroups[data._id].visibility = true;
+                this.projectBaseGroups[data._id].members = data.members;
+            }
+            else {
+                this.projectBaseGroups[data._id].visibility = false;
+            }
+        }
+        else if (!!this.privateGroups[data._id]) {
+            var hasMe = this.checkMySelfInNewMembersReceived(data);
+            if (hasMe) {
+                this.privateGroups[data._id].visibility = true;
+                this.privateGroups[data._id].members = data.members;
+            }
+            else {
+                this.privateGroups[data._id].visibility = false;
+            }
+        }
+    };
+    DataManager.prototype.checkMySelfInNewMembersReceived = function (data) {
+        var self = this;
+        var hasMe = data.members.some(function isMySelfId(element, index, array) {
+            return element.id === self.myProfile._id;
+        });
+        console.debug("Hasme", hasMe);
+        return hasMe;
+    };
     DataManager.prototype.updateContactImage = function (contactId, url) {
         if (!!this.orgMembers[contactId]) {
             this.orgMembers[contactId].image = url;
@@ -1448,6 +1472,7 @@ var RoomStatus;
 ;
 var Room = (function () {
     function Room() {
+        this._visibility = true;
     }
     Room.prototype.editMember = function (member) {
         this.members.forEach(function (value) {
@@ -1456,6 +1481,20 @@ var Room = (function () {
             }
         });
     };
+    Object.defineProperty(Room.prototype, "visibility", {
+        set: function (_boo) {
+            this._visibility = _boo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Room.prototype, "visibilty", {
+        get: function () {
+            return this._visibility;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Room;
 })();
 var RoomAccessData = (function () {

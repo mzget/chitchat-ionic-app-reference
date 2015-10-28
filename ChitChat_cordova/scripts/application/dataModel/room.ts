@@ -17,6 +17,8 @@ class Room {
     description: string;
     status: RoomStatus;
     createTime: Date;
+
+    public _visibility: boolean = true;
     
     public editMember (member: Member) {
         this.members.forEach(value => {
@@ -24,5 +26,12 @@ class Room {
                 value = member;
             }
         });
+    }
+
+    set visibility(_boo: boolean) {
+        this._visibility = _boo;
+    }
+    get visibilty(): boolean {
+        return this._visibility;
     }
 }
