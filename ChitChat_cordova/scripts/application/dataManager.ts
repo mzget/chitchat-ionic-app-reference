@@ -131,6 +131,7 @@ class DataManager implements Services.IFrontendServerListener {
         //<!-- Beware please checking myself before update group members.
         //<!-- May be your id is removed from group.
         if (!!this.orgGroups[data._id]) {
+            //<!-- This statement call when current you still a member.
             var hasMe = this.checkMySelfInNewMembersReceived(data);
             if (hasMe) {
                 this.orgGroups[data._id].members = data.members;
