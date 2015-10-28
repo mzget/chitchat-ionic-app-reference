@@ -184,11 +184,10 @@ class DataManager implements Services.IFrontendServerListener {
     }
 
     private editMemberDetail(roomId: string, member: Member) {
-        console.debug("editMember editMember editMember");
-        this.getGroup(roomId).members.forEach(value => {
+        this.getGroup(roomId).members.forEach((value, index, arr) => {
             if (value.id === member.id) {
-                value = member;
-                console.debug(JSON.stringify(value));
+                this.getGroup(roomId).members[index].role = member.role;
+                this.getGroup(roomId).members[index].jobPosition = member.jobPosition;
             }
         });
     }

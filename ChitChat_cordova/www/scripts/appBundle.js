@@ -1334,11 +1334,11 @@ var DataManager = (function () {
         return hasMe;
     };
     DataManager.prototype.editMemberDetail = function (roomId, member) {
-        console.debug("editMember editMember editMember");
-        this.getGroup(roomId).members.forEach(function (value) {
+        var _this = this;
+        this.getGroup(roomId).members.forEach(function (value, index, arr) {
             if (value.id === member.id) {
-                value = member;
-                console.debug(JSON.stringify(value));
+                _this.getGroup(roomId).members[index].role = member.role;
+                _this.getGroup(roomId).members[index].jobPosition = member.jobPosition;
             }
         });
     };
