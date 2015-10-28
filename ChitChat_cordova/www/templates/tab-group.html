@@ -43,7 +43,10 @@
 			</button>
 		</div>
 		<ion-list id="list-pjbGroups" class="group-list">
-			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="pjbGroup in pjbGroups" ng-click="openPjbModal(pjbGroup._id)" type="item-text-wrap">
+			<ion-item class="item-remove-animate item-avatar item-icon-right"
+                       ng-repeat="pjbGroup in pjbGroups"
+                       ng-if="pjbGroup.visibility === true || pjbGroup.visibility === undefine" 
+                       ng-click="openPjbModal(pjbGroup._id)" type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{pjbGroup.image}}&h=40&w=40" />
 				<h2>{{pjbGroup.name}}</h2>
 				<p>{{pjbGroup.description}}</p>
@@ -63,7 +66,10 @@
 			</button>
 		</div>
 		<ion-list id="list-pvGroups" class="group-list">
-			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="pvGroup in pvGroups" ng-if="pvGroup.visibility === true || pvGroup.visibility === undefine"  ng-click="openPvgModal(pvGroup._id)" type="item-text-wrap">
+			<ion-item class="item-remove-animate item-avatar item-icon-right"
+                       ng-repeat="pvGroup in pvGroups"
+                       ng-if="pvGroup.visibility === true || pvGroup.visibility === undefine" 
+                       ng-click="openPvgModal(pvGroup._id)" type="item-text-wrap">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{pvGroup.image}}&h=40&w=40" />
 				<h2>{{pvGroup.name}}</h2>
 				<i class="icon ion-chevron-right icon-accessory"></i>
