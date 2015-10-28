@@ -69,6 +69,8 @@ class DataManager implements Services.IFrontendServerListener {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     }
 
+    //<!---------- Group ------------------------------------
+
     public getGroup(id:string) : Room {
         if(!!this.orgGroups[id]) {
             return this.orgGroups[id];
@@ -125,7 +127,52 @@ class DataManager implements Services.IFrontendServerListener {
             this.privateGroups[data._id].name = data.name;
         }
     }
+    public updateGroupMembers(data: Room) {
+        //<!-- Beware please checking myself before update group members.
+        //<!-- May be your id is removed from group.
+        if (!!this.orgGroups[data._id]) {
+            var hasMe = this.checkMySelfInNewMembersReceived(data);
+            if (hasMe) {
+                this.orgGroups[data._id].members = data.members;
+            }
+            else {
+                console.warn("this org group is not contain me in members list.");
+            }
+        }
+        else if (!!this.projectBaseGroups[data._id]) {
+            var hasMe = this.checkMySelfInNewMembersReceived(data);
+            if (hasMe) {
+                this.projectBaseGroups[data._id].visibility = true;
+                this.projectBaseGroups[data._id].members = data.members;
+            }
+            else {
+                this.projectBaseGroups[data._id].visibility = false;
+            }
+        }
+        else if (!!this.privateGroups[data._id]) {
+            var hasMe = this.checkMySelfInNewMembersReceived(data);
+            if (hasMe) {
+                this.privateGroups[data._id].visibility = true;
+                this.privateGroups[data._id].members = data.members;
+            }
+            else {
+                this.privateGroups[data._id].visibility = false;
+            }
+        }
+    }
+
+    private checkMySelfInNewMembersReceived(data: Room): boolean {
+        var self = this;
+        var hasMe = data.members.some(function isMySelfId(element, index, array) {
+            return element.id === self.myProfile._id; 
+        });
+
+        console.debug("Hasme", hasMe);
+        return hasMe;
+    }
     
+    //<!------------------------------------------------------
+
     public updateContactImage(contactId: string, url: string) {
         if(!!this.orgMembers[contactId]) {
            this.orgMembers[contactId].image = url;
