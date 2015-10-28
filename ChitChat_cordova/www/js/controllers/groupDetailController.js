@@ -47,6 +47,16 @@
             }
         }
 
+    
+        $scope.isAdmin = function(id){
+            $.each(room.members, function(index, result) {
+                if(result._id == id){
+                    if(result.role == MemberRole[MemberRole.admin]) { return false; }
+                    else{ return true; }
+                }else{ return true; }
+            });
+        }
+
         $scope.checked = function(id,selected){
             setMemberSelected(id,selected);
         }
@@ -73,9 +83,14 @@
               }
             }
         }
+
+        $scope.$on('$ionicView.beforeLeave', function () {
+            CreateGroup.clear();
+            $rootScope.status = "";
+        });
     }
     
-    function viewGroupMembersCtrl($scope, $stateParams, $ionicModal,$rootScope, roomSelected,CreateGroup) {
+    function viewGroupMembersCtrl($scope, $stateParams, $ionicModal,$rootScope,roomSelected,CreateGroup) {
         navHide();
         $scope.$on('$ionicView.enter', function () {
             //<!-- Contact modal.
@@ -125,8 +140,9 @@
         var room = roomSelected.getRoom();
         var group = getGroup(room.type, $stateParams.chatId);
         var gMembers = group.members;
-
-        $scope.chat = group;
+        $scope.privateIndex = RoomType.privateGroup;
+        $scope.projectBaseIndex = RoomType.projectBaseGroup;
+        $scope.chatGroup = group;
 
         if(room.type === RoomType.privateGroup || room.type === RoomType.organizationGroup) {
             groupMembers(gMembers, gMembers.length, function done(members) {
@@ -134,6 +150,7 @@
             });
         }else if(room.type === RoomType.projectBaseGroup){
             for(var x=0; x<room.members.length; x++){
+                room.members[x]._id = main.getDataManager().orgMembers[room.members[x].id]._id;
                 room.members[x].displayname = main.getDataManager().orgMembers[room.members[x].id].displayname;
                 room.members[x].image = main.getDataManager().orgMembers[room.members[x].id].image;
                 if(room.members[x].role == null) { room.members[x].role = MemberRole[MemberRole.member]; }
@@ -145,11 +162,11 @@
         $scope.members_length = gMembers.length;
 
         $scope.InviteMembers = function () {
-            location.href = '#/tab/group/members/' + $scope.chat._id + '/invite';
+            location.href = '#/tab/group/members/' + $scope.chatGroup._id + '/invite';
             $rootScope.status = "invite";
         }
         $scope.editMember = function() {
-            location.href = '#/tab/group/members/' + $scope.chat._id + '/edit';
+            location.href = '#/tab/group/members/' + $scope.chatGroup._id + '/edit';
             $rootScope.status = "edit";
             CreateGroup.createType = "ProjectBase";
         }

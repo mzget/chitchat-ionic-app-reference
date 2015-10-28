@@ -7,7 +7,7 @@
             <div class="input-label">
               ROLE
             </div>
-            <select ng-model="role" ng-options="role.role for role in rolePosition" ng-disabled="myProfile._id==targetId">
+            <select ng-model="role" ng-options="role.role for role in rolePosition" ng-disabled="myProfile._id==targetId || isAdmin(role._id) ">
             </select>
           </div>
           <div class="item-input item-select">
@@ -19,9 +19,9 @@
           </div>
 
         <div class="row">
-			  <div class="col col-50"><button class="button button-block button-stable" ng-click="closeSelectRole()">Cancel</button></div>
-			  <div class="col col-50"><button class="button button-block button-stable" ng-click="savePosition(role.role,job.job)">Save</button></div>
-		</div>
+  			  <div class="col col-50"><button class="button button-block button-stable" ng-click="closeSelectRole()">Cancel</button></div>
+  			  <div class="col col-50"><button class="button button-block button-stable" ng-click="savePosition(role.role,job.job)">Save</button></div>
+		  </div>
 
     </ion-content>
 </ion-modal-view>

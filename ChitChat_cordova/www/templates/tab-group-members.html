@@ -25,12 +25,12 @@
 			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="member in members" type="item-text-wrap" ng-click="viewContact(member._id)">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{member.image}}&h=40&w=40" />
 
-				<div ng-if="chat.type==2">
+				<div ng-if="chatGroup.type==privateIndex">
 					<h2>{{member.displayname}}</h2>
 					<p>{{member.status}}</p>
 				</div>
 
-				<div ng-if="chat.type==1">
+				<div ng-if="chatGroup.type==projectBaseIndex">
 					<h2>{{member.displayname}}</h2>
 					<p style="float:right">{{member.role}}</p>
 					<p>{{member.jobPosition}}</p>

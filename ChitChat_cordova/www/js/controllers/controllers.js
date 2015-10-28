@@ -331,7 +331,7 @@ angular.module('spartan.controllers', [])
     });
 })
 
-.controller('CreateProjectBase',function($scope,$ionicModal,$rootScope,CreateGroup,ProjectBase) {
+.controller('CreateProjectBase',function($scope,$ionicModal,$rootScope,CreateGroup,ProjectBase, roomSelected) {
 	if(CreateGroup.createType!='ProjectBase'){ return; }
 		$scope.jobPosition=[];
 		$scope.rolePosition = [
@@ -343,10 +343,29 @@ angular.module('spartan.controllers', [])
 		$scope.targetId = "";
 	
 		$scope.savePosition = function(role,job){
-			if($rootScope.status=='edit'){
-				
-			}
 			ProjectBase.setRolePosition($scope.targetId,role,job);
+			if($rootScope.status=='edit'){
+				var room = roomSelected.getRoom();
+				var member = new function(){
+			        this.id = $scope.targetId;
+			        this.role = MemberRole[ ProjectBase.getRolePositionIndex($scope.targetId)[0] ];
+			        this.jobPosition = job;
+			    }
+				server.editMemberInfoInProjectBase(room._id,RoomType[room.type],member, function(err, res) {
+					if (!err) {
+						console.log(JSON.stringify(res));
+						$.each(room.members, function(index, result) {
+		                    if(result._id == $scope.targetId){
+		                        result.role = role;
+		                        result.jobPosition = job;
+		                    }
+		                });
+					}
+					else {
+						console.warn(err, res);
+					}
+				});
+			}
 			$scope.closeSelectRole();
 		}
 
