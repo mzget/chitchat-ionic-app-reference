@@ -130,33 +130,49 @@ class DataManager implements Services.IFrontendServerListener {
     public updateGroupMembers(data: Room) {
         //<!-- Beware please checking myself before update group members.
         //<!-- May be your id is removed from group.
-        if (!!this.orgGroups[data._id]) {
-            var hasMe = this.checkMySelfInNewMembersReceived(data);
-            if (hasMe) {
-                this.orgGroups[data._id].members = data.members;
+        var hasMe = this.checkMySelfInNewMembersReceived(data);
+
+        if (data.type === RoomType.organizationGroup) {
+            if (!!this.orgGroups[data._id]) {
+                //<!-- This statement call when current you still a member.
+                if (hasMe) {
+                    this.orgGroups[data._id].members = data.members;
+                }
+                else {
+                    console.warn("this org group is not contain me in members list.");
+                }
             }
             else {
-                console.warn("this org group is not contain me in members list.");
+                this.orgGroups[data._id] = data;
             }
         }
-        else if (!!this.projectBaseGroups[data._id]) {
-            var hasMe = this.checkMySelfInNewMembersReceived(data);
-            if (hasMe) {
-                this.projectBaseGroups[data._id].visibility = true;
-                this.projectBaseGroups[data._id].members = data.members;
+        else if (data.type === RoomType.projectBaseGroup) {
+            if (!!this.projectBaseGroups[data._id]) {
+                if (hasMe) {
+                    this.projectBaseGroups[data._id].visibility = true;
+                    this.projectBaseGroups[data._id].members = data.members;
+                }
+                else {
+                    this.projectBaseGroups[data._id].visibility = false;
+                }
             }
             else {
-                this.projectBaseGroups[data._id].visibility = false;
+                this.projectBaseGroups[data._id] = data;
             }
         }
-        else if (!!this.privateGroups[data._id]) {
-            var hasMe = this.checkMySelfInNewMembersReceived(data);
-            if (hasMe) {
-                this.privateGroups[data._id].visibility = true;
-                this.privateGroups[data._id].members = data.members;
+        else if (data.type === RoomType.privateGroup) {
+            if (!!this.privateGroups[data._id]) {
+                if (hasMe) {
+                    this.privateGroups[data._id].visibility = true;
+                    this.privateGroups[data._id].members = data.members;
+                }
+                else {
+                    this.privateGroups[data._id].visibility = false;
+                }
             }
             else {
-                this.privateGroups[data._id].visibility = false;
+                console.debug("new group", data.name);
+                this.privateGroups[data._id] = data;
             }
         }
     }
@@ -185,7 +201,7 @@ class DataManager implements Services.IFrontendServerListener {
             return element.id === self.myProfile._id; 
         });
 
-        console.debug("Hasme", hasMe);
+        console.debug("New data has me", hasMe);
         return hasMe;
     }
     
