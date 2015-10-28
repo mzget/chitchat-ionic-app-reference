@@ -1327,6 +1327,7 @@ var DataManager = (function () {
         this.getGroup(roomId).members.forEach(function (value, index, arr) {
             if (value.id === groupMember.id) {
                 _this.getGroup(roomId).members[index].role = groupMember.role;
+                _this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role];
                 _this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
             }
         });

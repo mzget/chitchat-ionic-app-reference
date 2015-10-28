@@ -4,9 +4,9 @@
     public joinTime: string;
     public status: string;
     public jobPosition: string;
+    public textRole: string;
 }
 
 enum MemberRole {
-    member,
-    admin
+    member, admin
 }

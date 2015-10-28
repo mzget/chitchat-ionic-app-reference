@@ -17,7 +17,7 @@
 		<ion-list>
 			<div class="row">
 				<div class="col col-90" style="float:left"> Member </div>
-				<div class="col col-10" style="float:left; text-align:right;" ng-click="editMember()"> EDIT </div>
+				<div class="col col-10" style="float:left; text-align:right;" ng-show="chatGroup.type==projectBaseIndex" ng-click="editMember()"> EDIT </div>
 			</div>
 		</ion-list>
 		
@@ -31,13 +31,14 @@
 
 				<div ng-if="chatGroup.type==projectBaseIndex">
 					<h2>{{member.displayname}}</h2>
-					<p style="float:right">{{member.role}}</p>
+					<p style="float:right" ng-show="member.role!=0 && member.role!=1">{{member.role}}</p>
+					<p style="float:right" ng-show="member.role==0 || member.role==1">{{member.textRole}}</p>
 					<p>{{member.jobPosition}}</p>
 				</div>
 
 				<i class="icon ion-chevron-right icon-accessory"></i>
 
-				<ion-option-button class="button-assertive" ng-show=" chatGroup.type==projectBaseIndex && !member.isAdmin " ng-click="removeMember(member.id)">
+				<ion-option-button class="button-assertive" ng-show=" chatGroup.type==projectBaseIndex && !member.isAdmin || chatGroup.type==privateIndex " ng-click="removeMember(member._id)">
 					Delete
 				</ion-option-button>
 			</ion-item>

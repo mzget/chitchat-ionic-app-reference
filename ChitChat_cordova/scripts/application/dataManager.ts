@@ -1,4 +1,4 @@
-﻿interface IRoomMap {
+interface IRoomMap {
     [key: string]: Room;
 }
 interface IMemberMep {
@@ -173,6 +173,7 @@ class DataManager implements Services.IFrontendServerListener {
         this.getGroup(roomId).members.forEach((value, index, arr) => {
             if (value.id === groupMember.id) {
                 this.getGroup(roomId).members[index].role = groupMember.role;
+                this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role]
                 this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
             }
         });
