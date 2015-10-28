@@ -1140,7 +1140,7 @@ var DataListener = (function () {
     };
     DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        this.dataManager.updateGroupMember(jsonObj);
+        this.dataManager.updateGroupMemberDetail(jsonObj);
     };
     DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
@@ -1315,7 +1315,8 @@ var DataManager = (function () {
             }
         }
     };
-    DataManager.prototype.updateGroupMember = function (jsonObj) {
+    DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
+        var _this = this;
         var editMember = jsonObj.editMember;
         var roomId = jsonObj.roomId;
         var groupMember = new Member();
@@ -1323,7 +1324,12 @@ var DataManager = (function () {
         var role = editMember.role;
         groupMember.role = MemberRole[role];
         groupMember.jobPosition = editMember.jobPosition;
-        this.editMemberDetail(roomId, groupMember);
+        this.getGroup(roomId).members.forEach(function (value, index, arr) {
+            if (value.id === groupMember.id) {
+                _this.getGroup(roomId).members[index].role = groupMember.role;
+                _this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
+            }
+        });
     };
     DataManager.prototype.checkMySelfInNewMembersReceived = function (data) {
         var self = this;
@@ -1332,15 +1338,6 @@ var DataManager = (function () {
         });
         console.debug("Hasme", hasMe);
         return hasMe;
-    };
-    DataManager.prototype.editMemberDetail = function (roomId, member) {
-        var _this = this;
-        this.getGroup(roomId).members.forEach(function (value, index, arr) {
-            if (value.id === member.id) {
-                _this.getGroup(roomId).members[index].role = member.role;
-                _this.getGroup(roomId).members[index].jobPosition = member.jobPosition;
-            }
-        });
     };
     DataManager.prototype.updateContactImage = function (contactId, url) {
         if (!!this.orgMembers[contactId]) {

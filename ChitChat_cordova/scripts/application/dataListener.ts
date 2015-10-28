@@ -57,7 +57,7 @@
 
     onUpdateMemberInfoInProjectBase(dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        this.dataManager.updateGroupMember(jsonObj);
+        this.dataManager.updateGroupMemberDetail(jsonObj);
     }
 
     onUserUpdateImageProfile(dataEvent) {

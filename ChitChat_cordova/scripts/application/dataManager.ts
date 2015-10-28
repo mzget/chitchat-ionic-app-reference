@@ -160,7 +160,7 @@ class DataManager implements Services.IFrontendServerListener {
             }
         }
     }
-    public updateGroupMember(jsonObj: any) {
+    public updateGroupMemberDetail(jsonObj: any) {
         var editMember = jsonObj.editMember;
         var roomId = jsonObj.roomId;
 
@@ -170,7 +170,12 @@ class DataManager implements Services.IFrontendServerListener {
         groupMember.role = MemberRole[role];
         groupMember.jobPosition = editMember.jobPosition;
 
-        this.editMemberDetail(roomId, groupMember);
+        this.getGroup(roomId).members.forEach((value, index, arr) => {
+            if (value.id === groupMember.id) {
+                this.getGroup(roomId).members[index].role = groupMember.role;
+                this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
+            }
+        });
     }
 
     private checkMySelfInNewMembersReceived(data: Room): boolean {
@@ -181,15 +186,6 @@ class DataManager implements Services.IFrontendServerListener {
 
         console.debug("Hasme", hasMe);
         return hasMe;
-    }
-
-    private editMemberDetail(roomId: string, member: Member) {
-        this.getGroup(roomId).members.forEach((value, index, arr) => {
-            if (value.id === member.id) {
-                this.getGroup(roomId).members[index].role = member.role;
-                this.getGroup(roomId).members[index].jobPosition = member.jobPosition;
-            }
-        });
     }
     
     //<!------------------------------------------------------
