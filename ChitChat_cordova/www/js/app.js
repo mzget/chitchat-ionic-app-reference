@@ -94,6 +94,16 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'starter.directives',
 				controller: 'editMemberGroup'
 			}
 		}
+	})//
+
+	.state('tab.group-members-edit', {
+		url: '/group/members/:chatId/edit',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-group-members-edit.html',
+				controller: 'editMemberGroup'
+			}
+		}
 	})
 	
 	// CHATS - Notification

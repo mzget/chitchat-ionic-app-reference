@@ -13,6 +13,13 @@
 				</button>
 			</ion-item>
 		</ion-list>
+
+		<ion-list>
+			<div class="row">
+				<div class="col col-90" style="float:left"> Member </div>
+				<div class="col col-10" style="float:left; text-align:right;" ng-click="editMember()"> EDIT </div>
+			</div>
+		</ion-list>
 		
 		<ion-list class="members-list">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="member in members" type="item-text-wrap" ng-click="viewContact(member._id)">

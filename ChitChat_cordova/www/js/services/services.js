@@ -270,7 +270,7 @@ angular.module('starter.services', [])
     if(containID(id)){
       for(var x=0; x<editPositionMember.length; x++){
         if(editPositionMember[x]._id == id){
-          positionRole = [editPositionMember[x].role.role,editPositionMember[x].position.job];
+          positionRole = [editPositionMember[x].role,editPositionMember[x].position];
         }
       }
     }else{
@@ -287,7 +287,7 @@ angular.module('starter.services', [])
     if(containID(id)){
       for(var x=0; x<editPositionMember.length; x++){
         if(editPositionMember[x]._id == id){
-          positionRole = [editPositionMember[x].role.role,editPositionMember[x].position.job];
+          positionRole = [editPositionMember[x].role,editPositionMember[x].position];
 
           for(var job=0; job<main.getDataManager().companyInfo.jobPosition.length; job++){
             if(positionRole[1]==main.getDataManager().companyInfo.jobPosition[job]){

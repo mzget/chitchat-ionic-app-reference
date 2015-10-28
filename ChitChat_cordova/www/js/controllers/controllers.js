@@ -331,7 +331,7 @@ angular.module('spartan.controllers', [])
     });
 })
 
-.controller('CreateProjectBase',function($scope,$ionicModal,CreateGroup,ProjectBase) {
+.controller('CreateProjectBase',function($scope,$ionicModal,$rootScope,CreateGroup,ProjectBase) {
 	if(CreateGroup.createType!='ProjectBase'){ return; }
 		$scope.jobPosition=[];
 		$scope.rolePosition = [
@@ -343,7 +343,11 @@ angular.module('spartan.controllers', [])
 		$scope.targetId = "";
 	
 		$scope.savePosition = function(role,job){
+			if($rootScope.status=='edit'){
+				
+			}
 			ProjectBase.setRolePosition($scope.targetId,role,job);
+			$scope.closeSelectRole();
 		}
 
 		$scope.openSelectRole = function(id){

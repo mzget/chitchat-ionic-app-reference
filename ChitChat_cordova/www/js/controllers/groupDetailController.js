@@ -22,23 +22,29 @@
         function activate() { }
     }
 
-    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicModal, CreateGroup, roomSelected){
+    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicModal,$rootScope, CreateGroup,ProjectBase, roomSelected){
         id_checked = [];
-        $scope.invite = true;
         $scope.myProfile = main.getDataManager().myProfile;
         $scope.allmembers = CreateGroup.getAllMember();
 
         var room = roomSelected.getRoom();
         var group = getGroup(room.type,$stateParams.chatId);
 
-        for(var i=0; i<room.members.length; i++){
-            var positionIndex;
-            $.each($scope.allmembers, function(index, result) {
-                if(result._id == room.members[i].id){
-                    positionIndex = index;
-                }
-            });
-            $scope.allmembers.splice(positionIndex,1);
+        if($rootScope.status == "invite"){
+            for(var i=0; i<room.members.length; i++){
+                var positionIndex;
+                $.each($scope.allmembers, function(index, result) {
+                    if(result._id == room.members[i].id){
+                        positionIndex = index;
+                    }
+                });
+                $scope.allmembers.splice(positionIndex,1);
+            }
+        }else if($rootScope.status = "edit"){
+            $scope.allmembers = room.members;
+            for(var x=0; x<room.members.length; x++){
+                ProjectBase.setRolePosition(room.members[x].id,room.members[x].role,room.members[x].jobPosition);
+            }
         }
 
         $scope.checked = function(id,selected){
@@ -69,7 +75,7 @@
         }
     }
     
-    function viewGroupMembersCtrl($scope, $stateParams, $ionicModal, roomSelected) {
+    function viewGroupMembersCtrl($scope, $stateParams, $ionicModal,$rootScope, roomSelected,CreateGroup) {
         navHide();
         $scope.$on('$ionicView.enter', function () {
             //<!-- Contact modal.
@@ -140,6 +146,12 @@
 
         $scope.InviteMembers = function () {
             location.href = '#/tab/group/members/' + $scope.chat._id + '/invite';
+            $rootScope.status = "invite";
+        }
+        $scope.editMember = function() {
+            location.href = '#/tab/group/members/' + $scope.chat._id + '/edit';
+            $rootScope.status = "edit";
+            CreateGroup.createType = "ProjectBase";
         }
 
         $scope.viewContact = function (contactId) {
