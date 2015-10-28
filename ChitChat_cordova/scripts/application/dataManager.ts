@@ -160,6 +160,23 @@ class DataManager implements Services.IFrontendServerListener {
             }
         }
     }
+    public updateGroupMemberDetail(jsonObj: any) {
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+
+        var groupMember: Member = new Member();
+        groupMember.id = editMember.id;
+        var role = <string>editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+
+        this.getGroup(roomId).members.forEach((value, index, arr) => {
+            if (value.id === groupMember.id) {
+                this.getGroup(roomId).members[index].role = groupMember.role;
+                this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
+            }
+        });
+    }
 
     private checkMySelfInNewMembersReceived(data: Room): boolean {
         var self = this;

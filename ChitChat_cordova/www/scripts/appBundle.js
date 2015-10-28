@@ -1140,14 +1140,7 @@ var DataListener = (function () {
     };
     DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        var editMember = jsonObj.editMember;
-        var roomId = jsonObj.roomId;
-        var groupMember = new Member();
-        groupMember.id = editMember.id;
-        var role = editMember.role;
-        groupMember.role = MemberRole[role];
-        groupMember.jobPosition = editMember.jobPosition;
-        this.dataManager.getGroup(roomId).editMember(groupMember);
+        this.dataManager.updateGroupMemberDetail(jsonObj);
     };
     DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
@@ -1322,6 +1315,22 @@ var DataManager = (function () {
             }
         }
     };
+    DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
+        var _this = this;
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+        var groupMember = new Member();
+        groupMember.id = editMember.id;
+        var role = editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+        this.getGroup(roomId).members.forEach(function (value, index, arr) {
+            if (value.id === groupMember.id) {
+                _this.getGroup(roomId).members[index].role = groupMember.role;
+                _this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
+            }
+        });
+    };
     DataManager.prototype.checkMySelfInNewMembersReceived = function (data) {
         var self = this;
         var hasMe = data.members.some(function isMySelfId(element, index, array) {
@@ -1474,13 +1483,6 @@ var Room = (function () {
     function Room() {
         this._visibility = true;
     }
-    Room.prototype.editMember = function (member) {
-        this.members.forEach(function (value) {
-            if (value.id == member.id) {
-                value = member;
-            }
-        });
-    };
     Object.defineProperty(Room.prototype, "visibility", {
         set: function (_boo) {
             this._visibility = _boo;
