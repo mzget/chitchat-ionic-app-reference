@@ -1140,14 +1140,7 @@ var DataListener = (function () {
     };
     DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        var editMember = jsonObj.editMember;
-        var roomId = jsonObj.roomId;
-        var groupMember = new Member();
-        groupMember.id = editMember.id;
-        var role = editMember.role;
-        groupMember.role = MemberRole[role];
-        groupMember.jobPosition = editMember.jobPosition;
-        this.dataManager.getGroup(roomId).editMember(groupMember);
+        this.dataManager.updateGroupMember(jsonObj);
     };
     DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
@@ -1322,6 +1315,16 @@ var DataManager = (function () {
             }
         }
     };
+    DataManager.prototype.updateGroupMember = function (jsonObj) {
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+        var groupMember = new Member();
+        groupMember.id = editMember.id;
+        var role = editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+        this.editMemberDetail(roomId, groupMember);
+    };
     DataManager.prototype.checkMySelfInNewMembersReceived = function (data) {
         var self = this;
         var hasMe = data.members.some(function isMySelfId(element, index, array) {
@@ -1329,6 +1332,15 @@ var DataManager = (function () {
         });
         console.debug("Hasme", hasMe);
         return hasMe;
+    };
+    DataManager.prototype.editMemberDetail = function (roomId, member) {
+        console.debug("editMember editMember editMember");
+        this.getGroup(roomId).members.forEach(function (value) {
+            if (value.id === member.id) {
+                value = member;
+                console.debug(JSON.stringify(value));
+            }
+        });
     };
     DataManager.prototype.updateContactImage = function (contactId, url) {
         if (!!this.orgMembers[contactId]) {
@@ -1474,13 +1486,6 @@ var Room = (function () {
     function Room() {
         this._visibility = true;
     }
-    Room.prototype.editMember = function (member) {
-        this.members.forEach(function (value) {
-            if (value.id == member.id) {
-                value = member;
-            }
-        });
-    };
     Object.defineProperty(Room.prototype, "visibility", {
         set: function (_boo) {
             this._visibility = _boo;

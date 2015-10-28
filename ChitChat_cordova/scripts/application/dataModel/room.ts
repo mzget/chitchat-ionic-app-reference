@@ -19,14 +19,6 @@ class Room {
     createTime: Date;
 
     public _visibility: boolean = true;
-    
-    public editMember (member: Member) {
-        this.members.forEach(value => {
-            if(value.id == member.id) {
-                value = member;
-            }
-        });
-    }
 
     set visibility(_boo: boolean) {
         this._visibility = _boo;

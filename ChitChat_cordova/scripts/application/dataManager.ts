@@ -160,6 +160,18 @@ class DataManager implements Services.IFrontendServerListener {
             }
         }
     }
+    public updateGroupMember(jsonObj: any) {
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+
+        var groupMember: Member = new Member();
+        groupMember.id = editMember.id;
+        var role = <string>editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+
+        this.editMemberDetail(roomId, groupMember);
+    }
 
     private checkMySelfInNewMembersReceived(data: Room): boolean {
         var self = this;
@@ -169,6 +181,16 @@ class DataManager implements Services.IFrontendServerListener {
 
         console.debug("Hasme", hasMe);
         return hasMe;
+    }
+
+    private editMemberDetail(roomId: string, member: Member) {
+        console.debug("editMember editMember editMember");
+        this.getGroup(roomId).members.forEach(value => {
+            if (value.id === member.id) {
+                value = member;
+                console.debug(JSON.stringify(value));
+            }
+        });
     }
     
     //<!------------------------------------------------------
