@@ -123,16 +123,16 @@
         });
 
         var room = roomSelected.getRoom();
-        var group = getGroup(room.type,$stateParams.chatId);
+        var group = getGroup(room.type, $stateParams.chatId);
         var gMembers = group.members;
 
         $scope.chat = group;
 
-        if(room.type==2){
+        if(room.type === RoomType.privateGroup || room.type === RoomType.organizationGroup) {
             groupMembers(gMembers, gMembers.length, function done(members) {
                 $scope.members = members;
             });
-        }else if(room.type==1){
+        }else if(room.type === RoomType.projectBaseGroup){
             for(var x=0; x<room.members.length; x++){
                 room.members[x].displayname = main.getDataManager().orgMembers[room.members[x].id].displayname;
                 room.members[x].image = main.getDataManager().orgMembers[room.members[x].id].image;
@@ -169,7 +169,7 @@
         };
     }
 
-    function getGroup(type,chatId){
+    function getGroup(type, chatId){
         var group = null;
         switch (type) {
             case 0:

@@ -1154,10 +1154,27 @@ var DataListener = (function () {
         this.dataManager.addGroup(jsonObj);
     };
     DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+        var groupMember = new Member();
+        groupMember.id = editMember.id;
+        var role = editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+        this.dataManager.getGroup(roomId).editMember(groupMember);
     };
     DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var _id = jsonObj._id;
+        var path = jsonObj.path;
+        this.dataManager.updateContactImage(_id, path);
     };
     DataListener.prototype.onUserUpdateProfile = function (dataEvent) {
+        var jsonobj = JSON.parse(JSON.stringify(dataEvent));
+        var params = jsonobj.params;
+        var _id = jsonobj._id;
+        this.dataManager.updateContactProfile(_id, params);
     };
     DataListener.prototype.onChatData = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
@@ -1234,6 +1251,17 @@ var DataManager = (function () {
     DataManager.prototype.setPrivateGroups = function (data) {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     };
+    DataManager.prototype.getGroup = function (id) {
+        if (!!this.orgGroups[id]) {
+            return this.orgGroups[id];
+        }
+        else if (!!this.projectBaseGroups[id]) {
+            return this.projectBaseGroups[id];
+        }
+        else if (!!this.privateGroups[id]) {
+            return this.privateGroups[id];
+        }
+    };
     DataManager.prototype.addGroup = function (data) {
         switch (data.type) {
             case RoomType.organizationGroup:
@@ -1276,6 +1304,22 @@ var DataManager = (function () {
         }
         else if (!!this.privateGroups[data._id]) {
             this.privateGroups[data._id].name = data.name;
+        }
+    };
+    DataManager.prototype.updateContactImage = function (contactId, url) {
+        if (!!this.orgMembers[contactId]) {
+            this.orgMembers[contactId].image = url;
+        }
+    };
+    DataManager.prototype.updateContactProfile = function (contactId, params) {
+        if (!!this.orgMembers[contactId]) {
+            var jsonObj = JSON.parse(JSON.stringify(params));
+            if (!!jsonObj.displayname) {
+                this.orgMembers[contactId].displayname = jsonObj.displayname;
+            }
+            if (!!jsonObj.status) {
+                this.orgMembers[contactId].status = jsonObj.status;
+            }
         }
     };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
@@ -1346,6 +1390,11 @@ var CompanyInfo = (function () {
     }
     return CompanyInfo;
 })();
+var ContactInfo = (function () {
+    function ContactInfo() {
+    }
+    return ContactInfo;
+})();
 var ContentType;
 (function (ContentType) {
     ContentType[ContentType["Unload"] = 0] = "Unload";
@@ -1382,11 +1431,6 @@ var MinLocation = (function () {
     }
     return MinLocation;
 })();
-var Room = (function () {
-    function Room() {
-    }
-    return Room;
-})();
 var RoomType;
 (function (RoomType) {
     RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
@@ -1402,6 +1446,18 @@ var RoomStatus;
     RoomStatus[RoomStatus["delete"] = 2] = "delete";
 })(RoomStatus || (RoomStatus = {}));
 ;
+var Room = (function () {
+    function Room() {
+    }
+    Room.prototype.editMember = function (member) {
+        this.members.forEach(function (value) {
+            if (value.id == member.id) {
+                value = member;
+            }
+        });
+    };
+    return Room;
+})();
 var RoomAccessData = (function () {
     function RoomAccessData() {
     }
@@ -1427,11 +1483,6 @@ var UserRole;
     UserRole[UserRole["admin"] = 4] = "admin";
 })(UserRole || (UserRole = {}));
 ;
-var OrgMember = (function () {
-    function OrgMember() {
-    }
-    return OrgMember;
-})();
 var Dummy = (function () {
     function Dummy() {
         this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;

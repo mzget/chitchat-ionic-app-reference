@@ -2,7 +2,7 @@
     [key: string]: Room;
 }
 interface IMemberMep {
-    [key: string]: OrgMember;
+    [key: string]: ContactInfo;
 }
 
 class DataManager implements Services.IFrontendServerListener {
@@ -69,6 +69,17 @@ class DataManager implements Services.IFrontendServerListener {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     }
 
+    public getGroup(id:string) : Room {
+        if(!!this.orgGroups[id]) {
+            return this.orgGroups[id];
+        }
+        else if(!!this.projectBaseGroups[id]) {
+            return this.projectBaseGroups[id];
+        }
+        else if(!!this.privateGroups[id]) {
+            return this.privateGroups[id];
+        }
+    }
     public addGroup(data: Room) {
         switch (data.type) {
             case RoomType.organizationGroup:
@@ -115,10 +126,27 @@ class DataManager implements Services.IFrontendServerListener {
         }
     }
     
+    public updateContactImage(contactId: string, url: string) {
+        if(!!this.orgMembers[contactId]) {
+           this.orgMembers[contactId].image = url;
+        }
+    }
+    public updateContactProfile(contactId:string, params: any) {
+        if(!!this.orgMembers[contactId]) {
+            var jsonObj = JSON.parse(JSON.stringify(params));
+            if(!!jsonObj.displayname) {
+                this.orgMembers[contactId].displayname = jsonObj.displayname;
+            }
+            if(!!jsonObj.status) {
+                this.orgMembers[contactId].status = jsonObj.status;
+            }
+        }
+    }
+    
 
     public onGetCompanyMemberComplete(dataEvent) {
         var self = this;
-        var members: Array<OrgMember> = JSON.parse(JSON.stringify(dataEvent));
+        var members: Array<ContactInfo> = JSON.parse(JSON.stringify(dataEvent));
 
         if (!this.orgMembers) this.orgMembers = {};
 
