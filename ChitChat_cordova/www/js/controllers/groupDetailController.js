@@ -80,7 +80,7 @@
         });
     }
     
-    function viewGroupMembersCtrl($scope, $stateParams, $ionicModal,$rootScope,roomSelected,CreateGroup) {
+    function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal,$rootScope,roomSelected,CreateGroup) {
         navHide();
         $scope.$on('$ionicView.enter', function () {
             //<!-- Contact modal.
@@ -145,6 +145,7 @@
                 room.members[x].image = main.getDataManager().orgMembers[room.members[x].id].image;
                 if(room.members[x].role == null) { room.members[x].role = MemberRole[MemberRole.member]; }
                 if(room.members[x].jobPosition == null) { room.members[x].jobPosition = main.getDataManager().companyInfo.jobPosition[0]; }
+                room.members[x].isAdmin = isAdminInProjectBase(room,room.members[x]._id);
             }
             $scope.members = room.members;
         }
@@ -160,6 +161,26 @@
             $rootScope.status = "edit";
             CreateGroup.createType = "ProjectBase";
         }
+        $scope.removeMember = function(id){
+            var idMember = [];
+            console.log(id);
+            idMember.push(id);
+            server.editGroupMembers("remove",room._id,RoomType[room.type],idMember, function(err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    var indexMember;
+                    $.each(room.members, function(index, result) {
+                        if(result.id == id){ indexMember = index; }
+                    });
+                    
+                    room.members.splice( indexMember, 1 );
+                    
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }
 
         $scope.viewContact = function (contactId) {
             console.debug("viewContact", contactId);
@@ -174,7 +195,10 @@
         $scope.closeContactModal = function () {
             $scope.contactModal.hide();
         };
+
     }
+
+
 
     function getGroup(type, chatId){
         var group = null;
