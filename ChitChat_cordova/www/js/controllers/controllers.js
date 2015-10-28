@@ -369,12 +369,25 @@ angular.module('spartan.controllers', [])
 			}
 			$scope.closeSelectRole();
 		}
+		
+		$scope.isAdmin = isAdmin();
+		function isAdmin(){
+			var room = roomSelected.getRoom();
+			var admin = false;
+            $.each(room.members, function(index, result) {
+                if(result._id == $scope.targetId){
+                    if(result.role == MemberRole[MemberRole.admin]) { admin = true; }
+                }
+            });
+            return admin;
+        }
 
 		$scope.openSelectRole = function(id){
 			$scope.targetId = id;
 			var index = ProjectBase.getRolePositionIndex(id);
 			$scope.job = $scope.jobPosition[index[1]];
 			$scope.role = $scope.rolePosition[index[0]];
+			if($rootScope.status=='edit'){ $scope.isAdmin = isAdmin(); }
 			$scope.modal.show();
 		};
 		$scope.closeSelectRole = function() {

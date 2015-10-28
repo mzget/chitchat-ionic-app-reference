@@ -47,16 +47,6 @@
             }
         }
 
-    
-        $scope.isAdmin = function(id){
-            $.each(room.members, function(index, result) {
-                if(result._id == id){
-                    if(result.role == MemberRole[MemberRole.admin]) { return false; }
-                    else{ return true; }
-                }else{ return true; }
-            });
-        }
-
         $scope.checked = function(id,selected){
             setMemberSelected(id,selected);
         }

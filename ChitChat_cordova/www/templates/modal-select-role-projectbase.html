@@ -7,7 +7,7 @@
             <div class="input-label">
               ROLE
             </div>
-            <select ng-model="role" ng-options="role.role for role in rolePosition" ng-disabled="myProfile._id==targetId || isAdmin(role._id) ">
+            <select ng-model="role" ng-options="role.role for role in rolePosition" ng-disabled="myProfile._id==targetId || isAdmin ">
             </select>
           </div>
           <div class="item-input item-select">
