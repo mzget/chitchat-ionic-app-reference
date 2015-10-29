@@ -301,28 +301,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/ionic-plugin-keyboard/www/ios/keyboard.js",
-        "id": "ionic-plugin-keyboard.keyboard",
-        "clobbers": [
-            "cordova.plugins.Keyboard"
-        ],
-        "runs": true
-    },
-    {
-        "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
-        "id": "org.apache.cordova.dialogs.notification",
-        "merges": [
-            "navigator.notification"
-        ]
-    },
-    {
-        "file": "plugins/org.pbernasconi.progressindicator/www/progressIndicator.js",
-        "id": "org.pbernasconi.progressindicator.ProgressIndicator",
-        "clobbers": [
-            "ProgressIndicator"
-        ]
-    },
-    {
         "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js",
         "id": "de.appplant.cordova.plugin.local-notification.LocalNotification",
         "clobbers": [
@@ -345,6 +323,28 @@ module.exports = [
             "cordova.plugins.notification.local.core",
             "plugin.notification.local.core"
         ]
+    },
+    {
+        "file": "plugins/ionic-plugin-keyboard/www/ios/keyboard.js",
+        "id": "ionic-plugin-keyboard.keyboard",
+        "clobbers": [
+            "cordova.plugins.Keyboard"
+        ],
+        "runs": true
+    },
+    {
+        "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
+        "id": "org.apache.cordova.dialogs.notification",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "file": "plugins/org.pbernasconi.progressindicator/www/progressIndicator.js",
+        "id": "org.pbernasconi.progressindicator.ProgressIndicator",
+        "clobbers": [
+            "ProgressIndicator"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -359,11 +359,11 @@ module.exports.metadata =
     "cordova-plugin-media": "1.0.1",
     "cordova-plugin-media-capture": "1.0.1",
     "cordova-plugin-whitelist": "1.0.0",
+    "de.appplant.cordova.common.registerusernotificationsettings": "1.0.1",
+    "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
     "ionic-plugin-keyboard": "1.0.7",
     "org.apache.cordova.dialogs": "0.3.0",
-    "org.pbernasconi.progressindicator": "1.1.0",
-    "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
-    "de.appplant.cordova.common.registerusernotificationsettings": "1.0.1"
+    "org.pbernasconi.progressindicator": "1.1.0"
 }
 // BOTTOM OF METADATA
 });

@@ -31,6 +31,10 @@
     <feature name="Capture">
         <param name="ios-package" value="CDVCapture" />
     </feature>
+    <feature name="LocalNotification">
+        <param name="ios-package" onload="true" value="APPLocalNotification" />
+        <param name="onload" value="true" />
+    </feature>
     <feature name="Keyboard">
         <param name="ios-package" onload="true" value="IonicKeyboard" />
     </feature>
@@ -39,10 +43,6 @@
     </feature>
     <feature name="ProgressIndicator">
         <param name="ios-package" value="ProgressIndicator" />
-    </feature>
-    <feature name="LocalNotification">
-        <param name="ios-package" onload="true" value="APPLocalNotification" />
-        <param name="onload" value="true" />
     </feature>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
