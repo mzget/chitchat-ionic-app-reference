@@ -127,7 +127,7 @@ angular.module('spartan.controllers', [])
 
 })
 
-.controller('AccountCreate',function($scope,$rootScope,$state,CreateGroup) {
+.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,CreateGroup) {
 	console.log('AccountCreate',CreateGroup.createType);
 	var myProfile = main.getDataManager().myProfile;
 	$rootScope.members = CreateGroup.getSelectedMember();
@@ -156,9 +156,12 @@ angular.module('spartan.controllers', [])
 			});
 		}
 	}
-	$scope.$on('$ionicView.leave', function(){
-		CreateGroup.clear();
-    });
+	$rootScope.$ionicGoBack = function() {
+		if($state.current.name=='tab.account-create'){
+			CreateGroup.clear();
+		}
+    	$ionicHistory.goBack(-1);
+	};
 })
 
 .controller('AccountInvite',function($scope,$rootScope,CreateGroup) {
@@ -171,7 +174,7 @@ angular.module('spartan.controllers', [])
 	}
 
 	$scope.$on('$ionicView.beforeLeave', function(){
-		console.log('Back to Previously');
+		//console.log('Back to Previously');
 		$rootScope.members = CreateGroup.getSelectedMember();
     });
 })
