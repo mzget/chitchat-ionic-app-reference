@@ -63,6 +63,11 @@
 		24B2217A3C274D0898769ADA /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = A27CB4E05A7B45D5A182ED85 /* MBProgressHUD.m */; };
 		19D957648CFE4EF68918A5FD /* ProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EF3AF7348D64937906F096D /* ProgressIndicator.m */; };
 		261BAD750DE241218902D5AB /* ProgressIndicator.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B6605914CE44477287C35AFA /* ProgressIndicator.bundle */; };
+		9CC97221F65D4ACCA5276108 /* AppDelegate+APPRegisterUserNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D51718CEB94FA691176BDD /* AppDelegate+APPRegisterUserNotificationSettings.m */; };
+		ED2CD0CAAFDF4878957DADE6 /* APPLocalNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = A3A5519A039F41E9BAA84FD0 /* APPLocalNotification.m */; };
+		83F6032E955A4B63B43CB93C /* APPLocalNotificationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF12A3AB93A1423596F6F2E7 /* APPLocalNotificationOptions.m */; };
+		938E930E6A9C43F7A6B84952 /* UIApplication+APPLocalNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = E97A0B13886A4035B608AA1B /* UIApplication+APPLocalNotification.m */; };
+		B2B096C8DF7B4D6889E76D56 /* UILocalNotification+APPLocalNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = BAA23458785947429FD9F706 /* UILocalNotification+APPLocalNotification.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -170,6 +175,16 @@
 		FB8CC92A92714FFAA26F703B /* MBProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MBProgressHUD.h"; path = "org.pbernasconi.progressindicator/MBProgressHUD.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		5E9C8282DAA1482C8F5DF30D /* ProgressIndicator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ProgressIndicator.h"; path = "org.pbernasconi.progressindicator/ProgressIndicator.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		B6605914CE44477287C35AFA /* ProgressIndicator.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "ProgressIndicator.bundle"; path = "ProgressIndicator.bundle"; sourceTree = "<group>"; };
+		27D51718CEB94FA691176BDD /* AppDelegate+APPRegisterUserNotificationSettings.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "AppDelegate+APPRegisterUserNotificationSettings.m"; path = "de.appplant.cordova.common.registerusernotificationsettings/AppDelegate+APPRegisterUserNotificationSettings.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		D3C3CFC156AD48008F4DBD5A /* AppDelegate+APPRegisterUserNotificationSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AppDelegate+APPRegisterUserNotificationSettings.h"; path = "de.appplant.cordova.common.registerusernotificationsettings/AppDelegate+APPRegisterUserNotificationSettings.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		A3A5519A039F41E9BAA84FD0 /* APPLocalNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "APPLocalNotification.m"; path = "de.appplant.cordova.plugin.local-notification/APPLocalNotification.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		FF12A3AB93A1423596F6F2E7 /* APPLocalNotificationOptions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "APPLocalNotificationOptions.m"; path = "de.appplant.cordova.plugin.local-notification/APPLocalNotificationOptions.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		E97A0B13886A4035B608AA1B /* UIApplication+APPLocalNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+APPLocalNotification.m"; path = "de.appplant.cordova.plugin.local-notification/UIApplication+APPLocalNotification.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		BAA23458785947429FD9F706 /* UILocalNotification+APPLocalNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UILocalNotification+APPLocalNotification.m"; path = "de.appplant.cordova.plugin.local-notification/UILocalNotification+APPLocalNotification.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		571FF735679D4DA6B9B3A3E6 /* APPLocalNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "APPLocalNotification.h"; path = "de.appplant.cordova.plugin.local-notification/APPLocalNotification.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		57FED09ED3A94DE69B990EEC /* APPLocalNotificationOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "APPLocalNotificationOptions.h"; path = "de.appplant.cordova.plugin.local-notification/APPLocalNotificationOptions.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		851B8F242F2843FC9C3F67A3 /* UIApplication+APPLocalNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIApplication+APPLocalNotification.h"; path = "de.appplant.cordova.plugin.local-notification/UIApplication+APPLocalNotification.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		C819C0B038C54FEEA99E7773 /* UILocalNotification+APPLocalNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UILocalNotification+APPLocalNotification.h"; path = "de.appplant.cordova.plugin.local-notification/UILocalNotification+APPLocalNotification.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,6 +329,16 @@
 				3EF3AF7348D64937906F096D /* ProgressIndicator.m */,
 				FB8CC92A92714FFAA26F703B /* MBProgressHUD.h */,
 				5E9C8282DAA1482C8F5DF30D /* ProgressIndicator.h */,
+				27D51718CEB94FA691176BDD /* AppDelegate+APPRegisterUserNotificationSettings.m */,
+				D3C3CFC156AD48008F4DBD5A /* AppDelegate+APPRegisterUserNotificationSettings.h */,
+				A3A5519A039F41E9BAA84FD0 /* APPLocalNotification.m */,
+				FF12A3AB93A1423596F6F2E7 /* APPLocalNotificationOptions.m */,
+				E97A0B13886A4035B608AA1B /* UIApplication+APPLocalNotification.m */,
+				BAA23458785947429FD9F706 /* UILocalNotification+APPLocalNotification.m */,
+				571FF735679D4DA6B9B3A3E6 /* APPLocalNotification.h */,
+				57FED09ED3A94DE69B990EEC /* APPLocalNotificationOptions.h */,
+				851B8F242F2843FC9C3F67A3 /* UIApplication+APPLocalNotification.h */,
+				C819C0B038C54FEEA99E7773 /* UILocalNotification+APPLocalNotification.h */,
 			);
 			name = Plugins;
 			path = "ChitChat/Plugins";
@@ -518,6 +543,11 @@
 				8070EB9CAE714E179D95D52F /* CDVNotification.m in Sources */,
 				24B2217A3C274D0898769ADA /* MBProgressHUD.m in Sources */,
 				19D957648CFE4EF68918A5FD /* ProgressIndicator.m in Sources */,
+				9CC97221F65D4ACCA5276108 /* AppDelegate+APPRegisterUserNotificationSettings.m in Sources */,
+				ED2CD0CAAFDF4878957DADE6 /* APPLocalNotification.m in Sources */,
+				83F6032E955A4B63B43CB93C /* APPLocalNotificationOptions.m in Sources */,
+				938E930E6A9C43F7A6B84952 /* UIApplication+APPLocalNotification.m in Sources */,
+				B2B096C8DF7B4D6889E76D56 /* UILocalNotification+APPLocalNotification.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

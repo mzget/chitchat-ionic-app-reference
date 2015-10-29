@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('spartan.services', [])
 
 .factory('FileService', function() {
   var images;
