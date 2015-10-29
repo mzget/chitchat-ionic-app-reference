@@ -94,7 +94,8 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup) {
+.controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup,$localStorage, $rootScope
+) {
 	$scope.settings = {
 		logOut: true,
 	};
@@ -123,6 +124,22 @@ angular.module('spartan.controllers', [])
   $scope.$on('$destroy', function() {
     $scope.thememodal.remove();
   });
+  
+ 
+    $scope.data = {
+            'themeblue': 'css/themeblue.css',
+            'themebrown': 'css/themebrown.css',
+            'themegreen': 'css/themegreen.css',
+            'themered': 'css/themered.css',
+            'themeviole': 'css/themeviole.css',
+            'themeyellow': 'css/themeyellow.css'
+        }
+
+    $scope.save_settings = function( data ) {
+            $localStorage.themeblue_data = data;
+            $rootScope.theme = $localStorage.themeblue_data;
+            console.log($rootScope.themeblue)
+        }
 
 
 })
