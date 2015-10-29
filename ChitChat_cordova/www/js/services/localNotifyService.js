@@ -8,11 +8,15 @@
     localNotifyService.$inject = ['$http', '$cordovaLocalNotification'];
 
     function localNotifyService($http, $cordovaLocalNotification) {
-        
+        var dataListener = main.getDataListener();
+        var dataManager = main.getDataManager();
         var onChatListenerImp = new HomeComponent();
-        main.getDataListener().addListenerImp(onChatListenerImp); 
+        dataListener.addListenerImp(onChatListenerImp);
         onChatListenerImp.onChat = function(chatMessageImp) {
-            scheduleSingleNotification();
+            if(chatMessageImp.type === ContentType[ContentType.Text]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                scheduleSingleNotification(contact.displayname, chatMessageImp.body);
+            }
         }
         
         var service = {
@@ -26,17 +30,17 @@
 
         function getData() { }
 
-        function scheduleSingleNotification() {
+        function scheduleSingleNotification(title, text) {
             // ========== Scheduling
             $cordovaLocalNotification.schedule({
                 id: 1,
-                title: 'Title here',
-                text: 'Text here',
+                title: title,
+                text: text,
                 data: {
                     customProperty: 'custom value'
                 }
             }).then(function (result) {
-                // ...
+                console.info('scheduleSingleNotification', result);
             });
         }
 
