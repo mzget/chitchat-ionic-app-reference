@@ -82,8 +82,9 @@
     onChatData(data) {
         var chatMessageImp: Message = JSON.parse(JSON.stringify(data));
 
-        if (!!this.listenerImp)
+        if (!!this.listenerImp) {
             this.listenerImp.onChat(chatMessageImp);
+        }
     };
     onLeaveRoom(data) {
         if (!!this.listenerImp)

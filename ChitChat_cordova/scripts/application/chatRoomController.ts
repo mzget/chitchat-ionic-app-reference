@@ -1,4 +1,4 @@
-﻿interface IChatRoomController {
+﻿interface IChatServerImp {
     onChat(data);
     onLeaveRoom(data);
     onRoomJoin(data);
@@ -6,7 +6,7 @@
     onGetMessagesReaders(dataEvent);
 }
 
-class ChatRoomController implements IChatRoomController {
+class ChatRoomController implements IChatServerImp {
     public chatMessages: Array<Message> = [];
     public serviceListener: (eventName: string, data: any) => void;
     private dataManager: DataManager;

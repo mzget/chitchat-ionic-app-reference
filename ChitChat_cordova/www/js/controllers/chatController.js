@@ -126,7 +126,7 @@ angular.module('spartan.chat', [])
 		{
 			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-			console.info('update with timeout fired');
+			console.info('chatController: refresh view');
 			$scope.chat = Chats.all();
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom

@@ -3,7 +3,7 @@
         "noImplicitAny": false,
         "noEmitOnError": true,
         "removeComments": true,
-        "sourceMap": false,
+        "sourceMap": true,
         "out": "www/scripts/appBundle.js",
       "target": "ES5",
       "jsx": "react"

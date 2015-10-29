@@ -280,7 +280,7 @@ angular.module('spartan.controllers', [])
   $scope.$on('$destroy', function() {
     $scope.thememodal.remove();
   });
-  
+ 
  
     $scope.data = {
             'themeblue': 'css/themeblue.css',
