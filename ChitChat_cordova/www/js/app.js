@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'spartan.controllers', 'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'starter.services', 'ngCordova'])
+angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chatslog', 'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'starter.services', 'ngCordova'])
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {
@@ -106,17 +106,6 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'starter.directives',
 		}
 	})
 	
-	// CHATS - Notification
-	//.state('tab.chats', {
-	//	url: '/chats',
-	//	views: {
-	//		'tab-chats': {
-	//			templateUrl: 'templates/tab-chats.html',
-	//			controller: 'ChatsCtrl'
-	//		}
-	//	}
-	//})
-	
 	.state('tab.group-chat', {
 		url: '/group/chat/:chatId',
 		views: {
@@ -126,13 +115,23 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'starter.directives',
 			}
 		}
 	})
-	
+
+	// CHATS - Notification
+	//.state('tab.chats', {
+	//	url: '/chats',
+	//	views: {
+	//		'tab-chats': {
+	//			templateUrl: 'templates/tab-chats.html',
+	//			controller: 'ChatsCtrl'
+	//		}
+	//	}
+	//})	
 	.state('tab.chats', {
 		url: '/chats',
 		views: {
 			'tab-chats': {
 				templateUrl: 'templates/tab-chats.html',
-				controller: 'ChatsCtrl'
+				controller: 'chatslogController'
 			}
 		}
 	})
