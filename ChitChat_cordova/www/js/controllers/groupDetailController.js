@@ -133,6 +133,7 @@
         var gMembers = group.members;
         $scope.privateIndex = RoomType.privateGroup;
         $scope.projectBaseIndex = RoomType.projectBaseGroup;
+        $scope.orgGroupsIndex = RoomType.organizationGroup;
         $scope.myProfile = main.getDataManager().myProfile;
         $scope.chatGroup = group;
         $scope.sourceImage = "";
