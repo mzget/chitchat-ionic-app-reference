@@ -1367,6 +1367,14 @@ var DataManager = (function () {
             }
         }
     };
+    DataManager.prototype.getContactProfile = function (contactId) {
+        if (!!this.orgMembers[contactId]) {
+            return this.orgMembers[contactId];
+        }
+        else {
+            console.warn('this contactId is invalid.');
+        }
+    };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
         var self = this;
         var members = JSON.parse(JSON.stringify(dataEvent));
