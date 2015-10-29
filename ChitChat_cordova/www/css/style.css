@@ -115,3 +115,9 @@ map{display:block;
     height:100%;
 }
 .scroll{height:100%;}
+.theme-title{font-size: 24px;
+width: inherit;
+height: auto;
+text-align: center;
+margin-top: 0.1em;
+color: #fff;}
