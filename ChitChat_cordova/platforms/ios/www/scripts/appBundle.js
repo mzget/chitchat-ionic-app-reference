@@ -12,10 +12,6 @@ var BlankCordovaApp1;
             document.addEventListener('resume', onResume, false);
         }
         function onPause() {
-            // TODO: This application has been suspended. Save application state here.
-            var serverImp = new ChatServer.ServerImplemented();
-            serverImp.disConnect();
-            console.error("disConnect");
         }
         function onResume() {
         }
@@ -1156,8 +1152,9 @@ var DataListener = (function () {
     };
     DataListener.prototype.onChatData = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
-        if (!!this.listenerImp)
+        if (!!this.listenerImp) {
             this.listenerImp.onChat(chatMessageImp);
+        }
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) {
@@ -1423,6 +1420,21 @@ var DataManager = (function () {
     ;
     return DataManager;
 })();
+var HomeComponent = (function () {
+    function HomeComponent() {
+    }
+    HomeComponent.prototype.onChat = function (data) {
+    };
+    HomeComponent.prototype.onLeaveRoom = function (data) {
+    };
+    HomeComponent.prototype.onRoomJoin = function (data) {
+    };
+    HomeComponent.prototype.onMessageRead = function (dataEvent) {
+    };
+    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) {
+    };
+    return HomeComponent;
+})();
 var MessageMeta = (function () {
     function MessageMeta() {
     }
@@ -1616,3 +1628,4 @@ var SecureService = (function () {
     };
     return SecureService;
 })();
+//# sourceMappingURL=appBundle.js.map
