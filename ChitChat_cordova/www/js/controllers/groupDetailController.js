@@ -133,7 +133,10 @@
         var gMembers = group.members;
         $scope.privateIndex = RoomType.privateGroup;
         $scope.projectBaseIndex = RoomType.projectBaseGroup;
+        $scope.myProfile = main.getDataManager().myProfile;
         $scope.chatGroup = group;
+        $scope.sourceImage = "";
+        $scope.model = { groupname: group.name, originalName: group.name };
         init();
         function init(){
             if(room.type === RoomType.privateGroup || room.type === RoomType.organizationGroup) {
@@ -142,6 +145,13 @@
                 });
             }else if(room.type === RoomType.projectBaseGroup){
                 $scope.members = getMembersInProjectBase(room);
+                var admin = false;
+                $.each($scope.members, function(index, result) {
+                    if($scope.myProfile._id == $scope.members[index]._id) { 
+                        if($scope.members[index].role == MemberRole[MemberRole.admin] || $scope.members[index].textRole == MemberRole[MemberRole.admin]) { admin = true; }
+                    }
+                });
+                $scope.meIsAdmin = admin;
             }
         }
 
@@ -189,6 +199,47 @@
         $scope.closeContactModal = function () {
             $scope.contactModal.hide();
         };
+
+        $scope.groupSave = function(){
+            uploadImgGroup();
+        }
+
+        function uploadImgGroup(){
+            if($scope.sourceImage != ''){
+                $scope.$broadcast('uploadImg','uploadImg');
+            }else{
+                changeNameGroup();
+            }
+        }
+        function changeNameGroup(){
+            if($scope.model.groupname != $scope.model.originalName){
+                server.editGroupName(room._id,RoomType[room.type],$scope.model.groupname, function(err, res){
+                    if(!err){
+                        console.log(JSON.stringify(res));
+                        $scope.model.originalName = $scope.model.groupname;
+                        $state.go($state.current, {}, { reload: true });
+                        console.log($scope.model);
+                    }else{
+                        console.warn(err, res);
+                    }
+                });
+            }
+        }
+        $scope.$on('fileUri', function(event, args) {
+            $scope.sourceImage = args;
+        });
+        $scope.$on('fileUrl', function(event, args) {
+            $scope.sourceImage = '';
+            server.UpdatedGroupImage(room._id,args[0], function(err, res){
+                if(!err){
+                    console.log(JSON.stringify(res));
+                    changeNameGroup();
+                }else{
+                    console.warn(err, res);
+                }
+            });
+        });
+
 
     }
     function getMembersInProjectBase(room){

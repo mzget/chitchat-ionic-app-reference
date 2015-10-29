@@ -8,6 +8,7 @@ angular.module('spartan.media', [])
   	});
 
   	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
+  	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
 
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.dataDirectory + imageName;
@@ -33,7 +34,7 @@ angular.module('spartan.media', [])
     	ImageService.handleMediaDialog(type).then(function() { 
     		$scope.$apply(); 
     		$scope.$emit('fileUri',[FileService.getImages(),"Image"]);
-    		$scope.uploadImg();
+    		//$scope.uploadImg();
     	});
   	}
 
