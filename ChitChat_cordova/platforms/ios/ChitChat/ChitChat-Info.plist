@@ -19,8 +19,6 @@
         </dict>
       </dict>
     </dict>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string></string>
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleDisplayName</key>
@@ -190,5 +188,7 @@
         <string>{768, 1024}</string>
       </dict>
     </array>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string></string>
   </dict>
 </plist>

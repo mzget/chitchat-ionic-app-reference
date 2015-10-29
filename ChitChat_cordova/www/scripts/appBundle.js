@@ -12,8 +12,10 @@ var BlankCordovaApp1;
             document.addEventListener('resume', onResume, false);
         }
         function onPause() {
+            console.warn('onPause');
         }
         function onResume() {
+            console.warn('onResume');
         }
     })(Application = BlankCordovaApp1.Application || (BlankCordovaApp1.Application = {}));
     window.onload = function () {

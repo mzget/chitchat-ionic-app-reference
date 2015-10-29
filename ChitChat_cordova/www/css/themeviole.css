@@ -4,8 +4,25 @@
     background-color: #8B6AAE;
 }
 
+.bar-header {
+    top: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    background-color: #8B6AAE;
+}
+
+.button.button-block {
+    background-color: #8B6AAE;
+    color: #fff;
+}
+
 /* bar*/
 .btn-nav {
+    background-color: #D9CEE6;
+}
+
+.card .item:first-child {
+    border-top: 0px none;
     background-color: #D9CEE6;
 }
 

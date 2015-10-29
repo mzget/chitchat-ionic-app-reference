@@ -4,8 +4,26 @@
     background-color: #539BD1;
 }
 
+.bar-header {
+    top: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    background-color: #539BD1;
+}
+
+.button.button-block {
+    background-color: #539BD1;
+    color: #fff;
+}
+
 /* bar*/
 .btn-nav {
+    background-color: #E9E9E9;
+}
+
+ard .item:first-child, .list-inset .item:first-child, .padding > .list .item:first-child {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
     background-color: #E9E9E9;
 }
 
