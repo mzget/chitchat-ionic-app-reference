@@ -223,7 +223,14 @@ class DataManager implements Services.IFrontendServerListener {
             }
         }
     }
-    
+    public getContactProfile(contactId: string) : ContactInfo {
+        if(!!this.orgMembers[contactId]) {
+            return this.orgMembers[contactId];
+        }
+        else {
+            console.warn('this contactId is invalid.');
+        }
+    }
 
     public onGetCompanyMemberComplete(dataEvent) {
         var self = this;
