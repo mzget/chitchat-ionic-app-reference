@@ -301,6 +301,17 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+        "id": "cordova-plugin-x-toast.Toast",
+        "clobbers": [
+            "window.plugins.toast"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-x-toast/test/tests.js",
+        "id": "cordova-plugin-x-toast.tests"
+    },
+    {
         "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js",
         "id": "de.appplant.cordova.plugin.local-notification.LocalNotification",
         "clobbers": [
@@ -359,6 +370,7 @@ module.exports.metadata =
     "cordova-plugin-media": "1.0.1",
     "cordova-plugin-media-capture": "1.0.1",
     "cordova-plugin-whitelist": "1.0.0",
+    "cordova-plugin-x-toast": "2.2.1",
     "de.appplant.cordova.common.registerusernotificationsettings": "1.0.1",
     "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
     "ionic-plugin-keyboard": "1.0.7",

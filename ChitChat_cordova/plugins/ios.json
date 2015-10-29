@@ -43,6 +43,12 @@
                             "count": 1
                         }
                     ],
+                    "QuartzCore.framework": [
+                        {
+                            "xml": false,
+                            "count": 1
+                        }
+                    ],
                     "AudioToolbox.framework": [
                         {
                             "xml": true,
@@ -92,6 +98,10 @@
                         },
                         {
                             "xml": "<feature name=\"Capture\"><param name=\"ios-package\" value=\"CDVCapture\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Toast\"><param name=\"ios-package\" value=\"Toast\" /></feature>",
                             "count": 1
                         },
                         {
@@ -151,6 +161,9 @@
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "cordova-plugin-x-toast": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "de.appplant.cordova.common.registerusernotificationsettings": {
