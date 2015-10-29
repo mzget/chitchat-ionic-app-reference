@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
@@ -14,7 +14,9 @@
 
         activate();
 
-        function activate() { }
+        function activate() {
+            console.info('homeController activate');
+        }
 
         
         $scope.$on('$ionicView.enter', function(){ 
@@ -37,6 +39,7 @@
             $scope.refreshView();
 	
             $scope.interval = setInterval(function () { $scope.refreshView(); }, 1000);
+
             //<!-- My profile.
             $ionicModal.fromTemplateUrl('templates/modal-myprofile.html', {
                 scope: $scope,
@@ -94,12 +97,7 @@
         $scope.$on('$ionicView.leave', function () {
             console.debug('clear : refreshView');
             clearInterval($scope.interval);
-        });
-
-        //$scope.chats = Chats.all();
-        $scope.remove = function(chat) {
-            Chats.remove(chat);
-        };		
+        });		
 	
         $scope.viewlist = function(list) {
             var listHeight = $('#list-'+list+' .list').height();		

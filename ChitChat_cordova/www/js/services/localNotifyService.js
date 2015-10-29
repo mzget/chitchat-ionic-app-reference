@@ -8,6 +8,13 @@
     localNotifyService.$inject = ['$http', '$cordovaLocalNotification'];
 
     function localNotifyService($http, $cordovaLocalNotification) {
+        
+        var onChatListenerImp = new HomeComponent();
+        main.getDataListener().addListenerImp(onChatListenerImp); 
+        onChatListenerImp.onChat = function(chatMessageImp) {
+            scheduleSingleNotification();
+        }
+        
         var service = {
             getData: getData,
             scheduleSingleNotification: scheduleSingleNotification,
