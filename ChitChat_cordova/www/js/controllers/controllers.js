@@ -127,17 +127,22 @@ angular.module('spartan.controllers', [])
 
 })
 
-.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,CreateGroup) {
+.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,CreateGroup,FileService) {
 	console.log('AccountCreate',CreateGroup.createType);
 	var myProfile = main.getDataManager().myProfile;
 	$rootScope.members = CreateGroup.getSelectedMember();
 	$scope.model = { groupname: "" };
+	var roomId = "";
 	$scope.submit = function(){
+		createGroup();
+	}
+	function createGroup(){
 		if(CreateGroup.createType=="PrivateGroup"){
 			server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
 				if (!err) {
 					console.log(JSON.stringify(res));
-					$state.go('tab.group');
+					roomId = res.data._id;
+					uploadImageGroup();
 				}
 				else {
 					console.warn(err, res);
@@ -148,7 +153,8 @@ angular.module('spartan.controllers', [])
 			server.requestCreateProjectBaseGroup($scope.model.groupname,CreateGroup.getSelectedMemberProjectBaseWithMe(), function(err, res) {
 				if (!err) {
 					console.log(JSON.stringify(res));
-					$state.go('tab.group');
+					roomId = res.data._id;
+					uploadImageGroup();
 				}
 				else {
 					console.warn(err, res);
@@ -156,6 +162,24 @@ angular.module('spartan.controllers', [])
 			});
 		}
 	}
+	function uploadImageGroup(){
+		if(FileService.getImages() != '') {
+			$scope.$broadcast('uploadImg','uploadImg');
+		}else{
+			$state.go('tab.group');
+		}
+	}
+	$scope.$on('fileUrl', function(event, args) {
+        server.UpdatedGroupImage(roomId,args[0], function(err, res){
+            if(!err){
+                console.log(JSON.stringify(res));
+                $state.go('tab.group');
+            }else{
+                console.warn(err, res);
+            }
+        });
+    });
+
 	$rootScope.$ionicGoBack = function() {
 		if($state.current.name=='tab.account-create'){
 			CreateGroup.clear();
