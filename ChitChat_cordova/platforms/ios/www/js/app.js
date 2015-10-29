@@ -5,7 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chatslog', 'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'starter.services', 'ngCordova'])
+angular.module('starter',
+    ['ionic', 'spartan.controllers', 'spartan.home', 'spartan.chatslog', 'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
+        'spartan.services', 'spartan.notify','ngCordova'])
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {
