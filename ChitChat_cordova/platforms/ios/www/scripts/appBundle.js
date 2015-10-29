@@ -1123,20 +1123,36 @@ var DataListener = (function () {
         this.dataManager.addGroup(group);
     };
     DataListener.prototype.onEditedGroupMember = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupMembers(jsonObj);
     };
     DataListener.prototype.onEditedGroupName = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupName(jsonObj);
     };
     DataListener.prototype.onEditedGroupImage = function (dataEvent) {
         var obj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupImage(obj);
     };
     DataListener.prototype.onNewGroupCreated = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.addGroup(jsonObj);
     };
     DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupMemberDetail(jsonObj);
     };
     DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var _id = jsonObj._id;
+        var path = jsonObj.path;
+        this.dataManager.updateContactImage(_id, path);
     };
     DataListener.prototype.onUserUpdateProfile = function (dataEvent) {
+        var jsonobj = JSON.parse(JSON.stringify(dataEvent));
+        var params = jsonobj.params;
+        var _id = jsonobj._id;
+        this.dataManager.updateContactProfile(_id, params);
     };
     DataListener.prototype.onChatData = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
@@ -1213,6 +1229,17 @@ var DataManager = (function () {
     DataManager.prototype.setPrivateGroups = function (data) {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     };
+    DataManager.prototype.getGroup = function (id) {
+        if (!!this.orgGroups[id]) {
+            return this.orgGroups[id];
+        }
+        else if (!!this.projectBaseGroups[id]) {
+            return this.projectBaseGroups[id];
+        }
+        else if (!!this.privateGroups[id]) {
+            return this.privateGroups[id];
+        }
+    };
     DataManager.prototype.addGroup = function (data) {
         switch (data.type) {
             case RoomType.organizationGroup:
@@ -1244,6 +1271,103 @@ var DataManager = (function () {
         }
         else if (!!this.privateGroups[data._id]) {
             this.privateGroups[data._id].image = data.image;
+        }
+    };
+    DataManager.prototype.updateGroupName = function (data) {
+        if (!!this.orgGroups[data._id]) {
+            this.orgGroups[data._id].name = data.name;
+        }
+        else if (!!this.projectBaseGroups[data._id]) {
+            this.projectBaseGroups[data._id].name = data.name;
+        }
+        else if (!!this.privateGroups[data._id]) {
+            this.privateGroups[data._id].name = data.name;
+        }
+    };
+    DataManager.prototype.updateGroupMembers = function (data) {
+        var hasMe = this.checkMySelfInNewMembersReceived(data);
+        if (data.type === RoomType.organizationGroup) {
+            if (!!this.orgGroups[data._id]) {
+                if (hasMe) {
+                    this.orgGroups[data._id].members = data.members;
+                }
+                else {
+                    console.warn("this org group is not contain me in members list.");
+                }
+            }
+            else {
+                this.orgGroups[data._id] = data;
+            }
+        }
+        else if (data.type === RoomType.projectBaseGroup) {
+            if (!!this.projectBaseGroups[data._id]) {
+                if (hasMe) {
+                    this.projectBaseGroups[data._id].visibility = true;
+                    this.projectBaseGroups[data._id].members = data.members;
+                }
+                else {
+                    this.projectBaseGroups[data._id].visibility = false;
+                }
+            }
+            else {
+                this.projectBaseGroups[data._id] = data;
+            }
+        }
+        else if (data.type === RoomType.privateGroup) {
+            if (!!this.privateGroups[data._id]) {
+                if (hasMe) {
+                    this.privateGroups[data._id].visibility = true;
+                    this.privateGroups[data._id].members = data.members;
+                }
+                else {
+                    this.privateGroups[data._id].visibility = false;
+                }
+            }
+            else {
+                console.debug("new group", data.name);
+                this.privateGroups[data._id] = data;
+            }
+        }
+    };
+    DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
+        var _this = this;
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+        var groupMember = new Member();
+        groupMember.id = editMember.id;
+        var role = editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+        this.getGroup(roomId).members.forEach(function (value, index, arr) {
+            if (value.id === groupMember.id) {
+                _this.getGroup(roomId).members[index].role = groupMember.role;
+                _this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role];
+                _this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
+            }
+        });
+    };
+    DataManager.prototype.checkMySelfInNewMembersReceived = function (data) {
+        var self = this;
+        var hasMe = data.members.some(function isMySelfId(element, index, array) {
+            return element.id === self.myProfile._id;
+        });
+        console.debug("New data has me", hasMe);
+        return hasMe;
+    };
+    DataManager.prototype.updateContactImage = function (contactId, url) {
+        if (!!this.orgMembers[contactId]) {
+            this.orgMembers[contactId].image = url;
+        }
+    };
+    DataManager.prototype.updateContactProfile = function (contactId, params) {
+        if (!!this.orgMembers[contactId]) {
+            var jsonObj = JSON.parse(JSON.stringify(params));
+            if (!!jsonObj.displayname) {
+                this.orgMembers[contactId].displayname = jsonObj.displayname;
+            }
+            if (!!jsonObj.status) {
+                this.orgMembers[contactId].status = jsonObj.status;
+            }
         }
     };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
@@ -1314,6 +1438,11 @@ var CompanyInfo = (function () {
     }
     return CompanyInfo;
 })();
+var ContactInfo = (function () {
+    function ContactInfo() {
+    }
+    return ContactInfo;
+})();
 var ContentType;
 (function (ContentType) {
     ContentType[ContentType["Unload"] = 0] = "Unload";
@@ -1350,11 +1479,6 @@ var MinLocation = (function () {
     }
     return MinLocation;
 })();
-var Room = (function () {
-    function Room() {
-    }
-    return Room;
-})();
 var RoomType;
 (function (RoomType) {
     RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
@@ -1370,6 +1494,26 @@ var RoomStatus;
     RoomStatus[RoomStatus["delete"] = 2] = "delete";
 })(RoomStatus || (RoomStatus = {}));
 ;
+var Room = (function () {
+    function Room() {
+        this._visibility = true;
+    }
+    Object.defineProperty(Room.prototype, "visibility", {
+        set: function (_boo) {
+            this._visibility = _boo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Room.prototype, "visibilty", {
+        get: function () {
+            return this._visibility;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Room;
+})();
 var RoomAccessData = (function () {
     function RoomAccessData() {
     }
@@ -1395,11 +1539,6 @@ var UserRole;
     UserRole[UserRole["admin"] = 4] = "admin";
 })(UserRole || (UserRole = {}));
 ;
-var OrgMember = (function () {
-    function OrgMember() {
-    }
-    return OrgMember;
-})();
 var Dummy = (function () {
     function Dummy() {
         this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
