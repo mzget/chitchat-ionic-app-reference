@@ -9,10 +9,12 @@
 		<img class="avatar" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}&w=150&h=150" />
         <a class="button button-icon icon ion-ios-close-empty" ng-click="closeProfileModal()"></a>
 		<div class="group-menu" style="width:100px;">
-		<a href="#/tab/group/member/{{chat._id}}" style="max-width:100%;"><i class="ion-ios-gear-outline" data-pack="default" data-tags="talk"></i><br /><span>Edit Profile</span></a>
+		<a ng-click="editProfile(chat._id)"  style="max-width:100%;"><i class="ion-ios-gear-outline" data-pack="default" data-tags="talk"></i><br /><span>Edit Profile</span></a>
 		</div>
 	</ion-content>
 </ion-modal-view>
 
 
 <a ng-click="closeProfileModal()" style="position:fixed; top:0; left:0; width:100%; height:100vh; background-color:rgba(0,0,0,0.6);"></a>
+
+<!--href="#/tab/group/member/{{chat._id}}"-->
