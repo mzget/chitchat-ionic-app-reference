@@ -7,7 +7,6 @@
   },
   "cordovaPlugins": [],
   "cordovaPlatforms": [
-    "android",
     "ios"
   ]
 }
