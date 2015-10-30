@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('spartan.services', [])
 
 .factory('FileService', function() {
   var images;
@@ -90,7 +90,6 @@ angular.module('starter.services', [])
   }
 })
 
-
 .factory('ImageService', function($cordovaCamera, FileService, $q, $cordovaFile, GenerateID) {
  
   function optionsForType(type) {
@@ -137,6 +136,200 @@ angular.module('starter.services', [])
   }
 })
 
+.factory('CreateGroup',function(ProjectBase){
+  var createType = "";
+  var id_checked = [];
+  var allmembers = [];
+  var membersSelectedInProjectBase = [];
+  var members = main.getDataManager().orgMembers;
+  
+  function getAllMember(){
+    allmembers = [];
+    for(var i in members){
+      if(this.createType=="ProjectBase"){
+        if(members[i]._id==main.getDataManager().myProfile._id){
+          allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":true } );
+        }else{
+          allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":getChecked(i) } );
+        }
+      }else{
+        allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":getChecked(i) } );
+      }
+    }
+    return allmembers;
+  }
+  function getSelectedMember(){
+    var selectedMember = [];
+    membersSelectedInProjectBase = [];
+    selectedMember.push( {"_id":"Add","image":"Add","displayname":"Add"});
+    
+    var membersLength = getLength(members);
+    
+    for(var i in members){
+      for(var x=0; x<membersLength; x++){
+        if(id_checked[x]==i){
+          if(this.createType=="ProjectBase"){
+            var positionRole = ProjectBase.getRolePosition(members[i]._id);
+            selectedMember.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "role":positionRole[0], "position":positionRole[1] } );
+            membersSelectedInProjectBase[membersSelectedInProjectBase.length] = new function(){
+              this.id = members[i]._id;
+              this.role = positionRole[0];
+              this.jobPosition = positionRole[1];
+            }
+          }else{
+            selectedMember.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image } );
+          }
+        }
+      }
+    }
+    var myProfile = main.getDataManager().myProfile;
+    if(this.createType=="ProjectBase"){
+      var positionRole = ProjectBase.getRolePosition(myProfile._id);
+      membersSelectedInProjectBase[membersSelectedInProjectBase.length] = new function(){
+        this.id = myProfile._id;
+        this.role = positionRole[0];
+        this.jobPosition = positionRole[1];
+      }
+    }
+    var positionRole = ProjectBase.getRolePosition(myProfile._id);
+    selectedMember.push( {"_id":myProfile._id, "displayname":myProfile.displayname, "image":myProfile.image, "role":positionRole[0], "position":positionRole[1] } );
+    return selectedMember;
+  }
+
+  function getLength(item){
+    var count = 0;
+    for(var i in item){
+      count++;
+    }
+    return count;
+  }
+  function getSelectedMemberProjectBaseWithMe(){
+    return membersSelectedInProjectBase;
+  }
+
+  function getSelectedIdWithMe(){ 
+    var id = id_checked;
+    id[id.length] = main.getDataManager().myProfile._id;
+    return id; 
+  }
+
+  function getChecked(id){
+    var checked = false;
+    for(var x=0; x<id_checked.length; x++){
+      if(id==id_checked[x]){
+        checked = true;
+      }
+    }
+    return checked;
+  }
+
+  function setMemberSelected(id,selected){
+    if(selected){
+      id_checked[id_checked.length] = id;
+    }else{
+      for(var i=0; i<id_checked.length; i++){
+        if(id_checked[i]==id){ id_checked.splice( i, 1 ); }
+      }
+    }
+  }
+  function clear(){
+    createType = "";
+    id_checked = [];
+    allmembers = [];
+    membersSelectedInProjectBase = [];
+    ProjectBase.clear();
+  }
+
+  return{
+    createType: createType,
+    getAllMember: getAllMember,
+    getSelectedMember: getSelectedMember,
+    getSelectedMemberProjectBaseWithMe: getSelectedMemberProjectBaseWithMe,
+    getSelectedIdWithMe: getSelectedIdWithMe,
+    setMemberSelected: setMemberSelected,
+    clear: clear
+  }
+})
+
+.factory('ProjectBase',function(){
+  var editPositionMember = [];
+  function setRolePosition(id,role,position){
+    if(containID(id)){
+      for(var i=0; i<editPositionMember.length; i++){
+        if(editPositionMember[i]._id==id){
+          editPositionMember[i].role = role;
+          editPositionMember[i].position = position;
+        }
+      }
+    }else{
+      editPositionMember.push( { "_id":id,"role":role,"position":position } );
+    }
+  }
+  function getRolePosition(id){
+    var positionRole = [];
+    if(containID(id)){
+      for(var x=0; x<editPositionMember.length; x++){
+        if(editPositionMember[x]._id == id){
+          positionRole = [editPositionMember[x].role,editPositionMember[x].position];
+        }
+      }
+    }else{
+      if(id==main.getDataManager().myProfile._id){
+        positionRole = [MemberRole[MemberRole.admin],main.getDataManager().companyInfo.jobPosition[0]];
+      }else
+        positionRole = [MemberRole[MemberRole.member],main.getDataManager().companyInfo.jobPosition[0]];
+    }
+    return positionRole;
+  }
+  function getRolePositionIndex(id){
+    var positionRole = [];
+    var index = [];
+    if(containID(id)){
+      for(var x=0; x<editPositionMember.length; x++){
+        if(editPositionMember[x]._id == id){
+          positionRole = [editPositionMember[x].role,editPositionMember[x].position];
+
+          for(var job=0; job<main.getDataManager().companyInfo.jobPosition.length; job++){
+            if(positionRole[1]==main.getDataManager().companyInfo.jobPosition[job]){
+              index[1] = job;
+            }
+          }
+          for(var role=0; role<(Object.keys(MemberRole).length/2); role++){
+            if(positionRole[0]==MemberRole[role]){ index[0] = role; }
+          }
+        }
+      }
+    }else{
+      if(id==main.getDataManager().myProfile._id){
+        index = [1,0];
+      }else{
+        index = [0,0];
+      }
+    }
+    return index;
+  }
+
+  function containID(id){
+    var hasValue = false;
+    for(var x=0; x<editPositionMember.length; x++){
+      if(editPositionMember[x]._id == id){
+        hasValue = true;
+      }
+    }
+    return hasValue;
+  }
+  function clear(){
+    positionRole = [];
+  }
+  
+  return{
+    setRolePosition: setRolePosition,
+    getRolePosition: getRolePosition,
+    getRolePositionIndex: getRolePositionIndex,
+    clear: clear
+  }
+})
+
 .factory('Chats', function($sce) {
     // Might use a resource here that returns a JSON array
 
@@ -152,7 +345,7 @@ angular.module('starter.services', [])
 		},
 		get: function(chatId) {
 			for (var i = 0; i < chats.length; i++) {
-				if (chats[i].id === parseInt(chatId)) {
+				if (chats[i]._id === chatId) {
 					return chats[i];
 				}
 			}
@@ -160,14 +353,23 @@ angular.module('starter.services', [])
 		},
 		set: function(json) {
 			chats = json;
-      for (var i = 0; i < chats.length; i++){
-        if(chats[i].type=='Video'){
-          chats[i].bodyUrl = $sce.trustAsResourceUrl('http://stalk.animation-genius.com'+chats[i].body);
-        }
-      }
+			for (var i = 0; i < chats.length; i++) {
+			    if (chats[i].type == 'Video') {
+			        chats[i].bodyUrl = $sce.trustAsResourceUrl('http://stalk.animation-genius.com' + chats[i].body);
+			    }
+			    else if (chats[i].type === ContentType[ContentType.Location]) {
+			        var location = JSON.parse(chats[i].body);
+
+			        chats[i].locationName = location.name;
+			        chats[i].locationAddress = location.address;
+			        chats[i].lat = location.latitude;
+			        chats[i].long = location.longitude;
+			    }
+			}
 		}
 	};
 })
+
 .factory('roomSelected', function () {
     var room;
 

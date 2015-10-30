@@ -1,8 +1,8 @@
-﻿interface IRoomMap {
+interface IRoomMap {
     [key: string]: Room;
 }
 interface IMemberMep {
-    [key: string]: OrgMember;
+    [key: string]: ContactInfo;
 }
 
 class DataManager implements Services.IFrontendServerListener {
@@ -20,8 +20,8 @@ class DataManager implements Services.IFrontendServerListener {
     public projectBaseGroups: IRoomMap = {};
     public privateGroups: IRoomMap = {};
     public orgMembers: IMemberMep = {};
-    public isOrgMembersReady :boolean = false;
-
+    public isOrgMembersReady: boolean = false;
+    public companyInfo: CompanyInfo;
 
     public onMyProfileReady;
 
@@ -54,7 +54,7 @@ class DataManager implements Services.IFrontendServerListener {
     }
 
     public setCompanyInfo(data: any) {
-
+          this.companyInfo = JSON.parse(JSON.stringify(data));
     }
 
     public setOrganizeGroups(data: any) {
@@ -69,10 +69,172 @@ class DataManager implements Services.IFrontendServerListener {
         this.privateGroups = JSON.parse(JSON.stringify(data));
     }
 
+    //<!---------- Group ------------------------------------
+
+    public getGroup(id:string) : Room {
+        if(!!this.orgGroups[id]) {
+            return this.orgGroups[id];
+        }
+        else if(!!this.projectBaseGroups[id]) {
+            return this.projectBaseGroups[id];
+        }
+        else if(!!this.privateGroups[id]) {
+            return this.privateGroups[id];
+        }
+    }
+    public addGroup(data: Room) {
+        switch (data.type) {
+            case RoomType.organizationGroup:
+                if (!this.orgGroups[data._id]) {
+                    this.orgGroups[data._id] = data;
+                }
+                break;
+            case RoomType.projectBaseGroup:
+                if (!this.projectBaseGroups[data._id]) {
+                    this.projectBaseGroups[data._id] = data;
+                }
+                break;
+            case RoomType.privateGroup:
+                if (!this.privateGroups[data._id]) {
+                    this.privateGroups[data._id] = data;
+                }
+                break;
+            default:
+                console.info("new room is not a group type.");
+            break;
+        }
+    }
+    
+    public updateGroupImage(data: Room) {
+        if(!!this.orgGroups[data._id]) {
+            this.orgGroups[data._id].image = data.image;
+        }
+        else if(!!this.projectBaseGroups[data._id]) {
+            this.projectBaseGroups[data._id].image = data.image;
+        }
+        else if(!!this.privateGroups[data._id]) {
+            this.privateGroups[data._id].image = data.image;
+        }
+    }
+    public updateGroupName(data: Room) {
+        if (!!this.orgGroups[data._id]) {
+            this.orgGroups[data._id].name = data.name;
+        }
+        else if (!!this.projectBaseGroups[data._id]) {
+            this.projectBaseGroups[data._id].name = data.name;
+        }
+        else if (!!this.privateGroups[data._id]) {
+            this.privateGroups[data._id].name = data.name;
+        }
+    }
+    public updateGroupMembers(data: Room) {
+        //<!-- Beware please checking myself before update group members.
+        //<!-- May be your id is removed from group.
+        var hasMe = this.checkMySelfInNewMembersReceived(data);
+
+        if (data.type === RoomType.organizationGroup) {
+            if (!!this.orgGroups[data._id]) {
+                //<!-- This statement call when current you still a member.
+                if (hasMe) {
+                    this.orgGroups[data._id].members = data.members;
+                }
+                else {
+                    console.warn("this org group is not contain me in members list.");
+                }
+            }
+            else {
+                this.orgGroups[data._id] = data;
+            }
+        }
+        else if (data.type === RoomType.projectBaseGroup) {
+            if (!!this.projectBaseGroups[data._id]) {
+                if (hasMe) {
+                    this.projectBaseGroups[data._id].visibility = true;
+                    this.projectBaseGroups[data._id].members = data.members;
+                }
+                else {
+                    this.projectBaseGroups[data._id].visibility = false;
+                }
+            }
+            else {
+                this.projectBaseGroups[data._id] = data;
+            }
+        }
+        else if (data.type === RoomType.privateGroup) {
+            if (!!this.privateGroups[data._id]) {
+                if (hasMe) {
+                    this.privateGroups[data._id].visibility = true;
+                    this.privateGroups[data._id].members = data.members;
+                }
+                else {
+                    this.privateGroups[data._id].visibility = false;
+                }
+            }
+            else {
+                console.debug("new group", data.name);
+                this.privateGroups[data._id] = data;
+            }
+        }
+    }
+    public updateGroupMemberDetail(jsonObj: any) {
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+
+        var groupMember: Member = new Member();
+        groupMember.id = editMember.id;
+        var role = <string>editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+
+        this.getGroup(roomId).members.forEach((value, index, arr) => {
+            if (value.id === groupMember.id) {
+                this.getGroup(roomId).members[index].role = groupMember.role;
+                this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role]
+                this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
+            }
+        });
+    }
+
+    private checkMySelfInNewMembersReceived(data: Room): boolean {
+        var self = this;
+        var hasMe = data.members.some(function isMySelfId(element, index, array) {
+            return element.id === self.myProfile._id; 
+        });
+
+        console.debug("New data has me", hasMe);
+        return hasMe;
+    }
+    
+    //<!------------------------------------------------------
+
+    public updateContactImage(contactId: string, url: string) {
+        if(!!this.orgMembers[contactId]) {
+           this.orgMembers[contactId].image = url;
+        }
+    }
+    public updateContactProfile(contactId:string, params: any) {
+        if(!!this.orgMembers[contactId]) {
+            var jsonObj = JSON.parse(JSON.stringify(params));
+            if(!!jsonObj.displayname) {
+                this.orgMembers[contactId].displayname = jsonObj.displayname;
+            }
+            if(!!jsonObj.status) {
+                this.orgMembers[contactId].status = jsonObj.status;
+            }
+        }
+    }
+    public getContactProfile(contactId: string) : ContactInfo {
+        if(!!this.orgMembers[contactId]) {
+            return this.orgMembers[contactId];
+        }
+        else {
+            console.warn('this contactId is invalid.');
+        }
+    }
 
     public onGetCompanyMemberComplete(dataEvent) {
         var self = this;
-        var members: Array<OrgMember> = JSON.parse(JSON.stringify(dataEvent));
+        var members: Array<ContactInfo> = JSON.parse(JSON.stringify(dataEvent));
 
         if (!this.orgMembers) this.orgMembers = {};
 

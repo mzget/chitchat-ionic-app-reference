@@ -1,23 +1,25 @@
-<ion-view view-title="Create Group">
+<ion-view view-title="Create Group" ng-controller="ImageController">
 
 	<ion-nav-buttons side="right">
-        <button class="button button-clear button-positive" id="viewprofile-save">Save</button>
+        <button class="button button-clear button-positive" id="viewprofile-save" ng-click="submit()">Save</button>
     </ion-nav-buttons>
 
 	<ion-content class="bar bar-subheader group-create" scroll="false" style="height:120px;">
-		<img class="img-group" src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"/>
+
+		<img class="img-group" ng-show="!images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" ng-click="addImg()"/>
+		<img class="img-group" ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" ng-click="addImg()"/>
 
 		<div class="list list-inset">
 			<label class="item item-input">
-
-		    <input type="text" placeholder="Group Name">
+		    <input type="text" placeholder="Group Name" data-ng-model="model.groupname">
 		  </label>
 		</div>
 	</ion-content>
 
 	<ion-content style="top:184px;">
-  		<div class="row">
-          	<img ng-src="{{images}}"/>
+  		<div class="create-group-list-member-selected" style="display:inline-block;" ng-repeat="member in members track by $index">
+  			<div class="member-contain" ng-if="member._id=='Add'" onclick="location.href='#/tab/account/create/invite';"> <div class="ion-android-add-circle add-member"></div> <div class="member-name"> {{member.displayname}} </div> </div>
+  			<div class="member-contain" ng-if="member._id!='Add'"> <img ng-src="http://stalk.animation-genius.com{{member.image}}"/> <div class="member-name"> {{member.displayname}} </div> </div>
       	</div>
     </ion-content>
 

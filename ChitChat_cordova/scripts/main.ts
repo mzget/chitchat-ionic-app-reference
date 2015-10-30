@@ -100,6 +100,7 @@ class Main {
                         }
                         else {
                             console.log("companyInfo: ", res);
+                            self.dataManager.setCompanyInfo(res.data);
                         }
                     });
 

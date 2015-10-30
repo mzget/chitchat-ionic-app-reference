@@ -1,0 +1,16 @@
+<ion-view view-title="Invite Members">
+
+
+  <ion-content>
+    <ion-list class="create-group-invite-list-member" ng-controller="CreateProjectBase">
+        <ion-item class="item item-button-right" ng-repeat="member in allmembers track by $index" id="{{member.id}}">
+            <img ng-src="http://stalk.animation-genius.com{{member.image}}"/> 
+            <div> {{member.displayname}} </div> 
+            <div ng-show="member.role!=0 && member.role!=1"> {{member.role}} : {{member.jobPosition}} </div>
+            <div ng-show="member.role==0 || member.role==1"> {{member.textRole}} : {{member.jobPosition}} </div>
+            <a class="button button-icon icon ion-compose" style="position:absolute; right:0px; margin-right:10px; z-index:4" ng-click="openSelectRole(member.id)"></a>
+        </ion-item>
+
+    </ion-list>
+  </ion-content>
+</ion-view>

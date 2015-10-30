@@ -8,6 +8,7 @@ angular.module('spartan.media', [])
   	});
 
   	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
+  	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
 
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.dataDirectory + imageName;
@@ -33,7 +34,7 @@ angular.module('spartan.media', [])
     	ImageService.handleMediaDialog(type).then(function() { 
     		$scope.$apply(); 
     		$scope.$emit('fileUri',[FileService.getImages(),"Image"]);
-    		$scope.uploadImg();
+    		//$scope.uploadImg();
     	});
   	}
 
@@ -206,7 +207,7 @@ angular.module('spartan.media', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 })
-.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, GenerateID) {
+.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile, GenerateID,roomSelected) {
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
 	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
@@ -233,21 +234,54 @@ angular.module('spartan.media', [])
 
 	var audio;
 	$scope.play = function(id,url){
-		console.log(url);
+		var fileName = url.substr(url.lastIndexOf('/') + 1);
+		var fileMedia = url.replace('file://','');
+
 		$('.ion-pause').css({ 'display': 'none' });
 		$('.ion-play').css({ 'display': 'inline' });
-		$('#' + id + '-voice-play').css({ 'display': 'none' });
-		$('#' + id + '-voice-pause').css({ 'display': 'inline' });
-		audio = new Media(url,
+
+		$cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
+	      .then(function (success) {
+			$('#' + id + '-voice-play').css({ 'display': 'none' });
+			$('#' + id + '-voice-pause').css({ 'display': 'inline' });
+			audio.stop();
+	        audio = new Media(fileMedia,
                          function() { $('#' + id + '-voice-play').css({ 'display': 'inline' }); $('#' + id + '-voice-pause').css({ 'display': 'none' }); },
                          function(err){ console.log("playAudio(): Error: "+ err.code) }
                          );
-		audio.play();
+			audio.play();
+	      }, function (error) {
+	        downloadMedia(id,url);
+	      });
 	}
 	$scope.pause = function(id){
 		$('#' + id + '-voice-play').css({ 'display': 'inline' });
 		$('#' + id + '-voice-pause').css({ 'display': 'none' });
 		audio.stop();
+	}
+
+	function downloadMedia(id,media){
+		var fileName = media.substr(media.lastIndexOf('/') + 1);
+		var url = media;
+	    var targetPath = cordova.file.documentsDirectory + fileName;
+	    var trustHosts = true
+	    var options = {};
+
+	    $('#' + id + '-download-contain').removeClass('hide');
+
+	    $cordovaFileTransfer.download(url, targetPath, options, trustHosts)
+	      .then(function(result) {
+	        $('#' + id + '-download-contain').addClass('hide'); $scope.play(id,targetPath);
+	      }, function(err) {
+	        console.log(err,"ERROR");
+	        $('#' + id + '-download-contain').removeClass('hide');
+	      }, function (progress) {
+	        $timeout(function () {
+	          var downloadProgress = (progress.loaded / progress.total) * 100;
+	          console.log(downloadProgress);
+	          $('#' + id + '-download-progress').css({ 'width': downloadProgress+'%' });
+	        })
+	      });
 	}
 
 	$scope.uploadVoice = function() {
@@ -291,3 +325,5 @@ angular.module('spartan.media', [])
 	}
 
 });
+
+

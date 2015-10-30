@@ -5,7 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spartan.media', 'starter.services', 'ngCordova'])
+angular.module('starter',
+     ['ionic', 'spartan.controllers', 'spartan.home', 'spartan.chatslog', 'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
+      'spartan.services', 'spartan.notify','ngCordova', 'ngStorage'])
+
 
 .run(function($ionicPlatform) {
 	$ionicPlatform.ready(function() {
@@ -81,7 +84,27 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-members.html',
-				controller: 'GroupMembersCtrl'
+				controller: 'viewGroupMembersCtrl'
+			}
+		}
+	})
+
+	.state('tab.group-members-invite', {
+		url: '/group/members/:chatId/invite',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-account-invite.html',
+				controller: 'editMemberGroup'
+			}
+		}
+	})//
+
+	.state('tab.group-members-edit', {
+		url: '/group/members/:chatId/edit',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-group-members-edit.html',
+				controller: 'editMemberGroup'
 			}
 		}
 	})
@@ -107,38 +130,16 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 		}
 	})
 	
-	.state('tab.group-map', {
-		url: '/group/chat/:chatId/map',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/map.html',
-				controller: 'MapCtrl'
-			}
-		}
-	})
-	
 	.state('tab.chats', {
 		url: '/chats',
 		views: {
 			'tab-chats': {
 				templateUrl: 'templates/tab-chats.html',
-				controller: 'ChatsCtrl'
+				controller: 'chatslogController'
 			}
 		}
 	})
 	
-	
-	/*
-    .state('tap.chat.map', {
-        url: '/chat/map',
-        views: {
-            'tab-chats': {
-				templateUrl: 'templates/map.html',
-				controller: 'chatController'
-			}
-        }
-    })
-	*/
 	/*
 	// CHAT : Message
 	.state('tab.message', {
@@ -189,6 +190,16 @@ angular.module('starter', ['ionic', 'spartan.controllers', 'spartan.chat', 'spar
 			'tab-account': {
 				templateUrl: 'templates/tab-account-create.html',
 				controller: 'AccountCreate'
+			}
+		}
+	})
+
+	.state('tab.account-invite', {
+		url: '/account/create/invite',
+		views: {
+			'tab-account': {
+				templateUrl: 'templates/tab-account-invite.html',
+				controller: 'AccountInvite'
 			}
 		}
 	})

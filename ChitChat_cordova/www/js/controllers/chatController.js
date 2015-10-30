@@ -1,12 +1,12 @@
 angular.module('spartan.chat', [])
 
-.controller('readers', function($scope, $ionicModal) {
-  
-})
-
-
-.controller('chatController', function($rootScope, $scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicModal, $sce, Chats, roomSelected) 
+.controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
+    $sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected)
 {    		
+	// Hide nav-tab # in chat detail
+	navHide();
+	$('#chatMessage').animate({'bottom':'0'}, 350);
+	
     var currentRoom = roomSelected.getRoom();
     var myprofile = main.getDataManager().myProfile;
     var allMembers = main.getDataManager().orgMembers;
@@ -25,14 +25,12 @@ angular.module('spartan.chat', [])
         }
     }
 	$scope.title = currentRoom.name;	
-    //console.log(main.dataManager.getMyProfile())
-	//console.debug("chatController", currentRoom.name, currentRoom._id);
 	
 	modalcount = 0;	
 	// Modal - Chat menu 
 	$scope.openModal = function() {
 		modalcount++;
-		$scope.modal.show();
+		$scope.chatMenuModal.show();
 		$('#chatMessage').animate({'bottom':'272px'}, 350);
 		$('#chatDetail').animate({'top':'-272px'}, 350);
 	};
@@ -53,7 +51,7 @@ angular.module('spartan.chat', [])
 		});
 		
 		$scope.modalSticker.hide();
-		$scope.modal.hide();
+		$scope.chatMenuModal.hide();
 	}
 	
 	// Modal - Webview 
@@ -71,7 +69,7 @@ angular.module('spartan.chat', [])
 		
 		if( modalcount == 1 )
 		{
-			$scope.modal.hide();			
+			$scope.chatMenuModal.hide();			
 		}
 		$('#chatMessage').animate({'bottom':'0'}, 350);
 		$('#chatDetail').animate({'top':'0'}, 350);		
@@ -99,7 +97,7 @@ angular.module('spartan.chat', [])
 		$scope.openModalWebview();
 	};
 		
-		$("#modal-webview-iframe").on('load',function() {
+	$("#modal-webview-iframe").on('load',function() {
 			alert( $(this).contentDocument.title );
 		});
 	
@@ -128,7 +126,7 @@ angular.module('spartan.chat', [])
 		{
 			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-			console.info('update with timeout fired');
+			console.info('chatController: refresh view');
 			$scope.chat = Chats.all();
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
@@ -147,9 +145,6 @@ angular.module('spartan.chat', [])
     $timeout(countUp, 1000);
 	
     var chats = Chats.all();
-    /*chats.forEach(chat => {
-        console.log(chat);
-    });*/
 
     $scope.allMembers = allMembers;
     $scope.myprofile = myprofile;
@@ -259,11 +254,25 @@ angular.module('spartan.chat', [])
 			$scope.openReaderModal();
 		});
 	}
-    
+	$scope.viewLocation = function (messageId) {
+	    console.info('viewLocation');
+	    var message = Chats.get(messageId);
+	    viewLocation($scope, message);
+	    $scope.mapViewModal.show();
+	}
     $scope.openMap = function() {
-        console.log("map");
-		location.href='#/tab/group/chat/'+currentRoom._id+'/map';
+        $scope.chatMenuModal.hide();
+		$scope.openMapModal();
     }
+	$scope.openMapModal = function() {
+	    callGeolocation($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, function (locationObj) {
+	        sendLocation(chatRoomApi, locationObj, currentRoom, myprofile);
+	    });
+		$scope.mapViewModal.show();
+	};
+	$scope.closeMapModal = function() {
+	    $scope.mapViewModal.hide();
+	};
 	
 	$scope.isValidURI = function(uri) {
 		if( uri.substr(0, 3) == 'www' || uri.substr(0, 4) == 'http' || uri.substr(0, 3) == 'ftp' )
@@ -284,7 +293,7 @@ angular.module('spartan.chat', [])
 			scope: $scope,
 			animation: 'slide-in-up'
 		}).then(function(modal) {
-			$scope.modal = modal;
+			$scope.chatMenuModal = modal;
 		})
 		
 		// Reload Modal - Sticker
@@ -310,6 +319,31 @@ angular.module('spartan.chat', [])
 		}).then(function(modal) {
 			$scope.readerViewModal = modal;
 		});
+		
+		// Map modal view modal.
+		$ionicModal.fromTemplateUrl('templates/map.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.mapViewModal = modal;
+		});
+		
+	    //Cleanup the modal when we're done with it!
+		$scope.$on('$destroy', function () {
+			$scope.chatMenuModal.remove();
+		    $scope.modalSticker.remove();
+		    $scope.modalWebview.remove();
+		    $scope.readerViewModal.remove();
+			$scope.mapViewModal.remove();
+		});
+	    // Execute action on hide modal
+		$scope.$on('modal.hidden', function () {
+		    // Execute action
+		});
+	    // Execute action on remove modal
+		$scope.$on('modal.removed', function () {
+		    // Execute action
+		});
     });
 
 	// ON LEAVE
@@ -329,3 +363,81 @@ angular.module('spartan.chat', [])
 		});
     });
 });
+
+var viewLocation = function ($scope, message, $ionicLoading) {
+    $scope.viewOnly = true;
+	$scope.place = message.locationName;
+    $scope.$broadcast('onInitMap', { lat: message.lat, long: message.long });
+}
+
+var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, done) {
+    var locationObj = new MinLocation();
+    $scope.viewOnly = false;
+    $scope.place = "";
+    $scope.selectedPlace = function (place) {
+        console.debug('onSelectMarker', place)
+        $scope.place = place.name;
+        $scope.myLocation = place;
+    };
+
+    $scope.share = function () {
+        if (!$scope.place) {
+            $cordovaDialogs.alert('Missing place information', 'Share location', 'OK')
+               .then(function () {
+                   // callback success
+               });
+
+            return;
+        }
+
+        locationObj.name = $scope.myLocation.name;
+        locationObj.address = $scope.myLocation.vicinity;
+        done(locationObj);
+        $scope.closeMapModal();
+    }
+
+    $scope.loading = $ionicLoading.show({
+		content: 'Getting current location...',
+		showBackdrop: false
+	});
+
+	var posOptions = { timeout: 10000, enableHighAccuracy: false };
+	$cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
+	    locationObj.latitude = position.coords.latitude;
+	    locationObj.longitude = position.coords.longitude;
+	    $scope.$broadcast('onInitMap', { lat: position.coords.latitude, long: position.coords.longitude });
+	    $ionicLoading.hide();
+	}, function (err) {
+	    // error
+	    console.error(err);
+	});
+
+    var watchOptions = {
+        timeout: 3000,
+        enableHighAccuracy: false // may cause errors if true
+    };
+
+    var watch = $cordovaGeolocation.watchPosition(watchOptions);
+    watch.then(
+      null,
+      function (err) {
+          // error
+      },
+      function (position) {
+          var lat = position.coords.latitude
+          var long = position.coords.longitude
+      });
+
+    watch.clearWatch();
+}
+
+var sendLocation = function (chatRoomApi, locationObj, currentRoom, myprofile) {
+    chatRoomApi.chat(currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], function (err, res) {
+        if (err || res === null) {
+            console.warn("send message fail.");
+        }
+        else {
+            console.log("send message:", JSON.stringify(res));
+        }
+    });
+}
