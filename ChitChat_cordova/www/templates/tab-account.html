@@ -9,7 +9,7 @@
 				</button>
 			</div>
 
-			<div class="item item-button-right" ng-controller="CreateProjectBase">
+			<div class="item item-button-right" ng-show="myProfile.role==admin" ng-controller="CreateProjectBase">
 				Create ProjectBase
 				<button class="button" ng-click="createType('ProjectBase')">
 					<i class="ion-android-person-add"></i>

@@ -100,6 +100,9 @@ angular.module('spartan.controllers', [])
 		logOut: true,
 	};
 
+	$scope.myProfile = main.getDataManager().myProfile;
+	$scope.admin = UserRole.admin;
+
 	$scope.createType = function(type){
 		CreateGroup.createType = type;
 		location.href = '#/tab/account/create'
@@ -166,7 +169,6 @@ angular.module('spartan.controllers', [])
 				}
 			});
 		}else{
-			console.log("CreateGroup")
 			server.requestCreateProjectBaseGroup($scope.model.groupname,CreateGroup.getSelectedMemberProjectBaseWithMe(), function(err, res) {
 				if (!err) {
 					console.log(JSON.stringify(res));

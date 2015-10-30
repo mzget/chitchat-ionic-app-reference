@@ -62,7 +62,7 @@
 					</u>
 				</p>
 				
-                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-src="{{message.body}}" ng-click="viewImage(message.body)"/>
+                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImg()" ng-src="{{message.body}}" ng-click="viewImage(message.body)"/>
 				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://stalk.animation-genius.com{{message.body}}" ng-click="viewImage('http://stalk.animation-genius.com'+message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
