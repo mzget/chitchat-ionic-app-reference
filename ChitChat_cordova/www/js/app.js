@@ -135,7 +135,7 @@ angular.module('starter',
 		views: {
 			'tab-chats': {
 				templateUrl: 'templates/tab-chats.html',
-				controller: 'ChatsCtrl'
+				controller: 'chatslogController'
 			}
 		}
 	})
