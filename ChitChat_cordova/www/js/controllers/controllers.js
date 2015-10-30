@@ -364,7 +364,7 @@ function navShow()
 	$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
 }
 
-var initOrgModal = function ($scope, groupId, roomSelected, done) {
+var initOrgModal = function ($state, $scope, groupId, roomSelected, done) {
     var group = main.getDataManager().orgGroups[groupId];
     roomSelected.setRoom(group);
     $scope.chat = group;
@@ -379,7 +379,12 @@ var initOrgModal = function ($scope, groupId, roomSelected, done) {
     //<!-- Join chat room.
     $scope.toggle = function (chatId) {
         $scope.closeOrgModal();
+ //       $state.go('', { chatId: chatId });
         location.href = '#/tab/group/chat/' + chatId;
+    };
+
+    $scope.viewGroupDetail = function (id) {
+        $state.go('tab.group-members', { chatId: id });
     };
 
     done();

@@ -121,7 +121,7 @@
         };
         //<!-- Org group modal ////////////////////////////////////////
         $scope.openOrgModal = function (groupId) {
-            initOrgModal($scope, groupId, roomSelected, function () {
+            initOrgModal($state, $scope, groupId, roomSelected, function () {
                 $scope.orgModal.show();
             });
         };
