@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		0BD6FC3D156C40198E2E66B6 /* UIWebViewExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 2263FD04B1BD455E92F48336 /* UIWebViewExtension.m */; };
 		0F68F9F0E62A474DA4434CBC /* CDVSound.m in Sources */ = {isa = PBXBuildFile; fileRef = BF4406D5BE7544BE83F3F01B /* CDVSound.m */; };
@@ -595,7 +596,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "ChitChat/ChitChat-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					CoreFoundation,
@@ -631,7 +632,7 @@
 					"\"$(OBJROOT)/UninstalledProducts/$(PLATFORM_NAME)/include\"",
 				);
 				INFOPLIST_FILE = "ChitChat/ChitChat-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					CoreFoundation,
