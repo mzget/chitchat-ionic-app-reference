@@ -56,13 +56,8 @@ angular.module('spartan.controllers', [])
         	$cordovaProgress.showSuccess(false, "Success!");
             setTimeout(function () { $cordovaProgress.hide(); }, 1500);
         }
-<<<<<<< HEAD
-    } else {
-=======
-
     }
     else {
->>>>>>> 37cb126a4f5341a24f83f6bb854f2e02a4152d35
         var member = main.getDataManager().orgMembers[$stateParams.chatId];
         if (member.firstname == null || member.firstname == "" &&
 			member.lastname == null || member.lastname == "" &&
@@ -160,7 +155,7 @@ angular.module('spartan.controllers', [])
 
 })
 
-.controller('AccountCreate',function($scope,$rootScope,$state,CreateGroup,FileService) {
+.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,CreateGroup,FileService) {
 	console.log('AccountCreate',CreateGroup.createType);
 	var myProfile = main.getDataManager().myProfile;
 	$rootScope.members = CreateGroup.getSelectedMember();
