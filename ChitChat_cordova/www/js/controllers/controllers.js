@@ -56,7 +56,13 @@ angular.module('spartan.controllers', [])
         	$cordovaProgress.showSuccess(false, "Success!");
             setTimeout(function () { $cordovaProgress.hide(); }, 1500);
         }
+<<<<<<< HEAD
     } else {
+=======
+
+    }
+    else {
+>>>>>>> 37cb126a4f5341a24f83f6bb854f2e02a4152d35
         var member = main.getDataManager().orgMembers[$stateParams.chatId];
         if (member.firstname == null || member.firstname == "" &&
 			member.lastname == null || member.lastname == "" &&
@@ -102,8 +108,7 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup,$localStorage, $rootScope
-) {
+.controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
 	$scope.settings = {
 		logOut: true,
 	};
@@ -363,7 +368,6 @@ function back()
 	//$('#chatroom_back').css({'display':'none'});
 }
 
-
 function testfunc()
 {
 	return 'tabs-item-hide';
@@ -467,8 +471,12 @@ var initContactModal = function ($scope, contactId, roomSelected, done) {
 	done();
 }
 
-var initMyProfileModal = function($scope, done) {
+var initMyProfileModal = function($state, $scope, done) {
 	$scope.chat = main.getDataManager().myProfile;
 	
+	$scope.editProfile = function (chatId) {
+	    $state.go('tab.group-viewprofile', { chatId: chatId });
+	};
+
 	done();
 }

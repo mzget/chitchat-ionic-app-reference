@@ -7,7 +7,7 @@
 
     //homeController.$inject = ['$location'];
 
-    function homeController($location, $scope, $timeout, $ionicModal, roomSelected, localNotifyService) {
+    function homeController($location, $state, $scope, $timeout, $ionicModal, roomSelected, localNotifyService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
@@ -112,7 +112,7 @@
 	
         //<!-- My profile modal. -->
         $scope.openProfileModal = function (groupId) {
-            initMyProfileModal($scope, function done(){
+            initMyProfileModal($state, $scope, function done(){
                 $scope.myProfileModal.show();
             });
         };
