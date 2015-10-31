@@ -74,13 +74,9 @@
             }
         }
 
-        $scope.$on('$ionicView.beforeLeave', function () {
-            CreateGroup.clear();
-            $rootScope.status = "";
-        });
     }
     
-    function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal,$rootScope,roomSelected,CreateGroup) {
+    function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal,$rootScope,$cordovaProgress,$ionicLoading,$ionicHistory,roomSelected,CreateGroup) {
         navHide();
         $scope.$on('$ionicView.enter', function () {
             //<!-- Contact modal.
@@ -202,6 +198,9 @@
         };
 
         $scope.groupSave = function(){
+            $ionicLoading.show({
+                template: 'Loading..'
+            });
             uploadImgGroup();
         }
 
@@ -219,13 +218,31 @@
                         console.log(JSON.stringify(res));
                         $scope.model.originalName = $scope.model.groupname;
                         $state.go($state.current, {}, { reload: true });
-                        console.log($scope.model);
+                        saveSuccess();
                     }else{
                         console.warn(err, res);
                     }
                 });
+            }else{
+                saveSuccess();
             }
         }
+        function saveSuccess() {
+            $ionicLoading.hide();
+            $cordovaProgress.showSuccess(false, "Success!");
+            setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+        }
+
+        $rootScope.$ionicGoBack = function() {
+            console.log($state.current.name);
+            if($state.current.name=='tab.group-members'){
+                CreateGroup.clear();
+                $rootScope.status = "";
+            }
+            $ionicHistory.goBack(-1);
+        };
+
+
         $scope.$on('fileUri', function(event, args) {
             $scope.sourceImage = args;
         });

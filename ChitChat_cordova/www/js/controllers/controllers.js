@@ -5,7 +5,7 @@ var newchatmessage;
 angular.module('spartan.controllers', [])
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $state, $cordovaProgress) {
+.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $state,$cordovaProgress,$ionicLoading) {
     if ($stateParams.chatId == main.getDataManager().myProfile._id) {
         $scope.chat = main.getDataManager().myProfile;
         $scope.model = {
@@ -13,6 +13,7 @@ angular.module('spartan.controllers', [])
             status: $scope.chat.status
         };
         $scope.title = "My Profile";
+        $scope.sourceImage = "";
         $('#viewprofile-input-display').removeAttr('disabled');
         $('#viewprofile-input-status').removeAttr('disabled');
         $scope.edit = 'true';
@@ -21,33 +22,40 @@ angular.module('spartan.controllers', [])
             if (url != null) {
                 server.ProfileImageChanged($stateParams.chatId, url[0], function (err, res) {
                     main.getDataManager().myProfile.image = url[0];
-                    if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
-						main.getDataManager().myProfile.status != $scope.model.status) {
-                        saveProfile();
-                    } else saveSuccess();
-                });
-            } else {
-                if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
-						main.getDataManager().myProfile.status != $scope.model.status) {
+                    $scope.sourceImage = "";
                     saveProfile();
-                }
-            }
+                });
+            } 
         });
-
-        function saveProfile() {
-            server.UpdateUserProfile($stateParams.chatId, $scope.model, function (err, res) {
-                console.log(JSON.stringify(res));
-                main.getDataManager().myProfile.displayname = $scope.model.displayname;
-                main.getDataManager().myProfile.status = $scope.model.status;
-                saveSuccess();
-            });
+        $scope.$on('fileUri', function(event, args) {
+            $scope.sourceImage = args;
+        });
+        $scope.save = function(){
+        	if($scope.sourceImage!='' || (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status)){
+        		$ionicLoading.show({
+			      template: 'Loading..'
+			  	});
+        		if($scope.sourceImage!=''){ $scope.$broadcast('uploadImg','uploadImg'); }
+        		else { saveProfile(); }
+        	}
         }
+        function saveProfile() {
+        	if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+						main.getDataManager().myProfile.status != $scope.model.status) {
 
+	        		server.UpdateUserProfile($stateParams.chatId, $scope.model, function (err, res) {
+	                console.log(JSON.stringify(res));
+	                main.getDataManager().myProfile.displayname = $scope.model.displayname;
+	                main.getDataManager().myProfile.status = $scope.model.status;
+	                saveSuccess();
+            	});
+        	}
+        }
         function saveSuccess() {
-            $cordovaProgress.showSuccess(false, "Success!");
+        	$ionicLoading.hide();
+        	$cordovaProgress.showSuccess(false, "Success!");
             setTimeout(function () { $cordovaProgress.hide(); }, 1500);
         }
-
     }
     else {
         var member = main.getDataManager().orgMembers[$stateParams.chatId];
@@ -198,13 +206,13 @@ angular.module('spartan.controllers', [])
             }
         });
     });
-
 	$rootScope.$ionicGoBack = function() {
 		if($state.current.name=='tab.account-create'){
 			CreateGroup.clear();
 		}
-    	$ionicHistory.goBack(-1);
+		$ionicHistory.goBack(-1);
 	};
+
 })
 
 .controller('AccountInvite',function($scope,$rootScope,CreateGroup) {
@@ -222,7 +230,7 @@ angular.module('spartan.controllers', [])
     });
 })
 
-.controller('CreateProjectBase',function($scope,$ionicModal,$rootScope,CreateGroup,ProjectBase, roomSelected) {
+.controller('CreateProjectBase',function($scope,$ionicModal,$rootScope,$ionicLoading,$cordovaProgress,CreateGroup,ProjectBase, roomSelected) {
 	if(CreateGroup.createType!='ProjectBase'){ return; }
 		$scope.jobPosition=[];
 		$scope.rolePosition = [
@@ -236,6 +244,9 @@ angular.module('spartan.controllers', [])
 		$scope.savePosition = function(role,job){
 			ProjectBase.setRolePosition($scope.targetId,role,job);
 			if($rootScope.status=='edit'){
+				$ionicLoading.show({
+			      template: 'Loading..'
+			  	});
 				var room = roomSelected.getRoom();
 				var member = new function(){
 			        this.id = $scope.targetId;
@@ -251,6 +262,7 @@ angular.module('spartan.controllers', [])
 		                        result.jobPosition = job;
 		                    }
 		                });
+		                saveSuccess();
 					}
 					else {
 						console.warn(err, res);
@@ -259,7 +271,11 @@ angular.module('spartan.controllers', [])
 			}
 			$scope.closeSelectRole();
 		}
-		
+		function saveSuccess() {
+        	$ionicLoading.hide();
+        	$cordovaProgress.showSuccess(false, "Success!");
+            setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+        }
 		$scope.openSelectRole = function(id){
 			$scope.targetId = id;
 			var index = ProjectBase.getRolePositionIndex(id);
