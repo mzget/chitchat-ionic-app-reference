@@ -155,7 +155,7 @@ angular.module('spartan.controllers', [])
 
 })
 
-.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,CreateGroup,FileService) {
+.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
 	console.log('AccountCreate',CreateGroup.createType);
 	var myProfile = main.getDataManager().myProfile;
 	$rootScope.members = CreateGroup.getSelectedMember();
@@ -165,6 +165,9 @@ angular.module('spartan.controllers', [])
 		createGroup();
 	}
 	function createGroup(){
+		$ionicLoading.show({
+            template: 'Loading..'
+        });
 		if(CreateGroup.createType=="PrivateGroup"){
 			server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
 				if (!err) {
@@ -189,18 +192,27 @@ angular.module('spartan.controllers', [])
 			});
 		}
 	}
+	function createSuccess() {
+        $ionicLoading.hide();
+        $cordovaProgress.showSuccess(false, "Success!");
+        setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+    }
 	function uploadImageGroup(){
 		if(FileService.getImages() != '') {
 			$scope.$broadcast('uploadImg','uploadImg');
 		}else{
-			$state.go('tab.group');
+			//$state.go('tab.group');
+			createSuccess();
+			$rootScope.$ionicGoBack();
 		}
 	}
 	$scope.$on('fileUrl', function(event, args) {
         server.UpdatedGroupImage(roomId,args[0], function(err, res){
             if(!err){
                 console.log(JSON.stringify(res));
-                $state.go('tab.group');
+                createSuccess();
+                //$state.go('tab.group');
+                $rootScope.$ionicGoBack();
             }else{
                 console.warn(err, res);
             }
@@ -259,6 +271,7 @@ angular.module('spartan.controllers', [])
 						$.each(room.members, function(index, result) {
 		                    if(result._id == $scope.targetId){
 		                        result.role = role;
+		                        console.log(result.role);
 		                        result.jobPosition = job;
 		                    }
 		                });
@@ -299,6 +312,19 @@ angular.module('spartan.controllers', [])
 			});
 		};
 
+})
+.filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (a[field].toLowerCase() > b[field].toLowerCase() ? 1 : -1);
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
 }); // <-- LAST CONTROLLER
 
 function isAdminInProjectBase(room,memberId){
@@ -378,105 +404,4 @@ function navShow()
 {
 	$('.tab-nav.tabs').css({'display':'flex'});
 	$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
-}
-
-var initOrgModal = function ($state, $scope, groupId, roomSelected, done) {
-    var group = main.getDataManager().orgGroups[groupId];
-    roomSelected.setRoom(group);
-    $scope.chat = group;
-
-    var members = group.members;
-    $scope.members_length = members.length;
-    groupMembers(members, null, function done(members) {
-        $scope.members = members;
-        $scope.$apply();
-    });
-
-    //<!-- Join chat room.
-    $scope.toggle = function (chatId) {
-        $scope.closeOrgModal();
- //       $state.go('', { chatId: chatId });
-        location.href = '#/tab/group/chat/' + chatId;
-    };
-
-    $scope.viewGroupDetail = function (id) {
-        $state.go('tab.group-members', { chatId: id });
-    };
-
-    done();
-}
-
-var initPjbModal = function ($scope, groupId, roomSelected, done) {
-    var group = main.getDataManager().projectBaseGroups[groupId];
-    roomSelected.setRoom(group);
-    $scope.chat = group;
-
-    var members = group.members;
-    $scope.members_length = members.length;
-    groupMembers(members, null, function done(members) {
-        $scope.members = members;
-        $scope.$apply();
-    });
-
-    $scope.toggle = function (chatId) {
-        $scope.closePjbModal();
-        location.href = '#/tab/group/chat/' + chatId;
-    };
-
-    done();
-}
-
-var initPvgModal = function ($scope, groupId, roomSelected, done) {
-    var group = main.getDataManager().privateGroups[groupId];
-    roomSelected.setRoom(group);
-    $scope.group = group;
-
-    var members = group.members;
-    $scope.members_length = members.length;
-    groupMembers(members, null, function done(members) {
-        $scope.members = members;
-        $scope.$apply();
-    });
-
-    $scope.chat = function (chatId) {
-        $scope.closePvgModal();
-        location.href = '#/tab/group/chat/' + chatId;
-    };
-
-    done();
-}
-
-var initContactModal = function ($scope, contactId, roomSelected, done) {
-	var contact = main.getDataManager().orgMembers[contactId];
-	console.debug(contact);
-    $scope.contact = contact;
-
-    server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
-        console.log(JSON.stringify(res));
-        var room = JSON.parse(JSON.stringify(res.data));
-
-        $scope.chat = function () {
-            roomSelected.setRoom(room);
-            location.href = '#/tab/group/chat/' + room._id;
-        };
-		
-		$scope.openViewContactProfile = function(id) {
-		    location.href = '#/tab/group/member/' + id;
-		    //$state.go("tab.group-members", { chatId: id}, { inherit: false });
-		}
-		
-		$scope.$apply();
-    });
-	
-	done();
-}
-
-var initMyProfileModal = function($state, $scope, done) {
-	$scope.chat = main.getDataManager().myProfile;
-	
-	$scope.editProfile = function (chatId) {
-	    $state.go('tab.group-viewprofile', { chatId: chatId });
-	};
-
-	done();
 }

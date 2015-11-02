@@ -18,6 +18,9 @@
             console.info('homeController activate');
         }
 
+        $scope.pullRefresh = function() {
+            $scope.$broadcast('scroll.refreshComplete');
+        }
         
         $scope.$on('$ionicView.enter', function(){ 
             navShow();
@@ -130,7 +133,7 @@
         };
         //<!-- Project base group modal /////////////////////////////////////////
         $scope.openPjbModal = function (groupId) {
-            initPjbModal($scope, groupId, roomSelected, function () {
+            initPjbModal($state, $scope, groupId, roomSelected, function () {
                 $scope.pjbModal.show();
             });
         };
@@ -139,7 +142,7 @@
         }
         //<!-- Private group modal ////////////////////////////////////////////
         $scope.openPvgModal = function (groupId) {
-            initPvgModal($scope, groupId, roomSelected, function () {
+            initPvgModal($state, $scope, groupId, roomSelected, function () {
                 $scope.pvgModal.show();
             });
         };
@@ -155,5 +158,116 @@
         $scope.closeContactModal = function() {
             $scope.contactModal.hide();	
         };
+    }
+
+
+
+    var initOrgModal = function ($state, $scope, groupId, roomSelected, done) {
+        var group = main.getDataManager().orgGroups[groupId];
+        roomSelected.setRoom(group);
+        $scope.chat = group;
+
+        var members = group.members;
+        $scope.members_length = members.length;
+        groupMembers(members, null, function done(members) {
+            $scope.members = members;
+            $scope.$apply();
+        });
+
+        //<!-- Join chat room.
+        $scope.toggle = function (chatId) {
+            $scope.closeOrgModal();
+            //       $state.go('', { chatId: chatId });
+            location.href = '#/tab/group/chat/' + chatId;
+        };
+
+        $scope.viewGroupDetail = function (id) {
+            $state.go('tab.group-members', { chatId: id });
+        };
+
+        done();
+    }
+
+    var initPjbModal = function ($state, $scope, groupId, roomSelected, done) {
+        var group = main.getDataManager().projectBaseGroups[groupId];
+        roomSelected.setRoom(group);
+        $scope.chat = group;
+
+        var members = group.members;
+        $scope.members_length = members.length;
+        groupMembers(members, null, function done(members) {
+            $scope.members = members;
+            $scope.$apply();
+        });
+
+        $scope.toggle = function (chatId) {
+            $scope.closePjbModal();
+            location.href = '#/tab/group/chat/' + chatId;
+        };
+
+        $scope.viewGroupDetail = function (id) {
+            $state.go('tab.group-members', { chatId: id });
+        };
+
+        done();
+    }
+
+    var initPvgModal = function ($state, $scope, groupId, roomSelected, done) {
+        var group = main.getDataManager().privateGroups[groupId];
+        roomSelected.setRoom(group);
+        $scope.group = group;
+
+        var members = group.members;
+        $scope.members_length = members.length;
+        groupMembers(members, null, function done(members) {
+            $scope.members = members;
+            $scope.$apply();
+        });
+
+        $scope.chat = function (chatId) {
+            $scope.closePvgModal();
+            location.href = '#/tab/group/chat/' + chatId;
+        };
+
+        $scope.viewGroupDetail = function (id) {
+            $state.go('tab.group-members', { chatId: id });
+        };
+
+        done();
+    }
+
+    var initContactModal = function ($scope, contactId, roomSelected, done) {
+        var contact = main.getDataManager().orgMembers[contactId];
+        console.debug(contact);
+        $scope.contact = contact;
+
+        server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
+            console.log(JSON.stringify(res));
+            var room = JSON.parse(JSON.stringify(res.data));
+
+            $scope.chat = function () {
+                roomSelected.setRoom(room);
+                location.href = '#/tab/group/chat/' + room._id;
+            };
+
+            $scope.openViewContactProfile = function (id) {
+                location.href = '#/tab/group/member/' + id;
+                //$state.go("tab.group-members", { chatId: id}, { inherit: false });
+            }
+
+            $scope.$apply();
+        });
+
+        done();
+    }
+
+    var initMyProfileModal = function ($state, $scope, done) {
+        $scope.chat = main.getDataManager().myProfile;
+
+        $scope.editProfile = function (chatId) {
+            $state.go('tab.group-viewprofile', { chatId: chatId });
+        };
+
+        done();
     }
 })();

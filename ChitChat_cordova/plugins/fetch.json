@@ -96,5 +96,21 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "org.pbernasconi.progressindicator": {
+        "source": {
+            "type": "registry",
+            "id": "org.pbernasconi.progressindicator"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "phonegap-plugin-push": {
+        "source": {
+            "type": "registry",
+            "id": "phonegap-plugin-push"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
