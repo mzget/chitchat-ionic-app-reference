@@ -13,7 +13,7 @@
             <span ng-repeat="member in members">
                 <img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{member.image}}&h=30&w=30" />
             </span>
-            <a href="#/tab/group/members/{{ chat._id }}" class="length">{{ members_length }}</a>
+            <a ng-click="viewGroupDetail(chat._id)" class="length">{{ members_length }}</a>
         </div>
         <div class="group-menu">
             <div ng-click="toggle(chat._id)"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></div>
@@ -24,3 +24,6 @@
 </ion-modal-view>
 
 <a ng-click="closePjbModal()" style="position:fixed; top:0; left:0; width:100%; height:100vh; background-color:rgba(0,0,0,0.6);"></a>
+
+
+<!--href="#/tab/group/members/{{ chat._id }}"--> 
