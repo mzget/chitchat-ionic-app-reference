@@ -71,6 +71,8 @@
 		5292B672333E4B45BB90B797 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D94B5A03EB4A1C8745AE19 /* MBProgressHUD.m */; };
 		E46C4DECEC3D4354A397C12B /* ProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC3413C742B480B8E0A4033 /* ProgressIndicator.m */; };
 		B41AF573CEC944E2AD3A2417 /* ProgressIndicator.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA6C280CBF6D40DFA21BCEF2 /* ProgressIndicator.bundle */; };
+		5F6F06CB294C408C96BC5E80 /* AppDelegate+notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 1474FB14157E47E9BFB4BCF2 /* AppDelegate+notification.m */; };
+		0F1883C48BE84661983F77A3 /* PushPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A7CF8A692646A891873392 /* PushPlugin.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -193,6 +195,10 @@
 		10D67201404A4BA1A8C22BA9 /* MBProgressHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MBProgressHUD.h"; path = "org.pbernasconi.progressindicator/MBProgressHUD.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		4BA6F45450E84CE8968C29A9 /* ProgressIndicator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "ProgressIndicator.h"; path = "org.pbernasconi.progressindicator/ProgressIndicator.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		FA6C280CBF6D40DFA21BCEF2 /* ProgressIndicator.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "ProgressIndicator.bundle"; path = "ProgressIndicator.bundle"; sourceTree = "<group>"; };
+		1474FB14157E47E9BFB4BCF2 /* AppDelegate+notification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "AppDelegate+notification.m"; path = "phonegap-plugin-push/AppDelegate+notification.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		C3A7CF8A692646A891873392 /* PushPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "PushPlugin.m"; path = "phonegap-plugin-push/PushPlugin.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		D5FBE31ADC5E495EA99C9AC6 /* AppDelegate+notification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AppDelegate+notification.h"; path = "phonegap-plugin-push/AppDelegate+notification.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		0050E015E74C4A9B843F7AF7 /* PushPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "PushPlugin.h"; path = "phonegap-plugin-push/PushPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,6 +359,10 @@
 				6EC3413C742B480B8E0A4033 /* ProgressIndicator.m */,
 				10D67201404A4BA1A8C22BA9 /* MBProgressHUD.h */,
 				4BA6F45450E84CE8968C29A9 /* ProgressIndicator.h */,
+				1474FB14157E47E9BFB4BCF2 /* AppDelegate+notification.m */,
+				C3A7CF8A692646A891873392 /* PushPlugin.m */,
+				D5FBE31ADC5E495EA99C9AC6 /* AppDelegate+notification.h */,
+				0050E015E74C4A9B843F7AF7 /* PushPlugin.h */,
 			);
 			name = Plugins;
 			path = "ChitChat/Plugins";
@@ -564,6 +574,8 @@
 				F925E953805E45928145616F /* CDVNotification.m in Sources */,
 				5292B672333E4B45BB90B797 /* MBProgressHUD.m in Sources */,
 				E46C4DECEC3D4354A397C12B /* ProgressIndicator.m in Sources */,
+				5F6F06CB294C408C96BC5E80 /* AppDelegate+notification.m in Sources */,
+				0F1883C48BE84661983F77A3 /* PushPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
