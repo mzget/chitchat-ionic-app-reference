@@ -22,7 +22,7 @@
         function activate() { }
     }
 
-    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicModal,$rootScope, CreateGroup,ProjectBase, roomSelected){
+    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal,$rootScope, CreateGroup,ProjectBase, roomSelected){
         id_checked = [];
         $scope.myProfile = main.getDataManager().myProfile;
         
@@ -52,11 +52,18 @@
         }
 
         $scope.invite = function(){
+            $ionicLoading.show({
+                template: 'Loading..'
+            });
             server.editGroupMembers("add",room._id,RoomType[room.type],id_checked, function(err, res) {
                 if (!err) {
                     console.log(JSON.stringify(res));
                     requestReload = true;
+                    $ionicLoading.hide();
+                    $cordovaProgress.showSuccess(false, "Success!");
+                    setTimeout(function () { $cordovaProgress.hide(); }, 1500);
                     $ionicHistory.goBack(-1);
+
                 }
                 else {
                     console.warn(err, res);

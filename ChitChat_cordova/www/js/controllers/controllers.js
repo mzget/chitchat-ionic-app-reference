@@ -155,7 +155,7 @@ angular.module('spartan.controllers', [])
 
 })
 
-.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,CreateGroup,FileService) {
+.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
 	console.log('AccountCreate',CreateGroup.createType);
 	var myProfile = main.getDataManager().myProfile;
 	$rootScope.members = CreateGroup.getSelectedMember();
@@ -165,6 +165,9 @@ angular.module('spartan.controllers', [])
 		createGroup();
 	}
 	function createGroup(){
+		$ionicLoading.show({
+            template: 'Loading..'
+        });
 		if(CreateGroup.createType=="PrivateGroup"){
 			server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
 				if (!err) {
@@ -189,18 +192,27 @@ angular.module('spartan.controllers', [])
 			});
 		}
 	}
+	function createSuccess() {
+        $ionicLoading.hide();
+        $cordovaProgress.showSuccess(false, "Success!");
+        setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+    }
 	function uploadImageGroup(){
 		if(FileService.getImages() != '') {
 			$scope.$broadcast('uploadImg','uploadImg');
 		}else{
-			$state.go('tab.group');
+			//$state.go('tab.group');
+			createSuccess();
+			$rootScope.$ionicGoBack();
 		}
 	}
 	$scope.$on('fileUrl', function(event, args) {
         server.UpdatedGroupImage(roomId,args[0], function(err, res){
             if(!err){
                 console.log(JSON.stringify(res));
-                $state.go('tab.group');
+                createSuccess();
+                //$state.go('tab.group');
+                $rootScope.$ionicGoBack();
             }else{
                 console.warn(err, res);
             }
@@ -259,6 +271,7 @@ angular.module('spartan.controllers', [])
 						$.each(room.members, function(index, result) {
 		                    if(result._id == $scope.targetId){
 		                        result.role = role;
+		                        console.log(result.role);
 		                        result.jobPosition = job;
 		                    }
 		                });
