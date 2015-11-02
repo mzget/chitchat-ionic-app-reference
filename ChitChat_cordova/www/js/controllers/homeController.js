@@ -18,6 +18,9 @@
             console.info('homeController activate');
         }
 
+        $scope.pullRefresh = function() {
+            $scope.$broadcast('scroll.refreshComplete');
+        }
         
         $scope.$on('$ionicView.enter', function(){ 
             navShow();
