@@ -119,6 +119,10 @@
                         {
                             "xml": "<feature name=\"ProgressIndicator\"><param name=\"ios-package\" value=\"ProgressIndicator\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"PushNotification\"><param name=\"ios-package\" value=\"PushPlugin\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -129,6 +133,12 @@
                         {
                             "xml": "<string />",
                             "count": 2
+                        }
+                    ],
+                    "UIBackgroundModes": [
+                        {
+                            "xml": "<array><string>remote-notification</string></array>",
+                            "count": 1
                         }
                     ]
                 }
@@ -179,6 +189,9 @@
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "org.pbernasconi.progressindicator": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "phonegap-plugin-push": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
