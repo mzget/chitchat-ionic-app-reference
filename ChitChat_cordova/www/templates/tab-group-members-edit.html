@@ -1,9 +1,26 @@
-<ion-view view-title="Invite Members">
+<ion-view view-title="Edit Members">
 
 
   <ion-content>
     <ion-list class="create-group-invite-list-member" ng-controller="CreateProjectBase">
-        <ion-item class="item item-button-right" ng-repeat="member in allmembers track by $index" id="{{member.id}}">
+
+
+<div class="bar bar-header item-input-inset">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" placeholder="Search" ng-model="search.displayname">
+          </label>
+        </div>
+        <div class="item item-button-right btn-nav">
+            Members
+            <button class="button">
+            </button>
+        </div>
+
+
+
+
+        <ion-item class="item item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false|filter:search" id="{{member.id}}">
             <img ng-src="http://stalk.animation-genius.com{{member.image}}"/> 
             <div> {{member.displayname}} </div> 
             <div ng-show="member.role!=0 && member.role!=1"> {{member.role}} : {{member.jobPosition}} </div>
