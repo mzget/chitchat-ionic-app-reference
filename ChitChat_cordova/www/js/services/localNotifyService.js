@@ -34,6 +34,30 @@
                 makeToastOnCenter(message);
                 scheduleSingleNotification(contact.displayname, message);
             }
+            else if (chatMessageImp.type === ContentType[ContentType.Voice]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a voice message."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
+            }
+            else if (chatMessageImp.type === ContentType[ContentType.Image]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a image."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
+            }
+            else if (chatMessageImp.type === ContentType[ContentType.Video]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a video."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
+            }
+            else if (chatMessageImp.type === ContentType[ContentType.Location]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a location."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
+            }
         }
         
         var service = {
