@@ -312,6 +312,19 @@ angular.module('spartan.controllers', [])
 			});
 		};
 
+})
+.filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (a[field].toLowerCase() > b[field].toLowerCase() ? 1 : -1);
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
 }); // <-- LAST CONTROLLER
 
 function isAdminInProjectBase(room,memberId){
