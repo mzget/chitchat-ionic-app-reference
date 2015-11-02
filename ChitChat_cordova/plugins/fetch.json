@@ -96,5 +96,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "org.pbernasconi.progressindicator": {
+        "source": {
+            "type": "registry",
+            "id": "org.pbernasconi.progressindicator"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
