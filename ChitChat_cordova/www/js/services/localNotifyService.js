@@ -13,6 +13,7 @@
         var onChatListenerImp = new HomeComponent();
         dataListener.addListenerImp(onChatListenerImp);
         onChatListenerImp.onChat = function(chatMessageImp) {
+            console.warn(chatMessageImp.type);
             if(chatMessageImp.type === ContentType[ContentType.Text]) {
                 var contact = dataManager.getContactProfile(chatMessageImp.sender);
                 var secure = new SecureService();
@@ -26,6 +27,36 @@
                         console.warn(err, res);
                     }
                 });
+            }
+            else if(chatMessageImp.type === ContentType[ContentType.Sticker]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a sticker."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
+            }
+            else if (chatMessageImp.type === ContentType[ContentType.Voice]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a voice message."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
+            }
+            else if (chatMessageImp.type === ContentType[ContentType.Image]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a image."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
+            }
+            else if (chatMessageImp.type === ContentType[ContentType.Video]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a video."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
+            }
+            else if (chatMessageImp.type === ContentType[ContentType.Location]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a location."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
             }
         }
         
@@ -41,10 +72,10 @@
         function getData() { }
         
         function makeToastOnCenter(message) {
-            console.debug('makeToastOnTop');
              $cordovaToast.showLongCenter(message).then(function(success) {
                 // success
                 console.debug('success', success);
+                navigator.notification.beep(1);
             }, function (error) {
                 // error
                 console.error('error', error);
