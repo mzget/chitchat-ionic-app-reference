@@ -13,6 +13,7 @@
         var onChatListenerImp = new HomeComponent();
         dataListener.addListenerImp(onChatListenerImp);
         onChatListenerImp.onChat = function(chatMessageImp) {
+            console.warn(chatMessageImp.type);
             if(chatMessageImp.type === ContentType[ContentType.Text]) {
                 var contact = dataManager.getContactProfile(chatMessageImp.sender);
                 var secure = new SecureService();
@@ -26,6 +27,12 @@
                         console.warn(err, res);
                     }
                 });
+            }
+            else if(chatMessageImp.type === ContentType[ContentType.Sticker]) {
+                var contact = dataManager.getContactProfile(chatMessageImp.sender);
+                var message = contact.displayname + " sent a sticker."
+                makeToastOnCenter(message);
+                scheduleSingleNotification(contact.displayname, message);
             }
         }
         
