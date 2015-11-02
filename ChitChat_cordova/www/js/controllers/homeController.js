@@ -139,7 +139,7 @@
         }
         //<!-- Private group modal ////////////////////////////////////////////
         $scope.openPvgModal = function (groupId) {
-            initPvgModal($scope, groupId, roomSelected, function () {
+            initPvgModal($state, $scope, groupId, roomSelected, function () {
                 $scope.pvgModal.show();
             });
         };
@@ -209,7 +209,7 @@
         done();
     }
 
-    var initPvgModal = function ($scope, groupId, roomSelected, done) {
+    var initPvgModal = function ($state, $scope, groupId, roomSelected, done) {
         var group = main.getDataManager().privateGroups[groupId];
         roomSelected.setRoom(group);
         $scope.group = group;
@@ -224,6 +224,10 @@
         $scope.chat = function (chatId) {
             $scope.closePvgModal();
             location.href = '#/tab/group/chat/' + chatId;
+        };
+
+        $scope.viewGroupDetail = function (id) {
+            $state.go('tab.group-members', { chatId: id });
         };
 
         done();

@@ -41,10 +41,10 @@
         function getData() { }
         
         function makeToastOnCenter(message) {
-            console.debug('makeToastOnTop');
              $cordovaToast.showLongCenter(message).then(function(success) {
                 // success
                 console.debug('success', success);
+                navigator.notification.beep(1);
             }, function (error) {
                 // error
                 console.error('error', error);
