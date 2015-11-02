@@ -16,6 +16,46 @@
 
         function activate() {
             console.info('homeController activate');
+            
+            console.log("<!-- push -->");
+            var push = PushNotification.init({
+                "ios": { "alert": "true", "badge": "true", "sound": "true" },
+                "windows": {}
+            });
+
+            console.log("******");
+            console.warn(push);
+
+            push.on('registration', function (data) {
+                console.log("registration event");
+                document.getElementById("regId").innerHTML = data.registrationId;
+                console.log(JSON.stringify(data));
+            });
+
+            push.on('notification', function (data) {
+                console.log("notification event");
+                console.log(JSON.stringify(data));
+                var cards = document.getElementById("cards");
+                var card = '<div class="row">' +
+                    '<div class="col s12 m6">' +
+                    '  <div class="card darken-1">' +
+                    '    <div class="card-content black-text">' +
+                    '      <span class="card-title black-text">' + data.title + '</span>' +
+                    '      <p>' + data.message + '</p>' +
+                    '    </div>' +
+                    '  </div>' +
+                    ' </div>' +
+                    '</div>';
+                cards.innerHTML += card;
+
+                push.finish(function () {
+                    console.log('finish successfully called');
+                });
+            });
+
+            push.on('error', function (e) {
+                console.log("push error");
+            });
         }
 
         
