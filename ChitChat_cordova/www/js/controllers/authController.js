@@ -11,12 +11,36 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
-
+        var registrationId = "";
         activate();
 
         function activate() {
             console.debug('authController activate');
             navHide();
+
+            console.log("<!-- push -->");
+            var push = PushNotification.init({
+                "ios": { "alert": "true", "badge": "true", "sound": "true" },
+                "windows": {}
+            });
+
+            push.on('registration', function (data) {
+                console.warn("registration event", JSON.stringify(data));
+                registrationId = data.registrationId;
+                localStorage.setItem("registrationId", registrationId);
+            });
+
+            push.on('notification', function (data) {
+                console.warn("notification event", JSON.stringify(data));
+
+                push.finish(function () {
+                    console.warn('finish successfully called');
+                });
+            });
+
+            push.on('error', function (e) {
+                console.error("push error", e.message);
+            });
             
 		    main.setDataManager(dataManager);
 		    main.setServerListener(serverEvents);
@@ -40,7 +64,6 @@
 					    $('#splash').css({ 'display': 'none' });
 	
 					    $('body #login #btn-login').click(function (event) {
-						    console.log('loging A');
 						    event.preventDefault();
 						    $('body #login input').attr('readonly', true);
 						    email = $('body #login form input[name="email"]').val();
