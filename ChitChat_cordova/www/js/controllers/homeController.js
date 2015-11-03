@@ -16,6 +16,43 @@
 
         function activate() {
             console.info('homeController activate');
+            
+            console.log("<!-- push -->");
+            var push = PushNotification.init({
+                "ios": { "alert": "true", "badge": "true", "sound": "true" },
+                "windows": {}
+            });
+
+            console.log("******");
+
+            push.on('registration', function (data) {
+                console.warn("registration event", JSON.stringify(data));
+                document.getElementById("regId").innerHTML = data.registrationId;
+            });
+
+            push.on('notification', function (data) {
+                console.warn("notification event", JSON.stringify(data));
+                var cards = document.getElementById("cards");
+                var card = '<div class="row">' +
+                    '<div class="col s12 m6">' +
+                    '  <div class="card darken-1">' +
+                    '    <div class="card-content black-text">' +
+                    '      <span class="card-title black-text">' + data.title + '</span>' +
+                    '      <p>' + data.message + '</p>' +
+                    '    </div>' +
+                    '  </div>' +
+                    ' </div>' +
+                    '</div>';
+                cards.innerHTML += card;
+
+                push.finish(function () {
+                    console.log('finish successfully called');
+                });
+            });
+
+            push.on('error', function (e) {
+                console.error("push error");
+            });
         }
 
         $scope.pullRefresh = function() {

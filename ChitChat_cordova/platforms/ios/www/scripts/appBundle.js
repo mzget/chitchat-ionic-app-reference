@@ -10,6 +10,7 @@ var BlankCordovaApp1;
         function onDeviceReady() {
             document.addEventListener('pause', onPause, false);
             document.addEventListener('resume', onResume, false);
+            console.warn("onDeviceReady");
         }
         function onPause() {
             console.warn('onPause');
