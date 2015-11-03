@@ -3,7 +3,6 @@ var BlankCordovaApp1;
     "use strict";
     var Application;
     (function (Application) {
-        var pushNoficate;
         function initialize() {
             document.addEventListener('deviceready', onDeviceReady, false);
         }
@@ -12,42 +11,6 @@ var BlankCordovaApp1;
             document.addEventListener('pause', onPause, false);
             document.addEventListener('resume', onResume, false);
             console.warn("onDeviceReady");
-            console.log("<!-- push -->");
-            pushNoficate = window.plugins.pushNotification;
-            console.log("pushNoficate", pushNoficate);
-            var push = pushNoficate.init({
-                "ios": { "alert": "true", "badge": "true", "sound": "true" },
-                "windows": {}
-            });
-            console.log("******");
-            console.warn(push);
-            push.on('registration', function (data) {
-                console.log("registration event");
-                document.getElementById("regId").innerHTML = data.registrationId;
-                console.log(JSON.stringify(data));
-            });
-            push.on('notification', function (data) {
-                console.log("notification event");
-                console.log(JSON.stringify(data));
-                var cards = document.getElementById("cards");
-                var card = '<div class="row">' +
-                    '<div class="col s12 m6">' +
-                    '  <div class="card darken-1">' +
-                    '    <div class="card-content black-text">' +
-                    '      <span class="card-title black-text">' + data.title + '</span>' +
-                    '      <p>' + data.message + '</p>' +
-                    '    </div>' +
-                    '  </div>' +
-                    ' </div>' +
-                    '</div>';
-                cards.innerHTML += card;
-                push.finish(function () {
-                    console.log('finish successfully called');
-                });
-            });
-            push.on('error', function (e) {
-                console.log("push error");
-            });
         }
         function onPause() {
             console.warn('onPause');
@@ -237,6 +200,7 @@ var ChatServer;
             this._isConnected = false;
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
+            this.registrationId = localStorage.getItem("registrationId");
             var authen = localStorage.getItem("authen");
             if (authen !== null) {
                 this.authenData = JSON.parse(authen);
@@ -335,7 +299,7 @@ var ChatServer;
         };
         ServerImplemented.prototype.authenForFrontendServer = function (callback) {
             var self = this;
-            var msg = { username: username, password: password };
+            var msg = { username: username, password: password, registrationId: this.registrationId };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
                 console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {

@@ -140,6 +140,16 @@ angular.module('starter',
 		}
 	})
 	
+	.state('tab.chats-chat', {
+		url: '/chats/chat/:chatId',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/chat-detail.html',
+				controller: 'chatController'
+			}
+		}
+	})
+	
 	/*
 	// CHAT : Message
 	.state('tab.message', {
