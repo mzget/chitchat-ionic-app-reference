@@ -17,32 +17,32 @@
         function activate() {
             console.info('homeController activate');
             
-            console.log("<!-- push -->");
-            var push = PushNotification.init({
-                "ios": { "alert": "true", "badge": "true", "sound": "true" },
-                "windows": {}
-            });
+            // console.log("<!-- push -->");
+            // var push = PushNotification.init({
+            //     "ios": { "alert": "true", "badge": "true", "sound": "true" },
+            //     "windows": {}
+            // });
            
 
-            console.log("******");
+            // console.log("******");
 
-            push.on('registration', function (data) {
-                console.warn("registration event", JSON.stringify(data));
-                var registrationId = data.registrationId;
-                localStorage.setItem("registrationId", registrationId);
-            });
+            // push.on('registration', function (data) {
+            //     console.warn("registration event", JSON.stringify(data));
+            //     var registrationId = data.registrationId;
+            //     localStorage.setItem("registrationId", registrationId);
+            // });
 
-            push.on('notification', function (data) {
-                console.warn("notification event", JSON.stringify(data));
+            // push.on('notification', function (data) {
+            //     console.warn("notification event", JSON.stringify(data));
 
-                push.finish(function () {
-                    console.warn('finish successfully called');
-                });
-            });
+            //     push.finish(function () {
+            //         console.warn('finish successfully called');
+            //     });
+            // });
 
-            push.on('error', function (e) {
-                console.error("push error", e.message);
-            });
+            // push.on('error', function (e) {
+            //     console.error("push error", e.message);
+            // });
         }
 
         $scope.pullRefresh = function() {
