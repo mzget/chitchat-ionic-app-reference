@@ -3,14 +3,12 @@
 
 	<ion-refresher on-refresh="pullRefresh()"></ion-refresher>
 
-	<div class="bar bar-header item-input-inset">
-	  <label class="item-input-wrapper">
-	    <i class="icon ion-ios-search placeholder-icon"></i>
-	    <input type="search" placeholder="Search" ng-model="search.name">
-	  </label>
-	</div>
-
-	
+		<div class="bar bar-header item-input-inset">
+		  <label class="item-input-wrapper">
+		    <i class="icon ion-ios-search placeholder-icon"></i>
+		    <input type="search" placeholder="Search" ng-model="search.name">
+		  </label>
+		</div>
 		<div id="nav-myProfile" ng-click="viewlist('myProfile')" class="item item-button-right btn-nav">
 			Profile
 			<button class="button">
@@ -26,6 +24,39 @@
 				<i class="icon ion-chevron-right icon-accessory"></i>
 			</ion-item>
 		</ion-list>
+
+
+
+
+		<!-- -- -- -- -- -- -- -- -- -- -- Favorite -- -- -- -- -- -- -- -- -- -- -->
+		<div id="nav-favorites" ng-click="viewlist('favorites')" class="item item-button-right btn-nav">
+			Favorites
+			<button class="button">
+				<i class="icon ion-chevron-up"></i>
+			</button>
+		</div>
+		<ion-list id="list-favorites" class="group-list">
+			<ion-item class="item-remove-animate item-avatar item-icon-right" 
+			ng-repeat="favorite in favorites|orderObjectBy:'name':false|filter:search" type="item-text-wrap" ng-click="openModal(favorite._id,favorite.type)">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{favorite.image}}&h=40&w=40" />
+				<div ng-if="favorite.type=='0' || favorite.type=='1'">
+					<h2>{{favorite.name}}</h2>
+					<p>{{favorite.description}}</p>
+				</div>
+				<div ng-if="favorite.type=='2'">
+					<h2>{{favorite.name}}</h2>
+				</div>
+				<div ng-if="favorite.type==undefined">
+					<h2>{{favorite.displayname}}</h2>
+					<p>{{favorite.status}}</p>
+				</div>
+
+				<i class="icon ion-chevron-right icon-accessory"></i>
+			</ion-item>
+		</ion-list>
+
+
+
 		<!-- -- -- -- -- -- -- -- -- -- -- Org group -- -- -- -- -- -- -- -- -- -- -->
 		<div id="nav-orgGroups" ng-click="viewlist('orgGroups')" class="item item-button-right btn-nav">
 			Organize Groups
@@ -39,10 +70,6 @@
 				<h2>{{orgGroup.name}}</h2>
 				<p>{{orgGroup.description}}</p>
 				<i class="icon ion-chevron-right icon-accessory"></i>
-
-				<ion-option-button class="button-assertive" ng-click="remove(orgGroup)">
-					Delete
-				</ion-option-button>
 			</ion-item>
 		</ion-list>
 		<!-- -- -- -- -- -- -- -- -- -- Project base group -- -- -- -- -- -- -- -- -- -- -- -->
@@ -61,10 +88,6 @@
 				<h2>{{pjbGroup.name}}</h2>
 				<p>{{pjbGroup.description}}</p>
 				<i class="icon ion-chevron-right icon-accessory"></i>
-
-				<ion-option-button class="button-assertive" ng-click="remove(pjbGroup)">
-					Delete
-				</ion-option-button>
 			</ion-item>
 		</ion-list>
 
@@ -83,10 +106,6 @@
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{pvGroup.image}}&h=40&w=40" />
 				<h2>{{pvGroup.name}}</h2>
 				<i class="icon ion-chevron-right icon-accessory"></i>
-
-				<ion-option-button class="button-assertive" ng-click="remove(pvGroup)">
-					Delete
-				</ion-option-button>
 			</ion-item>
 		</ion-list>
 		<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->
@@ -104,10 +123,6 @@
 				<h2>{{chat.displayname}}</h2>
 				<p>{{chat.status}}</p>
 				<i class="icon ion-chevron-right icon-accessory"></i>
-
-				<ion-option-button class="button-assertive" ng-click="remove(chat)">
-					Delete
-				</ion-option-button>
 			</ion-item>
 		</ion-list>
 		

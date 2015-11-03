@@ -394,8 +394,15 @@ var ChatServer;
             msg["token"] = this.authenData.token;
             pomelo.request("auth.profileHandler.editFavoriteMembers", msg, function (result) {
                 console.log("updateFavoriteMember: ", JSON.stringify(result));
-                if (callback != null)
+                if (callback != null){
+                    if(editType=='add'){
+                        self.dataManager.myProfile.favoriteUsers.push(member);
+                    }else{
+                        var index = self.dataManager.myProfile.favoriteUsers.indexOf(member);
+                        self.dataManager.myProfile.favoriteUsers.splice( index , 1);
+                    }
                     callback(null, result);
+                }
             });
         };
         ServerImplemented.prototype.updateFavoriteGroups = function (editType, group, callback) {
@@ -405,8 +412,15 @@ var ChatServer;
             msg["token"] = this.authenData.token;
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, function (result) {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                if (callback != null)
+                if (callback != null){
+                    if(editType=='add'){
+                        self.dataManager.myProfile.favoriteGroups.push(group);
+                    }else{
+                        var index = self.dataManager.myProfile.favoriteGroups.indexOf(group);
+                        self.dataManager.myProfile.favoriteGroups.splice( index , 1);
+                    }
                     callback(null, result);
+                }
             });
         };
         ServerImplemented.prototype.getMemberProfile = function (userId, callback) {
