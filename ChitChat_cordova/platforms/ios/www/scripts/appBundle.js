@@ -10,6 +10,7 @@ var BlankCordovaApp1;
         function onDeviceReady() {
             document.addEventListener('pause', onPause, false);
             document.addEventListener('resume', onResume, false);
+            console.warn("onDeviceReady");
         }
         function onPause() {
             console.warn('onPause');
@@ -199,6 +200,7 @@ var ChatServer;
             this._isConnected = false;
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
+            this.registrationId = localStorage.getItem("registrationId");
             var authen = localStorage.getItem("authen");
             if (authen !== null) {
                 this.authenData = JSON.parse(authen);
@@ -297,7 +299,7 @@ var ChatServer;
         };
         ServerImplemented.prototype.authenForFrontendServer = function (callback) {
             var self = this;
-            var msg = { username: username, password: password };
+            var msg = { username: username, password: password, registrationId: this.registrationId };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
                 console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
