@@ -28,13 +28,15 @@
 
             push.on('registration', function (data) {
                 console.warn("registration event", JSON.stringify(data));
+                var registrationId = data.registrationId;
+                localStorage.setItem("registrationId", registrationId);
             });
 
             push.on('notification', function (data) {
                 console.warn("notification event", JSON.stringify(data));
 
                 push.finish(function () {
-                    console.log('finish successfully called');
+                    console.warn('finish successfully called');
                 });
             });
 
