@@ -7,7 +7,7 @@
 
     //homeController.$inject = ['$location'];
 
-    function homeController($location, $state, $scope, $timeout, $ionicModal, roomSelected, localNotifyService) {
+    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, roomSelected, localNotifyService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
@@ -20,6 +20,63 @@
 
         $scope.pullRefresh = function() {
             $scope.$broadcast('scroll.refreshComplete');
+        }
+
+        function getFavorite(){
+            var favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
+            var favorite = [];
+            for(var x=0; x<favoriteArray.length; x++){
+                try {
+                    if(main.getDataManager().orgGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().orgGroups[favoriteArray[x]]); 
+                    else if(main.getDataManager().projectBaseGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().projectBaseGroups[favoriteArray[x]]); 
+                    else if(main.getDataManager().privateGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().privateGroups[favoriteArray[x]]); 
+                    else if(main.getDataManager().orgMembers[favoriteArray[x]] !== undefined) { 
+                        main.getDataManager().orgMembers[favoriteArray[x]].name = main.getDataManager().orgMembers[favoriteArray[x]].displayname;
+                        favorite.push(main.getDataManager().orgMembers[favoriteArray[x]]); 
+                    }
+                }
+                catch(err) {
+                    //console.log(err);
+                }
+            }
+            return favorite;
+        }
+        $scope.editFavorite = function(editType,id,type){
+            $ionicLoading.show({
+                  template: 'Loading..'
+            });
+            if(type==undefined){
+                server.updateFavoriteMember(editType,id,function (err, res) {
+                    if (!err) {
+                        console.log(JSON.stringify(res));
+                        $ionicLoading.hide();
+                    }
+                    else {
+                        console.warn(err, res);
+                    }
+                });
+            }else{
+                server.updateFavoriteGroups(editType,id,function (err, res) {
+                    if (!err) {
+                        console.log(JSON.stringify(res));
+                        $ionicLoading.hide();
+                    }
+                    else {
+                        console.warn(err, res);
+                    }
+                });
+            }
+        }
+   
+        $scope.isFavorite = function(id){
+            var favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
+            var isHas = false;
+            for(var i=0; i<favoriteArray.length; i++){
+                if(favoriteArray[i] == id){
+                    isHas = true;
+                }
+            }
+            return isHas;
         }
         
         $scope.$on('$ionicView.enter', function(){ 
@@ -35,7 +92,7 @@
                 $scope.pjbGroups = dataManager.projectBaseGroups;
                 $scope.pvGroups = dataManager.privateGroups;
                 $scope.chats = dataManager.orgMembers;
-
+                $scope.favorites = getFavorite();
                 $scope.$apply();
             };
 	
@@ -123,6 +180,17 @@
             $scope.myProfileModal.hide();
         };
         //<!-- Org group modal ////////////////////////////////////////
+        $scope.openModal = function(id,type){
+            if(type==RoomType.organizationGroup){
+                $scope.openOrgModal(id);
+            }else if(type==RoomType.projectBaseGroup){
+                $scope.openPjbModal(id);
+            }else if(type==RoomType.privateGroup){
+                $scope.openPvgModal(id);
+            }else{
+                $scope.openContactModal(id);
+            }
+        }
         $scope.openOrgModal = function (groupId) {
             initOrgModal($state, $scope, groupId, roomSelected, function () {
                 $scope.orgModal.show();
