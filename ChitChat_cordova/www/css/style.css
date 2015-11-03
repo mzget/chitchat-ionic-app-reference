@@ -122,3 +122,5 @@ height: auto;
 text-align: center;
 margin-top: 0.1em;
 color: #fff;}
+.tab-item b{ position:absolute; margin:-23px 0 0 -21px; }
+.tab-item.tab-item-active b{ color:#fff; }

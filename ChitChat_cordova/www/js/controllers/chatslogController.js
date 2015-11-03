@@ -34,10 +34,10 @@
 		var refresh = function () 
 		{		
 			$scope.roomAccess = myRoomAccess;
-			console.log('reload');
+			console.log('reload chatlog');
 		
-			console.log(roomAccess);
-			console.log(myRoomAccess);
+			//console.log(roomAccess);
+			//console.log(myRoomAccess);
 			
 			$timeout(refresh, 1000);
 		} 
@@ -69,18 +69,31 @@
 							location.href = '#/tab/chats/chat/' + accessId;
 							break;
 						case 3:
+							if( myRoomAccess[i]['members'][0]['id'] != dataManager.myProfile._id )
+								var contactId = myRoomAccess[i]['members'][0]['id']
+							else
+								var contactId = myRoomAccess[i]['members'][1]['id']
+						
+							server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
+								console.log(JSON.stringify(res));
+								var room = JSON.parse(JSON.stringify(res.data));
+								roomSelected.setRoom(room);
+								location.href = '#/tab/chats/chat/' + room._id;
+							});
 							break;
 					}
+					i = accessLength;
 				}
 			}	
 		};
+		
     }
 	
 	function getRoomAccess()
 	{
 		console.log('getRoomAccess: ');
 		
-		roomAccess = dataManager.myProfile.roomAccess;
+		roomAccess = dataManager.myProfile.roomAccess.reverse();
 		roomAccessLength = roomAccess.length;
 		
 		getRoomInfo();
