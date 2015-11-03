@@ -11,6 +11,17 @@ var BlankCordovaApp1;
             document.addEventListener('pause', onPause, false);
             document.addEventListener('resume', onResume, false);
             console.warn("onDeviceReady");
+            try {
+                console.log("device plat: ", JSON.stringify(device));
+                if (device.platform == 'android' || device.platform == 'Android') {
+                }
+                else if (device.platform === "iOS") {
+                    console.log("ios", device);
+                }
+            }
+            catch (err) {
+                console.error(err);
+            }
         }
         function onPause() {
             console.warn('onPause');
