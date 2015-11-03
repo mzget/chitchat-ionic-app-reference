@@ -66,8 +66,8 @@
 					    $('body #login #btn-login').click(function (event) {
 						    event.preventDefault();
 						    $('body #login input').attr('readonly', true);
-						    email = $('body #login form input[name="email"]').val();
-						    password = $('body #login form input[name="password"]').val();
+						    var email = $('body #login form input[name="email"]').val();
+						    var password = $('body #login form input[name="password"]').val();
 	
 						    main.getHashService(password, function (err, res) {
 							    main.authenUser(server, email, res, function (err, res) {
