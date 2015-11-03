@@ -35,6 +35,14 @@
 		30C1856619D5FC0A00212699 /* icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30C1856519D5FC0A00212699 /* icon-60@3x.png */; };
 		30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FC414816E50CA1004E6F35 /* icon-72@2x.png */; };
 		38F592FF5AED47CB9E121502 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C18BB1B6284852AE698151 /* QuartzCore.framework */; };
+		3D0748B21BE8600D00FA80F4 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0748B11BE8600D00FA80F4 /* Parse.framework */; };
+		3D0748B41BE8605E00FA80F4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0748B31BE8605E00FA80F4 /* CFNetwork.framework */; };
+		3D0748B61BE8607D00FA80F4 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0748B51BE8607D00FA80F4 /* Security.framework */; };
+		3D0748B81BE8608A00FA80F4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0748B71BE8608A00FA80F4 /* StoreKit.framework */; };
+		3D0748BA1BE8609A00FA80F4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0748B91BE8609A00FA80F4 /* SystemConfiguration.framework */; };
+		3D0748BC1BE860A900FA80F4 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0748BB1BE860A900FA80F4 /* libz.tbd */; };
+		3D0748BE1BE860B500FA80F4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0748BD1BE860B500FA80F4 /* libsqlite3.tbd */; };
+		3D0748C01BE8690F00FA80F4 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0748BF1BE8690F00FA80F4 /* Bolts.framework */; };
 		5292B672333E4B45BB90B797 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = B7D94B5A03EB4A1C8745AE19 /* MBProgressHUD.m */; };
 		5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */; };
 		5F6F06CB294C408C96BC5E80 /* AppDelegate+notification.m in Sources */ = {isa = PBXBuildFile; fileRef = 1474FB14157E47E9BFB4BCF2 /* AppDelegate+notification.m */; };
@@ -131,6 +139,14 @@
 		30FC414816E50CA1004E6F35 /* icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72@2x.png"; sourceTree = "<group>"; };
 		3279C8A7115C49918EF50FC8 /* IonicKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IonicKeyboard.h; path = "ionic-plugin-keyboard/IonicKeyboard.h"; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ChitChat-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChitChat-Prefix.pch"; sourceTree = "<group>"; };
+		3D0748B11BE8600D00FA80F4 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		3D0748B31BE8605E00FA80F4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		3D0748B51BE8607D00FA80F4 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		3D0748B71BE8608A00FA80F4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		3D0748B91BE8609A00FA80F4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		3D0748BB1BE860A900FA80F4 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		3D0748BD1BE860B500FA80F4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		3D0748BF1BE8690F00FA80F4 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		403D6D5E85384219ABFA3673 /* CDVLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVLocation.m; path = "cordova-plugin-geolocation/CDVLocation.m"; sourceTree = "<group>"; };
 		41B5E2FB6AFB4DEEAB4BF616 /* UIApplication+APPLocalNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+APPLocalNotification.m"; path = "de.appplant.cordova.plugin.local-notification/UIApplication+APPLocalNotification.m"; sourceTree = "<group>"; };
 		441F0B76E7EA402687AB1AAC /* APPLocalNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPLocalNotification.h; path = "de.appplant.cordova.plugin.local-notification/APPLocalNotification.h"; sourceTree = "<group>"; };
@@ -204,11 +220,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D0748BE1BE860B500FA80F4 /* libsqlite3.tbd in Frameworks */,
+				3D0748BC1BE860A900FA80F4 /* libz.tbd in Frameworks */,
+				3D0748BA1BE8609A00FA80F4 /* SystemConfiguration.framework in Frameworks */,
+				3D0748B81BE8608A00FA80F4 /* StoreKit.framework in Frameworks */,
+				3D0748B61BE8607D00FA80F4 /* Security.framework in Frameworks */,
+				3D0748B41BE8605E00FA80F4 /* CFNetwork.framework in Frameworks */,
 				5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */,
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */,
+				3D0748B21BE8600D00FA80F4 /* Parse.framework in Frameworks */,
 				2757FED81EAD4BB2B6B1C548 /* ImageIO.framework in Frameworks */,
+				3D0748C01BE8690F00FA80F4 /* Bolts.framework in Frameworks */,
 				F58D6F15EE2F4A48AD5D9CAB /* CoreLocation.framework in Frameworks */,
 				B260B629AC164835AEC14EFB /* AVFoundation.framework in Frameworks */,
 				38F592FF5AED47CB9E121502 /* QuartzCore.framework in Frameworks */,
@@ -285,6 +309,14 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3D0748BF1BE8690F00FA80F4 /* Bolts.framework */,
+				3D0748BD1BE860B500FA80F4 /* libsqlite3.tbd */,
+				3D0748BB1BE860A900FA80F4 /* libz.tbd */,
+				3D0748B91BE8609A00FA80F4 /* SystemConfiguration.framework */,
+				3D0748B71BE8608A00FA80F4 /* StoreKit.framework */,
+				3D0748B51BE8607D00FA80F4 /* Security.framework */,
+				3D0748B31BE8605E00FA80F4 /* CFNetwork.framework */,
+				3D0748B11BE8600D00FA80F4 /* Parse.framework */,
 				5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */,
@@ -606,6 +638,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -640,6 +676,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ChitChat/ChitChat-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;

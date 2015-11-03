@@ -24,17 +24,14 @@
             });
 
             console.log("******");
-            console.warn(push);
 
             push.on('registration', function (data) {
-                console.log("registration event");
+                console.warn("registration event", JSON.stringify(data));
                 document.getElementById("regId").innerHTML = data.registrationId;
-                console.log(JSON.stringify(data));
             });
 
             push.on('notification', function (data) {
-                console.log("notification event");
-                console.log(JSON.stringify(data));
+                console.warn("notification event", JSON.stringify(data));
                 var cards = document.getElementById("cards");
                 var card = '<div class="row">' +
                     '<div class="col s12 m6">' +
@@ -54,7 +51,7 @@
             });
 
             push.on('error', function (e) {
-                console.log("push error");
+                console.error("push error");
             });
         }
 
