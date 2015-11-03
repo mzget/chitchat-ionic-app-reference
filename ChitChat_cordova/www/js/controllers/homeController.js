@@ -16,7 +16,7 @@
 
         function activate() {
             console.info('homeController activate');
-            
+            /*
             console.log("<!-- push -->");
             var push = PushNotification.init({
                 "ios": { "alert": "true", "badge": "true", "sound": "true" },
@@ -43,6 +43,7 @@
             push.on('error', function (e) {
                 console.error("push error", e.message);
             });
+			*/
         }
 
         $scope.pullRefresh = function() {
