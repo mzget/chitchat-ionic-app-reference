@@ -23,7 +23,7 @@ var BlankCordovaApp1;
         Application.initialize();
     };
 })(BlankCordovaApp1 || (BlankCordovaApp1 = {}));
-// <reference path="./typings/tsd.d.ts" />
+/// <reference path="./typings/tsd.d.ts" />
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
@@ -200,7 +200,6 @@ var ChatServer;
             this._isConnected = false;
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
-            this.registrationId = localStorage.getItem("registrationId");
             var authen = localStorage.getItem("authen");
             if (authen !== null) {
                 this.authenData = JSON.parse(authen);
@@ -217,7 +216,7 @@ var ChatServer;
             });
         };
         ServerImplemented.prototype.loadSocket = function (resolve, rejected) {
-            requirejs(['../js/pomelo/pomeloclient'], function (obj) {
+            require(['../js/pomelo/pomeloclient'], function (obj) {
                 pomelo = obj;
                 resolve();
             });
@@ -299,7 +298,8 @@ var ChatServer;
         };
         ServerImplemented.prototype.authenForFrontendServer = function (callback) {
             var self = this;
-            var msg = { username: username, password: password, registrationId: this.registrationId };
+            var registrationId = localStorage.getItem("registrationId");
+            var msg = { username: username, password: password, registrationId: registrationId };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
                 console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
@@ -1595,7 +1595,7 @@ var SecureService = (function () {
         this.passiv = "ThisIsUrPassword";
     }
     SecureService.prototype.hashCompute = function (content, callback) {
-        requirejs(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
             var hash = CryptoJS.MD5(content);
             var md = hash.toString(CryptoJS.enc.Hex);
             callback(null, md);
@@ -1603,14 +1603,14 @@ var SecureService = (function () {
     };
     SecureService.prototype.encryption = function (content, callback) {
         var self = this;
-        requirejs(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
             var ciphertext = CryptoJS.AES.encrypt(content, self.key);
             callback(null, ciphertext.toString());
         });
     };
     SecureService.prototype.decryption = function (content, callback) {
         var self = this;
-        requirejs(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
             var bytes = CryptoJS.AES.decrypt(content, self.key);
             var plaintext = bytes.toString(CryptoJS.enc.Utf8);
             callback(null, plaintext);
@@ -1618,7 +1618,7 @@ var SecureService = (function () {
     };
     SecureService.prototype.encryptWithSecureRandom = function (content, callback) {
         var self = this;
-        requirejs(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
             var key = CryptoJS.enc.Utf8.parse(self.key);
             var iv = CryptoJS.enc.Utf8.parse(self.passiv);
             var ciphertext = CryptoJS.AES.encrypt(content, key, { iv: iv });
@@ -1627,7 +1627,7 @@ var SecureService = (function () {
     };
     SecureService.prototype.decryptWithSecureRandom = function (content, callback) {
         var self = this;
-        requirejs(["../js/crypto-js/crypto-js"], function (CryptoJS) {
+        require(["../js/crypto-js/crypto-js"], function (CryptoJS) {
             var key = CryptoJS.enc.Utf8.parse(self.key);
             var iv = CryptoJS.enc.Utf8.parse(self.passiv);
             var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv });
@@ -1640,4 +1640,3 @@ var SecureService = (function () {
     };
     return SecureService;
 })();
-//# sourceMappingURL=appBundle.js.map

@@ -60,7 +60,6 @@ angular.module('starter',
 
 	// Each tab has its own nav history stack:
 
-
 	// LOGIN
 	.state('tab.login', {
 		url: '/login',

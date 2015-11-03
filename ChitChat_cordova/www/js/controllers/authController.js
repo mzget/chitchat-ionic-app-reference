@@ -12,13 +12,15 @@
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
+        
+        navHide();
+        
         activate();
 
         function activate() {
             console.debug('authController activate');
-            navHide();
 
-            console.log("<!-- push -->");
+            console.log("init push notification.");
             var push = PushNotification.init({
                 "ios": { "alert": "true", "badge": "true", "sound": "true" },
                 "windows": {}
