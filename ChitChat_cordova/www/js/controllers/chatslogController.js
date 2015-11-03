@@ -69,19 +69,6 @@
 							location.href = '#/tab/chats/chat/' + accessId;
 							break;
 						case 3:
-							server.getPrivateChatRoomId(dataManager.myProfile._id, accessId, function result(err, res) {
-								console.log(JSON.stringify(res));
-								var room = JSON.parse(JSON.stringify(res.data));
-
-								$scope.chat = function () {
-									roomSelected.setRoom(room);
-									location.href = '#/tab/chats/chat/' + room._id;
-								};
-								
-								$scope.openViewContactProfile = function(id) {
-									location.href = '#/tab/chats/member/' + id;
-								}
-							});
 							break;
 					}
 				}
