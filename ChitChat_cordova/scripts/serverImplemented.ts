@@ -31,7 +31,6 @@ module ChatServer {
         host: string;
         port: number;
         authenData: AuthenData;
-        registrationId: string;
         _isInit = false;
         _isConnected = false;
         _isLogedin = false;
@@ -73,7 +72,6 @@ module ChatServer {
             this._isConnected = false;
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
-            this.registrationId = localStorage.getItem("registrationId");
             var authen = localStorage.getItem("authen");
             if (authen !== null) {
                 this.authenData = JSON.parse(authen);
@@ -206,7 +204,8 @@ module ChatServer {
         //<!-- Authentication. request for token sign.
         private authenForFrontendServer(callback: (err, res) => void) {
             var self = this;
-            var msg = { username: username, password: password, registrationId: this.registrationId };
+            var registrationId = localStorage.getItem("registrationId");
+            var msg = { username: username, password: password, registrationId: registrationId };
 
             //if (SpartanTalkApplication.getSharedAppData().contains(INSTALLATION_ID)) {
             //    msg.put(INSTALLATION_ID, SpartanTalkApplication.getSharedAppData().getString(INSTALLATION_ID, ""));
@@ -321,8 +320,15 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.editFavoriteMembers", msg, (result) => {
                 console.log("updateFavoriteMember: ", JSON.stringify(result));
-                if (callback != null)
+                if (callback != null){
+                    if(editType=='add'){
+                        self.dataManager.myProfile.favoriteUsers.push(member);
+                    }else{
+                        var index = self.dataManager.myProfile.favoriteUsers.indexOf(member);
+                        self.dataManager.myProfile.favoriteUsers.splice( index , 1);
+                    }
                     callback(null, result);
+                }
             });
         }
 
@@ -334,8 +340,15 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, (result) => {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                if (callback != null)
+                if (callback != null){
+                    if(editType=='add'){
+                        self.dataManager.myProfile.favoriteGroups.push(group);
+                    }else{
+                        var index = self.dataManager.myProfile.favoriteGroups.indexOf(group);
+                        self.dataManager.myProfile.favoriteGroups.splice( index , 1);
+                    }
                     callback(null, result);
+                }
             });
         }
 

@@ -200,7 +200,6 @@ var ChatServer;
             this._isConnected = false;
             username = localStorage.getItem("username");
             password = localStorage.getItem("password");
-            this.registrationId = localStorage.getItem("registrationId");
             var authen = localStorage.getItem("authen");
             if (authen !== null) {
                 this.authenData = JSON.parse(authen);
@@ -299,7 +298,8 @@ var ChatServer;
         };
         ServerImplemented.prototype.authenForFrontendServer = function (callback) {
             var self = this;
-            var msg = { username: username, password: password, registrationId: this.registrationId };
+            var registrationId = localStorage.getItem("registrationId");
+            var msg = { username: username, password: password, registrationId: registrationId };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
                 console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
@@ -394,8 +394,15 @@ var ChatServer;
             msg["token"] = this.authenData.token;
             pomelo.request("auth.profileHandler.editFavoriteMembers", msg, function (result) {
                 console.log("updateFavoriteMember: ", JSON.stringify(result));
-                if (callback != null)
+                if (callback != null){
+                    if(editType=='add'){
+                        self.dataManager.myProfile.favoriteUsers.push(member);
+                    }else{
+                        var index = self.dataManager.myProfile.favoriteUsers.indexOf(member);
+                        self.dataManager.myProfile.favoriteUsers.splice( index , 1);
+                    }
                     callback(null, result);
+                }
             });
         };
         ServerImplemented.prototype.updateFavoriteGroups = function (editType, group, callback) {
@@ -405,8 +412,15 @@ var ChatServer;
             msg["token"] = this.authenData.token;
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, function (result) {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                if (callback != null)
+                if (callback != null){
+                    if(editType=='add'){
+                        self.dataManager.myProfile.favoriteGroups.push(group);
+                    }else{
+                        var index = self.dataManager.myProfile.favoriteGroups.indexOf(group);
+                        self.dataManager.myProfile.favoriteGroups.splice( index , 1);
+                    }
                     callback(null, result);
+                }
             });
         };
         ServerImplemented.prototype.getMemberProfile = function (userId, callback) {
@@ -1640,4 +1654,3 @@ var SecureService = (function () {
     };
     return SecureService;
 })();
-//# sourceMappingURL=appBundle.js.map

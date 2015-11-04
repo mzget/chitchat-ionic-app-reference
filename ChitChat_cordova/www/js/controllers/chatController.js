@@ -24,7 +24,7 @@ angular.module('spartan.chat', [])
             });
         }
     }
-	$scope.title = currentRoom.name;	
+	$scope.currentRoom = currentRoom;
 	
 	modalcount = 0;	
 	// Modal - Chat menu 
@@ -362,6 +362,43 @@ angular.module('spartan.chat', [])
 			main.dataListener.removeListener(chatRoomControl);
 		});
     });
+
+    $scope.editFavorite = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==undefined){
+            server.updateFavoriteMember(editType,id,function (err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }else{
+            server.updateFavoriteGroups(editType,id,function (err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }
+    }
+    $scope.isFavorite = function(id){
+        var favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
+        var isHas = false;
+        for(var i=0; i<favoriteArray.length; i++){
+            if(favoriteArray[i] == id){
+                isHas = true;
+            }
+        }
+        return isHas;
+    }
 });
 
 var viewLocation = function ($scope, message, $ionicLoading) {
