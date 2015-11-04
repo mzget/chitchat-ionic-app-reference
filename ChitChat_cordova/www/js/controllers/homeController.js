@@ -73,7 +73,7 @@
             var favoriteArray = [];
             try{
                 favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
-            }catch{
+            }catch(err){
                 favoriteArray = [];
             }
            
