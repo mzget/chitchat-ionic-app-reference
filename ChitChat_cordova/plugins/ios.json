@@ -105,6 +105,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"Toast\"><param name=\"ios-package\" value=\"Toast\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
                             "count": 1
                         },
@@ -113,7 +117,7 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Toast\"><param name=\"ios-package\" value=\"Toast\" /></feature>",
+                            "xml": "<feature name=\"BackgroundMode\"><param name=\"ios-package\" value=\"APPBackgroundMode\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -130,6 +134,10 @@
                     "UIBackgroundModes": [
                         {
                             "xml": "<array><string>remote-notification</string></array>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<array><string>audio</string></array>",
                             "count": 1
                         }
                     ]
@@ -165,17 +173,20 @@
         "phonegap-plugin-push": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
-        "cordova-plugin-x-toast": {
+        "de.appplant.cordova.plugin.background-mode": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
     "dependent_plugins": {
-        "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
         "de.appplant.cordova.common.registerusernotificationsettings": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }

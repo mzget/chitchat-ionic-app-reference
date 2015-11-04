@@ -18,6 +18,7 @@
 
         function activate() {
             console.warn('homeController activate');
+ 
             localNotifyService.registerPermission();
         }
 

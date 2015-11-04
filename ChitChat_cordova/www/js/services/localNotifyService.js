@@ -81,7 +81,7 @@
         function makeToastOnCenter(message) {
              $cordovaToast.showLongCenter(message).then(function(success) {
                 // success
-                console.debug('success', success);
+                console.log('makeToastOnCenter success', success);
                 navigator.notification.beep(1);
             }, function (error) {
                 // error
@@ -91,7 +91,7 @@
 
         function scheduleSingleNotification(title, text) {
             // ========== Scheduling
-            console.warn("schedule: ", text);
+            console.log("schedule: ", text);
             $cordovaLocalNotification.schedule({
                 id: 1,
                 title: title,
@@ -100,7 +100,7 @@
                     customProperty: 'custom value'
                 }
             }).then(function (result) {
-                console.info('scheduleSingleNotification', result);
+                console.log('scheduleSingleNotification', result);
             });
         }
 

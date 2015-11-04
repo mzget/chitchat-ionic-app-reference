@@ -397,11 +397,11 @@ function testfunc()
 function navHide()
 {
 	$('.tab-nav.tabs').css({'display':'none'});
-	$('[name="tab-group"] .has-tabs').css({'bottom':'0px'})
+	$('.has-header').css({'bottom':'0px'})
 }
 
 function navShow()
 {
 	$('.tab-nav.tabs').css({'display':'flex'});
-	$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
+	$('.has-header').css({'bottom':'44px'})
 }
