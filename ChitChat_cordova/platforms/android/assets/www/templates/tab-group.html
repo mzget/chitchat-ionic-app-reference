@@ -1,0 +1,130 @@
+<ion-view view-title="Group" cache-view="false">
+	<ion-content>
+
+	<ion-refresher on-refresh="pullRefresh()"></ion-refresher>
+
+		<div class="bar bar-header item-input-inset">
+		  <label class="item-input-wrapper">
+		    <i class="icon ion-ios-search placeholder-icon"></i>
+		    <input type="search" placeholder="Search" ng-model="search.name">
+		  </label>
+		</div>
+		<div id="nav-myProfile" ng-click="viewlist('myProfile')" class="item item-button-right btn-nav">
+			Profile
+			<button class="button">
+				<i class="icon ion-chevron-up"></i>
+			</button>
+		</div>
+
+		<ion-list id="list-myProfile" class="group-list">
+			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-click="openProfileModal()"  type="item-text-wrap">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{myProfile.image}}&h=40&w=40" />
+				<h2>{{myProfile.displayname}}</h2>
+				<p>{{myProfile.status}}</p>
+				<i class="icon ion-chevron-right icon-accessory"></i>
+			</ion-item>
+		</ion-list>
+
+
+
+
+		<!-- -- -- -- -- -- -- -- -- -- -- Favorite -- -- -- -- -- -- -- -- -- -- -->
+		<div id="nav-favorites" ng-click="viewlist('favorites')" class="item item-button-right btn-nav">
+			Favorites
+			<button class="button">
+				<i class="icon ion-chevron-up"></i>
+			</button>
+		</div>
+		<ion-list id="list-favorites" class="group-list">
+			<ion-item class="item-remove-animate item-avatar item-icon-right" 
+			ng-repeat="favorite in favorites|orderObjectBy:'name':false|filter:search" type="item-text-wrap" ng-click="openModal(favorite._id,favorite.type)">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{favorite.image}}&h=40&w=40" />
+				<div ng-if="favorite.type=='0' || favorite.type=='1'">
+					<h2>{{favorite.name}}</h2>
+					<p>{{favorite.description}}</p>
+				</div>
+				<div ng-if="favorite.type=='2'">
+					<h2>{{favorite.name}}</h2>
+				</div>
+				<div ng-if="favorite.type==undefined">
+					<h2>{{favorite.displayname}}</h2>
+					<p>{{favorite.status}}</p>
+				</div>
+
+				<i class="icon ion-chevron-right icon-accessory"></i>
+			</ion-item>
+		</ion-list>
+
+
+
+		<!-- -- -- -- -- -- -- -- -- -- -- Org group -- -- -- -- -- -- -- -- -- -- -->
+		<div id="nav-orgGroups" ng-click="viewlist('orgGroups')" class="item item-button-right btn-nav">
+			Organize Groups
+			<button class="button">
+				<i class="icon ion-chevron-up"></i>
+			</button>
+		</div>
+		<ion-list id="list-orgGroups" class="group-list">
+			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="orgGroup in orgGroups|orderObjectBy:'name':false|filter:search" ng-click="openOrgModal(orgGroup._id)" type="item-text-wrap">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{orgGroup.image}}&h=40&w=40" />
+				<h2>{{orgGroup.name}}</h2>
+				<p>{{orgGroup.description}}</p>
+				<i class="icon ion-chevron-right icon-accessory"></i>
+			</ion-item>
+		</ion-list>
+		<!-- -- -- -- -- -- -- -- -- -- Project base group -- -- -- -- -- -- -- -- -- -- -- -->
+		<div id="nav-pjbGroups" ng-click="viewlist('pjbGroups')" class="item item-button-right btn-nav">
+			Project base Groups
+			<button class="button">
+				<i class="icon ion-chevron-up"></i>
+			</button>
+		</div>
+		<ion-list id="list-pjbGroups" class="group-list">
+			<ion-item class="item-remove-animate item-avatar item-icon-right"
+                       ng-repeat="pjbGroup in pjbGroups|orderObjectBy:'name':false|filter:search"
+                       ng-if="pjbGroup.visibility === true || pjbGroup.visibility === undefine" 
+                       ng-click="openPjbModal(pjbGroup._id)" type="item-text-wrap">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{pjbGroup.image}}&h=40&w=40" />
+				<h2>{{pjbGroup.name}}</h2>
+				<p>{{pjbGroup.description}}</p>
+				<i class="icon ion-chevron-right icon-accessory"></i>
+			</ion-item>
+		</ion-list>
+
+		<!-- -- -- -- -- -- -- -- -- -- -- Private group -- -- -- -- -- -- -- -- -- -- -->
+		<div id="nav-pvGroups" ng-click="viewlist('pvGroups')" class="item item-button-right btn-nav">
+			Private Groups
+			<button class="button">
+				<i class="icon ion-chevron-up"></i>
+			</button>
+		</div>
+		<ion-list id="list-pvGroups" class="group-list">
+			<ion-item class="item-remove-animate item-avatar item-icon-right"
+                       ng-repeat="pvGroup in pvGroups|orderObjectBy:'name':false|filter:search"
+                       ng-if="pvGroup.visibility === true || pvGroup.visibility === undefine" 
+                       ng-click="openPvgModal(pvGroup._id)" type="item-text-wrap">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{pvGroup.image}}&h=40&w=40" />
+				<h2>{{pvGroup.name}}</h2>
+				<i class="icon ion-chevron-right icon-accessory"></i>
+			</ion-item>
+		</ion-list>
+		<!-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -->
+		<div id="nav-orgmembers" ng-click="viewlist('orgmembers')" class="item item-button-right btn-nav">
+			Organize Members
+			<button class="button">
+				<i class="icon ion-chevron-up"></i>
+			</button>
+		</div>
+		<ion-list id="list-orgmembers" class="group-list">
+			<ion-item ng-repeat="chat in chats|orderObjectBy:'displayname':false|filter:search.name" 
+			ng-if="chat._id != myProfile._id" class="item-remove-animate item-avatar item-icon-right" 
+			ng-click="openContactModal(chat._id)" type="item-text-wrap">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}&h=40&w=40" />
+				<h2>{{chat.displayname}}</h2>
+				<p>{{chat.status}}</p>
+				<i class="icon ion-chevron-right icon-accessory"></i>
+			</ion-item>
+		</ion-list>
+		
+	</ion-content>
+</ion-view>

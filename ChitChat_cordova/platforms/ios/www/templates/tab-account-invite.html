@@ -1,0 +1,42 @@
+<ion-view view-title="Invite Members">
+
+    <ion-nav-buttons side="right">
+        <button class="button button-clear button-positive" ng-if="status=='invite'" ng-click='invite()'>Invite</button>
+    </ion-nav-buttons>
+
+  <ion-content>
+    <ion-list class="create-group-invite-list-member" ng-controller="CreateProjectBase">
+
+
+        <div class="bar bar-header item-input-inset">
+          <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" placeholder="Search" ng-model="search.displayname">
+          </label>
+        </div>
+        <div class="item item-button-right btn-nav">
+            Friends
+        </div>
+        
+        <ion-item class="item item-checkbox item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false|filter:search" 
+        ng-if=" createType=='PrivateGroup' && myProfile._id!=member._id || invite && myProfile._id!=member._id" id="{{member._id}}">
+            <label class="checkbox">
+              <input type="checkbox" ng-model="member.checked" ng-click="checked(member._id,member.checked)"/>
+            </label>
+            <img ng-src="http://stalk.animation-genius.com{{member.image}}"/> 
+            <div class="member-name"> {{member.displayname}} </div> 
+        </ion-item>
+
+        <ion-item class="item item-checkbox item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false|filter:search" 
+        ng-if="createType=='ProjectBase'" id="{{member._id}}">
+            <label class="checkbox">
+              <input type="checkbox" ng-model="member.checked" ng-disabled="myProfile._id==member._id" ng-click="checked(member._id,member.checked)" />
+            </label>
+            <img ng-src="http://stalk.animation-genius.com{{member.image}}"/> 
+            <div class="member-name"> {{member.displayname}} </div> 
+            <a class="button button-icon icon ion-compose" style="position:absolute; right:0px; margin-right:10px; z-index:4" ng-click="openSelectRole(member._id)"></a>
+        </ion-item>
+
+    </ion-list>
+  </ion-content>
+</ion-view>
