@@ -1,0 +1,35 @@
+﻿<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+
+<ion-modal-view style="width:80%; left:10%; right:10%; top:10%; bottom:10%; min-height:300px;">
+    <ion-pane class="padding group-detail"  padding ="false">
+        <img class="avatar" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}&w=150&h=150" />
+        <a class="button button-icon icon ion-ios-close-empty" ng-click="closePjbModal()"></a>
+
+        <div>
+          <i ng-if="isFavorite(chat._id)" class="ion-heart assertive" style="font-size:30px;padding:10px;display:inherit;" ng-click="editFavorite('remove',chat._id,chat.type)"></i>
+          <i ng-if="!isFavorite(chat._id)" class="ion-heart dark" style="font-size:30px;padding:10px;display:inherit;" ng-click="editFavorite('add',chat._id,chat.type)"></i>
+        </div>
+
+        <div class="group-pvgroup">
+            <span ng-repeat="member in members">
+                <img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{member.image}}&h=30&w=30" />
+            </span>
+            <a ng-click="viewGroupDetail(chat._id)" class="length">{{ members_length }}</a>
+        </div>
+        <div class="group-menu">
+            <div ng-click="toggle(chat._id)"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></div>
+            <div><i class="ion-ios-telephone-outline" data-pack="default" data-tags="talk"></i><br /><span>Wall</span></div>
+            <div><i class="ion-videocamera" data-pack="default" data-tags="talk"></i><br /><span>Album</span></div>
+        </div>
+    </ion-pane>
+</ion-modal-view>
+
+<a ng-click="closePjbModal()" style="position:fixed; top:0; left:0; width:100%; height:100vh; background-color:rgba(0,0,0,0.6);"></a>
+
+
+<!--href="#/tab/group/members/{{ chat._id }}"--> 
