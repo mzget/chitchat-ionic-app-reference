@@ -19,6 +19,9 @@
 
 .group-detail { text-align:center; }
 .group-detail .avatar { width:100%; max-width:150px; height:150px; border-radius:50%; }
+.group-detail .avatar-modal { width:100%; max-width:150px; height:150px; border-radius:50%; margin-top: 20px;}
+.group-detail .name-modal { font-size: 20px; margin-top: 20px;}
+.group-detail .close-modal { position: absolute; right: 5px; }
 .group-detail .group-menu { display:table; width:100%; max-width:600px; margin:0 auto; }
 .group-detail .group-menu > * { float:left; display:inline; width:100%; max-width:33%; padding:20px 0; font-size:40px; cursor:pointer; text-decoration:none; color:#333; }
 .group-detail .group-menu > * span { font-size:14px; position:relative; top:-10px; }
