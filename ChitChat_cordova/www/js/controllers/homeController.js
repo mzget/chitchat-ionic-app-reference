@@ -12,10 +12,11 @@
         var vm = this;
         vm.title = 'homeController';
 
+        navShow();
         activate();
 
         function activate() {
-            console.info('homeController activate');
+            console.warn('homeController activate');
         }
 
         $scope.pullRefresh = function() {
@@ -238,8 +239,6 @@
             $scope.contactModal.hide();	
         };
     }
-
-
 
     var initOrgModal = function ($state, $scope, groupId, roomSelected, done) {
         var group = main.getDataManager().orgGroups[groupId];

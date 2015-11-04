@@ -12,10 +12,11 @@
         var vm = this;
         vm.title = 'homeController';
 
+        navShow();
         activate();
 
         function activate() {
-            console.info('homeController activate');
+            console.warn('homeController activate');
         }
 
         $scope.pullRefresh = function() {
@@ -92,7 +93,12 @@
                 $scope.pjbGroups = dataManager.projectBaseGroups;
                 $scope.pvGroups = dataManager.privateGroups;
                 $scope.chats = dataManager.orgMembers;
-                $scope.favorites = getFavorite();
+                try{
+                    $scope.favorites = getFavorite();
+                }catch(err) {
+                    //console.log(err);
+                }
+                
                 $scope.$apply();
             };
 	
@@ -227,8 +233,6 @@
             $scope.contactModal.hide();	
         };
     }
-
-
 
     var initOrgModal = function ($state, $scope, groupId, roomSelected, done) {
         var group = main.getDataManager().orgGroups[groupId];

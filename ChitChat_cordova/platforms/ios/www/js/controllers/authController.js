@@ -16,7 +16,7 @@
         navHide();
 
         function activate() {
-            console.log('authController activate');
+            console.warn('authController activate');
 
             console.log("init push notification.");
             var push = PushNotification.init({
@@ -46,7 +46,6 @@
 		    main.setServerListener(serverEvents);
 		    main.setServerImp(server);
 		    main.onMyProfileReadyListener = function(dataManager) {
-			    console.warn('goto group');
 			    $('#login').css('display','none');
 			    $('.bar-stable').css({'display':''});
 			    $('#splash').css({'display':'none'});
