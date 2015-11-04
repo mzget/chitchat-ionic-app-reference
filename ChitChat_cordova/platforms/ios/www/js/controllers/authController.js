@@ -5,20 +5,18 @@
         .module('spartan.auth', [])
         .controller('authController', authController);
 
-    authController.$inject = ['$location']; 
+    authController.$inject = ['$location', "$ionicPlatform"];
 
-    function authController($location) {
+    function authController($location, $ionicPlatform) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
         
         navHide();
-        
-        activate();
 
         function activate() {
-            console.debug('authController activate');
+            console.log('authController activate');
 
             console.log("init push notification.");
             var push = PushNotification.init({
@@ -146,5 +144,9 @@
 				navigator.notification.alert(errMessage, function callback() {}, "Connecting to server fail!", "OK");
 			}
         }
+
+        $ionicPlatform.ready(function () {
+            activate();
+        });
     }
 })();
