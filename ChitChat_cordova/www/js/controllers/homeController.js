@@ -12,7 +12,8 @@
         var vm = this;
         vm.title = 'homeController';
 
-        navShow();
+		$('.tab-nav.tabs').css({'display':'flex'});
+		$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
         activate();
 
         function activate() {
@@ -73,7 +74,7 @@
             var favoriteArray = [];
             try{
                 favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
-            }catch{
+            }catch(err){
                 favoriteArray = [];
             }
            
