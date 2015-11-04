@@ -69,7 +69,13 @@
         }
    
         $scope.isFavorite = function(id){
-            var favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
+            var favoriteArray = [];
+            try{
+                favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
+            }catch{
+                favoriteArray = [];
+            }
+           
             var isHas = false;
             for(var i=0; i<favoriteArray.length; i++){
                 if(favoriteArray[i] == id){
