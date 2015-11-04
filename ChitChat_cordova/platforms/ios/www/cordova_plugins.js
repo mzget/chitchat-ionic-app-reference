@@ -278,6 +278,13 @@ module.exports = [
         "clobbers": [
             "ProgressIndicator"
         ]
+    },
+    {
+        "file": "plugins/phonegap-plugin-push/www/push.js",
+        "id": "phonegap-plugin-push.PushNotification",
+        "clobbers": [
+            "PushNotification"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -290,7 +297,8 @@ module.exports.metadata =
     "cordova-plugin-media": "1.0.1",
     "cordova-plugin-media-capture": "1.0.1",
     "org.apache.cordova.dialogs": "0.3.0",
-    "org.pbernasconi.progressindicator": "1.1.0"
+    "org.pbernasconi.progressindicator": "1.1.0",
+    "phonegap-plugin-push": "1.4.2"
 }
 // BOTTOM OF METADATA
 });
