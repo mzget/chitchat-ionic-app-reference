@@ -80,6 +80,8 @@
 		B42C3DB98A904A17AB4415B3 /* UILocalNotification+APPLocalNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 96C01C5C82674349BC17EC07 /* UILocalNotification+APPLocalNotification.m */; };
 		9F2C25DCA3594EDB8BD08AE0 /* APPBackgroundMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 192C5A0E35EB4A3ABFA7B36E /* APPBackgroundMode.m */; };
 		AC0A9BE7A8444CDEA4CEEE94 /* appbeep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 637270D7F2494F58BBA8370C /* appbeep.wav */; };
+		4F9BF8FDF59B4F3CAC2400A2 /* APPBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC3DA5F93324AC48E8EBBA1 /* APPBadge.m */; };
+		9894C92E3EA34E2F9DBBC09C /* UIApplication+APPBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 337BBA77AFD24CB1ACA0712B /* UIApplication+APPBadge.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -209,6 +211,10 @@
 		192C5A0E35EB4A3ABFA7B36E /* APPBackgroundMode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "APPBackgroundMode.m"; path = "de.appplant.cordova.plugin.background-mode/APPBackgroundMode.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		026E9DFC499B42F5AC0F566D /* APPBackgroundMode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "APPBackgroundMode.h"; path = "de.appplant.cordova.plugin.background-mode/APPBackgroundMode.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		637270D7F2494F58BBA8370C /* appbeep.wav */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "appbeep.wav"; path = "appbeep.wav"; sourceTree = "<group>"; fileEncoding = 4; };
+		5DC3DA5F93324AC48E8EBBA1 /* APPBadge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "APPBadge.m"; path = "de.appplant.cordova.plugin.badge/APPBadge.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		337BBA77AFD24CB1ACA0712B /* UIApplication+APPBadge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+APPBadge.m"; path = "de.appplant.cordova.plugin.badge/UIApplication+APPBadge.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		9CE39F065B554DEA97FF516E /* APPBadge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "APPBadge.h"; path = "de.appplant.cordova.plugin.badge/APPBadge.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		F6B920FCDFC24EB58BEDD3A2 /* UIApplication+APPBadge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIApplication+APPBadge.h"; path = "de.appplant.cordova.plugin.badge/UIApplication+APPBadge.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -386,6 +392,10 @@
 				74C8147E77D34BEEAA344EFB /* UILocalNotification+APPLocalNotification.h */,
 				192C5A0E35EB4A3ABFA7B36E /* APPBackgroundMode.m */,
 				026E9DFC499B42F5AC0F566D /* APPBackgroundMode.h */,
+				5DC3DA5F93324AC48E8EBBA1 /* APPBadge.m */,
+				337BBA77AFD24CB1ACA0712B /* UIApplication+APPBadge.m */,
+				9CE39F065B554DEA97FF516E /* APPBadge.h */,
+				F6B920FCDFC24EB58BEDD3A2 /* UIApplication+APPBadge.h */,
 			);
 			name = Plugins;
 			path = ChitChat/Plugins;
@@ -608,6 +618,8 @@
 				9EF28C40BDA74846B51A13ED /* UIApplication+APPLocalNotification.m in Sources */,
 				B42C3DB98A904A17AB4415B3 /* UILocalNotification+APPLocalNotification.m in Sources */,
 				9F2C25DCA3594EDB8BD08AE0 /* APPBackgroundMode.m in Sources */,
+				4F9BF8FDF59B4F3CAC2400A2 /* APPBadge.m in Sources */,
+				9894C92E3EA34E2F9DBBC09C /* UIApplication+APPBadge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

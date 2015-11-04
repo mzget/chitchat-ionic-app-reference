@@ -335,6 +335,14 @@ module.exports = [
             "cordova.plugins.backgroundMode",
             "plugin.backgroundMode"
         ]
+    },
+    {
+        "file": "plugins/de.appplant.cordova.plugin.badge/www/badge.js",
+        "id": "de.appplant.cordova.plugin.badge.Badge",
+        "clobbers": [
+            "plugin.notification.badge",
+            "cordova.plugins.notification.badge"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -353,6 +361,7 @@ module.exports.metadata =
     "org.apache.cordova.device": "0.3.0",
     "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
     "de.appplant.cordova.plugin.background-mode": "0.6.3",
+    "de.appplant.cordova.plugin.badge": "0.7.1",
     "de.appplant.cordova.common.registerusernotificationsettings": "1.0.1"
 }
 // BOTTOM OF METADATA

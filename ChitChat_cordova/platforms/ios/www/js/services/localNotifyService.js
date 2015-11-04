@@ -81,7 +81,7 @@
         function makeToastOnCenter(message) {
              $cordovaToast.showLongCenter(message).then(function(success) {
                 // success
-                console.log('success', success);
+                console.log('makeToastOnCenter success', success);
                 navigator.notification.beep(1);
             }, function (error) {
                 // error

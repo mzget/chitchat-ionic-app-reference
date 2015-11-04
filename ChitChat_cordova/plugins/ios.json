@@ -119,6 +119,10 @@
                         {
                             "xml": "<feature name=\"BackgroundMode\"><param name=\"ios-package\" value=\"APPBackgroundMode\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Badge\"><param name=\"ios-package\" value=\"APPBadge\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -183,6 +187,9 @@
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "de.appplant.cordova.plugin.background-mode": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "de.appplant.cordova.plugin.badge": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
