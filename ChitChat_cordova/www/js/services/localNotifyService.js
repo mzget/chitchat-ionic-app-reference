@@ -20,8 +20,8 @@
                 secure.decryptWithSecureRandom(chatMessageImp.body,  function done(err, res) {
                      if (!err) {
                         chatMessageImp.body = res;
-                        makeToastOnCenter(chatMessageImp.body);
                         scheduleSingleNotification(contact.displayname, chatMessageImp.body);
+                        makeToastOnCenter(chatMessageImp.body);
                     }
                     else {
                         console.warn(err, res);
@@ -64,12 +64,19 @@
             getData: getData,
             scheduleSingleNotification: scheduleSingleNotification,
             updateSingleNotification: updateSingleNotification,
-            cancelSingleNotification:cancelSingleNotification
+            cancelSingleNotification: cancelSingleNotification,
+            registerPermission: registerPermission
         };
 
         return service;
 
         function getData() { }
+
+        function registerPermission() {
+            cordova.plugins.notification.local.registerPermission(function (granted) {
+                console.warn('Permission has been granted: ' + granted);
+            });
+        }
         
         function makeToastOnCenter(message) {
              $cordovaToast.showLongCenter(message).then(function(success) {
@@ -84,11 +91,11 @@
 
         function scheduleSingleNotification(title, text) {
             // ========== Scheduling
+            console.warn("schedule: ", text);
             $cordovaLocalNotification.schedule({
                 id: 1,
                 title: title,
                 text: text,
-                sound: "/layerbell.caf",
                 data: {
                     customProperty: 'custom value'
                 }
