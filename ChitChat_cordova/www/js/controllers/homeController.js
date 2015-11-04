@@ -92,7 +92,12 @@
                 $scope.pjbGroups = dataManager.projectBaseGroups;
                 $scope.pvGroups = dataManager.privateGroups;
                 $scope.chats = dataManager.orgMembers;
-                $scope.favorites = getFavorite();
+                try{
+                    $scope.favorites = getFavorite();
+                }catch(err) {
+                    //console.log(err);
+                }
+                
                 $scope.$apply();
             };
 	
