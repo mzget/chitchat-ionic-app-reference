@@ -59,9 +59,19 @@ static char launchNotificationKey;
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
     NSLog(@"currentInstallation %@", currentInstallation);
+    //convert object to data
+//    NSError* error = nil;
+//    NSDictionary model = @{@"deviceToken": @(currentInstallation.deviceToken),
+    //                            @"installationId": @(currentInstallation.installationId)};
+    
+//    NSData* model = { currentInstallation.deviceToken, currentInstallation.installationId};
+//    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:model
+//                                                       options:0
+//                                                         error:nil];
+    
     
     PushPlugin *pushHandler = [self getCommandInstance:@"PushNotification"];
-    [pushHandler didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    [pushHandler didRegisterForRemoteNotificationsWithDeviceToken:currentInstallation.installationId];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -72,7 +82,7 @@ static char launchNotificationKey;
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     NSLog(@"didReceiveNotification with fetchCompletionHandler");
     //<!--  Parse..
-     [PFPush handlePush:userInfo];
+    [PFPush handlePush:userInfo];
 
     // app is in the foreground so call notification callback
     if (application.applicationState == UIApplicationStateActive) {

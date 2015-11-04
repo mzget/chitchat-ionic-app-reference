@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00FD179BF734482CB7D771D1 /* AppDelegate+notification.m in Sources */ = {isa = PBXBuildFile; fileRef = ECF5CAA476DD47BD873E69EE /* AppDelegate+notification.m */; };
 		0FD9A29302294EEAAF079F76 /* CDVLocalFilesystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7718F56514B542F6938598DF /* CDVLocalFilesystem.m */; };
