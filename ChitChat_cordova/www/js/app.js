@@ -39,8 +39,8 @@ angular.module('starter',
 		var currentPlatform = ionic.Platform.platform();
 		var currentPlatformVersion = ionic.Platform.version();
 		
-		console.log("0", deviceInformation);
-		console.log("1", currentPlatform);
+		console.log("deviceInformation", JSON.stringify(deviceInformation));
+		console.log("currentPlatform", currentPlatform);
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
