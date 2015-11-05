@@ -205,7 +205,7 @@ module ChatServer {
         private authenForFrontendServer(callback: (err, res) => void) {
             var self = this;
             var registrationId = localStorage.getItem("registrationId");
-            var msg = { username: username, password: password, installationId: registrationId };
+            var msg = { username: username, password: password, registrationId: registrationId };
 
             //if (SpartanTalkApplication.getSharedAppData().contains(INSTALLATION_ID)) {
             //    msg.put(INSTALLATION_ID, SpartanTalkApplication.getSharedAppData().getString(INSTALLATION_ID, ""));
