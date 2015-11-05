@@ -372,7 +372,7 @@ angular.module('spartan.chat', [])
         $ionicLoading.show({
               template: 'Loading..'
         });
-        if(type==undefined){
+        if(type==RoomType.privateChat){
             server.updateFavoriteMember(editType,id,function (err, res) {
                 if (!err) {
                     console.log(JSON.stringify(res));
