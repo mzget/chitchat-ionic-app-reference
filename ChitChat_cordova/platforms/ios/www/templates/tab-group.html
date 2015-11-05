@@ -37,7 +37,7 @@
 		</div>
 		<ion-list id="list-favorites" class="group-list">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" 
-			ng-repeat="favorite in favorites|orderObjectBy:'name':false|filter:search" type="item-text-wrap" ng-click="openModal(favorite._id,favorite.type)">
+			ng-repeat="favorite in favorites|orderObjectBy:'name':false|filter:search track by $index" type="item-text-wrap" ng-click="openModal(favorite._id,favorite.type)">
 				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{favorite.image}}&h=40&w=40" />
 				<div ng-if="favorite.type=='0' || favorite.type=='1'">
 					<h2>{{favorite.name}}</h2>
@@ -47,7 +47,7 @@
 					<h2>{{favorite.name}}</h2>
 				</div>
 				<div ng-if="favorite.type==undefined">
-					<h2>{{favorite.displayname}}</h2>
+					<h2>{{favorite.name}}</h2>
 					<p>{{favorite.status}}</p>
 				</div>
 
