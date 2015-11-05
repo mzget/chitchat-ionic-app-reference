@@ -8,6 +8,13 @@
     authController.$inject = ['$location', "$ionicPlatform"];
 
     function authController($location, $ionicPlatform) {
+
+    	$ionicPlatform.ready(function() {
+		    setTimeout(function() {
+		        navigator.splashscreen.hide();
+		    }, 100);
+		});
+
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
