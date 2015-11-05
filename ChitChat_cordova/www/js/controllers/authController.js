@@ -71,13 +71,16 @@
 						    main.getHashService(password, function (err, res) {
 							    main.authenUser(server, email, res, function (err, res) {
 								    if (!err && res !== null) {
-									    if (res.code === 200) {
+									    if (res.code === HttpStatusCode.success) {
 										    console.log("Success Login User...");
 									    }
 									    else if(res.code === 1004) {
 										    $('body #login input').attr('readonly', false);
 										
 										    onDuplicateLogin(res);
+									    }
+									    else if (res.code === HttpStatusCode.requestTimeout) {
+									        onLoginTimeout(res);
 									    }
 								    }
 								    else {
@@ -123,7 +126,9 @@
 				    }		
 			    }
 		    });
-		
+		    function onLoginTimeout(param) {
+		        navigator.notification.alert(param.message, function callback() { }, "Login Timeout!", "OK");
+		    }
 			function onDuplicateLogin(param) {
 				navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices", function (buttonIndex) {
 					switch (buttonIndex) {

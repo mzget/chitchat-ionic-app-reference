@@ -77,7 +77,7 @@ class Main {
                 }).then(function onFulfilled(value) {
                     server.getMe(function (err, res) {
                         if (err || res === null) {
-                            console.warn(err);
+                            console.error(err);
                         }
                         else {
                             self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
@@ -87,7 +87,7 @@ class Main {
                             if (res.code === 200) {
                             }
                             else {
-                                console.error("My user profile is empty. please check.");
+                                console.warn("My user profile is empty. please check.");
                             }
                         }
                     });
@@ -141,7 +141,7 @@ class Main {
                 });
             }
             else {
-                console.error(err);
+                console.error(err, loginRes);
             }
         });
     }

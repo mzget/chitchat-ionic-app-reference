@@ -219,17 +219,17 @@ module ChatServer {
                         callback(res.message, null);
                     }
                 }
-                else if(res.code === 1004) {
-                    if(callback !== null) {
-                        callback(null, res);
-                    }
-                }
-                else {
+                else if (res.code === 200) {
                     self.authenData.userId = res.uid;
                     self.authenData.token = res.token;
                     localStorage.setItem("authen", JSON.stringify(self.authenData));
 
                     if (callback != null) {
+                        callback(null, res);
+                    }
+                }
+                else {
+                    if (callback !== null) {
                         callback(null, res);
                     }
                 }
@@ -302,11 +302,7 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("connector.entryHandler.getMe", msg, (result) => {
                 console.log("getMe: ", JSON.stringify(result));
-                if (result.code === 500) {
-                    callback(result.message, null);
-                    //                    if (OnLoginComplete != null)
-                    //                        OnLoginComplete (false);
-                } else {
+                if (callback !== null) {
                     callback(null, result);
                 }
             });
