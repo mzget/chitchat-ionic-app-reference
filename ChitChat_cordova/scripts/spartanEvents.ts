@@ -8,6 +8,8 @@
         onGetMessagesReaders(dataEvent);
     }
     export interface IFrontendServerListener {
+        onGetMe(dataEvent);
+        onGetCompanyInfo(dataEvent);
         onGetCompanyMemberComplete(dataEvent);
         onGetPrivateGroupsComplete(dataEvent);
         onGetOrganizeGroupsComplete(dataEvent);
@@ -45,6 +47,8 @@
     }
 
     export abstract class AbsFrontendServerListener implements IFrontendServerListener {
+        abstract onGetMe(dataEvent);
+        abstract onGetCompanyInfo(dataEvent);
         abstract onGetCompanyMemberComplete(dataEvent);
         abstract onGetPrivateGroupsComplete(dataEvent);
         abstract onGetOrganizeGroupsComplete(dataEvent);
