@@ -12,11 +12,14 @@
         var vm = this;
         vm.title = 'homeController';
 
-        navShow();
+		$('.tab-nav.tabs').css({'display':'flex'});
+		$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
         activate();
 
         function activate() {
             console.warn('homeController activate');
+ 
+            localNotifyService.registerPermission();
         }
 
         $scope.pullRefresh = function() {

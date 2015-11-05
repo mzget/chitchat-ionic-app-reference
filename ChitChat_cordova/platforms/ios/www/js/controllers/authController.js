@@ -143,8 +143,25 @@
 				navigator.notification.alert(errMessage, function callback() {}, "Connecting to server fail!", "OK");
 			}
         }
+        
+        function activateBackground() {
+            // Prevent the app from going to sleep in background
+            cordova.plugins.backgroundMode.enable();
+            // Get informed when the background mode has been activated
+            cordova.plugins.backgroundMode.onactivate = function () {
+                console.warn("backgroundMode.onactivate");
+                cordova.plugins.notification.badge.set(1);
+            };
+            
+            // Get informed when the background mode has been deactivated
+            cordova.plugins.backgroundMode.ondeactivate = function () {
+                console.warn("backgroundMode.ondeactivate");
+                cordova.plugins.notification.badge.clear();
+            };
+        }
 
         $ionicPlatform.ready(function () {
+            activateBackground();
             activate();
         });
     }

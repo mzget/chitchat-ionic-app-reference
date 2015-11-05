@@ -287,6 +287,24 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
+        "id": "cordova-plugin-x-toast.Toast",
+        "clobbers": [
+            "window.plugins.toast"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-x-toast/test/tests.js",
+        "id": "cordova-plugin-x-toast.tests"
+    },
+    {
+        "file": "plugins/org.apache.cordova.device/www/device.js",
+        "id": "org.apache.cordova.device.device",
+        "clobbers": [
+            "device"
+        ]
+    },
+    {
         "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js",
         "id": "de.appplant.cordova.plugin.local-notification.LocalNotification",
         "clobbers": [
@@ -311,21 +329,19 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
-        "id": "cordova-plugin-x-toast.Toast",
+        "file": "plugins/de.appplant.cordova.plugin.background-mode/www/background-mode.js",
+        "id": "de.appplant.cordova.plugin.background-mode.BackgroundMode",
         "clobbers": [
-            "window.plugins.toast"
+            "cordova.plugins.backgroundMode",
+            "plugin.backgroundMode"
         ]
     },
     {
-        "file": "plugins/cordova-plugin-x-toast/test/tests.js",
-        "id": "cordova-plugin-x-toast.tests"
-    },
-    {
-        "file": "plugins/cordova-plugin-device/www/device.js",
-        "id": "cordova-plugin-device.device",
+        "file": "plugins/de.appplant.cordova.plugin.badge/www/badge.js",
+        "id": "de.appplant.cordova.plugin.badge.Badge",
         "clobbers": [
-            "device"
+            "plugin.notification.badge",
+            "cordova.plugins.notification.badge"
         ]
     }
 ];
@@ -341,9 +357,11 @@ module.exports.metadata =
     "org.apache.cordova.dialogs": "0.3.0",
     "org.pbernasconi.progressindicator": "1.1.0",
     "phonegap-plugin-push": "1.4.2",
-    "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
     "cordova-plugin-x-toast": "2.2.1",
-    "cordova-plugin-device": "1.0.1",
+    "org.apache.cordova.device": "0.3.0",
+    "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
+    "de.appplant.cordova.plugin.background-mode": "0.6.3",
+    "de.appplant.cordova.plugin.badge": "0.7.1",
     "de.appplant.cordova.common.registerusernotificationsettings": "1.0.1"
 }
 // BOTTOM OF METADATA

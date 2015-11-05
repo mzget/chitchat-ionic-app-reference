@@ -18,6 +18,8 @@
 
         function activate() {
             console.warn('homeController activate');
+ 
+            localNotifyService.registerPermission();
         }
 
         $scope.pullRefresh = function() {
