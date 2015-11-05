@@ -8,10 +8,11 @@
 	<ion-content class="padding group-detail">
 		<a ng-click="openViewContactProfile(contact._id)"> <img class="avatar-modal" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{contact.image}}&w=150&h=150"/> </a>
 		<a class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closeContactModal()"></a>
-		<p class="name-modal">{{contact.displayname}}</p>
-		<div>
-			<i ng-if="isFavorite(contact._id)" class="ion-heart assertive" style="font-size:30px;padding:10px;display:inherit;" ng-click="editFavorite('remove',contact._id)"></i>
-			<i ng-if="!isFavorite(contact._id)" class="ion-heart dark" style="font-size:30px;padding:10px;display:inherit;" ng-click="editFavorite('add',contact._id)"></i>
+		
+		<div style="margin-bottom:15px;">
+			<p class="name-modal" style="display:inline;">{{contact.displayname}}</p>
+			<i ng-if="isFavorite(contact._id)" class="ion-heart assertive" style="font-size:20px;display:inline;position:absolute;margin-left:10px;" ng-click="editFavorite('remove',contact._id)"></i>
+			<i ng-if="!isFavorite(contact._id)" class="ion-heart dark" style="font-size:20px;display:inline;position:absolute;margin-left:10px;" ng-click="editFavorite('add',contact._id)"></i>
 		</div>
 
 		<div class="group-menu">
