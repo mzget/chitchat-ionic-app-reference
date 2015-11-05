@@ -58,7 +58,7 @@ static char launchNotificationKey;
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
-    NSLog(@"currentInstallation %@", currentInstallation);
+    NSLog(@"currentInstallation %@", currentInstallation.deviceToken);
     //convert object to data
 //    NSError* error = nil;
 //    NSDictionary model = @{@"deviceToken": @(currentInstallation.deviceToken),

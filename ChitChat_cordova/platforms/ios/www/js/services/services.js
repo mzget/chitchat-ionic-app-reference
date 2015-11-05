@@ -330,6 +330,70 @@ angular.module('spartan.services', [])
   }
 })
 
+.factory('Favorite',function(){
+  var favoriteMembers = [];
+  var favoriteGroups = [];
+  var isGetFirstData = false;
+  function getFavorite(){
+    try{
+      favoriteMembers = main.getDataManager().myProfile.favoriteUsers;
+      favoriteGroups = main.getDataManager().myProfile.favoriteGroups;
+      isGetFirstData = true;
+    }catch(err){
+      isGetFirstData = false;
+    }
+  }
+  function isFavorite(id){
+    var isHas = false;
+    if(!isGetFirstData) getFavorite();
+    else{
+      var allFavorite = getAllFavorite();
+      for(var i=0; i<allFavorite.length; i++){
+          if(allFavorite[i] == id){
+              isHas = true;
+          }
+      }
+      return isHas;
+    }
+    return isHas;
+  }
+  function updateFavorite(editType,id,type){
+    if(type!=undefined){
+      if(editType=='add'){
+          if(favoriteGroups==undefined) favoriteGroups = [];
+          favoriteGroups.push(id);
+      }else{
+          var index = favoriteGroups.indexOf(id);
+          favoriteGroups.splice( index , 1);
+      }
+    }else{
+      if(editType=='add'){
+          if(favoriteMembers==undefined) favoriteMembers = [];
+          favoriteMembers.push(id);
+      }else{
+          var index = favoriteMembers.indexOf(id);
+          favoriteMembers.splice( index , 1);
+      }
+    }   
+  }
+  function getAllFavorite(){
+    if(!isGetFirstData) getFavorite();
+    else{
+      if(favoriteMembers != undefined && favoriteGroups != undefined){
+        return favoriteMembers.concat(favoriteGroups);
+      }
+      else if(favoriteMembers != undefined) return favoriteMembers;
+      else if(favoriteGroups != undefined) return favoriteGroups;
+    }
+    return [];
+  }
+  return{
+    isFavorite: isFavorite,
+    updateFavorite: updateFavorite,
+    getAllFavorite: getAllFavorite
+  }
+})
+
 .factory('Chats', function($sce) {
     // Might use a resource here that returns a JSON array
 

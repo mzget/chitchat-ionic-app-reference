@@ -87,7 +87,7 @@ var Main = (function () {
                 }).then(function onFulfilled(value) {
                     server.getMe(function (err, res) {
                         if (err || res === null) {
-                            console.warn(err);
+                            console.error(err);
                         }
                         else {
                             self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
@@ -97,7 +97,7 @@ var Main = (function () {
                             if (res.code === 200) {
                             }
                             else {
-                                console.error("My user profile is empty. please check.");
+                                console.warn("My user profile is empty. please check.");
                             }
                         }
                     });
@@ -146,7 +146,7 @@ var Main = (function () {
                 });
             }
             else {
-                console.error(err);
+                console.error(err, loginRes);
             }
         });
     };
@@ -305,16 +305,16 @@ var ChatServer;
                         callback(res.message, null);
                     }
                 }
-                else if (res.code === 1004) {
-                    if (callback !== null) {
-                        callback(null, res);
-                    }
-                }
-                else {
+                else if (res.code === 200) {
                     self.authenData.userId = res.uid;
                     self.authenData.token = res.token;
                     localStorage.setItem("authen", JSON.stringify(self.authenData));
                     if (callback != null) {
+                        callback(null, res);
+                    }
+                }
+                else {
+                    if (callback !== null) {
                         callback(null, res);
                     }
                 }
@@ -377,10 +377,7 @@ var ChatServer;
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getMe", msg, function (result) {
                 console.log("getMe: ", JSON.stringify(result));
-                if (result.code === 500) {
-                    callback(result.message, null);
-                }
-                else {
+                if (callback !== null) {
                     callback(null, result);
                 }
             });
@@ -1665,4 +1662,12 @@ var SecureService = (function () {
         });
     };
     return SecureService;
+})();
+var HttpStatusCode = (function () {
+    function HttpStatusCode() {
+    }
+    HttpStatusCode.success = 200;
+    HttpStatusCode.fail = 500;
+    HttpStatusCode.requestTimeout = 408;
+    return HttpStatusCode;
 })();

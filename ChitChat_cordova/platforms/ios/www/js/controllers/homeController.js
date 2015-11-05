@@ -7,7 +7,7 @@
 
     //homeController.$inject = ['$location'];
 
-    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, roomSelected, localNotifyService) {
+    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, roomSelected, localNotifyService, Favorite) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
@@ -27,7 +27,7 @@
         }
 
         function getFavorite(){
-            var favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
+            var favoriteArray = Favorite.getAllFavorite();
             var favorite = [];
             for(var x=0; x<favoriteArray.length; x++){
                 try {
@@ -53,6 +53,7 @@
                 server.updateFavoriteMember(editType,id,function (err, res) {
                     if (!err) {
                         console.log(JSON.stringify(res));
+                        Favorite.updateFavorite(editType,id,type);
                         $ionicLoading.hide();
                     }
                     else {
@@ -63,6 +64,7 @@
                 server.updateFavoriteGroups(editType,id,function (err, res) {
                     if (!err) {
                         console.log(JSON.stringify(res));
+                        Favorite.updateFavorite(editType,id,type);
                         $ionicLoading.hide();
                     }
                     else {
@@ -73,20 +75,7 @@
         }
    
         $scope.isFavorite = function(id){
-            var favoriteArray = [];
-            try{
-                favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
-            }catch(err){
-                favoriteArray = [];
-            }
-           
-            var isHas = false;
-            for(var i=0; i<favoriteArray.length; i++){
-                if(favoriteArray[i] == id){
-                    isHas = true;
-                }
-            }
-            return isHas;
+            return Favorite.isFavorite(id);
         }
         
         $scope.$on('$ionicView.enter', function(){ 
@@ -102,11 +91,7 @@
                 $scope.pjbGroups = dataManager.projectBaseGroups;
                 $scope.pvGroups = dataManager.privateGroups;
                 $scope.chats = dataManager.orgMembers;
-                try{
-                    $scope.favorites = getFavorite();
-                }catch(err) {
-                    //console.log(err);
-                }
+                $scope.favorites = getFavorite();
                 
                 $scope.$apply();
             };

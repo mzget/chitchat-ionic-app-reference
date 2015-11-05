@@ -266,27 +266,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
-        "id": "org.apache.cordova.dialogs.notification",
-        "merges": [
-            "navigator.notification"
-        ]
-    },
-    {
-        "file": "plugins/org.pbernasconi.progressindicator/www/progressIndicator.js",
-        "id": "org.pbernasconi.progressindicator.ProgressIndicator",
-        "clobbers": [
-            "ProgressIndicator"
-        ]
-    },
-    {
-        "file": "plugins/phonegap-plugin-push/www/push.js",
-        "id": "phonegap-plugin-push.PushNotification",
-        "clobbers": [
-            "PushNotification"
-        ]
-    },
-    {
         "file": "plugins/cordova-plugin-x-toast/www/Toast.js",
         "id": "cordova-plugin-x-toast.Toast",
         "clobbers": [
@@ -298,10 +277,19 @@ module.exports = [
         "id": "cordova-plugin-x-toast.tests"
     },
     {
-        "file": "plugins/org.apache.cordova.device/www/device.js",
-        "id": "org.apache.cordova.device.device",
+        "file": "plugins/de.appplant.cordova.plugin.background-mode/www/background-mode.js",
+        "id": "de.appplant.cordova.plugin.background-mode.BackgroundMode",
         "clobbers": [
-            "device"
+            "cordova.plugins.backgroundMode",
+            "plugin.backgroundMode"
+        ]
+    },
+    {
+        "file": "plugins/de.appplant.cordova.plugin.badge/www/badge.js",
+        "id": "de.appplant.cordova.plugin.badge.Badge",
+        "clobbers": [
+            "plugin.notification.badge",
+            "cordova.plugins.notification.badge"
         ]
     },
     {
@@ -329,19 +317,38 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/de.appplant.cordova.plugin.background-mode/www/background-mode.js",
-        "id": "de.appplant.cordova.plugin.background-mode.BackgroundMode",
-        "clobbers": [
-            "cordova.plugins.backgroundMode",
-            "plugin.backgroundMode"
+        "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
+        "id": "org.apache.cordova.dialogs.notification",
+        "merges": [
+            "navigator.notification"
         ]
     },
     {
-        "file": "plugins/de.appplant.cordova.plugin.badge/www/badge.js",
-        "id": "de.appplant.cordova.plugin.badge.Badge",
+        "file": "plugins/org.pbernasconi.progressindicator/www/progressIndicator.js",
+        "id": "org.pbernasconi.progressindicator.ProgressIndicator",
         "clobbers": [
-            "plugin.notification.badge",
-            "cordova.plugins.notification.badge"
+            "ProgressIndicator"
+        ]
+    },
+    {
+        "file": "plugins/phonegap-plugin-push/www/push.js",
+        "id": "phonegap-plugin-push.PushNotification",
+        "clobbers": [
+            "PushNotification"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-splashscreen/www/splashscreen.js",
+        "id": "cordova-plugin-splashscreen.SplashScreen",
+        "clobbers": [
+            "navigator.splashscreen"
+        ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.device/www/device.js",
+        "id": "org.apache.cordova.device.device",
+        "clobbers": [
+            "device"
         ]
     }
 ];
@@ -354,15 +361,16 @@ module.exports.metadata =
     "cordova-plugin-file-transfer": "1.3.0",
     "cordova-plugin-media": "1.0.1",
     "cordova-plugin-media-capture": "1.0.1",
+    "cordova-plugin-x-toast": "2.2.1",
+    "de.appplant.cordova.common.registerusernotificationsettings": "1.0.1",
+    "de.appplant.cordova.plugin.background-mode": "0.6.3",
+    "de.appplant.cordova.plugin.badge": "0.7.1",
+    "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
     "org.apache.cordova.dialogs": "0.3.0",
     "org.pbernasconi.progressindicator": "1.1.0",
     "phonegap-plugin-push": "1.4.2",
-    "cordova-plugin-x-toast": "2.2.1",
-    "org.apache.cordova.device": "0.3.0",
-    "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
-    "de.appplant.cordova.plugin.background-mode": "0.6.3",
-    "de.appplant.cordova.plugin.badge": "0.7.1",
-    "de.appplant.cordova.common.registerusernotificationsettings": "1.0.1"
+    "cordova-plugin-splashscreen": "2.1.0",
+    "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA
 });

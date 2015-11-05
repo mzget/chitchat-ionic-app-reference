@@ -1,0 +1,18 @@
+﻿<ion-modal-view view-title="Readers" cache-view="false">
+    <ion-header-bar>
+		<h1 class="title">Readers</h1>
+		<button ng-click="closeReaderModal()" class="button button-clear button-positive" style="color:#000; padding:0 10px;">Close</button>
+    </ion-header-bar>
+	<ion-content>
+			
+		<ion-list class="members-list">
+			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="user in readers" type="item-text-wrap" href="#/tab/group/detail/{{member._id}}">
+				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[user._id]['image']}}&h=40&w=40" />
+				<h2>{{allMembers[user._id]['displayname']}}</h2>
+				<p>{{allMembers[user._id]['status']}}</p>
+				<i class="icon ion-chevron-right icon-accessory"></i>
+			</ion-item>
+		</ion-list>
+		
+	</ion-content>
+</ion-modal-view>

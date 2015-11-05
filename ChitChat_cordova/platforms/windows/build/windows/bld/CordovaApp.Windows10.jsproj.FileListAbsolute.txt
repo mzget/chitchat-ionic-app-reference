@@ -1,0 +1,17 @@
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\resources.pri
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\AppxManifest.xml
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\debug\anycpu\CordovaApp.Windows10.build.appxrecipe
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\ResourceHandlingTask.state
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\priconfig.xml
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\priconfig.xml.intermediate
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\layout.resfiles
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\layout.resfiles.intermediate
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\resources.resfiles
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\resources.resfiles.intermediate
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\pri.resfiles
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\pri.resfiles.intermediate
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\qualifiers.txt
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\qualifiers.txt.intermediate
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\MultipleQualifiersPerDimensionFound.txt
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\ProjectArchitectures.txt
+E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\package.map.txt

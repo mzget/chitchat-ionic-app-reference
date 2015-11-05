@@ -1,0 +1,90 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "package.appxmanifest": {
+                "parents": {
+                    "/Package/Capabilities": [
+                        {
+                            "xml": "<DeviceCapability Name=\"webcam\" />",
+                            "count": 2
+                        },
+                        {
+                            "xml": "<DeviceCapability Name=\"microphone\" />",
+                            "count": 2
+                        }
+                    ]
+                }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<preference name=\"WindowsToastCapable\" value=\"true\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "cordova-plugin-media": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "de.appplant.cordova.common.registerusernotificationsettings": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "de.appplant.cordova.plugin.background-mode": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "de.appplant.cordova.plugin.badge": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "org.pbernasconi.progressindicator": {
+            "PACKAGE_NAME": "ChitChat"
+        },
+        "phonegap-plugin-push": {
+            "PACKAGE_NAME": "ChitChat"
+        }
+    },
+    "dependent_plugins": {
+        "org.apache.cordova.device": {
+            "PACKAGE_NAME": "ChitChat"
+        }
+    }
+}
