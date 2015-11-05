@@ -14,14 +14,19 @@
         dataListener.addListenerImp(onChatListenerImp);
         onChatListenerImp.onChat = function(chatMessageImp) {
             console.warn(chatMessageImp.type);
+            var appBackground = cordova.plugins.backgroundMode.isActive();
             if(chatMessageImp.type === ContentType[ContentType.Text]) {
                 var contact = dataManager.getContactProfile(chatMessageImp.sender);
                 var secure = new SecureService();
                 secure.decryptWithSecureRandom(chatMessageImp.body,  function done(err, res) {
                      if (!err) {
                         chatMessageImp.body = res;
-                        scheduleSingleNotification(contact.displayname, chatMessageImp.body);
-                        makeToastOnCenter(chatMessageImp.body);
+                        if (!appBackground) {
+                            makeToastOnCenter(chatMessageImp.body);
+                        }
+                        else {
+                            scheduleSingleNotification(contact.displayname, chatMessageImp.body);
+                        }
                     }
                     else {
                         console.warn(err, res);
@@ -31,32 +36,52 @@
             else if(chatMessageImp.type === ContentType[ContentType.Sticker]) {
                 var contact = dataManager.getContactProfile(chatMessageImp.sender);
                 var message = contact.displayname + " sent a sticker."
-                makeToastOnCenter(message);
-                scheduleSingleNotification(contact.displayname, message);
+                if (!appBackground) {
+                    makeToastOnCenter(message);
+                }
+                else {
+                    scheduleSingleNotification(contact.displayname, message);
+                }
             }
             else if (chatMessageImp.type === ContentType[ContentType.Voice]) {
                 var contact = dataManager.getContactProfile(chatMessageImp.sender);
                 var message = contact.displayname + " sent a voice message."
-                makeToastOnCenter(message);
-                scheduleSingleNotification(contact.displayname, message);
+                if (!appBackground) {
+                    makeToastOnCenter(message);
+                }
+                else {
+                    scheduleSingleNotification(contact.displayname, message);
+                }
             }
             else if (chatMessageImp.type === ContentType[ContentType.Image]) {
                 var contact = dataManager.getContactProfile(chatMessageImp.sender);
                 var message = contact.displayname + " sent a image."
-                makeToastOnCenter(message);
-                scheduleSingleNotification(contact.displayname, message);
+                if (!appBackground) {
+                    makeToastOnCenter(message);
+                }
+                else {
+                    scheduleSingleNotification(contact.displayname, message);
+                }
             }
             else if (chatMessageImp.type === ContentType[ContentType.Video]) {
                 var contact = dataManager.getContactProfile(chatMessageImp.sender);
                 var message = contact.displayname + " sent a video."
-                makeToastOnCenter(message);
-                scheduleSingleNotification(contact.displayname, message);
+                if (!appBackground) {
+                    makeToastOnCenter(message);
+                }
+                else {
+                    scheduleSingleNotification(contact.displayname, message);
+                }
             }
             else if (chatMessageImp.type === ContentType[ContentType.Location]) {
                 var contact = dataManager.getContactProfile(chatMessageImp.sender);
                 var message = contact.displayname + " sent a location."
-                makeToastOnCenter(message);
-                scheduleSingleNotification(contact.displayname, message);
+                if (!appBackground) {
+                    makeToastOnCenter(message);
+                }
+                else {
+                    scheduleSingleNotification(contact.displayname, message);
+                }
             }
         }
         
