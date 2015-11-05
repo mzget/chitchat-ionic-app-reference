@@ -231,6 +231,27 @@ class DataManager implements Services.IFrontendServerListener {
             console.warn('this contactId is invalid.');
         }
     }
+    
+    public onGetMe(dataEvent) {
+        var self = this;
+        var _profile = JSON.parse(JSON.stringify(dataEvent));
+        if(dataEvent.code === 200) {
+            this.setMyProfile(dataEvent.data);
+        }
+        else {
+            console.error("get use profile fail!", dataEvent.message);
+        }
+    }
+    public onGetCompanyInfo(dataEvent) {
+        var self = this;
+        var _company = JSON.parse(JSON.stringify(dataEvent));
+        if(dataEvent.code === 200) {
+            this.setCompanyInfo(dataEvent.data);
+        }
+        else {
+            console.error("get company info fail!", dataEvent.message);
+        }
+    }
 
     public onGetCompanyMemberComplete(dataEvent) {
         var self = this;

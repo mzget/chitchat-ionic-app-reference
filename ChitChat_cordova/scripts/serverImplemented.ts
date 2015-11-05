@@ -792,6 +792,9 @@ module ChatServer {
         public static ON_USER_UPDATE_IMAGE_PROFILE: string = "onUserUpdateImgProfile";
         public static ON_USER_UPDATE_PROFILE: string = "onUserUpdateProfile";
 
+
+        public static ON_GET_ME:string = "onGetMe";
+        public static ON_GET_COMPANY_INFO = "onGetCompanyInfo";
         public static ON_GET_COMPANY_MEMBERS: string = "onGetCompanyMembers";
         public static ON_GET_PRIVATE_GROUPS: string = "onGetPrivateGroups";
         public static ON_GET_ORGANIZE_GROUPS: string = "onGetOrganizeGroups";
@@ -834,6 +837,17 @@ module ChatServer {
 
             var self = this; 
 
+            pomelo.on(ServerEventListener.ON_GET_ME, function(data) {
+                console.log(ServerEventListener.ON_GET_ME, JSON.stringify(data));
+
+                self.frontendListener.onGetMe(data);
+            });
+            pomelo.on(ServerEventListener.ON_GET_COMPANY_INFO, function(data) {
+                console.log(ServerEventListener.ON_GET_COMPANY_INFO, JSON.stringify(data));
+
+                self.frontendListener.onGetCompanyInfo(data);
+            });
+                
             //wait message from the server.
             pomelo.on(ServerEventListener.ON_GET_ORGANIZE_GROUPS, function (data) {
                 console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS, JSON.stringify(data));

@@ -87,15 +87,14 @@ var Main = (function () {
                 }).then(function onFulfilled(value) {
                     server.getMe(function (err, res) {
                         if (err || res === null) {
-                            console.error(err);
+                            console.warn(err);
                         }
                         else {
+                            self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
+                            server.getLastAccessRoomsInfo(function (err, res) {
+                                console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
+                            });
                             if (res.code === 200) {
-                                self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                                self.dataManager.setMyProfile(res.data);
-                                server.getLastAccessRoomsInfo(function (err, res) {
-                                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
-                                });
                             }
                             else {
                                 console.error("My user profile is empty. please check.");
@@ -107,8 +106,7 @@ var Main = (function () {
                             console.error(err);
                         }
                         else {
-                            console.log("companyInfo: ", res);
-                            self.dataManager.setCompanyInfo(res.data);
+                            console.log("companyInfo: ", JSON.stringify(res));
                         }
                     });
                     server.getOrganizationGroups(function (err, res) {
@@ -746,6 +744,14 @@ var ChatServer;
         };
         ServerEventListener.prototype.callFrontendServer = function () {
             var self = this;
+            pomelo.on(ServerEventListener.ON_GET_ME, function (data) {
+                console.log(ServerEventListener.ON_GET_ME, JSON.stringify(data));
+                self.frontendListener.onGetMe(data);
+            });
+            pomelo.on(ServerEventListener.ON_GET_COMPANY_INFO, function (data) {
+                console.log(ServerEventListener.ON_GET_COMPANY_INFO, JSON.stringify(data));
+                self.frontendListener.onGetCompanyInfo(data);
+            });
             pomelo.on(ServerEventListener.ON_GET_ORGANIZE_GROUPS, function (data) {
                 console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS, JSON.stringify(data));
                 self.frontendListener.onGetOrganizeGroupsComplete(data);
@@ -868,6 +874,8 @@ var ChatServer;
         ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE = "onUpdateMemberInfoInProjectBase";
         ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE = "onUserUpdateImgProfile";
         ServerEventListener.ON_USER_UPDATE_PROFILE = "onUserUpdateProfile";
+        ServerEventListener.ON_GET_ME = "onGetMe";
+        ServerEventListener.ON_GET_COMPANY_INFO = "onGetCompanyInfo";
         ServerEventListener.ON_GET_COMPANY_MEMBERS = "onGetCompanyMembers";
         ServerEventListener.ON_GET_PRIVATE_GROUPS = "onGetPrivateGroups";
         ServerEventListener.ON_GET_ORGANIZE_GROUPS = "onGetOrganizeGroups";
@@ -1375,6 +1383,26 @@ var DataManager = (function () {
         }
         else {
             console.warn('this contactId is invalid.');
+        }
+    };
+    DataManager.prototype.onGetMe = function (dataEvent) {
+        var self = this;
+        var _profile = JSON.parse(JSON.stringify(dataEvent));
+        if (dataEvent.code === 200) {
+            this.setMyProfile(dataEvent.data);
+        }
+        else {
+            console.error("get use profile fail!", dataEvent.message);
+        }
+    };
+    DataManager.prototype.onGetCompanyInfo = function (dataEvent) {
+        var self = this;
+        var _company = JSON.parse(JSON.stringify(dataEvent));
+        if (dataEvent.code === 200) {
+            this.setCompanyInfo(dataEvent.data);
+        }
+        else {
+            console.error("get company info fail!", dataEvent.message);
         }
     };
     DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
