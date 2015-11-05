@@ -1,7 +1,7 @@
 angular.module('spartan.chat', [])
 
 .controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
-    $sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected)
+    $sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected,Favorite)
 {    		
 	// Hide nav-tab # in chat detail
 	navHide();
@@ -25,6 +25,11 @@ angular.module('spartan.chat', [])
         }
     }
 	$scope.currentRoom = currentRoom;
+	if($scope.currentRoom.type == RoomType.privateChat){
+		$.each($scope.currentRoom.members, function(index, value){
+			if(value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
+		});
+	}
 	
 	modalcount = 0;	
 	// Modal - Chat menu 
@@ -371,6 +376,7 @@ angular.module('spartan.chat', [])
             server.updateFavoriteMember(editType,id,function (err, res) {
                 if (!err) {
                     console.log(JSON.stringify(res));
+                    Favorite.updateFavorite(editType,id,type);
                     $ionicLoading.hide();
                 }
                 else {
@@ -381,6 +387,7 @@ angular.module('spartan.chat', [])
             server.updateFavoriteGroups(editType,id,function (err, res) {
                 if (!err) {
                     console.log(JSON.stringify(res));
+                    Favorite.updateFavorite(editType,id,type);
                     $ionicLoading.hide();
                 }
                 else {
@@ -390,15 +397,9 @@ angular.module('spartan.chat', [])
         }
     }
     $scope.isFavorite = function(id){
-        var favoriteArray = main.getDataManager().myProfile.favoriteUsers.concat(main.getDataManager().myProfile.favoriteGroups);
-        var isHas = false;
-        for(var i=0; i<favoriteArray.length; i++){
-            if(favoriteArray[i] == id){
-                isHas = true;
-            }
-        }
-        return isHas;
+        return Favorite.isFavorite(id);
     }
+        
 });
 
 var viewLocation = function ($scope, message, $ionicLoading) {
