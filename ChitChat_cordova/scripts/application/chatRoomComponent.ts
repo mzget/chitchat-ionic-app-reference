@@ -6,7 +6,7 @@
     onGetMessagesReaders(dataEvent);
 }
 
-class ChatRoomController implements IChatServerImp {
+class ChatRoomComponent implements IChatServerImp {
     public chatMessages: Array<Message> = [];
     public serviceListener: (eventName: string, data: any) => void;
     private dataManager: DataManager;

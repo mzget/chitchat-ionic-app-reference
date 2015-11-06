@@ -86,9 +86,9 @@ module ChatServer {
                 self.loadSocket(resolve, rejected);
             }).then(function onfulfilled(value) {
                 self.loadConfig(callback);
-                }).catch(function onRejected(err) {
-                    console.error(err);
-                });
+            }).catch(function onRejected(err) {
+                console.error(err);
+            });
         }
 
         private loadSocket(resolve, rejected) {
@@ -153,7 +153,7 @@ module ChatServer {
             var self = this;
 
             pomelo.init({ host: _host, port: _port }, function (err, socket) {
-                console.info("socket init result: ", err, socket);
+                console.log("socket init result: ", err, socket);
                 callback(err, socket);
 
                 //pomelo.on("disconnect", function (dataEvent) {
@@ -789,10 +789,9 @@ module ChatServer {
         //<!-- User profile -->
         public static ON_USER_UPDATE_IMAGE_PROFILE: string = "onUserUpdateImgProfile";
         public static ON_USER_UPDATE_PROFILE: string = "onUserUpdateProfile";
-
-
-        public static ON_GET_ME:string = "onGetMe";
-        public static ON_GET_COMPANY_INFO = "onGetCompanyInfo";
+        //<!-- Frontend server --->
+        public static ON_GET_ME: string = "onGetMe";
+        public static ON_GET_COMPANY_INFO: string = "onGetCompanyInfo";
         public static ON_GET_COMPANY_MEMBERS: string = "onGetCompanyMembers";
         public static ON_GET_PRIVATE_GROUPS: string = "onGetPrivateGroups";
         public static ON_GET_ORGANIZE_GROUPS: string = "onGetOrganizeGroups";

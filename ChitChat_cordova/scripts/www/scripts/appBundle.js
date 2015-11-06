@@ -146,7 +146,7 @@ var Main = (function () {
                 });
             }
             else {
-                console.error(err, loginRes);
+                console.error(err, JSON.stringify(loginRes));
             }
         });
     };
@@ -186,8 +186,10 @@ var ChatServer;
             }
         };
         ServerImplemented.prototype.Logout = function () {
+            var registrationId = localStorage.getItem("registrationId");
             var msg = {};
             msg["username"] = username;
+            msg["registrationId"] = registrationId;
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
             localStorage.clear();
@@ -266,7 +268,7 @@ var ChatServer;
             console.log("socket init connecting to: ", _host, _port);
             var self = this;
             pomelo.init({ host: _host, port: _port }, function (err, socket) {
-                console.info("socket init result: ", err, socket);
+                console.log("socket init result: ", err, socket);
                 callback(err, socket);
             });
         };
@@ -297,7 +299,7 @@ var ChatServer;
         ServerImplemented.prototype.authenForFrontendServer = function (callback) {
             var self = this;
             var registrationId = localStorage.getItem("registrationId");
-            var msg = { username: username, password: password, installationId: registrationId };
+            var msg = { username: username, password: password, registrationId: registrationId };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
                 console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
@@ -919,8 +921,8 @@ var Services;
     })();
     Services.AbsServerListener = AbsServerListener;
 })(Services || (Services = {}));
-var ChatRoomController = (function () {
-    function ChatRoomController(main, room_id) {
+var ChatRoomComponent = (function () {
+    function ChatRoomComponent(main, room_id) {
         this.chatMessages = [];
         this.main = main;
         this.serverImp = this.main.getServerImp();
@@ -929,7 +931,7 @@ var ChatRoomController = (function () {
         this.roomId = room_id;
         console.log("constructor ChatRoomController");
     }
-    ChatRoomController.prototype.onChat = function (chatMessageImp) {
+    ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
         var _this = this;
         var self = this;
         if (this.roomId === chatMessageImp.rid) {
@@ -961,11 +963,11 @@ var ChatRoomController = (function () {
             console.info("this msg come from other room.");
         }
     };
-    ChatRoomController.prototype.onLeaveRoom = function (data) {
+    ChatRoomComponent.prototype.onLeaveRoom = function (data) {
     };
-    ChatRoomController.prototype.onRoomJoin = function (data) {
+    ChatRoomComponent.prototype.onRoomJoin = function (data) {
     };
-    ChatRoomController.prototype.onMessageRead = function (dataEvent) {
+    ChatRoomComponent.prototype.onMessageRead = function (dataEvent) {
         console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
         var self = this;
         var newMsg = JSON.parse(JSON.stringify(dataEvent));
@@ -978,9 +980,9 @@ var ChatRoomController = (function () {
             }
         });
     };
-    ChatRoomController.prototype.onGetMessagesReaders = function (dataEvent) {
+    ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
     };
-    ChatRoomController.prototype.getMessage = function (chatId, Chats, callback) {
+    ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
         var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
@@ -1089,14 +1091,14 @@ var ChatRoomController = (function () {
             });
         });
     };
-    ChatRoomController.prototype.leaveRoom = function (room_id, callback) {
+    ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
         var self = this;
         this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
             console.log("leave room", JSON.stringify(res));
             callback(err, res);
         });
     };
-    return ChatRoomController;
+    return ChatRoomComponent;
 })();
 var DataListener = (function () {
     function DataListener(dataManager) {

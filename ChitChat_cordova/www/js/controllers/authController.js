@@ -130,15 +130,16 @@
 		        navigator.notification.alert(param.message, function callback() { }, "Login Timeout!", "OK");
 		    }
 			function onDuplicateLogin(param) {
-				navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices", function (buttonIndex) {
-					switch (buttonIndex) {
-						case 1:
-							break;
-						case 2:
-                       	  server.kickMeAllSession(param.uid);
-							break;
-					}
-				}, "Duplicated login!", ["Cancle", "OK"]);
+			    navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices",
+                    function (buttonIndex) {
+                        switch (buttonIndex) {
+                            case 1:
+                                break;
+                            case 2:
+                                server.kickMeAllSession(param.uid);
+                                break;
+                        }
+                    }, "Duplicated login!", ["Cancle", "OK"]);
 			}	
 			function onAuthenFail(errMessage) {
 				navigator.notification.alert(errMessage, function callback() {}, "Login fail!", "OK");
