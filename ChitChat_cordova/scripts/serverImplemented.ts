@@ -56,8 +56,10 @@ module ChatServer {
         }
 
         public Logout() {
+            var registrationId = localStorage.getItem("registrationId");
             var msg: IDictionary = {};
             msg["username"] = username;
+            msg["registrationId"] = registrationId;
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
 
