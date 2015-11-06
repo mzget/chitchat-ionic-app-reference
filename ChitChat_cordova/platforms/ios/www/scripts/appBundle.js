@@ -297,7 +297,7 @@ var ChatServer;
         ServerImplemented.prototype.authenForFrontendServer = function (callback) {
             var self = this;
             var registrationId = localStorage.getItem("registrationId");
-            var msg = { username: username, password: password, installationId: registrationId };
+            var msg = { username: username, password: password, registrationId: registrationId };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
                 console.log("login: ", JSON.stringify(res), res.code);
                 if (res.code === 500) {
