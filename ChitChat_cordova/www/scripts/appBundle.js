@@ -186,8 +186,10 @@ var ChatServer;
             }
         };
         ServerImplemented.prototype.Logout = function () {
+            var registrationId = localStorage.getItem("registrationId");
             var msg = {};
             msg["username"] = username;
+            msg["registrationId"] = registrationId;
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
             localStorage.clear();
