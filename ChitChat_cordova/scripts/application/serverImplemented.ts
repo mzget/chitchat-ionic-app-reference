@@ -117,7 +117,7 @@ module ChatServer {
                 self.port = appConfig.socketPort;
                 if (!!pomelo) {
                     //<!-- Connecting gate server.
-                    self.connectSocketServer(self.host, self.port, (err, res) => {
+                    self.connectSocketServer(self.host, self.port, (err) => {
                         callback(err, self);
                     });
                 }
@@ -146,25 +146,13 @@ module ChatServer {
             }
         }
 
-        private connectSocketServer(_host: string, _port: number, callback: (err, res) => void) {
+        private connectSocketServer(_host: string, _port: number, callback: (err) => void) {
             console.log("socket init connecting to: ", _host, _port);
-            var self = this;
-
-            pomelo.init({ host: _host, port: _port }, function (err, socket) {
-                console.log("socket init result: ", err, socket);
-                callback(err, socket);
-
-                //pomelo.on("disconnect", function (dataEvent) {
-                //console.error("disconnect Event", dataEvent);
-                //if (connectionListen != null) {
-                //    connectionListen.connectionEvent("disconnect");
-                //}
-                //});
-
-                pomelo.on('disconnect', function data(reason) {
-                    if (self.socketComponent !== null)
-                        self.socketComponent.disconnected(reason);
-                });
+            
+            // var self = this;    
+            pomelo.init({ host: _host, port: _port }, function cb(err) {
+                console.log("socket init result: ", err);
+                callback(err);
             });
         }
 
@@ -186,11 +174,11 @@ module ChatServer {
                 //<!-- Quering connector server.
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
 
-                    console.log("QueryConnectorServ", result);
+                    console.log("QueryConnectorServ", result.code);
 
                     if (result.code === 200) {
                         pomelo.disconnect();
-
+                        
                         var port = result.port;
                         //<!-- Connecting to connector server.
                         self.connectSocketServer(self.host, port, () => {
@@ -232,6 +220,11 @@ module ChatServer {
                     if (callback != null) {
                         callback(null, res);
                     }
+                    
+                    pomelo.on('disconnect', function data(reason) {
+                        if (self.socketComponent !== null)
+                            self.socketComponent.disconnected(reason);
+                    });
                 }
                 else {
                     if (callback !== null) {
@@ -321,15 +314,7 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.editFavoriteMembers", msg, (result) => {
                 console.log("updateFavoriteMember: ", JSON.stringify(result));
-                // if (callback != null){
-                //     if(editType=='add'){
-                //         self.dataManager.myProfile.favoriteUsers.push(member);
-                //     }else{
-                //         var index = self.dataManager.myProfile.favoriteUsers.indexOf(member);
-                //         self.dataManager.myProfile.favoriteUsers.splice( index , 1);
-                //     }
-                    callback(null, result);
-                // }
+                callback(null, result);
             });
         }
 

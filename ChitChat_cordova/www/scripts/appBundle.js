@@ -793,7 +793,7 @@ var ChatServer;
                 self.host = appConfig.socketHost;
                 self.port = appConfig.socketPort;
                 if (!!pomelo) {
-                    self.connectSocketServer(self.host, self.port, function (err, res) {
+                    self.connectSocketServer(self.host, self.port, function (err) {
                         callback(err, self);
                     });
                 }
@@ -820,14 +820,9 @@ var ChatServer;
         };
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
             console.log("socket init connecting to: ", _host, _port);
-            var self = this;
-            pomelo.init({ host: _host, port: _port }, function (err, socket) {
-                console.log("socket init result: ", err, socket);
-                callback(err, socket);
-                pomelo.on('disconnect', function data(reason) {
-                    if (self.socketComponent !== null)
-                        self.socketComponent.disconnected(reason);
-                });
+            pomelo.init({ host: _host, port: _port }, function cb(err) {
+                console.log("socket init result: ", err);
+                callback(err);
             });
         };
         ServerImplemented.prototype.logIn = function (_username, _hash, callback) {
@@ -839,7 +834,7 @@ var ChatServer;
             if (pomelo !== null && this._isConnected === false) {
                 var msg = { uid: username };
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
-                    console.log("QueryConnectorServ", result);
+                    console.log("QueryConnectorServ", result.code);
                     if (result.code === 200) {
                         pomelo.disconnect();
                         var port = result.port;
@@ -872,6 +867,10 @@ var ChatServer;
                     if (callback != null) {
                         callback(null, res);
                     }
+                    pomelo.on('disconnect', function data(reason) {
+                        if (self.socketComponent !== null)
+                            self.socketComponent.disconnected(reason);
+                    });
                 }
                 else {
                     if (callback !== null) {
