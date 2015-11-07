@@ -5,9 +5,9 @@
         .module('spartan.auth', [])
         .controller('authController', authController);
 
-    authController.$inject = ['$location', "$ionicPlatform"];
+    authController.$inject = ['$location', "$ionicPlatform", "networkService"];
 
-    function authController($location, $ionicPlatform) {
+    function authController($location, $ionicPlatform, networkService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -48,8 +48,10 @@
 		    main.onMyProfileReadyListener = function(dataManager) {
 			    $('#login').css('display','none');
 			    $('.bar-stable').css({'display':''});
-			    $('#splash').css({'display':'none'});
-			    location.href = "#/tab/group";					
+			    $('#splash').css({ 'display': 'none' });
+
+			    location.href = "#/tab/group";
+			    activateNetworkService();
 		    };
 		    server.init(function (err, server) {
 			    console.info("init server connection", err, server);
@@ -164,6 +166,10 @@
                 console.warn("backgroundMode.ondeactivate");
                 cordova.plugins.notification.badge.clear();
             };
+        }
+
+        function activateNetworkService() {
+            networkService.regisSocketListener();
         }
 
         $ionicPlatform.ready(function () {

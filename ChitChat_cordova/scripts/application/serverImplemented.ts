@@ -34,6 +34,10 @@ module ChatServer {
         _isInit = false;
         _isConnected = false;
         _isLogedin = false;
+        socketComponent: SocketComponent;
+        public setSocketComponent(socket: SocketComponent) {
+            this.socketComponent = socket;
+        }
 
         public getClient() {
             var self = this;
@@ -42,12 +46,6 @@ module ChatServer {
             }
             else {
                 console.warn("disconnect Event");
-                
-                //if (connectionListen != null) {
-                //    connectionListen.connectionEvent("disconnect");
-                //}
-
-                //return new PomeloClient(instance.host, instance.port);
             }
         }
 
@@ -162,6 +160,11 @@ module ChatServer {
                 //    connectionListen.connectionEvent("disconnect");
                 //}
                 //});
+
+                pomelo.on('disconnect', function data(reason) {
+                    if (self.socketComponent !== null)
+                        self.socketComponent.disconnected(reason);
+                });
             });
         }
 
