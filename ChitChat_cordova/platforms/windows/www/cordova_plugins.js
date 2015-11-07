@@ -50,6 +50,20 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-device/www/device.js",
+        "id": "cordova-plugin-device.device",
+        "clobbers": [
+            "device"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-device/src/windows/DeviceProxy.js",
+        "id": "cordova-plugin-device.DeviceProxy",
+        "merges": [
+            ""
+        ]
+    },
+    {
         "file": "plugins/cordova-plugin-file/www/DirectoryEntry.js",
         "id": "cordova-plugin-file.DirectoryEntry",
         "clobbers": [
@@ -379,6 +393,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/hu.dpal.phonegap.plugins.SpinnerDialog/www/spinner.js",
+        "id": "hu.dpal.phonegap.plugins.SpinnerDialog.SpinnerDialog",
+        "merges": [
+            "window.plugins.spinnerDialog"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
         "id": "org.apache.cordova.dialogs.notification",
         "merges": [
@@ -412,20 +433,6 @@ module.exports = [
         "merges": [
             ""
         ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.device/www/device.js",
-        "id": "org.apache.cordova.device.device",
-        "clobbers": [
-            "device"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.device/src/windows/DeviceProxy.js",
-        "id": "org.apache.cordova.device.DeviceProxy",
-        "merges": [
-            ""
-        ]
     }
 ];
 module.exports.metadata = 
@@ -433,6 +440,7 @@ module.exports.metadata =
 {
     "cordova-plugin-camera": "1.2.0",
     "cordova-plugin-console": "1.0.1",
+    "cordova-plugin-device": "1.0.1",
     "cordova-plugin-file": "3.0.0",
     "cordova-plugin-file-transfer": "1.3.0",
     "cordova-plugin-media": "1.0.1",
@@ -443,10 +451,10 @@ module.exports.metadata =
     "de.appplant.cordova.plugin.background-mode": "0.6.3",
     "de.appplant.cordova.plugin.badge": "0.7.1",
     "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
+    "hu.dpal.phonegap.plugins.SpinnerDialog": "1.3.1",
     "org.apache.cordova.dialogs": "0.3.0",
     "org.pbernasconi.progressindicator": "1.1.0",
-    "phonegap-plugin-push": "1.4.2",
-    "org.apache.cordova.device": "0.3.0"
+    "phonegap-plugin-push": "1.4.2"
 }
 // BOTTOM OF METADATA
 });

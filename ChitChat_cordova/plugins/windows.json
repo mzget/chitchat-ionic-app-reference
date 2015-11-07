@@ -42,6 +42,9 @@
         "cordova-plugin-console": {
             "PACKAGE_NAME": "ChitChat"
         },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "ChitChat"
+        },
         "cordova-plugin-file": {
             "PACKAGE_NAME": "ChitChat"
         },
@@ -72,6 +75,9 @@
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "ChitChat"
         },
+        "hu.dpal.phonegap.plugins.SpinnerDialog": {
+            "PACKAGE_NAME": "ChitChat"
+        },
         "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "ChitChat"
         },
@@ -82,9 +88,5 @@
             "PACKAGE_NAME": "ChitChat"
         }
     },
-    "dependent_plugins": {
-        "org.apache.cordova.device": {
-            "PACKAGE_NAME": "ChitChat"
-        }
-    }
+    "dependent_plugins": {}
 }

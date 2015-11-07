@@ -322,52 +322,50 @@ define(['jquery'], function (jq) {
   var id = 1;
   var callbacks = {};
   
-  pomelo.init = function(params, cb){
-	pomelo.params = params;
-	params.debug = true;
-	var host = params.host;
-	var port = params.port;
+  pomelo.init = function (params, cb) {
+      pomelo.params = params;
+      params.debug = true;
+      var host = params.host;
+      var port = params.port;
 
-	var url = 'ws://' + host;
-	if(port) {
-	  url +=  ':' + port;
-	}
+      var url = 'ws://' + host;
+      if (port) {
+          url += ':' + port;
+      }
 
-	socket = io.connect(url, {'force new connection': true, reconnect: false});
+      socket = io.connect(url, { 'force new connection': true, reconnect: false });
 
-	socket.on('connect', function(){
-	  console.log('[pomeloclient.init] websocket connected!');
-	  if (cb) {
-		cb(null, socket);
-	  }
-	});
+      socket.on('connect', function () {
+          console.log('[pomeloclient.init] websocket connected!');
 
-	socket.on('reconnect', function() {
-	  console.log('reconnect');
-	});
+          cb(null);
+      });
 
-	socket.on('message', function (data) {
-	  if(typeof data === 'string') {
-		data = JSON.parse(data);
-	  }
-	  if(data instanceof Array) {
-		processMessageBatch(pomelo, data);
-	  } else {
-		processMessage(pomelo, data);
-	  }
-	});
+      socket.on('reconnect', function () {
+          console.log('reconnect');
+      });
 
-	socket.on('error', function(err) {
-	  	console.error(JSON.stringify(err));
-	  
-	 	if (cb) {
-			cb("error: " + JSON.stringify(err), null);
-	  	}
-	});
+      socket.on('message', function (data) {
+          if (typeof data === 'string') {
+              data = JSON.parse(data);
+          }
+          if (data instanceof Array) {
+              processMessageBatch(pomelo, data);
+          } else {
+              processMessage(pomelo, data);
+          }
+      });
 
-	socket.on('disconnect', function(reason) {
-	  	pomelo.emit('disconnect', reason);	
-	});
+      socket.on('error', function (err) {
+          console.error(JSON.stringify(err));
+
+          cb(err);
+      });
+
+      socket.on('disconnect', function (reason) {
+          pomelo.emit('disconnect', reason);
+          console.error("disconnect: ", reason);
+      });
   };
 
   pomelo.disconnect = function() {

@@ -8,7 +8,7 @@
     <TargetOsDescription>Windows 10.0</TargetOsDescription>
     <SolutionConfiguration>debug|anycpu</SolutionConfiguration>
     <PackageArchitecture>neutral</PackageArchitecture>
-    <PackageIdentityName>58ac6ba0-83a7-11e5-83fb-5f59d83da229</PackageIdentityName>
+    <PackageIdentityName>d39a2050-8541-11e5-98ba-5fb1f7f03754</PackageIdentityName>
     <IntermediateOutputPath>E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\build\windows\bld\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
@@ -51,9 +51,6 @@
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\images\Wide310x150Logo.scale-100.png">
       <PackagePath>images\Wide310x150Logo.scale-100.png</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\img\ionic.png">
-      <PackagePath>www\img\ionic.png</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\img\logo-main.png">
       <PackagePath>www\img\logo-main.png</PackagePath>
@@ -187,14 +184,17 @@
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\stickers\sticker9.png">
       <PackagePath>www\stickers\sticker9.png</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\WinJS\js\base.js">
-      <PackagePath>WinJS\js\base.js</PackagePath>
+    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\configs\appconfig.json">
+      <PackagePath>www\configs\appconfig.json</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova-js-src\exec.js">
-      <PackagePath>www\cordova-js-src\exec.js</PackagePath>
+    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\bower.json">
+      <PackagePath>www\js\crypto-js\bower.json</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova-js-src\platform.js">
-      <PackagePath>www\cordova-js-src\platform.js</PackagePath>
+    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\package.json">
+      <PackagePath>www\js\crypto-js\package.json</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\version.json">
+      <PackagePath>www\lib\ionic\version.json</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\cordova.js">
       <PackagePath>www\cordova.js</PackagePath>
@@ -406,6 +406,9 @@
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services\localNotifyService.js">
       <PackagePath>www\js\services\localNotifyService.js</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services\networkService.js">
+      <PackagePath>www\js\services\networkService.js</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\services\services.js">
       <PackagePath>www\js\services\services.js</PackagePath>
     </AppxPackagedFile>
@@ -489,6 +492,12 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\plugins\cordova-plugin-console\www\logger.js">
       <PackagePath>www\plugins\cordova-plugin-console\www\logger.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\plugins\cordova-plugin-device\src\windows\DeviceProxy.js">
+      <PackagePath>www\plugins\cordova-plugin-device\src\windows\DeviceProxy.js</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\plugins\cordova-plugin-device\www\device.js">
+      <PackagePath>www\plugins\cordova-plugin-device\www\device.js</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\plugins\cordova-plugin-file-transfer\src\windows\FileTransferProxy.js">
       <PackagePath>www\plugins\cordova-plugin-file-transfer\src\windows\FileTransferProxy.js</PackagePath>
@@ -631,11 +640,8 @@
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\plugins\de.appplant.cordova.plugin.local-notification\www\local-notification.js">
       <PackagePath>www\plugins\de.appplant.cordova.plugin.local-notification\www\local-notification.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\plugins\org.apache.cordova.device\src\windows\DeviceProxy.js">
-      <PackagePath>www\plugins\org.apache.cordova.device\src\windows\DeviceProxy.js</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\plugins\org.apache.cordova.device\www\device.js">
-      <PackagePath>www\plugins\org.apache.cordova.device\www\device.js</PackagePath>
+    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\plugins\hu.dpal.phonegap.plugins.SpinnerDialog\www\spinner.js">
+      <PackagePath>www\plugins\hu.dpal.phonegap.plugins.SpinnerDialog\www\spinner.js</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\plugins\org.apache.cordova.dialogs\src\windows\NotificationProxy.js">
       <PackagePath>www\plugins\org.apache.cordova.dialogs\src\windows\NotificationProxy.js</PackagePath>
@@ -655,17 +661,8 @@
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\scripts\appBundle.js">
       <PackagePath>www\scripts\appBundle.js</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\configs\appconfig.json">
-      <PackagePath>www\configs\appconfig.json</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\bower.json">
-      <PackagePath>www\js\crypto-js\bower.json</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\js\crypto-js\package.json">
-      <PackagePath>www\js\crypto-js\package.json</PackagePath>
-    </AppxPackagedFile>
-    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\lib\ionic\version.json">
-      <PackagePath>www\lib\ionic\version.json</PackagePath>
+    <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\WinJS\js\base.js">
+      <PackagePath>www\WinJS\js\base.js</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="E:\Documents\chitchat-ios\ChitChat_cordova\platforms\windows\www\css\index.css">
       <PackagePath>www\css\index.css</PackagePath>

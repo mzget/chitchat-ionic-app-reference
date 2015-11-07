@@ -82,6 +82,7 @@
 		AC0A9BE7A8444CDEA4CEEE94 /* appbeep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 637270D7F2494F58BBA8370C /* appbeep.wav */; };
 		4F9BF8FDF59B4F3CAC2400A2 /* APPBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC3DA5F93324AC48E8EBBA1 /* APPBadge.m */; };
 		9894C92E3EA34E2F9DBBC09C /* UIApplication+APPBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 337BBA77AFD24CB1ACA0712B /* UIApplication+APPBadge.m */; };
+		02FF05E5F4DF49159BA17018 /* CDVSpinnerDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 491321A2F18E4709A5275204 /* CDVSpinnerDialog.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +216,8 @@
 		337BBA77AFD24CB1ACA0712B /* UIApplication+APPBadge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+APPBadge.m"; path = "de.appplant.cordova.plugin.badge/UIApplication+APPBadge.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		9CE39F065B554DEA97FF516E /* APPBadge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "APPBadge.h"; path = "de.appplant.cordova.plugin.badge/APPBadge.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		F6B920FCDFC24EB58BEDD3A2 /* UIApplication+APPBadge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "UIApplication+APPBadge.h"; path = "de.appplant.cordova.plugin.badge/UIApplication+APPBadge.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		491321A2F18E4709A5275204 /* CDVSpinnerDialog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVSpinnerDialog.m"; path = "hu.dpal.phonegap.plugins.SpinnerDialog/CDVSpinnerDialog.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		9F1F3C1D6FB54670A1EE85F8 /* CDVSpinnerDialog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVSpinnerDialog.h"; path = "hu.dpal.phonegap.plugins.SpinnerDialog/CDVSpinnerDialog.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -396,6 +399,8 @@
 				337BBA77AFD24CB1ACA0712B /* UIApplication+APPBadge.m */,
 				9CE39F065B554DEA97FF516E /* APPBadge.h */,
 				F6B920FCDFC24EB58BEDD3A2 /* UIApplication+APPBadge.h */,
+				491321A2F18E4709A5275204 /* CDVSpinnerDialog.m */,
+				9F1F3C1D6FB54670A1EE85F8 /* CDVSpinnerDialog.h */,
 			);
 			name = Plugins;
 			path = ChitChat/Plugins;
@@ -620,6 +625,7 @@
 				9F2C25DCA3594EDB8BD08AE0 /* APPBackgroundMode.m in Sources */,
 				4F9BF8FDF59B4F3CAC2400A2 /* APPBadge.m in Sources */,
 				9894C92E3EA34E2F9DBBC09C /* UIApplication+APPBadge.m in Sources */,
+				02FF05E5F4DF49159BA17018 /* CDVSpinnerDialog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,7 +8,7 @@
     For more information on package manifest files, see http://go.microsoft.com/fwlink/?LinkID=241727
   -->
   <Identity Name="com.ahoostudio.chitchat" Publisher="CN=Apache Cordova Team" Version="1.0.0.0" ProcessorArchitecture="neutral" />
-  <mp:PhoneIdentity PhoneProductId="58ac6ba0-83a7-11e5-83fb-5f59d83da229" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <mp:PhoneIdentity PhoneProductId="d39a2050-8541-11e5-98ba-5fb1f7f03754" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>ChitChat</DisplayName>
     <PublisherDisplayName>Apache Cordova Team</PublisherDisplayName>

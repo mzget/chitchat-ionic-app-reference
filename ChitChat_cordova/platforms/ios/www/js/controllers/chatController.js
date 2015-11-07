@@ -107,7 +107,7 @@ angular.module('spartan.chat', [])
 		});
 	
 
-	var chatRoomControl = new ChatRoomController(main, currentRoom._id);
+	var chatRoomControl = new ChatRoomComponent(main, currentRoom._id);
 	main.dataListener.addListenerImp(chatRoomControl);
 	var chatRoomApi = main.getChatRoomApi();
 	chatRoomControl.serviceListener = function (event, newMsg) {
@@ -352,7 +352,7 @@ angular.module('spartan.chat', [])
     });
 
 	// ON LEAVE
-    $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
+    $scope.$on('$ionicView.beforeLeave', function(){ //This just one when leaving, which happens when I logout
         console.log("App view (menu) leaved.");
 				
 		$('#send_message').css({ 'display': 'none' });

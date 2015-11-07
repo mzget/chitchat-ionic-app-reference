@@ -41,6 +41,10 @@
     <PropertyGroup Label="Globals">
         <ProjectGuid>31b67a35-9503-4213-857e-f44eb42ae549</ProjectGuid>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(CordovaBundlePlatforms)' != ''" Label="CordovaBuildParameters">
+        <AppxBundle>Always</AppxBundle>
+        <AppxBundlePlatforms>$(CordovaBundlePlatforms)</AppxBundlePlatforms>
+    </PropertyGroup>
     <Import Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
     <PropertyGroup Condition="'$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0'">
         <VisualStudioVersion>12.0</VisualStudioVersion>

@@ -345,6 +345,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/hu.dpal.phonegap.plugins.SpinnerDialog/www/spinner.js",
+        "id": "hu.dpal.phonegap.plugins.SpinnerDialog.SpinnerDialog",
+        "merges": [
+            "window.plugins.spinnerDialog"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -370,6 +377,7 @@ module.exports.metadata =
     "org.pbernasconi.progressindicator": "1.1.0",
     "phonegap-plugin-push": "1.4.2",
     "cordova-plugin-splashscreen": "2.1.0",
+    "hu.dpal.phonegap.plugins.SpinnerDialog": "1.3.1",
     "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA

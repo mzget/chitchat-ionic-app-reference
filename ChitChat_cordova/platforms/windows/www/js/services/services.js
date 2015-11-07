@@ -358,7 +358,7 @@
     return isHas;
   }
   function updateFavorite(editType,id,type){
-    if(type!=undefined){
+    if(type==RoomType.organizationGroup || type==RoomType.projectBaseGroup || type==RoomType.privateGroup){
       if(editType=='add'){
           if(favoriteGroups==undefined) favoriteGroups = [];
           favoriteGroups.push(id);

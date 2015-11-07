@@ -8,12 +8,9 @@ images\Square70x70Logo.scale-100.png
 images\Square71x71Logo.scale-100.png
 images\StoreLogo.scale-100.png
 images\Wide310x150Logo.scale-100.png
-WinJS\js\base.js
 www\configs\appconfig.json
 www\cordova.js
 www\cordova_plugins.js
-www\cordova-js-src\exec.js
-www\cordova-js-src\platform.js
 www\css\index.css
 www\css\style.css
 www\css\themeblue.css
@@ -23,7 +20,6 @@ www\css\themered.css
 www\css\themeviole.css
 www\css\themeyellow.css
 www\favicon.ico
-www\img\ionic.png
 www\img\logo-main.png
 www\index.html
 www\js\.DS_Store
@@ -100,6 +96,7 @@ www\js\pomelo\pomeloclient.js
 www\js\push.js
 www\js\require.js
 www\js\services\localNotifyService.js
+www\js\services\networkService.js
 www\js\services\services.js
 www\js\socket.io.js
 www\js\template.js
@@ -174,6 +171,8 @@ www\plugins\cordova-plugin-camera\www\CameraPopoverHandle.js
 www\plugins\cordova-plugin-camera\www\CameraPopoverOptions.js
 www\plugins\cordova-plugin-console\www\console-via-logger.js
 www\plugins\cordova-plugin-console\www\logger.js
+www\plugins\cordova-plugin-device\src\windows\DeviceProxy.js
+www\plugins\cordova-plugin-device\www\device.js
 www\plugins\cordova-plugin-file\src\windows\FileProxy.js
 www\plugins\cordova-plugin-file\www\DirectoryEntry.js
 www\plugins\cordova-plugin-file\www\DirectoryReader.js
@@ -221,8 +220,7 @@ www\plugins\de.appplant.cordova.plugin.local-notification\src\windows\LocalNotif
 www\plugins\de.appplant.cordova.plugin.local-notification\www\local-notification.js
 www\plugins\de.appplant.cordova.plugin.local-notification\www\local-notification-core.js
 www\plugins\de.appplant.cordova.plugin.local-notification\www\local-notification-util.js
-www\plugins\org.apache.cordova.device\src\windows\DeviceProxy.js
-www\plugins\org.apache.cordova.device\www\device.js
+www\plugins\hu.dpal.phonegap.plugins.SpinnerDialog\www\spinner.js
 www\plugins\org.apache.cordova.dialogs\src\windows\NotificationProxy.js
 www\plugins\org.apache.cordova.dialogs\www\notification.js
 www\plugins\org.pbernasconi.progressindicator\www\progressIndicator.js
@@ -299,3 +297,4 @@ www\templates\tab-group-viewprofile.html
 www\templates\tab-login.html
 www\templates\tabs.html
 www\templates\tab-timeline.html
+www\WinJS\js\base.js

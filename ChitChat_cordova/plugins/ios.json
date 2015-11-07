@@ -127,6 +127,10 @@
                         {
                             "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SpinnerDialog\"><param name=\"ios-package\" value=\"CDVSpinnerDialog\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -197,6 +201,9 @@
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "hu.dpal.phonegap.plugins.SpinnerDialog": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
