@@ -338,7 +338,7 @@ define(['jquery'], function (jq) {
       socket.on('connect', function () {
           console.log('[pomeloclient.init] websocket connected!');
 
-          cb(null, {});
+          cb(null);
       });
 
       socket.on('reconnect', function () {
@@ -359,7 +359,7 @@ define(['jquery'], function (jq) {
       socket.on('error', function (err) {
           console.error(JSON.stringify(err));
 
-          cb(err, null);
+          cb(err);
       });
 
       socket.on('disconnect', function (reason) {

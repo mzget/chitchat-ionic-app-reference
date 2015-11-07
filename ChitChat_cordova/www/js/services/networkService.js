@@ -5,9 +5,9 @@
         .module('spartan.services')
         .factory('networkService', networkService);
 
-    networkService.$inject = ['$http'];
+    networkService.$inject = ['$http', '$state', "localNotifyService"];
 
-    function networkService($http) {
+    function networkService($http, $state, localNotifyService) {
         var service = {
             getData: getData,
             regisSocketListener: regisSocketListener
@@ -18,10 +18,12 @@
         function getData() { }
 
         function regisSocketListener() {
+            console.log("regis socket event.");
             var socket = new SocketComponent();
             server.setSocketComponent(socket);
             socket.onDisconnect =  function onDisconnect(reason) {
-                console.warn("onDisconnect", reason);
+                localNotifyService.makeToast("disconnected.");
+                $state.go("tab.login");
             }
         }
     }

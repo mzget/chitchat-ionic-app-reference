@@ -15,6 +15,7 @@
             cancelSingleNotification: cancelSingleNotification,
             registerPermission: registerPermission,
             
+            makeToast: makeToast,
             makeToastOnCenter: makeToastOnCenter
         };
 
@@ -25,6 +26,16 @@
         function registerPermission() {
             cordova.plugins.notification.local.registerPermission(function (granted) {
                 console.warn('Permission has been granted: ' + granted);
+            });
+        }
+        
+        function makeToast(message) {
+             $cordovaToast.showLongCenter(message).then(function(success) {
+                // success
+                console.log('makeToastOnCenter success', success);
+            }, function (error) {
+                // error
+                console.error('error', error);
             });
         }
         

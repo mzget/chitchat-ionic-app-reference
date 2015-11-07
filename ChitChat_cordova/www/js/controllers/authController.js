@@ -50,11 +50,14 @@
 			    $('.bar-stable').css({'display':''});
 			    $('#splash').css({ 'display': 'none' });
 
+		        // Hide spinner dialog
+			    window.plugins.spinnerDialog.hide();
+
 			    location.href = "#/tab/group";
 			    activateNetworkService();
 		    };
 		    server.init(function (err, server) {
-			    console.info("init server connection", err, server);
+			    console.log("Init serve completed is connected:", server._isConnected, JSON.stringify(err));
 			    if(err) {
 				    onServerConnectionFail(err);
 			    }
@@ -65,33 +68,43 @@
 					    $('#splash').css({ 'display': 'none' });
 	
 					    $('body #login #btn-login').click(function (event) {
-						    event.preventDefault();
-						    $('body #login input').attr('readonly', true);
-						    var email = $('body #login form input[name="email"]').val();
-						    var password = $('body #login form input[name="password"]').val();
-	
-						    main.getHashService(password, function (err, res) {
-							    main.authenUser(server, email, res, function (err, res) {
-								    if (!err && res !== null) {
-									    if (res.code === HttpStatusCode.success) {
-										    console.log("Success Login User...");
-									    }
-									    else if(res.code === 1004) {
-										    $('body #login input').attr('readonly', false);
-										
-										    onDuplicateLogin(res);
-									    }
-									    else if (res.code === HttpStatusCode.requestTimeout) {
-									        onLoginTimeout(res);
-									    }
-								    }
-								    else {
-									    $('body #login input').attr('readonly', false);
-									    // maybe user not found.
-									    onAuthenFail(err);
-								    }
-							    });
-						    });
+					        event.preventDefault();
+
+					        $('body #login input').attr('readonly', true);
+					        var email = $('body #login form input[name="email"]').val();
+					        var password = $('body #login form input[name="password"]').val();
+
+					        // console.error(email, ":", password)
+					        if (!email || !password) {
+					            onMissingParams();
+					        }
+					        else {
+					            // Show spinner dialog
+					            window.plugins.spinnerDialog.show(null, "loging in...", true);
+
+					            main.getHashService(password, function (err, res) {
+					                main.authenUser(server, email, res, function (err, res) {
+					                    if (!err && res !== null) {
+					                        if (res.code === HttpStatusCode.success) {
+					                            console.log("Success Login User...");
+					                        }
+					                        else if (res.code === 1004) {
+					                            $('body #login input').attr('readonly', false);
+
+					                            onDuplicateLogin(res);
+					                        }
+					                        else if (res.code === HttpStatusCode.requestTimeout) {
+					                            onLoginTimeout(res);
+					                        }
+					                    }
+					                    else {
+					                        $('body #login input').attr('readonly', false);
+					                        // maybe user not found.
+					                        onAuthenFail(err);
+					                    }
+					                });
+					            });
+					        }
 					    });
 				    }
 				    else {
@@ -128,10 +141,18 @@
 				    }		
 			    }
 		    });
+
 		    function onLoginTimeout(param) {
+		        // Hide spinner dialog
+		        window.plugins.spinnerDialog.hide();
+
 		        navigator.notification.alert(param.message, function callback() { }, "Login Timeout!", "OK");
 		    }
-			function onDuplicateLogin(param) {
+
+		    function onDuplicateLogin(param) {
+		        // Hide spinner dialog
+		        window.plugins.spinnerDialog.hide();
+
 			    navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices",
                     function (buttonIndex) {
                         switch (buttonIndex) {
@@ -142,14 +163,28 @@
                                 break;
                         }
                     }, "Duplicated login!", ["Cancle", "OK"]);
-			}	
-			function onAuthenFail(errMessage) {
+		    }
+
+		    function onAuthenFail(errMessage) {
+		        // Hide spinner dialog
+		        window.plugins.spinnerDialog.hide();
+
 				navigator.notification.alert(errMessage, function callback() {}, "Login fail!", "OK");
 			}
 			
-			function onServerConnectionFail(errMessage) {
+		    function onServerConnectionFail(errMessage) {
+		        // Hide spinner dialog
+		        window.plugins.spinnerDialog.hide();
+
 				navigator.notification.alert(errMessage, function callback() {}, "Connecting to server fail!", "OK");
 			}
+            
+            function onMissingParams() {
+		        // Hide spinner dialog
+		        window.plugins.spinnerDialog.hide();
+
+				navigator.notification.alert("Missing username or password.", function callback() {}, "Cannot login.", "OK");
+            }
         }
         
         function activateBackground() {
