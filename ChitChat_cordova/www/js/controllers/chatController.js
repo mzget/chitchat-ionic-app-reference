@@ -119,23 +119,23 @@ angular.module('spartan.chat', [])
 		});
 	
 
-	var chatRoomControl = new ChatRoomComponent(main, currentRoom._id);
-	main.dataListener.addListenerImp(chatRoomControl);
+	var chatRoomComponent = new ChatRoomComponent(main, currentRoom._id);
+	main.dataListener.addListenerImp(chatRoomComponent);
 	var chatRoomApi = main.getChatRoomApi();
-	chatRoomControl.serviceListener = function (event, newMsg) {
+	chatRoomComponent.serviceListener = function (event, newMsg) {
 	    if (event === "onChat") {
-	        Chats.set(chatRoomControl.chatMessages);
+	        Chats.set(chatRoomComponent.chatMessages);
 
 	        if (newMsg.sender !== main.dataManager.myProfile._id) {
 	            chatRoomApi.updateMessageReader(newMsg._id, currentRoom._id);
 	        }
 	    }
 	    else if (event === "onMessageRead") {
-	        Chats.set(chatRoomControl.chatMessages);
+	        Chats.set(chatRoomComponent.chatMessages);
 	    }
     }
-    chatRoomControl.getMessage(currentRoom._id, Chats, function () {
-        Chats.set(chatRoomControl.chatMessages);
+    chatRoomComponent.getMessage(currentRoom._id, Chats, function () {
+        Chats.set(chatRoomComponent.chatMessages);
     });
      
     var countUp = function () {		
@@ -215,8 +215,6 @@ angular.module('spartan.chat', [])
 		}
     }
     
-
-
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
 		if(args[1] == "Image"){
@@ -381,15 +379,15 @@ angular.module('spartan.chat', [])
 				
         $('#send_message').css({ 'display': 'none' });
 
-		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
+		chatRoomComponent.leaveRoom(currentRoom._id, function callback(err, res) {
 			localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
-			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomControl.chatMessages));
-			console.warn("save", currentRoom.name, JSON.stringify(chatRoomControl.chatMessages));
+			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomComponent.chatMessages));
+			console.warn("save", currentRoom.name, JSON.stringify(chatRoomComponent.chatMessages));
 
 			currentRoom = null;
 			roomSelected.setRoom(currentRoom);
-			chatRoomControl.chatMessages = [];
-			main.dataListener.removeListener(chatRoomControl);
+			chatRoomComponent.chatMessages = [];
+			main.dataListener.removeListener(chatRoomComponent);
 		});
     });
 
@@ -423,8 +421,7 @@ angular.module('spartan.chat', [])
     }
     $scope.isFavorite = function(id){
         return Favorite.isFavorite(id);
-    }
-        
+    }        
 });
 
 var viewLocation = function ($scope, message, $ionicLoading) {

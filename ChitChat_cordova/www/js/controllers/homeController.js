@@ -11,7 +11,6 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
-        var homeComponent = null;
 
 		$('.tab-nav.tabs').css({'display':'flex'});
 		$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
@@ -21,8 +20,6 @@
             console.warn('homeController activate');
  
             localNotifyService.registerPermission();
-
-            homeComponent = new HomeComponent();
 
             addHomeComponent(localNotifyService);
         }
@@ -348,6 +345,7 @@
         var dataManager = main.getDataManager();
         var onChatListenerImp = new HomeComponent();
         dataListener.addListenerImp(onChatListenerImp);
+
         onChatListenerImp.onChat = function (chatMessageImp) {
             console.warn("new message: ", chatMessageImp.type);
             var appBackground = cordova.plugins.backgroundMode.isActive();
