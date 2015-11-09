@@ -58,6 +58,12 @@ angular.module('spartan.chat', [])
 		$scope.modalSticker.hide();
 		$scope.chatMenuModal.hide();
 	}
+	// Modal - Audio Recorder
+
+	$scope.openModalRecorder = function(){
+		modalcount++;
+		$scope.modalAudio.show();
+	}
 	
 	// Modal - Webview 
 	$scope.openModalWebview = function() {
@@ -77,7 +83,13 @@ angular.module('spartan.chat', [])
 			$scope.chatMenuModal.hide();			
 		}
 		$('#chatMessage').animate({'bottom':'0'}, 350);
-		$('#chatDetail').animate({'top':'0'}, 350);		
+		$('#chatDetail').animate({'top':'0'}, 350);
+
+		if($('.audio-recorder').is(".recording")){
+			$('.audio-recorder').removeClass("recording");
+			$('.audio-recorder').addClass("unrecording");
+            $scope.$broadcast('cancelRecord', 'cancelRecord');
+        }		
 	});
 	$scope.openReaderModal = function() {
 		$scope.readerViewModal.show();
@@ -185,21 +197,25 @@ angular.module('spartan.chat', [])
 		}
 	});
 
-	$scope.voice = function(){
-		if($('.ion-android-microphone').is(".recording")){
-			$('.ion-android-microphone').removeClass("recording");
-            $scope.$broadcast('stopRecord', 'stopRecord');
-		}else{
-			$('.ion-android-microphone').addClass("recording");
-			$scope.$broadcast('startRecord', 'startRecord');
-		}
-	}
     $scope.image = function(){
         $scope.$broadcast('addImg', 'addImg');
     }
     $scope.video = function(){
         $scope.$broadcast('captureVideo', 'captureVideo');
     }
+    $scope.voice = function(){
+        if($('.audio-recorder').is(".recording")){
+			$('.audio-recorder').removeClass("recording");
+			$('.audio-recorder').addClass("unrecording");
+            $scope.$broadcast('stopRecord', 'stopRecord');
+		}else{
+			$('.audio-recorder').removeClass("unrecording");
+			$('.audio-recorder').addClass("recording");
+			$scope.$broadcast('startRecord', 'startRecord');
+		}
+    }
+    
+
 
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
@@ -308,6 +324,13 @@ angular.module('spartan.chat', [])
 		}).then(function(modal) {
 			$scope.modalSticker = modal;
 		})
+
+		$ionicModal.fromTemplateUrl('templates/modal-audio-recorder.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modalAudio = modal;
+		})
 		
 		// Reload Modal - WebView
 		$ionicModal.fromTemplateUrl('templates/modal-webview.html', {
@@ -337,6 +360,7 @@ angular.module('spartan.chat', [])
 		$scope.$on('$destroy', function () {
 			$scope.chatMenuModal.remove();
 		    $scope.modalSticker.remove();
+		    $scope.modalAudio.remove();
 		    $scope.modalWebview.remove();
 		    $scope.readerViewModal.remove();
 			$scope.mapViewModal.remove();
