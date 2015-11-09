@@ -61,6 +61,16 @@ angular.module('starter',
 		}
 	})
 
+	// ERROR
+	.state('tab.login-error', {
+		url: '/login/error',
+		views: {
+			'tab-login': {
+				templateUrl: 'templates/tab-login-error.html',
+				controller: 'noConnection'
+			}
+		}
+	})
 
 	// GROUP
 	.state('tab.group', {
