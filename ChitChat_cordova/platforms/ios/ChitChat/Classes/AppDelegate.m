@@ -89,8 +89,8 @@
     [self.window makeKeyAndVisible];
 
     //<!-- Parse.
-    [Parse setApplicationId:@"g2zHskQRutVmqjtXtuqoMiPiGEvvsZdT70l93uVO"
-                  clientKey:@"SsWCm3Kfm8HTE4EpaqOGmYUKfDWY73teII4c7gGG"];
+    [Parse setApplicationId:@"lPwt6trVsZbEji9cc3GEo4yxCogdg2XyR0aJ8hu5"
+                  clientKey:@"PgU6EwhWinmbDEwaooM9Xf89gSanp3sM67TafqnO"];
     // Register for Push Notitications
     UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
                                                     UIUserNotificationTypeBadge |
