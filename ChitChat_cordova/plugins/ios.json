@@ -73,6 +73,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
                             "count": 1
                         },
@@ -93,11 +97,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Toast\"><param name=\"ios-package\" value=\"Toast\" /></feature>",
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
+                            "xml": "<feature name=\"Toast\"><param name=\"ios-package\" value=\"Toast\" /></feature>",
                             "count": 1
                         },
                         {
@@ -113,6 +117,10 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"SpinnerDialog\"><param name=\"ios-package\" value=\"CDVSpinnerDialog\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
                             "count": 1
                         },
@@ -122,10 +130,6 @@
                         },
                         {
                             "xml": "<feature name=\"PushNotification\"><param name=\"ios-package\" value=\"PushPlugin\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -160,6 +164,9 @@
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
         "cordova-plugin-file": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
@@ -170,6 +177,9 @@
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "cordova-plugin-x-toast": {
@@ -187,6 +197,9 @@
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
+        "hu.dpal.phonegap.plugins.SpinnerDialog": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
         "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
@@ -195,14 +208,7 @@
         },
         "phonegap-plugin-push": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
-    "dependent_plugins": {
-        "org.apache.cordova.device": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        }
-    }
+    "dependent_plugins": {}
 }

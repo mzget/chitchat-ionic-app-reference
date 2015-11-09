@@ -211,6 +211,7 @@ angular.module('spartan.media', [])
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
 	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
+	$scope.$on('cancelRecord', function(event, args) { $scope.cancelRecord(); });
 
     var fileName;
 	var src;
@@ -230,6 +231,10 @@ angular.module('spartan.media', [])
 		mediaRec.stopRecord();
 		$scope.$emit('fileUri',[fileName + ".wav","Voice"]);
 		$scope.uploadVoice();
+	}
+
+	function cancelRecord(){
+		mediaRec.stopRecord();
 	}
 
 	var audio;

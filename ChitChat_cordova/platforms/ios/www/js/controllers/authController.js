@@ -5,15 +5,40 @@
         .module('spartan.auth', [])
         .controller('authController', authController);
 
-    authController.$inject = ['$location', "$ionicPlatform"];
+    authController.$inject = ['$location', "$ionicPlatform", "networkService"];
 
-    function authController($location, $ionicPlatform) {
+    function authController($location, $ionicPlatform, networkService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
         
         navHide();
+
+        $ionicPlatform.ready(function () {
+            activateBackground();
+            activate();
+
+            main.setDataManager(dataManager);
+            main.setServerListener(serverEvents);
+            main.setServerImp(server);
+            main.onMyProfileReadyListener = function (dataManager) {
+                $('#login').css('display', 'none');
+                $('.bar-stable').css({ 'display': '' });
+                $('#splash').css({ 'display': 'none' });
+
+                // Hide spinner dialog
+                window.plugins.spinnerDialog.hide();
+
+                location.href = "#/tab/group";
+                activateNetworkService();
+            };
+            initSpartanServer();
+
+            setTimeout(function () {
+                navigator.splashscreen.hide();
+            }, 100);
+        });
 
         function activate() {
             console.warn('authController activate');
@@ -41,112 +66,6 @@
             push.on('error', function (e) {
                 console.error("push error", e.message);
             });
-            
-		    main.setDataManager(dataManager);
-		    main.setServerListener(serverEvents);
-		    main.setServerImp(server);
-		    main.onMyProfileReadyListener = function(dataManager) {
-			    $('#login').css('display','none');
-			    $('.bar-stable').css({'display':''});
-			    $('#splash').css({'display':'none'});
-			    location.href = "#/tab/group";					
-		    };
-		    server.init(function (err, server) {
-			    console.info("init server connection", err, server);
-			    if(err) {
-				    onServerConnectionFail(err);
-			    }
-			    else { 
-				    var authen = server.authenData;
-				    console.log("token: ", authen.token);
-				    if (!authen.token) {
-					    $('#splash').css({ 'display': 'none' });
-	
-					    $('body #login #btn-login').click(function (event) {
-						    event.preventDefault();
-						    $('body #login input').attr('readonly', true);
-						    var email = $('body #login form input[name="email"]').val();
-						    var password = $('body #login form input[name="password"]').val();
-	
-						    main.getHashService(password, function (err, res) {
-							    main.authenUser(server, email, res, function (err, res) {
-								    if (!err && res !== null) {
-									    if (res.code === HttpStatusCode.success) {
-										    console.log("Success Login User...");
-									    }
-									    else if(res.code === 1004) {
-										    $('body #login input').attr('readonly', false);
-										
-										    onDuplicateLogin(res);
-									    }
-									    else if (res.code === HttpStatusCode.requestTimeout) {
-									        onLoginTimeout(res);
-									    }
-								    }
-								    else {
-									    $('body #login input').attr('readonly', false);
-									    // maybe user not found.
-									    onAuthenFail(err);
-								    }
-							    });
-						    });
-					    });
-				    }
-				    else {
-					    server.TokenAuthen(authen.token, function (err, res) {
-						    if (!err && res !== null) {
-							    console.log("Authen result: ", JSON.stringify(res));
-							    if (res.success) {
-								    main.authenUser(server, res.username, res.password, function (err, res) {
-									    if (!err && res !== null) {
-										    if (res.code === 200) {
-											    console.log("Success Authen User...");
-										    }
-										    else {
-											    //<!-- Authen fail.
-											    server.Logout();
-											    location.href = '';
-	
-											    console.error(err, res);
-											    onDuplicateLogin(err);
-										    }
-									    }
-									    else {
-										    //<!-- Authen fail.
-										    server.Logout();
-										    location.href = '';
-	
-										    console.error(err, res);
-										    onDuplicateLogin(err);
-									    }
-								    });
-							    }
-						    }
-					    });
-				    }		
-			    }
-		    });
-		    function onLoginTimeout(param) {
-		        navigator.notification.alert(param.message, function callback() { }, "Login Timeout!", "OK");
-		    }
-			function onDuplicateLogin(param) {
-				navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices", function (buttonIndex) {
-					switch (buttonIndex) {
-						case 1:
-							break;
-						case 2:
-                       	  server.kickMeAllSession(param.uid);
-							break;
-					}
-				}, "Duplicated login!", ["Cancle", "OK"]);
-			}	
-			function onAuthenFail(errMessage) {
-				navigator.notification.alert(errMessage, function callback() {}, "Login fail!", "OK");
-			}
-			
-			function onServerConnectionFail(errMessage) {
-				navigator.notification.alert(errMessage, function callback() {}, "Connecting to server fail!", "OK");
-			}
         }
         
         function activateBackground() {
@@ -165,12 +84,147 @@
             };
         }
 
-        $ionicPlatform.ready(function () {
-            activateBackground();
-            activate();
-            setTimeout(function() {
-		        navigator.splashscreen.hide();
-		    }, 100);
-        });
+        function activateNetworkService() {
+            networkService.regisSocketListener();
+        }
+
+        function initSpartanServer() {
+            server.init(function (err, server) {
+                console.log("Init serve completed is connected:", server._isConnected, JSON.stringify(err));
+                if (err !== null) {
+                    onServerConnectionFail(err);
+                }
+                else {
+                    onReadyToSigning();
+                }
+            });
+        }
+
+        function onLoginTimeout(param) {
+            // Hide spinner dialog
+            window.plugins.spinnerDialog.hide();
+
+            navigator.notification.alert(param.message, function callback() { }, "Login Timeout!", "OK");
+        }
+
+        function onDuplicateLogin(param) {
+            // Hide spinner dialog
+            window.plugins.spinnerDialog.hide();
+
+            navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices",
+                function (buttonIndex) {
+                    switch (buttonIndex) {
+                        case 1:
+                            break;
+                        case 2:
+                            server.kickMeAllSession(param.uid);
+                            break;
+                    }
+                }, "Duplicated login!", ["Cancle", "OK"]);
+        }
+
+        function onAuthenFail(errMessage) {
+            // Hide spinner dialog
+            window.plugins.spinnerDialog.hide();
+
+            navigator.notification.alert(errMessage, function callback() { }, "Login fail!", "OK");
+        }
+
+        function onServerConnectionFail(errMessage) {
+            // Hide spinner dialog
+            window.plugins.spinnerDialog.hide();
+
+            navigator.notification.alert(errMessage, function callback() {
+                console.warn("Just go to no connection page.");
+            },
+            "Connecting to server fail! \n Please come back again.", "OK");
+        }
+
+        function onMissingParams() {
+            // Hide spinner dialog
+            window.plugins.spinnerDialog.hide();
+
+            navigator.notification.alert("Missing username or password.", function callback() { }, "Cannot login.", "OK");
+        }
+
+        function onReadyToSigning() {
+            var authen = server.authenData;
+            console.log("token: ", authen.token);
+            if (!authen.token) {
+                $('#splash').css({ 'display': 'none' });
+
+                $('body #login #btn-login').click(function (event) {
+                    event.preventDefault();
+
+                    $('body #login input').attr('readonly', true);
+                    var email = $('body #login form input[name="email"]').val();
+                    var password = $('body #login form input[name="password"]').val();
+
+                    // console.error(email, ":", password)
+                    if (!email || !password) {
+                        onMissingParams();
+                    }
+                    else {
+                        // Show spinner dialog
+                        window.plugins.spinnerDialog.show(null, "loging in...", true);
+
+                        main.getHashService(password, function (err, res) {
+                            main.authenUser(server, email, res, function (err, res) {
+                                if (!err && res !== null) {
+                                    if (res.code === HttpStatusCode.success) {
+                                        console.log("Success Login User...");
+                                    }
+                                    else if (res.code === 1004) {
+                                        $('body #login input').attr('readonly', false);
+
+                                        onDuplicateLogin(res);
+                                    }
+                                    else if (res.code === HttpStatusCode.requestTimeout) {
+                                        onLoginTimeout(res);
+                                    }
+                                }
+                                else {
+                                    $('body #login input').attr('readonly', false);
+                                    // maybe user not found.
+                                    onAuthenFail(err);
+                                }
+                            });
+                        });
+                    }
+                });
+            }
+            else {
+                server.TokenAuthen(authen.token, function (err, res) {
+                    if (!err && res !== null) {
+                        console.log("Authen result: ", JSON.stringify(res));
+                        if (res.success) {
+                            main.authenUser(server, res.username, res.password, function (err, res) {
+                                if (!err && res !== null) {
+                                    if (res.code === 200) {
+                                        console.log("Success Authen User...");
+                                    }
+                                    else {
+                                        //<!-- Authen fail.
+                                        server.Logout();
+                                        location.href = '';
+
+                                        console.error(err, res);
+                                        onDuplicateLogin(err);
+                                    }
+                                }
+                                else {
+                                    //<!-- Authen fail.
+                                    server.Logout();
+                                    location.href = '';
+
+                                    console.error(err, res);
+                                    onDuplicateLogin(err);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
     }
 })();
