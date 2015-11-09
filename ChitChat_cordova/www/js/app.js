@@ -8,7 +8,7 @@
 angular.module('starter',
      ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
 	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify','ngCordova', 'ngStorage'])
+      'spartan.services', 'spartan.notify', 'ngCordova', 'ngStorage'])
 
 
 .run(function($ionicPlatform) {
@@ -26,11 +26,11 @@ angular.module('starter',
 		}
 		
 		console.log("$ionicPlatform.ready");
+	});
 
-		var currentPlatform = ionic.Platform.platform();
-		var currentPlatformVersion = ionic.Platform.version();
-		console.log("currentPlatform", currentPlatform);
-	});	
+	var currentPlatform = ionic.Platform.platform();
+	var currentPlatformVersion = ionic.Platform.version();
+	console.log("currentPlatform", currentPlatform, currentPlatformVersion);
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

@@ -377,9 +377,10 @@ angular.module('spartan.chat', [])
 
 	// ON LEAVE
     $scope.$on('$ionicView.beforeLeave', function(){ //This just one when leaving, which happens when I logout
-        console.log("App view (menu) leaved.");
+        console.log("chatController beforeLeave.");
 				
-		$('#send_message').css({ 'display': 'none' });
+        $('#send_message').css({ 'display': 'none' });
+
 		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
 			localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
 			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomControl.chatMessages));
