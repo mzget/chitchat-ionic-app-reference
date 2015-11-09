@@ -377,19 +377,19 @@ angular.module('spartan.chat', [])
 
 	// ON LEAVE
     $scope.$on('$ionicView.beforeLeave', function(){ //This just one when leaving, which happens when I logout
-        console.log("App view (menu) leaved.");
+        console.log("chatController beforeLeave.");
 				
 		$('#send_message').css({ 'display': 'none' });
-		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
-			localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
-			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomControl.chatMessages));
-			console.warn("save", currentRoom.name, JSON.stringify(chatRoomControl.chatMessages));
+		//chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
+		//	localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
+		//	localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomControl.chatMessages));
+		//	console.warn("save", currentRoom.name, JSON.stringify(chatRoomControl.chatMessages));
 
-			currentRoom = null;
-			roomSelected.setRoom(currentRoom);
-			chatRoomControl.chatMessages = [];
-			main.dataListener.removeListener(chatRoomControl);
-		});
+		//	currentRoom = null;
+		//	roomSelected.setRoom(currentRoom);
+		//	chatRoomControl.chatMessages = [];
+		//	main.dataListener.removeListener(chatRoomControl);
+		//});
     });
 
     $scope.editFavorite = function(editType,id,type){
