@@ -160,7 +160,7 @@ var ChatRoomComponent = (function () {
         this.chatRoomApi = this.main.getChatRoomApi();
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
-        console.log("constructor ChatRoomController");
+        console.log("constructor ChatRoomComponent");
     }
     ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
         var _this = this;
@@ -339,7 +339,9 @@ var DataListener = (function () {
         this.dataManager = dataManager;
     }
     DataListener.prototype.addListenerImp = function (listener) {
+        console.error("0: ", this.chatListenerImps.length);
         this.chatListenerImps.push(listener);
+        console.error("1: ", this.chatListenerImps.length);
     };
     DataListener.prototype.removeListener = function (listener) {
         var id = this.chatListenerImps.indexOf(listener);

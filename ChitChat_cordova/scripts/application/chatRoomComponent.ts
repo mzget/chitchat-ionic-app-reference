@@ -15,7 +15,7 @@
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
         
-        console.log("constructor ChatRoomController");
+        console.log("constructor ChatRoomComponent");
     }
 
     onChat(chatMessageImp: Message) {
