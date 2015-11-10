@@ -103,7 +103,7 @@
         }
         
         $scope.$on('$ionicView.enter', function(){ 
-            navShow();
+            //navShow();
 	
             $scope.refreshView = function () {
                 console.debug("homeController : refreshView");

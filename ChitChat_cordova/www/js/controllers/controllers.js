@@ -435,12 +435,12 @@ function testfunc()
 
 function navHide()
 {
-	$('.tab-nav.tabs').css({'display':'none'});
-	$('.has-header').css({'bottom':'0px'})
+	// $('.tab-nav.tabs').css({'display':'none'});
+	// $('.has-header').css({'bottom':'0px'})
 }
 
 function navShow()
 {	
-	$('.tab-nav.tabs').css({'display':'flex'});
-	$('.has-header').css({'bottom':'44px'})
+	// $('.tab-nav.tabs').css({'display':'flex'});
+	// $('.has-header').css({'bottom':'44px'})
 }

@@ -32,7 +32,8 @@
                 // Hide spinner dialog
                 window.plugins.spinnerDialog.hide();
 
-                location.href = "#/tab/group";
+                //location.href = "#/tab/group";
+                $state.go('tab.group');
                 activateNetworkService();
             };
             initSpartanServer();
