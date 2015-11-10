@@ -335,6 +335,7 @@ var ChatRoomComponent = (function () {
 })();
 var DataListener = (function () {
     function DataListener(dataManager) {
+        this.chatListenerImps = new Array();
         this.dataManager = dataManager;
     }
     DataListener.prototype.addListenerImp = function (listener) {

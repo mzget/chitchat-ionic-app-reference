@@ -1,6 +1,6 @@
 ﻿class DataListener implements Services.IServerListener, Services.IChatServerListener {
     private dataManager: DataManager;
-    private chatListenerImps: IChatListenerComponent[];
+    private chatListenerImps = new Array<IChatListenerComponent>();
 
     constructor(dataManager: DataManager) {
         this.dataManager = dataManager;
