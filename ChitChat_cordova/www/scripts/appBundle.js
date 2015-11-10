@@ -428,10 +428,10 @@ var DataManager = (function () {
         this.isOrgMembersReady = false;
     }
     DataManager.getInstance = function () {
-        if (!DataManager.Instance) {
-            DataManager.Instance = new DataManager();
+        if (this._instance === null || this._instance === undefined) {
+            this._instance = new DataManager();
         }
-        return DataManager.Instance;
+        return this._instance;
     };
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
