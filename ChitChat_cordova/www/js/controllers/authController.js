@@ -15,8 +15,6 @@
         vm.title = 'authController';
         var registrationId = "";
         
-        navHide();
-
         $ionicPlatform.ready(function () {
             activateBackground();
             activate();
