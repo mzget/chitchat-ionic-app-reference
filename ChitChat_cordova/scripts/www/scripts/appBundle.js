@@ -716,9 +716,12 @@ var NotifyManager = (function () {
         return this._instance;
     };
     NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
+        console.warn('notify', appBackground, chatMessageImp.type, notifyService);
         var dataManager = DataManager.getInstance();
+        console.warn('notify 2', dataManager);
         if (chatMessageImp.type === ContentType.Text) {
             var contact = dataManager.getContactProfile(chatMessageImp.sender);
+            console.warn('notify 3', contact);
             var secure = new SecureService();
             secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
                 if (!err) {
