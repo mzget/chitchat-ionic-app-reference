@@ -6,6 +6,7 @@ interface IMemberMep {
 }
 
 class DataManager implements Services.IFrontendServerListener {
+/*
     private static _instance: DataManager;
     public static getInstance(): DataManager {
         if (this._instance === null || this._instance === undefined) {
@@ -14,7 +15,7 @@ class DataManager implements Services.IFrontendServerListener {
 
         return this._instance;
     }
-
+*/
     public myProfile: User;
     public orgGroups: IRoomMap = {};
     public projectBaseGroups: IRoomMap = {};

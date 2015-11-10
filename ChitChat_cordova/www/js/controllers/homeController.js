@@ -344,7 +344,7 @@
         var dataListener = main.getDataListener();
         var dataManager = main.getDataManager();
         var onChatListenerImp = new HomeComponent();
-        var notifyManager = NotifyManager.getInstance();
+        var notifyManager = new NotifyManager(main);
         dataListener.addListenerImp(onChatListenerImp);
 
         onChatListenerImp.onChat = function (chatMessageImp) {

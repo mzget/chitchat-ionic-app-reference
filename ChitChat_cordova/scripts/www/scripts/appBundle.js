@@ -427,12 +427,6 @@ var DataManager = (function () {
         this.orgMembers = {};
         this.isOrgMembersReady = false;
     }
-    DataManager.getInstance = function () {
-        if (this._instance === null || this._instance === undefined) {
-            this._instance = new DataManager();
-        }
-        return this._instance;
-    };
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
         if (!!this.onMyProfileReady)
@@ -706,21 +700,15 @@ var HomeComponent = (function () {
     return HomeComponent;
 })();
 var NotifyManager = (function () {
-    function NotifyManager() {
+    function NotifyManager(main) {
         console.log("construc notify manager.");
+        this.dataManager = main.getDataManager();
     }
-    NotifyManager.getInstance = function () {
-        if (this._instance === null || this._instance === undefined) {
-            this._instance = new NotifyManager;
-        }
-        return this._instance;
-    };
     NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
         console.warn('notify', appBackground, JSON.stringify(chatMessageImp), notifyService);
-        var dataManager = DataManager.getInstance();
-        console.warn('notify 2', JSON.stringify(dataManager.myProfile));
+        console.warn('notify 2', JSON.stringify(this.dataManager.myProfile));
         if (chatMessageImp.type === ContentType.Text) {
-            var contact = dataManager.getContactProfile(chatMessageImp.sender);
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             console.warn('notify 3', contact);
             var secure = new SecureService();
             secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
@@ -740,7 +728,7 @@ var NotifyManager = (function () {
             });
         }
         else if (chatMessageImp.type === ContentType.Sticker) {
-            var contact = dataManager.getContactProfile(chatMessageImp.sender);
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a sticker.";
             if (!appBackground) {
                 notifyService.makeToastOnCenter(message);
@@ -750,7 +738,7 @@ var NotifyManager = (function () {
             }
         }
         else if (chatMessageImp.type === ContentType.Voice) {
-            var contact = dataManager.getContactProfile(chatMessageImp.sender);
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a voice message.";
             if (!appBackground) {
                 notifyService.makeToastOnCenter(message);
@@ -760,7 +748,7 @@ var NotifyManager = (function () {
             }
         }
         else if (chatMessageImp.type === ContentType.Image) {
-            var contact = dataManager.getContactProfile(chatMessageImp.sender);
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a image.";
             if (!appBackground) {
                 notifyService.makeToastOnCenter(message);
@@ -770,7 +758,7 @@ var NotifyManager = (function () {
             }
         }
         else if (chatMessageImp.type === ContentType.Video) {
-            var contact = dataManager.getContactProfile(chatMessageImp.sender);
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a video.";
             if (!appBackground) {
                 notifyService.makeToastOnCenter(message);
@@ -780,7 +768,7 @@ var NotifyManager = (function () {
             }
         }
         else if (chatMessageImp.type === ContentType.Location) {
-            var contact = dataManager.getContactProfile(chatMessageImp.sender);
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a location.";
             if (!appBackground) {
                 notifyService.makeToastOnCenter(message);
