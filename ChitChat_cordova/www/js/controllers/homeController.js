@@ -12,8 +12,9 @@
         var vm = this;
         vm.title = 'homeController';
 
-		$('.tab-nav.tabs').css({'display':'flex'});
-		$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
+		//$('.tab-nav.tabs').css({'display':'flex'});
+		//$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
+
         activate();
 
         function activate() {
