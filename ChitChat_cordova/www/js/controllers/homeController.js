@@ -25,10 +25,10 @@
  
             localNotifyService.registerPermission();
 
-            addHomeComponent(localNotifyService);
+            addHomeComponent();
         }
 
-        function addHomeComponent(notifyService) {
+        function addHomeComponent() {
             var notifyManager = new NotifyManager(main);
 
             dataListener.addListenerImp(homeComponent);
@@ -37,7 +37,7 @@
                 console.warn("new message: ", chatMessageImp.type);
 
                 var appBackground = cordova.plugins.backgroundMode.isActive();
-                notifyManager.notify(chatMessageImp, appBackground, notifyService);
+                notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
             }
         }
 

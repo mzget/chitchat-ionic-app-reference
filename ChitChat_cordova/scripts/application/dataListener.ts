@@ -88,6 +88,8 @@
                 value.onChat(chatMessageImp);
             });
         }
+
+        console.error("dataListener: ", this.chatListenerImps.length, chatMessageImp.type);
     };
 
     onLeaveRoom(data) {
