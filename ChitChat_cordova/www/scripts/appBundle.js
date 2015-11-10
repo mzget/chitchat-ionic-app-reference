@@ -344,8 +344,11 @@ var DataListener = (function () {
         console.error("1: ", this.chatListenerImps.length);
     };
     DataListener.prototype.removeListener = function (listener) {
+        console.error("remove 0: ", this.chatListenerImps.length);
         var id = this.chatListenerImps.indexOf(listener);
+        console.error("remove 1: id of", id);
         this.chatListenerImps.splice(id);
+        console.error("remove 2: ", this.chatListenerImps.length);
     };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
