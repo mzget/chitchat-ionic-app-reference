@@ -1,7 +1,8 @@
 angular.module('spartan.chat', [])
 
 .controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
-    $sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected, Favorite, localNotifyService)
+    $sce, $cordovaGeolocation, $cordovaDialogs,
+    Chats, roomSelected, Favorite, localNotifyService, sharedObjectService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
@@ -38,7 +39,7 @@ angular.module('spartan.chat', [])
         chatRoomComponent.notifyEvent = function (event, data) {
             if (event === ChatServer.ServerEventListener.ON_CHAT) {
                 var appBackground = cordova.plugins.backgroundMode.isActive();
-                notifyManager.notify(data, appBackground, localNotifyService);
+                sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
             }
         };
         chatRoomComponent.getMessage(currentRoom._id, Chats, function () {
