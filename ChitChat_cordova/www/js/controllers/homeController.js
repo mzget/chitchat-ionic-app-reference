@@ -355,6 +355,8 @@
                 secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
                     if (!err) {
                         chatMessageImp.body = res;
+
+                        var toastMessage = contact.displayname + " sent " + chatMessageImp.body;
                         if (!appBackground) {
                             notifyService.makeToastOnCenter(chatMessageImp.body);
                         }
