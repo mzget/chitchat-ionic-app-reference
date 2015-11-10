@@ -339,13 +339,11 @@ var DataListener = (function () {
         this.dataManager = dataManager;
     }
     DataListener.prototype.addListenerImp = function (listener) {
-        console.error("0: ", this.chatListenerImps.length);
         this.chatListenerImps.push(listener);
-        console.error("1: ", this.chatListenerImps.length);
     };
     DataListener.prototype.removeListener = function (listener) {
         var id = this.chatListenerImps.indexOf(listener);
-        this.chatListenerImps.splice(id);
+        this.chatListenerImps.splice(id, 1);
     };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
@@ -403,7 +401,6 @@ var DataListener = (function () {
                 value.onChat(chatMessageImp);
             });
         }
-        console.error("dataListener: ", this.chatListenerImps.length, chatMessageImp.type);
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) {
