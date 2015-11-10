@@ -16,7 +16,7 @@
         console.error("remove 0: ", this.chatListenerImps.length);
         var id = this.chatListenerImps.indexOf(listener);
         console.error("remove 1: id of", id);
-        this.chatListenerImps.splice(id);
+        this.chatListenerImps.splice(id, 1);
         console.error("remove 2: ", this.chatListenerImps.length);
     }
 
