@@ -3,11 +3,13 @@
 
     angular
         .module('spartan.auth', [])
-        .controller('authController', authController);
+        .controller('authController', authController)
+        .controller('noConnection', noConnection);
 
-    authController.$inject = ['$location', "$ionicPlatform", "networkService"];
 
-    function authController($location, $ionicPlatform, networkService) {
+    authController.$inject = ['$location', "$ionicPlatform", "$state", "networkService"];
+
+    function authController($location, $ionicPlatform, $state, networkService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -136,6 +138,11 @@
 
             navigator.notification.alert(errMessage, function callback() {
                 console.warn("Just go to no connection page.");
+                $('#login').css('display', 'none');
+                $('.bar-stable').css({ 'display': '' });
+                $('#splash').css({ 'display': 'none' });
+                window.plugins.spinnerDialog.hide();
+                location.href = "#/tab/login/error";
             },
             "Connecting to server fail! \n Please come back again.", "OK");
         }
@@ -225,6 +232,12 @@
                     }
                 });
             }
+        }
+    }
+    function noConnection($scope,$ionicNavBarDelegate,$rootScope,$ionicHistory){
+        $ionicNavBarDelegate.showBackButton(false);
+        $scope.goBack = function(){
+            $ionicHistory.goBack(-1);
         }
     }
 })();

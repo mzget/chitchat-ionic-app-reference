@@ -160,7 +160,7 @@ var ChatRoomComponent = (function () {
         this.chatRoomApi = this.main.getChatRoomApi();
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
-        console.log("constructor ChatRoomController");
+        console.log("constructor ChatRoomComponent");
     }
     ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
         var _this = this;
@@ -191,7 +191,9 @@ var ChatRoomComponent = (function () {
             }
         }
         else {
-            console.info("this msg come from other room.");
+            if (!!this.notifyEvent) {
+                this.notifyEvent(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+            }
         }
     };
     ChatRoomComponent.prototype.onLeaveRoom = function (data) {
@@ -333,13 +335,17 @@ var ChatRoomComponent = (function () {
 })();
 var DataListener = (function () {
     function DataListener(dataManager) {
+        this.chatListenerImps = new Array();
         this.dataManager = dataManager;
     }
     DataListener.prototype.addListenerImp = function (listener) {
-        this.listenerImp = listener;
+        console.error("0: ", this.chatListenerImps.length);
+        this.chatListenerImps.push(listener);
+        console.error("1: ", this.chatListenerImps.length);
     };
     DataListener.prototype.removeListener = function (listener) {
-        this.listenerImp = null;
+        var id = this.chatListenerImps.indexOf(listener);
+        this.chatListenerImps.splice(id);
     };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
@@ -392,27 +398,39 @@ var DataListener = (function () {
     };
     DataListener.prototype.onChatData = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
-        if (!!this.listenerImp) {
-            this.listenerImp.onChat(chatMessageImp);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value, id, arr) {
+                value.onChat(chatMessageImp);
+            });
         }
+        console.error("dataListener: ", this.chatListenerImps.length, chatMessageImp.type);
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) {
-        if (!!this.listenerImp)
-            this.listenerImp.onLeaveRoom(data);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value) {
+                value.onLeaveRoom(data);
+            });
+        }
     };
     ;
     DataListener.prototype.onRoomJoin = function (data) {
     };
     ;
     DataListener.prototype.onMessageRead = function (dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onMessageRead(dataEvent);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value) {
+                value.onMessageRead(dataEvent);
+            });
+        }
     };
     ;
     DataListener.prototype.onGetMessagesReaders = function (dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onGetMessagesReaders(dataEvent);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value) {
+                value.onGetMessagesReaders(dataEvent);
+            });
+        }
     };
     ;
     return DataListener;
@@ -425,12 +443,6 @@ var DataManager = (function () {
         this.orgMembers = {};
         this.isOrgMembersReady = false;
     }
-    DataManager.getInstance = function () {
-        if (!DataManager.Instance) {
-            DataManager.Instance = new DataManager();
-        }
-        return DataManager.Instance;
-    };
     DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
         if (!!this.onMyProfileReady)
@@ -702,6 +714,84 @@ var HomeComponent = (function () {
     HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) {
     };
     return HomeComponent;
+})();
+var NotifyManager = (function () {
+    function NotifyManager(main) {
+        console.log("construc notify manager.");
+        this.dataManager = main.getDataManager();
+    }
+    NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
+        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var secure = new SecureService();
+            secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
+                if (!err) {
+                    chatMessageImp.body = res;
+                    var toastMessage = contact.displayname + " sent " + chatMessageImp.body;
+                    if (!appBackground) {
+                        notifyService.makeToastOnCenter(toastMessage);
+                    }
+                    else {
+                        notifyService.scheduleSingleNotification(contact.displayname, chatMessageImp.body);
+                    }
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Sticker]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a sticker.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Voice]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a voice message.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Image]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a image.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Video]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a video.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Location]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a location.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+    };
+    return NotifyManager;
 })();
 var appConfig;
 var pomelo;
