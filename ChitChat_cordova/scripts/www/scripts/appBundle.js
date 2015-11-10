@@ -191,6 +191,7 @@ var ChatRoomComponent = (function () {
             }
         }
         else {
+            console.log("this msg come from other room.");
             if (!!this.notifyEvent) {
                 this.notifyEvent(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
             }

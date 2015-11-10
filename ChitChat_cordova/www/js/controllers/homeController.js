@@ -7,7 +7,8 @@
 
     //homeController.$inject = ['$location'];
 
-    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, roomSelected, localNotifyService, Favorite) {
+    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading,
+        roomSelected, localNotifyService, Favorite, sharedObjectService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
@@ -24,20 +25,19 @@
             console.warn('homeController activate');
  
             localNotifyService.registerPermission();
+            sharedObjectService.createNotifyManager(main);
 
             addHomeComponent();
         }
 
         function addHomeComponent() {
-            var notifyManager = new NotifyManager(main);
-
             dataListener.addListenerImp(homeComponent);
 
             homeComponent.onChat = function (chatMessageImp) {
                 console.warn("new message: ", chatMessageImp.type);
 
                 var appBackground = cordova.plugins.backgroundMode.isActive();
-                notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
+                sharedObjectService.getNotifyManager().notify(chatMessageImp, appBackground, localNotifyService);
             }
         }
 

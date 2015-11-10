@@ -7,7 +7,7 @@
         .controller('viewGroupMembersCtrl', viewGroupMembersCtrl)
         .controller('editMemberGroup', editMemberGroup);
 
-    groupDetailController.$inject = ['$location']; 
+    groupDetailController.$inject = ['$location'];
 
     var requestReload = false;
     var id_checked = [];
@@ -22,40 +22,40 @@
         function activate() { }
     }
 
-    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal,$rootScope, CreateGroup,ProjectBase, roomSelected){
+    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $rootScope, CreateGroup, ProjectBase, roomSelected) {
         id_checked = [];
         $scope.myProfile = main.getDataManager().myProfile;
-        
-        var room = roomSelected.getRoom();
-        var group = getGroup(room.type,$stateParams.chatId);
 
-        if($rootScope.status == "invite"){
+        var room = roomSelected.getRoom();
+        var group = getGroup(room.type, $stateParams.chatId);
+
+        if ($rootScope.status == "invite") {
             $scope.allmembers = CreateGroup.getAllMember();
-            for(var i=0; i<room.members.length; i++){
+            for (var i = 0; i < room.members.length; i++) {
                 var positionIndex;
-                $.each($scope.allmembers, function(index, result) {
-                    if(result._id == room.members[i].id){
+                $.each($scope.allmembers, function (index, result) {
+                    if (result._id == room.members[i].id) {
                         positionIndex = index;
                     }
                 });
-                $scope.allmembers.splice(positionIndex,1);
+                $scope.allmembers.splice(positionIndex, 1);
             }
-        }else if($rootScope.status = "edit"){
+        } else if ($rootScope.status = "edit") {
             $scope.allmembers = getMembersInProjectBase(room);
-            for(var x=0; x<room.members.length; x++){
-                ProjectBase.setRolePosition($scope.allmembers[x].id,$scope.allmembers[x].role,$scope.allmembers[x].jobPosition);
+            for (var x = 0; x < room.members.length; x++) {
+                ProjectBase.setRolePosition($scope.allmembers[x].id, $scope.allmembers[x].role, $scope.allmembers[x].jobPosition);
             }
         }
 
-        $scope.checked = function(id,selected){
-            setMemberSelected(id,selected);
+        $scope.checked = function (id, selected) {
+            setMemberSelected(id, selected);
         }
 
-        $scope.invite = function(){
+        $scope.invite = function () {
             $ionicLoading.show({
                 template: 'Loading..'
             });
-            server.editGroupMembers("add",room._id,RoomType[room.type],id_checked, function(err, res) {
+            server.editGroupMembers("add", room._id, RoomType[room.type], id_checked, function (err, res) {
                 if (!err) {
                     console.log(JSON.stringify(res));
                     requestReload = true;
@@ -71,19 +71,19 @@
             });
         }
 
-        function setMemberSelected(id,selected){
-            if(selected){
-              id_checked[id_checked.length] = id;
-            }else{
-              for(var i=0; i<id_checked.length; i++){
-                if(id_checked[i]==id){ id_checked.splice( i, 1 ); }
-              }
+        function setMemberSelected(id, selected) {
+            if (selected) {
+                id_checked[id_checked.length] = id;
+            } else {
+                for (var i = 0; i < id_checked.length; i++) {
+                    if (id_checked[i] == id) { id_checked.splice(i, 1); }
+                }
             }
         }
 
     }
-    
-    function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal,$rootScope,$cordovaProgress,$ionicLoading,$ionicHistory,roomSelected,CreateGroup) {
+
+    function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory, roomSelected, CreateGroup) {
         $scope.$on('$ionicView.enter', function () {
             //<!-- Contact modal.
             $ionicModal.fromTemplateUrl('templates/modal-contact.html', {
@@ -106,14 +106,14 @@
                 // Execute action
             });
 
-            if(requestReload){   
+            if (requestReload) {
                 var member = [];
-                for(var i=0; i<id_checked.length; i++){
+                for (var i = 0; i < id_checked.length; i++) {
                     var member = main.getDataManager().orgMembers[id_checked[i]];
                     $scope.members.push(member);
                 }
                 requestReload = false;
-                if(room.type === RoomType.projectBaseGroup) { init(); }
+                if (room.type === RoomType.projectBaseGroup) { init(); }
             }
         });
         $scope.$on('$ionicView.leave', function () {
@@ -141,17 +141,17 @@
         $scope.sourceImage = "";
         $scope.model = { groupname: group.name, originalName: group.name };
         init();
-        function init(){
-            if(room.type === RoomType.privateGroup || room.type === RoomType.organizationGroup) {
+        function init() {
+            if (room.type === RoomType.privateGroup || room.type === RoomType.organizationGroup) {
                 groupMembers(gMembers, gMembers.length, function done(members) {
                     $scope.members = members;
                 });
-            }else if(room.type === RoomType.projectBaseGroup){
+            } else if (room.type === RoomType.projectBaseGroup) {
                 $scope.members = getMembersInProjectBase(room);
                 var admin = false;
-                $.each($scope.members, function(index, result) {
-                    if($scope.myProfile._id == $scope.members[index]._id) { 
-                        if($scope.members[index].role == MemberRole[MemberRole.admin] || $scope.members[index].textRole == MemberRole[MemberRole.admin]) { admin = true; }
+                $.each($scope.members, function (index, result) {
+                    if ($scope.myProfile._id == $scope.members[index]._id) {
+                        if ($scope.members[index].role == MemberRole[MemberRole.admin] || $scope.members[index].textRole == MemberRole[MemberRole.admin]) { admin = true; }
                     }
                 });
                 $scope.meIsAdmin = admin;
@@ -164,23 +164,23 @@
             location.href = '#/tab/group/members/' + $scope.chatGroup._id + '/invite';
             $rootScope.status = "invite";
         }
-        $scope.editMember = function() {
+        $scope.editMember = function () {
             location.href = '#/tab/group/members/' + $scope.chatGroup._id + '/edit';
             $rootScope.status = "edit";
             CreateGroup.createType = "ProjectBase";
         }
-        $scope.removeMember = function(id){
+        $scope.removeMember = function (id) {
             var idMember = [];
             console.log(id);
             idMember.push(id);
-            server.editGroupMembers("remove",room._id,RoomType[room.type],idMember, function(err, res) {
+            server.editGroupMembers("remove", room._id, RoomType[room.type], idMember, function (err, res) {
                 if (!err) {
                     console.log(JSON.stringify(res));
                     var indexMember;
-                    $.each(room.members, function(index, result) {
-                        if(result._id == id || result.id == id){ indexMember = index; }
+                    $.each(room.members, function (index, result) {
+                        if (result._id == id || result.id == id) { indexMember = index; }
                     });
-                    $scope.members.splice( indexMember, 1 );
+                    $scope.members.splice(indexMember, 1);
                     $state.go($state.current, {}, { reload: true });
                 }
                 else {
@@ -203,33 +203,33 @@
             $scope.contactModal.hide();
         };
 
-        $scope.groupSave = function(){
+        $scope.groupSave = function () {
             $ionicLoading.show({
                 template: 'Loading..'
             });
             uploadImgGroup();
         }
 
-        function uploadImgGroup(){
-            if($scope.sourceImage != ''){
-                $scope.$broadcast('uploadImg','uploadImg');
-            }else{
+        function uploadImgGroup() {
+            if ($scope.sourceImage != '') {
+                $scope.$broadcast('uploadImg', 'uploadImg');
+            } else {
                 changeNameGroup();
             }
         }
-        function changeNameGroup(){
-            if($scope.model.groupname != $scope.model.originalName){
-                server.editGroupName(room._id,RoomType[room.type],$scope.model.groupname, function(err, res){
-                    if(!err){
+        function changeNameGroup() {
+            if ($scope.model.groupname != $scope.model.originalName) {
+                server.editGroupName(room._id, RoomType[room.type], $scope.model.groupname, function (err, res) {
+                    if (!err) {
                         console.log(JSON.stringify(res));
                         $scope.model.originalName = $scope.model.groupname;
                         $state.go($state.current, {}, { reload: true });
                         saveSuccess();
-                    }else{
+                    } else {
                         console.warn(err, res);
                     }
                 });
-            }else{
+            } else {
                 saveSuccess();
             }
         }
@@ -239,9 +239,9 @@
             setTimeout(function () { $cordovaProgress.hide(); }, 1500);
         }
 
-        $rootScope.$ionicGoBack = function() {
+        $rootScope.$ionicGoBack = function () {
             console.log($state.current.name);
-            if($state.current.name=='tab.group-members'){
+            if ($state.current.name == 'tab.group-members') {
                 CreateGroup.clear();
                 $rootScope.status = "";
             }
@@ -249,16 +249,16 @@
         };
 
 
-        $scope.$on('fileUri', function(event, args) {
+        $scope.$on('fileUri', function (event, args) {
             $scope.sourceImage = args;
         });
-        $scope.$on('fileUrl', function(event, args) {
+        $scope.$on('fileUrl', function (event, args) {
             $scope.sourceImage = '';
-            server.UpdatedGroupImage(room._id,args[0], function(err, res){
-                if(!err){
+            server.UpdatedGroupImage(room._id, args[0], function (err, res) {
+                if (!err) {
                     console.log(JSON.stringify(res));
                     changeNameGroup();
-                }else{
+                } else {
                     console.warn(err, res);
                 }
             });
@@ -266,20 +266,20 @@
 
 
     }
-    function getMembersInProjectBase(room){
-        for(var x=0; x<room.members.length; x++){
+
+    function getMembersInProjectBase(room) {
+        for (var x = 0; x < room.members.length; x++) {
             room.members[x]._id = main.getDataManager().orgMembers[room.members[x].id]._id;
             room.members[x].displayname = main.getDataManager().orgMembers[room.members[x].id].displayname;
             room.members[x].image = main.getDataManager().orgMembers[room.members[x].id].image;
-            if(room.members[x].role == null) { room.members[x].role = MemberRole[MemberRole.member]; }
-            if(room.members[x].jobPosition == null) { room.members[x].jobPosition = main.getDataManager().companyInfo.jobPosition[0]; }
-            room.members[x].isAdmin = isAdminInProjectBase(room,room.members[x]._id);
+            if (room.members[x].role == null) { room.members[x].role = MemberRole[MemberRole.member]; }
+            if (room.members[x].jobPosition == null) { room.members[x].jobPosition = main.getDataManager().companyInfo.jobPosition[0]; }
+            room.members[x].isAdmin = isAdminInProjectBase(room, room.members[x]._id);
         }
         return room.members;
     }
 
-
-    function getGroup(type, chatId){
+    function getGroup(type, chatId) {
         var group = null;
         switch (type) {
             case 0:
@@ -296,5 +296,4 @@
         }
         return group;
     }
-
 })();
