@@ -9,6 +9,7 @@
 class ChatRoomComponent implements IChatServerImp {
     public chatMessages: Array<Message> = [];
     public serviceListener: (eventName: string, data: any) => void;
+    public notifyEvent: (eventName: string, data: any) => void;
     private dataManager: DataManager;
     private main: Main;
     private serverImp: ChatServer.ServerImplemented;
@@ -54,7 +55,10 @@ class ChatRoomComponent implements IChatServerImp {
             }
         }
         else {
-            console.info("this msg come from other room.");
+            //console.log("this msg come from other room.");
+            if (!!this.notifyEvent) {
+                this.notifyEvent(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+            }
         }
     }
 

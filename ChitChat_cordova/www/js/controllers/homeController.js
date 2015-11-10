@@ -344,81 +344,14 @@
         var dataListener = main.getDataListener();
         var dataManager = main.getDataManager();
         var onChatListenerImp = new HomeComponent();
+        var notifyManager = NotifyManager.prototype;
         dataListener.addListenerImp(onChatListenerImp);
 
         onChatListenerImp.onChat = function (chatMessageImp) {
             console.warn("new message: ", chatMessageImp.type);
-            var appBackground = cordova.plugins.backgroundMode.isActive();
-            if (chatMessageImp.type === ContentType[ContentType.Text]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var secure = new SecureService();
-                secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
-                    if (!err) {
-                        chatMessageImp.body = res;
 
-                        var toastMessage = contact.displayname + " sent " + chatMessageImp.body;
-                        if (!appBackground) {
-                            notifyService.makeToastOnCenter(toastMessage);
-                        }
-                        else {
-                            notifyService.scheduleSingleNotification(contact.displayname, chatMessageImp.body);
-                        }
-                    }
-                    else {
-                        console.warn(err, res);
-                    }
-                });
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Sticker]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a sticker."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Voice]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a voice message."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Image]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a image."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Video]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a video."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Location]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a location."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
+            var appBackground = cordova.plugins.backgroundMode.isActive();
+            notifyManager.notify(chatMessageImp, appBackground, notifyService);
         }
     }
 })();

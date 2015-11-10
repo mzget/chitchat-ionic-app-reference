@@ -36,6 +36,9 @@ angular.module('spartan.chat', [])
                 Chats.set(chatRoomComponent.chatMessages);
             }
         }
+        chatRoomComponent.notifyEvent = function (event, data) {
+
+        };
         chatRoomComponent.getMessage(currentRoom._id, Chats, function () {
             Chats.set(chatRoomComponent.chatMessages);
         });
