@@ -37,7 +37,10 @@ angular.module('spartan.chat', [])
             }
         }
         chatRoomComponent.notifyEvent = function (event, data) {
-
+            if (event === ChatServer.ServerEventListener.ON_CHAT) {
+                var appBackground = cordova.plugins.backgroundMode.isActive();
+                notifyManager.notify(data, appBackground, localNotifyService);
+            }
         };
         chatRoomComponent.getMessage(currentRoom._id, Chats, function () {
             Chats.set(chatRoomComponent.chatMessages);
