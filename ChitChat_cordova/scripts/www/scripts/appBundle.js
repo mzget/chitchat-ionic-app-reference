@@ -401,7 +401,6 @@ var DataListener = (function () {
                 value.onChat(chatMessageImp);
             });
         }
-        console.error("dataListener: ", this.chatListenerImps, chatMessageImp.type);
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) {
@@ -719,10 +718,8 @@ var NotifyManager = (function () {
         this.dataManager = main.getDataManager();
     }
     NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
-        console.warn('notify', appBackground, JSON.stringify(chatMessageImp), notifyService);
         if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
             var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            console.warn('notify 3', contact);
             var secure = new SecureService();
             secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
                 if (!err) {

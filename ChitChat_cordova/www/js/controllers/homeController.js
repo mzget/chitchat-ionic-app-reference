@@ -12,6 +12,10 @@
         var vm = this;
         vm.title = 'homeController';
 
+        var dataListener = main.getDataListener();
+        var dataManager = main.getDataManager();
+        var homeComponent = new HomeComponent();
+
 		$('.tab-nav.tabs').css({'display':'flex'});
 		$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
         activate();
@@ -22,6 +26,23 @@
             localNotifyService.registerPermission();
 
             addHomeComponent(localNotifyService);
+        }
+
+        function addHomeComponent(notifyService) {
+            var notifyManager = new NotifyManager(main);
+
+            dataListener.addListenerImp(homeComponent);
+
+            homeComponent.onChat = function (chatMessageImp) {
+                console.warn("new message: ", chatMessageImp.type);
+
+                var appBackground = cordova.plugins.backgroundMode.isActive();
+                notifyManager.notify(chatMessageImp, appBackground, notifyService);
+            }
+        }
+
+        function onLeave() {
+            dataListener.removeListener(homeComponent);
         }
 
         $scope.pullRefresh = function() {
@@ -157,9 +178,10 @@
             });
         });
 	
-        $scope.$on('$ionicView.leave', function () {
-            console.debug('clear : refreshView');
+        $scope.$on('$ionicView.beforeLeave', function () {
+            console.log("beforeLeave: homeController");
             clearInterval($scope.interval);
+            onLeave();
         });		
 	
         $scope.viewlist = function(list) {
@@ -338,22 +360,5 @@
         };
 
         done();
-    }
-
-    var addHomeComponent = function(notifyService) {
-        var dataListener = main.getDataListener();
-        var dataManager = main.getDataManager();
-        var homeComponent = new HomeComponent();
-        var notifyManager = new NotifyManager(main);
-
-        console.error("addListenerImp: ", homeComponent);
-        dataListener.addListenerImp(homeComponent);
-
-        homeComponent.onChat = function (chatMessageImp) {
-            console.warn("new message: ", chatMessageImp.type);
-
-            var appBackground = cordova.plugins.backgroundMode.isActive();
-            notifyManager.notify(chatMessageImp, appBackground, notifyService);
-        }
     }
 })();

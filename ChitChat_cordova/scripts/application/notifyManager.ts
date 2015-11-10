@@ -8,11 +8,8 @@
     }
 
     public notify(chatMessageImp: Message, appBackground: boolean, notifyService) {
-        console.warn('notify', appBackground, JSON.stringify(chatMessageImp), notifyService);
-
         if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
             var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            console.warn('notify 3', contact);
             var secure = new SecureService();
             secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
                 if (!err) {
