@@ -1,4 +1,17 @@
 ﻿class NotifyManager {
+    private static _instance: NotifyManager;
+    public static getInstance(): NotifyManager {
+        if (this._instance === null || this._instance === undefined) {
+            this._instance = new NotifyManager;
+        }
+
+        return this._instance;
+    } 
+
+    constructor() {
+        console.log("construc notify manager.");
+    }
+
     public notify(chatMessageImp: Message, appBackground: boolean, notifyService) {
         var dataManager = DataManager.getInstance();
 

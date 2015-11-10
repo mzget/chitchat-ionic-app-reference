@@ -707,7 +707,14 @@ var HomeComponent = (function () {
 })();
 var NotifyManager = (function () {
     function NotifyManager() {
+        console.log("construc notify manager.");
     }
+    NotifyManager.getInstance = function () {
+        if (this._instance === null || this._instance === undefined) {
+            this._instance = new NotifyManager;
+        }
+        return this._instance;
+    };
     NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
         var dataManager = DataManager.getInstance();
         if (chatMessageImp.type === ContentType.Text) {
