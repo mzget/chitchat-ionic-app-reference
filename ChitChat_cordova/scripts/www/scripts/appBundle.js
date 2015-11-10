@@ -706,8 +706,7 @@ var NotifyManager = (function () {
     }
     NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
         console.warn('notify', appBackground, JSON.stringify(chatMessageImp), notifyService);
-        console.warn('notify 2', JSON.stringify(this.dataManager.myProfile));
-        if (chatMessageImp.type === ContentType.Text) {
+        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
             var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             console.warn('notify 3', contact);
             var secure = new SecureService();
@@ -727,7 +726,7 @@ var NotifyManager = (function () {
                 }
             });
         }
-        else if (chatMessageImp.type === ContentType.Sticker) {
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Sticker]) {
             var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a sticker.";
             if (!appBackground) {
@@ -737,7 +736,7 @@ var NotifyManager = (function () {
                 notifyService.scheduleSingleNotification(contact.displayname, message);
             }
         }
-        else if (chatMessageImp.type === ContentType.Voice) {
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Voice]) {
             var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a voice message.";
             if (!appBackground) {
@@ -747,7 +746,7 @@ var NotifyManager = (function () {
                 notifyService.scheduleSingleNotification(contact.displayname, message);
             }
         }
-        else if (chatMessageImp.type === ContentType.Image) {
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Image]) {
             var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a image.";
             if (!appBackground) {
@@ -757,7 +756,7 @@ var NotifyManager = (function () {
                 notifyService.scheduleSingleNotification(contact.displayname, message);
             }
         }
-        else if (chatMessageImp.type === ContentType.Video) {
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Video]) {
             var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a video.";
             if (!appBackground) {
@@ -767,7 +766,7 @@ var NotifyManager = (function () {
                 notifyService.scheduleSingleNotification(contact.displayname, message);
             }
         }
-        else if (chatMessageImp.type === ContentType.Location) {
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Location]) {
             var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var message = contact.displayname + " sent a location.";
             if (!appBackground) {
