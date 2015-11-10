@@ -85,6 +85,8 @@
         if (!!this.listenerImp) {
             this.listenerImp.onChat(chatMessageImp);
         }
+
+        console.error("dataListener: ", this.listenerImp, chatMessageImp.type);
     };
     onLeaveRoom(data) {
         if (!!this.listenerImp)

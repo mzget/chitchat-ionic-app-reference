@@ -397,6 +397,7 @@ var DataListener = (function () {
         if (!!this.listenerImp) {
             this.listenerImp.onChat(chatMessageImp);
         }
+        console.error("dataListener: ", this.listenerImp, chatMessageImp.type);
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) {
