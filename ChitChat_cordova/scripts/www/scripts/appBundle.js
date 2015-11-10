@@ -716,9 +716,9 @@ var NotifyManager = (function () {
         return this._instance;
     };
     NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
-        console.warn('notify', appBackground, chatMessageImp.type, notifyService);
+        console.warn('notify', appBackground, chatMessageImp, notifyService);
         var dataManager = DataManager.getInstance();
-        console.warn('notify 2', dataManager);
+        console.warn('notify 2', JSON.stringify(dataManager.myProfile));
         if (chatMessageImp.type === ContentType.Text) {
             var contact = dataManager.getContactProfile(chatMessageImp.sender);
             console.warn('notify 3', contact);
