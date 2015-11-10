@@ -13,7 +13,7 @@
     }
 
     public notify(chatMessageImp: Message, appBackground: boolean, notifyService) {
-        console.warn('notify', appBackground, chatMessageImp, notifyService);
+        console.warn('notify', appBackground, JSON.stringify(chatMessageImp), notifyService);
 
         var dataManager = DataManager.getInstance();
 
