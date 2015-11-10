@@ -16,8 +16,8 @@
         var dataManager = main.getDataManager();
         var homeComponent = new HomeComponent();
 
-		$('.tab-nav.tabs').css({'display':'flex'});
-		$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
+		//$('.tab-nav.tabs').css({'display':'flex'});
+		//$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
         activate();
 
         function activate() {
@@ -103,7 +103,6 @@
         }
         
         $scope.$on('$ionicView.enter', function(){ 
-            //navShow();
 	
             $scope.refreshView = function () {
                 console.debug("homeController : refreshView");

@@ -20,10 +20,6 @@
         activate();
 
         function activate() { }
-				
-        $scope.$on('$ionicView.enter', function(){ 
-            navShow();
-		});
 
         var dataManager = main.getDataManager();
 				

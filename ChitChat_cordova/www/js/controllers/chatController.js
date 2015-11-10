@@ -4,7 +4,6 @@ angular.module('spartan.chat', [])
     $sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected, Favorite, localNotifyService)
 {    		
 	// Hide nav-tab # in chat detail
-	navHide();
 	$('#chatMessage').animate({'bottom':'0'}, 350);
 
 

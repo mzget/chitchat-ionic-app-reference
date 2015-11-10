@@ -84,7 +84,6 @@
     }
     
     function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal,$rootScope,$cordovaProgress,$ionicLoading,$ionicHistory,roomSelected,CreateGroup) {
-        navHide();
         $scope.$on('$ionicView.enter', function () {
             //<!-- Contact modal.
             $ionicModal.fromTemplateUrl('templates/modal-contact.html', {
