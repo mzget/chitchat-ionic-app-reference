@@ -7,7 +7,9 @@
     }
 
     public addListenerImp(listener: IChatListenerComponent) {
+        console.error("0: ", this.chatListenerImps.length);
         this.chatListenerImps.push(listener);
+        console.error("1: ", this.chatListenerImps.length);
     }
 
     public removeListener(listener: IChatListenerComponent) {
