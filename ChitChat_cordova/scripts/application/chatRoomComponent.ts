@@ -1,12 +1,4 @@
-﻿interface IChatServerImp {
-    onChat(data);
-    onLeaveRoom(data);
-    onRoomJoin(data);
-    onMessageRead(dataEvent);
-    onGetMessagesReaders(dataEvent);
-}
-
-class ChatRoomComponent implements IChatServerImp {
+﻿class ChatRoomComponent implements IChatListenerComponent {
     public chatMessages: Array<Message> = [];
     public serviceListener: (eventName: string, data: any) => void;
     public notifyEvent: (eventName: string, data: any) => void;

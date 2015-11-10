@@ -338,10 +338,11 @@ var DataListener = (function () {
         this.dataManager = dataManager;
     }
     DataListener.prototype.addListenerImp = function (listener) {
-        this.listenerImp = listener;
+        this.chatListenerImps.push(listener);
     };
     DataListener.prototype.removeListener = function (listener) {
-        this.listenerImp = null;
+        var id = this.chatListenerImps.indexOf(listener);
+        this.chatListenerImps.splice(id);
     };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
@@ -394,28 +395,39 @@ var DataListener = (function () {
     };
     DataListener.prototype.onChatData = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
-        if (!!this.listenerImp) {
-            this.listenerImp.onChat(chatMessageImp);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value, id, arr) {
+                value.onChat(chatMessageImp);
+            });
         }
-        console.error("dataListener: ", this.listenerImp, chatMessageImp.type);
+        console.error("dataListener: ", this.chatListenerImps, chatMessageImp.type);
     };
     ;
     DataListener.prototype.onLeaveRoom = function (data) {
-        if (!!this.listenerImp)
-            this.listenerImp.onLeaveRoom(data);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value) {
+                value.onLeaveRoom(data);
+            });
+        }
     };
     ;
     DataListener.prototype.onRoomJoin = function (data) {
     };
     ;
     DataListener.prototype.onMessageRead = function (dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onMessageRead(dataEvent);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value) {
+                value.onMessageRead(dataEvent);
+            });
+        }
     };
     ;
     DataListener.prototype.onGetMessagesReaders = function (dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onGetMessagesReaders(dataEvent);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value) {
+                value.onGetMessagesReaders(dataEvent);
+            });
+        }
     };
     ;
     return DataListener;

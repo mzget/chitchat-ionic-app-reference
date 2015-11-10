@@ -1,4 +1,4 @@
-class HomeComponent implements IChatServerImp {
+class HomeComponent implements IChatListenerComponent {
 	onChat(data) {
 		
 	}
