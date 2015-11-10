@@ -6,15 +6,16 @@ interface IMemberMep {
 }
 
 class DataManager implements Services.IFrontendServerListener {
-    private static Instance: DataManager;
+/*
+    private static _instance: DataManager;
     public static getInstance(): DataManager {
-        if (!DataManager.Instance) {
-            DataManager.Instance = new DataManager();
+        if (this._instance === null || this._instance === undefined) {
+            this._instance = new DataManager();
         }
 
-        return DataManager.Instance;
+        return this._instance;
     }
-
+*/
     public myProfile: User;
     public orgGroups: IRoomMap = {};
     public projectBaseGroups: IRoomMap = {};

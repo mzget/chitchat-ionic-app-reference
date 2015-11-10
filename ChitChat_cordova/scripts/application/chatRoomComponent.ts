@@ -1,14 +1,7 @@
-﻿interface IChatServerImp {
-    onChat(data);
-    onLeaveRoom(data);
-    onRoomJoin(data);
-    onMessageRead(dataEvent);
-    onGetMessagesReaders(dataEvent);
-}
-
-class ChatRoomComponent implements IChatServerImp {
+﻿class ChatRoomComponent implements IChatListenerComponent {
     public chatMessages: Array<Message> = [];
     public serviceListener: (eventName: string, data: any) => void;
+    public notifyEvent: (eventName: string, data: any) => void;
     private dataManager: DataManager;
     private main: Main;
     private serverImp: ChatServer.ServerImplemented;
@@ -22,7 +15,7 @@ class ChatRoomComponent implements IChatServerImp {
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
         
-        console.log("constructor ChatRoomController");
+        console.log("constructor ChatRoomComponent");
     }
 
     onChat(chatMessageImp: Message) {
@@ -54,7 +47,10 @@ class ChatRoomComponent implements IChatServerImp {
             }
         }
         else {
-            console.info("this msg come from other room.");
+            //console.log("this msg come from other room.");
+            if (!!this.notifyEvent) {
+                this.notifyEvent(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+            }
         }
     }
 

@@ -11,7 +11,10 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
-        var homeComponent = null;
+
+        var dataListener = main.getDataListener();
+        var dataManager = main.getDataManager();
+        var homeComponent = new HomeComponent();
 
 		$('.tab-nav.tabs').css({'display':'flex'});
 		$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
@@ -22,9 +25,24 @@
  
             localNotifyService.registerPermission();
 
-            homeComponent = new HomeComponent();
+            addHomeComponent();
+        }
 
-            addHomeComponent(localNotifyService);
+        function addHomeComponent() {
+            var notifyManager = new NotifyManager(main);
+
+            dataListener.addListenerImp(homeComponent);
+
+            homeComponent.onChat = function (chatMessageImp) {
+                console.warn("new message: ", chatMessageImp.type);
+
+                var appBackground = cordova.plugins.backgroundMode.isActive();
+                notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
+            }
+        }
+
+        function onLeave() {
+            dataListener.removeListener(homeComponent);
         }
 
         $scope.pullRefresh = function() {
@@ -160,9 +178,10 @@
             });
         });
 	
-        $scope.$on('$ionicView.leave', function () {
-            console.debug('clear : refreshView');
+        $scope.$on('$ionicView.beforeLeave', function () {
+            console.log("beforeLeave: homeController");
             clearInterval($scope.interval);
+            onLeave();
         });		
 	
         $scope.viewlist = function(list) {
@@ -341,84 +360,5 @@
         };
 
         done();
-    }
-
-    var addHomeComponent = function(notifyService) {
-        var dataListener = main.getDataListener();
-        var dataManager = main.getDataManager();
-        var onChatListenerImp = new HomeComponent();
-        dataListener.addListenerImp(onChatListenerImp);
-        onChatListenerImp.onChat = function (chatMessageImp) {
-            console.warn("new message: ", chatMessageImp.type);
-            var appBackground = cordova.plugins.backgroundMode.isActive();
-            if (chatMessageImp.type === ContentType[ContentType.Text]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var secure = new SecureService();
-                secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
-                    if (!err) {
-                        chatMessageImp.body = res;
-                        if (!appBackground) {
-                            notifyService.makeToastOnCenter(chatMessageImp.body);
-                        }
-                        else {
-                            notifyService.scheduleSingleNotification(contact.displayname, chatMessageImp.body);
-                        }
-                    }
-                    else {
-                        console.warn(err, res);
-                    }
-                });
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Sticker]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a sticker."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Voice]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a voice message."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Image]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a image."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Video]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a video."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
-            else if (chatMessageImp.type === ContentType[ContentType.Location]) {
-                var contact = dataManager.getContactProfile(chatMessageImp.sender);
-                var message = contact.displayname + " sent a location."
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(message);
-                }
-                else {
-                    notifyService.scheduleSingleNotification(contact.displayname, message);
-                }
-            }
-        }
     }
 })();

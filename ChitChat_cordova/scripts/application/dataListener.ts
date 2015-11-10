@@ -1,17 +1,18 @@
 ﻿class DataListener implements Services.IServerListener, Services.IChatServerListener {
     private dataManager: DataManager;
-    private listenerImp;
+    private chatListenerImps = new Array<IChatListenerComponent>();
 
     constructor(dataManager: DataManager) {
         this.dataManager = dataManager;
     }
 
-    public addListenerImp(listener) {
-        this.listenerImp = listener;
+    public addListenerImp(listener: IChatListenerComponent) {
+        this.chatListenerImps.push(listener);
     }
 
-    public removeListener(listener) {
-        this.listenerImp = null;
+    public removeListener(listener: IChatListenerComponent) {
+        var id = this.chatListenerImps.indexOf(listener);
+        this.chatListenerImps.splice(id, 1);
     }
 
     onAccessRoom(dataEvent) {
@@ -82,25 +83,38 @@
     onChatData(data) {
         var chatMessageImp: Message = JSON.parse(JSON.stringify(data));
 
-        if (!!this.listenerImp) {
-            this.listenerImp.onChat(chatMessageImp);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach((value, id, arr) => {
+                value.onChat(chatMessageImp);
+            });
         }
     };
+
     onLeaveRoom(data) {
-        if (!!this.listenerImp)
-            this.listenerImp.onLeaveRoom(data);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(value => {
+                value.onLeaveRoom(data);
+            });
+        }
     };
+
     onRoomJoin(data) {
 
     };
 
     onMessageRead(dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onMessageRead(dataEvent);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(value => {
+                value.onMessageRead(dataEvent);
+            });
+        }
     };
 
     onGetMessagesReaders(dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onGetMessagesReaders(dataEvent);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(value => {
+                value.onGetMessagesReaders(dataEvent);
+            });
+        }
     };
 }
