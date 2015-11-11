@@ -26,18 +26,19 @@
 		$scope.myProfile = dataManager.myProfile;
 		$scope.orgMembers = dataManager.orgMembers;
 		$scope.roomAccess = [];
-		getRoomAccess();
-		var refresh = function () 
-		{		
-			$scope.roomAccess = myRoomAccess;
-			console.log('reload chatlog');
+        //getRoomAccess();
+		getUnreadMessages();
+		//var refresh = function () 
+		//{		
+		//	$scope.roomAccess = myRoomAccess;
+		//	console.log('reload chatlog');
 		
-			//console.log(roomAccess);
-			//console.log(myRoomAccess);
+		//	//console.log(roomAccess);
+		//	//console.log(myRoomAccess);
 			
-			$timeout(refresh, 1000);
-		} 
-		$timeout(refresh, 1000);
+		//	$timeout(refresh, 1000);
+		//} 
+		//$timeout(refresh, 1000);
 		
 		
 		$scope.gotoChat = function (accessId) 
@@ -84,6 +85,23 @@
 		};
 		
     }
+
+    function getUnreadMessages() {
+        async.eachSeries(dataManager.myProfile.roomAccess, function iterator(item, cb) {
+            server.getUnreadMsgOfRoom(item.roomId, item.accessTime, function res(err, res) {
+                if (err || res === null) {
+                    cb(err, null);
+                }
+                else {
+                    console.warn(JSON.stringify(res));
+                    cb();
+                }
+            });
+        }, function done(err) {
+            console.log("get unread message is done.");
+        })
+    }
+
 	
 	function getRoomAccess()
 	{
