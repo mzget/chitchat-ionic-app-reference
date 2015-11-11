@@ -105,6 +105,21 @@
 				{
 					console.log( res['data']['_id'] );
 					var data = res;
+					
+					if(data.data.type == RoomType.privateChat){
+						try{
+							if( data.data.members[0].id == main.getDataManager().myProfile._id ){
+								data.data.name = main.getDataManager().orgMembers[data.data.members[1].id].displayname;
+								data.data.image = main.getDataManager().orgMembers[data.data.members[1].id].image;
+							}else{
+								data.data.name = main.getDataManager().orgMembers[data.data.members[0].id].displayname;
+								data.data.image = main.getDataManager().orgMembers[data.data.members[0].id].image;
+							}
+						}catch(err){
+							console.log(err);
+						}
+					}
+
 					myRoomAccess.push(data['data']);
 					/*
 					myRoomAccess[ res['data']['_id'] ] = {};
