@@ -28,17 +28,17 @@
 		$scope.roomAccess = [];
         //getRoomAccess();
 		getUnreadMessages();
-		var refresh = function () 
-		{		
-			$scope.roomAccess = myRoomAccess;
-			console.log('reload chatlog');
+		//var refresh = function () 
+		//{		
+		//	$scope.roomAccess = myRoomAccess;
+		//	console.log('reload chatlog');
 		
-			//console.log(roomAccess);
-			//console.log(myRoomAccess);
+		//	//console.log(roomAccess);
+		//	//console.log(myRoomAccess);
 			
-			$timeout(refresh, 1000);
-		} 
-		$timeout(refresh, 1000);
+		//	$timeout(refresh, 1000);
+		//} 
+		//$timeout(refresh, 1000);
 		
 		
 		$scope.gotoChat = function (accessId) 
