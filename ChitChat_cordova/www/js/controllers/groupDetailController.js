@@ -83,7 +83,7 @@
 
     }
 
-    function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory, roomSelected, CreateGroup) {
+    function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory, roomSelected, CreateGroup, modalService) {
         $scope.$on('$ionicView.enter', function () {
             //<!-- Contact modal.
             $ionicModal.fromTemplateUrl('templates/modal-contact.html', {
@@ -195,7 +195,7 @@
         }
         //<!-- Contact modal -------------------------->
         $scope.openContactModal = function (contactId) {
-            initContactModal($scope, contactId, roomSelected, function done() {
+            modalService.initContactModal($scope, contactId, roomSelected, function done() {
                 $scope.contactModal.show();
             });
         };
