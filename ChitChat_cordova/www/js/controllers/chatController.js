@@ -2,7 +2,7 @@ angular.module('spartan.chat', [])
 
 .controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
     $sce, $cordovaGeolocation, $cordovaDialogs,
-    Chats, roomSelected, Favorite, localNotifyService, sharedObjectService)
+    Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
@@ -441,6 +441,9 @@ angular.module('spartan.chat', [])
     }
     $scope.isFavorite = function(id){
         return Favorite.isFavorite(id);
+    }
+    $scope.isBlockNoti = function(id){
+    	return blockNotifications.isBlockNoti(id);
     }        
 });
 

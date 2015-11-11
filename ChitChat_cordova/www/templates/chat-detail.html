@@ -2,13 +2,23 @@
 
 	<ion-nav-buttons side="right">
 		<div ng-show="currentRoom.type!=3">
-	        <i ng-if="isFavorite(currentRoom._id)" class="ion-heart assertive" style="font-size:30px;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)"></i>
-			<i ng-if="!isFavorite(currentRoom._id)" class="ion-heart dark" style="font-size:30px;" ng-click="editFavorite('add',currentRoom._id,currentRoom.type)"></i>
+	        <i ng-if="isFavorite(currentRoom._id)" class="ion-heart assertive" style="font-size:25px; line-height:40px;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)"></i>
+			<i ng-if="!isFavorite(currentRoom._id)" class="ion-heart dark" style="font-size:25px; line-height:40px;" ng-click="editFavorite('add',currentRoom._id,currentRoom.type)"></i>
 		</div>
 		<div ng-show="currentRoom.type==3">
-	        <i ng-if="isFavorite(otherId)" class="ion-heart assertive" style="font-size:30px;" ng-click="editFavorite('remove',otherId,currentRoom.type)"></i>
-			<i ng-if="!isFavorite(otherId)" class="ion-heart dark" style="font-size:30px;" ng-click="editFavorite('add',otherId,currentRoom.type)"></i>
+	        <i ng-if="isFavorite(otherId)" class="ion-heart assertive" style="font-size:25px; line-height:40px;" ng-click="editFavorite('remove',otherId,currentRoom.type)"></i>
+			<i ng-if="!isFavorite(otherId)" class="ion-heart dark" style="font-size:25px; line-height:40px;" ng-click="editFavorite('add',otherId,currentRoom.type)"></i>
 		</div>
+
+		<div ng-show="currentRoom.type==1 || currentRoom.type==2">
+			<i ng-if="isBlockNoti(currentRoom._id)" class="ion-android-notifications-off" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;"></i>
+			<i ng-if="!isBlockNoti(currentRoom._id)" class="ion-android-notifications" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;"></i>
+		</div>
+		<div ng-show="currentRoom.type==3">
+			<i ng-if="isBlockNoti(otherId)" class="ion-android-notifications-off" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;"></i>
+			<i ng-if="!isBlockNoti(otherId)" class="ion-android-notifications" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;"></i>
+		</div>
+
     </ion-nav-buttons>
 	
 	<ion-content delegate-handle="mainScroll" style="bottom:44px;">    
