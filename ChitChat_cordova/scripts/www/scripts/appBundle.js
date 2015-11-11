@@ -334,6 +334,48 @@ var ChatRoomComponent = (function () {
     };
     return ChatRoomComponent;
 })();
+var ChatsLogComponent = (function () {
+    function ChatsLogComponent(main, server) {
+        this.main = main;
+        this.server = server;
+    }
+    ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) { };
+    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) { };
+    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) { };
+    ChatsLogComponent.prototype.onCreateGroupSuccess = function (dataEvent) { };
+    ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) { };
+    ChatsLogComponent.prototype.onEditedGroupName = function (dataEvent) { };
+    ChatsLogComponent.prototype.onEditedGroupImage = function (dataEvent) { };
+    ChatsLogComponent.prototype.onNewGroupCreated = function (dataEvent) { };
+    ChatsLogComponent.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) { };
+    ChatsLogComponent.prototype.onUserUpdateImageProfile = function (dataEvent) { };
+    ChatsLogComponent.prototype.onUserUpdateProfile = function (dataEvent) { };
+    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess) {
+        var self = this;
+        async.mapSeries(roomAccess, function iterator(item, cb) {
+            if (!!item.roomId && !!item.accessTime) {
+                self.server.getUnreadMsgOfRoom(item.roomId, item.accessTime.toString(), function res(err, res) {
+                    if (err || res === null) {
+                        console.warn("getUnreadMsgOfRoom: ", err);
+                    }
+                    else {
+                        if (res.code === HttpStatusCode.success) {
+                            console.log(JSON.stringify(res));
+                            var unread = JSON.parse(JSON.stringify(res.data));
+                        }
+                    }
+                    cb(null, null);
+                });
+            }
+            else {
+                cb(null, null);
+            }
+        }, function done(err) {
+            console.log("get unread message is done.");
+        });
+    };
+    return ChatsLogComponent;
+})();
 var DataListener = (function () {
     function DataListener(dataManager) {
         this.chatListenerImps = new Array();

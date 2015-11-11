@@ -11,34 +11,38 @@
 	var roomAccessLength = 0;
 	var myRoomAccess = [];
 	var myRoomAccessCount = 0;
+	var chatsLogComponent = null;
 	
     function chatslogController($location, $scope, $timeout, roomSelected) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
-
         activate();
 
-        function activate() { }
+        function activate() { 
+			console.warn("chatslogController.activate");
+			
+			chatsLogComponent = new ChatsLogComponent(main, server);
+			getUnreadMessages();
+		}
 
         var dataManager = main.getDataManager();
 				
 		$scope.myProfile = dataManager.myProfile;
 		$scope.orgMembers = dataManager.orgMembers;
 		$scope.roomAccess = [];
-        //getRoomAccess();
-		getUnreadMessages();
-		//var refresh = function () 
-		//{		
-		//	$scope.roomAccess = myRoomAccess;
-		//	console.log('reload chatlog');
+        getRoomAccess();
+		var refresh = function () 
+		{		
+			$scope.roomAccess = myRoomAccess;
+			console.log('reload chatlog');
 		
-		//	//console.log(roomAccess);
-		//	//console.log(myRoomAccess);
+			//console.log(roomAccess);
+			//console.log(myRoomAccess);
 			
-		//	$timeout(refresh, 1000);
-		//} 
-		//$timeout(refresh, 1000);
+			$timeout(refresh, 1000);
+		} 
+		$timeout(refresh, 1000);
 		
 		
 		$scope.gotoChat = function (accessId) 
@@ -87,19 +91,7 @@
     }
 
     function getUnreadMessages() {
-        async.eachSeries(dataManager.myProfile.roomAccess, function iterator(item, cb) {
-            server.getUnreadMsgOfRoom(item.roomId, item.accessTime, function res(err, res) {
-                if (err || res === null) {
-                    cb(err, null);
-                }
-                else {
-                    console.warn(JSON.stringify(res));
-                    cb();
-                }
-            });
-        }, function done(err) {
-            console.log("get unread message is done.");
-        })
+		chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess);
     }
 
 	
