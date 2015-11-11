@@ -11,22 +11,27 @@
 	var roomAccessLength = 0;
 	var myRoomAccess = [];
 	var myRoomAccessCount = 0;
+	var chatsLogComponent = null;
 	
     function chatslogController($location, $scope, $timeout, roomSelected) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
-
         activate();
 
-        function activate() { }
+        function activate() { 
+			console.warn("chatslogController.activate");
+			
+			chatsLogComponent = new ChatsLogComponent(main, server);
+			getUnreadMessages();
+		}
 
         var dataManager = main.getDataManager();
 				
 		$scope.myProfile = dataManager.myProfile;
 		$scope.orgMembers = dataManager.orgMembers;
 		$scope.roomAccess = [];
-		getRoomAccess();
+        getRoomAccess();
 		var refresh = function () 
 		{		
 			$scope.roomAccess = myRoomAccess;
@@ -84,6 +89,11 @@
 		};
 		
     }
+
+    function getUnreadMessages() {
+		chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess);
+    }
+
 	
 	function getRoomAccess()
 	{
@@ -105,6 +115,21 @@
 				{
 					console.log( res['data']['_id'] );
 					var data = res;
+					
+					if(data.data.type == RoomType.privateChat){
+						try{
+							if( data.data.members[0].id == main.getDataManager().myProfile._id ){
+								data.data.name = main.getDataManager().orgMembers[data.data.members[1].id].displayname;
+								data.data.image = main.getDataManager().orgMembers[data.data.members[1].id].image;
+							}else{
+								data.data.name = main.getDataManager().orgMembers[data.data.members[0].id].displayname;
+								data.data.image = main.getDataManager().orgMembers[data.data.members[0].id].image;
+							}
+						}catch(err){
+							console.log(err);
+						}
+					}
+
 					myRoomAccess.push(data['data']);
 					/*
 					myRoomAccess[ res['data']['_id'] ] = {};
