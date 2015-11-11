@@ -433,6 +433,7 @@ angular.module('spartan.services', [])
 		}
 	};
 })
+
 .factory('modalService', function (){
   function initContactModal($scope, contactId, roomSelected, done){
     var contact = main.getDataManager().orgMembers[contactId];
@@ -459,9 +460,8 @@ angular.module('spartan.services', [])
       done();
   }
   return {
-        initContactModal: initContactModal
-    }
-
+      initContactModal: initContactModal
+  }
 })
 
 .factory('roomSelected', function () {
