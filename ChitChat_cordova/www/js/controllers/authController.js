@@ -163,12 +163,16 @@
                     event.preventDefault();
 
                     $('body #login input').attr('readonly', true);
+                    $('body #login #btn-login').attr('disabled', true);
+
                     var email = $('body #login form input[name="email"]').val();
                     var password = $('body #login form input[name="password"]').val();
 
                     // console.error(email, ":", password)
                     if (!email || !password) {
                         onMissingParams();
+                        $('body #login input').attr('readonly', false);
+                        $('body #login #btn-login').attr('disabled', false);
                     }
                     else {
                         // Show spinner dialog
@@ -182,15 +186,18 @@
                                     }
                                     else if (res.code === 1004) {
                                         $('body #login input').attr('readonly', false);
-
+                                        $('body #login #btn-login').attr('disabled', false);
                                         onDuplicateLogin(res);
                                     }
                                     else if (res.code === HttpStatusCode.requestTimeout) {
+                                        $('body #login input').attr('readonly', false);
+                                        $('body #login #btn-login').attr('disabled', false);
                                         onLoginTimeout(res);
                                     }
                                 }
                                 else {
                                     $('body #login input').attr('readonly', false);
+                                    $('body #login #btn-login').attr('disabled', false);
                                     // maybe user not found.
                                     onAuthenFail(err);
                                 }
