@@ -326,15 +326,31 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, (result) => {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                // if (callback != null){
-                //     if(editType=='add'){
-                //         self.dataManager.myProfile.favoriteGroups.push(group);
-                //     }else{
-                //         var index = self.dataManager.myProfile.favoriteGroups.indexOf(group);
-                //         self.dataManager.myProfile.favoriteGroups.splice( index , 1);
-                //     }
-                    callback(null, result);
-                // }
+                callback(null, result);
+            });
+        }
+
+        public updateClosedNoticeMemberList(editType: string, member: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["editType"] = editType;
+            msg["member"] = member;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, (result) => {
+                console.log("updateClosedNoticeMemberList: ", JSON.stringify(result));
+                callback(null, result);
+            });
+        }
+
+        public updateClosedNoticeGroupsList(editType: string, group: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["editType"] = editType;
+            msg["group"] = group;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, (result) => {
+                console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
+                callback(null, result);
             });
         }
 
