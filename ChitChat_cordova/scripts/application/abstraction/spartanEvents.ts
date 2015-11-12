@@ -1,4 +1,4 @@
-﻿module Services {
+﻿module absSpartan {
 
     export interface IChatServerListener {
         onChatData(data);

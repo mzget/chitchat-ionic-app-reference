@@ -785,20 +785,20 @@ module ChatServer {
         public static ON_GET_ORGANIZE_GROUPS: string = "onGetOrganizeGroups";
         public static ON_GET_PROJECT_BASE_GROUPS: string = "onGetProjectBaseGroups";
 
-        private chatServerListener: Services.IChatServerListener;
-        private frontendListener: Services.IFrontendServerListener;
-        private rtcCallListener: Services.IRTCListener;
-        private serverListener: Services.IServerListener;
-        public addFrontendListener(obj: Services.IFrontendServerListener): void {
+        private chatServerListener: absSpartan.IChatServerListener;
+        private frontendListener: absSpartan.IFrontendServerListener;
+        private rtcCallListener: absSpartan.IRTCListener;
+        private serverListener: absSpartan.IServerListener;
+        public addFrontendListener(obj: absSpartan.IFrontendServerListener): void {
             this.frontendListener = obj;
         }
-        public addServerListener(obj: Services.IServerListener): void {
+        public addServerListener(obj: absSpartan.IServerListener): void {
             this.serverListener = obj;
         }
-        public addChatListener(obj: Services.IChatServerListener): void {
+        public addChatListener(obj: absSpartan.IChatServerListener): void {
             this.chatServerListener = obj;
         }
-        public addRTCListener(obj: Services.IRTCListener): void {
+        public addRTCListener(obj: absSpartan.IRTCListener): void {
             this.rtcCallListener = obj;
         }
 

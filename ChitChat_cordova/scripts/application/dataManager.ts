@@ -5,7 +5,7 @@ interface IMemberMep {
     [key: string]: ContactInfo;
 }
 
-class DataManager implements Services.IFrontendServerListener {
+class DataManager implements absSpartan.IFrontendServerListener {
 /*
     private static _instance: DataManager;
     public static getInstance(): DataManager {

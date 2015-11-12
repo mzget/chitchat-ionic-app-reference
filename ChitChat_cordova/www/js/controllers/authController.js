@@ -7,18 +7,23 @@
         .controller('noConnection', noConnection);
 
 
-    authController.$inject = ['$location', "$ionicPlatform", "$state", "networkService"];
+//    authController.$inject = ['$location', "$ionicPlatform", "$ionicLoading", "$state", "networkService"];
 
-    function authController($location, $ionicPlatform, $state, networkService) {
+    function authController($location, $ionicPlatform, $ionicLoading, $state, networkService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
-        
+
+        activate();
+     /*   
         $ionicPlatform.ready(function () {
             activateBackground();
             activate();
-
+            console.warn("ready....", JSON.stringify(main));
+            var dataManager = DataManager.prototype;
+            var server = ChatServer.ServerImplemented.prototype;
+            console.warn("ready....2", dataManager);
             main.setDataManager(dataManager);
             main.setServerListener(serverEvents);
             main.setServerImp(server);
@@ -35,23 +40,22 @@
                 activateNetworkService();
             };
             initSpartanServer();
-
+            
             setTimeout(function () {
                 navigator.splashscreen.hide();
             }, 100);
         });
-
+*/
         function activate() {
             console.warn('authController activate');
 
             console.log("init push notification.");
             var push = PushNotification.init({
-                "ios": { "alert": "true", "badge": "true", "sound": "true" },
-                "windows": {}
+                "ios": { "alert": "true", "badge": "true", "sound": "true" }
             });
 
             push.on('registration', function (data) {
-                console.warn("registration event", JSON.stringify(data));
+                console.log("registration event", JSON.stringify(data));
                 registrationId = data.registrationId;
                 localStorage.setItem("registrationId", registrationId);
             });
@@ -90,6 +94,8 @@
         }
 
         function initSpartanServer() {
+            console.log("initSpartanServer", server);
+            
             server.init(function (err, server) {
                 console.log("Init serve completed is connected:", server._isConnected, JSON.stringify(err));
                 if (err !== null) {

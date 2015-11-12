@@ -1,22 +1,35 @@
-﻿class DataListener implements Services.IServerListener, Services.IChatServerListener {
+﻿class DataListener implements absSpartan.IServerListener, absSpartan.IChatServerListener {
     private dataManager: DataManager;
-    private chatListenerImps = new Array<IChatListenerComponent>();
+    private chatListenerImps = new Array<absSpartan.AbsChatServerListener>();
+    public addListenerImp(listener: absSpartan.AbsChatServerListener) {
+        this.chatListenerImps.push(listener);
+    }
+    public removeListener(listener: absSpartan.AbsChatServerListener) {
+        var id = this.chatListenerImps.indexOf(listener);
+        this.chatListenerImps.splice(id, 1);
+    }
+
+    private roomAccessListenerImps = new Array<absSpartan.AbsRoomAccessListenerImp>();
+    public addRoomAccessListenerImp(listener: absSpartan.AbsRoomAccessListenerImp) {
+        this.roomAccessListenerImps.push(listener);
+    }
+    public removeRoomAccessListener(listener: absSpartan.AbsRoomAccessListenerImp) {
+        var id = this.roomAccessListenerImps.indexOf(listener);
+        this.roomAccessListenerImps.splice(id, 1);
+    }
 
     constructor(dataManager: DataManager) {
         this.dataManager = dataManager;
     }
 
-    public addListenerImp(listener: IChatListenerComponent) {
-        this.chatListenerImps.push(listener);
-    }
-
-    public removeListener(listener: IChatListenerComponent) {
-        var id = this.chatListenerImps.indexOf(listener);
-        this.chatListenerImps.splice(id, 1);
-    }
-
     onAccessRoom(dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
+
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onAccessRoom(dataEvent);
+            });
+        }
     }
 
     onUpdatedLastAccessTime(dataEvent) {
@@ -85,7 +98,7 @@
 
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach((value, id, arr) => {
-                value.onChat(chatMessageImp);
+                value.onChatData(chatMessageImp);
             });
         }
     };
