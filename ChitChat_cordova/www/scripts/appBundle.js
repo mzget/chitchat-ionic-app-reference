@@ -351,6 +351,9 @@ var ChatsLogComponent = (function () {
     ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) {
         console.warn("onAddRoomAccess", JSON.stringify(dataEvent));
     };
+    ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) {
+        console.warn("onEditedGroupMember", JSON.stringify(dataEvent));
+    };
     ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         var self = this;
         var logs = [];

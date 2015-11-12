@@ -104,7 +104,7 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
+.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
 	$scope.settings = {
 		logOut: true,
 	};
@@ -154,7 +154,10 @@ angular.module('spartan.controllers', [])
         }
 
     $scope.logOut = function () {
+		console.warn("logOut...");
         server.logOut();
+		
+		$state.go("tab");
     }
 })
 
