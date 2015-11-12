@@ -35,18 +35,22 @@
 			//console.log(roomAccess);
 			//console.log(myRoomAccess);
 			
+			$('#chatlog_count').text(chatlog_count);
+			
 			$timeout(refresh, 1000);
 		} 
 		$timeout(refresh, 1000);
 		
 		
-		$scope.gotoChat = function (accessId) 
+		$scope.gotoChat = function (accessId, chatlog) 
 		{		
+			chatlog_count -= chatlog;
 			var accessLength = myRoomAccess.length;
 			for(var i=0; i<accessLength; i++)
 			{
 				if( myRoomAccess[i]['_id'] == accessId )
 				{
+					myRoomAccess[i]['body']['count'] = 0;
 					switch( myRoomAccess[i]['type'] )
 					{
 						case 0:
@@ -100,27 +104,39 @@
 		if( myRoomAccessCount < roomAccessLength )
 		{
 			console.log( 'wait: ' + myRoomAccessCount + '/' + roomAccessLength );	
+			//console.log( roomAccess[myRoomAccessCount] );
 			server.getRoomInfo(roomAccess[myRoomAccessCount]['roomId'], function(err, res){				
 				if( res['code'] == 200 )
 				{
 					console.log( res['data']['_id'] );
+					//console.log( res );
 					var data = res;
-					myRoomAccess.push(data['data']);
-					/*
-					myRoomAccess[ res['data']['_id'] ] = {};
-					myRoomAccess[ res['data']['_id'] ]['roomId'] = 'I';
-					myRoomAccess[ res['data']['_id'] ]['accessTime'] = 'J';		
-					*/				
+					data['data']['accessTime'] = roomAccess[myRoomAccessCount]['accessTime'];
+					//myRoomAccess.push(data['data']);			
 				}
 				
-				if( myRoomAccessCount+1 == roomAccessLength )
-				{
-					console.log( 'last' );
-				}else{
-					myRoomAccessCount++;
-					getRoomInfo(myRoomAccessCount);
-				}	
+				server.getUnreadMsgOfRoom(roomAccess[myRoomAccessCount]['roomId'], roomAccess[myRoomAccessCount]['accessTime'], function(err, res){		
+					if( res['code'] == 200 )
+					{
+						data['data']['body'] = res['data'];
+						chatlog_count += res['data']['count'];
+						console.log( data );
+						myRoomAccess.push(data['data']);	
+					}
+								
+					if( myRoomAccessCount+1 == roomAccessLength )
+					{
+						console.log( 'last' );
+					}else{
+						myRoomAccessCount++;
+						getRoomInfo(myRoomAccessCount);
+					}
+					
+				});
+				
 			});
+			
 		}
 	}	
+	
 })();

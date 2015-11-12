@@ -1,9 +1,9 @@
-<ion-view view-title="Chats">
+<ion-view view-title="Chats" show-tab-bar>
 	<ion-content>
 		<ion-list>
 			<ion-item class="item-remove-animate item-avatar item-icon-right" 
-				ng-repeat="access in roomAccess track by $index" type="item-text-wrap"
-				ng-click="gotoChat(access._id)">
+				ng-repeat="access in roomAccess | orderBy:'accessTime':true" type="item-text-wrap"
+				ng-click="gotoChat(access._id, access.body['count'])">
 				<img ng-if="access.name!==undefined" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{access.image}}&h=40&w=40" />
 				<img ng-if="access.name===undefined && access.members[0]['id'] != myProfile._id" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{orgMembers[access.members[0]['id']]['image']}}&h=40&w=40" />
 				<img ng-if="access.name===undefined && access.members[0]['id'] == myProfile._id" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{orgMembers[access.members[1]['id']]['image']}}&h=40&w=40" />
@@ -12,9 +12,9 @@
 				<h2 ng-if="access.name===undefined && access.members[0]['id'] != myProfile._id">{{orgMembers[access.members[0]['id']]['displayname']}}</h2>
 				<h2 ng-if="access.name===undefined && access.members[0]['id'] == myProfile._id">{{orgMembers[access.members[1]['id']]['displayname']}}</h2>
 				
-				<p>{{access.createTime.substr(0, 10)}} {{access.createTime.substr(11, 8)}}</p>
-				<i class="icon">
-					<small style="height:20px; line-height:20px; padding:0 5px; border-radius:10px; font-weight:bold; font-size:14px; color:#fff; background-color:#f00;"><i class="fa fa-clock-o"></i>999+</small>
+				<p>{{access.accessTime.substr(0, 10)}} {{access.accessTime.substr(11, 8)}}</p>
+				<i class="icon" ng-if="access.body['count'] > 0">
+					<small style="height:20px; line-height:20px; padding:0 5px; border-radius:10px; font-weight:bold; font-size:14px; color:#fff; background-color:#f00;"><i class="fa fa-clock-o"></i>{{access.body['count']}}</small>
 				</i>
 			</ion-item>
 		</ion-list>
