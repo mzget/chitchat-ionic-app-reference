@@ -104,7 +104,7 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
+.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
 	$scope.settings = {
 		logOut: true,
 	};
@@ -133,8 +133,8 @@ angular.module('spartan.controllers', [])
     $scope.thememodal.hide();
   };
 
-  $scope.$on('$destroy', function() {
-    $scope.thememodal.remove();
+  $scope.$on('$destroy', function () {
+      $scope.thememodal.remove();
   });
   
  
@@ -153,7 +153,12 @@ angular.module('spartan.controllers', [])
             console.log($rootScope.themeblue)
         }
 
-
+    $scope.logOut = function () {
+		console.warn("logOut...");
+        server.logOut();
+		
+		$state.go("tab");
+    }
 })
 
 .controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {

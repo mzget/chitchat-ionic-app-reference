@@ -1,3 +1,4 @@
+/// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
 .controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
@@ -6,7 +7,6 @@ angular.module('spartan.chat', [])
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
-
 
 	var currentRoom = roomSelected.getRoom();
 	var myprofile = main.getDataManager().myProfile;
@@ -44,6 +44,10 @@ angular.module('spartan.chat', [])
         };
         chatRoomComponent.getMessage(currentRoom._id, Chats, function () {
             Chats.set(chatRoomComponent.chatMessages);
+            setTimeout(function () {
+                $ionicLoading.hide();
+            }, 1000);
+            
         });
     }
 
@@ -56,6 +60,7 @@ angular.module('spartan.chat', [])
             currentRoom = null;
             roomSelected.setRoom(currentRoom);
             chatRoomComponent.chatMessages = [];
+            Chats.clear();
             main.dataListener.removeListener(chatRoomComponent);
         });
     }
@@ -218,7 +223,7 @@ angular.module('spartan.chat', [])
 							console.warn("send message fail.");
 						}
 						else {
-							console.log("send message:", res);
+							console.log("send message:", JSON.stringify(res));
 						}
 					});
 				}
@@ -333,6 +338,10 @@ angular.module('spartan.chat', [])
 	// ON ENTER 
     $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
         console.log("App view (menu) entered.");
+
+        $ionicLoading.show({
+	        template: 'Loading..'
+	    });
 		
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
 			

@@ -345,8 +345,12 @@ var ChatsLogComponent = (function () {
     ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
         console.warn("onAccessRoom", JSON.stringify(dataEvent));
     };
-    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) { };
-    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) { };
+    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) {
+        console.warn("onUpdatedLastAccessTime", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) {
+        console.warn("onAddRoomAccess", JSON.stringify(dataEvent));
+    };
     ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         var self = this;
         var logs = [];
@@ -887,7 +891,7 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
-        ServerImplemented.prototype.Logout = function () {
+        ServerImplemented.prototype.logout = function () {
             var registrationId = localStorage.getItem("registrationId");
             var msg = {};
             msg["username"] = username;
@@ -1358,7 +1362,6 @@ var ChatServer;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
-                console.log("Chat msg response: ", data);
                 if (repalceMessageID !== null)
                     repalceMessageID(null, data.data);
             });

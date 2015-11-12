@@ -4,5 +4,6 @@
         onAccessRoom(dataEvent);
         onUpdatedLastAccessTime(dataEvent);
         onAddRoomAccess(dataEvent);
+        onEditedGroupMember(dataEvent);
     }
 }

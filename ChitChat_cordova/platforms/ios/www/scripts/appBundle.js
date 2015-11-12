@@ -345,8 +345,12 @@ var ChatsLogComponent = (function () {
     ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
         console.warn("onAccessRoom", JSON.stringify(dataEvent));
     };
-    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) { };
-    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) { };
+    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) {
+        console.warn("onUpdatedLastAccessTime", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) {
+        console.warn("onAddRoomAccess", JSON.stringify(dataEvent));
+    };
     ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         var self = this;
         var logs = [];

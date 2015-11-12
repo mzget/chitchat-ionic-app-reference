@@ -52,6 +52,12 @@
     onEditedGroupMember(dataEvent) {
         var jsonObj: Room = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupMembers(jsonObj);
+        
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onEditedGroupMember(dataEvent);
+            });
+        }
     }
         
     onEditedGroupName(dataEvent) {

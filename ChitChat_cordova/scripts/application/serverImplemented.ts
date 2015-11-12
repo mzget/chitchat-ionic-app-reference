@@ -53,7 +53,7 @@ module ChatServer {
             console.warn("serv imp. constructor");
         }
 
-        public Logout() {
+        public logout() {
             var registrationId = localStorage.getItem("registrationId");
             var msg: IDictionary = {};
             msg["username"] = username;
@@ -668,7 +668,6 @@ module ChatServer {
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
-                console.log("Chat msg response: ", data);
 
                 if (repalceMessageID !== null)
                     repalceMessageID(null, data.data);
