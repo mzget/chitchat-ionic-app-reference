@@ -101,6 +101,11 @@
                 value.onChat(chatMessageImp);
             });
         }
+        if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
+            this.roomAccessListenerImps.map(v => {
+                v.onNewMessage(chatMessageImp);
+            });
+        }
     };
 
     onLeaveRoom(data) {

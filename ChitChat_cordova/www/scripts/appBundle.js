@@ -339,6 +339,9 @@ var ChatsLogComponent = (function () {
         this.main = main;
         this.server = server;
     }
+    ChatsLogComponent.prototype.onNewMessage = function (dataEvent) {
+        console.warn("OnNewMessage", JSON.stringify(dataEvent));
+    };
     ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
         console.warn("onAccessRoom", JSON.stringify(dataEvent));
     };
@@ -452,6 +455,11 @@ var DataListener = (function () {
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach(function (value, id, arr) {
                 value.onChat(chatMessageImp);
+            });
+        }
+        if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
+            this.roomAccessListenerImps.map(function (v) {
+                v.onNewMessage(chatMessageImp);
             });
         }
     };
