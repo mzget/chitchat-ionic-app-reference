@@ -417,24 +417,56 @@ angular.module('spartan.chat', [])
         });
         if(type==RoomType.privateChat){
             server.updateFavoriteMember(editType,id,function (err, res) {
-                if (!err) {
+                if (!err && res.code==200) {
                     console.log(JSON.stringify(res));
                     Favorite.updateFavorite(editType,id,type);
                     $ionicLoading.hide();
                 }
                 else {
                     console.warn(err, res);
+                    $ionicLoading.hide();
                 }
             });
         }else{
             server.updateFavoriteGroups(editType,id,function (err, res) {
-                if (!err) {
+                if (!err && res.code==200) {
                     console.log(JSON.stringify(res));
                     Favorite.updateFavorite(editType,id,type);
                     $ionicLoading.hide();
                 }
                 else {
                     console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }
+    }
+    $scope.editBlockNoti = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==RoomType.privateChat){
+            server.updateClosedNoticeMemberList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }else{
+            server.updateClosedNoticeGroupsList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
                 }
             });
         }

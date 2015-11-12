@@ -75,24 +75,26 @@
             });
             if(type==undefined){
                 server.updateFavoriteMember(editType,id,function (err, res) {
-                    if (!err) {
+                    if (!err && res.code==200) {
                         console.log(JSON.stringify(res));
                         Favorite.updateFavorite(editType,id,type);
                         $ionicLoading.hide();
                     }
                     else {
                         console.warn(err, res);
+                        $ionicLoading.hide();
                     }
                 });
             }else{
                 server.updateFavoriteGroups(editType,id,function (err, res) {
-                    if (!err) {
+                    if (!err && res.code==200) {
                         console.log(JSON.stringify(res));
                         Favorite.updateFavorite(editType,id,type);
                         $ionicLoading.hide();
                     }
                     else {
                         console.warn(err, res);
+                        $ionicLoading.hide();
                     }
                 });
             }
