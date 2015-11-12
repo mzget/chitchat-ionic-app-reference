@@ -56,6 +56,7 @@ angular.module('spartan.chat', [])
             currentRoom = null;
             roomSelected.setRoom(currentRoom);
             chatRoomComponent.chatMessages = [];
+            Chats.clear();
             main.dataListener.removeListener(chatRoomComponent);
         });
     }

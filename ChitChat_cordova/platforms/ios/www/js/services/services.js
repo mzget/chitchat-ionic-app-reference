@@ -463,6 +463,10 @@ angular.module('spartan.services', [])
 
 	// Some fake testing data
     var chats = [];
+    
+    function clear() {
+        chats = [];
+    }
 
 	return {
 		all: function() {
@@ -494,7 +498,8 @@ angular.module('spartan.services', [])
 			        chats[i].long = location.longitude;
 			    }
 			}
-		}
+		},
+        clear: clear
 	};
 })
 

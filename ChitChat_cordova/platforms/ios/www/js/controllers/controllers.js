@@ -1,6 +1,7 @@
 var date = new Date();
 var now;
 var newchatmessage;
+var chatlog_count = 0;
 
 angular.module('spartan.controllers', [])
 
@@ -240,6 +241,16 @@ angular.module('spartan.controllers', [])
 		//console.log('Back to Previously');
 		$rootScope.members = CreateGroup.getSelectedMember();
     });
+})
+
+.controller('bobo',function($scope,$rootScope,$timeout) {
+	var refresh = function () 
+	{		
+		$scope.foo = chatlog_count;
+		
+		$timeout(refresh, 1000);
+	} 
+	$timeout(refresh, 1000);
 })
 
 .controller('CreateProjectBase',function($scope,$ionicModal,$rootScope,$ionicLoading,$cordovaProgress,CreateGroup,ProjectBase, roomSelected) {

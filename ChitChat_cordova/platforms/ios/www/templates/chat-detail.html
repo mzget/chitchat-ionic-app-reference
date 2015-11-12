@@ -91,7 +91,7 @@
 				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://stalk.animation-genius.com{{message.body}}" ng-click="viewImage('http://stalk.animation-genius.com'+message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
-				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'">
+				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice()">
                     <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
@@ -100,7 +100,7 @@
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
                 </div>
 
-                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'">
+                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo()">
                 	<video id="{{message._id}}" src="{{message.body}}"></video>
 				</div>
                 <div class="type-video" ng-if="message.type=='Video' && message.temp==null">

@@ -51,6 +51,9 @@
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
     </feature>
+    <feature name="Geolocation">
+        <param name="ios-package" value="CDVLocation" />
+    </feature>
     <feature name="ProgressIndicator">
         <param name="ios-package" value="ProgressIndicator" />
     </feature>
