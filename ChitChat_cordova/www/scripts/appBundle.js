@@ -428,6 +428,11 @@ var DataListener = (function () {
     DataListener.prototype.onEditedGroupMember = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupMembers(jsonObj);
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(function (value) {
+                value.onEditedGroupMember(dataEvent);
+            });
+        }
     };
     DataListener.prototype.onEditedGroupName = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
