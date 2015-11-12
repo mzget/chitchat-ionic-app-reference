@@ -1,5 +1,5 @@
-class HomeComponent implements absSpartan.AbsChatServerListener {
-    onChatData(data) { };
+class HomeComponent implements absSpartan.IChatServerListener {
+    onChat(data) { };
     onLeaveRoom(data) { };
     onRoomJoin(data) { };
     onMessageRead(dataEvent) { };

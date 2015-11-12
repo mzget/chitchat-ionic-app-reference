@@ -1,4 +1,4 @@
-﻿class ChatRoomComponent extends absSpartan.AbsChatServerListener {
+﻿class ChatRoomComponent implements absSpartan.IChatServerListener {
     public chatMessages: Array<Message> = [];
     public serviceListener: (eventName: string, data: any) => void;
     public notifyEvent: (eventName: string, data: any) => void;
@@ -9,8 +9,6 @@
     private roomId : string;
 
     constructor(main: Main, room_id: string) {
-        super();
-
         this.main = main;
         this.serverImp = this.main.getServerImp();
         this.chatRoomApi = this.main.getChatRoomApi();

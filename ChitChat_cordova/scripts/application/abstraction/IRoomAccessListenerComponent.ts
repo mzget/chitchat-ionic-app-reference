@@ -1,7 +1,7 @@
 ﻿module absSpartan {
-    export abstract class AbsRoomAccessListenerImp {
-        abstract onAccessRoom(dataEvent);
-        abstract onUpdatedLastAccessTime(dataEvent);
-        abstract onAddRoomAccess(dataEvent);
+    export interface IRoomAccessListenerImp {
+        onAccessRoom(dataEvent);
+        onUpdatedLastAccessTime(dataEvent);
+        onAddRoomAccess(dataEvent);
     }
 }

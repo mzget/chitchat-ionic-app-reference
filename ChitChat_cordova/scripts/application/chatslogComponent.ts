@@ -5,7 +5,7 @@ interface IUnreadMessage {
     body: string; // last message id.
 }
 
-class ChatsLogComponent extends absSpartan.AbsRoomAccessListenerImp {
+class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
     onAccessRoom(dataEvent) {
         console.warn("onAccessRoom", JSON.stringify(dataEvent));
     }
@@ -15,8 +15,6 @@ class ChatsLogComponent extends absSpartan.AbsRoomAccessListenerImp {
         private main : Main;
         private server: ChatServer.ServerImplemented;
         constructor(main: Main, server: ChatServer.ServerImplemented) {
-            super();
-
             this.main = main;
             this.server = server;
         }

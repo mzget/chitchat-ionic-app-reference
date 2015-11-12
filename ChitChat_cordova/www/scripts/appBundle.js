@@ -152,15 +152,8 @@ var Main = (function () {
     };
     return Main;
 })();
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var ChatRoomComponent = (function (_super) {
-    __extends(ChatRoomComponent, _super);
+var ChatRoomComponent = (function () {
     function ChatRoomComponent(main, room_id) {
-        _super.call(this);
         this.chatMessages = [];
         this.main = main;
         this.serverImp = this.main.getServerImp();
@@ -340,11 +333,9 @@ var ChatRoomComponent = (function (_super) {
         });
     };
     return ChatRoomComponent;
-})(absSpartan.AbsChatServerListener);
-var ChatsLogComponent = (function (_super) {
-    __extends(ChatsLogComponent, _super);
+})();
+var ChatsLogComponent = (function () {
     function ChatsLogComponent(main, server) {
-        _super.call(this);
         this.main = main;
         this.server = server;
     }
@@ -381,7 +372,7 @@ var ChatsLogComponent = (function (_super) {
         });
     };
     return ChatsLogComponent;
-})(absSpartan.AbsRoomAccessListenerImp);
+})();
 var DataListener = (function () {
     function DataListener(dataManager) {
         this.chatListenerImps = new Array();
@@ -456,11 +447,11 @@ var DataListener = (function () {
         var _id = jsonobj._id;
         this.dataManager.updateContactProfile(_id, params);
     };
-    DataListener.prototype.onChatData = function (data) {
+    DataListener.prototype.onChat = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach(function (value, id, arr) {
-                value.onChatData(chatMessageImp);
+                value.onChat(chatMessageImp);
             });
         }
     };
@@ -762,7 +753,7 @@ var DataManager = (function () {
 var HomeComponent = (function () {
     function HomeComponent() {
     }
-    HomeComponent.prototype.onChatData = function (data) { };
+    HomeComponent.prototype.onChat = function (data) { };
     ;
     HomeComponent.prototype.onLeaveRoom = function (data) { };
     ;
@@ -1107,26 +1098,6 @@ var ChatServer;
             msg["token"] = this.authenData.token;
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, function (result) {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                callback(null, result);
-            });
-        };
-        ServerImplemented.prototype.updateClosedNoticeMemberList = function (editType, member, callback) {
-            var msg = {};
-            msg["editType"] = editType;
-            msg["member"] = member;
-            msg["token"] = this.authenData.token;
-            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, function (result) {
-                console.log("updateClosedNoticeMemberList: ", JSON.stringify(result));
-                callback(null, result);
-            });
-        };
-        ServerImplemented.prototype.updateClosedNoticeGroupsList = function (editType, group, callback) {
-            var msg = {};
-            msg["editType"] = editType;
-            msg["group"] = group;
-            msg["token"] = this.authenData.token;
-            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, function (result) {
-                console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
                 callback(null, result);
             });
         };
@@ -1498,7 +1469,7 @@ var ChatServer;
             var self = this;
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, JSON.stringify(data));
-                self.chatServerListener.onChatData(data);
+                self.chatServerListener.onChat(data);
             });
             pomelo.on(ServerEventListener.ON_LEAVE, function (data) {
                 console.log(ServerEventListener.ON_LEAVE, JSON.stringify(data));
@@ -1622,53 +1593,6 @@ var SocketComponent = (function () {
     };
     return SocketComponent;
 })();
-var absSpartan;
-(function (absSpartan) {
-    var AbsRoomAccessListenerImp = (function () {
-        function AbsRoomAccessListenerImp() {
-        }
-        return AbsRoomAccessListenerImp;
-    })();
-    absSpartan.AbsRoomAccessListenerImp = AbsRoomAccessListenerImp;
-})(absSpartan || (absSpartan = {}));
-var absSpartan;
-(function (absSpartan) {
-    var AbsChatServerListener = (function () {
-        function AbsChatServerListener() {
-        }
-        AbsChatServerListener.prototype.onChatData = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onLeaveRoom = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onRoomJoin = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onMessageRead = function (dataEvent) { };
-        ;
-        AbsChatServerListener.prototype.onGetMessagesReaders = function (dataEvent) { };
-        ;
-        return AbsChatServerListener;
-    })();
-    absSpartan.AbsChatServerListener = AbsChatServerListener;
-    var AbsFrontendServerListener = (function () {
-        function AbsFrontendServerListener() {
-        }
-        return AbsFrontendServerListener;
-    })();
-    absSpartan.AbsFrontendServerListener = AbsFrontendServerListener;
-    ;
-    var AbsRTCListener = (function () {
-        function AbsRTCListener() {
-        }
-        return AbsRTCListener;
-    })();
-    absSpartan.AbsRTCListener = AbsRTCListener;
-    var AbsServerListener = (function () {
-        function AbsServerListener() {
-        }
-        return AbsServerListener;
-    })();
-    absSpartan.AbsServerListener = AbsServerListener;
-})(absSpartan || (absSpartan = {}));
 var MessageMeta = (function () {
     function MessageMeta() {
     }

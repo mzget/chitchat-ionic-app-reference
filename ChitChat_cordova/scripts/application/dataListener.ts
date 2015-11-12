@@ -1,19 +1,19 @@
 ﻿class DataListener implements absSpartan.IServerListener, absSpartan.IChatServerListener {
     private dataManager: DataManager;
-    private chatListenerImps = new Array<absSpartan.AbsChatServerListener>();
-    public addListenerImp(listener: absSpartan.AbsChatServerListener) {
+    private chatListenerImps = new Array<absSpartan.IChatServerListener>();
+    public addListenerImp(listener: absSpartan.IChatServerListener) {
         this.chatListenerImps.push(listener);
     }
-    public removeListener(listener: absSpartan.AbsChatServerListener) {
+    public removeListener(listener: absSpartan.IChatServerListener) {
         var id = this.chatListenerImps.indexOf(listener);
         this.chatListenerImps.splice(id, 1);
     }
 
-    private roomAccessListenerImps = new Array<absSpartan.AbsRoomAccessListenerImp>();
-    public addRoomAccessListenerImp(listener: absSpartan.AbsRoomAccessListenerImp) {
+    private roomAccessListenerImps = new Array<absSpartan.IRoomAccessListenerImp>();
+    public addRoomAccessListenerImp(listener: absSpartan.IRoomAccessListenerImp) {
         this.roomAccessListenerImps.push(listener);
     }
-    public removeRoomAccessListener(listener: absSpartan.AbsRoomAccessListenerImp) {
+    public removeRoomAccessListener(listener: absSpartan.IRoomAccessListenerImp) {
         var id = this.roomAccessListenerImps.indexOf(listener);
         this.roomAccessListenerImps.splice(id, 1);
     }
@@ -93,12 +93,12 @@
     /*******************************************************************************/
     //<!-- chat room data listener.
 
-    onChatData(data) {
+    onChat(data) {
         var chatMessageImp: Message = JSON.parse(JSON.stringify(data));
 
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach((value, id, arr) => {
-                value.onChatData(chatMessageImp);
+                value.onChat(chatMessageImp);
             });
         }
     };
