@@ -339,17 +339,18 @@ var ChatsLogComponent = (function () {
         this.main = main;
         this.server = server;
     }
-    ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) { };
-    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) { };
-    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) { };
-    ChatsLogComponent.prototype.onCreateGroupSuccess = function (dataEvent) { };
-    ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) { };
-    ChatsLogComponent.prototype.onEditedGroupName = function (dataEvent) { };
-    ChatsLogComponent.prototype.onEditedGroupImage = function (dataEvent) { };
-    ChatsLogComponent.prototype.onNewGroupCreated = function (dataEvent) { };
-    ChatsLogComponent.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) { };
-    ChatsLogComponent.prototype.onUserUpdateImageProfile = function (dataEvent) { };
-    ChatsLogComponent.prototype.onUserUpdateProfile = function (dataEvent) { };
+    ChatsLogComponent.prototype.onNewMessage = function (dataEvent) {
+        console.warn("OnNewMessage", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
+        console.warn("onAccessRoom", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) {
+        console.warn("onUpdatedLastAccessTime", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) {
+        console.warn("onAddRoomAccess", JSON.stringify(dataEvent));
+    };
     ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         var self = this;
         var logs = [];
@@ -382,6 +383,7 @@ var ChatsLogComponent = (function () {
 var DataListener = (function () {
     function DataListener(dataManager) {
         this.chatListenerImps = new Array();
+        this.roomAccessListenerImps = new Array();
         this.dataManager = dataManager;
     }
     DataListener.prototype.addListenerImp = function (listener) {
@@ -391,8 +393,20 @@ var DataListener = (function () {
         var id = this.chatListenerImps.indexOf(listener);
         this.chatListenerImps.splice(id, 1);
     };
+    DataListener.prototype.addRoomAccessListenerImp = function (listener) {
+        this.roomAccessListenerImps.push(listener);
+    };
+    DataListener.prototype.removeRoomAccessListener = function (listener) {
+        var id = this.roomAccessListenerImps.indexOf(listener);
+        this.roomAccessListenerImps.splice(id, 1);
+    };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(function (value) {
+                value.onAccessRoom(dataEvent);
+            });
+        }
     };
     DataListener.prototype.onUpdatedLastAccessTime = function (dataEvent) {
         this.dataManager.updateRoomAccessForUser(dataEvent);
@@ -440,11 +454,16 @@ var DataListener = (function () {
         var _id = jsonobj._id;
         this.dataManager.updateContactProfile(_id, params);
     };
-    DataListener.prototype.onChatData = function (data) {
+    DataListener.prototype.onChat = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach(function (value, id, arr) {
                 value.onChat(chatMessageImp);
+            });
+        }
+        if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
+            this.roomAccessListenerImps.map(function (v) {
+                v.onNewMessage(chatMessageImp);
             });
         }
     };
@@ -746,16 +765,16 @@ var DataManager = (function () {
 var HomeComponent = (function () {
     function HomeComponent() {
     }
-    HomeComponent.prototype.onChat = function (data) {
-    };
-    HomeComponent.prototype.onLeaveRoom = function (data) {
-    };
-    HomeComponent.prototype.onRoomJoin = function (data) {
-    };
-    HomeComponent.prototype.onMessageRead = function (dataEvent) {
-    };
-    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) {
-    };
+    HomeComponent.prototype.onChat = function (data) { };
+    ;
+    HomeComponent.prototype.onLeaveRoom = function (data) { };
+    ;
+    HomeComponent.prototype.onRoomJoin = function (data) { };
+    ;
+    HomeComponent.prototype.onMessageRead = function (dataEvent) { };
+    ;
+    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) { };
+    ;
     return HomeComponent;
 })();
 var NotifyManager = (function () {
@@ -1091,26 +1110,6 @@ var ChatServer;
             msg["token"] = this.authenData.token;
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, function (result) {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                callback(null, result);
-            });
-        };
-        ServerImplemented.prototype.updateClosedNoticeMemberList = function (editType, member, callback) {
-            var msg = {};
-            msg["editType"] = editType;
-            msg["member"] = member;
-            msg["token"] = this.authenData.token;
-            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, function (result) {
-                console.log("updateClosedNoticeMemberList: ", JSON.stringify(result));
-                callback(null, result);
-            });
-        };
-        ServerImplemented.prototype.updateClosedNoticeGroupsList = function (editType, group, callback) {
-            var msg = {};
-            msg["editType"] = editType;
-            msg["group"] = group;
-            msg["token"] = this.authenData.token;
-            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, function (result) {
-                console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
                 callback(null, result);
             });
         };
@@ -1482,7 +1481,7 @@ var ChatServer;
             var self = this;
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, JSON.stringify(data));
-                self.chatServerListener.onChatData(data);
+                self.chatServerListener.onChat(data);
             });
             pomelo.on(ServerEventListener.ON_LEAVE, function (data) {
                 console.log(ServerEventListener.ON_LEAVE, JSON.stringify(data));
@@ -1606,44 +1605,6 @@ var SocketComponent = (function () {
     };
     return SocketComponent;
 })();
-var Services;
-(function (Services) {
-    var AbsChatServerListener = (function () {
-        function AbsChatServerListener() {
-        }
-        AbsChatServerListener.prototype.onChatData = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onLeaveRoom = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onRoomJoin = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onMessageRead = function (dataEvent) { };
-        ;
-        AbsChatServerListener.prototype.onGetMessagesReaders = function (dataEvent) { };
-        ;
-        return AbsChatServerListener;
-    })();
-    Services.AbsChatServerListener = AbsChatServerListener;
-    var AbsFrontendServerListener = (function () {
-        function AbsFrontendServerListener() {
-        }
-        return AbsFrontendServerListener;
-    })();
-    Services.AbsFrontendServerListener = AbsFrontendServerListener;
-    ;
-    var AbsRTCListener = (function () {
-        function AbsRTCListener() {
-        }
-        return AbsRTCListener;
-    })();
-    Services.AbsRTCListener = AbsRTCListener;
-    var AbsServerListener = (function () {
-        function AbsServerListener() {
-        }
-        return AbsServerListener;
-    })();
-    Services.AbsServerListener = AbsServerListener;
-})(Services || (Services = {}));
 var MessageMeta = (function () {
     function MessageMeta() {
     }

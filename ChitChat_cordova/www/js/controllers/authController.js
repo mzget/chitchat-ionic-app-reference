@@ -7,14 +7,14 @@
         .controller('noConnection', noConnection);
 
 
-    authController.$inject = ['$location', "$ionicPlatform", "$state", "networkService"];
+    authController.$inject = ['$location', '$ionicPlatform', '$ionicLoading', '$state', 'networkService'];
 
-    function authController($location, $ionicPlatform, $state, networkService) {
+    function authController($location, $ionicPlatform, $ionicLoading, $state, networkService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
-        
+     
         $ionicPlatform.ready(function () {
             activateBackground();
             activate();
@@ -35,7 +35,7 @@
                 activateNetworkService();
             };
             initSpartanServer();
-
+            
             setTimeout(function () {
                 navigator.splashscreen.hide();
             }, 100);
@@ -46,12 +46,11 @@
 
             console.log("init push notification.");
             var push = PushNotification.init({
-                "ios": { "alert": "true", "badge": "true", "sound": "true" },
-                "windows": {}
+                "ios": { "alert": "true", "badge": "true", "sound": "true" }
             });
 
             push.on('registration', function (data) {
-                console.warn("registration event", JSON.stringify(data));
+                console.log("registration event", JSON.stringify(data));
                 registrationId = data.registrationId;
                 localStorage.setItem("registrationId", registrationId);
             });

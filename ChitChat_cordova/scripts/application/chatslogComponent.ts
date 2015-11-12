@@ -5,25 +5,23 @@ interface IUnreadMessage {
     body: string; // last message id.
 }
 
-class ChatsLogComponent implements Services.IServerListener {
-        onAccessRoom(dataEvent) {}
-        onUpdatedLastAccessTime(dataEvent) {}
-        onAddRoomAccess(dataEvent) {}
-
-        onCreateGroupSuccess(dataEvent) {}
-        onEditedGroupMember(dataEvent) {}
-        onEditedGroupName(dataEvent){}
-        onEditedGroupImage(dataEvent){}
-        onNewGroupCreated(dataEvent){}
-
-        onUpdateMemberInfoInProjectBase(dataEvent) {}
-
-        onUserUpdateImageProfile(dataEvent){}
-        onUserUpdateProfile(dataEvent){}
+class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
+    onNewMessage(dataEvent) {
+        console.warn("OnNewMessage", JSON.stringify(dataEvent));
+    }
+    onAccessRoom(dataEvent) {
+        console.warn("onAccessRoom", JSON.stringify(dataEvent));
+    }
+    onUpdatedLastAccessTime(dataEvent) {
+        console.warn("onUpdatedLastAccessTime", JSON.stringify(dataEvent));
+    }
+    onAddRoomAccess(dataEvent) {
+        console.warn("onAddRoomAccess", JSON.stringify(dataEvent));
+    }
         
         private main : Main;
         private server: ChatServer.ServerImplemented;
-        constructor (main: Main, server: ChatServer.ServerImplemented) {
+        constructor(main: Main, server: ChatServer.ServerImplemented) {
             this.main = main;
             this.server = server;
         }

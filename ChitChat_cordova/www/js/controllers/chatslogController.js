@@ -17,6 +17,13 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
+
+        var dataManager = main.getDataManager();
+        var dataListener = main.getDataListener();
+        $scope.myProfile = dataManager.myProfile;
+        $scope.orgMembers = dataManager.orgMembers;
+        $scope.roomAccess = [];
+
         activate();
 
         function activate() { 
@@ -24,13 +31,10 @@
 			
 			chatsLogComponent = new ChatsLogComponent(main, server);
 			getUnreadMessages();
-		}
+			dataListener.addRoomAccessListenerImp(chatsLogComponent);
+        }
 
-        var dataManager = main.getDataManager();
-				
-		$scope.myProfile = dataManager.myProfile;
-		$scope.orgMembers = dataManager.orgMembers;
-		$scope.roomAccess = [];
+
         getRoomAccess();
 		var refresh = function () 
 		{		

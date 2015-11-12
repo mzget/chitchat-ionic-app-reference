@@ -326,31 +326,15 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, (result) => {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                callback(null, result);
-            });
-        }
-
-        public updateClosedNoticeMemberList(editType: string, member: string, callback: (err, res) => void) {
-            var msg: IDictionary = {};
-            msg["editType"] = editType;
-            msg["member"] = member;
-            msg["token"] = this.authenData.token;
-            //<!-- Get user info.
-            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, (result) => {
-                console.log("updateClosedNoticeMemberList: ", JSON.stringify(result));
-                callback(null, result);
-            });
-        }
-
-        public updateClosedNoticeGroupsList(editType: string, group: string, callback: (err, res) => void) {
-            var msg: IDictionary = {};
-            msg["editType"] = editType;
-            msg["group"] = group;
-            msg["token"] = this.authenData.token;
-            //<!-- Get user info.
-            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, (result) => {
-                console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
-                callback(null, result);
+                // if (callback != null){
+                //     if(editType=='add'){
+                //         self.dataManager.myProfile.favoriteGroups.push(group);
+                //     }else{
+                //         var index = self.dataManager.myProfile.favoriteGroups.indexOf(group);
+                //         self.dataManager.myProfile.favoriteGroups.splice( index , 1);
+                //     }
+                    callback(null, result);
+                // }
             });
         }
 
@@ -801,20 +785,20 @@ module ChatServer {
         public static ON_GET_ORGANIZE_GROUPS: string = "onGetOrganizeGroups";
         public static ON_GET_PROJECT_BASE_GROUPS: string = "onGetProjectBaseGroups";
 
-        private chatServerListener: Services.IChatServerListener;
-        private frontendListener: Services.IFrontendServerListener;
-        private rtcCallListener: Services.IRTCListener;
-        private serverListener: Services.IServerListener;
-        public addFrontendListener(obj: Services.IFrontendServerListener): void {
+        private chatServerListener: absSpartan.IChatServerListener;
+        private frontendListener: absSpartan.IFrontendServerListener;
+        private rtcCallListener: absSpartan.IRTCListener;
+        private serverListener: absSpartan.IServerListener;
+        public addFrontendListener(obj: absSpartan.IFrontendServerListener): void {
             this.frontendListener = obj;
         }
-        public addServerListener(obj: Services.IServerListener): void {
+        public addServerListener(obj: absSpartan.IServerListener): void {
             this.serverListener = obj;
         }
-        public addChatListener(obj: Services.IChatServerListener): void {
+        public addChatListener(obj: absSpartan.IChatServerListener): void {
             this.chatServerListener = obj;
         }
-        public addRTCListener(obj: Services.IRTCListener): void {
+        public addRTCListener(obj: absSpartan.IRTCListener): void {
             this.rtcCallListener = obj;
         }
 
@@ -878,7 +862,7 @@ module ChatServer {
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, JSON.stringify(data));
 
-                self.chatServerListener.onChatData(data);
+                self.chatServerListener.onChat(data);
             });
 
             //pomelo.on(ServerEventListener.ON_ADD, (data) => {
