@@ -1,3 +1,4 @@
+/// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
 .controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
@@ -219,7 +220,7 @@ angular.module('spartan.chat', [])
 							console.warn("send message fail.");
 						}
 						else {
-							console.log("send message:", res);
+							console.log("send message:", JSON.stringify(res));
 						}
 					});
 				}

@@ -133,8 +133,8 @@ angular.module('spartan.controllers', [])
     $scope.thememodal.hide();
   };
 
-  $scope.$on('$destroy', function() {
-    $scope.thememodal.remove();
+  $scope.$on('$destroy', function () {
+      $scope.thememodal.remove();
   });
   
  
@@ -153,7 +153,9 @@ angular.module('spartan.controllers', [])
             console.log($rootScope.themeblue)
         }
 
-
+    $scope.logOut = function () {
+        server.logOut();
+    }
 })
 
 .controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {

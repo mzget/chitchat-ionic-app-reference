@@ -891,7 +891,7 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
-        ServerImplemented.prototype.Logout = function () {
+        ServerImplemented.prototype.logout = function () {
             var registrationId = localStorage.getItem("registrationId");
             var msg = {};
             msg["username"] = username;
@@ -1362,7 +1362,6 @@ var ChatServer;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
-                console.log("Chat msg response: ", data);
                 if (repalceMessageID !== null)
                     repalceMessageID(null, data.data);
             });
