@@ -1,4 +1,5 @@
 interface IUnreadMessage {
+    rid: string;
     count: number;
     type: string,
     body: string; // last message id.
@@ -27,9 +28,9 @@ class ChatsLogComponent implements Services.IServerListener {
             this.server = server;
         }
         
-        public getUnreadMessage(roomAccess: RoomAccessData[]) {
+        public getUnreadMessage(roomAccess: RoomAccessData[], callback:(err: Error, logsData: Array<IUnreadMessage>) => void) {
             var self = this;
-        
+            var logs = [];
             async.mapSeries(roomAccess, function iterator(item, cb) {
                 if (!!item.roomId && !!item.accessTime) {
                     self.server.getUnreadMsgOfRoom(item.roomId, item.accessTime.toString(), function res(err, res) {
@@ -38,9 +39,9 @@ class ChatsLogComponent implements Services.IServerListener {
                         }
                         else {
                             if (res.code === HttpStatusCode.success) {
-                                console.log(JSON.stringify(res));
                                 var unread: IUnreadMessage = JSON.parse(JSON.stringify(res.data));
-                                 
+                                unread.rid = item.roomId;
+                                logs.push(unread);
                             }
                         }
                         cb(null, null);
@@ -51,6 +52,7 @@ class ChatsLogComponent implements Services.IServerListener {
                 }
             }, function done(err) {
                 console.log("get unread message is done.");
+                callback(null, logs);
             });
         }
 }

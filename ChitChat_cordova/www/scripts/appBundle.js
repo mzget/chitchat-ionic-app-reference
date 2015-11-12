@@ -350,8 +350,9 @@ var ChatsLogComponent = (function () {
     ChatsLogComponent.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) { };
     ChatsLogComponent.prototype.onUserUpdateImageProfile = function (dataEvent) { };
     ChatsLogComponent.prototype.onUserUpdateProfile = function (dataEvent) { };
-    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess) {
+    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         var self = this;
+        var logs = [];
         async.mapSeries(roomAccess, function iterator(item, cb) {
             if (!!item.roomId && !!item.accessTime) {
                 self.server.getUnreadMsgOfRoom(item.roomId, item.accessTime.toString(), function res(err, res) {
@@ -360,8 +361,9 @@ var ChatsLogComponent = (function () {
                     }
                     else {
                         if (res.code === HttpStatusCode.success) {
-                            console.log(JSON.stringify(res));
                             var unread = JSON.parse(JSON.stringify(res.data));
+                            unread.rid = item.roomId;
+                            logs.push(unread);
                         }
                     }
                     cb(null, null);
@@ -372,6 +374,7 @@ var ChatsLogComponent = (function () {
             }
         }, function done(err) {
             console.log("get unread message is done.");
+            callback(null, logs);
         });
     };
     return ChatsLogComponent;

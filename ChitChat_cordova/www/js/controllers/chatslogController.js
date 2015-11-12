@@ -91,7 +91,13 @@
     }
 
     function getUnreadMessages() {
-		chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess);
+	 	chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
+			 if(!!logsData) {
+				 logsData.map(function element(v) {
+					 console.log(v);
+				 });
+			 }
+		 });
     }
 
 	
