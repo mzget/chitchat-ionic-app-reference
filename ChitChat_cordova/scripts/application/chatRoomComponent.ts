@@ -1,4 +1,4 @@
-﻿class ChatRoomComponent implements IChatListenerComponent {
+﻿class ChatRoomComponent implements absSpartan.IChatServerListener {
     public chatMessages: Array<Message> = [];
     public serviceListener: (eventName: string, data: any) => void;
     public notifyEvent: (eventName: string, data: any) => void;

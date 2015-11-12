@@ -2,7 +2,7 @@ angular.module('spartan.chat', [])
 
 .controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
     $sce, $cordovaGeolocation, $cordovaDialogs,
-    Chats, roomSelected, Favorite, localNotifyService, sharedObjectService)
+    Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
@@ -247,7 +247,7 @@ angular.module('spartan.chat', [])
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
 		if(args[1] == "Image"){
-			$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+			$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"temp":"true"});
 		}else if(args[1] == "Voice"){
 			$scope.chat.push( {"rid":currentRoom._id,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}else if(args[1] == "Video"){
@@ -417,30 +417,65 @@ angular.module('spartan.chat', [])
         });
         if(type==RoomType.privateChat){
             server.updateFavoriteMember(editType,id,function (err, res) {
-                if (!err) {
+                if (!err && res.code==200) {
                     console.log(JSON.stringify(res));
                     Favorite.updateFavorite(editType,id,type);
                     $ionicLoading.hide();
                 }
                 else {
                     console.warn(err, res);
+                    $ionicLoading.hide();
                 }
             });
         }else{
             server.updateFavoriteGroups(editType,id,function (err, res) {
-                if (!err) {
+                if (!err && res.code==200) {
                     console.log(JSON.stringify(res));
                     Favorite.updateFavorite(editType,id,type);
                     $ionicLoading.hide();
                 }
                 else {
                     console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }
+    }
+    $scope.editBlockNoti = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==RoomType.privateChat){
+            server.updateClosedNoticeMemberList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }else{
+            server.updateClosedNoticeGroupsList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
                 }
             });
         }
     }
     $scope.isFavorite = function(id){
         return Favorite.isFavorite(id);
+    }
+    $scope.isBlockNoti = function(id){
+    	return blockNotifications.isBlockNoti(id);
     }        
 });
 

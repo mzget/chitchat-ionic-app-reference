@@ -32,7 +32,7 @@ angular.module('spartan.media', [])
   	$scope.addImage = function(type) {
     	$scope.hideSheet();
     	ImageService.handleMediaDialog(type).then(function() { 
-    		$scope.$apply(); 
+    		//$scope.$apply(); 
     		$scope.$emit('fileUri',[FileService.getImages(),"Image"]);
     		//$scope.uploadImg();
     	});
@@ -49,11 +49,26 @@ angular.module('spartan.media', [])
 	    options.params = params;
 	    options.chunkedMode = false;
 	    var ft = new FileTransfer();
+
+	    var downloadContain = document.getElementById(FileService.getImages()[0] + '-download-contain');
+	    var downloadProgress = document.getElementById(FileService.getImages()[0] + '-download-progress');
+	    var ionicLoadingUpload = true;
+	    console.log(downloadContain);
+	    if(downloadContain != null || downloadContain != undefined){
+	    	ionicLoadingUpload = false;
+	    	downloadContain.classList.remove("hide");
+	    }
+  		
 	    ft.onprogress = function(progressEvent){
 	    	if (progressEvent.lengthComputable) {
-		      $ionicLoading.show({
-			      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
-			  });
+	    		if(ionicLoadingUpload){
+	    			$ionicLoading.show({
+				      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
+				  });
+	    		}else{
+	    			var downloadPercent = (progressEvent.loaded / progressEvent.total) * 100;
+		        	downloadProgress.style.width = downloadPercent+'%';
+	    		}
 		    } else {
 		      //loadingStatus.increment();
 		    }

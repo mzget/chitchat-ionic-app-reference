@@ -368,7 +368,6 @@ angular.module('spartan.controllers', [])
       return function($scope, $element, $attr) {
         var scroll = $element[0].querySelector('.scroll-content');
         $scope.$on('$ionicView.beforeEnter', function() {
-          console.log('SHOWWWWWW');
           tabBar.classList.remove('slide-away');
           scroll.classList.remove('no-tabs');
         });

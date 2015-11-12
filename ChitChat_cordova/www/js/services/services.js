@@ -394,6 +394,70 @@ angular.module('spartan.services', [])
   }
 })
 
+.factory('blockNotifications',function(){
+  var blockNotiMembers = [];
+  var blockNotiGroups = [];
+  var isGetFirstData = false;
+  function getBlockNoti(){
+    try{
+      blockNotiMembers = main.getDataManager().myProfile.closedNoticeUsers;
+      blockNotiGroups = main.getDataManager().myProfile.closedNoticeGroups;
+      isGetFirstData = true;
+    }catch(err){
+      isGetFirstData = false;
+    }
+  }
+  function isBlockNoti(id){
+    var isHas = false;
+    if(!isGetFirstData) getBlockNoti();
+    else{
+      var allBlockNoti = getAllBlockNoti();
+      for(var i=0; i<allBlockNoti.length; i++){
+          if(allBlockNoti[i] == id){
+              isHas = true;
+          }
+      }
+      return isHas;
+    }
+    return isHas;
+  }
+  function updateBlockNoti(editType,id,type){
+    if(type==RoomType.projectBaseGroup || type==RoomType.privateGroup){
+      if(editType=='add'){
+          if(blockNotiGroups==undefined) blockNotiGroups = [];
+          blockNotiGroups.push(id);
+      }else{
+          var index = blockNotiGroups.indexOf(id);
+          blockNotiGroups.splice( index , 1);
+      }
+    }else{
+      if(editType=='add'){
+          if(blockNotiMembers==undefined) blockNotiMembers = [];
+          blockNotiMembers.push(id);
+      }else{
+          var index = blockNotiMembers.indexOf(id);
+          blockNotiMembers.splice( index , 1);
+      }
+    }   
+  }
+  function getAllBlockNoti(){
+    if(!isGetFirstData) getBlockNoti();
+    else{
+      if(blockNotiMembers != undefined && blockNotiGroups != undefined){
+        return blockNotiMembers.concat(blockNotiGroups);
+      }
+      else if(blockNotiMembers != undefined) return blockNotiMembers;
+      else if(blockNotiGroups != undefined) return blockNotiGroups;
+    }
+    return [];
+  }
+  return{
+    isBlockNoti: isBlockNoti,
+    updateBlockNoti: updateBlockNoti,
+    getAllBlockNoti: getAllBlockNoti
+  }
+})
+
 .factory('Chats', function($sce) {
     // Might use a resource here that returns a JSON array
 
@@ -432,6 +496,36 @@ angular.module('spartan.services', [])
 			}
 		}
 	};
+})
+
+.factory('modalService', function (){
+  function initContactModal($scope, contactId, roomSelected, done){
+    var contact = main.getDataManager().orgMembers[contactId];
+      console.debug(contact);
+      $scope.contact = contact;
+
+      server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
+          console.log(JSON.stringify(res));
+          var room = JSON.parse(JSON.stringify(res.data));
+
+          $scope.chat = function () {
+              roomSelected.setRoom(room);
+              location.href = '#/tab/group/chat/' + room._id;
+          };
+
+          $scope.openViewContactProfile = function (id) {
+              location.href = '#/tab/group/member/' + id;
+              //$state.go("tab.group-members", { chatId: id}, { inherit: false });
+          }
+
+          $scope.$apply();
+      });
+
+      done();
+  }
+  return {
+      initContactModal: initContactModal
+  }
 })
 
 .factory('roomSelected', function () {

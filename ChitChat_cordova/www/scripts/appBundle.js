@@ -334,9 +334,52 @@ var ChatRoomComponent = (function () {
     };
     return ChatRoomComponent;
 })();
+var ChatsLogComponent = (function () {
+    function ChatsLogComponent(main, server) {
+        this.main = main;
+        this.server = server;
+    }
+    ChatsLogComponent.prototype.onNewMessage = function (dataEvent) {
+        console.warn("OnNewMessage", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
+        console.warn("onAccessRoom", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) { };
+    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) { };
+    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
+        var self = this;
+        var logs = [];
+        async.mapSeries(roomAccess, function iterator(item, cb) {
+            if (!!item.roomId && !!item.accessTime) {
+                self.server.getUnreadMsgOfRoom(item.roomId, item.accessTime.toString(), function res(err, res) {
+                    if (err || res === null) {
+                        console.warn("getUnreadMsgOfRoom: ", err);
+                    }
+                    else {
+                        if (res.code === HttpStatusCode.success) {
+                            var unread = JSON.parse(JSON.stringify(res.data));
+                            unread.rid = item.roomId;
+                            logs.push(unread);
+                        }
+                    }
+                    cb(null, null);
+                });
+            }
+            else {
+                cb(null, null);
+            }
+        }, function done(err) {
+            console.log("get unread message is done.");
+            callback(null, logs);
+        });
+    };
+    return ChatsLogComponent;
+})();
 var DataListener = (function () {
     function DataListener(dataManager) {
         this.chatListenerImps = new Array();
+        this.roomAccessListenerImps = new Array();
         this.dataManager = dataManager;
     }
     DataListener.prototype.addListenerImp = function (listener) {
@@ -346,8 +389,20 @@ var DataListener = (function () {
         var id = this.chatListenerImps.indexOf(listener);
         this.chatListenerImps.splice(id, 1);
     };
+    DataListener.prototype.addRoomAccessListenerImp = function (listener) {
+        this.roomAccessListenerImps.push(listener);
+    };
+    DataListener.prototype.removeRoomAccessListener = function (listener) {
+        var id = this.roomAccessListenerImps.indexOf(listener);
+        this.roomAccessListenerImps.splice(id, 1);
+    };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(function (value) {
+                value.onAccessRoom(dataEvent);
+            });
+        }
     };
     DataListener.prototype.onUpdatedLastAccessTime = function (dataEvent) {
         this.dataManager.updateRoomAccessForUser(dataEvent);
@@ -395,11 +450,16 @@ var DataListener = (function () {
         var _id = jsonobj._id;
         this.dataManager.updateContactProfile(_id, params);
     };
-    DataListener.prototype.onChatData = function (data) {
+    DataListener.prototype.onChat = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach(function (value, id, arr) {
                 value.onChat(chatMessageImp);
+            });
+        }
+        if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
+            this.roomAccessListenerImps.map(function (v) {
+                v.onNewMessage(chatMessageImp);
             });
         }
     };
@@ -701,16 +761,16 @@ var DataManager = (function () {
 var HomeComponent = (function () {
     function HomeComponent() {
     }
-    HomeComponent.prototype.onChat = function (data) {
-    };
-    HomeComponent.prototype.onLeaveRoom = function (data) {
-    };
-    HomeComponent.prototype.onRoomJoin = function (data) {
-    };
-    HomeComponent.prototype.onMessageRead = function (dataEvent) {
-    };
-    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) {
-    };
+    HomeComponent.prototype.onChat = function (data) { };
+    ;
+    HomeComponent.prototype.onLeaveRoom = function (data) { };
+    ;
+    HomeComponent.prototype.onRoomJoin = function (data) { };
+    ;
+    HomeComponent.prototype.onMessageRead = function (dataEvent) { };
+    ;
+    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) { };
+    ;
     return HomeComponent;
 })();
 var NotifyManager = (function () {
@@ -1417,7 +1477,7 @@ var ChatServer;
             var self = this;
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, JSON.stringify(data));
-                self.chatServerListener.onChatData(data);
+                self.chatServerListener.onChat(data);
             });
             pomelo.on(ServerEventListener.ON_LEAVE, function (data) {
                 console.log(ServerEventListener.ON_LEAVE, JSON.stringify(data));
@@ -1541,44 +1601,6 @@ var SocketComponent = (function () {
     };
     return SocketComponent;
 })();
-var Services;
-(function (Services) {
-    var AbsChatServerListener = (function () {
-        function AbsChatServerListener() {
-        }
-        AbsChatServerListener.prototype.onChatData = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onLeaveRoom = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onRoomJoin = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onMessageRead = function (dataEvent) { };
-        ;
-        AbsChatServerListener.prototype.onGetMessagesReaders = function (dataEvent) { };
-        ;
-        return AbsChatServerListener;
-    })();
-    Services.AbsChatServerListener = AbsChatServerListener;
-    var AbsFrontendServerListener = (function () {
-        function AbsFrontendServerListener() {
-        }
-        return AbsFrontendServerListener;
-    })();
-    Services.AbsFrontendServerListener = AbsFrontendServerListener;
-    ;
-    var AbsRTCListener = (function () {
-        function AbsRTCListener() {
-        }
-        return AbsRTCListener;
-    })();
-    Services.AbsRTCListener = AbsRTCListener;
-    var AbsServerListener = (function () {
-        function AbsServerListener() {
-        }
-        return AbsServerListener;
-    })();
-    Services.AbsServerListener = AbsServerListener;
-})(Services || (Services = {}));
 var MessageMeta = (function () {
     function MessageMeta() {
     }
