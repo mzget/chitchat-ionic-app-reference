@@ -39,6 +39,10 @@ module ChatServer {
             this.socketComponent = socket;
         }
 
+        constructor() {
+            console.warn("serv imp. constructor");
+        }
+
         public getClient() {
             var self = this;
             if (pomelo !== null) {
@@ -48,10 +52,11 @@ module ChatServer {
                 console.warn("disconnect Event");
             }
         }
-
-        constructor() {
-            console.warn("serv imp. constructor");
+        public disposeClient() {
+            pomelo = null;
+            console.warn("dispose socket client.");
         }
+        
 
         public logout() {
             var registrationId = localStorage.getItem("registrationId");
@@ -131,6 +136,7 @@ module ChatServer {
 
         public disConnect() {
             if (pomelo !== null) {
+                pomelo.removeAllListeners();
                 pomelo.disconnect();
             }
 
