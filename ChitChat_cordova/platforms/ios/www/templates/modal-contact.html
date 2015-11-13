@@ -6,7 +6,11 @@
 -->
 <ion-modal-view style="width:80%; left:10%; right:10%; top:10%; bottom:10%; min-height:300px;">
 	<ion-content class="padding group-detail">
-		<a ng-click="openViewContactProfile(contact._id)"> <img class="avatar-modal" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{contact.image}}&w=150&h=150"/> </a>
+		<a ng-click="openViewContactProfile(contact._id)"> 
+
+		<img class="avatar-modal" ng-if="contact.image != null" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{contact.image}}&h=150&w=150" />
+		<img class="avatar-modal" ng-if="contact.image == null" src="img/img.jpg" height="150" width="150"  />
+
 		<a class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closeContactModal()"></a>
 		
 		<div style="margin-bottom:15px;">
