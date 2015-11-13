@@ -6,8 +6,9 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
-     ['ionic', 'spartan.controllers', 'spartan.home', 'spartan.chatslog', 'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify','ngCordova', 'ngStorage'])
+     ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
+	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
+      'spartan.services', 'spartan.notify', 'ngCordova', 'ngStorage'])
 
 
 .run(function($ionicPlatform) {
@@ -23,7 +24,13 @@ angular.module('starter',
 			// org.apache.cordova.statusbar required
 			StatusBar.styleLightContent();
 		}
+		
+		console.log("$ionicPlatform.ready");
 	});
+
+	var currentPlatform = ionic.Platform.platform();
+	var currentPlatformVersion = ionic.Platform.version();
+	console.log("currentPlatform", currentPlatform, currentPlatformVersion);
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -43,18 +50,27 @@ angular.module('starter',
 
 	// Each tab has its own nav history stack:
 
-
 	// LOGIN
 	.state('tab.login', {
 		url: '/login',
 		views: {
 		    'tab-login': {
 		        templateUrl: 'templates/tab-login.html',
-				controller: 'LoginCtrl'
+		        controller: 'authController'
 			}
 		}
 	})
 
+	// ERROR
+	.state('tab.login-error', {
+		url: '/login/error',
+		views: {
+			'tab-login': {
+				templateUrl: 'templates/tab-login-error.html',
+				controller: 'noConnection'
+			}
+		}
+	})
 
 	// GROUP
 	.state('tab.group', {
@@ -140,6 +156,16 @@ angular.module('starter',
 		}
 	})
 	
+	.state('tab.chats-chat', {
+		url: '/chats/chat/:chatId',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/chat-detail.html',
+				controller: 'chatController'
+			}
+		}
+	})
+	
 	/*
 	// CHAT : Message
 	.state('tab.message', {
@@ -216,5 +242,4 @@ angular.module('starter',
 
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/tab/login');
-
 });

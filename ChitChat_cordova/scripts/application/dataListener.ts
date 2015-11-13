@@ -1,21 +1,35 @@
-﻿class DataListener implements Services.IServerListener, Services.IChatServerListener {
+﻿class DataListener implements absSpartan.IServerListener, absSpartan.IChatServerListener {
     private dataManager: DataManager;
-    private listenerImp;
+    private chatListenerImps = new Array<absSpartan.IChatServerListener>();
+    public addListenerImp(listener: absSpartan.IChatServerListener) {
+        this.chatListenerImps.push(listener);
+    }
+    public removeListener(listener: absSpartan.IChatServerListener) {
+        var id = this.chatListenerImps.indexOf(listener);
+        this.chatListenerImps.splice(id, 1);
+    }
+
+    private roomAccessListenerImps = new Array<absSpartan.IRoomAccessListenerImp>();
+    public addRoomAccessListenerImp(listener: absSpartan.IRoomAccessListenerImp) {
+        this.roomAccessListenerImps.push(listener);
+    }
+    public removeRoomAccessListener(listener: absSpartan.IRoomAccessListenerImp) {
+        var id = this.roomAccessListenerImps.indexOf(listener);
+        this.roomAccessListenerImps.splice(id, 1);
+    }
 
     constructor(dataManager: DataManager) {
         this.dataManager = dataManager;
     }
 
-    public addListenerImp(listener) {
-        this.listenerImp = listener;
-    }
-
-    public removeListener(listener) {
-        this.listenerImp = null;
-    }
-
     onAccessRoom(dataEvent) {
         this.dataManager.setRoomAccessForUser(dataEvent);
+
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onAccessRoom(dataEvent);
+            });
+        }
     }
 
     onUpdatedLastAccessTime(dataEvent) {
@@ -38,6 +52,12 @@
     onEditedGroupMember(dataEvent) {
         var jsonObj: Room = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupMembers(jsonObj);
+        
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onEditedGroupMember(dataEvent);
+            });
+        }
     }
         
     onEditedGroupName(dataEvent) {
@@ -79,28 +99,46 @@
     /*******************************************************************************/
     //<!-- chat room data listener.
 
-    onChatData(data) {
+    onChat(data) {
         var chatMessageImp: Message = JSON.parse(JSON.stringify(data));
 
-        if (!!this.listenerImp) {
-            this.listenerImp.onChat(chatMessageImp);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach((value, id, arr) => {
+                value.onChat(chatMessageImp);
+            });
+        }
+        if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
+            this.roomAccessListenerImps.map(v => {
+                v.onNewMessage(chatMessageImp);
+            });
         }
     };
+
     onLeaveRoom(data) {
-        if (!!this.listenerImp)
-            this.listenerImp.onLeaveRoom(data);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(value => {
+                value.onLeaveRoom(data);
+            });
+        }
     };
+
     onRoomJoin(data) {
 
     };
 
     onMessageRead(dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onMessageRead(dataEvent);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(value => {
+                value.onMessageRead(dataEvent);
+            });
+        }
     };
 
     onGetMessagesReaders(dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onGetMessagesReaders(dataEvent);
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(value => {
+                value.onGetMessagesReaders(dataEvent);
+            });
+        }
     };
 }

@@ -17,6 +17,7 @@ module BlankCordovaApp1 {
 
             // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
             
+            console.warn("onDeviceReady");
         }
 
         function onPause() {

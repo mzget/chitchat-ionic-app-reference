@@ -5,16 +5,17 @@ interface IMemberMep {
     [key: string]: ContactInfo;
 }
 
-class DataManager implements Services.IFrontendServerListener {
-    private static Instance: DataManager;
+class DataManager implements absSpartan.IFrontendServerListener {
+/*
+    private static _instance: DataManager;
     public static getInstance(): DataManager {
-        if (!DataManager.Instance) {
-            DataManager.Instance = new DataManager();
+        if (this._instance === null || this._instance === undefined) {
+            this._instance = new DataManager();
         }
 
-        return DataManager.Instance;
+        return this._instance;
     }
-
+*/
     public myProfile: User;
     public orgGroups: IRoomMap = {};
     public projectBaseGroups: IRoomMap = {};
@@ -229,6 +230,27 @@ class DataManager implements Services.IFrontendServerListener {
         }
         else {
             console.warn('this contactId is invalid.');
+        }
+    }
+    
+    public onGetMe(dataEvent) {
+        var self = this;
+        var _profile = JSON.parse(JSON.stringify(dataEvent));
+        if(dataEvent.code === 200) {
+            this.setMyProfile(dataEvent.data);
+        }
+        else {
+            console.error("get use profile fail!", dataEvent.message);
+        }
+    }
+    public onGetCompanyInfo(dataEvent) {
+        var self = this;
+        var _company = JSON.parse(JSON.stringify(dataEvent));
+        if(dataEvent.code === 200) {
+            this.setCompanyInfo(dataEvent.data);
+        }
+        else {
+            console.error("get company info fail!", dataEvent.message);
         }
     }
 

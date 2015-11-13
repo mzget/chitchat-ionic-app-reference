@@ -80,16 +80,14 @@ class Main {
                             console.error(err);
                         }
                         else {
+                            self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
+                            server.getLastAccessRoomsInfo(function (err, res) {
+                                console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
+                            });
                             if (res.code === 200) {
-                                self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                                self.dataManager.setMyProfile(res.data);
-
-                                server.getLastAccessRoomsInfo(function (err, res) {
-                                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
-                                });
                             }
                             else {
-                                console.error("My user profile is empty. please check.");
+                                console.warn("My user profile is empty. please check.");
                             }
                         }
                     });
@@ -99,8 +97,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("companyInfo: ", res);
-                            self.dataManager.setCompanyInfo(res.data);
+                            console.log("companyInfo: ", JSON.stringify(res));
                         }
                     });
 
@@ -144,7 +141,7 @@ class Main {
                 });
             }
             else {
-                console.error(err);
+                console.error(err, JSON.stringify(loginRes));
             }
         });
     }

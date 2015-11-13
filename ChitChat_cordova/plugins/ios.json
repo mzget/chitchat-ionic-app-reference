@@ -22,7 +22,7 @@
                     "CoreGraphics.framework": [
                         {
                             "xml": false,
-                            "count": 3
+                            "count": 4
                         }
                     ],
                     "AssetsLibrary.framework": [
@@ -89,10 +89,6 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Media\"><param name=\"ios-package\" value=\"CDVSound\" /></feature>",
                             "count": 1
                         },
@@ -101,7 +97,19 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Toast\"><param name=\"ios-package\" value=\"Toast\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"BackgroundMode\"><param name=\"ios-package\" value=\"APPBackgroundMode\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Badge\"><param name=\"ios-package\" value=\"APPBadge\" /></feature>",
                             "count": 1
                         },
                         {
@@ -109,7 +117,7 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"IonicKeyboard\" /></feature>",
+                            "xml": "<feature name=\"SpinnerDialog\"><param name=\"ios-package\" value=\"CDVSpinnerDialog\" /></feature>",
                             "count": 1
                         },
                         {
@@ -117,7 +125,15 @@
                             "count": 1
                         },
                         {
+                            "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"ProgressIndicator\"><param name=\"ios-package\" value=\"ProgressIndicator\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"PushNotification\"><param name=\"ios-package\" value=\"PushPlugin\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -129,6 +145,16 @@
                         {
                             "xml": "<string />",
                             "count": 2
+                        }
+                    ],
+                    "UIBackgroundModes": [
+                        {
+                            "xml": "<array><string>audio</string></array>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<array><string>remote-notification</string></array>",
+                            "count": 1
                         }
                     ]
                 }
@@ -151,16 +177,13 @@
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
-        "cordova-plugin-geolocation": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
         "cordova-plugin-media": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "cordova-plugin-media-capture": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
-        "cordova-plugin-whitelist": {
+        "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "cordova-plugin-x-toast": {
@@ -169,16 +192,28 @@
         "de.appplant.cordova.common.registerusernotificationsettings": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
+        "de.appplant.cordova.plugin.background-mode": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "de.appplant.cordova.plugin.badge": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
         "de.appplant.cordova.plugin.local-notification": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
-        "ionic-plugin-keyboard": {
+        "hu.dpal.phonegap.plugins.SpinnerDialog": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
+        "org.apache.cordova.geolocation": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
         "org.pbernasconi.progressindicator": {
+            "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "phonegap-plugin-push": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         }
     },
