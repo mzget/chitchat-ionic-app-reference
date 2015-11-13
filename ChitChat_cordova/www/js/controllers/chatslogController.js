@@ -8,29 +8,57 @@
     chatslogController.$inject = ['$location', '$scope', '$timeout', 'roomSelected'];
 			
 	var roomAccess = [];
+	var accessLength = 0;
 	var roomAccessLength = 0;
 	var myRoomAccess = [];
 	var myRoomAccessCount = 0;
+	var chatsLogComponent = null;
 	
     function chatslogController($location, $scope, $timeout, roomSelected) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
 
+        var dataManager = main.getDataManager();
+        var dataListener = main.getDataListener();
+        $scope.myProfile = dataManager.myProfile;
+        $scope.orgMembers = dataManager.orgMembers;
+        $scope.roomAccess = [];
+
         activate();
 
-        function activate() { }
+        function activate() { 
+			console.warn("chatslogController.activate");
+			
+			chatsLogComponent = new ChatsLogComponent(main, server);
+			getUnreadMessages();
+			dataListener.addRoomAccessListenerImp(chatsLogComponent);
+			
+			chatsLogComponent.onNewMessage = function(newmsg)
+			{
+				chatlog_count++;
+				console.log( 'onNewMessage: ' + newmsg.rid);
 				
-        $scope.$on('$ionicView.enter', function(){ 
-            navShow();
-		});
+				for(var i=0; i<accessLength; i++)
+				{
+					//console.log( myRoomAccess[i]['_id'] + ' / ' + newmsg.rid );
+					if( myRoomAccess[i]['_id'] == newmsg.rid )
+					{
+						myRoomAccess[i]['body']['count']++;
+					}
+				}
+				
+			}
+			
+			chatsLogComponent.onEditedGroupMember = function(newgroup)
+			{
+				console.log( 'onEditedGroupMember :::::::	' );
+				console.log( newgroup );					
+			}
+        }
 
-        var dataManager = main.getDataManager();
-				
-		$scope.myProfile = dataManager.myProfile;
-		$scope.orgMembers = dataManager.orgMembers;
-		$scope.roomAccess = [];
-		getRoomAccess();
+
+        getRoomAccess();
 		var refresh = function () 
 		{		
 			$scope.roomAccess = myRoomAccess;
@@ -39,18 +67,21 @@
 			//console.log(roomAccess);
 			//console.log(myRoomAccess);
 			
+			$('#chatlog_count').text(chatlog_count);
+			
 			$timeout(refresh, 1000);
 		} 
 		$timeout(refresh, 1000);
 		
 		
-		$scope.gotoChat = function (accessId) 
+		$scope.gotoChat = function (accessId, chatlog) 
 		{		
-			var accessLength = myRoomAccess.length;
+			chatlog_count -= chatlog;
 			for(var i=0; i<accessLength; i++)
 			{
 				if( myRoomAccess[i]['_id'] == accessId )
 				{
+					myRoomAccess[i]['body']['count'] = 0;
 					switch( myRoomAccess[i]['type'] )
 					{
 						case 0:
@@ -88,6 +119,17 @@
 		};
 		
     }
+
+    function getUnreadMessages() {
+	 	chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
+			 if(!!logsData) {
+				 logsData.map(function element(v) {
+					 console.log(v);
+				 });
+			 }
+		 });
+    }
+
 	
 	function getRoomAccess()
 	{
@@ -104,27 +146,55 @@
 		if( myRoomAccessCount < roomAccessLength )
 		{
 			console.log( 'wait: ' + myRoomAccessCount + '/' + roomAccessLength );	
+			//console.log( roomAccess[myRoomAccessCount] );
 			server.getRoomInfo(roomAccess[myRoomAccessCount]['roomId'], function(err, res){				
 				if( res['code'] == 200 )
 				{
 					console.log( res['data']['_id'] );
+					//console.log( res );
 					var data = res;
-					myRoomAccess.push(data['data']);
-					/*
-					myRoomAccess[ res['data']['_id'] ] = {};
-					myRoomAccess[ res['data']['_id'] ]['roomId'] = 'I';
-					myRoomAccess[ res['data']['_id'] ]['accessTime'] = 'J';		
-					*/				
+					data['data']['accessTime'] = roomAccess[myRoomAccessCount]['accessTime'];
+					console.log( data );
+					//myRoomAccess.push(data['data']);			
+					
+					if(data.data.type == RoomType.privateChat){
+						try{
+							if( data.data.members[0].id == main.getDataManager().myProfile._id ){
+								data.data.name = main.getDataManager().orgMembers[data.data.members[1].id].displayname;
+								data.data.image = main.getDataManager().orgMembers[data.data.members[1].id].image;
+							}else{
+								data.data.name = main.getDataManager().orgMembers[data.data.members[0].id].displayname;
+								data.data.image = main.getDataManager().orgMembers[data.data.members[0].id].image;
+							}
+						}catch(err){
+							console.log(err);
+						}
+					}			
 				}
 				
-				if( myRoomAccessCount+1 == roomAccessLength )
-				{
-					console.log( 'last' );
-				}else{
-					myRoomAccessCount++;
-					getRoomInfo(myRoomAccessCount);
-				}	
+				server.getUnreadMsgOfRoom(roomAccess[myRoomAccessCount]['roomId'], roomAccess[myRoomAccessCount]['accessTime'], function(err, res){		
+					if( res['code'] == 200 )
+					{
+						data['data']['body'] = res['data'];
+						chatlog_count += res['data']['count'];
+						console.log( data );
+						myRoomAccess.push(data['data']);	
+						accessLength = myRoomAccess.length;
+					}
+								
+					if( myRoomAccessCount+1 == roomAccessLength )
+					{
+						console.log( 'last' );
+					}else{
+						myRoomAccessCount++;
+						getRoomInfo(myRoomAccessCount);
+					}
+					
+				});
+				
 			});
+			
 		}
 	}	
+	
 })();

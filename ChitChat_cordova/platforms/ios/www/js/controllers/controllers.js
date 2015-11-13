@@ -1,6 +1,7 @@
 var date = new Date();
 var now;
 var newchatmessage;
+var chatlog_count = 0;
 
 angular.module('spartan.controllers', [])
 
@@ -103,7 +104,7 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope,$ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
+.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
 	$scope.settings = {
 		logOut: true,
 	};
@@ -132,8 +133,8 @@ angular.module('spartan.controllers', [])
     $scope.thememodal.hide();
   };
 
-  $scope.$on('$destroy', function() {
-    $scope.thememodal.remove();
+  $scope.$on('$destroy', function () {
+      $scope.thememodal.remove();
   });
   
  
@@ -152,7 +153,12 @@ angular.module('spartan.controllers', [])
             console.log($rootScope.themeblue)
         }
 
-
+    $scope.logOut = function () {
+		console.warn("logOut...");
+        server.logout();
+		server.disposeClient();
+		$state.go('tab.login');
+    }
 })
 
 .controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
@@ -242,6 +248,16 @@ angular.module('spartan.controllers', [])
     });
 })
 
+.controller('bobo',function($scope,$rootScope,$timeout) {
+	var refresh = function () 
+	{		
+		$scope.foo = chatlog_count;
+		
+		$timeout(refresh, 1000);
+	} 
+	$timeout(refresh, 1000);
+})
+
 .controller('CreateProjectBase',function($scope,$ionicModal,$rootScope,$ionicLoading,$cordovaProgress,CreateGroup,ProjectBase, roomSelected) {
 	if(CreateGroup.createType!='ProjectBase'){ return; }
 		$scope.jobPosition=[];
@@ -325,6 +341,44 @@ angular.module('spartan.controllers', [])
     if(reverse) filtered.reverse();
     return filtered;
   };
+})
+.directive('hideTabBar', function($timeout) {
+  var style = angular.element('<style>').html(
+    '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
+    '.no-tabs.has-tabs-top { top: 44px; }');
+  document.body.appendChild(style[0]);
+  return {
+    restrict: 'A',
+    compile: function(element, attr) {
+      var tabBar = document.querySelector('.tab-nav');
+      return function($scope, $element, $attr) {
+        var scroll = $element[0].querySelector('.scroll-content');
+        $scope.$on('$ionicView.beforeEnter', function() {
+          tabBar.classList.add('slide-away');
+          scroll.classList.add('no-tabs');
+        });
+      }
+    }
+  };
+})
+.directive('showTabBar', function($timeout) {
+  var style = angular.element('<style>').html(
+    '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
+    '.no-tabs.has-tabs-top { top: 44px; }');
+  document.body.appendChild(style[0]);
+  return {
+    restrict: 'A',
+    compile: function(element, attr) {
+      var tabBar = document.querySelector('.tab-nav');
+      return function($scope, $element, $attr) {
+        var scroll = $element[0].querySelector('.scroll-content');
+        $scope.$on('$ionicView.beforeEnter', function() {
+          tabBar.classList.remove('slide-away');
+          scroll.classList.remove('no-tabs');
+        });
+      }
+    }
+  };
 }); // <-- LAST CONTROLLER
 
 function isAdminInProjectBase(room,memberId){
@@ -392,16 +446,4 @@ function back()
 function testfunc()
 {
 	return 'tabs-item-hide';
-}
-
-function navHide()
-{
-	$('.tab-nav.tabs').css({'display':'none'});
-	$('.has-header').css({'bottom':'0px'})
-}
-
-function navShow()
-{
-	$('.tab-nav.tabs').css({'display':'flex'});
-	$('.has-header').css({'bottom':'44px'})
 }

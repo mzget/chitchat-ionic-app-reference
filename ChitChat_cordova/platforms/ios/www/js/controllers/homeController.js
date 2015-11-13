@@ -7,19 +7,42 @@
 
     //homeController.$inject = ['$location'];
 
-    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, roomSelected, localNotifyService, Favorite) {
+    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading,
+        roomSelected, localNotifyService, Favorite, sharedObjectService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
 
-		$('.tab-nav.tabs').css({'display':'flex'});
-		$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
+        var dataListener = main.getDataListener();
+        var dataManager = main.getDataManager();
+        var homeComponent = new HomeComponent();
+
+		//$('.tab-nav.tabs').css({'display':'flex'});
+		//$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
         activate();
 
         function activate() {
             console.warn('homeController activate');
  
             localNotifyService.registerPermission();
+            sharedObjectService.createNotifyManager(main);
+
+            addHomeComponent();
+        }
+
+        function addHomeComponent() {
+            dataListener.addListenerImp(homeComponent);
+
+            homeComponent.onChat = function (chatMessageImp) {
+                console.warn("new message: ", chatMessageImp.type);
+
+                var appBackground = cordova.plugins.backgroundMode.isActive();
+                sharedObjectService.getNotifyManager().notify(chatMessageImp, appBackground, localNotifyService);
+            }
+        }
+
+        function onLeave() {
+            dataListener.removeListener(homeComponent);
         }
 
         $scope.pullRefresh = function() {
@@ -45,30 +68,33 @@
             }
             return favorite;
         }
+
         $scope.editFavorite = function(editType,id,type){
             $ionicLoading.show({
                   template: 'Loading..'
             });
             if(type==undefined){
                 server.updateFavoriteMember(editType,id,function (err, res) {
-                    if (!err) {
+                    if (!err && res.code==200) {
                         console.log(JSON.stringify(res));
                         Favorite.updateFavorite(editType,id,type);
                         $ionicLoading.hide();
                     }
                     else {
                         console.warn(err, res);
+                        $ionicLoading.hide();
                     }
                 });
             }else{
                 server.updateFavoriteGroups(editType,id,function (err, res) {
-                    if (!err) {
+                    if (!err && res.code==200) {
                         console.log(JSON.stringify(res));
                         Favorite.updateFavorite(editType,id,type);
                         $ionicLoading.hide();
                     }
                     else {
                         console.warn(err, res);
+                        $ionicLoading.hide();
                     }
                 });
             }
@@ -79,7 +105,6 @@
         }
         
         $scope.$on('$ionicView.enter', function(){ 
-            navShow();
 	
             $scope.refreshView = function () {
                 console.debug("homeController : refreshView");
@@ -154,9 +179,10 @@
             });
         });
 	
-        $scope.$on('$ionicView.leave', function () {
-            console.debug('clear : refreshView');
+        $scope.$on('$ionicView.beforeLeave', function () {
+            console.log("beforeLeave: homeController");
             clearInterval($scope.interval);
+            onLeave();
         });		
 	
         $scope.viewlist = function(list) {

@@ -1,14 +1,28 @@
-<ion-view id="chatDetail" view-title="{{currentRoom.name}}" cache-view="false">
+<ion-view id="chatDetail" view-title="{{currentRoom.name}}" cache-view="false" hide-tab-bar>
 
 	<ion-nav-buttons side="right">
 		<div ng-show="currentRoom.type!=3">
-	        <i ng-if="isFavorite(currentRoom._id)" class="ion-heart assertive" style="font-size:30px;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)"></i>
-			<i ng-if="!isFavorite(currentRoom._id)" class="ion-heart dark" style="font-size:30px;" ng-click="editFavorite('add',currentRoom._id,currentRoom.type)"></i>
+	        <i ng-if="isFavorite(currentRoom._id)" class="ion-heart assertive" style="font-size:25px; line-height:40px;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)"></i>
+			<i ng-if="!isFavorite(currentRoom._id)" class="ion-heart dark" style="font-size:25px; line-height:40px;" ng-click="editFavorite('add',currentRoom._id,currentRoom.type)"></i>
 		</div>
 		<div ng-show="currentRoom.type==3">
-	        <i ng-if="isFavorite(otherId)" class="ion-heart assertive" style="font-size:30px;" ng-click="editFavorite('remove',otherId,currentRoom.type)"></i>
-			<i ng-if="!isFavorite(otherId)" class="ion-heart dark" style="font-size:30px;" ng-click="editFavorite('add',otherId,currentRoom.type)"></i>
+	        <i ng-if="isFavorite(otherId)" class="ion-heart assertive" style="font-size:25px; line-height:40px;" ng-click="editFavorite('remove',otherId,currentRoom.type)"></i>
+			<i ng-if="!isFavorite(otherId)" class="ion-heart dark" style="font-size:25px; line-height:40px;" ng-click="editFavorite('add',otherId,currentRoom.type)"></i>
 		</div>
+
+		<div ng-show="currentRoom.type==2">
+			<i ng-if="isBlockNoti(currentRoom._id)" class="ion-android-notifications-off" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;" 
+				ng-click="editBlockNoti('remove',currentRoom._id,currentRoom.type)"></i>
+			<i ng-if="!isBlockNoti(currentRoom._id)" class="ion-android-notifications" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;"
+				ng-click="editBlockNoti('add',currentRoom._id,currentRoom.type)"></i>
+		</div>
+		<div ng-show="currentRoom.type==3">
+			<i ng-if="isBlockNoti(otherId)" class="ion-android-notifications-off" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;"
+				ng-click="editBlockNoti('remove',otherId,currentRoom.type)"></i>
+			<i ng-if="!isBlockNoti(otherId)" class="ion-android-notifications" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;"
+				ng-click="editBlockNoti('add',otherId,currentRoom.type)"></i>
+		</div>
+
     </ion-nav-buttons>
 	
 	<ion-content delegate-handle="mainScroll" style="bottom:44px;">    
@@ -77,7 +91,7 @@
 				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://stalk.animation-genius.com{{message.body}}" ng-click="viewImage('http://stalk.animation-genius.com'+message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
-				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'">
+				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice()">
                     <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
@@ -86,7 +100,7 @@
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
                 </div>
 
-                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'">
+                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo()">
                 	<video id="{{message._id}}" src="{{message.body}}"></video>
 				</div>
                 <div class="type-video" ng-if="message.type=='Video' && message.temp==null">

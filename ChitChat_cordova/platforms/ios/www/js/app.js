@@ -8,7 +8,7 @@
 angular.module('starter',
      ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
 	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify','ngCordova', 'ngStorage'])
+      'spartan.services', 'spartan.notify', 'ngCordova', 'ngStorage'])
 
 
 .run(function($ionicPlatform) {
@@ -27,20 +27,10 @@ angular.module('starter',
 		
 		console.log("$ionicPlatform.ready");
 	});
-	
-	 	var deviceInformation = ionic.Platform.device();	
 
-		var isWebView = ionic.Platform.isWebView();
-		var isIPad = ionic.Platform.isIPad();
-		var isIOS = ionic.Platform.isIOS();
-		var isAndroid = ionic.Platform.isAndroid();
-		var isWindowsPhone = ionic.Platform.isWindowsPhone();
-		
-		var currentPlatform = ionic.Platform.platform();
-		var currentPlatformVersion = ionic.Platform.version();
-		
-		console.log("deviceInformation", JSON.stringify(deviceInformation));
-		console.log("currentPlatform", currentPlatform);
+	var currentPlatform = ionic.Platform.platform();
+	var currentPlatformVersion = ionic.Platform.version();
+	console.log("currentPlatform", currentPlatform, currentPlatformVersion);
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -71,6 +61,16 @@ angular.module('starter',
 		}
 	})
 
+	// ERROR
+	.state('tab.login-error', {
+		url: '/login/error',
+		views: {
+			'tab-login': {
+				templateUrl: 'templates/tab-login-error.html',
+				controller: 'noConnection'
+			}
+		}
+	})
 
 	// GROUP
 	.state('tab.group', {

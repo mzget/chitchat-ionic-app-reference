@@ -141,7 +141,7 @@ class Main {
                 });
             }
             else {
-                console.error(err, loginRes);
+                console.error(err, JSON.stringify(loginRes));
             }
         });
     }

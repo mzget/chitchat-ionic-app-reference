@@ -1,8 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.ahoostudio.chitchat" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <preference name="AutoHideSplashScreen" value="false" />
     <preference name="BackupWebStorage" value="cloud" />
-    <preference name="ShowSplashScreenSpinner" value="false" />
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
     </feature>
@@ -12,6 +10,9 @@
     <preference name="CameraUsesGeolocation" value="false" />
     <feature name="Console">
         <param name="ios-package" value="CDVLogger" />
+    </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
     </feature>
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <feature name="File">
@@ -27,11 +28,12 @@
     <feature name="Capture">
         <param name="ios-package" value="CDVCapture" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="ios-package" value="CDVSplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
     <feature name="Toast">
         <param name="ios-package" value="Toast" />
-    </feature>
-    <feature name="Device">
-        <param name="ios-package" value="CDVDevice" />
     </feature>
     <feature name="BackgroundMode">
         <param name="ios-package" value="APPBackgroundMode" />
@@ -43,18 +45,20 @@
         <param name="ios-package" onload="true" value="APPLocalNotification" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="SpinnerDialog">
+        <param name="ios-package" value="CDVSpinnerDialog" />
+    </feature>
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
+    </feature>
+    <feature name="Geolocation">
+        <param name="ios-package" value="CDVLocation" />
     </feature>
     <feature name="ProgressIndicator">
         <param name="ios-package" value="ProgressIndicator" />
     </feature>
     <feature name="PushNotification">
         <param name="ios-package" value="PushPlugin" />
-    </feature>
-    <feature name="SplashScreen">
-        <param name="ios-package" value="CDVSplashScreen" />
-        <param name="onload" value="true" />
     </feature>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />

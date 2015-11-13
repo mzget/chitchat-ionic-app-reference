@@ -93,6 +93,7 @@
 .modal-chatmenu > * { text-align:center; padding:20px 0; cursor:pointer; } 
 .modal-chatmenu > *:active { background-color:rgba(0,0,0,0.1); }
 .modal-chatmenu i { font-size:30px; }
+.audio-recorder { background:url(../img/ic_audio-recorder.png) no-repeat center center; height:272px;}
 
 .stickerhead { width:100%; padding:5px 0; margin-bottom:10px; border-bottom:1px solid #ccc; white-space:nowrap; overflow-x:auto; overflow-y:hidden; cursor:pointer; position:relative; z-index:100; background-color:#fff; }
 .stickerhead > * { float:left; display:inline-block; width:33px; height:33px; margin:0 0 0 10px; background-size:contain; background-repeat:no-repeat; background-position:50% 50%; opacity:0.5; }
@@ -112,6 +113,7 @@
 
 .modal-img-view {  background-size: contain; background-repeat: no-repeat; background-position: 50% center; }
 .recording { background-color: red; }
+.unrecording { background-color: #bebebe; }
 /*.has-header { top:64px; }*/
 .nav-bar-block { margin-top:0; }
 map{display:block;
@@ -128,3 +130,37 @@ color: #fff;}
 
 .tab-item b{ position:absolute; margin:-23px 0 0 -21px; }
 .tab-item.tab-item-active b{ color:#fff; }
+
+.tabs-top .tab-nav {
+  -webkit-transition-timing-function: cubic-bezier(0.4, 0.6, 0.2, 1);
+  transition-timing-function: cubic-bezier(0.4, 0.6, 0.2, 1);
+  -webkit-transition-duration: 200ms;
+  transition-duration: 200ms;
+  -webkit-transition-property: all;
+  transition-property: all;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+.tabs-top .slide-away {
+  transform: translate3d(0, -50px, 0);
+  -webkit-transform: translate3d(0, -50px, 0);
+}
+
+.tabs-bottom .tab-nav,
+.tab-nav {
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms;
+  -webkit-transition-timing-function: cubic-bezier(0.36, 0.66, 0.04, 1);
+  transition-timing-function: cubic-bezier(0.36, 0.66, 0.04, 1);
+  -webkit-transition-property: all;
+  transition-property: all;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+.tabs-bottom .slide-away,
+.slide-away {
+  transform: translate3d(0, 49px, 0);
+  -webkit-transform: translate3d(0, 49px, 0);
+}

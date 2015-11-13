@@ -1,15 +1,69 @@
+/// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
 .controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
-    $sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected,Favorite)
+    $sce, $cordovaGeolocation, $cordovaDialogs,
+    Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
 {    		
 	// Hide nav-tab # in chat detail
-	navHide();
 	$('#chatMessage').animate({'bottom':'0'}, 350);
-	
-    var currentRoom = roomSelected.getRoom();
-    var myprofile = main.getDataManager().myProfile;
-    var allMembers = main.getDataManager().orgMembers;
+
+	var currentRoom = roomSelected.getRoom();
+	var myprofile = main.getDataManager().myProfile;
+	var allMembers = main.getDataManager().orgMembers;
+	var chatRoomApi = main.getChatRoomApi();
+	var chatRoomComponent = new ChatRoomComponent(main, currentRoom._id);
+
+    activate();
+
+    function activate() {
+        console.log("chatController is activate");
+
+        addComponent();
+    }
+
+    function addComponent() {
+        main.dataListener.addListenerImp(chatRoomComponent);
+        chatRoomComponent.serviceListener = function (event, newMsg) {
+            if (event === "onChat") {
+                Chats.set(chatRoomComponent.chatMessages);
+
+                if (newMsg.sender !== main.dataManager.myProfile._id) {
+                    chatRoomApi.updateMessageReader(newMsg._id, currentRoom._id);
+                }
+            }
+            else if (event === "onMessageRead") {
+                Chats.set(chatRoomComponent.chatMessages);
+            }
+        }
+        chatRoomComponent.notifyEvent = function (event, data) {
+            if (event === ChatServer.ServerEventListener.ON_CHAT) {
+                var appBackground = cordova.plugins.backgroundMode.isActive();
+                sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+            }
+        };
+        chatRoomComponent.getMessage(currentRoom._id, Chats, function () {
+            Chats.set(chatRoomComponent.chatMessages);
+            setTimeout(function () {
+                $ionicLoading.hide();
+            }, 1000);
+            
+        });
+    }
+
+    function leaveRoom() {
+        chatRoomComponent.leaveRoom(currentRoom._id, function callback(err, res) {
+            localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
+            localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomComponent.chatMessages));
+            console.warn("save", currentRoom.name, JSON.stringify(chatRoomComponent.chatMessages));
+
+            currentRoom = null;
+            roomSelected.setRoom(currentRoom);
+            chatRoomComponent.chatMessages = [];
+            Chats.clear();
+            main.dataListener.removeListener(chatRoomComponent);
+        });
+    }
     
     $scope.chat = [];
     //<!-- Set up roomname for display title of chatroom.
@@ -58,6 +112,12 @@ angular.module('spartan.chat', [])
 		$scope.modalSticker.hide();
 		$scope.chatMenuModal.hide();
 	}
+	// Modal - Audio Recorder
+
+	$scope.openModalRecorder = function(){
+		modalcount++;
+		$scope.modalAudio.show();
+	}
 	
 	// Modal - Webview 
 	$scope.openModalWebview = function() {
@@ -77,7 +137,13 @@ angular.module('spartan.chat', [])
 			$scope.chatMenuModal.hide();			
 		}
 		$('#chatMessage').animate({'bottom':'0'}, 350);
-		$('#chatDetail').animate({'top':'0'}, 350);		
+		$('#chatDetail').animate({'top':'0'}, 350);
+
+		if($('.audio-recorder').is(".recording")){
+			$('.audio-recorder').removeClass("recording");
+			$('.audio-recorder').addClass("unrecording");
+            $scope.$broadcast('cancelRecord', 'cancelRecord');
+        }		
 	});
 	$scope.openReaderModal = function() {
 		$scope.readerViewModal.show();
@@ -105,27 +171,7 @@ angular.module('spartan.chat', [])
 	$("#modal-webview-iframe").on('load',function() {
 			alert( $(this).contentDocument.title );
 		});
-	
-
-	var chatRoomControl = new ChatRoomController(main, currentRoom._id);
-	main.dataListener.addListenerImp(chatRoomControl);
-	var chatRoomApi = main.getChatRoomApi();
-	chatRoomControl.serviceListener = function (event, newMsg) {
-	    if (event === "onChat") {
-	        Chats.set(chatRoomControl.chatMessages);
-
-	        if (newMsg.sender !== main.dataManager.myProfile._id) {
-	            chatRoomApi.updateMessageReader(newMsg._id, currentRoom._id);
-	        }
-	    }
-	    else if (event === "onMessageRead") {
-	        Chats.set(chatRoomControl.chatMessages);
-	    }
-    }
-    chatRoomControl.getMessage(currentRoom._id, Chats, function () {
-        Chats.set(chatRoomControl.chatMessages);
-    });
-     
+	 
     var countUp = function () {		
 		if( currentRoom != null )
 		{
@@ -177,7 +223,7 @@ angular.module('spartan.chat', [])
 							console.warn("send message fail.");
 						}
 						else {
-							console.log("send message:", res);
+							console.log("send message:", JSON.stringify(res));
 						}
 					});
 				}
@@ -185,26 +231,28 @@ angular.module('spartan.chat', [])
 		}
 	});
 
-	$scope.voice = function(){
-		if($('.ion-android-microphone').is(".recording")){
-			$('.ion-android-microphone').removeClass("recording");
-            $scope.$broadcast('stopRecord', 'stopRecord');
-		}else{
-			$('.ion-android-microphone').addClass("recording");
-			$scope.$broadcast('startRecord', 'startRecord');
-		}
-	}
     $scope.image = function(){
         $scope.$broadcast('addImg', 'addImg');
     }
     $scope.video = function(){
         $scope.$broadcast('captureVideo', 'captureVideo');
     }
-
+    $scope.voice = function(){
+        if($('.audio-recorder').is(".recording")){
+			$('.audio-recorder').removeClass("recording");
+			$('.audio-recorder').addClass("unrecording");
+            $scope.$broadcast('stopRecord', 'stopRecord');
+		}else{
+			$('.audio-recorder').removeClass("unrecording");
+			$('.audio-recorder').addClass("recording");
+			$scope.$broadcast('startRecord', 'startRecord');
+		}
+    }
+    
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
 		if(args[1] == "Image"){
-			$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+			$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"temp":"true"});
 		}else if(args[1] == "Voice"){
 			$scope.chat.push( {"rid":currentRoom._id,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
 		}else if(args[1] == "Video"){
@@ -290,6 +338,10 @@ angular.module('spartan.chat', [])
 	// ON ENTER 
     $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
         console.log("App view (menu) entered.");
+
+        $ionicLoading.show({
+	        template: 'Loading..'
+	    });
 		
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
 			
@@ -307,6 +359,13 @@ angular.module('spartan.chat', [])
 			animation: 'slide-in-up'
 		}).then(function(modal) {
 			$scope.modalSticker = modal;
+		})
+
+		$ionicModal.fromTemplateUrl('templates/modal-audio-recorder.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.modalAudio = modal;
 		})
 		
 		// Reload Modal - WebView
@@ -337,6 +396,7 @@ angular.module('spartan.chat', [])
 		$scope.$on('$destroy', function () {
 			$scope.chatMenuModal.remove();
 		    $scope.modalSticker.remove();
+		    $scope.modalAudio.remove();
 		    $scope.modalWebview.remove();
 		    $scope.readerViewModal.remove();
 			$scope.mapViewModal.remove();
@@ -352,20 +412,12 @@ angular.module('spartan.chat', [])
     });
 
 	// ON LEAVE
-    $scope.$on('$ionicView.leave', function(){ //This just one when leaving, which happens when I logout
-        console.log("App view (menu) leaved.");
+    $scope.$on('$ionicView.beforeLeave', function(){ //This just one when leaving, which happens when I logout
+        console.log("chatController beforeLeave.");
 				
-		$('#send_message').css({ 'display': 'none' });
-		chatRoomControl.leaveRoom(currentRoom._id, function callback(err, res) {
-			localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
-			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomControl.chatMessages));
-			console.warn("save", currentRoom.name, JSON.stringify(chatRoomControl.chatMessages));
+        $('#send_message').css({ 'display': 'none' });
 
-			currentRoom = null;
-			roomSelected.setRoom(currentRoom);
-			chatRoomControl.chatMessages = [];
-			main.dataListener.removeListener(chatRoomControl);
-		});
+        leaveRoom();
     });
 
     $scope.editFavorite = function(editType,id,type){
@@ -374,24 +426,56 @@ angular.module('spartan.chat', [])
         });
         if(type==RoomType.privateChat){
             server.updateFavoriteMember(editType,id,function (err, res) {
-                if (!err) {
+                if (!err && res.code==200) {
                     console.log(JSON.stringify(res));
                     Favorite.updateFavorite(editType,id,type);
                     $ionicLoading.hide();
                 }
                 else {
                     console.warn(err, res);
+                    $ionicLoading.hide();
                 }
             });
         }else{
             server.updateFavoriteGroups(editType,id,function (err, res) {
-                if (!err) {
+                if (!err && res.code==200) {
                     console.log(JSON.stringify(res));
                     Favorite.updateFavorite(editType,id,type);
                     $ionicLoading.hide();
                 }
                 else {
                     console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }
+    }
+    $scope.editBlockNoti = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==RoomType.privateChat){
+            server.updateClosedNoticeMemberList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }else{
+            server.updateClosedNoticeGroupsList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
                 }
             });
         }
@@ -399,7 +483,9 @@ angular.module('spartan.chat', [])
     $scope.isFavorite = function(id){
         return Favorite.isFavorite(id);
     }
-        
+    $scope.isBlockNoti = function(id){
+    	return blockNotifications.isBlockNoti(id);
+    }        
 });
 
 var viewLocation = function ($scope, message, $ionicLoading) {

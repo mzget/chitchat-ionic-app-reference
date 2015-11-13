@@ -146,11 +146,722 @@ var Main = (function () {
                 });
             }
             else {
-                console.error(err, loginRes);
+                console.error(err, JSON.stringify(loginRes));
             }
         });
     };
     return Main;
+})();
+var ChatRoomComponent = (function () {
+    function ChatRoomComponent(main, room_id) {
+        this.chatMessages = [];
+        this.main = main;
+        this.serverImp = this.main.getServerImp();
+        this.chatRoomApi = this.main.getChatRoomApi();
+        this.dataManager = this.main.getDataManager();
+        this.roomId = room_id;
+        console.log("constructor ChatRoomComponent");
+    }
+    ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
+        var _this = this;
+        var self = this;
+        if (this.roomId === chatMessageImp.rid) {
+            console.log("Implement chat msg hear..", chatMessageImp);
+            var secure = new SecureService();
+            if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
+                secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
+                    if (!err) {
+                        chatMessageImp.body = res;
+                        self.chatMessages.push(chatMessageImp);
+                        if (!!_this.serviceListener)
+                            _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                    }
+                    else {
+                        console.log(err, res);
+                        self.chatMessages.push(chatMessageImp);
+                        if (!!_this.serviceListener)
+                            _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                    }
+                });
+            }
+            else {
+                self.chatMessages.push(chatMessageImp);
+                if (!!this.serviceListener)
+                    this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+            }
+        }
+        else {
+            console.log("this msg come from other room.");
+            if (!!this.notifyEvent) {
+                this.notifyEvent(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+            }
+        }
+    };
+    ChatRoomComponent.prototype.onLeaveRoom = function (data) {
+    };
+    ChatRoomComponent.prototype.onRoomJoin = function (data) {
+    };
+    ChatRoomComponent.prototype.onMessageRead = function (dataEvent) {
+        console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
+        var self = this;
+        var newMsg = JSON.parse(JSON.stringify(dataEvent));
+        this.chatMessages.some(function callback(value) {
+            if (value._id === newMsg._id) {
+                value.readers = newMsg.readers;
+                if (!!self.serviceListener)
+                    self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
+                return true;
+            }
+        });
+    };
+    ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
+    };
+    ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
+        var self = this;
+        var myProfile = self.dataManager.myProfile;
+        var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
+        async.waterfall([
+            function (cb) {
+                if (!!chatLog) {
+                    if (JSON.stringify(chatLog) === "") {
+                        self.chatMessages = [];
+                        cb(null, null);
+                    }
+                    else {
+                        var arr_fromLog = JSON.parse(chatLog);
+                        if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
+                            self.chatMessages = [];
+                            cb(null, null);
+                        }
+                        else {
+                            async.eachSeries(arr_fromLog, function (log, cb) {
+                                var messageImp = log;
+                                if (messageImp.type === ContentType[ContentType.Text]) {
+                                    self.main.decodeService(messageImp.body, function (err, res) {
+                                        if (!err) {
+                                            messageImp.body = res;
+                                            self.chatMessages.push(messageImp);
+                                            cb();
+                                        }
+                                        else {
+                                            self.chatMessages.push(messageImp);
+                                            cb();
+                                        }
+                                    });
+                                }
+                                else {
+                                    self.chatMessages.push(log);
+                                    cb();
+                                }
+                            }, function (err) {
+                                cb(null, null);
+                            });
+                        }
+                    }
+                }
+                else {
+                    self.chatMessages = [];
+                    cb(null, null);
+                }
+            },
+            function (arg1, cb) {
+                cb(null, null);
+            }
+        ], function (err, res) {
+            self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
+                if (res.code == 200) {
+                    var access = new Date();
+                    var roomAccess = self.dataManager.myProfile.roomAccess;
+                    async.eachSeries(roomAccess, function iterator(item, cb) {
+                        if (item.roomId == chatId) {
+                            access = item.accessTime;
+                        }
+                        cb();
+                    }, function done() {
+                        self.chatRoomApi.getChatHistory(chatId, access, function (err, result) {
+                            var histories = [];
+                            if (result.code === 200) {
+                                histories = result.data;
+                            }
+                            else {
+                            }
+                            var his_length = histories.length;
+                            if (his_length > 0) {
+                                async.eachSeries(histories, function (item, cb) {
+                                    var chatMessageImp = JSON.parse(JSON.stringify(item));
+                                    if (chatMessageImp.type === ContentType[ContentType.Text]) {
+                                        self.main.decodeService(chatMessageImp.body, function (err, res) {
+                                            if (!err) {
+                                                chatMessageImp.body = res;
+                                                self.chatMessages.push(chatMessageImp);
+                                                cb();
+                                            }
+                                            else {
+                                                cb();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        if (item.type == 'File') {
+                                            console.log('file');
+                                        }
+                                        self.chatMessages.push(item);
+                                        cb();
+                                    }
+                                }, function (err) {
+                                    Chats.set(self.chatMessages);
+                                    localStorage.removeItem(myProfile._id + '_' + chatId);
+                                    localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
+                                    callback();
+                                });
+                            }
+                            else {
+                                Chats.set(self.chatMessages);
+                                callback();
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    };
+    ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
+        var self = this;
+        this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
+            console.log("leave room", JSON.stringify(res));
+            callback(err, res);
+        });
+    };
+    return ChatRoomComponent;
+})();
+var ChatsLogComponent = (function () {
+    function ChatsLogComponent(main, server) {
+        this.main = main;
+        this.server = server;
+    }
+    ChatsLogComponent.prototype.onNewMessage = function (dataEvent) {
+        console.warn("OnNewMessage", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
+        console.warn("onAccessRoom", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) {
+        console.warn("onUpdatedLastAccessTime", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) {
+        console.warn("onAddRoomAccess", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) {
+        console.warn("onEditedGroupMember", JSON.stringify(dataEvent));
+    };
+    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
+        var self = this;
+        var logs = [];
+        async.mapSeries(roomAccess, function iterator(item, cb) {
+            if (!!item.roomId && !!item.accessTime) {
+                self.server.getUnreadMsgOfRoom(item.roomId, item.accessTime.toString(), function res(err, res) {
+                    if (err || res === null) {
+                        console.warn("getUnreadMsgOfRoom: ", err);
+                    }
+                    else {
+                        if (res.code === HttpStatusCode.success) {
+                            var unread = JSON.parse(JSON.stringify(res.data));
+                            unread.rid = item.roomId;
+                            logs.push(unread);
+                        }
+                    }
+                    cb(null, null);
+                });
+            }
+            else {
+                cb(null, null);
+            }
+        }, function done(err) {
+            console.log("get unread message is done.");
+            callback(null, logs);
+        });
+    };
+    return ChatsLogComponent;
+})();
+var DataListener = (function () {
+    function DataListener(dataManager) {
+        this.chatListenerImps = new Array();
+        this.roomAccessListenerImps = new Array();
+        this.dataManager = dataManager;
+    }
+    DataListener.prototype.addListenerImp = function (listener) {
+        this.chatListenerImps.push(listener);
+    };
+    DataListener.prototype.removeListener = function (listener) {
+        var id = this.chatListenerImps.indexOf(listener);
+        this.chatListenerImps.splice(id, 1);
+    };
+    DataListener.prototype.addRoomAccessListenerImp = function (listener) {
+        this.roomAccessListenerImps.push(listener);
+    };
+    DataListener.prototype.removeRoomAccessListener = function (listener) {
+        var id = this.roomAccessListenerImps.indexOf(listener);
+        this.roomAccessListenerImps.splice(id, 1);
+    };
+    DataListener.prototype.onAccessRoom = function (dataEvent) {
+        this.dataManager.setRoomAccessForUser(dataEvent);
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(function (value) {
+                value.onAccessRoom(dataEvent);
+            });
+        }
+    };
+    DataListener.prototype.onUpdatedLastAccessTime = function (dataEvent) {
+        this.dataManager.updateRoomAccessForUser(dataEvent);
+    };
+    DataListener.prototype.onAddRoomAccess = function (dataEvent) {
+        var data = JSON.parse(JSON.stringify(dataEvent));
+        var roomAccess = data.roomAccess;
+        if (roomAccess !== null && roomAccess.length !== 0) {
+            this.dataManager.setRoomAccessForUser(dataEvent);
+        }
+    };
+    DataListener.prototype.onCreateGroupSuccess = function (dataEvent) {
+        var group = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.addGroup(group);
+    };
+    DataListener.prototype.onEditedGroupMember = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupMembers(jsonObj);
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(function (value) {
+                value.onEditedGroupMember(dataEvent);
+            });
+        }
+    };
+    DataListener.prototype.onEditedGroupName = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupName(jsonObj);
+    };
+    DataListener.prototype.onEditedGroupImage = function (dataEvent) {
+        var obj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupImage(obj);
+    };
+    DataListener.prototype.onNewGroupCreated = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.addGroup(jsonObj);
+    };
+    DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        this.dataManager.updateGroupMemberDetail(jsonObj);
+    };
+    DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
+        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
+        var _id = jsonObj._id;
+        var path = jsonObj.path;
+        this.dataManager.updateContactImage(_id, path);
+    };
+    DataListener.prototype.onUserUpdateProfile = function (dataEvent) {
+        var jsonobj = JSON.parse(JSON.stringify(dataEvent));
+        var params = jsonobj.params;
+        var _id = jsonobj._id;
+        this.dataManager.updateContactProfile(_id, params);
+    };
+    DataListener.prototype.onChat = function (data) {
+        var chatMessageImp = JSON.parse(JSON.stringify(data));
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value, id, arr) {
+                value.onChat(chatMessageImp);
+            });
+        }
+        if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
+            this.roomAccessListenerImps.map(function (v) {
+                v.onNewMessage(chatMessageImp);
+            });
+        }
+    };
+    ;
+    DataListener.prototype.onLeaveRoom = function (data) {
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value) {
+                value.onLeaveRoom(data);
+            });
+        }
+    };
+    ;
+    DataListener.prototype.onRoomJoin = function (data) {
+    };
+    ;
+    DataListener.prototype.onMessageRead = function (dataEvent) {
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value) {
+                value.onMessageRead(dataEvent);
+            });
+        }
+    };
+    ;
+    DataListener.prototype.onGetMessagesReaders = function (dataEvent) {
+        if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
+            this.chatListenerImps.forEach(function (value) {
+                value.onGetMessagesReaders(dataEvent);
+            });
+        }
+    };
+    ;
+    return DataListener;
+})();
+var DataManager = (function () {
+    function DataManager() {
+        this.orgGroups = {};
+        this.projectBaseGroups = {};
+        this.privateGroups = {};
+        this.orgMembers = {};
+        this.isOrgMembersReady = false;
+    }
+    DataManager.prototype.setMyProfile = function (data) {
+        this.myProfile = JSON.parse(JSON.stringify(data));
+        if (!!this.onMyProfileReady)
+            this.onMyProfileReady(this);
+    };
+    DataManager.prototype.getMyProfile = function () {
+        return this.myProfile;
+    };
+    DataManager.prototype.setRoomAccessForUser = function (data) {
+        this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
+    };
+    DataManager.prototype.updateRoomAccessForUser = function (data) {
+        console.info(JSON.stringify(data));
+        var arr = JSON.parse(JSON.stringify(data.roomAccess));
+        this.myProfile.roomAccess.forEach(function (value) {
+            if (value.roomId === arr[0].roomId) {
+                value.accessTime = arr[0].accessTime;
+                return;
+            }
+        });
+    };
+    DataManager.prototype.setMembers = function (data) {
+    };
+    DataManager.prototype.setCompanyInfo = function (data) {
+        this.companyInfo = JSON.parse(JSON.stringify(data));
+    };
+    DataManager.prototype.setOrganizeGroups = function (data) {
+        this.orgGroups = JSON.parse(JSON.stringify(data));
+    };
+    DataManager.prototype.setProjectBaseGroups = function (data) {
+        this.projectBaseGroups = JSON.parse(JSON.stringify(data));
+    };
+    DataManager.prototype.setPrivateGroups = function (data) {
+        this.privateGroups = JSON.parse(JSON.stringify(data));
+    };
+    DataManager.prototype.getGroup = function (id) {
+        if (!!this.orgGroups[id]) {
+            return this.orgGroups[id];
+        }
+        else if (!!this.projectBaseGroups[id]) {
+            return this.projectBaseGroups[id];
+        }
+        else if (!!this.privateGroups[id]) {
+            return this.privateGroups[id];
+        }
+    };
+    DataManager.prototype.addGroup = function (data) {
+        switch (data.type) {
+            case RoomType.organizationGroup:
+                if (!this.orgGroups[data._id]) {
+                    this.orgGroups[data._id] = data;
+                }
+                break;
+            case RoomType.projectBaseGroup:
+                if (!this.projectBaseGroups[data._id]) {
+                    this.projectBaseGroups[data._id] = data;
+                }
+                break;
+            case RoomType.privateGroup:
+                if (!this.privateGroups[data._id]) {
+                    this.privateGroups[data._id] = data;
+                }
+                break;
+            default:
+                console.info("new room is not a group type.");
+                break;
+        }
+    };
+    DataManager.prototype.updateGroupImage = function (data) {
+        if (!!this.orgGroups[data._id]) {
+            this.orgGroups[data._id].image = data.image;
+        }
+        else if (!!this.projectBaseGroups[data._id]) {
+            this.projectBaseGroups[data._id].image = data.image;
+        }
+        else if (!!this.privateGroups[data._id]) {
+            this.privateGroups[data._id].image = data.image;
+        }
+    };
+    DataManager.prototype.updateGroupName = function (data) {
+        if (!!this.orgGroups[data._id]) {
+            this.orgGroups[data._id].name = data.name;
+        }
+        else if (!!this.projectBaseGroups[data._id]) {
+            this.projectBaseGroups[data._id].name = data.name;
+        }
+        else if (!!this.privateGroups[data._id]) {
+            this.privateGroups[data._id].name = data.name;
+        }
+    };
+    DataManager.prototype.updateGroupMembers = function (data) {
+        var hasMe = this.checkMySelfInNewMembersReceived(data);
+        if (data.type === RoomType.organizationGroup) {
+            if (!!this.orgGroups[data._id]) {
+                if (hasMe) {
+                    this.orgGroups[data._id].members = data.members;
+                }
+                else {
+                    console.warn("this org group is not contain me in members list.");
+                }
+            }
+            else {
+                this.orgGroups[data._id] = data;
+            }
+        }
+        else if (data.type === RoomType.projectBaseGroup) {
+            if (!!this.projectBaseGroups[data._id]) {
+                if (hasMe) {
+                    this.projectBaseGroups[data._id].visibility = true;
+                    this.projectBaseGroups[data._id].members = data.members;
+                }
+                else {
+                    this.projectBaseGroups[data._id].visibility = false;
+                }
+            }
+            else {
+                this.projectBaseGroups[data._id] = data;
+            }
+        }
+        else if (data.type === RoomType.privateGroup) {
+            if (!!this.privateGroups[data._id]) {
+                if (hasMe) {
+                    this.privateGroups[data._id].visibility = true;
+                    this.privateGroups[data._id].members = data.members;
+                }
+                else {
+                    this.privateGroups[data._id].visibility = false;
+                }
+            }
+            else {
+                console.debug("new group", data.name);
+                this.privateGroups[data._id] = data;
+            }
+        }
+    };
+    DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
+        var _this = this;
+        var editMember = jsonObj.editMember;
+        var roomId = jsonObj.roomId;
+        var groupMember = new Member();
+        groupMember.id = editMember.id;
+        var role = editMember.role;
+        groupMember.role = MemberRole[role];
+        groupMember.jobPosition = editMember.jobPosition;
+        this.getGroup(roomId).members.forEach(function (value, index, arr) {
+            if (value.id === groupMember.id) {
+                _this.getGroup(roomId).members[index].role = groupMember.role;
+                _this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role];
+                _this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
+            }
+        });
+    };
+    DataManager.prototype.checkMySelfInNewMembersReceived = function (data) {
+        var self = this;
+        var hasMe = data.members.some(function isMySelfId(element, index, array) {
+            return element.id === self.myProfile._id;
+        });
+        console.debug("New data has me", hasMe);
+        return hasMe;
+    };
+    DataManager.prototype.updateContactImage = function (contactId, url) {
+        if (!!this.orgMembers[contactId]) {
+            this.orgMembers[contactId].image = url;
+        }
+    };
+    DataManager.prototype.updateContactProfile = function (contactId, params) {
+        if (!!this.orgMembers[contactId]) {
+            var jsonObj = JSON.parse(JSON.stringify(params));
+            if (!!jsonObj.displayname) {
+                this.orgMembers[contactId].displayname = jsonObj.displayname;
+            }
+            if (!!jsonObj.status) {
+                this.orgMembers[contactId].status = jsonObj.status;
+            }
+        }
+    };
+    DataManager.prototype.getContactProfile = function (contactId) {
+        if (!!this.orgMembers[contactId]) {
+            return this.orgMembers[contactId];
+        }
+        else {
+            console.warn('this contactId is invalid.');
+        }
+    };
+    DataManager.prototype.onGetMe = function (dataEvent) {
+        var self = this;
+        var _profile = JSON.parse(JSON.stringify(dataEvent));
+        if (dataEvent.code === 200) {
+            this.setMyProfile(dataEvent.data);
+        }
+        else {
+            console.error("get use profile fail!", dataEvent.message);
+        }
+    };
+    DataManager.prototype.onGetCompanyInfo = function (dataEvent) {
+        var self = this;
+        var _company = JSON.parse(JSON.stringify(dataEvent));
+        if (dataEvent.code === 200) {
+            this.setCompanyInfo(dataEvent.data);
+        }
+        else {
+            console.error("get company info fail!", dataEvent.message);
+        }
+    };
+    DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
+        var self = this;
+        var members = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.orgMembers)
+            this.orgMembers = {};
+        async.eachSeries(members, function iterator(item, cb) {
+            if (!self.orgMembers[item._id]) {
+                self.orgMembers[item._id] = item;
+            }
+            cb();
+        }, function done(err) {
+            self.isOrgMembersReady = true;
+        });
+    };
+    ;
+    DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var rooms = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.orgGroups)
+            this.orgGroups = {};
+        rooms.forEach(function (value) {
+            if (!_this.orgGroups[value._id]) {
+                _this.orgGroups[value._id] = value;
+            }
+        });
+    };
+    ;
+    DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var groups = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.projectBaseGroups)
+            this.projectBaseGroups = {};
+        groups.forEach(function (value) {
+            if (!_this.projectBaseGroups[value._id]) {
+                _this.projectBaseGroups[value._id] = value;
+            }
+        });
+    };
+    ;
+    DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var groups = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.privateGroups)
+            this.privateGroups = {};
+        groups.forEach(function (value) {
+            if (!_this.privateGroups[value._id]) {
+                _this.privateGroups[value._id] = value;
+            }
+        });
+    };
+    ;
+    return DataManager;
+})();
+var HomeComponent = (function () {
+    function HomeComponent() {
+    }
+    HomeComponent.prototype.onChat = function (data) { };
+    ;
+    HomeComponent.prototype.onLeaveRoom = function (data) { };
+    ;
+    HomeComponent.prototype.onRoomJoin = function (data) { };
+    ;
+    HomeComponent.prototype.onMessageRead = function (dataEvent) { };
+    ;
+    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) { };
+    ;
+    return HomeComponent;
+})();
+var NotifyManager = (function () {
+    function NotifyManager(main) {
+        console.log("construc notify manager.");
+        this.dataManager = main.getDataManager();
+    }
+    NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
+        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var secure = new SecureService();
+            secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
+                if (!err) {
+                    chatMessageImp.body = res;
+                    var toastMessage = contact.displayname + " sent " + chatMessageImp.body;
+                    if (!appBackground) {
+                        notifyService.makeToastOnCenter(toastMessage);
+                    }
+                    else {
+                        notifyService.scheduleSingleNotification(contact.displayname, chatMessageImp.body);
+                    }
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Sticker]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a sticker.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Voice]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a voice message.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Image]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a image.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Video]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a video.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Location]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a location.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+    };
+    return NotifyManager;
 })();
 var appConfig;
 var pomelo;
@@ -176,6 +887,9 @@ var ChatServer;
             }
             return ServerImplemented.Instance;
         };
+        ServerImplemented.prototype.setSocketComponent = function (socket) {
+            this.socketComponent = socket;
+        };
         ServerImplemented.prototype.getClient = function () {
             var self = this;
             if (pomelo !== null) {
@@ -185,7 +899,11 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
-        ServerImplemented.prototype.Logout = function () {
+        ServerImplemented.prototype.disposeClient = function () {
+            pomelo = null;
+            console.warn("dispose socket client.");
+        };
+        ServerImplemented.prototype.logout = function () {
             var registrationId = localStorage.getItem("registrationId");
             var msg = {};
             msg["username"] = username;
@@ -239,7 +957,7 @@ var ChatServer;
                 self.host = appConfig.socketHost;
                 self.port = appConfig.socketPort;
                 if (!!pomelo) {
-                    self.connectSocketServer(self.host, self.port, function (err, res) {
+                    self.connectSocketServer(self.host, self.port, function (err) {
                         callback(err, self);
                     });
                 }
@@ -252,6 +970,7 @@ var ChatServer;
         };
         ServerImplemented.prototype.disConnect = function () {
             if (pomelo !== null) {
+                pomelo.removeAllListeners();
                 pomelo.disconnect();
             }
             this.authenData = null;
@@ -266,10 +985,9 @@ var ChatServer;
         };
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
             console.log("socket init connecting to: ", _host, _port);
-            var self = this;
-            pomelo.init({ host: _host, port: _port }, function (err, socket) {
-                console.info("socket init result: ", err, socket);
-                callback(err, socket);
+            pomelo.init({ host: _host, port: _port }, function cb(err) {
+                console.log("socket init result: ", err);
+                callback(err);
             });
         };
         ServerImplemented.prototype.logIn = function (_username, _hash, callback) {
@@ -281,7 +999,7 @@ var ChatServer;
             if (pomelo !== null && this._isConnected === false) {
                 var msg = { uid: username };
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
-                    console.log("QueryConnectorServ", result);
+                    console.log("QueryConnectorServ", result.code);
                     if (result.code === 200) {
                         pomelo.disconnect();
                         var port = result.port;
@@ -314,6 +1032,10 @@ var ChatServer;
                     if (callback != null) {
                         callback(null, res);
                     }
+                    pomelo.on('disconnect', function data(reason) {
+                        if (self.socketComponent !== null)
+                            self.socketComponent.disconnected(reason);
+                    });
                 }
                 else {
                     if (callback !== null) {
@@ -653,7 +1375,6 @@ var ChatServer;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
-                console.log("Chat msg response: ", data);
                 if (repalceMessageID !== null)
                     repalceMessageID(null, data.data);
             });
@@ -772,7 +1493,7 @@ var ChatServer;
             var self = this;
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, JSON.stringify(data));
-                self.chatServerListener.onChatData(data);
+                self.chatServerListener.onChat(data);
             });
             pomelo.on(ServerEventListener.ON_LEAVE, function (data) {
                 console.log(ServerEventListener.ON_LEAVE, JSON.stringify(data));
@@ -883,594 +1604,18 @@ var ChatServer;
     })();
     ChatServer.ServerEventListener = ServerEventListener;
 })(ChatServer || (ChatServer = {}));
-var Services;
-(function (Services) {
-    var AbsChatServerListener = (function () {
-        function AbsChatServerListener() {
-        }
-        AbsChatServerListener.prototype.onChatData = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onLeaveRoom = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onRoomJoin = function (data) { };
-        ;
-        AbsChatServerListener.prototype.onMessageRead = function (dataEvent) { };
-        ;
-        AbsChatServerListener.prototype.onGetMessagesReaders = function (dataEvent) { };
-        ;
-        return AbsChatServerListener;
-    })();
-    Services.AbsChatServerListener = AbsChatServerListener;
-    var AbsFrontendServerListener = (function () {
-        function AbsFrontendServerListener() {
-        }
-        return AbsFrontendServerListener;
-    })();
-    Services.AbsFrontendServerListener = AbsFrontendServerListener;
-    ;
-    var AbsRTCListener = (function () {
-        function AbsRTCListener() {
-        }
-        return AbsRTCListener;
-    })();
-    Services.AbsRTCListener = AbsRTCListener;
-    var AbsServerListener = (function () {
-        function AbsServerListener() {
-        }
-        return AbsServerListener;
-    })();
-    Services.AbsServerListener = AbsServerListener;
-})(Services || (Services = {}));
-var ChatRoomController = (function () {
-    function ChatRoomController(main, room_id) {
-        this.chatMessages = [];
-        this.main = main;
-        this.serverImp = this.main.getServerImp();
-        this.chatRoomApi = this.main.getChatRoomApi();
-        this.dataManager = this.main.getDataManager();
-        this.roomId = room_id;
-        console.log("constructor ChatRoomController");
+var SocketComponent = (function () {
+    function SocketComponent() {
     }
-    ChatRoomController.prototype.onChat = function (chatMessageImp) {
-        var _this = this;
-        var self = this;
-        if (this.roomId === chatMessageImp.rid) {
-            console.log("Implement chat msg hear..", chatMessageImp);
-            var secure = new SecureService();
-            if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
-                secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
-                    if (!err) {
-                        chatMessageImp.body = res;
-                        self.chatMessages.push(chatMessageImp);
-                        if (!!_this.serviceListener)
-                            _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                    }
-                    else {
-                        console.log(err, res);
-                        self.chatMessages.push(chatMessageImp);
-                        if (!!_this.serviceListener)
-                            _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                    }
-                });
-            }
-            else {
-                self.chatMessages.push(chatMessageImp);
-                if (!!this.serviceListener)
-                    this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-            }
+    SocketComponent.prototype.disconnected = function (reason) {
+        if (!!this.onDisconnect) {
+            this.onDisconnect(reason);
         }
         else {
-            console.info("this msg come from other room.");
+            console.warn("onDisconnected delegate is empty.");
         }
     };
-    ChatRoomController.prototype.onLeaveRoom = function (data) {
-    };
-    ChatRoomController.prototype.onRoomJoin = function (data) {
-    };
-    ChatRoomController.prototype.onMessageRead = function (dataEvent) {
-        console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
-        var self = this;
-        var newMsg = JSON.parse(JSON.stringify(dataEvent));
-        this.chatMessages.some(function callback(value) {
-            if (value._id === newMsg._id) {
-                value.readers = newMsg.readers;
-                if (!!self.serviceListener)
-                    self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
-                return true;
-            }
-        });
-    };
-    ChatRoomController.prototype.onGetMessagesReaders = function (dataEvent) {
-    };
-    ChatRoomController.prototype.getMessage = function (chatId, Chats, callback) {
-        var self = this;
-        var myProfile = self.dataManager.myProfile;
-        var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
-        async.waterfall([
-            function (cb) {
-                if (!!chatLog) {
-                    if (JSON.stringify(chatLog) === "") {
-                        self.chatMessages = [];
-                        cb(null, null);
-                    }
-                    else {
-                        var arr_fromLog = JSON.parse(chatLog);
-                        if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
-                            self.chatMessages = [];
-                            cb(null, null);
-                        }
-                        else {
-                            async.eachSeries(arr_fromLog, function (log, cb) {
-                                var messageImp = log;
-                                if (messageImp.type === ContentType[ContentType.Text]) {
-                                    self.main.decodeService(messageImp.body, function (err, res) {
-                                        if (!err) {
-                                            messageImp.body = res;
-                                            self.chatMessages.push(messageImp);
-                                            cb();
-                                        }
-                                        else {
-                                            self.chatMessages.push(messageImp);
-                                            cb();
-                                        }
-                                    });
-                                }
-                                else {
-                                    self.chatMessages.push(log);
-                                    cb();
-                                }
-                            }, function (err) {
-                                cb(null, null);
-                            });
-                        }
-                    }
-                }
-                else {
-                    self.chatMessages = [];
-                    cb(null, null);
-                }
-            },
-            function (arg1, cb) {
-                cb(null, null);
-            }
-        ], function (err, res) {
-            self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
-                if (res.code == 200) {
-                    var access = new Date();
-                    var roomAccess = self.dataManager.myProfile.roomAccess;
-                    async.eachSeries(roomAccess, function iterator(item, cb) {
-                        if (item.roomId == chatId) {
-                            access = item.accessTime;
-                        }
-                        cb();
-                    }, function done() {
-                        self.chatRoomApi.getChatHistory(chatId, access, function (err, result) {
-                            var histories = [];
-                            if (result.code === 200) {
-                                histories = result.data;
-                            }
-                            else {
-                            }
-                            var his_length = histories.length;
-                            if (his_length > 0) {
-                                async.eachSeries(histories, function (item, cb) {
-                                    var chatMessageImp = JSON.parse(JSON.stringify(item));
-                                    if (chatMessageImp.type === ContentType[ContentType.Text]) {
-                                        self.main.decodeService(chatMessageImp.body, function (err, res) {
-                                            if (!err) {
-                                                chatMessageImp.body = res;
-                                                self.chatMessages.push(chatMessageImp);
-                                                cb();
-                                            }
-                                            else {
-                                                cb();
-                                            }
-                                        });
-                                    }
-                                    else {
-                                        if (item.type == 'File') {
-                                            console.log('file');
-                                        }
-                                        self.chatMessages.push(item);
-                                        cb();
-                                    }
-                                }, function (err) {
-                                    Chats.set(self.chatMessages);
-                                    localStorage.removeItem(myProfile._id + '_' + chatId);
-                                    localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
-                                    callback();
-                                });
-                            }
-                            else {
-                                Chats.set(self.chatMessages);
-                                callback();
-                            }
-                        });
-                    });
-                }
-            });
-        });
-    };
-    ChatRoomController.prototype.leaveRoom = function (room_id, callback) {
-        var self = this;
-        this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
-            console.log("leave room", JSON.stringify(res));
-            callback(err, res);
-        });
-    };
-    return ChatRoomController;
-})();
-var DataListener = (function () {
-    function DataListener(dataManager) {
-        this.dataManager = dataManager;
-    }
-    DataListener.prototype.addListenerImp = function (listener) {
-        this.listenerImp = listener;
-    };
-    DataListener.prototype.removeListener = function (listener) {
-        this.listenerImp = null;
-    };
-    DataListener.prototype.onAccessRoom = function (dataEvent) {
-        this.dataManager.setRoomAccessForUser(dataEvent);
-    };
-    DataListener.prototype.onUpdatedLastAccessTime = function (dataEvent) {
-        this.dataManager.updateRoomAccessForUser(dataEvent);
-    };
-    DataListener.prototype.onAddRoomAccess = function (dataEvent) {
-        var data = JSON.parse(JSON.stringify(dataEvent));
-        var roomAccess = data.roomAccess;
-        if (roomAccess !== null && roomAccess.length !== 0) {
-            this.dataManager.setRoomAccessForUser(dataEvent);
-        }
-    };
-    DataListener.prototype.onCreateGroupSuccess = function (dataEvent) {
-        var group = JSON.parse(JSON.stringify(dataEvent));
-        this.dataManager.addGroup(group);
-    };
-    DataListener.prototype.onEditedGroupMember = function (dataEvent) {
-        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        this.dataManager.updateGroupMembers(jsonObj);
-    };
-    DataListener.prototype.onEditedGroupName = function (dataEvent) {
-        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        this.dataManager.updateGroupName(jsonObj);
-    };
-    DataListener.prototype.onEditedGroupImage = function (dataEvent) {
-        var obj = JSON.parse(JSON.stringify(dataEvent));
-        this.dataManager.updateGroupImage(obj);
-    };
-    DataListener.prototype.onNewGroupCreated = function (dataEvent) {
-        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        this.dataManager.addGroup(jsonObj);
-    };
-    DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
-        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        this.dataManager.updateGroupMemberDetail(jsonObj);
-    };
-    DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
-        var jsonObj = JSON.parse(JSON.stringify(dataEvent));
-        var _id = jsonObj._id;
-        var path = jsonObj.path;
-        this.dataManager.updateContactImage(_id, path);
-    };
-    DataListener.prototype.onUserUpdateProfile = function (dataEvent) {
-        var jsonobj = JSON.parse(JSON.stringify(dataEvent));
-        var params = jsonobj.params;
-        var _id = jsonobj._id;
-        this.dataManager.updateContactProfile(_id, params);
-    };
-    DataListener.prototype.onChatData = function (data) {
-        var chatMessageImp = JSON.parse(JSON.stringify(data));
-        if (!!this.listenerImp) {
-            this.listenerImp.onChat(chatMessageImp);
-        }
-    };
-    ;
-    DataListener.prototype.onLeaveRoom = function (data) {
-        if (!!this.listenerImp)
-            this.listenerImp.onLeaveRoom(data);
-    };
-    ;
-    DataListener.prototype.onRoomJoin = function (data) {
-    };
-    ;
-    DataListener.prototype.onMessageRead = function (dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onMessageRead(dataEvent);
-    };
-    ;
-    DataListener.prototype.onGetMessagesReaders = function (dataEvent) {
-        if (!!this.listenerImp)
-            this.listenerImp.onGetMessagesReaders(dataEvent);
-    };
-    ;
-    return DataListener;
-})();
-var DataManager = (function () {
-    function DataManager() {
-        this.orgGroups = {};
-        this.projectBaseGroups = {};
-        this.privateGroups = {};
-        this.orgMembers = {};
-        this.isOrgMembersReady = false;
-    }
-    DataManager.getInstance = function () {
-        if (!DataManager.Instance) {
-            DataManager.Instance = new DataManager();
-        }
-        return DataManager.Instance;
-    };
-    DataManager.prototype.setMyProfile = function (data) {
-        this.myProfile = JSON.parse(JSON.stringify(data));
-        if (!!this.onMyProfileReady)
-            this.onMyProfileReady(this);
-    };
-    DataManager.prototype.getMyProfile = function () {
-        return this.myProfile;
-    };
-    DataManager.prototype.setRoomAccessForUser = function (data) {
-        this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
-    };
-    DataManager.prototype.updateRoomAccessForUser = function (data) {
-        console.info(JSON.stringify(data));
-        var arr = JSON.parse(JSON.stringify(data.roomAccess));
-        this.myProfile.roomAccess.forEach(function (value) {
-            if (value.roomId === arr[0].roomId) {
-                value.accessTime = arr[0].accessTime;
-                return;
-            }
-        });
-    };
-    DataManager.prototype.setMembers = function (data) {
-    };
-    DataManager.prototype.setCompanyInfo = function (data) {
-        this.companyInfo = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.setOrganizeGroups = function (data) {
-        this.orgGroups = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.setProjectBaseGroups = function (data) {
-        this.projectBaseGroups = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.setPrivateGroups = function (data) {
-        this.privateGroups = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.getGroup = function (id) {
-        if (!!this.orgGroups[id]) {
-            return this.orgGroups[id];
-        }
-        else if (!!this.projectBaseGroups[id]) {
-            return this.projectBaseGroups[id];
-        }
-        else if (!!this.privateGroups[id]) {
-            return this.privateGroups[id];
-        }
-    };
-    DataManager.prototype.addGroup = function (data) {
-        switch (data.type) {
-            case RoomType.organizationGroup:
-                if (!this.orgGroups[data._id]) {
-                    this.orgGroups[data._id] = data;
-                }
-                break;
-            case RoomType.projectBaseGroup:
-                if (!this.projectBaseGroups[data._id]) {
-                    this.projectBaseGroups[data._id] = data;
-                }
-                break;
-            case RoomType.privateGroup:
-                if (!this.privateGroups[data._id]) {
-                    this.privateGroups[data._id] = data;
-                }
-                break;
-            default:
-                console.info("new room is not a group type.");
-                break;
-        }
-    };
-    DataManager.prototype.updateGroupImage = function (data) {
-        if (!!this.orgGroups[data._id]) {
-            this.orgGroups[data._id].image = data.image;
-        }
-        else if (!!this.projectBaseGroups[data._id]) {
-            this.projectBaseGroups[data._id].image = data.image;
-        }
-        else if (!!this.privateGroups[data._id]) {
-            this.privateGroups[data._id].image = data.image;
-        }
-    };
-    DataManager.prototype.updateGroupName = function (data) {
-        if (!!this.orgGroups[data._id]) {
-            this.orgGroups[data._id].name = data.name;
-        }
-        else if (!!this.projectBaseGroups[data._id]) {
-            this.projectBaseGroups[data._id].name = data.name;
-        }
-        else if (!!this.privateGroups[data._id]) {
-            this.privateGroups[data._id].name = data.name;
-        }
-    };
-    DataManager.prototype.updateGroupMembers = function (data) {
-        var hasMe = this.checkMySelfInNewMembersReceived(data);
-        if (data.type === RoomType.organizationGroup) {
-            if (!!this.orgGroups[data._id]) {
-                if (hasMe) {
-                    this.orgGroups[data._id].members = data.members;
-                }
-                else {
-                    console.warn("this org group is not contain me in members list.");
-                }
-            }
-            else {
-                this.orgGroups[data._id] = data;
-            }
-        }
-        else if (data.type === RoomType.projectBaseGroup) {
-            if (!!this.projectBaseGroups[data._id]) {
-                if (hasMe) {
-                    this.projectBaseGroups[data._id].visibility = true;
-                    this.projectBaseGroups[data._id].members = data.members;
-                }
-                else {
-                    this.projectBaseGroups[data._id].visibility = false;
-                }
-            }
-            else {
-                this.projectBaseGroups[data._id] = data;
-            }
-        }
-        else if (data.type === RoomType.privateGroup) {
-            if (!!this.privateGroups[data._id]) {
-                if (hasMe) {
-                    this.privateGroups[data._id].visibility = true;
-                    this.privateGroups[data._id].members = data.members;
-                }
-                else {
-                    this.privateGroups[data._id].visibility = false;
-                }
-            }
-            else {
-                console.debug("new group", data.name);
-                this.privateGroups[data._id] = data;
-            }
-        }
-    };
-    DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
-        var _this = this;
-        var editMember = jsonObj.editMember;
-        var roomId = jsonObj.roomId;
-        var groupMember = new Member();
-        groupMember.id = editMember.id;
-        var role = editMember.role;
-        groupMember.role = MemberRole[role];
-        groupMember.jobPosition = editMember.jobPosition;
-        this.getGroup(roomId).members.forEach(function (value, index, arr) {
-            if (value.id === groupMember.id) {
-                _this.getGroup(roomId).members[index].role = groupMember.role;
-                _this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role];
-                _this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
-            }
-        });
-    };
-    DataManager.prototype.checkMySelfInNewMembersReceived = function (data) {
-        var self = this;
-        var hasMe = data.members.some(function isMySelfId(element, index, array) {
-            return element.id === self.myProfile._id;
-        });
-        console.debug("New data has me", hasMe);
-        return hasMe;
-    };
-    DataManager.prototype.updateContactImage = function (contactId, url) {
-        if (!!this.orgMembers[contactId]) {
-            this.orgMembers[contactId].image = url;
-        }
-    };
-    DataManager.prototype.updateContactProfile = function (contactId, params) {
-        if (!!this.orgMembers[contactId]) {
-            var jsonObj = JSON.parse(JSON.stringify(params));
-            if (!!jsonObj.displayname) {
-                this.orgMembers[contactId].displayname = jsonObj.displayname;
-            }
-            if (!!jsonObj.status) {
-                this.orgMembers[contactId].status = jsonObj.status;
-            }
-        }
-    };
-    DataManager.prototype.getContactProfile = function (contactId) {
-        if (!!this.orgMembers[contactId]) {
-            return this.orgMembers[contactId];
-        }
-        else {
-            console.warn('this contactId is invalid.');
-        }
-    };
-    DataManager.prototype.onGetMe = function (dataEvent) {
-        var self = this;
-        var _profile = JSON.parse(JSON.stringify(dataEvent));
-        if (dataEvent.code === 200) {
-            this.setMyProfile(dataEvent.data);
-        }
-        else {
-            console.error("get use profile fail!", dataEvent.message);
-        }
-    };
-    DataManager.prototype.onGetCompanyInfo = function (dataEvent) {
-        var self = this;
-        var _company = JSON.parse(JSON.stringify(dataEvent));
-        if (dataEvent.code === 200) {
-            this.setCompanyInfo(dataEvent.data);
-        }
-        else {
-            console.error("get company info fail!", dataEvent.message);
-        }
-    };
-    DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
-        var self = this;
-        var members = JSON.parse(JSON.stringify(dataEvent));
-        if (!this.orgMembers)
-            this.orgMembers = {};
-        async.eachSeries(members, function iterator(item, cb) {
-            if (!self.orgMembers[item._id]) {
-                self.orgMembers[item._id] = item;
-            }
-            cb();
-        }, function done(err) {
-            self.isOrgMembersReady = true;
-        });
-    };
-    ;
-    DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
-        var _this = this;
-        var rooms = JSON.parse(JSON.stringify(dataEvent));
-        if (!this.orgGroups)
-            this.orgGroups = {};
-        rooms.forEach(function (value) {
-            if (!_this.orgGroups[value._id]) {
-                _this.orgGroups[value._id] = value;
-            }
-        });
-    };
-    ;
-    DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) {
-        var _this = this;
-        var groups = JSON.parse(JSON.stringify(dataEvent));
-        if (!this.projectBaseGroups)
-            this.projectBaseGroups = {};
-        groups.forEach(function (value) {
-            if (!_this.projectBaseGroups[value._id]) {
-                _this.projectBaseGroups[value._id] = value;
-            }
-        });
-    };
-    ;
-    DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) {
-        var _this = this;
-        var groups = JSON.parse(JSON.stringify(dataEvent));
-        if (!this.privateGroups)
-            this.privateGroups = {};
-        groups.forEach(function (value) {
-            if (!_this.privateGroups[value._id]) {
-                _this.privateGroups[value._id] = value;
-            }
-        });
-    };
-    ;
-    return DataManager;
-})();
-var HomeComponent = (function () {
-    function HomeComponent() {
-    }
-    HomeComponent.prototype.onChat = function (data) {
-    };
-    HomeComponent.prototype.onLeaveRoom = function (data) {
-    };
-    HomeComponent.prototype.onRoomJoin = function (data) {
-    };
-    HomeComponent.prototype.onMessageRead = function (dataEvent) {
-    };
-    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) {
-    };
-    return HomeComponent;
+    return SocketComponent;
 })();
 var MessageMeta = (function () {
     function MessageMeta() {
