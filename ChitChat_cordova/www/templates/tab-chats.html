@@ -10,7 +10,10 @@
 			<ion-item class="item-remove-animate item-avatar item-icon-right" 
 				ng-repeat="access in roomAccess | orderBy:'accessTime':true | filter:search " type="item-text-wrap"
 				ng-click="gotoChat(access._id, access.body['count'])">
-				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{access.image}}&h=40&w=40" />
+
+				<img ng-if="access.image != null" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{access.image}}&h=40&w=40" />
+    			<img ng-if="access.image == null" src="img/img.jpg" height="40" width="40"  />
+
 				<!-- <img ng-if="access.name===undefined && access.members[0]['id'] != myProfile._id" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{orgMembers[access.members[0]['id']]['image']}}&h=40&w=40" />
 				<img ng-if="access.name===undefined && access.members[0]['id'] == myProfile._id" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{orgMembers[access.members[1]['id']]['image']}}&h=40&w=40" /> -->
 				
