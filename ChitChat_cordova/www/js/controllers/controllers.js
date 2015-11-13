@@ -155,9 +155,9 @@ angular.module('spartan.controllers', [])
 
     $scope.logOut = function () {
 		console.warn("logOut...");
-        server.logOut();
-		
-		$state.go("tab");
+        server.logout();
+		server.disposeClient();
+		$state.go('tab.login');
     }
 })
 

@@ -351,6 +351,9 @@ var ChatsLogComponent = (function () {
     ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) {
         console.warn("onAddRoomAccess", JSON.stringify(dataEvent));
     };
+    ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) {
+        console.warn("onEditedGroupMember", JSON.stringify(dataEvent));
+    };
     ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         var self = this;
         var logs = [];
@@ -425,6 +428,11 @@ var DataListener = (function () {
     DataListener.prototype.onEditedGroupMember = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupMembers(jsonObj);
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(function (value) {
+                value.onEditedGroupMember(dataEvent);
+            });
+        }
     };
     DataListener.prototype.onEditedGroupName = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
@@ -891,7 +899,11 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
-        ServerImplemented.prototype.Logout = function () {
+        ServerImplemented.prototype.disposeClient = function () {
+            pomelo = null;
+            console.warn("dispose socket client.");
+        };
+        ServerImplemented.prototype.logout = function () {
             var registrationId = localStorage.getItem("registrationId");
             var msg = {};
             msg["username"] = username;
@@ -958,6 +970,7 @@ var ChatServer;
         };
         ServerImplemented.prototype.disConnect = function () {
             if (pomelo !== null) {
+                pomelo.removeAllListeners();
                 pomelo.disconnect();
             }
             this.authenData = null;
@@ -1362,7 +1375,6 @@ var ChatServer;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
-                console.log("Chat msg response: ", data);
                 if (repalceMessageID !== null)
                     repalceMessageID(null, data.data);
             });
