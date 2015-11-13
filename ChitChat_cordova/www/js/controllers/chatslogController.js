@@ -50,9 +50,9 @@
 				
 			}
 			
-			chatsLogComponent.onAccessRoom = function(newgroup)
+			chatsLogComponent.onEditedGroupMember = function(newgroup)
 			{
-				console.log( 'onAccessRoom :::::::	' );
+				console.log( 'onEditedGroupMember :::::::	' );
 				console.log( newgroup );					
 			}
         }
