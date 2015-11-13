@@ -899,6 +899,10 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
+        ServerImplemented.prototype.disposeClient = function () {
+            pomelo = null;
+            console.warn("dispose socket client.");
+        };
         ServerImplemented.prototype.logout = function () {
             var registrationId = localStorage.getItem("registrationId");
             var msg = {};
@@ -966,6 +970,7 @@ var ChatServer;
         };
         ServerImplemented.prototype.disConnect = function () {
             if (pomelo !== null) {
+                pomelo.removeAllListeners();
                 pomelo.disconnect();
             }
             this.authenData = null;
