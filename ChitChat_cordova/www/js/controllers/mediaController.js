@@ -114,6 +114,7 @@ angular.module('spartan.media', [])
 .controller('VideoController', function($scope, $cordovaCapture, $ionicLoading, $ionicActionSheet, $cordovaProgress,$cordovaFile,GenerateID,VideoService) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
+
 	var videoURI;
 	var videoName;
 
@@ -164,9 +165,8 @@ angular.module('spartan.media', [])
         $cordovaFile.moveFile(namePath,name,cordova.file.tempDirectory,videoName)
         .then(function(success) {
         	console.log(success);
-        	delectFolderTmp(folderFile);
         	videoURI = cordova.file.tempDirectory + videoName;
-        	$scope.$emit('fileUri',[videoURI,"Video"]);
+        	delectFolderTmp(folderFile);
         	//$scope.uploadVideo();
           }, function(error) {
           	console.log(error);
@@ -178,24 +178,25 @@ angular.module('spartan.media', [])
 		$cordovaFile.removeDir(cordova.file.tempDirectory, nameFolder)
 	      .then(function (success) {
 	        console.log(success);
+	        $scope.$emit('fileUri',[videoName,"Video"]);
 	      }, function (error) {
 	        console.log(error);
 	      });
 	}
 
 	$scope.uploadVideo = function() {
+
+		var downloadContain = document.getElementById( videoName + '-download-contain');
+	    var downloadProgress = document.getElementById( videoName + '-download-progress');
+	    downloadContain.classList.remove("hide");
+
 	    var options = new FileUploadOptions();
 	    options.fileKey = "fileToUpload";
-	    options.fileName = videoURI.substr(videoURI.lastIndexOf('/') + 1);
+	    options.fileName = videoName;
 	    options.mimeType = "video/quicktime";
 	    var params = new Object();
 	    options.params = params;
 	    options.chunkedMode = false;
-
-	    var downloadContain = document.getElementById(options.fileName + '-download-contain');
-	    var downloadProgress = document.getElementById(options.fileName + '-download-progress');
-	    downloadContain.classList.remove("hide");
-
 	    var ft = new FileTransfer();
 	    ft.onprogress = function(progressEvent){
 	    	if (progressEvent.lengthComputable) {
@@ -270,7 +271,7 @@ angular.module('spartan.media', [])
 	      .then(function (success) {
 			$('#' + id + '-voice-play').css({ 'display': 'none' });
 			$('#' + id + '-voice-pause').css({ 'display': 'inline' });
-			audio.stop();
+			//audio.stop();
 	        audio = new Media(fileMedia,
                          function() { $('#' + id + '-voice-play').css({ 'display': 'inline' }); $('#' + id + '-voice-pause').css({ 'display': 'none' }); },
                          function(err){ console.log("playAudio(): Error: "+ err.code) }
