@@ -7,33 +7,35 @@
 
     //homeController.$inject = ['$location'];
 
-    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading,
-        roomSelected, localNotifyService, Favorite, sharedObjectService) {
+    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $ionicPlatform,
+        roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
 
-        var dataListener = main.getDataListener();
-        var dataManager = main.getDataManager();
-        var homeComponent = new HomeComponent();
+        $ionicPlatform.ready(function () {
+            console.log(vm.title, "ready");
 
-		//$('.tab-nav.tabs').css({'display':'flex'});
-		//$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
-        activate();
+            //$('.tab-nav.tabs').css({'display':'flex'});
+            //$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
+            activate();
+        });
 
         function activate() {
-            console.warn('homeController activate');
- 
+            vm.dataListener = main.getDataListener();
+            vm.homeComponent = new HomeComponent();
+
             localNotifyService.registerPermission();
             sharedObjectService.createNotifyManager(main);
+            chatslogService.init();
 
             addHomeComponent();
         }
 
         function addHomeComponent() {
-            dataListener.addListenerImp(homeComponent);
+            vm.dataListener.addListenerImp(vm.homeComponent);
 
-            homeComponent.onChat = function (chatMessageImp) {
+            vm.homeComponent.onChat = function (chatMessageImp) {
                 console.warn("new message: ", chatMessageImp.type);
 
                 var appBackground = cordova.plugins.backgroundMode.isActive();
@@ -42,7 +44,7 @@
         }
 
         function onLeave() {
-            dataListener.removeListener(homeComponent);
+            vm.dataListener.removeListener(vm.homeComponent);
         }
 
         $scope.pullRefresh = function() {
@@ -52,17 +54,17 @@
         function getFavorite(){
             var favoriteArray = Favorite.getAllFavorite();
             var favorite = [];
-            for(var x=0; x<favoriteArray.length; x++){
+            for (var x = 0; x < favoriteArray.length; x++) {
                 try {
-                    if(main.getDataManager().orgGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().orgGroups[favoriteArray[x]]); 
-                    else if(main.getDataManager().projectBaseGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().projectBaseGroups[favoriteArray[x]]); 
-                    else if(main.getDataManager().privateGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().privateGroups[favoriteArray[x]]); 
-                    else if(main.getDataManager().orgMembers[favoriteArray[x]] !== undefined) { 
+                    if (main.getDataManager().orgGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().orgGroups[favoriteArray[x]]);
+                    else if (main.getDataManager().projectBaseGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().projectBaseGroups[favoriteArray[x]]);
+                    else if (main.getDataManager().privateGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().privateGroups[favoriteArray[x]]);
+                    else if (main.getDataManager().orgMembers[favoriteArray[x]] !== undefined) {
                         main.getDataManager().orgMembers[favoriteArray[x]].name = main.getDataManager().orgMembers[favoriteArray[x]].displayname;
-                        favorite.push(main.getDataManager().orgMembers[favoriteArray[x]]); 
+                        favorite.push(main.getDataManager().orgMembers[favoriteArray[x]]);
                     }
                 }
-                catch(err) {
+                catch (err) {
                     //console.log(err);
                 }
             }

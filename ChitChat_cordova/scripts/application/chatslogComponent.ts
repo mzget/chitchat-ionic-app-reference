@@ -10,7 +10,11 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         console.warn("OnNewMessage", JSON.stringify(dataEvent));
     }
     onAccessRoom(dataEvent) {
-        console.warn("onAccessRoom", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onAccessRoom", JSON.stringify(dataEvent));
+
+        this._isReady = true;
+        if (!!this.onReady)
+            this.onReady();
     }
     onUpdatedLastAccessTime(dataEvent) {
         console.warn("onUpdatedLastAccessTime", JSON.stringify(dataEvent));
@@ -24,9 +28,14 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         
         private main : Main;
         private server: ChatServer.ServerImplemented;
+        public _isReady: boolean;
+        public onReady:() => void;
         constructor(main: Main, server: ChatServer.ServerImplemented) {
             this.main = main;
             this.server = server;
+            this._isReady = false;
+
+            console.log("ChatsLogComponent : constructor");
         }
         
         public getUnreadMessage(roomAccess: RoomAccessData[], callback:(err: Error, logsData: Array<IUnreadMessage>) => void) {

@@ -1,10 +1,10 @@
 ﻿class DataListener implements absSpartan.IServerListener, absSpartan.IChatServerListener {
     private dataManager: DataManager;
     private chatListenerImps = new Array<absSpartan.IChatServerListener>();
-    public addListenerImp(listener: absSpartan.IChatServerListener) {
+    public addChatListenerImp(listener: absSpartan.IChatServerListener) {
         this.chatListenerImps.push(listener);
     }
-    public removeListener(listener: absSpartan.IChatServerListener) {
+    public removeChatListenerImp(listener: absSpartan.IChatServerListener) {
         var id = this.chatListenerImps.indexOf(listener);
         this.chatListenerImps.splice(id, 1);
     }

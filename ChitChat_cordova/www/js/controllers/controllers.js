@@ -248,10 +248,10 @@ angular.module('spartan.controllers', [])
     });
 })
 
-.controller('bobo',function($scope,$rootScope,$timeout) {
+.controller('bobo', function ($scope, $rootScope, $timeout, chatslogService) {
 	var refresh = function () 
 	{		
-		$scope.foo = chatlog_count;
+		$scope.foo = chatslogService.getChatsLogCount();
 		
 		$timeout(refresh, 1000);
 	} 
