@@ -458,11 +458,15 @@ angular.module('spartan.services', [])
   }
 })
 
-.factory('Chats', function($sce) {
+.factory('Chats', function($sce,roomSelected) {
     // Might use a resource here that returns a JSON array
 
 	// Some fake testing data
     var chats = [];
+
+    var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    var date = [];
+    var rid;
     
     function clear() {
         chats = [];
@@ -485,7 +489,36 @@ angular.module('spartan.services', [])
 		},
 		set: function(json) {
 			chats = json;
+      
+      console.log(JSON.stringify(chats));
+      if(rid != roomSelected.getRoom()._id){
+        rid = roomSelected.getRoom()._id;
+        date = [];
+      }
+
 			for (var i = 0; i < chats.length; i++) {
+
+        var dateTime  = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
+        if(date.indexOf(dateTime) == -1){ 
+          date.push( chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')) );
+
+          var dateMsg = new Date(dateTime);
+          var dateNow = new Date();
+          
+          if( dateMsg.getFullYear() == dateNow.getFullYear() &&
+           dateMsg.getMonth() == dateNow.getMonth() &&
+           dateMsg.getDate() == dateNow.getDate() ){
+            chats[i].firstMsg = "Today";
+          }else if( dateMsg.getFullYear() == dateNow.getFullYear() &&
+           dateMsg.getMonth() == dateNow.getMonth() &&
+           dateMsg.getDate() == dateNow.getDate()-1 ){
+            chats[i].firstMsg = "Yesterday";
+          }else{
+            chats[i].firstMsg = days[dateMsg.getDay()] + ', ' + (dateMsg.getMonth()+1) + '/' + dateMsg.getFullYear() ;
+          }
+
+           
+        }
 			    if (chats[i].type == 'Video') {
 			        chats[i].bodyUrl = $sce.trustAsResourceUrl('http://stalk.animation-genius.com' + chats[i].body);
 			    }
