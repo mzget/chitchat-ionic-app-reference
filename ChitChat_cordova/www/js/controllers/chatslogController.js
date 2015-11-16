@@ -5,7 +5,7 @@
         .module('spartan.chatslog', [])
         .controller('chatslogController', chatslogController);
 
-    chatslogController.$inject = ['$location', '$scope', '$timeout', 'roomSelected'];
+    // chatslogController.$inject = ['$location', '$scope', '$timeout', 'roomSelected'];
 			
 	var roomAccess = [];
 	var accessLength = 0;
@@ -14,13 +14,14 @@
 	var myRoomAccessCount = 0;
 	var chatsLogComponent = null;
 	
-    function chatslogController($location, $scope, $timeout, roomSelected) {
+    function chatslogController($location, $scope, $timeout, roomSelected, chatslogService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
 
         var dataManager = main.getDataManager();
         var dataListener = main.getDataListener();
+		var chatlog_count = 0;
         $scope.myProfile = dataManager.myProfile;
         $scope.orgMembers = dataManager.orgMembers;
         $scope.roomAccess = [];
@@ -30,10 +31,9 @@
         function activate() { 
 			console.warn("chatslogController.activate");
 			
-			chatsLogComponent = new ChatsLogComponent(main, server);
-			getUnreadMessages();
-			dataListener.addRoomAccessListenerImp(chatsLogComponent);
-			
+			chatsLogComponent = chatslogService.getChatsLogComponent();
+			chatslogService.setChatsLogCount(0);
+			chatlog_count = chatslogService.getChatsLogCount();
 			chatsLogComponent.onNewMessage = function(newmsg)
 			{
 				chatlog_count++;

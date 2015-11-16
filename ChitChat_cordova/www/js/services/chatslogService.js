@@ -9,9 +9,10 @@
 
     function chatslogService($http) {
         var service = {
-            getData: getData,
+            getChatsLogComponent: getChatsLogComponent,
             init: init,
-            getChatsLogCount: getChatsLogCount
+            getChatsLogCount: getChatsLogCount,
+            setChatsLogCount: setChatsLogCount
         };
 
         return service;
@@ -30,23 +31,6 @@
                 chatsLogComponent.onReady = null;
             }
             dataListener.addRoomAccessListenerImp(chatsLogComponent);
-
-            chatsLogComponent.onNewMessage = function (newmsg) {
-                chatlog_count++;
-                console.log('onNewMessage: ' + newmsg.rid);
-
-                for (var i = 0; i < accessLength; i++) {
-                    //console.log( myRoomAccess[i]['_id'] + ' / ' + newmsg.rid );
-                    if (myRoomAccess[i]['_id'] == newmsg.rid) {
-                        myRoomAccess[i]['body']['count']++;
-                    }
-                }
-            }
-
-            chatsLogComponent.onEditedGroupMember = function (newgroup) {
-                console.log('onEditedGroupMember :::::::	');
-                console.log(newgroup);
-            }
         }
 
         function getUnreadMessages() {
@@ -65,7 +49,13 @@
         function getChatsLogCount() {
             return chatlog_count;
         }
-
-        function getData() { }
+        
+        function setChatsLogCount(count) {
+            chatlog_count = count;
+        }
+       
+        function getChatsLogComponent() {
+            return chatsLogComponent;
+         }
     }
 })();
