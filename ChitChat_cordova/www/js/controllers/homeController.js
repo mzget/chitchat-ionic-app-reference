@@ -33,7 +33,7 @@
         }
 
         function addHomeComponent() {
-            vm.dataListener.addListenerImp(vm.homeComponent);
+            vm.dataListener.addChatListenerImp(vm.homeComponent);
 
             vm.homeComponent.onChat = function (chatMessageImp) {
                 console.warn("new message: ", chatMessageImp.type);
@@ -44,7 +44,7 @@
         }
 
         function onLeave() {
-            vm.dataListener.removeListener(vm.homeComponent);
+            vm.dataListener.removeChatListenerImp(vm.homeComponent);
         }
 
         $scope.pullRefresh = function() {

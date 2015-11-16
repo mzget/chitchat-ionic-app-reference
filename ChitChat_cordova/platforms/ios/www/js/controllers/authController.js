@@ -104,7 +104,9 @@
             // Hide spinner dialog
             window.plugins.spinnerDialog.hide();
 
-            navigator.notification.alert(param.message, function callback() { }, "Login Timeout!", "OK");
+            navigator.notification.alert(param.message, function callback() {
+                location.href = '';
+            }, "Login Timeout!", "OK");
         }
 
         function onDuplicateLogin(param) {
@@ -212,16 +214,19 @@
                         if (res.success) {
                             main.authenUser(server, res.username, res.password, function (err, res) {
                                 if (!err && res !== null) {
-                                    if (res.code === 200) {
+                                    if (res.code === HttpStatusCode.success) {
                                         console.log("Success Authen User...");
                                     }
-                                    else {
+                                    else if(res.code === 1004) {
                                         //<!-- Authen fail.
                                         server.Logout();
                                         location.href = '';
 
                                         console.error(err, res);
                                         onDuplicateLogin(err);
+                                    }
+                                    else if (res.code === HttpStatusCode.requestTimeout) {
+                                        onLoginTimeout(res);
                                     }
                                 }
                                 else {
@@ -239,6 +244,7 @@
             }
         }
     }
+
     function noConnection($scope,$ionicNavBarDelegate,$rootScope,$ionicHistory){
         $ionicNavBarDelegate.showBackButton(false);
         $scope.goBack = function(){

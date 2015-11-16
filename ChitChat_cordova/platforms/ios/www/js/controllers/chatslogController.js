@@ -73,7 +73,6 @@
 		} 
 		$timeout(refresh, 1000);
 		
-		
 		$scope.gotoChat = function (accessId, chatlog) 
 		{		
 			chatlog_count -= chatlog;
@@ -117,7 +116,6 @@
 				}
 			}	
 		};
-		
     }
 
     function getUnreadMessages() {

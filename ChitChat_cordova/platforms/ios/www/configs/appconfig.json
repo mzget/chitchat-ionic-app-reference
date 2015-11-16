@@ -1,4 +1,4 @@
 {
-  "socketHost": "animation-genius.com",
-  "socketPort": 3015
+  "socketHost": "192.168.1.95",
+  "socketPort": 3010
 }

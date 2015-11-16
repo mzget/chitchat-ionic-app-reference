@@ -32,29 +32,29 @@ angular.module('spartan.controllers', [])
             $scope.sourceImage = args;
         });
         $scope.save = function(){
-        	if($scope.sourceImage!='' || (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status)){
-        		$ionicLoading.show({
-			      template: 'Loading..'
-			  	});
-        		if($scope.sourceImage!=''){ $scope.$broadcast('uploadImg','uploadImg'); }
-        		else { saveProfile(); }
-        	}
+            if($scope.sourceImage!='' || (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status)){
+                $ionicLoading.show({
+                    template: 'Loading..'
+                });
+                if($scope.sourceImage!=''){ $scope.$broadcast('uploadImg','uploadImg'); }
+                else { saveProfile(); }
+            }
         }
         function saveProfile() {
-        	if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+            if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
 						main.getDataManager().myProfile.status != $scope.model.status) {
 
-	        		server.UpdateUserProfile($stateParams.chatId, $scope.model, function (err, res) {
-	                console.log(JSON.stringify(res));
-	                main.getDataManager().myProfile.displayname = $scope.model.displayname;
-	                main.getDataManager().myProfile.status = $scope.model.status;
-	                saveSuccess();
-            	});
-        	}
+                server.UpdateUserProfile($stateParams.chatId, $scope.model, function (err, res) {
+                    console.log(JSON.stringify(res));
+                    main.getDataManager().myProfile.displayname = $scope.model.displayname;
+                    main.getDataManager().myProfile.status = $scope.model.status;
+                    saveSuccess();
+                });
+            }
         }
         function saveSuccess() {
-        	$ionicLoading.hide();
-        	$cordovaProgress.showSuccess(false, "Success!");
+            $ionicLoading.hide();
+            $cordovaProgress.showSuccess(false, "Success!");
             setTimeout(function () { $cordovaProgress.hide(); }, 1500);
         }
     }
@@ -94,10 +94,10 @@ angular.module('spartan.controllers', [])
 })
 
 .factory('getProfileMember',function(){
-	var result;
-	function _all(){
+    var result;
+    function _all(){
 
-	}
+    }
 })
 
 .controller('FreecallCtrl', function($scope, $stateParams) {
@@ -105,114 +105,114 @@ angular.module('spartan.controllers', [])
 })
 
 .controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
-	$scope.settings = {
-		logOut: true,
-	};
+    $scope.settings = {
+        logOut: true,
+    };
 
-	$scope.myProfile = main.getDataManager().myProfile;
-	$scope.admin = UserRole.admin;
+    $scope.myProfile = main.getDataManager().myProfile;
+    $scope.admin = UserRole.admin;
 
-	$scope.createType = function(type){
-		CreateGroup.createType = type;
-		location.href = '#/tab/account/create'
-		console.log(CreateGroup.createType);
-	}
+    $scope.createType = function(type){
+        CreateGroup.createType = type;
+        location.href = '#/tab/account/create'
+        console.log(CreateGroup.createType);
+    }
     
     $ionicModal.fromTemplateUrl('templates/modal-theme.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-  }).then(function(modal) {
-    $scope.thememodal = modal
-  })  
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function(modal) {
+        $scope.thememodal = modal
+    })  
 
-  $scope.openThemeModal = function() {
-    $scope.thememodal.show()
-  }
+    $scope.openThemeModal = function() {
+        $scope.thememodal.show()
+    }
 
-  $scope.closeThemeModal = function() {
-    $scope.thememodal.hide();
-  };
+    $scope.closeThemeModal = function() {
+        $scope.thememodal.hide();
+    };
 
-  $scope.$on('$destroy', function () {
-      $scope.thememodal.remove();
-  });
+    $scope.$on('$destroy', function () {
+        $scope.thememodal.remove();
+    });
   
  
     $scope.data = {
-            'themeblue': 'css/themeblue.css',
-            'themebrown': 'css/themebrown.css',
-            'themegreen': 'css/themegreen.css',
-            'themered': 'css/themered.css',
-            'themeviole': 'css/themeviole.css',
-            'themeyellow': 'css/themeyellow.css'
-        }
+        'themeblue': 'css/themeblue.css',
+        'themebrown': 'css/themebrown.css',
+        'themegreen': 'css/themegreen.css',
+        'themered': 'css/themered.css',
+        'themeviole': 'css/themeviole.css',
+        'themeyellow': 'css/themeyellow.css'
+    }
 
     $scope.save_settings = function( data ) {
-            $localStorage.themeblue_data = data;
-            $rootScope.theme = $localStorage.themeblue_data;
-            console.log($rootScope.themeblue)
-        }
+        $localStorage.themeblue_data = data;
+        $rootScope.theme = $localStorage.themeblue_data;
+        console.log($rootScope.themeblue)
+    }
 
     $scope.logOut = function () {
-		console.warn("logOut...");
+        console.warn("logOut...");
         server.logout();
-		server.disposeClient();
-		$state.go('tab.login');
+        server.disposeClient();
+        $state.go('tab.login');
     }
 })
 
 .controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
-	console.log('AccountCreate',CreateGroup.createType);
-	var myProfile = main.getDataManager().myProfile;
-	$rootScope.members = CreateGroup.getSelectedMember();
-	$scope.model = { groupname: "" };
-	var roomId = "";
-	$scope.submit = function(){
-		createGroup();
-	}
-	function createGroup(){
-		$ionicLoading.show({
+    console.log('AccountCreate',CreateGroup.createType);
+    var myProfile = main.getDataManager().myProfile;
+    $rootScope.members = CreateGroup.getSelectedMember();
+    $scope.model = { groupname: "" };
+    var roomId = "";
+    $scope.submit = function(){
+        createGroup();
+    }
+    function createGroup(){
+        $ionicLoading.show({
             template: 'Loading..'
         });
-		if(CreateGroup.createType=="PrivateGroup"){
-			server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
-				if (!err) {
-					console.log(JSON.stringify(res));
-					roomId = res.data._id;
-					uploadImageGroup();
-				}
-				else {
-					console.warn(err, res);
-				}
-			});
-		}else{
-			server.requestCreateProjectBaseGroup($scope.model.groupname,CreateGroup.getSelectedMemberProjectBaseWithMe(), function(err, res) {
-				if (!err) {
-					console.log(JSON.stringify(res));
-					roomId = res.data._id;
-					uploadImageGroup();
-				}
-				else {
-					console.warn(err, res);
-				}
-			});
-		}
-	}
-	function createSuccess() {
+        if(CreateGroup.createType=="PrivateGroup"){
+            server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    roomId = res.data._id;
+                    uploadImageGroup();
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }else{
+            server.requestCreateProjectBaseGroup($scope.model.groupname,CreateGroup.getSelectedMemberProjectBaseWithMe(), function(err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    roomId = res.data._id;
+                    uploadImageGroup();
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }
+    }
+    function createSuccess() {
         $ionicLoading.hide();
         $cordovaProgress.showSuccess(false, "Success!");
         setTimeout(function () { $cordovaProgress.hide(); }, 1500);
     }
-	function uploadImageGroup(){
-		if(FileService.getImages() != '') {
-			$scope.$broadcast('uploadImg','uploadImg');
-		}else{
-			//$state.go('tab.group');
-			createSuccess();
-			$rootScope.$ionicGoBack();
-		}
-	}
-	$scope.$on('fileUrl', function(event, args) {
+    function uploadImageGroup(){
+        if(FileService.getImages() != '') {
+            $scope.$broadcast('uploadImg','uploadImg');
+        }else{
+            //$state.go('tab.group');
+            createSuccess();
+            $rootScope.$ionicGoBack();
+        }
+    }
+    $scope.$on('fileUrl', function(event, args) {
         server.UpdatedGroupImage(roomId,args[0], function(err, res){
             if(!err){
                 console.log(JSON.stringify(res));
@@ -224,38 +224,43 @@ angular.module('spartan.controllers', [])
             }
         });
     });
-	$rootScope.$ionicGoBack = function() {
-		if($state.current.name=='tab.account-create'){
-			CreateGroup.clear();
-		}
-		$ionicHistory.goBack(-1);
-	};
+    $rootScope.$ionicGoBack = function() {
+        if($state.current.name=='tab.account-create'){
+            CreateGroup.clear();
+        }
+        $ionicHistory.goBack(-1);
+    };
 
 })
 
 .controller('AccountInvite',function($scope,$rootScope,CreateGroup) {
-	$scope.createType = CreateGroup.createType;
-	$scope.myProfile = main.getDataManager().myProfile;
-	$scope.allmembers = CreateGroup.getAllMember();
+    $scope.createType = CreateGroup.createType;
+    $scope.myProfile = main.getDataManager().myProfile;
+    $scope.allmembers = CreateGroup.getAllMember();
 
-	$scope.checked = function(id,selected){
-		CreateGroup.setMemberSelected(id,selected);
-	}
+    $scope.checked = function(id,selected){
+        CreateGroup.setMemberSelected(id,selected);
+    }
 
-	$scope.$on('$ionicView.beforeLeave', function(){
-		//console.log('Back to Previously');
-		$rootScope.members = CreateGroup.getSelectedMember();
+    $scope.$on('$ionicView.beforeLeave', function(){
+        //console.log('Back to Previously');
+        $rootScope.members = CreateGroup.getSelectedMember();
     });
 })
 
-.controller('bobo', function ($scope, $rootScope, $timeout, chatslogService) {
-	var refresh = function () 
-	{		
-		$scope.foo = chatslogService.getChatsLogCount();
-		
-		$timeout(refresh, 1000);
-	} 
-	$timeout(refresh, 1000);
+.controller('bobo', function ($scope, $rootScope, $timeout,$ionicPlatform, chatslogService) {
+    /* jshint validthis:true */
+    var vm = this;
+    vm.title = 'bobo';
+
+    var refresh = function () {
+        if (!!chatslogService) {
+            $scope.foo = chatslogService.getChatsLogCount();
+            console.warn(vm.title, chatslogService.getChatsLogCount());
+            $timeout(refresh, 1000);
+        }
+    }
+    $timeout(refresh, 1000);
 })
 
 .controller('CreateProjectBase',function($scope,$ionicModal,$rootScope,$ionicLoading,$cordovaProgress,CreateGroup,ProjectBase, roomSelected) {

@@ -17,13 +17,15 @@
         return service;
 
         var chatsLogComponent = null;
-        var dataListener = null; 
+        var dataListener = null;
+        var chatlog_count = 0;
 
         function init() {
             dataListener = main.getDataListener();
             chatsLogComponent = new ChatsLogComponent(main, server);
             chatsLogComponent.onReady = function () {
                 getUnreadMessages();
+
                 chatsLogComponent.onReady = null;
             }
             dataListener.addRoomAccessListenerImp(chatsLogComponent);
@@ -38,7 +40,6 @@
                         myRoomAccess[i]['body']['count']++;
                     }
                 }
-
             }
 
             chatsLogComponent.onEditedGroupMember = function (newgroup) {
@@ -52,6 +53,10 @@
                 if (!!logsData) {
                     logsData.map(function element(v) {
                         console.log(v);
+
+                        chatlog_count += Number(v.count);
+
+                        console.log(chatlog_count);
                     });
                 }
             });
