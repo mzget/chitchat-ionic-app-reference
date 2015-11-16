@@ -120,4 +120,5 @@
     <content src="index.html" />
     <access origin="*" />
     <icon src="resources/ios/icon/icon-small@3x.png" />
+    <preference name="Orientation" value="portrait" />
 </widget>
