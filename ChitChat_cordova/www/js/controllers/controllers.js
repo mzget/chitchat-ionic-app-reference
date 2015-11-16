@@ -256,7 +256,6 @@ angular.module('spartan.controllers', [])
     var refresh = function () {
         if (!!chatslogService) {
             $scope.foo = chatslogService.getChatsLogCount();
-            console.warn(vm.title, chatslogService.getChatsLogCount());
             $timeout(refresh, 1000);
         }
     }

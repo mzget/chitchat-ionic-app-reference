@@ -22,6 +22,7 @@
 
         function init() {
             dataListener = main.getDataListener();
+            chatlog_count = 0;
             chatsLogComponent = new ChatsLogComponent(main, server);
             chatsLogComponent.onReady = function () {
                 getUnreadMessages();
@@ -54,9 +55,8 @@
                     logsData.map(function element(v) {
                         console.log(v);
 
-                        chatlog_count += Number(v.count);
-
-                        console.log(chatlog_count);
+                        var count = Number(v.count);
+                        chatlog_count += count;
                     });
                 }
             });
