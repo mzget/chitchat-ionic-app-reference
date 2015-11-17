@@ -12,7 +12,8 @@
             getChatsLogComponent: getChatsLogComponent,
             init: init,
             getChatsLogCount: getChatsLogCount,
-            decreaseLogsCount: decreaseLogsCount
+            decreaseLogsCount: decreaseLogsCount,
+            increaseLogsCount: increaseLogsCount
         };
 
         return service;
@@ -21,25 +22,30 @@
         var listenerImp;
         var dataListener = null;
         var chatlog_count = 0;
+        var isInit = false;
 
         function init() {
-            dataListener = main.getDataListener();
-            chatlog_count = 0;
-            listenerImp = function(newMsg) {
-                chatlog_count++;
-            }
-            chatsLogComponent = new ChatsLogComponent(main, server);
-            chatsLogComponent.onReady = function () {
-                getUnreadMessages();
-
-                chatsLogComponent.onReady = null;
-            }
-            dataListener.addRoomAccessListenerImp(chatsLogComponent);
-            chatsLogComponent.addNewMsgListener(listenerImp);
-
-            chatsLogComponent.onEditedGroupMember = function (newgroup) {
-                console.log('onEditedGroupMember :::::::	');
-                console.log(newgroup);
+            if(!isInit) {
+                isInit = true;
+                
+                dataListener = main.getDataListener();
+                chatlog_count = 0;
+                listenerImp = function(newMsg) {
+                    chatlog_count++;
+                }
+                chatsLogComponent = new ChatsLogComponent(main, server);
+                chatsLogComponent.onReady = function () {
+                    getUnreadMessages();
+    
+                    chatsLogComponent.onReady = null;
+                }
+                dataListener.addRoomAccessListenerImp(chatsLogComponent);
+                chatsLogComponent.addNewMsgListener(listenerImp);
+    
+                chatsLogComponent.onEditedGroupMember = function (newgroup) {
+                    console.log('onEditedGroupMember :::::::	');
+                    console.log(newgroup);
+                }
             }
         }
 
@@ -62,6 +68,10 @@
         
         function decreaseLogsCount(count) {
             chatlog_count -= count;
+        }
+
+        function increaseLogsCount(count) {
+            chatlog_count += count;
         }
        
         function getChatsLogComponent() {

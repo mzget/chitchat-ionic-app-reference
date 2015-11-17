@@ -141,9 +141,9 @@
 				    if (res['code'] == 200)
 					{
 						data['data']['body'] = res['data'];
-						chatlog_count += res['data']['count'];
-						console.log( data );
-						myRoomAccess.push(data['data']);	
+						chatslogService.increaseLogsCount(res['data']['count']);
+						console.log(data);
+						myRoomAccess.push(data['data']);
 						accessLength = myRoomAccess.length;
 					}
 								

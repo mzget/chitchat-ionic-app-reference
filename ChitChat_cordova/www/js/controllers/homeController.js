@@ -12,18 +12,10 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
-
-        $ionicPlatform.ready(function () {
-            console.log(vm.title, "ready");
-
-            //$('.tab-nav.tabs').css({'display':'flex'});
-            //$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
-            activate();
-        });
+        vm.dataListener = main.getDataListener();
+        vm.homeComponent = new HomeComponent();
 
         function activate() {
-            vm.dataListener = main.getDataListener();
-            vm.homeComponent = new HomeComponent();
 
             localNotifyService.registerPermission();
             sharedObjectService.createNotifyManager(main);
@@ -36,7 +28,7 @@
             vm.dataListener.addChatListenerImp(vm.homeComponent);
 
             vm.homeComponent.onChat = function (chatMessageImp) {
-                console.warn("new message: ", chatMessageImp.type);
+                console.log("homeComponent : new message: ");
 
                 var appBackground = cordova.plugins.backgroundMode.isActive();
                 sharedObjectService.getNotifyManager().notify(chatMessageImp, appBackground, localNotifyService);
@@ -107,7 +99,10 @@
         }
         
         $scope.$on('$ionicView.enter', function(){ 
-	
+            console.log("$ionicView.enter: ", vm.title);
+
+            activate();
+
             $scope.refreshView = function () {
                 console.debug("homeController : refreshView");
 
@@ -183,9 +178,17 @@
 	
         $scope.$on('$ionicView.beforeLeave', function () {
             console.log("beforeLeave: homeController");
+        });
+
+        $scope.$on('$ionicView.leave', function () {
+            console.log("$ionicView.leave:", vm.title);
+        });
+        $scope.$on('$ionicView.unloaded', function () {
+            console.log("$ionicView.unloaded:", vm.title);
+
             clearInterval($scope.interval);
             onLeave();
-        });		
+        });
 	
         $scope.viewlist = function(list) {
             var listHeight = $('#list-'+list+' .list').height();		
