@@ -77,11 +77,11 @@ var Main = (function () {
         crypto.decryptWithSecureRandom(content, callback);
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
-        console.log(email, password);
+        console.log("authenUser:", email, password);
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
             callback(err, loginRes);
-            if (!err && loginRes !== null && loginRes.code === 200) {
+            if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);
                 }).then(function onFulfilled(value) {
@@ -336,14 +336,26 @@ var ChatRoomComponent = (function () {
 })();
 var ChatsLogComponent = (function () {
     function ChatsLogComponent(main, server) {
+        this.newMessageListeners = new Array();
         this.main = main;
         this.server = server;
+        this._isReady = false;
+        console.log("ChatsLogComponent : constructor");
     }
+    ChatsLogComponent.prototype.addNewMsgListener = function (listener) {
+        this.newMessageListeners.push(listener);
+    };
     ChatsLogComponent.prototype.onNewMessage = function (dataEvent) {
         console.warn("OnNewMessage", JSON.stringify(dataEvent));
+        this.newMessageListeners.map(function (v, i, a) {
+            v(dataEvent);
+        });
     };
     ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
-        console.warn("onAccessRoom", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onAccessRoom", JSON.stringify(dataEvent));
+        this._isReady = true;
+        if (!!this.onReady)
+            this.onReady();
     };
     ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) {
         console.warn("onUpdatedLastAccessTime", JSON.stringify(dataEvent));
@@ -389,10 +401,10 @@ var DataListener = (function () {
         this.roomAccessListenerImps = new Array();
         this.dataManager = dataManager;
     }
-    DataListener.prototype.addListenerImp = function (listener) {
+    DataListener.prototype.addChatListenerImp = function (listener) {
         this.chatListenerImps.push(listener);
     };
-    DataListener.prototype.removeListener = function (listener) {
+    DataListener.prototype.removeChatListenerImp = function (listener) {
         var id = this.chatListenerImps.indexOf(listener);
         this.chatListenerImps.splice(id, 1);
     };
@@ -1020,12 +1032,12 @@ var ChatServer;
             var msg = { username: username, password: password, registrationId: registrationId };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
                 console.log("login: ", JSON.stringify(res), res.code);
-                if (res.code === 500) {
+                if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
                         callback(res.message, null);
                     }
                 }
-                else if (res.code === 200) {
+                else if (res.code === HttpStatusCode.success) {
                     self.authenData.userId = res.uid;
                     self.authenData.token = res.token;
                     localStorage.setItem("authen", JSON.stringify(self.authenData));
