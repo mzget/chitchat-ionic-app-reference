@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
@@ -46,6 +46,63 @@
         }
 
         getRoomAccess();
+        
+        function getRoomAccess() {
+            console.log('getRoomAccess: ');
+
+            roomAccess = dataManager.myProfile.roomAccess.reverse();
+            roomAccessLength = roomAccess.length;
+
+            getRoomInfo();
+        }
+        
+        function getRoomInfo() {
+            if (myRoomAccessCount < roomAccessLength) {
+                server.getRoomInfo(roomAccess[myRoomAccessCount]['roomId'], function (err, res) {
+                    if (res['code'] == 200) {
+                        var data = res;
+                        data['data']['accessTime'] = roomAccess[myRoomAccessCount]['accessTime'];
+                        console.log(data);
+                        //myRoomAccess.push(data['data']);			
+
+                        if (data.data.type == RoomType.privateChat) {
+                            try {
+                                if (data.data.members[0].id == main.getDataManager().myProfile._id) {
+                                    data.data.name = main.getDataManager().orgMembers[data.data.members[1].id].displayname;
+                                    data.data.image = main.getDataManager().orgMembers[data.data.members[1].id].image;
+                                } else {
+                                    data.data.name = main.getDataManager().orgMembers[data.data.members[0].id].displayname;
+                                    data.data.image = main.getDataManager().orgMembers[data.data.members[0].id].image;
+                                }
+                            } catch (err) {
+                                console.error(err);
+                            }
+                        }
+                    }
+
+                    server.getUnreadMsgOfRoom(roomAccess[myRoomAccessCount]['roomId'], roomAccess[myRoomAccessCount]['accessTime'], function (err, res) {
+                        if (res['code'] == 200) {
+                            data['data']['body'] = res['data'];
+                            chatslogService.increaseLogsCount(res['data']['count']);
+                            console.log(data);
+                            myRoomAccess.push(data['data']);
+                            accessLength = myRoomAccess.length;
+                        }
+
+                        if (myRoomAccessCount + 1 == roomAccessLength) {
+                            console.log('last');
+                        } else {
+                            myRoomAccessCount++;
+                            getRoomInfo(myRoomAccessCount);
+                        }
+
+                    });
+
+                });
+
+            }
+        }
+        
 		var refresh = function () 
 		{		
 			$scope.roomAccess = myRoomAccess;
@@ -98,68 +155,4 @@
 			}	
 		};
     }
-
-	
-	function getRoomAccess()
-	{
-		console.log('getRoomAccess: ');
-		
-		roomAccess = dataManager.myProfile.roomAccess.reverse();
-		roomAccessLength = roomAccess.length;
-		
-		getRoomInfo();
-	}
-	
-	function getRoomInfo()
-	{
-		if( myRoomAccessCount < roomAccessLength )
-		{
-			server.getRoomInfo(roomAccess[myRoomAccessCount]['roomId'], function(err, res){				
-				if( res['code'] == 200 )
-				{
-					var data = res;
-					data['data']['accessTime'] = roomAccess[myRoomAccessCount]['accessTime'];
-					console.log( data );
-					//myRoomAccess.push(data['data']);			
-					
-					if(data.data.type == RoomType.privateChat){
-						try{
-							if( data.data.members[0].id == main.getDataManager().myProfile._id ){
-								data.data.name = main.getDataManager().orgMembers[data.data.members[1].id].displayname;
-								data.data.image = main.getDataManager().orgMembers[data.data.members[1].id].image;
-							}else{
-								data.data.name = main.getDataManager().orgMembers[data.data.members[0].id].displayname;
-								data.data.image = main.getDataManager().orgMembers[data.data.members[0].id].image;
-							}
-						}catch(err){
-							console.log(err);
-						}
-					}			
-				}
-				
-				server.getUnreadMsgOfRoom(roomAccess[myRoomAccessCount]['roomId'], roomAccess[myRoomAccessCount]['accessTime'], function(err, res){		
-				    if (res['code'] == 200)
-					{
-						data['data']['body'] = res['data'];
-						chatlog_count += res['data']['count'];
-						console.log( data );
-						myRoomAccess.push(data['data']);	
-						accessLength = myRoomAccess.length;
-					}
-								
-					if( myRoomAccessCount+1 == roomAccessLength )
-					{
-						console.log( 'last' );
-					}else{
-						myRoomAccessCount++;
-						getRoomInfo(myRoomAccessCount);
-					}
-					
-				});
-				
-			});
-			
-		}
-	}	
-	
 })();

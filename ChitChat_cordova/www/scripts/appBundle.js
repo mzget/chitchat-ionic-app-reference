@@ -346,7 +346,7 @@ var ChatsLogComponent = (function () {
         this.newMessageListeners.push(listener);
     };
     ChatsLogComponent.prototype.onNewMessage = function (dataEvent) {
-        console.warn("OnNewMessage", JSON.stringify(dataEvent));
+        console.log("ChatsLogComponent.onNewMessage");
         this.newMessageListeners.map(function (v, i, a) {
             v(dataEvent);
         });
@@ -784,6 +784,7 @@ var DataManager = (function () {
 })();
 var HomeComponent = (function () {
     function HomeComponent() {
+        console.log("HomeComponent. constructor");
     }
     HomeComponent.prototype.onChat = function (data) { };
     ;

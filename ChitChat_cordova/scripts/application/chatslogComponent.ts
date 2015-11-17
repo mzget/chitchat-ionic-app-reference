@@ -11,7 +11,8 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         this.newMessageListeners.push(listener);
     }
     onNewMessage(dataEvent) {
-        console.warn("OnNewMessage", JSON.stringify(dataEvent));
+        console.log("ChatsLogComponent.onNewMessage");
+        //<!-- Provide chatslog service.
         this.newMessageListeners.map((v, i, a) => {
             v(dataEvent);
         });
