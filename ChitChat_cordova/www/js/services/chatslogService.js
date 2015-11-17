@@ -12,18 +12,22 @@
             getChatsLogComponent: getChatsLogComponent,
             init: init,
             getChatsLogCount: getChatsLogCount,
-            setChatsLogCount: setChatsLogCount
+            decreaseLogsCount: decreaseLogsCount
         };
 
         return service;
 
         var chatsLogComponent = null;
+        var listenerImp;
         var dataListener = null;
         var chatlog_count = 0;
 
         function init() {
             dataListener = main.getDataListener();
             chatlog_count = 0;
+            listenerImp = function(newMsg) {
+                chatlog_count++;
+            }
             chatsLogComponent = new ChatsLogComponent(main, server);
             chatsLogComponent.onReady = function () {
                 getUnreadMessages();
@@ -31,6 +35,12 @@
                 chatsLogComponent.onReady = null;
             }
             dataListener.addRoomAccessListenerImp(chatsLogComponent);
+            chatsLogComponent.addNewMsgListener(listenerImp);
+
+            chatsLogComponent.onEditedGroupMember = function (newgroup) {
+                console.log('onEditedGroupMember :::::::	');
+                console.log(newgroup);
+            }
         }
 
         function getUnreadMessages() {
@@ -50,8 +60,8 @@
             return chatlog_count;
         }
         
-        function setChatsLogCount(count) {
-            chatlog_count = count;
+        function decreaseLogsCount(count) {
+            chatlog_count -= count;
         }
        
         function getChatsLogComponent() {

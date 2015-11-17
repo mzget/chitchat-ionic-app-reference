@@ -6,8 +6,15 @@ interface IUnreadMessage {
 }
 
 class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
+    private newMessageListeners = new Array<(param) => void>();
+    public addNewMsgListener (listener) {
+        this.newMessageListeners.push(listener);
+    }
     onNewMessage(dataEvent) {
         console.warn("OnNewMessage", JSON.stringify(dataEvent));
+        this.newMessageListeners.map((v, i, a) => {
+            v(dataEvent);
+        });
     }
     onAccessRoom(dataEvent) {
         console.warn("ChatsLogComponent.onAccessRoom", JSON.stringify(dataEvent));

@@ -336,13 +336,20 @@ var ChatRoomComponent = (function () {
 })();
 var ChatsLogComponent = (function () {
     function ChatsLogComponent(main, server) {
+        this.newMessageListeners = new Array();
         this.main = main;
         this.server = server;
         this._isReady = false;
         console.log("ChatsLogComponent : constructor");
     }
+    ChatsLogComponent.prototype.addNewMsgListener = function (listener) {
+        this.newMessageListeners.push(listener);
+    };
     ChatsLogComponent.prototype.onNewMessage = function (dataEvent) {
         console.warn("OnNewMessage", JSON.stringify(dataEvent));
+        this.newMessageListeners.map(function (v, i, a) {
+            v(dataEvent);
+        });
     };
     ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
         console.warn("ChatsLogComponent.onAccessRoom", JSON.stringify(dataEvent));

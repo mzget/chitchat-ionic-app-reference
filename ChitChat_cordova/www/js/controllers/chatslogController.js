@@ -12,7 +12,6 @@
 	var roomAccessLength = 0;
 	var myRoomAccess = [];
 	var myRoomAccessCount = 0;
-	var chatsLogComponent = null;
 	
     function chatslogController($location, $scope, $timeout, roomSelected, chatslogService) {
         /* jshint validthis:true */
@@ -21,7 +20,8 @@
 
         var dataManager = main.getDataManager();
         var dataListener = main.getDataListener();
-		var chatlog_count = 0;
+		var chatslogComponent;
+		var listenerImp;
         $scope.myProfile = dataManager.myProfile;
         $scope.orgMembers = dataManager.orgMembers;
         $scope.roomAccess = [];
@@ -29,45 +29,26 @@
         activate();
 
         function activate() { 
-			console.warn("chatslogController.activate");
+			console.warn(vm.title, "activate");
 			
-			chatsLogComponent = chatslogService.getChatsLogComponent();
-			chatslogService.setChatsLogCount(0);
-			chatlog_count = chatslogService.getChatsLogCount();
-			chatsLogComponent.onNewMessage = function(newmsg)
-			{
-				chatlog_count++;
-				console.log( 'onNewMessage: ' + newmsg.rid);
-				
-				for(var i=0; i<accessLength; i++)
-				{
-					//console.log( myRoomAccess[i]['_id'] + ' / ' + newmsg.rid );
-					if( myRoomAccess[i]['_id'] == newmsg.rid )
-					{
-						myRoomAccess[i]['body']['count']++;
-					}
-				}
-				
-			}
-			
-			chatsLogComponent.onEditedGroupMember = function(newgroup)
-			{
-				console.log( 'onEditedGroupMember :::::::	' );
-				console.log( newgroup );					
-			}
-        }
+			listenerImp = function (newmsg) {
+			    console.log(vm.title, 'onNewMessage: ' + newmsg.rid);
 
+			    for (var i = 0; i < accessLength; i++) {
+			        //console.log( myRoomAccess[i]['_id'] + ' / ' + newmsg.rid );
+			        if (myRoomAccess[i]['_id'] == newmsg.rid) {
+			            myRoomAccess[i]['body']['count']++;
+			        }
+			    }
+			}
+			chatslogComponent = chatslogService.getChatsLogComponent();
+			chatslogComponent.addNewMsgListener(listenerImp);
+        }
 
         getRoomAccess();
 		var refresh = function () 
 		{		
 			$scope.roomAccess = myRoomAccess;
-			console.log('reload chatlog');
-		
-			//console.log(roomAccess);
-			//console.log(myRoomAccess);
-			
-			$('#chatlog_count').text(chatlog_count);
 			
 			$timeout(refresh, 1000);
 		} 
@@ -75,7 +56,7 @@
 		
 		$scope.gotoChat = function (accessId, chatlog) 
 		{		
-			chatlog_count -= chatlog;
+		    chatslogService.decreaseLogsCount(chatlog);
 			for(var i=0; i<accessLength; i++)
 			{
 				if( myRoomAccess[i]['_id'] == accessId )
@@ -118,16 +99,6 @@
 		};
     }
 
-    function getUnreadMessages() {
-	 	chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
-			 if(!!logsData) {
-				 logsData.map(function element(v) {
-					 console.log(v);
-				 });
-			 }
-		 });
-    }
-
 	
 	function getRoomAccess()
 	{
@@ -143,13 +114,9 @@
 	{
 		if( myRoomAccessCount < roomAccessLength )
 		{
-			console.log( 'wait: ' + myRoomAccessCount + '/' + roomAccessLength );	
-			//console.log( roomAccess[myRoomAccessCount] );
 			server.getRoomInfo(roomAccess[myRoomAccessCount]['roomId'], function(err, res){				
 				if( res['code'] == 200 )
 				{
-					console.log( res['data']['_id'] );
-					//console.log( res );
 					var data = res;
 					data['data']['accessTime'] = roomAccess[myRoomAccessCount]['accessTime'];
 					console.log( data );
@@ -171,7 +138,7 @@
 				}
 				
 				server.getUnreadMsgOfRoom(roomAccess[myRoomAccessCount]['roomId'], roomAccess[myRoomAccessCount]['accessTime'], function(err, res){		
-					if( res['code'] == 200 )
+				    if (res['code'] == 200)
 					{
 						data['data']['body'] = res['data'];
 						chatlog_count += res['data']['count'];
