@@ -1,5 +1,6 @@
 ﻿class DataListener implements absSpartan.IServerListener, absSpartan.IChatServerListener {
     private dataManager: DataManager;
+    public notifyNewMessageEvent: (message: Message) => void;
     private chatListenerImps = new Array<absSpartan.IChatServerListener>();
     public addChatListenerImp(listener: absSpartan.IChatServerListener) {
         this.chatListenerImps.push(listener);
@@ -111,6 +112,9 @@
             this.roomAccessListenerImps.map(v => {
                 v.onNewMessage(chatMessageImp);
             });
+        }
+        if (!!this.notifyNewMessageEvent) {
+            this.notifyNewMessageEvent(chatMessageImp)
         }
     };
 

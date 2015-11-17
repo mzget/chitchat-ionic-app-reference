@@ -13,13 +13,12 @@
 	var myRoomAccess = [];
 	var myRoomAccessCount = 0;
 	
-    function chatslogController($location, $scope, $timeout, roomSelected, chatslogService) {
+	function chatslogController($location, $scope, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
 
         var dataManager = main.getDataManager();
-        var dataListener = main.getDataListener();
 		var chatslogComponent;
 		var listenerImp;
         $scope.myProfile = dataManager.myProfile;
@@ -58,6 +57,8 @@
         
         function getRoomInfo() {
             if (myRoomAccessCount < roomAccessLength) {
+             
+                
                 server.getRoomInfo(roomAccess[myRoomAccessCount]['roomId'], function (err, res) {
                     if (res['code'] == 200) {
                         var data = res;
@@ -91,11 +92,11 @@
 
                         if (myRoomAccessCount + 1 == roomAccessLength) {
                             console.log('last');
-                        } else {
+                        }
+                        else {
                             myRoomAccessCount++;
                             getRoomInfo(myRoomAccessCount);
                         }
-
                     });
 
                 });

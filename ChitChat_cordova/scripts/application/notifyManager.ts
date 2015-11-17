@@ -2,7 +2,7 @@
     private dataManager: DataManager;
 
     constructor(main: Main) {
-        console.log("construc notify manager.");
+        console.log("NotifyManager.constructor");
 
         this.dataManager = main.getDataManager();
     }

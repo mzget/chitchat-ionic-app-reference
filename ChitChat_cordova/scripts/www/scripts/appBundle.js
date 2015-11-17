@@ -785,6 +785,22 @@ var DataManager = (function () {
     ;
     return DataManager;
 })();
+var HomeComponent = (function () {
+    function HomeComponent() {
+        console.log("HomeComponent. constructor");
+    }
+    HomeComponent.prototype.onChat = function (data) { };
+    ;
+    HomeComponent.prototype.onLeaveRoom = function (data) { };
+    ;
+    HomeComponent.prototype.onRoomJoin = function (data) { };
+    ;
+    HomeComponent.prototype.onMessageRead = function (dataEvent) { };
+    ;
+    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) { };
+    ;
+    return HomeComponent;
+})();
 var NotifyManager = (function () {
     function NotifyManager(main) {
         console.log("NotifyManager.constructor");
@@ -1617,16 +1633,6 @@ var SocketComponent = (function () {
     };
     return SocketComponent;
 })();
-var MessageMeta = (function () {
-    function MessageMeta() {
-    }
-    return MessageMeta;
-})();
-var Message = (function () {
-    function Message() {
-    }
-    return Message;
-})();
 var CompanyInfo = (function () {
     function CompanyInfo() {
     }
@@ -1668,6 +1674,16 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+})();
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
+})();
 var MinLocation = (function () {
     function MinLocation() {
     }
