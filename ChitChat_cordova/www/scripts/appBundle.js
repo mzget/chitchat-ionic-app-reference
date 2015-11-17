@@ -393,6 +393,20 @@ var ChatsLogComponent = (function () {
             callback(null, logs);
         });
     };
+    ChatsLogComponent.prototype.getRoomsInfo = function () {
+        var dataManager = this.main.getDataManager();
+        var myRoomAccess = dataManager.myProfile.roomAccess;
+        console.log("myRoomAccess.length", myRoomAccess.length);
+        myRoomAccess.map(function (value, id, arr) {
+            var room = dataManager.getGroup(value.roomId);
+            if (!!room) {
+                console.log(room);
+            }
+            else {
+                console.warn("room: ", value.roomId + "is invalid");
+            }
+        });
+    };
     return ChatsLogComponent;
 })();
 var DataListener = (function () {
