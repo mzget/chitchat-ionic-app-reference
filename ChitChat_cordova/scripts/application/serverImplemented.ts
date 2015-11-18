@@ -742,6 +742,16 @@ module ChatServer {
             pomelo.notify("chat.chatHandler.getMessagesReaders", message);
         }
 
+        public getMessageContent(messageId: string, callback: (err: Error, res: any) => void) {
+            var message: IDictionary = {};
+            message["messageId"] = messageId;
+            pomelo.request("chat.chatHandler.getMessageContent", message, (result) => {
+                if (!!callback) {
+                    callback(null, result);
+                }
+            });
+        }
+
         public updateMessageReader(messageId: string, roomId: string) {
             var message: IDictionary = {};
             message["messageId"] = messageId;

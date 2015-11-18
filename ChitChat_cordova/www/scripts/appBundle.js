@@ -1439,6 +1439,15 @@ var ChatServer;
             message["token"] = this.serverImp.authenData.token;
             pomelo.notify("chat.chatHandler.getMessagesReaders", message);
         };
+        ChatRoomApiProvider.prototype.getMessageContent = function (messageId, callback) {
+            var message = {};
+            message["messageId"] = messageId;
+            pomelo.request("chat.chatHandler.getMessageContent", message, function (result) {
+                if (!!callback) {
+                    callback(null, result);
+                }
+            });
+        };
         ChatRoomApiProvider.prototype.updateMessageReader = function (messageId, roomId) {
             var message = {};
             message["messageId"] = messageId;

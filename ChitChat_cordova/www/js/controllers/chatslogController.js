@@ -42,30 +42,29 @@
 			chatslogComponent.addNewMsgListener(listenerImp);
         }
 
-       getRoomAccess();
-        
-        function getRoomAccess() {
-            console.log('getRoomAccess: ');
-
-            roomAccess = dataManager.myProfile.roomAccess.reverse();
-            roomAccessLength = roomAccess.length;
-
-            getRoomInfo();
-        }
+       getRoomInfo();
         
         function getRoomInfo() {
+            roomAccess = dataManager.myProfile.roomAccess;
+            
             console.log("myRoomAccess.length", roomAccess.length);
             
             var data = {};
+            var unReadData = null;
             var lastMessageMap = chatslogService.getLastMessageMap();
             roomAccess.map(function iterator(value, id, arr) {
-                var unReadData = lastMessageMap[value.roomId];
+                if(!!lastMessageMap) {
+                    unReadData = lastMessageMap[value.roomId];
+                }
                 var room = dataManager.getGroup(value.roomId);
                 if(!!room) {
                     console.log("room", room._id, room.name, room.type);
                     data.data = room;
-                    data.data.body = unReadData;
-                    data.data.accessTime = value.accessTime;
+                    if (!!unReadData) {
+                        data.data.body = unReadData;
+                        data.data.accessTime = value.accessTime;
+                        data.data.lastMessage = unReadData.type;
+                    }
                     myRoomAccess.push(data['data']);
                 }
                 else {
@@ -76,9 +75,10 @@
                             console.log("getRoomInfo", JSON.stringify(res));
                             if (res['code'] == 200) {
                                 data = res;
-                                data.data.accessTime = value.accessTime;
                                 data.data.body = unReadData;
-                                console.log(data);
+                                data.data.accessTime = value.accessTime;
+                                data.data.lastMessage = unReadData.type;
+                                
                                 myRoomAccess.push(data['data']);			
         
                                 if (data.data.type == RoomType.privateChat) {

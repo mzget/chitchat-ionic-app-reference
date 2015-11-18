@@ -12,7 +12,9 @@
             getChatsLogComponent: getChatsLogComponent,
             init: init,
             getChatsLogCount: getChatsLogCount,
-            decreaseLogsCount: decreaseLogsCount
+            decreaseLogsCount: decreaseLogsCount,
+            increaseLogsCount: increaseLogsCount,
+            getLastMessageMap: getLastMessageMap
         };
 
         return service;
@@ -21,36 +23,45 @@
         var listenerImp;
         var dataListener = null;
         var chatlog_count = 0;
+        var newMessageMap = {};
+        var isInit = false;
 
         function init() {
-            dataListener = main.getDataListener();
-            chatlog_count = 0;
-            listenerImp = function(newMsg) {
-                chatlog_count++;
-            }
-            chatsLogComponent = new ChatsLogComponent(main, server);
-            chatsLogComponent.onReady = function () {
-                getUnreadMessages();
-
-                chatsLogComponent.onReady = null;
-            }
-            dataListener.addRoomAccessListenerImp(chatsLogComponent);
-            chatsLogComponent.addNewMsgListener(listenerImp);
-
-            chatsLogComponent.onEditedGroupMember = function (newgroup) {
-                console.log('onEditedGroupMember :::::::	');
-                console.log(newgroup);
+            if(!isInit) {
+                isInit = true;
+                
+                dataListener = main.getDataListener();
+                chatlog_count = 0;
+                listenerImp = function(newMsg) {
+                    chatlog_count++;
+                }
+                chatsLogComponent = new ChatsLogComponent(main, server);
+                chatsLogComponent.onReady = function () {
+                    getUnreadMessages();
+    
+                    chatsLogComponent.onReady = null;
+                }
+                dataListener.addRoomAccessListenerImp(chatsLogComponent);
+                chatsLogComponent.addNewMsgListener(listenerImp);
+    
+                chatsLogComponent.onEditedGroupMember = function (newgroup) {
+                    console.log('onEditedGroupMember :::::::	');
+                    console.log(newgroup);
+                }
             }
         }
 
         function getUnreadMessages() {
+            newMessageMap = {};
             chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
                 if (!!logsData) {
                     logsData.map(function element(v) {
-                        console.log(v);
+                        newMessageMap[v.rid] = v;
 
                         var count = Number(v.count);
                         chatlog_count += count;
+
+                        console.log(v);
                     });
                 }
             });
@@ -63,9 +74,17 @@
         function decreaseLogsCount(count) {
             chatlog_count -= count;
         }
+
+        function increaseLogsCount(count) {
+            chatlog_count += count;
+        }
        
         function getChatsLogComponent() {
             return chatsLogComponent;
+         }
+         
+         function getLastMessageMap() {
+             return newMessageMap;
          }
     }
 })();

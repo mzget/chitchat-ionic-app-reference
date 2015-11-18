@@ -60,6 +60,8 @@
 
                         var count = Number(v.count);
                         chatlog_count += count;
+
+                        console.log(v);
                     });
                 }
             });

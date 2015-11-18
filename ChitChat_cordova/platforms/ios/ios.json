@@ -7,5 +7,6 @@
         "files": {}
     },
     "installed_plugins": {},
-    "dependent_plugins": {}
+    "dependent_plugins": {},
+    "modules": []
 }
