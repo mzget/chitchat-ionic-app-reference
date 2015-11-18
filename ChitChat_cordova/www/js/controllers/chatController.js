@@ -47,7 +47,6 @@ angular.module('spartan.chat', [])
             setTimeout(function () {
                 $ionicLoading.hide();
             }, 1000);
-            
         });
     }
 
@@ -251,18 +250,18 @@ angular.module('spartan.chat', [])
     
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
-		if(args[1] == "Image"){
-			$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"temp":"true"});
-		}else if(args[1] == "Voice"){
-			$scope.chat.push( {"rid":currentRoom._id,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
-		}else if(args[1] == "Video"){
-			$scope.chat.push( {"rid":currentRoom._id,"type":"Video","body":cordova.file.tempDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+		if(args[1] == ContentType[ContentType.Image] ){
+			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.cacheDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
+		}else if(args[1] == ContentType[ContentType.Voice] ){
+			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.cacheDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+		}else if(args[1] == ContentType[ContentType.Video] ){
+			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.cacheDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}
 		
 	});
 	// Send Image and remove temp Image
 	$scope.$on('fileUrl', function(event,args){
-		if(args[2]=="Image"){
+		if(args[2]==ContentType[ContentType.Image]){
 			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
 				if (err || res === null) {
 					console.warn("send message fail.");
@@ -271,7 +270,7 @@ angular.module('spartan.chat', [])
 					console.log("send message:", JSON.stringify(res));
 				}
 			});
-		}else if(args[2]=="Voice"){
+		}else if(args[2]==ContentType[ContentType.Voice]){
 			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], function(err, res) {
 				if (err || res === null) {
 					console.warn("send message fail.");
@@ -280,7 +279,7 @@ angular.module('spartan.chat', [])
 					console.log("send message:", JSON.stringify(res));
 				}
 			});
-		}else if(args[2]=="Video"){
+		}else if(args[2]==ContentType[ContentType.Video]){
 			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], function(err, res) {
 				if (err || res === null) {
 					console.warn("send message fail.");
@@ -291,8 +290,9 @@ angular.module('spartan.chat', [])
 			});
 		}
 		$.each($scope.chat, function(index, value){
-			//console.log(value._id,args[1]);
-			if(value._id == args[1]) { $scope.chat[index] = new Object; }
+			if(value._id == args[1]) { 
+				$scope.chat[index] = new Object; 
+			}
 		});
 	});
 

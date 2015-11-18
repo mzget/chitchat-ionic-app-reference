@@ -38,7 +38,7 @@
 			</ion-item>
 
 			<ion-item ng-if="message.sender != myprofile._id && !!message.sender" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
-				<img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
+				<img ng-src="http://203.113.25.44/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 				<h2>{{allMembers[message.sender]['displayname']}}</h2>
 				</br>
 
@@ -52,10 +52,10 @@
 				</p>
 				
 				
-				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://stalk.animation-genius.com{{message.body}}" ng-click="viewImage('http://stalk.animation-genius.com'+message.body)"/>
+				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage('http://203.113.25.44'+message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
-					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://stalk.animation-genius.com'+message.body)"></i>
+					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.44'+message.body)"></i>
 					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
 
@@ -69,11 +69,15 @@
 							{{message.locationName}}     
                            <br /> {{message.locationAddress}}
                             <br /> {{message.lat}} , {{message.long}}
-						</div>
+						</div>s
 					</div>
 				</div>
+				
 
-				<div id="{{message._id}}-download-contain" class="download-contain hide"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
+				<div id="{{message._id}}-downloaded" class="hide">
+					<div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
+				</div>
+
 				</br>
 				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
@@ -81,7 +85,12 @@
 			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
 				<label style="clear:none; cursor:pointer;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
 
-				<div id="{{message._id}}-download-contain" class="download-contain hide"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
+				<div id="{{message._id}}-resend" class="hide" style="font-size:10px;" ng-click="resend(message.body,message._id)"> Resend </div>
+
+				<div id="{{message._id}}-downloaded" class="hide">
+					<i class="ion-ios-close" style="margin-right:5px; float:left;" ng-click="sentCancel(message._id)"></i>
+					<div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
+				</div>
 			
 				<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
 					{{message.body}}
@@ -93,7 +102,7 @@
 				</p>
 				
                 <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImg()" ng-src="{{message.body}}" ng-click="viewImage(message.body)"/>
-				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://stalk.animation-genius.com{{message.body}}" ng-click="viewImage('http://stalk.animation-genius.com'+message.body)"/>
+				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage('http://203.113.25.44'+message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice()">
@@ -101,15 +110,15 @@
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
                 <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp==null">
-                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://stalk.animation-genius.com'+message.body)"></i>
+                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.44'+message.body)"></i>
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
                 </div>
 
-                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo()">
-                	<video id="{{message._id}}" src="{{message.body}}"></video>
+                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo(message._id)">
+                	<video id="{{message._id}}" src="{{message.body}}" controls></video>
 				</div>
                 <div class="type-video" ng-if="message.type=='Video' && message.temp==null">
-                	<video id="{{message._id}}" src="{{message.bodyUrl}}"></video>
+                	<video id="{{message._id}}" src="{{message.bodyUrl}}" controls></video>
                 </div>
 				
 				
@@ -124,7 +133,7 @@
 				</div>
 						
                 <br />
-				<label> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+				<label ng-if="message.temp != 'true' "> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
 			</ion-item>
 		</ion-list>
 

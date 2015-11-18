@@ -53,7 +53,7 @@ angular.module('spartan.services', [])
   }
 
   function setVideoUri(name){
-    videoUri = cordova.file.tempDirectory + name;
+    videoUri = cordova.file.cacheDirectory + name;
   }
 
   function optionType(){
@@ -73,8 +73,8 @@ angular.module('spartan.services', [])
         var name = imageUrl.substr(imageUrl.lastIndexOf('/') + 1);
         var namePath = imageUrl.substr(0, imageUrl.lastIndexOf('/') + 1);
         console.log(imageUrl,namePath);
-        var newName = GenerateID.makeid() + name;
-        $cordovaFile.copyFile(namePath, name, cordova.file.tempDirectory, newName)
+        var newName = GenerateID.makeid() + ".MOV";
+        $cordovaFile.moveFile(namePath, name, cordova.file.cacheDirectory, newName)
           .then(function(info) {
             setVideoUri(newName);
             resolve();
@@ -121,7 +121,7 @@ angular.module('spartan.services', [])
         var namePath = imageUrl.substr(0, imageUrl.lastIndexOf('/') + 1);
         console.log(imageUrl,namePath);
         var newName = GenerateID.makeid() + name;
-        $cordovaFile.copyFile(namePath, name, cordova.file.dataDirectory, newName)
+        $cordovaFile.copyFile(namePath, name, cordova.file.cacheDirectory, newName)
           .then(function(info) {
             FileService.storeImage(newName);
             resolve();
@@ -497,7 +497,7 @@ angular.module('spartan.services', [])
       }
 
 			for (var i = 0; i < chats.length; i++) {
-
+        if(!chats[i].hasOwnProperty('_id')) return;
         var dateTime  = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
         if(date.indexOf(dateTime) == -1){ 
           date.push( chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')) );
@@ -519,8 +519,12 @@ angular.module('spartan.services', [])
 
            
         }
-			    if (chats[i].type == 'Video') {
-			        chats[i].bodyUrl = $sce.trustAsResourceUrl('http://stalk.animation-genius.com' + chats[i].body);
+			    if (chats[i].type == ContentType[ContentType.Video]) {
+              if( chats[i].temp == 'true' ){
+                chats[i].body = cordova.file.cacheDirectory + chats[i]._id;
+              }else{
+                chats[i].bodyUrl = $sce.trustAsResourceUrl('http://203.113.25.44' + chats[i].body);
+              }
 			    }
 			    else if (chats[i].type === ContentType[ContentType.Location]) {
 			        var location = JSON.parse(chats[i].body);
