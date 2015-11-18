@@ -73,7 +73,7 @@ angular.module('spartan.media', [])
 		      //loadingStatus.increment();
 		    }
 	    };
-	    ft.upload(imageURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
+	    ft.upload(imageURI, "http://203.113.25.44/?r=api/upload", win, fail,
 	        options);
 	}
 
@@ -209,7 +209,7 @@ angular.module('spartan.media', [])
 		      //loadingStatus.increment();
 		    }
 	    };
-	    ft.upload(videoURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
+	    ft.upload(videoURI, "http://203.113.25.44/?r=api/upload", win, fail,
         options);
 	}
 
@@ -337,7 +337,7 @@ angular.module('spartan.media', [])
 		      //loadingStatus.increment();
 		    }
 	    };
-	    ft.upload(voiceURI, "http://stalk.animation-genius.com/?r=api/upload", win, fail,
+	    ft.upload(voiceURI, "http://203.113.25.44/?r=api/upload", win, fail,
         options);
 	}
 

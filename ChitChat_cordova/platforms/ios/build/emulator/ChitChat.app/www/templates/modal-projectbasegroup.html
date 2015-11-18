@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   This template loads for the 'tab.friend-detail' state (app.js)
   'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
   The FriendsCtrl pulls data from the Friends service (service.js)
@@ -7,7 +7,7 @@
 
 <ion-modal-view style="width:80%; left:10%; right:10%; top:10%; bottom:10%; min-height:300px;">
     <ion-pane class="padding group-detail"  padding ="false">
-        <img class="avatar-modal" ng-if="chat.image != null" ng-src="http://stalk.animation-genius.com/timthumb.php?src={{chat.image}}&h=150&w=150" />
+        <img class="avatar-modal" ng-if="chat.image != null" ng-src="http://203.113.25.44/timthumb.php?src={{chat.image}}&h=150&w=150" />
         <img class="avatar-modal" ng-if="chat.image == null" src="img/img.jpg" height="150" width="150"  />
         
         <a class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closePjbModal()"></a>
@@ -20,7 +20,7 @@
 
         <div class="group-pvgroup">
             <span ng-repeat="member in members">
-                <img ng-src="http://stalk.animation-genius.com/timthumb.php?src={{member.image}}&h=30&w=30" />
+                <img ng-src="http://203.113.25.44/timthumb.php?src={{member.image}}&h=30&w=30" />
             </span>
             <a ng-click="viewGroupDetail(chat._id)" class="length">{{ members_length }}</a>
         </div>

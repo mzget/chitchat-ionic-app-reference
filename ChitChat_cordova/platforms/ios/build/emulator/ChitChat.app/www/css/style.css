@@ -100,7 +100,6 @@
 .stickertab { width:100%; display:none; text-align:center; margin-top:44px; }
 .stickertab > * { display:inline-block; width:105px; height:105px; background-size:contain; background-repeat:no-repeat; background-position:50% 50%; cursor:pointer; }
 
-
 .create-group-list-member-selected { display:none; text-align:left; margin-top:20px; }
 .create-group-list-member-selected img { border-radius: 50%; margin:0 10px; width: 50px; height: 50px;}
 .create-group-list-member-selected .member-contain { width: 70px; height: 70px; }

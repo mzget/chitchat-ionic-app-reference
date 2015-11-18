@@ -194,8 +194,8 @@ angular.module('starter',
 		url: '/timeline',
 		views: {
 			'tab-timeline': {
-				templateUrl: 'templates/tab-timeline.html',
-				controller: 'DashCtrl'
+				templateUrl: 'templates/tab-timeline.html'
+//				controller: 'DashCtrl'
 			}
 		}
 	})

@@ -346,7 +346,7 @@ var ChatsLogComponent = (function () {
         this.newMessageListeners.push(listener);
     };
     ChatsLogComponent.prototype.onNewMessage = function (dataEvent) {
-        console.warn("OnNewMessage", JSON.stringify(dataEvent));
+        console.log("ChatsLogComponent.onNewMessage");
         this.newMessageListeners.map(function (v, i, a) {
             v(dataEvent);
         });
@@ -391,6 +391,20 @@ var ChatsLogComponent = (function () {
         }, function done(err) {
             console.log("get unread message is done.");
             callback(null, logs);
+        });
+    };
+    ChatsLogComponent.prototype.getRoomsInfo = function () {
+        var dataManager = this.main.getDataManager();
+        var myRoomAccess = dataManager.myProfile.roomAccess;
+        console.log("myRoomAccess.length", myRoomAccess.length);
+        myRoomAccess.map(function (value, id, arr) {
+            var room = dataManager.getGroup(value.roomId);
+            if (!!room) {
+                console.log(room);
+            }
+            else {
+                console.warn("room: ", value.roomId + "is invalid");
+            }
         });
     };
     return ChatsLogComponent;
@@ -485,6 +499,9 @@ var DataListener = (function () {
             this.roomAccessListenerImps.map(function (v) {
                 v.onNewMessage(chatMessageImp);
             });
+        }
+        if (!!this.notifyNewMessageEvent) {
+            this.notifyNewMessageEvent(chatMessageImp);
         }
     };
     ;
@@ -782,24 +799,9 @@ var DataManager = (function () {
     ;
     return DataManager;
 })();
-var HomeComponent = (function () {
-    function HomeComponent() {
-    }
-    HomeComponent.prototype.onChat = function (data) { };
-    ;
-    HomeComponent.prototype.onLeaveRoom = function (data) { };
-    ;
-    HomeComponent.prototype.onRoomJoin = function (data) { };
-    ;
-    HomeComponent.prototype.onMessageRead = function (dataEvent) { };
-    ;
-    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) { };
-    ;
-    return HomeComponent;
-})();
 var NotifyManager = (function () {
     function NotifyManager(main) {
-        console.log("construc notify manager.");
+        console.log("NotifyManager.constructor");
         this.dataManager = main.getDataManager();
     }
     NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
@@ -1436,6 +1438,15 @@ var ChatServer;
             var message = {};
             message["token"] = this.serverImp.authenData.token;
             pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+        };
+        ChatRoomApiProvider.prototype.getMessageContent = function (messageId, callback) {
+            var message = {};
+            message["messageId"] = messageId;
+            pomelo.request("chat.chatHandler.getMessageContent", message, function (result) {
+                if (!!callback) {
+                    callback(null, result);
+                }
+            });
         };
         ChatRoomApiProvider.prototype.updateMessageReader = function (messageId, roomId) {
             var message = {};
