@@ -21,7 +21,8 @@
 				<!-- <h2 ng-if="access.name===undefined && access.members[0]['id'] != myProfile._id">{{orgMembers[access.members[0]['id']]['displayname']}}</h2>
 				<h2 ng-if="access.name===undefined && access.members[0]['id'] == myProfile._id">{{orgMembers[access.members[1]['id']]['displayname']}}</h2> -->
 				
-				<p>{{access.accessTime.substr(0, 10)}} {{access.accessTime.substr(11, 8)}}</p>
+			<!--	<p>{{access.accessTime.substr(0, 10)}} {{access.accessTime.substr(11, 8)}}</p>-->
+                <p>{{access.lastMessage}}</p>
 				<i class="icon" ng-if="access.body['count'] > 0 ">
 					<small style="height:20px; line-height:20px; padding:0 5px; border-radius:10px; font-weight:bold; font-size:14px; color:#fff; background-color:#f00;"><i class="fa fa-clock-o"></i>{{access.body['count']}}</small>
 				</i>

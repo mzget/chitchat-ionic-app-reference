@@ -393,6 +393,20 @@ var ChatsLogComponent = (function () {
             callback(null, logs);
         });
     };
+    ChatsLogComponent.prototype.getRoomsInfo = function () {
+        var dataManager = this.main.getDataManager();
+        var myRoomAccess = dataManager.myProfile.roomAccess;
+        console.log("myRoomAccess.length", myRoomAccess.length);
+        myRoomAccess.map(function (value, id, arr) {
+            var room = dataManager.getGroup(value.roomId);
+            if (!!room) {
+                console.log(room);
+            }
+            else {
+                console.warn("room: ", value.roomId + "is invalid");
+            }
+        });
+    };
     return ChatsLogComponent;
 })();
 var DataListener = (function () {
@@ -784,22 +798,6 @@ var DataManager = (function () {
     };
     ;
     return DataManager;
-})();
-var HomeComponent = (function () {
-    function HomeComponent() {
-        console.log("HomeComponent. constructor");
-    }
-    HomeComponent.prototype.onChat = function (data) { };
-    ;
-    HomeComponent.prototype.onLeaveRoom = function (data) { };
-    ;
-    HomeComponent.prototype.onRoomJoin = function (data) { };
-    ;
-    HomeComponent.prototype.onMessageRead = function (dataEvent) { };
-    ;
-    HomeComponent.prototype.onGetMessagesReaders = function (dataEvent) { };
-    ;
-    return HomeComponent;
 })();
 var NotifyManager = (function () {
     function NotifyManager(main) {
@@ -1440,6 +1438,15 @@ var ChatServer;
             var message = {};
             message["token"] = this.serverImp.authenData.token;
             pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+        };
+        ChatRoomApiProvider.prototype.getMessageContent = function (messageId, callback) {
+            var message = {};
+            message["messageId"] = messageId;
+            pomelo.request("chat.chatHandler.getMessageContent", message, function (result) {
+                if (!!callback) {
+                    callback(null, result);
+                }
+            });
         };
         ChatRoomApiProvider.prototype.updateMessageReader = function (messageId, roomId) {
             var message = {};
