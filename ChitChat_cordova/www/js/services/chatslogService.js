@@ -13,7 +13,8 @@
             init: init,
             getChatsLogCount: getChatsLogCount,
             decreaseLogsCount: decreaseLogsCount,
-            increaseLogsCount: increaseLogsCount
+            increaseLogsCount: increaseLogsCount,
+            getLastMessageMap: getLastMessageMap
         };
 
         return service;
@@ -22,6 +23,7 @@
         var listenerImp;
         var dataListener = null;
         var chatlog_count = 0;
+        var newMessageMap = {};
         var isInit = false;
 
         function init() {
@@ -50,10 +52,11 @@
         }
 
         function getUnreadMessages() {
+            newMessageMap = {};
             chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
                 if (!!logsData) {
                     logsData.map(function element(v) {
-                        console.log(v);
+                        newMessageMap[v.rid] = v;
 
                         var count = Number(v.count);
                         chatlog_count += count;
@@ -76,6 +79,10 @@
        
         function getChatsLogComponent() {
             return chatsLogComponent;
+         }
+         
+         function getLastMessageMap() {
+             return newMessageMap;
          }
     }
 })();

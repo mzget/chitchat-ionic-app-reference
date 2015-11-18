@@ -12,8 +12,6 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
-        vm.dataListener = main.getDataListener();
-        vm.homeComponent = new HomeComponent();
 
         function activate() {
 
@@ -21,22 +19,12 @@
             sharedObjectService.createNotifyManager(main);
             chatslogService.init();
 
-            addHomeComponent();
-        }
-
-        function addHomeComponent() {
-            vm.dataListener.addChatListenerImp(vm.homeComponent);
-
-            vm.homeComponent.onChat = function (chatMessageImp) {
-                console.log("homeComponent : new message: ");
-
-                var appBackground = cordova.plugins.backgroundMode.isActive();
-                sharedObjectService.getNotifyManager().notify(chatMessageImp, appBackground, localNotifyService);
-            }
+            vm.dataListener = sharedObjectService.getDataListener();
+            sharedObjectService.regisNotifyNewMessageEvent(localNotifyService);
         }
 
         function onLeave() {
-            vm.dataListener.removeChatListenerImp(vm.homeComponent);
+        
         }
 
         $scope.pullRefresh = function() {

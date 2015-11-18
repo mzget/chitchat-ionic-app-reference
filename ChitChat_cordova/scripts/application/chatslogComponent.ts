@@ -73,4 +73,19 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
                 callback(null, logs);
             });
         }
+        
+        public getRoomsInfo() {
+            var dataManager = this.main.getDataManager();
+            var myRoomAccess = dataManager.myProfile.roomAccess;
+            console.log("myRoomAccess.length", myRoomAccess.length);
+            myRoomAccess.map((value, id, arr) => {
+                var room = dataManager.getGroup(value.roomId);
+                if(!!room) {
+                    console.log(room);
+                }
+                else {
+                    console.warn("room: ", value.roomId + "is invalid");
+                }
+            });
+        }
 }
