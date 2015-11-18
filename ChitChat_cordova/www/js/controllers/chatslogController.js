@@ -50,9 +50,12 @@
             console.log("myRoomAccess.length", roomAccess.length);
             
             var data = {};
+            var unReadData = null;
             var lastMessageMap = chatslogService.getLastMessageMap();
             roomAccess.map(function iterator(value, id, arr) {
-                var unReadData = lastMessageMap[value.roomId];
+                if(!!lastMessageMap) {
+                    unReadData = lastMessageMap[value.roomId];
+                }
                 var room = dataManager.getGroup(value.roomId);
                 if(!!room) {
                     console.log("room", room._id, room.name, room.type);

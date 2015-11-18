@@ -520,7 +520,7 @@ angular.module('spartan.services', [])
            
         }
 			    if (chats[i].type == 'Video') {
-			        chats[i].bodyUrl = $sce.trustAsResourceUrl('http://stalk.animation-genius.com' + chats[i].body);
+			        chats[i].bodyUrl = $sce.trustAsResourceUrl('http://203.113.25.44' + chats[i].body);
 			    }
 			    else if (chats[i].type === ContentType[ContentType.Location]) {
 			        var location = JSON.parse(chats[i].body);
