@@ -78,7 +78,7 @@
 .message-list .owner .type-video > * { width: 140px; height: 155px; }
 
 .message-list .other .download-contain { clear: none; width: 80px; height: 5px; background-color: gray; border-radius: 2px; }
-.message-list .owner .download-contain { width: 80px; height: 5px; background-color: gray; border-radius: 2px; }
+.message-list .owner .download-contain { float:left; width: 80px; height: 5px; background-color: gray; border-radius: 2px; margin-top: 7px;}
 .download-bar { height: 5px; width: 0%; border-radius: 2px; background-color: green; }
 .hide { display: none !important;}
 

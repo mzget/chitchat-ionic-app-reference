@@ -43,6 +43,9 @@
                 }
                 dataListener.addRoomAccessListenerImp(chatsLogComponent);
                 chatsLogComponent.addNewMsgListener(listenerImp);
+                chatsLogComponent.updatedLastAccessTimeEvent = function (newRoomAccess) {
+                    getUnreadMessages();
+                }
     
                 chatsLogComponent.onEditedGroupMember = function (newgroup) {
                     console.log('onEditedGroupMember :::::::	');
@@ -53,6 +56,7 @@
 
         function getUnreadMessages() {
             newMessageMap = {};
+            chatlog_count = 0;
             chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
                 if (!!logsData) {
                     logsData.map(function element(v) {
