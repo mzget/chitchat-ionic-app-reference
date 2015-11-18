@@ -6,11 +6,23 @@ interface IUnreadMessage {
 }
 
 class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
+    private newMessageListeners = new Array<(param) => void>();
+    public addNewMsgListener (listener) {
+        this.newMessageListeners.push(listener);
+    }
     onNewMessage(dataEvent) {
-        console.warn("OnNewMessage", JSON.stringify(dataEvent));
+        console.log("ChatsLogComponent.onNewMessage");
+        //<!-- Provide chatslog service.
+        this.newMessageListeners.map((v, i, a) => {
+            v(dataEvent);
+        });
     }
     onAccessRoom(dataEvent) {
-        console.warn("onAccessRoom", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onAccessRoom", JSON.stringify(dataEvent));
+
+        this._isReady = true;
+        if (!!this.onReady)
+            this.onReady();
     }
     onUpdatedLastAccessTime(dataEvent) {
         console.warn("onUpdatedLastAccessTime", JSON.stringify(dataEvent));
@@ -24,9 +36,14 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         
         private main : Main;
         private server: ChatServer.ServerImplemented;
+        public _isReady: boolean;
+        public onReady:() => void;
         constructor(main: Main, server: ChatServer.ServerImplemented) {
             this.main = main;
             this.server = server;
+            this._isReady = false;
+
+            console.log("ChatsLogComponent : constructor");
         }
         
         public getUnreadMessage(roomAccess: RoomAccessData[], callback:(err: Error, logsData: Array<IUnreadMessage>) => void) {
@@ -54,6 +71,21 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
             }, function done(err) {
                 console.log("get unread message is done.");
                 callback(null, logs);
+            });
+        }
+        
+        public getRoomsInfo() {
+            var dataManager = this.main.getDataManager();
+            var myRoomAccess = dataManager.myProfile.roomAccess;
+            console.log("myRoomAccess.length", myRoomAccess.length);
+            myRoomAccess.map((value, id, arr) => {
+                var room = dataManager.getGroup(value.roomId);
+                if(!!room) {
+                    console.log(room);
+                }
+                else {
+                    console.warn("room: ", value.roomId + "is invalid");
+                }
             });
         }
 }

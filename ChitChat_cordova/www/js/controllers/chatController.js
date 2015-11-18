@@ -23,7 +23,7 @@ angular.module('spartan.chat', [])
     }
 
     function addComponent() {
-        main.dataListener.addListenerImp(chatRoomComponent);
+        main.dataListener.addChatListenerImp(chatRoomComponent);
         chatRoomComponent.serviceListener = function (event, newMsg) {
             if (event === "onChat") {
                 Chats.set(chatRoomComponent.chatMessages);
@@ -60,7 +60,7 @@ angular.module('spartan.chat', [])
             roomSelected.setRoom(currentRoom);
             chatRoomComponent.chatMessages = [];
             Chats.clear();
-            main.dataListener.removeListener(chatRoomComponent);
+            main.dataListener.removeChatListenerImp(chatRoomComponent);
         });
     }
     

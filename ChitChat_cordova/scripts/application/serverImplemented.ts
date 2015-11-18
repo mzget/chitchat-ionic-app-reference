@@ -213,12 +213,12 @@ module ChatServer {
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, (res) => {
                 console.log("login: ", JSON.stringify(res), res.code);
-                if (res.code === 500) {
+                if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
                         callback(res.message, null);
                     }
                 }
-                else if (res.code === 200) {
+                else if (res.code === HttpStatusCode.success) {
                     self.authenData.userId = res.uid;
                     self.authenData.token = res.token;
                     localStorage.setItem("authen", JSON.stringify(self.authenData));
