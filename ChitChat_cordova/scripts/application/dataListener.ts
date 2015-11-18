@@ -35,6 +35,12 @@
 
     onUpdatedLastAccessTime(dataEvent) {
         this.dataManager.updateRoomAccessForUser(dataEvent);
+
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onUpdatedLastAccessTime(dataEvent);
+            });
+        }
     }
 
     onAddRoomAccess(dataEvent) {

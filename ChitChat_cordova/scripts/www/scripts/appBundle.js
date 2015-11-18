@@ -358,13 +358,16 @@ var ChatsLogComponent = (function () {
             this.onReady();
     };
     ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) {
-        console.warn("onUpdatedLastAccessTime", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onUpdatedLastAccessTime", JSON.stringify(dataEvent));
+        if (!!this.updatedLastAccessTimeEvent) {
+            this.updatedLastAccessTimeEvent(dataEvent);
+        }
     };
     ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) {
-        console.warn("onAddRoomAccess", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onAddRoomAccess", JSON.stringify(dataEvent));
     };
     ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) {
-        console.warn("onEditedGroupMember", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onEditedGroupMember", JSON.stringify(dataEvent));
     };
     ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         var self = this;
@@ -439,6 +442,11 @@ var DataListener = (function () {
     };
     DataListener.prototype.onUpdatedLastAccessTime = function (dataEvent) {
         this.dataManager.updateRoomAccessForUser(dataEvent);
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(function (value) {
+                value.onUpdatedLastAccessTime(dataEvent);
+            });
+        }
     };
     DataListener.prototype.onAddRoomAccess = function (dataEvent) {
         var data = JSON.parse(JSON.stringify(dataEvent));
@@ -554,7 +562,6 @@ var DataManager = (function () {
         this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
     };
     DataManager.prototype.updateRoomAccessForUser = function (data) {
-        console.info(JSON.stringify(data));
         var arr = JSON.parse(JSON.stringify(data.roomAccess));
         this.myProfile.roomAccess.forEach(function (value) {
             if (value.roomId === arr[0].roomId) {
