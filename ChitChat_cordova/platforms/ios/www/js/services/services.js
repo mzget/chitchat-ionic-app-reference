@@ -53,7 +53,7 @@ angular.module('spartan.services', [])
   }
 
   function setVideoUri(name){
-    videoUri = cordova.file.tempDirectory + name;
+    videoUri = cordova.file.cacheDirectory + name;
   }
 
   function optionType(){
@@ -73,8 +73,8 @@ angular.module('spartan.services', [])
         var name = imageUrl.substr(imageUrl.lastIndexOf('/') + 1);
         var namePath = imageUrl.substr(0, imageUrl.lastIndexOf('/') + 1);
         console.log(imageUrl,namePath);
-        var newName = GenerateID.makeid() + name;
-        $cordovaFile.copyFile(namePath, name, cordova.file.tempDirectory, newName)
+        var newName = GenerateID.makeid() + ".MOV";
+        $cordovaFile.moveFile(namePath, name, cordova.file.cacheDirectory, newName)
           .then(function(info) {
             setVideoUri(newName);
             resolve();
@@ -121,7 +121,7 @@ angular.module('spartan.services', [])
         var namePath = imageUrl.substr(0, imageUrl.lastIndexOf('/') + 1);
         console.log(imageUrl,namePath);
         var newName = GenerateID.makeid() + name;
-        $cordovaFile.copyFile(namePath, name, cordova.file.dataDirectory, newName)
+        $cordovaFile.copyFile(namePath, name, cordova.file.cacheDirectory, newName)
           .then(function(info) {
             FileService.storeImage(newName);
             resolve();
@@ -458,11 +458,15 @@ angular.module('spartan.services', [])
   }
 })
 
-.factory('Chats', function($sce) {
+.factory('Chats', function($sce,roomSelected) {
     // Might use a resource here that returns a JSON array
 
 	// Some fake testing data
     var chats = [];
+
+    var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+    var date = [];
+    var rid;
     
     function clear() {
         chats = [];
@@ -485,9 +489,42 @@ angular.module('spartan.services', [])
 		},
 		set: function(json) {
 			chats = json;
+      
+      console.log(JSON.stringify(chats));
+      if(rid != roomSelected.getRoom()._id){
+        rid = roomSelected.getRoom()._id;
+        date = [];
+      }
+
 			for (var i = 0; i < chats.length; i++) {
-			    if (chats[i].type == 'Video') {
-			        chats[i].bodyUrl = $sce.trustAsResourceUrl('http://stalk.animation-genius.com' + chats[i].body);
+        if(!chats[i].hasOwnProperty('_id')) return;
+        var dateTime  = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
+        if(date.indexOf(dateTime) == -1){ 
+          date.push( chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')) );
+
+          var dateMsg = new Date(dateTime);
+          var dateNow = new Date();
+          
+          if( dateMsg.getFullYear() == dateNow.getFullYear() &&
+           dateMsg.getMonth() == dateNow.getMonth() &&
+           dateMsg.getDate() == dateNow.getDate() ){
+            chats[i].firstMsg = "Today";
+          }else if( dateMsg.getFullYear() == dateNow.getFullYear() &&
+           dateMsg.getMonth() == dateNow.getMonth() &&
+           dateMsg.getDate() == dateNow.getDate()-1 ){
+            chats[i].firstMsg = "Yesterday";
+          }else{
+            chats[i].firstMsg = days[dateMsg.getDay()] + ', ' + (dateMsg.getMonth()+1) + '/' + dateMsg.getFullYear() ;
+          }
+
+           
+        }
+			    if (chats[i].type == ContentType[ContentType.Video]) {
+              if( chats[i].temp == 'true' ){
+                chats[i].body = cordova.file.cacheDirectory + chats[i]._id;
+              }else{
+                chats[i].bodyUrl = $sce.trustAsResourceUrl('http://203.113.25.44' + chats[i].body);
+              }
 			    }
 			    else if (chats[i].type === ContentType[ContentType.Location]) {
 			        var location = JSON.parse(chats[i].body);

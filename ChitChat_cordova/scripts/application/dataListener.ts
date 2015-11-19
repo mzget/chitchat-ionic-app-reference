@@ -1,10 +1,11 @@
 ﻿class DataListener implements absSpartan.IServerListener, absSpartan.IChatServerListener {
     private dataManager: DataManager;
+    public notifyNewMessageEvent: (message: Message) => void;
     private chatListenerImps = new Array<absSpartan.IChatServerListener>();
-    public addListenerImp(listener: absSpartan.IChatServerListener) {
+    public addChatListenerImp(listener: absSpartan.IChatServerListener) {
         this.chatListenerImps.push(listener);
     }
-    public removeListener(listener: absSpartan.IChatServerListener) {
+    public removeChatListenerImp(listener: absSpartan.IChatServerListener) {
         var id = this.chatListenerImps.indexOf(listener);
         this.chatListenerImps.splice(id, 1);
     }
@@ -34,6 +35,12 @@
 
     onUpdatedLastAccessTime(dataEvent) {
         this.dataManager.updateRoomAccessForUser(dataEvent);
+
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onUpdatedLastAccessTime(dataEvent);
+            });
+        }
     }
 
     onAddRoomAccess(dataEvent) {
@@ -111,6 +118,9 @@
             this.roomAccessListenerImps.map(v => {
                 v.onNewMessage(chatMessageImp);
             });
+        }
+        if (!!this.notifyNewMessageEvent) {
+            this.notifyNewMessageEvent(chatMessageImp)
         }
     };
 

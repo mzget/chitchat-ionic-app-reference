@@ -16,7 +16,7 @@
                     "CoreLocation.framework": [
                         {
                             "xml": false,
-                            "count": 2
+                            "count": 3
                         }
                     ],
                     "CoreGraphics.framework": [
@@ -126,7 +126,7 @@
                         },
                         {
                             "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<feature name=\"ProgressIndicator\"><param name=\"ios-package\" value=\"ProgressIndicator\" /></feature>",
@@ -144,7 +144,7 @@
                     "NSLocationWhenInUseUsageDescription": [
                         {
                             "xml": "<string />",
-                            "count": 2
+                            "count": 3
                         }
                     ],
                     "UIBackgroundModes": [
@@ -207,14 +207,14 @@
         "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
-        "org.apache.cordova.geolocation": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
         "org.pbernasconi.progressindicator": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
         "phonegap-plugin-push": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
     "dependent_plugins": {}
