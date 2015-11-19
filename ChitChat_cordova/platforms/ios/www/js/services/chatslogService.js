@@ -51,6 +51,10 @@
                     console.log('onEditedGroupMember :::::::	');
                     console.log(newgroup);
                 }
+                
+                server.getLastAccessRoomsInfo(function (err, res) {
+                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
+                });
             }
         }
 

@@ -53,9 +53,10 @@
                 var room = dataManager.getGroup(value.roomId);
                 if(!!room) {
                     data.data = room;
-                    data.data.body = lastMessageMap[value.roomId];
                     data.data.accessTime = value.accessTime;
-                    
+                    if(!!lastMessageMap && !!lastMessageMap[value.roomId]) {
+                        data.data.body = lastMessageMap[value.roomId];
+                    }
                     myRoomAccess.push(data['data']);
                 }
                 else {
@@ -64,8 +65,10 @@
                         server.getRoomInfo(value.roomId, function (err, res) {
                             if (res['code'] == 200) {
                                 data.data = res.data;
-                                data.data.body = lastMessageMap[value.roomId];
                                 data.data.accessTime = value.accessTime;
+                                if(!!lastMessageMap && !!lastMessageMap[value.roomId]) {
+                                    data.data.body = lastMessageMap[value.roomId];
+                                }
 
                                 if (data.data.type == RoomType.privateChat) {
                                     try {

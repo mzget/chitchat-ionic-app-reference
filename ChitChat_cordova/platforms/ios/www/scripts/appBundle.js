@@ -91,9 +91,6 @@ var Main = (function () {
                         }
                         else {
                             self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                            server.getLastAccessRoomsInfo(function (err, res) {
-                                console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
-                            });
                             if (res.code === 200) {
                             }
                             else {
