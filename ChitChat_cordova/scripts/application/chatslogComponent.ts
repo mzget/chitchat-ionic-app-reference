@@ -1,8 +1,7 @@
 interface IUnreadMessage {
     rid: string;
     count: number;
-    type: string,
-    body: string; // last message id.
+    message: Message;
 }
 
 class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
