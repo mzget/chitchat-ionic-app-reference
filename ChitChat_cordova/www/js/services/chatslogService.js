@@ -67,15 +67,26 @@
         function getUnreadMessages() {
             newMessageMap = {};
             chatlog_count = 0;
-            chatsLogComponent.getUnreadMessages(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
-                if (!!logsData) {
-                    logsData.map(function element(v) {
-                        newMessageMap[v.rid] = v;
+            chatsLogComponent.getUnreadMessages(main.getDataManager().myProfile.roomAccess, function done(err, unreadLogs) {
+                if (!!unreadLogs) {
+                    unreadLogs.map(function element(unread) {
+                        newMessageMap[unread.rid] = unread;
+                        if(!!unread.body) {
+                            main.decodeService(unread.body, function(err, res) {
+                                if (!err) {
+                                    unread.body = res;
+                                    newMessageMap[unread.rid] = unread;
+                                }
+                                else {
+                                    console.log(err, res);
+                                }
+                            });
+                        }
 
-                        var count = Number(v.count);
+                        var count = Number(unread.count);
                         chatlog_count += count;
 
-                        console.log(v);
+                        console.log(unread);
                     });
                 }
             });
