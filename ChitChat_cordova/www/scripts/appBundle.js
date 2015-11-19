@@ -366,7 +366,7 @@ var ChatsLogComponent = (function () {
     ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) {
         console.warn("ChatsLogComponent.onEditedGroupMember", JSON.stringify(dataEvent));
     };
-    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
+    ChatsLogComponent.prototype.getUnreadMessages = function (roomAccess, callback) {
         var self = this;
         var logs = [];
         async.mapSeries(roomAccess, function iterator(item, cb) {
@@ -391,6 +391,21 @@ var ChatsLogComponent = (function () {
         }, function done(err) {
             console.log("get unread message is done.");
             callback(null, logs);
+        });
+    };
+    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
+        this.server.getUnreadMsgOfRoom(roomAccess.roomId, roomAccess.accessTime.toString(), function res(err, res) {
+            console.warn("getUnreadMsgOfRoom: ", err, JSON.stringify(res));
+            if (err || res === null) {
+                callback(err, null);
+            }
+            else {
+                if (res.code === HttpStatusCode.success) {
+                    var unread = JSON.parse(JSON.stringify(res.data));
+                    unread.rid = roomAccess.roomId;
+                    callback(null, unread);
+                }
+            }
         });
     };
     ChatsLogComponent.prototype.getRoomsInfo = function () {

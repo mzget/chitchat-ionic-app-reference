@@ -44,7 +44,13 @@
                 dataListener.addRoomAccessListenerImp(chatsLogComponent);
                 chatsLogComponent.addNewMsgListener(listenerImp);
                 chatsLogComponent.updatedLastAccessTimeEvent = function (newRoomAccess) {
-                    getUnreadMessages();
+                    chatsLogComponent.getUnreadMessage(newRoomAccess.roomAccess[0], function(err, unread) {
+                        if(!!unread) {
+                            newMessageMap[unread.rid] = unread;
+                            
+                            calculateUnreadCount();
+                        }
+                    });
                 }
     
                 chatsLogComponent.onEditedGroupMember = function (newgroup) {
@@ -61,7 +67,7 @@
         function getUnreadMessages() {
             newMessageMap = {};
             chatlog_count = 0;
-            chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
+            chatsLogComponent.getUnreadMessages(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
                 if (!!logsData) {
                     logsData.map(function element(v) {
                         newMessageMap[v.rid] = v;
@@ -73,6 +79,16 @@
                     });
                 }
             });
+        }
+        
+        function calculateUnreadCount() {
+            chatlog_count = 0;
+            for (var key in newMessageMap) {
+                if (newMessageMap.hasOwnProperty(key)) {
+                    var count = newMessageMap[key].count;
+                    chatlog_count += count;
+                }
+            }
         }
 
         function getChatsLogCount() {

@@ -28,7 +28,6 @@
 			
 			listenerImp = function (newmsg) {
 			    console.log(vm.title, 'onNewMessage: ' + newmsg.rid);
-
 			    for (var i = 0; i < myRoomAccess.length; i++) {
 			        if (myRoomAccess[i]._id === newmsg.rid) {
 			            //console.log(JSON.stringify(myRoomAccess[i]) + ' / ' + newmsg.rid);
@@ -129,7 +128,6 @@
 		
 		$scope.gotoChat = function (accessId, chatlog) 
 		{		
-		    chatslogService.decreaseLogsCount(chatlog);
             var accessLength = myRoomAccess.length; 
             
 			for(var i=0; i< accessLength; i++)
