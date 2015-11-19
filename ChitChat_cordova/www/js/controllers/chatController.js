@@ -24,6 +24,7 @@ angular.module('spartan.chat', [])
 
     function addComponent() {
         main.dataListener.addChatListenerImp(chatRoomComponent);
+		sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
         chatRoomComponent.serviceListener = function (event, newMsg) {
             if (event === "onChat") {
                 Chats.set(chatRoomComponent.chatMessages);
@@ -61,6 +62,7 @@ angular.module('spartan.chat', [])
             chatRoomComponent.chatMessages = [];
             Chats.clear();
             main.dataListener.removeChatListenerImp(chatRoomComponent);
+			sharedObjectService.regisNotifyNewMessageEvent();
         });
     }
     

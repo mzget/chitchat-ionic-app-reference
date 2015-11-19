@@ -411,10 +411,20 @@ var ChatsLogComponent = (function () {
 })();
 var DataListener = (function () {
     function DataListener(dataManager) {
+        this.notifyNewMessageEvents = new Array();
         this.chatListenerImps = new Array();
         this.roomAccessListenerImps = new Array();
         this.dataManager = dataManager;
     }
+    DataListener.prototype.addNoticeNewMessageEvent = function (listener) {
+        if (this.notifyNewMessageEvents.length === 0) {
+            this.notifyNewMessageEvents.push(listener);
+        }
+    };
+    DataListener.prototype.removeNoticeNewMessageEvent = function (listener) {
+        var id = this.notifyNewMessageEvents.indexOf(listener);
+        this.notifyNewMessageEvents.splice(id, 1);
+    };
     DataListener.prototype.addChatListenerImp = function (listener) {
         this.chatListenerImps.push(listener);
     };
@@ -495,6 +505,11 @@ var DataListener = (function () {
     };
     DataListener.prototype.onChat = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
+        if (!!this.notifyNewMessageEvents && this.notifyNewMessageEvents.length !== 0) {
+            this.notifyNewMessageEvents.map(function (v, id, arr) {
+                v(chatMessageImp);
+            });
+        }
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach(function (value, id, arr) {
                 value.onChat(chatMessageImp);
@@ -504,9 +519,6 @@ var DataListener = (function () {
             this.roomAccessListenerImps.map(function (v) {
                 v.onNewMessage(chatMessageImp);
             });
-        }
-        if (!!this.notifyNewMessageEvent) {
-            this.notifyNewMessageEvent(chatMessageImp);
         }
     };
     ;

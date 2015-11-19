@@ -1,6 +1,17 @@
 ﻿class DataListener implements absSpartan.IServerListener, absSpartan.IChatServerListener {
     private dataManager: DataManager;
-    public notifyNewMessageEvent: (message: Message) => void;
+    
+    private notifyNewMessageEvents = new Array<(message: Message) => void>();
+    public addNoticeNewMessageEvent(listener: (message: Message) => void) {
+        if(this.notifyNewMessageEvents.length === 0) {
+            this.notifyNewMessageEvents.push(listener);
+        }
+    }
+    public removeNoticeNewMessageEvent(listener : (message: Message) => void) {
+        var id = this.notifyNewMessageEvents.indexOf(listener);
+        this.notifyNewMessageEvents.splice(id, 1);
+    }
+    
     private chatListenerImps = new Array<absSpartan.IChatServerListener>();
     public addChatListenerImp(listener: absSpartan.IChatServerListener) {
         this.chatListenerImps.push(listener);
@@ -108,7 +119,11 @@
 
     onChat(data) {
         var chatMessageImp: Message = JSON.parse(JSON.stringify(data));
-
+        if (!!this.notifyNewMessageEvents && this.notifyNewMessageEvents.length !== 0) {
+            this.notifyNewMessageEvents.map((v, id, arr) => {
+                v(chatMessageImp);
+            });
+        }
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach((value, id, arr) => {
                 value.onChat(chatMessageImp);
@@ -118,9 +133,6 @@
             this.roomAccessListenerImps.map(v => {
                 v.onNewMessage(chatMessageImp);
             });
-        }
-        if (!!this.notifyNewMessageEvent) {
-            this.notifyNewMessageEvent(chatMessageImp)
         }
     };
 

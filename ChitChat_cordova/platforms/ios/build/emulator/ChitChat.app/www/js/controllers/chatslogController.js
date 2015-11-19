@@ -136,7 +136,6 @@
 			{
 				if( myRoomAccess[i]['_id'] == accessId )
 				{
-					myRoomAccess[i]['body']['count'] = 0;
 					switch( myRoomAccess[i]['type'] )
 					{
 						case 0:
