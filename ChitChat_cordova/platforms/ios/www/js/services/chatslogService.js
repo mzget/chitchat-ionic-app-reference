@@ -44,7 +44,13 @@
                 dataListener.addRoomAccessListenerImp(chatsLogComponent);
                 chatsLogComponent.addNewMsgListener(listenerImp);
                 chatsLogComponent.updatedLastAccessTimeEvent = function (newRoomAccess) {
-                    getUnreadMessages();
+                    chatsLogComponent.getUnreadMessage(newRoomAccess.roomAccess[0], function(err, unread) {
+                        if(!!unread) {
+                            newMessageMap[unread.rid] = unread;
+                            
+                            calculateUnreadCount();
+                        }
+                    });
                 }
     
                 chatsLogComponent.onEditedGroupMember = function (newgroup) {
@@ -61,18 +67,39 @@
         function getUnreadMessages() {
             newMessageMap = {};
             chatlog_count = 0;
-            chatsLogComponent.getUnreadMessage(main.getDataManager().myProfile.roomAccess, function done(err, logsData) {
-                if (!!logsData) {
-                    logsData.map(function element(v) {
-                        newMessageMap[v.rid] = v;
+            chatsLogComponent.getUnreadMessages(main.getDataManager().myProfile.roomAccess, function done(err, unreadLogs) {
+                if (!!unreadLogs) {
+                    unreadLogs.map(function element(unread) {
+                        newMessageMap[unread.rid] = unread;
+                        if(!!unread.body) {
+                            main.decodeService(unread.body, function(err, res) {
+                                if (!err) {
+                                    unread.body = res;
+                                    newMessageMap[unread.rid] = unread;
+                                }
+                                else {
+                                    console.log(err, res);
+                                }
+                            });
+                        }
 
-                        var count = Number(v.count);
+                        var count = Number(unread.count);
                         chatlog_count += count;
 
-                        console.log(v);
+                        console.log(unread);
                     });
                 }
             });
+        }
+        
+        function calculateUnreadCount() {
+            chatlog_count = 0;
+            for (var key in newMessageMap) {
+                if (newMessageMap.hasOwnProperty(key)) {
+                    var count = newMessageMap[key].count;
+                    chatlog_count += count;
+                }
+            }
         }
 
         function getChatsLogCount() {

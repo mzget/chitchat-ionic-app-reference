@@ -53,7 +53,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         
         public getUnreadMessages(roomAccess: RoomAccessData[], callback:(err: Error, logsData: Array<IUnreadMessage>) => void) {
             var self = this;
-            var logs = [];
+            var unreadLogs = [];
             async.mapSeries(roomAccess, function iterator(item, cb) {
                 if (!!item.roomId && !!item.accessTime) {
                     self.server.getUnreadMsgOfRoom(item.roomId, item.accessTime.toString(), function res(err, res) {
@@ -64,7 +64,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
                             if (res.code === HttpStatusCode.success) {
                                 var unread: IUnreadMessage = JSON.parse(JSON.stringify(res.data));
                                 unread.rid = item.roomId;
-                                logs.push(unread);
+                                unreadLogs.push(unread);
                             }
                         }
                         cb(null, null);
@@ -75,7 +75,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
                 }
             }, function done(err) {
                 console.log("get unread message is done.");
-                callback(null, logs);
+                callback(null, unreadLogs);
             });
         }
         
