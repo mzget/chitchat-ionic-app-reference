@@ -497,7 +497,7 @@ angular.module('spartan.services', [])
       }
 
 			for (var i = 0; i < chats.length; i++) {
-        if(!chats[i].hasOwnProperty('_id')) return;
+        if(!chats[i].hasOwnProperty('_id')) { continue; }
         var dateTime  = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
         if(date.indexOf(dateTime) == -1){ 
           date.push( chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')) );
