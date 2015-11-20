@@ -121,7 +121,7 @@ angular.module('spartan.services', [])
         var namePath = imageUrl.substr(0, imageUrl.lastIndexOf('/') + 1);
         console.log(imageUrl,namePath);
         var newName = GenerateID.makeid() + name;
-        $cordovaFile.copyFile(namePath, name, cordova.file.cacheDirectory, newName)
+        $cordovaFile.moveFile(namePath, name, cordova.file.cacheDirectory, newName)
           .then(function(info) {
             FileService.storeImage(newName);
             resolve();
@@ -458,7 +458,7 @@ angular.module('spartan.services', [])
   }
 })
 
-.factory('Chats', function($sce,roomSelected) {
+.factory('Chats', function($sce,$cordovaFile,roomSelected) {
     // Might use a resource here that returns a JSON array
 
 	// Some fake testing data
@@ -523,7 +523,20 @@ angular.module('spartan.services', [])
               if( chats[i].temp == 'true' ){
                 chats[i].body = cordova.file.cacheDirectory + chats[i]._id;
               }else{
-                chats[i].bodyUrl = $sce.trustAsResourceUrl('http://203.113.25.44' + chats[i].body);
+                // console.log(mediaUpload);
+                // var check = false;
+
+                // $.each(mediaUpload, function(index, value){
+                //   if(mediaUpload[index].messageId == chats[i]._id) { 
+                //     check = true;
+                //     chats[i].bodyUrl = cordova.file.cacheDirectory + Object.keys(mediaUpload);
+                //     console.log('BeforeOKOK',Object.keys(mediaUpload));
+                //     console.log('OKOKOK',chats[i].bodyUrl);
+                //   }
+                // });
+                // if(check==false){
+                  chats[i].bodyUrl = $sce.trustAsResourceUrl('http://203.113.25.44' + chats[i].body);
+                // }
               }
 			    }
 			    else if (chats[i].type === ContentType[ContentType.Location]) {
