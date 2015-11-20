@@ -24,6 +24,7 @@ angular.module('spartan.chat', [])
 
     function addComponent() {
         main.dataListener.addChatListenerImp(chatRoomComponent);
+		sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
         chatRoomComponent.serviceListener = function (event, newMsg) {
             if (event === "onChat") {
                 Chats.set(chatRoomComponent.chatMessages);
@@ -54,13 +55,14 @@ angular.module('spartan.chat', [])
         chatRoomComponent.leaveRoom(currentRoom._id, function callback(err, res) {
             localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
             localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomComponent.chatMessages));
-            console.warn("save", currentRoom.name, JSON.stringify(chatRoomComponent.chatMessages));
+            console.warn("save chat history", currentRoom.name);
 
             currentRoom = null;
             roomSelected.setRoom(currentRoom);
             chatRoomComponent.chatMessages = [];
             Chats.clear();
             main.dataListener.removeChatListenerImp(chatRoomComponent);
+			sharedObjectService.regisNotifyNewMessageEvent();
         });
     }
     
@@ -542,6 +544,11 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cor
 	}, function (err) {
 	    // error
 	    console.error(err);
+
+	    $cordovaDialogs.alert('Get your current position timeout.', 'Location Fail.', 'OK')
+        .then(function () {
+            $scope.closeMapModal();
+        });
 	});
 
     var watchOptions = {
