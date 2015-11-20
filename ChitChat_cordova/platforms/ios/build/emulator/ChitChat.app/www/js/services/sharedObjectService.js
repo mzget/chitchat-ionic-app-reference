@@ -5,15 +5,16 @@
         .module('spartan.services')
         .factory('sharedObjectService', sharedObjectService);
 
-    sharedObjectService.$inject = ['$http'];
+    sharedObjectService.$inject = ['$http', 'localNotifyService'];
 
-    function sharedObjectService($http) {
+    function sharedObjectService($http, localNotifyService) {
         var notifyManager = null;
         var dataListener = main.getDataListener();
 
         var service = {
             getDataListener: getDataListener,
             regisNotifyNewMessageEvent: regisNotifyNewMessageEvent,
+            unsubscribeGlobalNotifyMessageEvent: unsubscribeGlobalNotifyMessageEvent,
             createNotifyManager: createNotifyManager,
             getNotifyManager: getNotifyManager
         };
@@ -24,11 +25,14 @@
             return dataListener;
         }
 
-        function regisNotifyNewMessageEvent(localNotifyService) {
-            dataListener.notifyNewMessageEvent = function (chatMessageImp) {
-                var appBackground = cordova.plugins.backgroundMode.isActive();
-                notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
-            }
+        function regisNotifyNewMessageEvent() {
+            console.log("subscribe global notify message event");
+            
+            dataListener.addNoticeNewMessageEvent(noticeNewMessage);
+        }
+        
+        function unsubscribeGlobalNotifyMessageEvent() {
+             dataListener.removeNoticeNewMessageEvent(noticeNewMessage);
         }
 
         function createNotifyManager(main) {
@@ -40,5 +44,11 @@
         function getNotifyManager() {
             return notifyManager;
         }
+        
+        function noticeNewMessage(chatMessageImp) {
+            console.log("noticeNewMessage", chatMessageImp.type);
+            var appBackground = cordova.plugins.backgroundMode.isActive();
+            notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
+        };
     }
 })();

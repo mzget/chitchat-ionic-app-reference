@@ -91,9 +91,6 @@ var Main = (function () {
                         }
                         else {
                             self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                            server.getLastAccessRoomsInfo(function (err, res) {
-                                console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
-                            });
                             if (res.code === 200) {
                             }
                             else {
@@ -352,7 +349,7 @@ var ChatsLogComponent = (function () {
         });
     };
     ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
-        console.warn("ChatsLogComponent.onAccessRoom", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onAccessRoom");
         this._isReady = true;
         if (!!this.onReady)
             this.onReady();
@@ -369,9 +366,9 @@ var ChatsLogComponent = (function () {
     ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) {
         console.warn("ChatsLogComponent.onEditedGroupMember", JSON.stringify(dataEvent));
     };
-    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
+    ChatsLogComponent.prototype.getUnreadMessages = function (roomAccess, callback) {
         var self = this;
-        var logs = [];
+        var unreadLogs = [];
         async.mapSeries(roomAccess, function iterator(item, cb) {
             if (!!item.roomId && !!item.accessTime) {
                 self.server.getUnreadMsgOfRoom(item.roomId, item.accessTime.toString(), function res(err, res) {
@@ -382,7 +379,7 @@ var ChatsLogComponent = (function () {
                         if (res.code === HttpStatusCode.success) {
                             var unread = JSON.parse(JSON.stringify(res.data));
                             unread.rid = item.roomId;
-                            logs.push(unread);
+                            unreadLogs.push(unread);
                         }
                     }
                     cb(null, null);
@@ -393,7 +390,22 @@ var ChatsLogComponent = (function () {
             }
         }, function done(err) {
             console.log("get unread message is done.");
-            callback(null, logs);
+            callback(null, unreadLogs);
+        });
+    };
+    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
+        this.server.getUnreadMsgOfRoom(roomAccess.roomId, roomAccess.accessTime.toString(), function res(err, res) {
+            console.warn("getUnreadMsgOfRoom: ", err, JSON.stringify(res));
+            if (err || res === null) {
+                callback(err, null);
+            }
+            else {
+                if (res.code === HttpStatusCode.success) {
+                    var unread = JSON.parse(JSON.stringify(res.data));
+                    unread.rid = roomAccess.roomId;
+                    callback(null, unread);
+                }
+            }
         });
     };
     ChatsLogComponent.prototype.getRoomsInfo = function () {
@@ -414,10 +426,20 @@ var ChatsLogComponent = (function () {
 })();
 var DataListener = (function () {
     function DataListener(dataManager) {
+        this.notifyNewMessageEvents = new Array();
         this.chatListenerImps = new Array();
         this.roomAccessListenerImps = new Array();
         this.dataManager = dataManager;
     }
+    DataListener.prototype.addNoticeNewMessageEvent = function (listener) {
+        if (this.notifyNewMessageEvents.length === 0) {
+            this.notifyNewMessageEvents.push(listener);
+        }
+    };
+    DataListener.prototype.removeNoticeNewMessageEvent = function (listener) {
+        var id = this.notifyNewMessageEvents.indexOf(listener);
+        this.notifyNewMessageEvents.splice(id, 1);
+    };
     DataListener.prototype.addChatListenerImp = function (listener) {
         this.chatListenerImps.push(listener);
     };
@@ -498,6 +520,11 @@ var DataListener = (function () {
     };
     DataListener.prototype.onChat = function (data) {
         var chatMessageImp = JSON.parse(JSON.stringify(data));
+        if (!!this.notifyNewMessageEvents && this.notifyNewMessageEvents.length !== 0) {
+            this.notifyNewMessageEvents.map(function (v, id, arr) {
+                v(chatMessageImp);
+            });
+        }
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach(function (value, id, arr) {
                 value.onChat(chatMessageImp);
@@ -507,9 +534,6 @@ var DataListener = (function () {
             this.roomAccessListenerImps.map(function (v) {
                 v.onNewMessage(chatMessageImp);
             });
-        }
-        if (!!this.notifyNewMessageEvent) {
-            this.notifyNewMessageEvent(chatMessageImp);
         }
     };
     ;

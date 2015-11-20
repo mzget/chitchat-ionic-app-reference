@@ -20,7 +20,7 @@
             chatslogService.init();
 
             vm.dataListener = sharedObjectService.getDataListener();
-            sharedObjectService.regisNotifyNewMessageEvent(localNotifyService);
+            sharedObjectService.regisNotifyNewMessageEvent();
         }
 
         function onLeave() {

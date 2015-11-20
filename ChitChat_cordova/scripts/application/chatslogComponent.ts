@@ -1,8 +1,7 @@
 interface IUnreadMessage {
     rid: string;
     count: number;
-    type: string,
-    body: string; // last message id.
+    message: Message;
 }
 
 class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
@@ -18,7 +17,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         });
     }
     onAccessRoom(dataEvent) {
-        console.warn("ChatsLogComponent.onAccessRoom", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onAccessRoom");
 
         this._isReady = true;
         if (!!this.onReady)
@@ -51,9 +50,9 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
             console.log("ChatsLogComponent : constructor");
         }
         
-        public getUnreadMessage(roomAccess: RoomAccessData[], callback:(err: Error, logsData: Array<IUnreadMessage>) => void) {
+        public getUnreadMessages(roomAccess: RoomAccessData[], callback:(err: Error, logsData: Array<IUnreadMessage>) => void) {
             var self = this;
-            var logs = [];
+            var unreadLogs = [];
             async.mapSeries(roomAccess, function iterator(item, cb) {
                 if (!!item.roomId && !!item.accessTime) {
                     self.server.getUnreadMsgOfRoom(item.roomId, item.accessTime.toString(), function res(err, res) {
@@ -64,7 +63,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
                             if (res.code === HttpStatusCode.success) {
                                 var unread: IUnreadMessage = JSON.parse(JSON.stringify(res.data));
                                 unread.rid = item.roomId;
-                                logs.push(unread);
+                                unreadLogs.push(unread);
                             }
                         }
                         cb(null, null);
@@ -75,7 +74,24 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
                 }
             }, function done(err) {
                 console.log("get unread message is done.");
-                callback(null, logs);
+                callback(null, unreadLogs);
+            });
+        }
+        
+        public getUnreadMessage(roomAccess: RoomAccessData, callback:(err, res) => void) {
+            this.server.getUnreadMsgOfRoom(roomAccess.roomId, roomAccess.accessTime.toString(), function res(err, res) {
+                console.warn("getUnreadMsgOfRoom: ", err, JSON.stringify(res));
+                if (err || res === null) {
+                    callback(err, null);
+                }
+                else {
+                    if (res.code === HttpStatusCode.success) {
+                        var unread: IUnreadMessage = JSON.parse(JSON.stringify(res.data));
+                        unread.rid = roomAccess.roomId;
+                        
+                        callback(null, unread);
+                    }
+                }
             });
         }
         
