@@ -14,8 +14,7 @@
             getChatsLogCount: getChatsLogCount,
             decreaseLogsCount: decreaseLogsCount,
             increaseLogsCount: increaseLogsCount,
-            getUnreadMessageMap: getUnreadMessageMap,
-            onUnreadMessageMapChanged: onUnreadMessageMapChanged
+            getUnreadMessageMap: getUnreadMessageMap
         };
 
         return service;
@@ -26,8 +25,6 @@
         var chatlog_count = 0;
         var unreadMessageMap = {};
         var isInit = false;
-
-        var onUnreadMessageMapChanged;
 
         function init() {
             if(!isInit) {
@@ -49,8 +46,16 @@
                 chatsLogComponent.updatedLastAccessTimeEvent = function (newRoomAccess) {
                     chatsLogComponent.getUnreadMessage(newRoomAccess.roomAccess[0], function(err, unread) {
                         if(!!unread) {
+                            main.decodeService(unread.message.body, function (err, res) {
+                                if (!err) {
+                                    unread.message.body = res;
+                                }
+                                else {
+                                    console.log(err, res);
+                                }
+                            });
+
                             unreadMessageMap[unread.rid] = unread;
-                            
                             calculateUnreadCount();
                         }
                     });
@@ -73,18 +78,18 @@
             chatsLogComponent.getUnreadMessages(main.getDataManager().myProfile.roomAccess, function done(err, unreadLogs) {
                 if (!!unreadLogs) {
                     unreadLogs.map(function element(unread) {
-                        unreadMessageMap[unread.rid] = unread;
                         if(!!unread.message) {
                             main.decodeService(unread.message.body, function(err, res) {
                                 if (!err) {
                                     unread.message.body = res;
-                                    unreadMessageMap[unread.rid] = unread;
                                 }
                                 else {
                                     console.log(err, res);
                                 }
                             });
                         }
+
+                        unreadMessageMap[unread.rid] = unread;
 
                         var count = Number(unread.count);
                         chatlog_count += count;

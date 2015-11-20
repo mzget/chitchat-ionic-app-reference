@@ -55,7 +55,7 @@ angular.module('spartan.chat', [])
         chatRoomComponent.leaveRoom(currentRoom._id, function callback(err, res) {
             localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
             localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomComponent.chatMessages));
-            console.warn("save", currentRoom.name, JSON.stringify(chatRoomComponent.chatMessages));
+            console.warn("save chat history", currentRoom.name);
 
             currentRoom = null;
             roomSelected.setRoom(currentRoom);

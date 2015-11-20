@@ -50,9 +50,6 @@
 			}
 			chatslogComponent = chatslogService.getChatsLogComponent();
 			chatslogComponent.addNewMsgListener(listenerImp);
-			chatslogService.onUnreadMessageMapChanged = function() {
-			    updateUnreadMessageCount();
-			};
         }
 
         getRoomInfo();
@@ -73,7 +70,13 @@
                         data.data.body = unreadMessageMap[value.roomId];
                     }
                     
-                    data.data.lastTime = unreadMessageMap[value.roomId].message ? unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                    if (!!unreadMessageMap && !!unreadMessageMap[value.roomId].message) {
+                        data.data.lastTime = unreadMessageMap[value.roomId].message.createTime ?
+                            unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                    }
+                    else {
+                        data.data.lastTime = value.accessTime;
+                    }
 
                     myRoomAccess.push(data['data']);
                 }
@@ -87,7 +90,13 @@
                                     data.data.body = unreadMessageMap[value.roomId];
                                 }
 
-                                data.data.lastTime = unreadMessageMap[value.roomId].message ? unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                                if (!!unreadMessageMap && !!unreadMessageMap[value.roomId].message) {
+                                    data.data.lastTime = unreadMessageMap[value.roomId].message.createTime ?
+                                        unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                                }
+                                else {
+                                    data.data.lastTime = value.accessTime;
+                                }
 
                                 if (data.data.type == RoomType.privateChat) {
                                     try {
@@ -147,7 +156,9 @@
         }
         
 		var refresh = function () 
-		{		
+		{
+		    updateUnreadMessageCount();
+
 			$scope.roomAccess = myRoomAccess;
 			
 			$timeout(refresh, 1000);
@@ -200,8 +211,6 @@
 
         $scope.$on('$ionicView.enter', function() { 
             console.log("$ionicView.enter: ", vm.title);
-            
-		    updateUnreadMessageCount();
         });
     }
 })();
