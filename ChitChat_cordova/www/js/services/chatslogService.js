@@ -48,7 +48,6 @@
                     chatsLogComponent.getUnreadMessage(newRoomAccess.roomAccess[0], function(err, unread) {
                         if (!!unread) {
                             organizeUnreadMessageMapForDisplayInfo(unread, function done() {
-                                unreadMessageMap[unread.rid] = unread;
                                 calculateUnreadCount();
                             });
                         }
@@ -73,9 +72,7 @@
                 if (!!unreadLogs) {
                     unreadLogs.map(function element(unread) {
                         if(!!unread.message) {
-                           organizeUnreadMessageMapForDisplayInfo(unread, function done() {
-                                unreadMessageMap[unread.rid] = unread;
-                           });
+                           organizeUnreadMessageMapForDisplayInfo(unread, null);
                         }
 
                         var count = Number(unread.count);
@@ -154,7 +151,8 @@
                     break;
             }
             
-            done();
+            unreadMessageMap[unread.rid] = unread;
+            if(!!done) done();
          }
     }
 })();

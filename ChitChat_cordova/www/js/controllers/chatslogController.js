@@ -30,12 +30,15 @@
 			    console.log(vm.title, 'onNewMessage: ' + newmsg.rid);
                 var unread = {};
                 unread.message = newmsg;
+                unread.rid = newmsg.rid;
                 chatslogService.organizeUnreadMessageMapForDisplayInfo(unread, function done() {                  
                     var lastMessageMap = chatslogService.getUnreadMessageMap();
                     myRoomAccess.some(function(value, id, arr) {
                         if(value._id === newmsg.rid) {
                             value.body.count++;
-                            value.body.message = lastMessageMap[newmsg.rid];
+                            lastMessageMap[newmsg.rid].count = value.body.count; 
+                            value.body.count = lastMessageMap[newmsg.rid].count;
+                            value.body.message = lastMessageMap[newmsg.rid].message;
                             value.lastTime = newmsg.createTime;
                             
                             return true;
