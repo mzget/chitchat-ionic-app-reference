@@ -32,10 +32,12 @@
                 myRoomAccess.some(function(value, id, arr) {
                    if(value._id === newmsg.rid) {
                        value.body.count++;
+                       value.body.message = newmsg;
+                       value.lastTime = newmsg.createTime;
                        if(newmsg.type === ContentType[ContentType.Text]) {
                         main.decodeService(newmsg.body, function(err, res) {
                             if (!err) {
-                                value.body.body = res;
+                                value.body.message.body = res;
                             }
                             else {
                                 console.log(err, res);
@@ -58,15 +60,24 @@
             console.log("myRoomAccess.length", roomAccess.length);
             
             var data = {};
-            var unreadMessageMap = chatslogService.getLastMessageMap();
+            var unreadMessageMap = chatslogService.getUnreadMessageMap();
             roomAccess.map(function iterator(value, id, arr) {
                 var room = dataManager.getGroup(value.roomId);
                 if(!!room) {
                     data.data = room;
-                    data.data.accessTime = value.accessTime;
-                    if(!!unreadMessageMap && !!unreadMessageMap[value.roomId]) {
+
+                    if (!!unreadMessageMap && !!unreadMessageMap[value.roomId]) {
                         data.data.body = unreadMessageMap[value.roomId];
                     }
+                    
+                    if (!!unreadMessageMap && !!unreadMessageMap[value.roomId].message) {
+                        data.data.lastTime = unreadMessageMap[value.roomId].message.createTime ?
+                            unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                    }
+                    else {
+                        data.data.lastTime = value.accessTime;
+                    }
+
                     myRoomAccess.push(data['data']);
                 }
                 else {
@@ -75,9 +86,16 @@
                         server.getRoomInfo(value.roomId, function (err, res) {
                             if (res['code'] == 200) {
                                 data.data = res.data;
-                                data.data.accessTime = value.accessTime;
-                                if(!!unreadMessageMap && !!unreadMessageMap[value.roomId]) {
+                                if (!!unreadMessageMap && !!unreadMessageMap[value.roomId]) {
                                     data.data.body = unreadMessageMap[value.roomId];
+                                }
+
+                                if (!!unreadMessageMap && !!unreadMessageMap[value.roomId].message) {
+                                    data.data.lastTime = unreadMessageMap[value.roomId].message.createTime ?
+                                        unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                                }
+                                else {
+                                    data.data.lastTime = value.accessTime;
                                 }
 
                                 if (data.data.type == RoomType.privateChat) {
@@ -131,14 +149,16 @@
         }
 
         function updateUnreadMessageCount() {
-            var lastMessageMap = chatslogService.getLastMessageMap();
+            var lastMessageMap = chatslogService.getUnreadMessageMap();
             for (var i = 0; i < myRoomAccess.length; i++) {
                 myRoomAccess[i].body = lastMessageMap[myRoomAccess[i]._id];
             }
         }
         
 		var refresh = function () 
-		{		
+		{
+		    updateUnreadMessageCount();
+
 			$scope.roomAccess = myRoomAccess;
 			
 			$timeout(refresh, 1000);
@@ -191,8 +211,6 @@
 
         $scope.$on('$ionicView.enter', function() { 
             console.log("$ionicView.enter: ", vm.title);
-            
-		    updateUnreadMessageCount();
         });
     }
 })();
