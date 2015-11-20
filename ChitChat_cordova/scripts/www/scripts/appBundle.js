@@ -349,7 +349,7 @@ var ChatsLogComponent = (function () {
         });
     };
     ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
-        console.warn("ChatsLogComponent.onAccessRoom", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onAccessRoom");
         this._isReady = true;
         if (!!this.onReady)
             this.onReady();

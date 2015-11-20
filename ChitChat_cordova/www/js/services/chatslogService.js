@@ -14,7 +14,8 @@
             getChatsLogCount: getChatsLogCount,
             decreaseLogsCount: decreaseLogsCount,
             increaseLogsCount: increaseLogsCount,
-            getUnreadMessageMap: getUnreadMessageMap
+            getUnreadMessageMap: getUnreadMessageMap,
+            organizeUnreadMessageMapForDisplayInfo: organizeUnreadMessageMapForDisplayInfo
         };
 
         return service;
@@ -45,18 +46,11 @@
                 chatsLogComponent.addNewMsgListener(listenerImp);
                 chatsLogComponent.updatedLastAccessTimeEvent = function (newRoomAccess) {
                     chatsLogComponent.getUnreadMessage(newRoomAccess.roomAccess[0], function(err, unread) {
-                        if(!!unread) {
-                            main.decodeService(unread.message.body, function (err, res) {
-                                if (!err) {
-                                    unread.message.body = res;
-                                }
-                                else {
-                                    console.log(err, res);
-                                }
+                        if (!!unread) {
+                            organizeUnreadMessageMapForDisplayInfo(unread, function done() {
+                                unreadMessageMap[unread.rid] = unread;
+                                calculateUnreadCount();
                             });
-
-                            unreadMessageMap[unread.rid] = unread;
-                            calculateUnreadCount();
                         }
                     });
                 }
@@ -79,17 +73,10 @@
                 if (!!unreadLogs) {
                     unreadLogs.map(function element(unread) {
                         if(!!unread.message) {
-                            main.decodeService(unread.message.body, function(err, res) {
-                                if (!err) {
-                                    unread.message.body = res;
-                                }
-                                else {
-                                    console.log(err, res);
-                                }
-                            });
+                           organizeUnreadMessageMapForDisplayInfo(unread, function done() {
+                                unreadMessageMap[unread.rid] = unread;
+                           });
                         }
-
-                        unreadMessageMap[unread.rid] = unread;
 
                         var count = Number(unread.count);
                         chatlog_count += count;
@@ -128,6 +115,46 @@
          
          function getUnreadMessageMap() {
              return unreadMessageMap;
+         }
+         
+         function organizeUnreadMessageMapForDisplayInfo(unread, done) { 
+            var contact = main.getDataManager().getContactProfile(unread.message.sender);
+            switch (unread.message.type) {
+                case ContentType[ContentType.Text]:  
+                    main.decodeService(unread.message.body, function (err, res) {
+                        if (!err) {
+                            unread.message.body = res;
+                        }
+                        else {
+                            console.log(err, res);
+                        }
+                    });
+                    break;
+                case ContentType[ContentType.Sticker]:
+                    var message = contact.displayname + " sent a sticker.";
+                    unread.message.body = message;
+                    break;
+                case ContentType[ContentType.Voice]:
+                    var message = contact.displayname + " sent a voice message.";
+                    unread.message.body = message;
+                    break;
+                case ContentType[ContentType.Image]:
+                    var message = contact.displayname + " sent a image.";
+                    unread.message.body = message;
+                    break;
+                case ContentType[ContentType.Video]:
+                    var message = contact.displayname + " sent a video."
+                    unread.message.body = message;
+                    break;
+                case ContentType[ContentType.Location]:
+                    var message = contact.displayname + " sent a location.";
+                    unread.message.body = message;
+                    break;
+                default:
+                    break;
+            }
+            
+            done();
          }
     }
 })();
