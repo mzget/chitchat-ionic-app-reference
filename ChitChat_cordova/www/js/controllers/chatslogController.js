@@ -28,24 +28,22 @@
 			
 			listenerImp = function (newmsg) {
 			    console.log(vm.title, 'onNewMessage: ' + newmsg.rid);
-                
-                myRoomAccess.some(function(value, id, arr) {
-                   if(value._id === newmsg.rid) {
-                       value.body.count++;
-                       value.body.message = newmsg;
-                       value.lastTime = newmsg.createTime;
-                       if(newmsg.type === ContentType[ContentType.Text]) {
-                        main.decodeService(newmsg.body, function(err, res) {
-                            if (!err) {
-                                value.body.message.body = res;
-                            }
-                            else {
-                                console.log(err, res);
-                            }
-                        });                   
-                       }
-                       return true;
-                   } 
+                var unread = {};
+                unread.message = newmsg;
+                unread.rid = newmsg.rid;
+                chatslogService.organizeUnreadMessageMapForDisplayInfo(unread, function done() {                  
+                    var lastMessageMap = chatslogService.getUnreadMessageMap();
+                    myRoomAccess.some(function(value, id, arr) {
+                        if(value._id === newmsg.rid) {
+                            value.body.count++;
+                            lastMessageMap[newmsg.rid].count = value.body.count; 
+                            value.body.count = lastMessageMap[newmsg.rid].count;
+                            value.body.message = lastMessageMap[newmsg.rid].message;
+                            value.lastTime = newmsg.createTime;
+                            
+                            return true;
+                        } 
+                    });
                 });
 			}
 			chatslogComponent = chatslogService.getChatsLogComponent();
@@ -68,11 +66,14 @@
 
                     if (!!unreadMessageMap && !!unreadMessageMap[value.roomId]) {
                         data.data.body = unreadMessageMap[value.roomId];
-                    }
                     
-                    if (!!unreadMessageMap && !!unreadMessageMap[value.roomId].message) {
-                        data.data.lastTime = unreadMessageMap[value.roomId].message.createTime ?
-                            unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                        if (!!unreadMessageMap[value.roomId].message) {
+                            data.data.lastTime = unreadMessageMap[value.roomId].message.createTime ?
+                                unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                        }
+                        else {
+                            data.data.lastTime = value.accessTime;
+                        }
                     }
                     else {
                         data.data.lastTime = value.accessTime;

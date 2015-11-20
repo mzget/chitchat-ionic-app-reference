@@ -17,7 +17,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         });
     }
     onAccessRoom(dataEvent) {
-        console.warn("ChatsLogComponent.onAccessRoom", JSON.stringify(dataEvent));
+        console.warn("ChatsLogComponent.onAccessRoom");
 
         this._isReady = true;
         if (!!this.onReady)

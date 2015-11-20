@@ -14,7 +14,8 @@
             getChatsLogCount: getChatsLogCount,
             decreaseLogsCount: decreaseLogsCount,
             increaseLogsCount: increaseLogsCount,
-            getLastMessageMap: getLastMessageMap
+            getUnreadMessageMap: getUnreadMessageMap,
+            organizeUnreadMessageMapForDisplayInfo: organizeUnreadMessageMapForDisplayInfo
         };
 
         return service;
@@ -23,7 +24,7 @@
         var listenerImp;
         var dataListener = null;
         var chatlog_count = 0;
-        var newMessageMap = {};
+        var unreadMessageMap = {};
         var isInit = false;
 
         function init() {
@@ -45,10 +46,10 @@
                 chatsLogComponent.addNewMsgListener(listenerImp);
                 chatsLogComponent.updatedLastAccessTimeEvent = function (newRoomAccess) {
                     chatsLogComponent.getUnreadMessage(newRoomAccess.roomAccess[0], function(err, unread) {
-                        if(!!unread) {
-                            newMessageMap[unread.rid] = unread;
-                            
-                            calculateUnreadCount();
+                        if (!!unread) {
+                            organizeUnreadMessageMapForDisplayInfo(unread, function done() {
+                                calculateUnreadCount();
+                            });
                         }
                     });
                 }
@@ -65,22 +66,13 @@
         }
 
         function getUnreadMessages() {
-            newMessageMap = {};
+            unreadMessageMap = {};
             chatlog_count = 0;
             chatsLogComponent.getUnreadMessages(main.getDataManager().myProfile.roomAccess, function done(err, unreadLogs) {
                 if (!!unreadLogs) {
                     unreadLogs.map(function element(unread) {
-                        newMessageMap[unread.rid] = unread;
-                        if(!!unread.body) {
-                            main.decodeService(unread.body, function(err, res) {
-                                if (!err) {
-                                    unread.body = res;
-                                    newMessageMap[unread.rid] = unread;
-                                }
-                                else {
-                                    console.log(err, res);
-                                }
-                            });
+                        if(!!unread.message) {
+                           organizeUnreadMessageMapForDisplayInfo(unread, null);
                         }
 
                         var count = Number(unread.count);
@@ -94,9 +86,9 @@
         
         function calculateUnreadCount() {
             chatlog_count = 0;
-            for (var key in newMessageMap) {
-                if (newMessageMap.hasOwnProperty(key)) {
-                    var count = newMessageMap[key].count;
+            for (var key in unreadMessageMap) {
+                if (unreadMessageMap.hasOwnProperty(key)) {
+                    var count = unreadMessageMap[key].count;
                     chatlog_count += count;
                 }
             }
@@ -118,8 +110,49 @@
             return chatsLogComponent;
          }
          
-         function getLastMessageMap() {
-             return newMessageMap;
+         function getUnreadMessageMap() {
+             return unreadMessageMap;
+         }
+         
+         function organizeUnreadMessageMapForDisplayInfo(unread, done) { 
+            var contact = main.getDataManager().getContactProfile(unread.message.sender);
+            switch (unread.message.type) {
+                case ContentType[ContentType.Text]:  
+                    main.decodeService(unread.message.body, function (err, res) {
+                        if (!err) {
+                            unread.message.body = res;
+                        }
+                        else {
+                            console.log(err, res);
+                        }
+                    });
+                    break;
+                case ContentType[ContentType.Sticker]:
+                    var message = contact.displayname + " sent a sticker.";
+                    unread.message.body = message;
+                    break;
+                case ContentType[ContentType.Voice]:
+                    var message = contact.displayname + " sent a voice message.";
+                    unread.message.body = message;
+                    break;
+                case ContentType[ContentType.Image]:
+                    var message = contact.displayname + " sent a image.";
+                    unread.message.body = message;
+                    break;
+                case ContentType[ContentType.Video]:
+                    var message = contact.displayname + " sent a video."
+                    unread.message.body = message;
+                    break;
+                case ContentType[ContentType.Location]:
+                    var message = contact.displayname + " sent a location.";
+                    unread.message.body = message;
+                    break;
+                default:
+                    break;
+            }
+            
+            unreadMessageMap[unread.rid] = unread;
+            if(!!done) done();
          }
     }
 })();
