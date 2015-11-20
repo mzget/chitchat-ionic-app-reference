@@ -35,10 +35,8 @@
                     var lastMessageMap = chatslogService.getUnreadMessageMap();
                     myRoomAccess.some(function(value, id, arr) {
                         if(value._id === newmsg.rid) {
-                            console.log(value.body.count);
                             value.body.count++;
                             lastMessageMap[newmsg.rid].count = value.body.count; 
-                            console.log(lastMessageMap[newmsg.rid]);
                             value.body.count = lastMessageMap[newmsg.rid].count;
                             value.body.message = lastMessageMap[newmsg.rid].message;
                             value.lastTime = newmsg.createTime;

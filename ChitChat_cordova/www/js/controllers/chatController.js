@@ -536,6 +536,11 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cor
 	}, function (err) {
 	    // error
 	    console.error(err);
+
+	    $cordovaDialogs.alert('Get your current position timeout.', 'Location Fail.', 'OK')
+        .then(function () {
+            $scope.closeMapModal();
+        });
 	});
 
     var watchOptions = {
