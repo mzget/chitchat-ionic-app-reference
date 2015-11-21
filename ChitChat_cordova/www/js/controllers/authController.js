@@ -32,9 +32,7 @@
                     $cordovaSpinnerDialog.hide();
                 }
                 else if (cordova.platformId === "windows") {
-                    $ionicLoading.show({
-                        template: 'Loading...'
-                    });
+                    $ionicLoading.hide();
                 }
 
                 //location.href = "#/tab/group";
@@ -103,15 +101,17 @@
         }
 
         function initSpartanServer() {
-            server.init(function (err, server) {
+            function initCallback (err, server) {
                 console.log("Init serve completed is connected:", server._isConnected, JSON.stringify(err));
                 if (err !== null) {
                     onServerConnectionFail(err);
                 }
                 else {
+                    initCallback = null;
                     onReadyToSigning();
                 }
-            });
+            }
+            server.init(initCallback);
         }
 
         function onLoginTimeout(param) {
@@ -139,6 +139,7 @@
                             break;
                         case 2:
                             server.kickMeAllSession(param.uid);
+                            $state.go('tab.login');
                             break;
                     }
                 }, "Duplicated login!", ["Cancle", "OK"]);
@@ -162,6 +163,7 @@
 
             navigator.notification.alert(errMessage, function callback() {
                 console.warn("Just go to no connection page.");
+
                 $('#login').css('display', 'none');
                 $('.bar-stable').css({ 'display': '' });
                 $('#splash').css({ 'display': 'none' });
@@ -217,8 +219,6 @@
                                         console.log("Success Login User...");
                                     }
                                     else if (res.code === 1004) {
-                                        $('body #login input').attr('readonly', false);
-                                        $('body #login #btn-login').attr('disabled', false);
                                         onDuplicateLogin(res);
                                     }
                                     else if (res.code === HttpStatusCode.requestTimeout) {
@@ -251,9 +251,8 @@
                                     else if(res.code === 1004) {
                                         //<!-- Authen fail.
                                         server.logout();
-                                        location.href = '';
 
-                                        console.error(err, res);
+                                        console.warn(JSON.stringify(err), JSON.stringify(res));
                                         onDuplicateLogin(err);
                                     }
                                     else if (res.code === HttpStatusCode.requestTimeout) {

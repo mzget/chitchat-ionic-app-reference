@@ -1046,7 +1046,6 @@ var ChatServer;
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
                     console.log("QueryConnectorServ", result.code);
                     if (result.code === 200) {
-                        pomelo.disconnect();
                         var port = result.port;
                         self.connectSocketServer(self.host, port, function () {
                             self._isConnected = true;
