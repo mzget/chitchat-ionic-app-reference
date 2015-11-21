@@ -35,6 +35,8 @@
                 chatlog_count = 0;
                 listenerImp = function(newMsg) {
                     chatlog_count++;
+                    
+                    console.warn("chatlogService: ", JSON.stringify(newMsg));
                 }
                 chatsLogComponent = new ChatsLogComponent(main, server);
                 chatsLogComponent.onReady = function () {
