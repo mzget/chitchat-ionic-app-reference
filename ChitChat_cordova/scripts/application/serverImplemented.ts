@@ -183,7 +183,7 @@ module ChatServer {
                     console.log("QueryConnectorServ", result.code);
 
                     if (result.code === 200) {
-                        pomelo.disconnect();
+                        //pomelo.disconnect();
                         
                         var port = result.port;
                         //<!-- Connecting to connector server.
