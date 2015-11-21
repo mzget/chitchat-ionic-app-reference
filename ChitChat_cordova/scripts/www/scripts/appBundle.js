@@ -582,6 +582,14 @@ var DataManager = (function () {
     DataManager.prototype.getMyProfile = function () {
         return this.myProfile;
     };
+    DataManager.prototype.isMySelf = function (uid) {
+        if (uid === this.myProfile._id) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
     DataManager.prototype.setRoomAccessForUser = function (data) {
         this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
     };

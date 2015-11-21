@@ -35,6 +35,16 @@ class DataManager implements absSpartan.IFrontendServerListener {
     public getMyProfile(): User {
         return this.myProfile;
     }
+    public isMySelf(uid: string): boolean {
+        if (uid === this.myProfile._id) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
     public setRoomAccessForUser(data) {
         this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
     }
