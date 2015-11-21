@@ -152,7 +152,11 @@
         function updateUnreadMessageCount() {
             var lastMessageMap = chatslogService.getUnreadMessageMap();
             for (var i = 0; i < myRoomAccess.length; i++) {
-                myRoomAccess[i].body = lastMessageMap[myRoomAccess[i]._id];
+                var rid = myRoomAccess[i]._id;
+                myRoomAccess[i].body = lastMessageMap[rid];
+                if(!!lastMessageMap[rid] && !!lastMessageMap[rid].message.createTime) {
+                    myRoomAccess[i].lastTime = lastMessageMap[rid].message.createTime; 
+                }
             }
         }
         
