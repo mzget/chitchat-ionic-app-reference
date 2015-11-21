@@ -24,7 +24,9 @@
         function getData() { }
 
         function registerPermission() {
-            cordova.plugins.notification.local.registerPermission(function (granted) {
+            console.log(cordova.plugins);
+
+            $cordovaLocalNotification.registerPermission(function (granted) {
                 console.warn('Permission has been granted: ' + granted);
             });
         }

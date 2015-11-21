@@ -35,8 +35,12 @@
                 chatlog_count = 0;
                 listenerImp = function(newMsg) {
                     chatlog_count++;
-                    
+
                     console.warn("chatlogService: ", JSON.stringify(newMsg));
+
+                    var unread = {};
+                    unread.message = newmsg;
+                    unread.rid = newmsg.rid;
                 }
                 chatsLogComponent = new ChatsLogComponent(main, server);
                 chatsLogComponent.onReady = function () {
