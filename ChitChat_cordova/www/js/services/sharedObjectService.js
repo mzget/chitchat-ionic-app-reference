@@ -47,8 +47,11 @@
         
         function noticeNewMessage(chatMessageImp) {
             console.log("noticeNewMessage", chatMessageImp.type);
-            var appBackground = cordova.plugins.backgroundMode.isActive();
-            notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
+
+            if (cordova.platformId === "ios") {
+                var appBackground = cordova.plugins.backgroundMode.isActive();
+                notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
+            }
         };
     }
 })();
