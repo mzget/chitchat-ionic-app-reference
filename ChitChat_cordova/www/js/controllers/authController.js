@@ -107,7 +107,6 @@
                     onServerConnectionFail(err);
                 }
                 else {
-                    initCallback = null;
                     onReadyToSigning();
                 }
             }

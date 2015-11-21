@@ -47,7 +47,7 @@
                 });
 			}
 			chatslogComponent = chatslogService.getChatsLogComponent();
-			chatslogComponent.addNewMsgListener(listenerImp);
+			//chatslogComponent.addNewMsgListener(listenerImp);
         }
 
         getRoomInfo();
