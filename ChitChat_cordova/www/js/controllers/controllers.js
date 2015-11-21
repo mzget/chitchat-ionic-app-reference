@@ -157,7 +157,8 @@ angular.module('spartan.controllers', [])
         console.warn("logOut...");
         server.logout();
         server.disposeClient();
-        $state.go('tab.login');
+        //$state.go('tab.login');
+        location.href = '';
     }
 })
 

@@ -32,7 +32,7 @@
         }
         
         function unsubscribeGlobalNotifyMessageEvent() {
-             dataListener.removeNoticeNewMessageEvent(noticeNewMessage);
+            dataListener.removeNoticeNewMessageEvent(noticeNewMessage);
         }
 
         function createNotifyManager(main) {
