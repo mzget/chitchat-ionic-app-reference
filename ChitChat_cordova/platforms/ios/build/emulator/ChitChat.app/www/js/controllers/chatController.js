@@ -298,6 +298,14 @@ angular.module('spartan.chat', [])
 		});
 	});
 
+	$scope.$on('delectTemp', function(event,args){
+		$.each($scope.chat, function(index, value){
+			if(value._id == args[0]) { 
+				$scope.chat[index] = new Object; 
+			}
+		});
+	});
+
 	$scope.viewReader = function (readers) {
 		var members = [];
 		async.eachSeries(readers, function iterator(item, cb) {

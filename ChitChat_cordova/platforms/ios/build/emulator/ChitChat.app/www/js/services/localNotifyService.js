@@ -24,9 +24,11 @@
         function getData() { }
 
         function registerPermission() {
-            cordova.plugins.notification.local.registerPermission(function (granted) {
-                console.warn('Permission has been granted: ' + granted);
-            });
+            if (cordova.platformId === "ios") {
+                $cordovaLocalNotification.registerPermission(function (granted) {
+                    console.warn('Permission has been granted: ' + granted);
+                });
+            }
         }
         
         function makeToast(message) {
