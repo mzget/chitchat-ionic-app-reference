@@ -1,4 +1,4 @@
-﻿class Dummy {
+class Dummy {
     chatRoom: ChatServer.ChatRoomApiProvider = ChatServer.ChatRoomApiProvider.prototype;
     serverApi: ChatServer.ServerImplemented;
     
@@ -19,14 +19,14 @@
     }
 
     public fireChatInRoom(myUid: string) {
-        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", (err, res) => {
+        this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", (err, res) => {
             if (!err && res !== null) {
                 setInterval(() => {
                     var temp = this.counter++;
-                    this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
+                    this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
-                }, 1000);
+                }, 5000);
             }
         });
     }
