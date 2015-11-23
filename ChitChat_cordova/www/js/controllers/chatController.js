@@ -14,8 +14,6 @@ angular.module('spartan.chat', [])
 	var chatRoomApi = main.getChatRoomApi();
 	var chatRoomComponent = new ChatRoomComponent(main, currentRoom._id);
 
-    activate();
-
     function activate() {
         console.log("chatController is activate");
 
@@ -26,14 +24,14 @@ angular.module('spartan.chat', [])
         main.dataListener.addChatListenerImp(chatRoomComponent);
 		sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
         chatRoomComponent.serviceListener = function (event, newMsg) {
-            if (event === "onChat") {
+            if (event === ChatServer.ServerEventListener.ON_CHAT) {
                 Chats.set(chatRoomComponent.chatMessages);
 
                 if (newMsg.sender !== main.dataManager.myProfile._id) {
                     chatRoomApi.updateMessageReader(newMsg._id, currentRoom._id);
                 }
             }
-            else if (event === "onMessageRead") {
+            else if (event === ChatServer.ServerEventListener.ON_MESSAGE_READ) {
                 Chats.set(chatRoomComponent.chatMessages);
             }
         }
@@ -43,7 +41,7 @@ angular.module('spartan.chat', [])
                 sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
             }
         };
-        chatRoomComponent.getMessage(currentRoom._id, Chats, function () {
+        chatRoomComponent.getMessageHistory(currentRoom._id, Chats, function () {
             Chats.set(chatRoomComponent.chatMessages);
             setTimeout(function () {
                 $ionicLoading.hide();
@@ -67,6 +65,7 @@ angular.module('spartan.chat', [])
     }
     
     $scope.chat = [];
+
     //<!-- Set up roomname for display title of chatroom.
     var roomName = currentRoom.name;
     if (!roomName || roomName === "") {
@@ -317,6 +316,7 @@ angular.module('spartan.chat', [])
 			$scope.openReaderModal();
 		});
 	}
+
 	$scope.viewLocation = function (messageId) {
 	    console.info('viewLocation');
 	    var message = Chats.get(messageId);
@@ -346,8 +346,10 @@ angular.module('spartan.chat', [])
 	};
 	
 	// ON ENTER 
-    $scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
+    $scope.$on('$ionicView.enter', function() { //This is fired twice in a row
         console.log("App view (menu) entered.");
+
+        activate();
 
         $ionicLoading.show({
 	        template: 'Loading..'

@@ -1,4 +1,5 @@
-﻿class ChatRoomComponent implements absSpartan.IChatServerListener {
+﻿/// <reference path="notifymanager.ts" />
+class ChatRoomComponent implements absSpartan.IChatServerListener {
     public chatMessages: Array<Message> = [];
     public serviceListener: (eventName: string, data: any) => void;
     public notifyEvent: (eventName: string, data: any) => void;
@@ -83,13 +84,13 @@
 
     }
 
-    public getMessage(chatId, Chats, callback) {
+    public getMessageHistory(chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
         var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
 
         async.waterfall([
-            function (cb) {
+            function (cb) { //<!-- get local histories.
                 if (!!chatLog) {
                     if (JSON.stringify(chatLog) === "") {
                         self.chatMessages = [];
@@ -138,6 +139,7 @@
                 cb(null, null);
             }
         ], function (err, res) {
+            //<!-- when get local histories complete then we join room request and get server histories.
             self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
                 if (res.code == 200) {
                     var access = new Date();
@@ -187,14 +189,13 @@
 
                                     localStorage.removeItem(myProfile._id + '_' + chatId);
                                     localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
-
-                                    // location.href = '#/tab/message/' + chatId;
+                                    
                                     callback();
                                 });
                             }
                             else {
-                                // location.href = '#/tab/message/' + chatId;
                                 Chats.set(self.chatMessages);
+
                                 callback();
                             }
                         });

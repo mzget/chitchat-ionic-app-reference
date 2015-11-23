@@ -149,6 +149,85 @@ var Main = (function () {
     };
     return Main;
 })();
+var NotifyManager = (function () {
+    function NotifyManager(main) {
+        console.log("NotifyManager.constructor");
+        this.dataManager = main.getDataManager();
+    }
+    NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
+        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var secure = new SecureService();
+            secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
+                if (!err) {
+                    chatMessageImp.body = res;
+                    var toastMessage = contact.displayname + " sent " + chatMessageImp.body;
+                    if (!appBackground) {
+                        notifyService.makeToastOnCenter(toastMessage);
+                    }
+                    else {
+                        notifyService.scheduleSingleNotification(contact.displayname, chatMessageImp.body);
+                    }
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Sticker]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a sticker.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Voice]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a voice message.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Image]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a image.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Video]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a video.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+        else if (chatMessageImp.type.toString() === ContentType[ContentType.Location]) {
+            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
+            var message = contact.displayname + " sent a location.";
+            if (!appBackground) {
+                notifyService.makeToastOnCenter(message);
+            }
+            else {
+                notifyService.scheduleSingleNotification(contact.displayname, message);
+            }
+        }
+    };
+    return NotifyManager;
+})();
+/// <reference path="notifymanager.ts" />
 var ChatRoomComponent = (function () {
     function ChatRoomComponent(main, room_id) {
         this.chatMessages = [];
@@ -213,7 +292,7 @@ var ChatRoomComponent = (function () {
     };
     ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
     };
-    ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
+    ChatRoomComponent.prototype.getMessageHistory = function (chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
         var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
@@ -837,84 +916,6 @@ var DataManager = (function () {
     };
     ;
     return DataManager;
-})();
-var NotifyManager = (function () {
-    function NotifyManager(main) {
-        console.log("NotifyManager.constructor");
-        this.dataManager = main.getDataManager();
-    }
-    NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
-        if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var secure = new SecureService();
-            secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
-                if (!err) {
-                    chatMessageImp.body = res;
-                    var toastMessage = contact.displayname + " sent " + chatMessageImp.body;
-                    if (!appBackground) {
-                        notifyService.makeToastOnCenter(toastMessage);
-                    }
-                    else {
-                        notifyService.scheduleSingleNotification(contact.displayname, chatMessageImp.body);
-                    }
-                }
-                else {
-                    console.warn(err, res);
-                }
-            });
-        }
-        else if (chatMessageImp.type.toString() === ContentType[ContentType.Sticker]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a sticker.";
-            if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
-            }
-            else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
-            }
-        }
-        else if (chatMessageImp.type.toString() === ContentType[ContentType.Voice]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a voice message.";
-            if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
-            }
-            else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
-            }
-        }
-        else if (chatMessageImp.type.toString() === ContentType[ContentType.Image]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a image.";
-            if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
-            }
-            else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
-            }
-        }
-        else if (chatMessageImp.type.toString() === ContentType[ContentType.Video]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a video.";
-            if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
-            }
-            else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
-            }
-        }
-        else if (chatMessageImp.type.toString() === ContentType[ContentType.Location]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a location.";
-            if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
-            }
-            else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
-            }
-        }
-    };
-    return NotifyManager;
 })();
 var appConfig;
 var pomelo;
