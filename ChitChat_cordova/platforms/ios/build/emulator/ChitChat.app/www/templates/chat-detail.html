@@ -101,11 +101,11 @@
 					</u>
 				</p>
 				
-                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImg()" ng-src="{{message.body}}" ng-click="viewImage(message.body)"/>
+                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.body)"/>
 				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage('http://203.113.25.44'+message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
-				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice()">
+				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
                     <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>

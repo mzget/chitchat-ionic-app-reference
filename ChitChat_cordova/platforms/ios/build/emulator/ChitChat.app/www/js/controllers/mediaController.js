@@ -1,6 +1,6 @@
 angular.module('spartan.media', [])
 
-.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService) {
+.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
@@ -50,31 +50,18 @@ angular.module('spartan.media', [])
 	    options.chunkedMode = false;
 	    var ft = new FileTransfer();
 
-	    var downloadContain = document.getElementById(FileService.getImages()[0] + '-downloaded');
-	    var downloadProgress = document.getElementById(FileService.getImages()[0] + '-download-progress');
-	    var ionicLoadingUpload = true;
-
-	    if(downloadContain != null || downloadContain != undefined){
-	    	ionicLoadingUpload = false;
-	    	downloadContain.classList.remove("hide");
-	    }
-  		
 	    ft.onprogress = function(progressEvent){
 	    	if (progressEvent.lengthComputable) {
-	    		if(ionicLoadingUpload){
 	    			$ionicLoading.show({
 				      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
 				  });
-	    		}else{
-	    			var downloadPercent = (progressEvent.loaded / progressEvent.total) * 100;
-		        	downloadProgress.style.width = downloadPercent+'%';
-	    		}
 		    } else {
 		      //loadingStatus.increment();
 		    }
 	    };
 	    ft.upload(imageURI, "http://203.113.25.44/?r=api/upload", win, fail,
 	        options);
+
 	}
 
 	function win(r) {
@@ -108,6 +95,22 @@ angular.module('spartan.media', [])
 	}
 	$scope.closeImage = function(){
 		$scope.modalImage.hide();
+	}
+
+	$scope.uploadImage = function(id) {
+		if(FileService.getImages().length!=0) { 
+			var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.cacheDirectory + id, ContentType[ContentType.Image], function(id,messageId){
+				$scope.$emit('delectTemp', [id]); 
+			});
+			mediaUpload[id] = img;
+			mediaUpload[id].upload();
+		}else{
+			if(mediaUpload[id].hasOwnProperty('url')){
+				$scope.$emit('delectTemp', [id]); 
+			}else{
+				document.getElementById( id + '-resend').classList.remove("hide");
+			}
+		}
 	}
 
 })
@@ -214,8 +217,8 @@ angular.module('spartan.media', [])
 	var mediaRec;
 
 	$scope.startRecord = function() {
-        fileName = GenerateID.makeid();
-		src = "documents://"+ fileName + ".wav";
+        fileName = GenerateID.makeid() + ".wav";
+		src = "documents://"+ fileName;
 	    mediaRec = new Media(src,
 	        function() { console.log("recordAudio():Audio Success"); },
 	        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
@@ -225,7 +228,7 @@ angular.module('spartan.media', [])
 
 	$scope.stopRecord = function(){
 		mediaRec.stopRecord();
-		$scope.$emit('fileUri',[fileName + ".wav",ContentType[ContentType.Voice]]);
+		$scope.$emit('fileUri',[fileName,ContentType[ContentType.Voice]]);
 		//$scope.uploadVoice();
 	}
 
@@ -285,50 +288,20 @@ angular.module('spartan.media', [])
 	      });
 	}
 
-	$scope.uploadVoice = function() {
-		var downloadContain = document.getElementById(fileName + ".wav" + '-downloaded');
-	    var downloadProgress = document.getElementById(fileName + ".wav" + '-download-progress');
-	    downloadContain.classList.remove("hide");
-
-	    var voiceURI = cordova.file.documentsDirectory + fileName + ".wav";
-        console.log(voiceURI);
-	    var options = new FileUploadOptions();
-	    options.fileKey = "fileToUpload";
-	    options.fileName = voiceURI.substr(voiceURI.lastIndexOf('/') + 1);
-	    options.mimeType = "audio/wav";
-	    var params = new Object();
-	    options.params = params;
-	    options.chunkedMode = false;
-	    var ft = new FileTransfer();
-	    ft.onprogress = function(progressEvent){
-	    	if (progressEvent.lengthComputable) {
-		      // $ionicLoading.show({
-			  //     template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
-			  // });
-				var downloadPercent = (progressEvent.loaded / progressEvent.total) * 100;
-		        downloadProgress.style.width = downloadPercent+'%';
-		    } else {
-		      //loadingStatus.increment();
-		    }
-	    };
-	    ft.upload(voiceURI, "http://203.113.25.44/?r=api/upload", win, fail,
-        options);
-	}
-
-	function win(r) {
-	    console.log("Code = " + r.responseCode);
-	    console.log("Response = " + r.response);
-	    console.log("Sent = " + r.bytesSent);
-	    //$ionicLoading.hide();
-        $scope.$emit('fileUrl', [r.response,fileName + ".wav",ContentType[ContentType.Voice]]);
-	}
-
-	function fail(error) {
-	    alert("An error has occurred: Code = " + error.code);
-	    console.log("upload error source " + error.source);
-	    console.log("upload error target " + error.target);
-	    $cordovaProgress.showText(false, "Fail!", 'center');
-	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
+	$scope.uploadVoice = function(id) {
+		if(fileName != null || fileName != undefined) { 
+			var voice = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function(id,messageId){
+				$scope.$emit('delectTemp', [id]); 
+			});
+			mediaUpload[id] = voice;
+			mediaUpload[id].upload();
+		}else{
+			if(mediaUpload[id].hasOwnProperty('url')){
+				$scope.$emit('delectTemp', [id]); 
+			}else{
+				document.getElementById( id + '-resend').classList.remove("hide");
+			}
+		}
 	}
 
 });
