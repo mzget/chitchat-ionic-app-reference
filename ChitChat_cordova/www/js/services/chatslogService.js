@@ -33,8 +33,23 @@
                 
                 dataListener = main.getDataListener();
                 chatlog_count = 0;
-                listenerImp = function(newMsg) {
-                    chatlog_count++;
+                listenerImp = function (newMsg) {
+                    if (!main.getDataManager().isMySelf(newMsg.sender)) {
+                        chatlog_count++;
+
+                        console.warn("chatlogService: ", JSON.stringify(newMsg));
+                        
+                        var unread = {};
+                        unread.message = newMsg;
+                        unread.rid = newMsg.rid;
+                        var count = Number(unreadMessageMap[newMsg.rid].count);
+                        count++;
+                        console.log(newMsg.rid, "unread count", unreadMessageMap[newMsg.rid].count);
+                        organizeUnreadMessageMapForDisplayInfo(unread, function done() {
+                            unreadMessageMap[newMsg.rid].count = count;
+                            console.log(newMsg.rid, "unread count++", unreadMessageMap[newMsg.rid].count);
+                        });
+                    }
                 }
                 chatsLogComponent = new ChatsLogComponent(main, server);
                 chatsLogComponent.onReady = function () {

@@ -255,7 +255,7 @@ angular.module('spartan.chat', [])
 		if(args[1] == ContentType[ContentType.Image] ){
 			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.cacheDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
 		}else if(args[1] == ContentType[ContentType.Voice] ){
-			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.cacheDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}else if(args[1] == ContentType[ContentType.Video] ){
 			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.cacheDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}
@@ -293,6 +293,14 @@ angular.module('spartan.chat', [])
 		}
 		$.each($scope.chat, function(index, value){
 			if(value._id == args[1]) { 
+				$scope.chat[index] = new Object; 
+			}
+		});
+	});
+
+	$scope.$on('delectTemp', function(event,args){
+		$.each($scope.chat, function(index, value){
+			if(value._id == args[0]) { 
 				$scope.chat[index] = new Object; 
 			}
 		});

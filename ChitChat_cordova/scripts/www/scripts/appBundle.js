@@ -582,6 +582,14 @@ var DataManager = (function () {
     DataManager.prototype.getMyProfile = function () {
         return this.myProfile;
     };
+    DataManager.prototype.isMySelf = function (uid) {
+        if (uid === this.myProfile._id) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    };
     DataManager.prototype.setRoomAccessForUser = function (data) {
         this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
     };
@@ -1046,7 +1054,6 @@ var ChatServer;
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
                     console.log("QueryConnectorServ", result.code);
                     if (result.code === 200) {
-                        pomelo.disconnect();
                         var port = result.port;
                         self.connectSocketServer(self.host, port, function () {
                             self._isConnected = true;
