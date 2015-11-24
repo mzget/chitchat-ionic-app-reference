@@ -1409,11 +1409,11 @@ var Dummy = (function () {
     };
     Dummy.prototype.fireChatInRoom = function (myUid) {
         var _this = this;
-        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
+        this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", function (err, res) {
             if (!err && res !== null) {
                 setInterval(function () {
                     var temp = _this.counter++;
-                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
+                    _this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
                 }, 1000);
