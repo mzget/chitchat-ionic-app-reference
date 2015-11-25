@@ -138,7 +138,7 @@
                             break;
                         case 2:
                             server.kickMeAllSession(param.uid);
-                            $state.go('tab.login');
+                            location.href = "";
                             break;
                     }
                 }, "Duplicated login!", ["Cancle", "OK"]);

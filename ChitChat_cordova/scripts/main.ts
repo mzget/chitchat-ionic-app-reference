@@ -82,7 +82,7 @@ class Main {
                         }
                         else {
                             self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                            if (res.code === 200) {
+                            if (res.code === HttpStatusCode.success) {
                             }
                             else {
                                 console.warn("My user profile is empty. please check.");
