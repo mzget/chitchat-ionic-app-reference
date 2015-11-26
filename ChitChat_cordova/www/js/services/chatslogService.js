@@ -139,7 +139,6 @@
          }
          
          function organizeUnreadMessageMapForDisplayInfo(unread, done) { 
-             console.log("organizeUnreadMessageMapForDisplayInfo");
             var contact = main.getDataManager().getContactProfile(unread.message.sender);
             switch (unread.message.type) {
                 case ContentType[ContentType.Text]:  

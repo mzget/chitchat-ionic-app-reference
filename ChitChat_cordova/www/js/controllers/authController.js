@@ -135,6 +135,7 @@
                 function (buttonIndex) {
                     switch (buttonIndex) {
                         case 1:
+                            location.href = '';
                             break;
                         case 2:
                             server.kickMeAllSession(param.uid);

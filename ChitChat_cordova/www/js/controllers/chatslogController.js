@@ -28,48 +28,50 @@
             myRoomAccess = [];
             roomAccess = dataManager.myProfile.roomAccess;
             
-            console.log("myRoomAccess.length", roomAccess.length);
+            console.log("dataManager.myProfile.roomAccess.length", roomAccess.length);
             
             var data = {};
             var unreadMessageMap = chatslogService.getUnreadMessageMap();
-            roomAccess.map(function iterator(value, id, arr) {
-                var room = dataManager.getGroup(value.roomId);
+        
+            async.map(roomAccess, function iterator(item, resultCB) {
+                var room = dataManager.getGroup(item.roomId);
                 if(!!room) {
                     data.data = room;
 
-                    if (!!unreadMessageMap && !!unreadMessageMap[value.roomId]) {
-                        data.data.body = unreadMessageMap[value.roomId];
+                    if (!!unreadMessageMap && !!unreadMessageMap[item.roomId]) {
+                        data.data.body = unreadMessageMap[item.roomId];
                     
-                        if (!!unreadMessageMap[value.roomId].message) {
-                            data.data.lastTime = unreadMessageMap[value.roomId].message.createTime ?
-                                unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                        if (!!unreadMessageMap[item.roomId].message) {
+                            data.data.lastTime = unreadMessageMap[item.roomId].message.createTime ?
+                                unreadMessageMap[item.roomId].message.createTime : item.accessTime;
                         }
                         else {
-                            data.data.lastTime = value.accessTime;
+                            data.data.lastTime = item.accessTime;
                         }
                     }
                     else {
-                        data.data.lastTime = value.accessTime;
+                        data.data.lastTime = item.accessTime;
                     }
 
                     myRoomAccess.push(data['data']);
+                    resultCB(null, null);
                 }
                 else {
                     // console.warn("room: ", value.roomId + "is a private chat type..");
-                    if (!!unreadMessageMap[value.roomId]) {
-                        server.getRoomInfo(value.roomId, function (err, res) {
+                    if (!!unreadMessageMap[item.roomId]) {
+                        server.getRoomInfo(item.roomId, function (err, res) {
                             if (res['code'] == 200) {
                                 data.data = res.data;
-                                if (!!unreadMessageMap && !!unreadMessageMap[value.roomId]) {
-                                    data.data.body = unreadMessageMap[value.roomId];
+                                if (!!unreadMessageMap && !!unreadMessageMap[item.roomId]) {
+                                    data.data.body = unreadMessageMap[item.roomId];
                                 }
 
-                                if (!!unreadMessageMap && !!unreadMessageMap[value.roomId].message) {
-                                    data.data.lastTime = unreadMessageMap[value.roomId].message.createTime ?
-                                        unreadMessageMap[value.roomId].message.createTime : value.accessTime;
+                                if (!!unreadMessageMap && !!unreadMessageMap[item.roomId].message) {
+                                    data.data.lastTime = unreadMessageMap[item.roomId].message.createTime ?
+                                        unreadMessageMap[item.roomId].message.createTime : item.accessTime;
                                 }
                                 else {
-                                    data.data.lastTime = value.accessTime;
+                                    data.data.lastTime = item.accessTime;
                                 }
 
                                 if (data.data.type == RoomType.privateChat) {
@@ -87,28 +89,22 @@
                                 }
 
                                 myRoomAccess.push(data['data']);
+                                resultCB(null, null);
                             }
-
-                            // server.getUnreadMsgOfRoom(roomAccess[myRoomAccessCount]['roomId'], roomAccess[myRoomAccessCount]['accessTime'], function (err, res) {
-                            //     if (res['code'] == 200) {
-                            //         data['data']['body'] = res['data'];
-                            //         chatslogService.increaseLogsCount(res['data']['count']);
-                            //         console.log(data);
-                            //         myRoomAccess.push(data['data']);
-                            //         accessLength = myRoomAccess.length;
-                            //     }
-
-                            //     if (myRoomAccessCount + 1 == roomAccessLength) {
-                            //         console.log('last');
-                            //     }
-                            //     else {
-                            //         myRoomAccessCount++;
-                            //         getRoomInfo(myRoomAccessCount);
-                            //     }
-                            // });
+                            else {
+                                console.warn("Fail to get room info of room %s", item.roomId, res.message);
+                                resultCB(null, null);
+                            }
                         });
                     }
+                    else {
+                        console.warn("Fail to get unreadMessageMap of room %s", item.roomId);
+                        resultCB(null, null);
+                    }
                 }
+
+            }, function done(err, results) {
+                console.log("getRoomInfo Completed", myRoomAccess.length);
             });
         }
 
