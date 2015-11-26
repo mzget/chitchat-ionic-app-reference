@@ -91,7 +91,7 @@ var Main = (function () {
                         }
                         else {
                             self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                            if (res.code === 200) {
+                            if (res.code === HttpStatusCode.success) {
                             }
                             else {
                                 console.warn("My user profile is empty. please check.");
@@ -362,6 +362,9 @@ var ChatsLogComponent = (function () {
     };
     ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) {
         console.warn("ChatsLogComponent.onAddRoomAccess", JSON.stringify(dataEvent));
+        if (!!this.addNewRoomAccessEvent) {
+            this.addNewRoomAccessEvent(dataEvent);
+        }
     };
     ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) {
         console.warn("ChatsLogComponent.onEditedGroupMember", JSON.stringify(dataEvent));
@@ -475,6 +478,11 @@ var DataListener = (function () {
         var roomAccess = data.roomAccess;
         if (roomAccess !== null && roomAccess.length !== 0) {
             this.dataManager.setRoomAccessForUser(dataEvent);
+        }
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(function (value) {
+                value.onAddRoomAccess(dataEvent);
+            });
         }
     };
     DataListener.prototype.onCreateGroupSuccess = function (dataEvent) {

@@ -7,13 +7,12 @@
 
     // chatslogController.$inject = ['$location', '$scope', '$timeout', 'roomSelected'];
 			
-	function chatslogController($location, $scope, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService) {
+	function chatslogController($location, $scope, $rootScope, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
 
         var dataManager = main.getDataManager();
-		var chatslogComponent;
 		var listenerImp;
         var roomAccess = [];
         var myRoomAccess = [];
@@ -21,38 +20,12 @@
         $scope.orgMembers = dataManager.orgMembers;
         $scope.roomAccess = [];
 
-        activate();
-
         function activate() { 
 			console.warn(vm.title, "activate");
-			
-			listenerImp = function (newmsg) {
-			    console.log(vm.title, 'onNewMessage: ' + newmsg.rid);
-                var unread = {};
-                unread.message = newmsg;
-                unread.rid = newmsg.rid;
-                chatslogService.organizeUnreadMessageMapForDisplayInfo(unread, function done() {                  
-                    var lastMessageMap = chatslogService.getUnreadMessageMap();
-                    myRoomAccess.some(function(value, id, arr) {
-                        if(value._id === newmsg.rid) {
-                            value.body.count++;
-                            lastMessageMap[newmsg.rid].count = value.body.count; 
-                            value.body.count = lastMessageMap[newmsg.rid].count;
-                            value.body.message = lastMessageMap[newmsg.rid].message;
-                            value.lastTime = newmsg.createTime;
-                            
-                            return true;
-                        } 
-                    });
-                });
-			}
-			chatslogComponent = chatslogService.getChatsLogComponent();
-			//chatslogComponent.addNewMsgListener(listenerImp);
         }
-
-        getRoomInfo();
         
         function getRoomInfo() {
+            myRoomAccess = [];
             roomAccess = dataManager.myProfile.roomAccess;
             
             console.log("myRoomAccess.length", roomAccess.length);
@@ -137,24 +110,26 @@
                     }
                 }
             });
-            
-            // for (var key in unreadMessageMap) {
-            //     if (unreadMessageMap.hasOwnProperty(key)) {
-            //         var unread = unreadMessageMap[key];
-            //         console.log(unread);
-            //         if(!!unread.body) {
-                        
-            //         }
-            //     }
-            // }
         }
 
         function updateUnreadMessageCount() {
             var lastMessageMap = chatslogService.getUnreadMessageMap();
+            // myRoomAccess = [];
+            //  for (var key in lastMessageMap) {
+            //     if (lastMessageMap.hasOwnProperty(key)) {
+            //         var unread = lastMessageMap[key];
+            //         var content = {};
+            //         content.body = unread;
+            //         if(!!unread && !!unread.message) {
+            //             content.lastTime = unread.message.createTime;
+            //             myRoomAccess.push(content);
+            //         }
+            //     }
+            // }
             for (var i = 0; i < myRoomAccess.length; i++) {
                 var rid = myRoomAccess[i]._id;
                 myRoomAccess[i].body = lastMessageMap[rid];
-                if(!!lastMessageMap[rid] && !!lastMessageMap[rid].message.createTime) {
+                if(!!lastMessageMap[rid] && !!lastMessageMap[rid].message) {
                     myRoomAccess[i].lastTime = lastMessageMap[rid].message.createTime; 
                 }
             }
@@ -216,6 +191,14 @@
 
         $scope.$on('$ionicView.enter', function() { 
             console.log("$ionicView.enter: ", vm.title);
+            
+            activate();
+
+            getRoomInfo();
+        });
+        
+        $scope.$on('getunreadmessagecomplete', function(event, data){
+            getRoomInfo();
         });
     }
 })();
