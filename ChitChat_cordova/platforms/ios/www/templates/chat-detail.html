@@ -59,8 +59,8 @@
 					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
 
-				<div class="type-video" ng-if="message.type=='Video'">
-					<video id="{{message._id}}" src="{{message.bodyUrl}}"></video>
+				<div class="type-video" ng-if="message.type=='Video'" ng-click="openVideo(message.type,message.body)">
+					<!-- <video id="{{message._id}}" src="{{message.bodyUrl}}"></video> -->
 				</div>
             
 				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
@@ -118,7 +118,7 @@
                 	<!-- <video id="{{message._id}}" src="{{message.body}}" controls></video> -->
 				</div>
                 <div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)">
-                	<!-- <video id="{{message._id}}" src="{{message.bodyUrl}}" controls></video> -->
+                	<!-- <video id="{{message._id}}" src="" poster="{{message.thumbnail}}" controls></video> -->
                 </div>
 				
 				
