@@ -253,11 +253,11 @@ angular.module('spartan.chat', [])
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
 		if(args[1] == ContentType[ContentType.Image] ){
-			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.cacheDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
+			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
 		}else if(args[1] == ContentType[ContentType.Voice] ){
 			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}else if(args[1] == ContentType[ContentType.Video] ){
-			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.cacheDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}
 		
 	});
@@ -529,45 +529,30 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cor
         done(locationObj);
         $scope.closeMapModal();
     }
-
-    $scope.loading = $ionicLoading.show({
-		content: 'Getting current location...',
-		showBackdrop: false
-	});
+	
+	$ionicLoading.show({
+      template: 'Getting current location...'
+    });
 
 	var posOptions = { timeout: 10000, enableHighAccuracy: false };
 	$cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
 	    locationObj.latitude = position.coords.latitude;
 	    locationObj.longitude = position.coords.longitude;
+		
 	    $scope.$broadcast('onInitMap', { lat: position.coords.latitude, long: position.coords.longitude });
-	    $ionicLoading.hide();
+	    
+		$ionicLoading.hide();
 	}, function (err) {
 	    // error
 	    console.error(err);
+		
+		$ionicLoading.hide();
 
 	    $cordovaDialogs.alert('Get your current position timeout.', 'Location Fail.', 'OK')
         .then(function () {
             $scope.closeMapModal();
         });
 	});
-
-    var watchOptions = {
-        timeout: 3000,
-        enableHighAccuracy: false // may cause errors if true
-    };
-
-    var watch = $cordovaGeolocation.watchPosition(watchOptions);
-    watch.then(
-      null,
-      function (err) {
-          // error
-      },
-      function (position) {
-          var lat = position.coords.latitude
-          var long = position.coords.longitude
-      });
-
-    watch.clearWatch();
 }
 
 var sendLocation = function (chatRoomApi, locationObj, currentRoom, myprofile) {

@@ -1,6 +1,6 @@
 angular.module('spartan.media', [])
 
-.controller('ImageController', function($scope, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected) {
+.controller('ImageController', function($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
@@ -11,7 +11,7 @@ angular.module('spartan.media', [])
   	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
 
   	$scope.urlForImage = function(imageName) {
-    	var trueOrigin = cordova.file.cacheDirectory + imageName;
+    	var trueOrigin = cordova.file.documentsDirectory + imageName;
     	return trueOrigin;
   	}
  
@@ -40,7 +40,7 @@ angular.module('spartan.media', [])
 
   	$scope.uploadImg = function() {
   		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
-	    var imageURI = cordova.file.cacheDirectory + FileService.getImages();
+	    var imageURI = cordova.file.documentsDirectory + FileService.getImages();
 	    var options = new FileUploadOptions();
 	    options.fileKey = "fileToUpload";
 	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
@@ -81,16 +81,17 @@ angular.module('spartan.media', [])
 	    setTimeout(function(){ $cordovaProgress.hide(); }, 1500);
 	}
 
-		$ionicModal.fromTemplateUrl('templates/modal-image.html', function($ionicModal) {
-	    	$scope.modalImage = $ionicModal;
-	  	}, {
-		    scope: $scope,
-		    animation: 'slide-in-up'
-	  	});
+	$ionicModal.fromTemplateUrl('templates/modal-image.html', function($ionicModal) {
+    	$scope.modalImage = $ionicModal;
+  	}, {
+	    scope: $scope,
+	    animation: 'slide-in-up'
+  	});
 	
 
-	$scope.viewImage = function(src){
-		$scope.src = src;
+	$scope.viewImage = function(type,src){
+		$scope.modalImage.type = type;
+		$scope.modalImage.src = src;
 		$scope.modalImage.show();
 	}
 	$scope.closeImage = function(){
@@ -99,7 +100,7 @@ angular.module('spartan.media', [])
 
 	$scope.uploadImage = function(id) {
 		if(FileService.getImages().length!=0) { 
-			var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.cacheDirectory + id, ContentType[ContentType.Image], function(id,messageId){
+			var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
 				$scope.$emit('delectTemp', [id]); 
 			});
 			mediaUpload[id] = img;
@@ -113,8 +114,66 @@ angular.module('spartan.media', [])
 		}
 	}
 
+	$scope.saveFile = function(type,url){
+ 		$scope.mediaDownload(url).then(function(path) { 
+ 			saveToCameraRoll(type,path).then(function(){
+ 				navigator.notification.alert(
+				    'This ' + type +' been saved!', 
+				     null,          
+				    'Complete',          
+				    'OK'   
+				);
+ 			})
+    	});
+ 	}
+
+ 	function saveToCameraRoll(type,uri){
+ 		return $q(function(resolve, reject){
+ 			if(type == ContentType[ContentType.Image]){
+		 		CameraRoll.saveImageToCameraRoll(uri, function() {
+		 			resolve();
+				}, function(err) {
+					reject();
+				});
+		 	}else{
+		 		CameraRoll.saveVideoToCameraRoll(uri, function() {
+		 			resolve();
+				}, function(err) {
+					reject();
+				});
+		 	}
+ 		})
+ 	}
+
+
+ 	$scope.mediaDownload = function(url){
+ 		console.log(url);
+ 		return $q(function(resolve, reject) {
+ 			var fileName = url.substr(url.lastIndexOf('/') + 1);
+		    var targetPath = cordova.file.documentsDirectory + fileName;
+		    var ft = new FileTransfer();
+	    	ft.onprogress = function(progressEvent){
+	    		var downloadPercent = (progressEvent.loaded / progressEvent.total) * 100;
+	        	console.log(downloadPercent);
+
+			    $ionicLoading.show({
+			      template: 'Downloading ' + downloadPercent.toFixed(0) + '%'
+			    });
+			};
+		    ft.download(url,targetPath,
+	    	function win(r){
+	    		$ionicLoading.hide();
+		    	resolve(targetPath);
+			},
+			function fail(error){
+				$ionicLoading.hide();
+			    reject();
+			});
+ 		})
+ 	}
+
 })
-.controller('VideoController', function($scope, $cordovaCapture, $ionicLoading, $ionicActionSheet, $cordovaProgress,$cordovaFile,GenerateID,VideoService,roomSelected) {
+.controller('VideoController', function($scope, $q, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress,$cordovaFile,GenerateID,VideoService,roomSelected) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
 
@@ -161,10 +220,10 @@ angular.module('spartan.media', [])
         var namePathTrim = namePath.substring(0,namePath.length - 1);
         var folderFile = namePathTrim.substr(namePathTrim.lastIndexOf('/') + 1);
         
-        $cordovaFile.moveFile(namePath,name,cordova.file.cacheDirectory,videoName)
+        $cordovaFile.moveFile(namePath,name,cordova.file.documentsDirectory,videoName)
         .then(function(success) {
         	console.log(success);
-        	videoURI = cordova.file.cacheDirectory + videoName;
+        	videoURI = cordova.file.documentsDirectory + videoName;
         	delectFolderTmp(folderFile);
           }, function(error) {
           	console.log(error);
@@ -205,6 +264,83 @@ angular.module('spartan.media', [])
 	$scope.sentCancel = function(id){
 		mediaUpload[id].cancel();
 	}
+
+	$scope.openVideo = function(type,src) {
+		$ionicModal.fromTemplateUrl('templates/modal-video.html', {
+			scope: $scope,
+		    animation: 'slide-in-up'
+		}).then(function(modal) {
+		    $scope.modalVideo = modal;
+		    $scope.modalVideo.type = type;
+		    $scope.modalVideo.src = src;
+		    $scope.modalVideo.show();
+		    document.getElementById("video-player").play();
+		});
+	};
+	$scope.closeVideo = function() {
+		angular.element(document.getElementById("video-player").pause());
+    	$scope.modalVideo.remove();
+  	};
+	
+ 	$scope.saveFile = function(type,url){
+ 		$scope.mediaDownload('http://203.113.25.44' + url).then(function(path) { 
+ 			saveToCameraRoll(type,path).then(function(){
+ 				navigator.notification.alert(
+				    'This ' + type +' been saved!', 
+				     null,          
+				    'Complete',          
+				    'OK'   
+				);
+ 			})
+    	});
+ 	}
+
+ 	function saveToCameraRoll(type,uri){
+ 		return $q(function(resolve, reject){
+ 			if(type == ContentType[ContentType.Image]){
+		 		CameraRoll.saveImageToCameraRoll(uri, function() {
+		 			resolve();
+				}, function(err) {
+					reject();
+				});
+		 	}else{
+		 		CameraRoll.saveVideoToCameraRoll(uri, function() {
+		 			resolve();
+				}, function(err) {
+					reject();
+				});
+		 	}
+ 		})
+ 	}
+
+
+ 	$scope.mediaDownload = function(url){
+ 		console.log(url);
+ 		return $q(function(resolve, reject) {
+ 			var fileName = url.substr(url.lastIndexOf('/') + 1);
+		    var targetPath = cordova.file.documentsDirectory + fileName;
+		    var ft = new FileTransfer();
+	    	ft.onprogress = function(progressEvent){
+	    		var downloadPercent = (progressEvent.loaded / progressEvent.total) * 100;
+	        	console.log(downloadPercent);
+
+			    $ionicLoading.show({
+			      template: 'Downloading ' + downloadPercent.toFixed(0) + '%'
+			    });
+			};
+		    ft.download(url,targetPath,
+	    	function win(r){
+	    		$ionicLoading.hide();
+		    	resolve(targetPath);
+			},
+			function fail(error){
+				$ionicLoading.hide();
+			    reject();
+			});
+ 		})
+ 	}
+
+
 })
 .controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile, GenerateID,roomSelected) {
 
@@ -309,7 +445,8 @@ angular.module('spartan.media', [])
 var mediaUpload = {};
 
 function UploadMedia(rid,uri,type,callback){
-	var mimeType = { "Image":"image/jpeg", "Video":"video/quicktime", "Voice":"audio/wav" }
+	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
+	var extension = { "Image":"jpeg", "Video":"mp4", "Voice":"wav" }
 	var uriFile = uri;
 	var mediaName = uri.substr(uri.lastIndexOf('/') + 1);
 	var ft = new FileTransfer();
@@ -322,6 +459,8 @@ function UploadMedia(rid,uri,type,callback){
 		options.fileName = mediaName;
 	    options.mimeType = mimeType[type];
 	    var params = new Object();
+	    params.extension = extension[type];
+	    params.category = 'msg';
 	    options.params = params;
 	    options.chunkedMode = false;
 		ft.onprogress = function(progressEvent){
@@ -354,6 +493,7 @@ function UploadMedia(rid,uri,type,callback){
 	}
 
 	function win(r){
+		console.log(JSON.stringify(r));
 		console.log("Code = " + r.responseCode);
 	    console.log("Response = " + r.response);
 	    console.log("Sent = " + r.bytesSent);
