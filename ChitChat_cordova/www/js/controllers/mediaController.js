@@ -173,7 +173,7 @@ angular.module('spartan.media', [])
  	}
 
 })
-.controller('VideoController', function($scope, $q, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress,$cordovaFile,GenerateID,VideoService,roomSelected) {
+.controller('VideoController', function($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress,$cordovaFile,GenerateID,VideoService,roomSelected) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
 
@@ -194,7 +194,8 @@ angular.module('spartan.media', [])
 	      		$scope.hideSheet();
 	      		VideoService.handleMediaDialog().then(function() {
 		    		videoURI = VideoService.getVideoUri();
-		    		videoName = videoURI.substr(videoURI.lastIndexOf('/') + 1);
+		    		videoName = (videoURI.substr(videoURI.lastIndexOf('/') + 1));
+		    		console.log(videoName);
 		    		$scope.$emit('fileUri',[videoName,ContentType[ContentType.Video]]);
 		    	});
 	      	}
@@ -214,7 +215,7 @@ angular.module('spartan.media', [])
 	}
 
 	function moveVideoToTmp(uri){
-		videoName = GenerateID.makeid() + '.MOV';
+		videoName = GenerateID.makeid() + '.mp4';
 		var name = uri.substr(uri.lastIndexOf('/') + 1);
         var namePath = uri.substr(0, uri.lastIndexOf('/') + 1);
         var namePathTrim = namePath.substring(0,namePath.length - 1);
@@ -273,6 +274,7 @@ angular.module('spartan.media', [])
 		    $scope.modalVideo = modal;
 		    $scope.modalVideo.type = type;
 		    $scope.modalVideo.src = src;
+		    $scope.modalVideo.url = $sce.trustAsResourceUrl('http://203.113.25.44' + src);
 		    $scope.modalVideo.show();
 		    document.getElementById("video-player").play();
 		});
@@ -446,7 +448,6 @@ var mediaUpload = {};
 
 function UploadMedia(rid,uri,type,callback){
 	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
-	var extension = { "Image":"jpeg", "Video":"mp4", "Voice":"wav" }
 	var uriFile = uri;
 	var mediaName = uri.substr(uri.lastIndexOf('/') + 1);
 	var ft = new FileTransfer();
@@ -459,7 +460,6 @@ function UploadMedia(rid,uri,type,callback){
 		options.fileName = mediaName;
 	    options.mimeType = mimeType[type];
 	    var params = new Object();
-	    params.extension = extension[type];
 	    params.category = 'msg';
 	    options.params = params;
 	    options.chunkedMode = false;
