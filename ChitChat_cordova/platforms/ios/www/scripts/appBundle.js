@@ -1186,6 +1186,26 @@ var ChatServer;
                 callback(null, result);
             });
         };
+        ServerImplemented.prototype.updateClosedNoticeMemberList = function (editType, member, callback) {
+            var msg = {};
+            msg["editType"] = editType;
+            msg["member"] = member;
+            msg["token"] = this.authenData.token;
+            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, function (result) {
+                console.log("updateClosedNoticeUsers: ", JSON.stringify(result));
+                callback(null, result);
+            });
+        };
+        ServerImplemented.prototype.updateClosedNoticeGroupsList = function (editType, group, callback) {
+            var msg = {};
+            msg["editType"] = editType;
+            msg["group"] = group;
+            msg["token"] = this.authenData.token;
+            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, function (result) {
+                console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
+                callback(null, result);
+            });
+        };
         ServerImplemented.prototype.getMemberProfile = function (userId, callback) {
             var msg = {};
             msg["userId"] = userId;

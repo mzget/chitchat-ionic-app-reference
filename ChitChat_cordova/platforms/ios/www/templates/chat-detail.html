@@ -59,9 +59,14 @@
 					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
 
-				<div class="type-video" ng-if="message.type=='Video'" ng-click="openVideo(message.type,message.body)">
-					<!-- <video id="{{message._id}}" src="{{message.bodyUrl}}"></video> -->
-				</div>
+				<div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)" 
+                style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+                	<div style="margin-left:10px;">
+                		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
+                	</div>
+                </div>
+
+
             
 				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
 					<div class="card">
@@ -115,10 +120,13 @@
                 </div>
 
                 <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo(message._id)">
-                	<!-- <video id="{{message._id}}" src="{{message.body}}" controls></video> -->
+                	<video id="{{message._id}}" src="{{message.body}}" controls="controls" preload="metadata"></video>
 				</div>
-                <div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)">
-                	<!-- <video id="{{message._id}}" src="" poster="{{message.thumbnail}}" controls></video> -->
+                <div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)" 
+                style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+                	<div style="margin-left:10px;">
+                		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
+                	</div>
                 </div>
 				
 				
