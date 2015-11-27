@@ -1,10 +1,22 @@
 ﻿class DataListener implements absSpartan.IServerListener, absSpartan.IChatServerListener {
     private dataManager: DataManager;
+    
+    private notifyNewMessageEvents = new Array<(message: Message) => void>();
+    public addNoticeNewMessageEvent(listener: (message: Message) => void) {
+        if(this.notifyNewMessageEvents.length === 0) {
+            this.notifyNewMessageEvents.push(listener);
+        }
+    }
+    public removeNoticeNewMessageEvent(listener : (message: Message) => void) {
+        var id = this.notifyNewMessageEvents.indexOf(listener);
+        this.notifyNewMessageEvents.splice(id, 1);
+    }
+    
     private chatListenerImps = new Array<absSpartan.IChatServerListener>();
-    public addListenerImp(listener: absSpartan.IChatServerListener) {
+    public addChatListenerImp(listener: absSpartan.IChatServerListener) {
         this.chatListenerImps.push(listener);
     }
-    public removeListener(listener: absSpartan.IChatServerListener) {
+    public removeChatListenerImp(listener: absSpartan.IChatServerListener) {
         var id = this.chatListenerImps.indexOf(listener);
         this.chatListenerImps.splice(id, 1);
     }
@@ -34,6 +46,12 @@
 
     onUpdatedLastAccessTime(dataEvent) {
         this.dataManager.updateRoomAccessForUser(dataEvent);
+
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onUpdatedLastAccessTime(dataEvent);
+            });
+        }
     }
 
     onAddRoomAccess(dataEvent) {
@@ -41,6 +59,13 @@
         var roomAccess: RoomAccessData[] = data.roomAccess;
         if (roomAccess !== null && roomAccess.length !== 0) {
             this.dataManager.setRoomAccessForUser(dataEvent);
+        }
+
+
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onAddRoomAccess(dataEvent);
+            });
         }
     }
 
@@ -102,6 +127,11 @@
     onChat(data) {
         var chatMessageImp: Message = JSON.parse(JSON.stringify(data));
 
+        if (!!this.notifyNewMessageEvents && this.notifyNewMessageEvents.length !== 0) {
+            this.notifyNewMessageEvents.map((v, id, arr) => {
+                v(chatMessageImp);
+            });
+        }
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
             this.chatListenerImps.forEach((value, id, arr) => {
                 value.onChat(chatMessageImp);

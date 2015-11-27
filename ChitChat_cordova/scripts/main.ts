@@ -65,12 +65,13 @@ class Main {
     }
 
     public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {
-        console.log(email, password)
+        console.log("authenUser:", email, password);
+
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
             callback(err, loginRes);
 
-            if (!err && loginRes !== null && loginRes.code === 200) {    
+            if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {    
                 //<!-- Listen all event in the spartan world.
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);
@@ -81,10 +82,7 @@ class Main {
                         }
                         else {
                             self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                            server.getLastAccessRoomsInfo(function (err, res) {
-                                console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
-                            });
-                            if (res.code === 200) {
+                            if (res.code === HttpStatusCode.success) {
                             }
                             else {
                                 console.warn("My user profile is empty. please check.");

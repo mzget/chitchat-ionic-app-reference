@@ -31,6 +31,7 @@ angular.module('starter',
 	var currentPlatform = ionic.Platform.platform();
 	var currentPlatformVersion = ionic.Platform.version();
 	console.log("currentPlatform", currentPlatform, currentPlatformVersion);
+	console.log("cordova detail", cordova.platformId, cordova.version);
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -194,8 +195,8 @@ angular.module('starter',
 		url: '/timeline',
 		views: {
 			'tab-timeline': {
-				templateUrl: 'templates/tab-timeline.html',
-				controller: 'DashCtrl'
+				templateUrl: 'templates/tab-timeline.html'
+//				controller: 'DashCtrl'
 			}
 		}
 	})

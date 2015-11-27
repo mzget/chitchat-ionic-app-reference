@@ -183,7 +183,7 @@ module ChatServer {
                     console.log("QueryConnectorServ", result.code);
 
                     if (result.code === 200) {
-                        pomelo.disconnect();
+                        //pomelo.disconnect();
                         
                         var port = result.port;
                         //<!-- Connecting to connector server.
@@ -213,12 +213,12 @@ module ChatServer {
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, (res) => {
                 console.log("login: ", JSON.stringify(res), res.code);
-                if (res.code === 500) {
+                if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
                         callback(res.message, null);
                     }
                 }
-                else if (res.code === 200) {
+                else if (res.code === HttpStatusCode.success) {
                     self.authenData.userId = res.uid;
                     self.authenData.token = res.token;
                     localStorage.setItem("authen", JSON.stringify(self.authenData));
@@ -332,17 +332,35 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, (result) => {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                // if (callback != null){
-                //     if(editType=='add'){
-                //         self.dataManager.myProfile.favoriteGroups.push(group);
-                //     }else{
-                //         var index = self.dataManager.myProfile.favoriteGroups.indexOf(group);
-                //         self.dataManager.myProfile.favoriteGroups.splice( index , 1);
-                //     }
                     callback(null, result);
-                // }
             });
         }
+
+        public updateClosedNoticeMemberList(editType: string, member: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["editType"] = editType;
+            msg["member"] = member;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, (result) => {
+                console.log("updateClosedNoticeUsers: ", JSON.stringify(result));
+                    callback(null, result);
+            });
+        }
+
+        public updateClosedNoticeGroupsList(editType: string, group: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["editType"] = editType;
+            msg["group"] = group;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, (result) => {
+                console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
+                    callback(null, result);
+            });
+        }
+
+
 
         public getMemberProfile(userId: string, callback: (err, res) => void) {
             var msg: IDictionary = {};
@@ -740,6 +758,16 @@ module ChatServer {
             var message: IDictionary = {};
             message["token"] = this.serverImp.authenData.token;
             pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+        }
+
+        public getMessageContent(messageId: string, callback: (err: Error, res: any) => void) {
+            var message: IDictionary = {};
+            message["messageId"] = messageId;
+            pomelo.request("chat.chatHandler.getMessageContent", message, (result) => {
+                if (!!callback) {
+                    callback(null, result);
+                }
+            });
         }
 
         public updateMessageReader(messageId: string, roomId: string) {

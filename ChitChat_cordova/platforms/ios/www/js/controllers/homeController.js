@@ -7,42 +7,24 @@
 
     //homeController.$inject = ['$location'];
 
-    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading,
-        roomSelected, localNotifyService, Favorite, sharedObjectService) {
+    function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $ionicPlatform,
+        roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'homeController';
 
-        var dataListener = main.getDataListener();
-        var dataManager = main.getDataManager();
-        var homeComponent = new HomeComponent();
-
-		//$('.tab-nav.tabs').css({'display':'flex'});
-		//$('[name="tab-group"] .has-tabs').css({'bottom':'44px'})
-        activate();
-
         function activate() {
-            console.warn('homeController activate');
- 
+
             localNotifyService.registerPermission();
             sharedObjectService.createNotifyManager(main);
+            chatslogService.init();
 
-            addHomeComponent();
-        }
-
-        function addHomeComponent() {
-            dataListener.addListenerImp(homeComponent);
-
-            homeComponent.onChat = function (chatMessageImp) {
-                console.warn("new message: ", chatMessageImp.type);
-
-                var appBackground = cordova.plugins.backgroundMode.isActive();
-                sharedObjectService.getNotifyManager().notify(chatMessageImp, appBackground, localNotifyService);
-            }
+            vm.dataListener = sharedObjectService.getDataListener();
+            sharedObjectService.regisNotifyNewMessageEvent();
         }
 
         function onLeave() {
-            dataListener.removeListener(homeComponent);
+        
         }
 
         $scope.pullRefresh = function() {
@@ -52,17 +34,17 @@
         function getFavorite(){
             var favoriteArray = Favorite.getAllFavorite();
             var favorite = [];
-            for(var x=0; x<favoriteArray.length; x++){
+            for (var x = 0; x < favoriteArray.length; x++) {
                 try {
-                    if(main.getDataManager().orgGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().orgGroups[favoriteArray[x]]); 
-                    else if(main.getDataManager().projectBaseGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().projectBaseGroups[favoriteArray[x]]); 
-                    else if(main.getDataManager().privateGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().privateGroups[favoriteArray[x]]); 
-                    else if(main.getDataManager().orgMembers[favoriteArray[x]] !== undefined) { 
+                    if (main.getDataManager().orgGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().orgGroups[favoriteArray[x]]);
+                    else if (main.getDataManager().projectBaseGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().projectBaseGroups[favoriteArray[x]]);
+                    else if (main.getDataManager().privateGroups[favoriteArray[x]] !== undefined) favorite.push(main.getDataManager().privateGroups[favoriteArray[x]]);
+                    else if (main.getDataManager().orgMembers[favoriteArray[x]] !== undefined) {
                         main.getDataManager().orgMembers[favoriteArray[x]].name = main.getDataManager().orgMembers[favoriteArray[x]].displayname;
-                        favorite.push(main.getDataManager().orgMembers[favoriteArray[x]]); 
+                        favorite.push(main.getDataManager().orgMembers[favoriteArray[x]]);
                     }
                 }
-                catch(err) {
+                catch (err) {
                     //console.log(err);
                 }
             }
@@ -105,7 +87,10 @@
         }
         
         $scope.$on('$ionicView.enter', function(){ 
-	
+            console.log("$ionicView.enter: ", vm.title);
+
+            activate();
+
             $scope.refreshView = function () {
                 console.debug("homeController : refreshView");
 
@@ -181,9 +166,17 @@
 	
         $scope.$on('$ionicView.beforeLeave', function () {
             console.log("beforeLeave: homeController");
+        });
+
+        $scope.$on('$ionicView.leave', function () {
+            console.log("$ionicView.leave:", vm.title);
+        });
+        $scope.$on('$ionicView.unloaded', function () {
+            console.log("$ionicView.unloaded:", vm.title);
+
             clearInterval($scope.interval);
             onLeave();
-        });		
+        });
 	
         $scope.viewlist = function(list) {
             var listHeight = $('#list-'+list+' .list').height();		

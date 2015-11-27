@@ -23,7 +23,8 @@ angular.module('spartan.chat', [])
     }
 
     function addComponent() {
-        main.dataListener.addListenerImp(chatRoomComponent);
+        main.dataListener.addChatListenerImp(chatRoomComponent);
+		sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
         chatRoomComponent.serviceListener = function (event, newMsg) {
             if (event === "onChat") {
                 Chats.set(chatRoomComponent.chatMessages);
@@ -47,7 +48,6 @@ angular.module('spartan.chat', [])
             setTimeout(function () {
                 $ionicLoading.hide();
             }, 1000);
-            
         });
     }
 
@@ -55,13 +55,14 @@ angular.module('spartan.chat', [])
         chatRoomComponent.leaveRoom(currentRoom._id, function callback(err, res) {
             localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
             localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomComponent.chatMessages));
-            console.warn("save", currentRoom.name, JSON.stringify(chatRoomComponent.chatMessages));
+            console.warn("save chat history", currentRoom.name);
 
             currentRoom = null;
             roomSelected.setRoom(currentRoom);
             chatRoomComponent.chatMessages = [];
             Chats.clear();
-            main.dataListener.removeListener(chatRoomComponent);
+            main.dataListener.removeChatListenerImp(chatRoomComponent);
+			sharedObjectService.regisNotifyNewMessageEvent();
         });
     }
     
@@ -251,18 +252,18 @@ angular.module('spartan.chat', [])
     
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
-		if(args[1] == "Image"){
-			$scope.chat.push( {"rid":currentRoom._id,"type":"Image","body":cordova.file.dataDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"temp":"true"});
-		}else if(args[1] == "Voice"){
-			$scope.chat.push( {"rid":currentRoom._id,"type":"Voice","body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
-		}else if(args[1] == "Video"){
-			$scope.chat.push( {"rid":currentRoom._id,"type":"Video","body":cordova.file.tempDirectory + args[0],"sender":myprofile._id,"_id":args[0],"temp":"true"});
+		if(args[1] == ContentType[ContentType.Image] ){
+			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
+		}else if(args[1] == ContentType[ContentType.Voice] ){
+			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+		}else if(args[1] == ContentType[ContentType.Video] ){
+			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}
 		
 	});
 	// Send Image and remove temp Image
 	$scope.$on('fileUrl', function(event,args){
-		if(args[2]=="Image"){
+		if(args[2]==ContentType[ContentType.Image]){
 			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
 				if (err || res === null) {
 					console.warn("send message fail.");
@@ -271,7 +272,7 @@ angular.module('spartan.chat', [])
 					console.log("send message:", JSON.stringify(res));
 				}
 			});
-		}else if(args[2]=="Voice"){
+		}else if(args[2]==ContentType[ContentType.Voice]){
 			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], function(err, res) {
 				if (err || res === null) {
 					console.warn("send message fail.");
@@ -280,7 +281,7 @@ angular.module('spartan.chat', [])
 					console.log("send message:", JSON.stringify(res));
 				}
 			});
-		}else if(args[2]=="Video"){
+		}else if(args[2]==ContentType[ContentType.Video]){
 			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], function(err, res) {
 				if (err || res === null) {
 					console.warn("send message fail.");
@@ -291,8 +292,17 @@ angular.module('spartan.chat', [])
 			});
 		}
 		$.each($scope.chat, function(index, value){
-			//console.log(value._id,args[1]);
-			if(value._id == args[1]) { $scope.chat[index] = new Object; }
+			if(value._id == args[1]) { 
+				$scope.chat[index] = new Object; 
+			}
+		});
+	});
+
+	$scope.$on('delectTemp', function(event,args){
+		$.each($scope.chat, function(index, value){
+			if(value._id == args[0]) { 
+				$scope.chat[index] = new Object; 
+			}
 		});
 	});
 
@@ -519,40 +529,30 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cor
         done(locationObj);
         $scope.closeMapModal();
     }
-
-    $scope.loading = $ionicLoading.show({
-		content: 'Getting current location...',
-		showBackdrop: false
-	});
+	
+	$ionicLoading.show({
+      template: 'Getting current location...'
+    });
 
 	var posOptions = { timeout: 10000, enableHighAccuracy: false };
 	$cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
 	    locationObj.latitude = position.coords.latitude;
 	    locationObj.longitude = position.coords.longitude;
+		
 	    $scope.$broadcast('onInitMap', { lat: position.coords.latitude, long: position.coords.longitude });
-	    $ionicLoading.hide();
+	    
+		$ionicLoading.hide();
 	}, function (err) {
 	    // error
 	    console.error(err);
+		
+		$ionicLoading.hide();
+
+	    $cordovaDialogs.alert('Get your current position timeout.', 'Location Fail.', 'OK')
+        .then(function () {
+            $scope.closeMapModal();
+        });
 	});
-
-    var watchOptions = {
-        timeout: 3000,
-        enableHighAccuracy: false // may cause errors if true
-    };
-
-    var watch = $cordovaGeolocation.watchPosition(watchOptions);
-    watch.then(
-      null,
-      function (err) {
-          // error
-      },
-      function (position) {
-          var lat = position.coords.latitude
-          var long = position.coords.longitude
-      });
-
-    watch.clearWatch();
 }
 
 var sendLocation = function (chatRoomApi, locationObj, currentRoom, myprofile) {
