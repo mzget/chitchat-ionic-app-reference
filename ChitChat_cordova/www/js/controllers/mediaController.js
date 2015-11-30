@@ -1,6 +1,6 @@
 angular.module('spartan.media', [])
 
-.controller('ImageController', function($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected) {
+.controller('ImageController', function($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected, checkFileSize) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
@@ -100,11 +100,22 @@ angular.module('spartan.media', [])
 
 	$scope.uploadImage = function(id) {
 		if(FileService.getImages().length!=0) { 
-			var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
-				$scope.$emit('delectTemp', [id]); 
+			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
+				if(canUpload){
+					var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
+						$scope.$emit('delectTemp', [id]); 
+					});
+				mediaUpload[id] = img;
+				mediaUpload[id].upload();
+				}else{
+					navigator.notification.alert(
+					    'This file size is over', 
+					     null,          
+					    'Fail to Upload',          
+					    'OK'   
+					);
+				}
 			});
-			mediaUpload[id] = img;
-			mediaUpload[id].upload();
 		}else{
 			if(mediaUpload[id].hasOwnProperty('url')){
 				$scope.$emit('delectTemp', [id]); 
@@ -173,7 +184,7 @@ angular.module('spartan.media', [])
  	}
 
 })
-.controller('VideoController', function($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress,$cordovaFile,GenerateID,VideoService,roomSelected) {
+.controller('VideoController', function($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile, checkFileSize, GenerateID,VideoService,roomSelected) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
 
@@ -242,11 +253,22 @@ angular.module('spartan.media', [])
 	}
 	$scope.uploadVideo = function(id) {
 		if(videoName != null || videoName != undefined) { 
-			var video = new UploadMedia(roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function(id,messageId){
-				$scope.$emit('delectTemp', [id]); 
+			checkFileSize.checkFile(videoURI).then(function(canUpload) {
+				if(canUpload){
+					var video = new UploadMedia(roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function(id,messageId){
+						$scope.$emit('delectTemp', [id]); 
+					});
+					mediaUpload[id] = video;
+					mediaUpload[id].upload();
+				}else{
+					navigator.notification.alert(
+					    'This file size is over', 
+					     null,          
+					    'Fail to Upload',          
+					    'OK'   
+					);
+				}
 			});
-			mediaUpload[id] = video;
-			mediaUpload[id].upload();
 		}else{
 			if(mediaUpload[id].hasOwnProperty('url')){
 				$scope.$emit('delectTemp', [id]); 
@@ -344,7 +366,7 @@ angular.module('spartan.media', [])
 
 
 })
-.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile, GenerateID,roomSelected) {
+.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile, GenerateID,roomSelected, checkFileSize) {
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
 	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
@@ -428,11 +450,22 @@ angular.module('spartan.media', [])
 
 	$scope.uploadVoice = function(id) {
 		if(fileName != null || fileName != undefined) { 
-			var voice = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function(id,messageId){
-				$scope.$emit('delectTemp', [id]); 
+			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
+				if(canUpload){
+					var voice = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function(id,messageId){
+						$scope.$emit('delectTemp', [id]); 
+				});
+				mediaUpload[id] = voice;
+				mediaUpload[id].upload();
+				}else{
+					navigator.notification.alert(
+					    'This file size is over', 
+					     null,          
+					    'Fail to Upload',          
+					    'OK'   
+					);
+				}
 			});
-			mediaUpload[id] = voice;
-			mediaUpload[id].upload();
 		}else{
 			if(mediaUpload[id].hasOwnProperty('url')){
 				$scope.$emit('delectTemp', [id]); 

@@ -467,6 +467,29 @@ angular.module('spartan.services', [])
   }
 })
 
+.factory('checkFileSize',function($q){
+
+  function checkFile(pathFile){
+    return $q(function(resolve, reject) {
+      window.resolveLocalFileSystemURL(pathFile, 
+        function win(fileEntry){
+          fileEntry.file(function(file){
+            var fileSize = file.size / 1000000;
+            if(fileSize <= 20) resolve(true);
+            else resolve(false);
+          });
+        }, 
+        function fail(e){
+          reject();
+      });
+    })
+  }
+
+  return{
+    checkFile: checkFile
+  }
+})
+
 .factory('Chats', function($sce,$cordovaFile,roomSelected) {
     // Might use a resource here that returns a JSON array
 
