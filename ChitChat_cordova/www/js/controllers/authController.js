@@ -31,6 +31,8 @@
                 else if (cordova.platformId === "windows") {
                     $ionicLoading.hide();
                 }
+                    
+                console.log("appConfig", server.appConfig.webserver);
 
                 //location.href = "#/tab/group";
                 $state.go('tab.group');
