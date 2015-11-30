@@ -1,5 +1,4 @@
 ﻿
-var appConfig;
 var pomelo;
 var username: string = "";
 var password: string = "";
@@ -31,6 +30,7 @@ module ChatServer {
         host: string;
         port: number;
         authenData: AuthenData;
+        appConfig : any;
         _isInit = false;
         _isConnected = false;
         _isLogedin = false;
@@ -109,7 +109,7 @@ module ChatServer {
                     url: "../www/configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
-                        appConfig = JSON.parse(JSON.stringify(config));
+                        self.appConfig = JSON.parse(JSON.stringify(config));
 
                         resolve();
                     }, error: function (jqXHR, textStatus, errorThrown) {
@@ -118,8 +118,8 @@ module ChatServer {
                     }
                 });
             }).then(function resolve(val) {
-                self.host = appConfig.socketHost;
-                self.port = appConfig.socketPort;
+                self.host = self.appConfig.socketHost;
+                self.port = self.appConfig.socketPort;
                 if (!!pomelo) {
                     //<!-- Connecting gate server.
                     self.connectSocketServer(self.host, self.port, (err) => {

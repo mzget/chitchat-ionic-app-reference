@@ -927,7 +927,6 @@ var NotifyManager = (function () {
     };
     return NotifyManager;
 })();
-var appConfig;
 var pomelo;
 var username = "";
 var password = "";
@@ -1010,7 +1009,7 @@ var ChatServer;
                     url: "../www/configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
-                        appConfig = JSON.parse(JSON.stringify(config));
+                        self.appConfig = JSON.parse(JSON.stringify(config));
                         resolve();
                     }, error: function (jqXHR, textStatus, errorThrown) {
                         console.error(jqXHR, textStatus, errorThrown);
@@ -1018,8 +1017,8 @@ var ChatServer;
                     }
                 });
             }).then(function resolve(val) {
-                self.host = appConfig.socketHost;
-                self.port = appConfig.socketPort;
+                self.host = self.appConfig.socketHost;
+                self.port = self.appConfig.socketPort;
                 if (!!pomelo) {
                     self.connectSocketServer(self.host, self.port, function (err) {
                         callback(err, self);
