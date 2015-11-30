@@ -37,8 +37,6 @@
                     if (!main.getDataManager().isMySelf(newMsg.sender)) {
                         chatlog_count++;
                         cordova.plugins.notification.badge.increase();
-
-                        console.warn("chatlogService: ", JSON.stringify(newMsg));
                         
                         var unread = {};
                         unread.message = newMsg;
