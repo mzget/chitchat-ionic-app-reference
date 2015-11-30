@@ -409,7 +409,16 @@ angular.module('spartan.services', [])
   }
   function isBlockNoti(id){
     var isHas = false;
-    if(!isGetFirstData) getBlockNoti();
+    if(!isGetFirstData) {
+      getBlockNoti();
+      var allBlockNoti = getAllBlockNoti();
+      for(var i=0; i<allBlockNoti.length; i++){
+          if(allBlockNoti[i] == id){
+              isHas = true;
+          }
+      }
+      return isHas;
+    }
     else{
       var allBlockNoti = getAllBlockNoti();
       for(var i=0; i<allBlockNoti.length; i++){
