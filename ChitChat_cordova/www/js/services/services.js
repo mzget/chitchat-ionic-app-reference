@@ -320,6 +320,7 @@ angular.module('spartan.services', [])
   }
   function clear(){
     positionRole = [];
+    editPositionMember = [];
   }
   
   return{
