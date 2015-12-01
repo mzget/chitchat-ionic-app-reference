@@ -683,7 +683,7 @@ module ChatServer {
     export class ChatRoomApiProvider {
         serverImp: ServerImplemented = ServerImplemented.getInstance();
         
-        public chat(room_id: string, target: string, sender_id: string, content: string, contentType: string, repalceMessageID: (err, res) => void) {
+        public chat(room_id: string, target: string, sender_id: string, content: string, contentType: string, callback: (err, res) => void) {
             var message: IDictionary = {};
             message["rid"] = room_id;
             message["content"] = content;
@@ -693,8 +693,8 @@ module ChatServer {
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
 
-                if (repalceMessageID !== null)
-                    repalceMessageID(null, data.data);
+                if (callback !== null)
+                    callback(null, data);
             });
         }
         
