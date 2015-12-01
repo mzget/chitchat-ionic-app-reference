@@ -48,9 +48,13 @@ angular.module('spartan.chat', [])
 			setTimeout(function () {
 				$ionicLoading.hide();
 			}, 1000);
+			console.log(joinRoomRes);
 
 			if (joinRoomRes.code !== HttpStatusCode.success) {
 			    //<!-- Block user interface for this chat room.
+			    $scope.inactive = true;
+			}else{
+				$scope.inactive = false;
 			}
 		});
 	}
