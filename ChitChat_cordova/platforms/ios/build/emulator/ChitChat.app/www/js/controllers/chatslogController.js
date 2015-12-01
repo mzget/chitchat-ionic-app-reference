@@ -6,14 +6,14 @@
         .controller('chatslogController', chatslogController);
 
     // chatslogController.$inject = ['$location', '$scope', '$timeout', 'roomSelected'];
-			
-	function chatslogController($location, $scope, $rootScope, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService) {
+            
+    function chatslogController($location, $scope, $rootScope, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
 
         var dataManager = main.getDataManager();
-		var listenerImp;
+        var listenerImp;
         var roomAccess = [];
         var myRoomAccess = [];
         $scope.myProfile = dataManager.myProfile;
@@ -21,7 +21,7 @@
         $scope.roomAccess = [];
 
         function activate() { 
-			console.warn(vm.title, "activate");
+            console.warn(vm.title, "activate");
         }
         
         function getRoomInfo() {
@@ -131,59 +131,59 @@
             }
         }
         
-		var refresh = function () 
-		{
-		    updateUnreadMessageCount();
+        var refresh = function () 
+        {
+            updateUnreadMessageCount();
 
-			$scope.roomAccess = myRoomAccess;
-			
-			$timeout(refresh, 1000);
-		} 
-		$timeout(refresh, 1000);
-		
-		$scope.gotoChat = function (accessId, chatlog) 
-		{		
+            $scope.roomAccess = myRoomAccess;
+            
+            $timeout(refresh, 1000);
+        } 
+        $timeout(refresh, 1000);
+        
+        $scope.gotoChat = function (accessId, chatlog) 
+        {		
             var accessLength = myRoomAccess.length; 
             
-			for(var i=0; i< accessLength; i++)
-			{
-				if( myRoomAccess[i]['_id'] == accessId )
-				{
-					switch( myRoomAccess[i]['type'] )
-					{
-						case 0:
-							var group = main.getDataManager().orgGroups[accessId];
-							roomSelected.setRoom(group);
-							location.href = '#/tab/chats/chat/' + accessId;
-							break;
-						case 1:
-							var group = main.getDataManager().projectBaseGroups[accessId];
-							roomSelected.setRoom(group);
-							location.href = '#/tab/chats/chat/' + accessId;
-							break;
-						case 2:
-							var group = main.getDataManager().privateGroups[accessId];
-							roomSelected.setRoom(group);
-							location.href = '#/tab/chats/chat/' + accessId;
-							break;
-						case 3:
-							if( myRoomAccess[i]['members'][0]['id'] != dataManager.myProfile._id )
-								var contactId = myRoomAccess[i]['members'][0]['id']
-							else
-								var contactId = myRoomAccess[i]['members'][1]['id']
-						
-							server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
-								console.log(JSON.stringify(res));
-								var room = JSON.parse(JSON.stringify(res.data));
-								roomSelected.setRoom(room);
-								location.href = '#/tab/chats/chat/' + room._id;
-							});
-							break;
-					}
-					i = accessLength;
-				}
-			}	
-		};
+            for(var i=0; i< accessLength; i++)
+            {
+                if( myRoomAccess[i]['_id'] == accessId )
+                {
+                    switch( myRoomAccess[i]['type'] )
+                    {
+                        case 0:
+                            var group = main.getDataManager().orgGroups[accessId];
+                            roomSelected.setRoom(group);
+                            location.href = '#/tab/chats/chat/' + accessId;
+                            break;
+                        case 1:
+                            var group = main.getDataManager().projectBaseGroups[accessId];
+                            roomSelected.setRoom(group);
+                            location.href = '#/tab/chats/chat/' + accessId;
+                            break;
+                        case 2:
+                            var group = main.getDataManager().privateGroups[accessId];
+                            roomSelected.setRoom(group);
+                            location.href = '#/tab/chats/chat/' + accessId;
+                            break;
+                        case 3:
+                            if( myRoomAccess[i]['members'][0]['id'] != dataManager.myProfile._id )
+                                var contactId = myRoomAccess[i]['members'][0]['id']
+                            else
+                                var contactId = myRoomAccess[i]['members'][1]['id']
+                        
+                            server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
+                                console.log(JSON.stringify(res));
+                                var room = JSON.parse(JSON.stringify(res.data));
+                                roomSelected.setRoom(room);
+                                location.href = '#/tab/chats/chat/' + room._id;
+                            });
+                            break;
+                    }
+                    i = accessLength;
+                }
+            }	
+        };
 
         $scope.$on('$ionicView.enter', function() { 
             console.log("$ionicView.enter: ", vm.title);

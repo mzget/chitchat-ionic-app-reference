@@ -36,13 +36,12 @@
                 listenerImp = function (newMsg) {
                     if (!main.getDataManager().isMySelf(newMsg.sender)) {
                         chatlog_count++;
-
-                        console.warn("chatlogService: ", JSON.stringify(newMsg));
+                        cordova.plugins.notification.badge.increase();
                         
                         var unread = {};
                         unread.message = newMsg;
                         unread.rid = newMsg.rid;
-                        console.error("room to add: ", unreadMessageMap[newMsg.rid]);
+                        console.warn("room to add: ", unreadMessageMap[newMsg.rid]);
                         var count = Number(unreadMessageMap[newMsg.rid].count);
                         count++;
                         console.log(newMsg.rid, "unread count", unreadMessageMap[newMsg.rid].count);
@@ -100,7 +99,7 @@
                         var count = Number(unread.count);
                         chatlog_count += count;
 
-                        console.log(unread);
+                        console.log("unread:", JSON.stringify(unread));
                     });
                 }
                 

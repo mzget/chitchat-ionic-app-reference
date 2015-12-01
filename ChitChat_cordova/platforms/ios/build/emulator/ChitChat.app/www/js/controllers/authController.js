@@ -6,10 +6,7 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-
-    //authController.$inject = ['$location', '$ionicPlatform', '$ionicLoading', '$state', 'networkService'];
-
-    function authController($location, $ionicPlatform, $ionicLoading, $state, $cordovaSpinnerDialog, networkService) {
+    function authController($location, $ionicPlatform, $ionicLoading, $state, $cordovaSpinnerDialog, networkService, chatslogService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -34,6 +31,8 @@
                 else if (cordova.platformId === "windows") {
                     $ionicLoading.hide();
                 }
+                    
+                console.log("appConfig", server.appConfig.webserver);
 
                 //location.href = "#/tab/group";
                 $state.go('tab.group');
@@ -85,13 +84,14 @@
                 // Get informed when the background mode has been activated
                 cordova.plugins.backgroundMode.onactivate = function () {
                     console.warn("backgroundMode.onactivate");
-                    cordova.plugins.notification.badge.set(1);
+
+                    var logCount = chatslogService.getChatsLogCount();
+                    cordova.plugins.notification.badge.set(logCount);
                 };
 
                 // Get informed when the background mode has been deactivated
                 cordova.plugins.backgroundMode.ondeactivate = function () {
                     console.warn("backgroundMode.ondeactivate");
-                    cordova.plugins.notification.badge.clear();
                 };
             }
         }
