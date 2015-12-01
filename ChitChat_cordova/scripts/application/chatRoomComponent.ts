@@ -83,7 +83,7 @@
 
     }
 
-    public getMessage(chatId, Chats, callback) {
+    public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
         var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
@@ -138,8 +138,8 @@
                 cb(null, null);
             }
         ], function (err, res) {
-            self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
-                if (res.code == 200) {
+            self.serverImp.JoinChatRoomRequest(chatId, function (err, joinRoomRes) {
+                if (joinRoomRes.code == 200) {
                     var access = new Date();
                     var roomAccess = self.dataManager.myProfile.roomAccess;
                     async.eachSeries(roomAccess, function iterator(item, cb) {
@@ -189,16 +189,19 @@
                                     localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
 
                                     // location.href = '#/tab/message/' + chatId;
-                                    callback();
+                                    callback(joinRoomRes);
                                 });
                             }
                             else {
                                 // location.href = '#/tab/message/' + chatId;
                                 Chats.set(self.chatMessages);
-                                callback();
+                                callback(joinRoomRes);
                             }
                         });
                     });
+                }
+                else {
+                    callback(joinRoomRes);
                 }
             });
         });

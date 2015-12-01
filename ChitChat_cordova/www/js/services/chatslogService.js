@@ -99,7 +99,7 @@
                         var count = Number(unread.count);
                         chatlog_count += count;
 
-                        console.log(unread);
+                        console.log("unread:", JSON.stringify(unread));
                     });
                 }
                 

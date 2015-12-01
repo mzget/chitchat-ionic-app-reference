@@ -265,8 +265,8 @@ var ChatRoomComponent = (function () {
                 cb(null, null);
             }
         ], function (err, res) {
-            self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
-                if (res.code == 200) {
+            self.serverImp.JoinChatRoomRequest(chatId, function (err, joinRoomRes) {
+                if (joinRoomRes.code == 200) {
                     var access = new Date();
                     var roomAccess = self.dataManager.myProfile.roomAccess;
                     async.eachSeries(roomAccess, function iterator(item, cb) {
@@ -309,15 +309,18 @@ var ChatRoomComponent = (function () {
                                     Chats.set(self.chatMessages);
                                     localStorage.removeItem(myProfile._id + '_' + chatId);
                                     localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
-                                    callback();
+                                    callback(joinRoomRes);
                                 });
                             }
                             else {
                                 Chats.set(self.chatMessages);
-                                callback();
+                                callback(joinRoomRes);
                             }
                         });
                     });
+                }
+                else {
+                    callback(joinRoomRes);
                 }
             });
         });
