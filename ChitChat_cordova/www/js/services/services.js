@@ -409,7 +409,16 @@ angular.module('spartan.services', [])
   }
   function isBlockNoti(id){
     var isHas = false;
-    if(!isGetFirstData) getBlockNoti();
+    if(!isGetFirstData) {
+      getBlockNoti();
+      var allBlockNoti = getAllBlockNoti();
+      for(var i=0; i<allBlockNoti.length; i++){
+          if(allBlockNoti[i] == id){
+              isHas = true;
+          }
+      }
+      return isHas;
+    }
     else{
       var allBlockNoti = getAllBlockNoti();
       for(var i=0; i<allBlockNoti.length; i++){
@@ -455,6 +464,29 @@ angular.module('spartan.services', [])
     isBlockNoti: isBlockNoti,
     updateBlockNoti: updateBlockNoti,
     getAllBlockNoti: getAllBlockNoti
+  }
+})
+
+.factory('checkFileSize',function($q){
+
+  function checkFile(pathFile){
+    return $q(function(resolve, reject) {
+      window.resolveLocalFileSystemURL(pathFile, 
+        function win(fileEntry){
+          fileEntry.file(function(file){
+            var fileSize = file.size / 1000000;
+            if(fileSize <= 20) resolve(true);
+            else resolve(false);
+          });
+        }, 
+        function fail(e){
+          reject();
+      });
+    })
+  }
+
+  return{
+    checkFile: checkFile
   }
 })
 
