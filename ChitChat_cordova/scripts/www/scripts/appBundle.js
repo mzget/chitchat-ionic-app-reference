@@ -23,7 +23,6 @@ var BlankCordovaApp1;
         Application.initialize();
     };
 })(BlankCordovaApp1 || (BlankCordovaApp1 = {}));
-/// <reference path="./typings/tsd.d.ts" />
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
@@ -217,54 +216,62 @@ var ChatRoomComponent = (function () {
         var self = this;
         var myProfile = self.dataManager.myProfile;
         var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
-        async.waterfall([
-            function (cb) {
-                if (!!chatLog) {
-                    if (JSON.stringify(chatLog) === "") {
+        var promise = new Promise(function (resolve, reject) {
+            if (!!chatLog) {
+                console.log("Local chat history has a data...");
+                if (JSON.stringify(chatLog) === "") {
+                    self.chatMessages = [];
+                    resolve();
+                }
+                else {
+                    var arr_fromLog = JSON.parse(chatLog);
+                    if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
                         self.chatMessages = [];
-                        cb(null, null);
+                        resolve();
                     }
                     else {
-                        var arr_fromLog = JSON.parse(chatLog);
-                        if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
-                            self.chatMessages = [];
-                            cb(null, null);
-                        }
-                        else {
-                            async.eachSeries(arr_fromLog, function (log, cb) {
+                        console.log("Decode local chat history for displaying:", arr_fromLog.length);
+                        var count = 0;
+                        async.mapSeries(arr_fromLog, function (log, iteratorCb) {
+                            async.setImmediate(function () {
                                 var messageImp = log;
                                 if (messageImp.type === ContentType[ContentType.Text]) {
+                                    console.log("item:", count++, log.type);
                                     self.main.decodeService(messageImp.body, function (err, res) {
                                         if (!err) {
                                             messageImp.body = res;
                                             self.chatMessages.push(messageImp);
-                                            cb();
+                                            iteratorCb(null, messageImp);
                                         }
                                         else {
                                             self.chatMessages.push(messageImp);
-                                            cb();
+                                            iteratorCb(null, messageImp);
                                         }
                                     });
                                 }
                                 else {
+                                    console.log("item:", count++, log.type);
                                     self.chatMessages.push(log);
-                                    cb();
+                                    iteratorCb(null, messageImp);
                                 }
-                            }, function (err) {
-                                cb(null, null);
                             });
-                        }
+                        }, function done(err, results) {
+                            if (!err) {
+                                console.log("Decode local chat history complete...");
+                            }
+                            resolve();
+                        });
                     }
                 }
-                else {
-                    self.chatMessages = [];
-                    cb(null, null);
-                }
-            },
-            function (arg1, cb) {
-                cb(null, null);
             }
-        ], function (err, res) {
+            else {
+                console.log("Have no local chat history.");
+                self.chatMessages = [];
+                resolve();
+            }
+        });
+        promise.then(function onFulfilled() {
+            console.log("get local history done:");
             self.serverImp.JoinChatRoomRequest(chatId, function (err, joinRoomRes) {
                 if (joinRoomRes.code == 200) {
                     var access = new Date();
@@ -323,6 +330,8 @@ var ChatRoomComponent = (function () {
                     callback(joinRoomRes);
                 }
             });
+        }).catch(function onRejected(reason) {
+            console.warn("promiss.onRejected", reason);
         });
     };
     ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
@@ -1451,7 +1460,7 @@ var ChatServer;
         function ChatRoomApiProvider() {
             this.serverImp = ServerImplemented.getInstance();
         }
-        ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, repalceMessageID) {
+        ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, callback) {
             var message = {};
             message["rid"] = room_id;
             message["content"] = content;
@@ -1460,8 +1469,8 @@ var ChatServer;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
-                if (repalceMessageID !== null)
-                    repalceMessageID(null, data.data);
+                if (callback !== null)
+                    callback(null, data);
             });
         };
         ChatRoomApiProvider.prototype.chatFile = function (room_id, target, sender_id, fileUrl, contentType, setMessageID) {
@@ -1732,7 +1741,6 @@ var ContentType;
     ContentType[ContentType["Sticker"] = 6] = "Sticker";
     ContentType[ContentType["Location"] = 7] = "Location";
 })(ContentType || (ContentType = {}));
-//<!--- Referrence by http://management.about.com/od/people/a/EEgradelevels.htm
 var JobLevel;
 (function (JobLevel) {
     JobLevel[JobLevel["employees"] = 0] = "employees";

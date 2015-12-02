@@ -217,54 +217,50 @@ var ChatRoomComponent = (function () {
         var self = this;
         var myProfile = self.dataManager.myProfile;
         var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
-        async.waterfall([
-            function (cb) {
-                if (!!chatLog) {
-                    if (JSON.stringify(chatLog) === "") {
-                        self.chatMessages = [];
-                        cb(null, null);
-                    }
-                    else {
-                        var arr_fromLog = JSON.parse(chatLog);
-                        if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
-                            self.chatMessages = [];
-                            cb(null, null);
-                        }
-                        else {
-                            async.eachSeries(arr_fromLog, function (log, cb) {
-                                var messageImp = log;
-                                if (messageImp.type === ContentType[ContentType.Text]) {
-                                    self.main.decodeService(messageImp.body, function (err, res) {
-                                        if (!err) {
-                                            messageImp.body = res;
-                                            self.chatMessages.push(messageImp);
-                                            cb();
-                                        }
-                                        else {
-                                            self.chatMessages.push(messageImp);
-                                            cb();
-                                        }
-                                    });
-                                }
-                                else {
-                                    self.chatMessages.push(log);
-                                    cb();
-                                }
-                            }, function (err) {
-                                cb(null, null);
-                            });
-                        }
-                    }
+        var promise = new Promise(function (resolve, reject) {
+            if (!!chatLog) {
+                console.log("Local chat history has a data...");
+                if (JSON.stringify(chatLog) === "") {
+                    self.chatMessages = [];
+                    resolve();
                 }
                 else {
-                    self.chatMessages = [];
-                    cb(null, null);
+                    var arr_fromLog = JSON.parse(chatLog);
+                    if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
+                        self.chatMessages = [];
+                        resolve();
+                    }
+                    else {
+                        console.log("Decode local chat history for displaying:", arr_fromLog.length);
+                        arr_fromLog.map(function (log, i, a) {
+                            var messageImp = log;
+                            if (messageImp.type === ContentType[ContentType.Text]) {
+                                self.main.decodeService(messageImp.body, function (err, res) {
+                                    if (!err) {
+                                        messageImp.body = res;
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                    else {
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                });
+                            }
+                            else {
+                                self.chatMessages.push(log);
+                            }
+                        });
+                        resolve();
+                    }
                 }
-            },
-            function (arg1, cb) {
-                cb(null, null);
             }
-        ], function (err, res) {
+            else {
+                console.log("Have no local chat history.");
+                self.chatMessages = [];
+                resolve();
+            }
+        });
+        promise.then(function onFulfilled() {
+            console.log("get local history done:");
             self.serverImp.JoinChatRoomRequest(chatId, function (err, joinRoomRes) {
                 if (joinRoomRes.code == 200) {
                     var access = new Date();
@@ -323,6 +319,8 @@ var ChatRoomComponent = (function () {
                     callback(joinRoomRes);
                 }
             });
+        }).catch(function onRejected(reason) {
+            console.warn("promiss.onRejected", reason);
         });
     };
     ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
@@ -1451,7 +1449,7 @@ var ChatServer;
         function ChatRoomApiProvider() {
             this.serverImp = ServerImplemented.getInstance();
         }
-        ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, repalceMessageID) {
+        ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, callback) {
             var message = {};
             message["rid"] = room_id;
             message["content"] = content;
@@ -1460,8 +1458,8 @@ var ChatServer;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
-                if (repalceMessageID !== null)
-                    repalceMessageID(null, data.data);
+                if (callback !== null)
+                    callback(null, data);
             });
         };
         ChatRoomApiProvider.prototype.chatFile = function (room_id, target, sender_id, fileUrl, contentType, setMessageID) {

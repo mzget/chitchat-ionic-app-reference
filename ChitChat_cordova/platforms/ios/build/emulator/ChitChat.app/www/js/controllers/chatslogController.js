@@ -167,10 +167,11 @@
                             location.href = '#/tab/chats/chat/' + accessId;
                             break;
                         case 3:
+                            var contactId;
                             if( myRoomAccess[i]['members'][0]['id'] != dataManager.myProfile._id )
-                                var contactId = myRoomAccess[i]['members'][0]['id']
+                                contactId = myRoomAccess[i]['members'][0]['id']
                             else
-                                var contactId = myRoomAccess[i]['members'][1]['id']
+                                contactId = myRoomAccess[i]['members'][1]['id']
                         
                             server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
                                 console.log(JSON.stringify(res));

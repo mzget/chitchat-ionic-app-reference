@@ -14,8 +14,6 @@ angular.module('spartan.chat', [])
 	var chatRoomApi = main.getChatRoomApi();
 	var chatRoomComponent = new ChatRoomComponent(main, currentRoom._id);
 
-	activate();
-
 	function activate() {
 		console.log("chatController is activate");
 
@@ -44,13 +42,14 @@ angular.module('spartan.chat', [])
 			}
 		};
 		chatRoomComponent.getMessage(currentRoom._id, Chats, function (joinRoomRes) {
+
+		    console.log("getMessageHistory: completed", joinRoomRes.code);
+
 			Chats.set(chatRoomComponent.chatMessages);
 			
 			setTimeout(function () {
 				$ionicLoading.hide();
 			}, 1000);
-			
-			console.log(joinRoomRes);
 
 			if (joinRoomRes.code !== HttpStatusCode.success) {
 			    //<!-- Block user interface for this chat room.
@@ -345,6 +344,9 @@ angular.module('spartan.chat', [])
 		$ionicLoading.show({
 			template: 'Loading..'
 		});
+
+
+	    activate();
 		
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
 			
