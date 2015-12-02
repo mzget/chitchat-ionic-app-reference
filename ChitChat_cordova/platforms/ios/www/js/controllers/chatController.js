@@ -14,8 +14,6 @@ angular.module('spartan.chat', [])
 	var chatRoomApi = main.getChatRoomApi();
 	var chatRoomComponent = new ChatRoomComponent(main, currentRoom._id);
 
-	activate();
-
 	function activate() {
 		console.log("chatController is activate");
 
@@ -44,13 +42,20 @@ angular.module('spartan.chat', [])
 			}
 		};
 		chatRoomComponent.getMessage(currentRoom._id, Chats, function (joinRoomRes) {
+
+		    console.log("getMessageHistory: completed", joinRoomRes.code);
+
 			Chats.set(chatRoomComponent.chatMessages);
+			
 			setTimeout(function () {
 				$ionicLoading.hide();
 			}, 1000);
 
 			if (joinRoomRes.code !== HttpStatusCode.success) {
 			    //<!-- Block user interface for this chat room.
+			    blockUI(true);
+			} else {
+			    blockUI(false);
 			}
 		});
 	}
@@ -68,6 +73,20 @@ angular.module('spartan.chat', [])
 			main.dataListener.removeChatListenerImp(chatRoomComponent);
 			sharedObjectService.regisNotifyNewMessageEvent();
 		});
+	}
+	
+	function blockUI(boo) {
+		$scope.inactive = boo;
+	}
+	
+	function sendMessageResponse(err, res) {
+		if (!!err) {
+			console.warn("send message fail.", err);
+		}
+		else if(res.code !== HttpStatusCode.success) {
+			console.warn("send message fail:", JSON.stringify(res));
+			blockUI(true);
+		}
 	}
 	
 	$scope.chat = [];
@@ -105,14 +124,7 @@ angular.module('spartan.chat', [])
 		$scope.modalSticker.show();
 	};
 	$scope.sendSticker = function(sticker) {
-		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, sticker, "Sticker", function(err, res) {
-			if (err || res === null) {
-				console.warn("send message fail.");
-			}
-			else {
-				console.log("send message:", res);
-			}
-		});
+		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
 		
 		$scope.modalSticker.hide();
 		$scope.chatMenuModal.hide();
@@ -223,18 +235,15 @@ angular.module('spartan.chat', [])
 				}
 				else {
 					//var myId = myprofile._id;
-					chatRoomApi.chat(currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], function(err, res) {
-						if (err || res === null) {
-							console.warn("send message fail.");
-						}
-						else {
-							console.log("send message:", JSON.stringify(res));
-						}
-					});
+					chatRoomApi.chat(currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
 				}
 			});
 		}
 	});
+
+	function sendLocation(locationObj) {
+		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
+	}
 
 	$scope.image = function(){
 		$scope.$broadcast('addImg', 'addImg');
@@ -268,32 +277,11 @@ angular.module('spartan.chat', [])
 	// Send Image and remove temp Image
 	$scope.$on('fileUrl', function(event,args){
 		if(args[2]==ContentType[ContentType.Image]){
-			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], function(err, res) {
-				if (err || res === null) {
-					console.warn("send message fail.");
-				}
-				else {
-					console.log("send message:", JSON.stringify(res));
-				}
-			});
+			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], sendMessageResponse);
 		}else if(args[2]==ContentType[ContentType.Voice]){
-			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], function(err, res) {
-				if (err || res === null) {
-					console.warn("send message fail.");
-				}
-				else {
-					console.log("send message:", JSON.stringify(res));
-				}
-			});
+			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], sendMessageResponse);
 		}else if(args[2]==ContentType[ContentType.Video]){
-			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], function(err, res) {
-				if (err || res === null) {
-					console.warn("send message fail.");
-				}
-				else {
-					console.log("send message:", JSON.stringify(res));
-				}
-			});
+			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
 		}
 		$.each($scope.chat, function(index, value){
 			if(value._id == args[1]) { 
@@ -333,7 +321,7 @@ angular.module('spartan.chat', [])
 	}
 	$scope.openMapModal = function() {
 		callGeolocation($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, function (locationObj) {
-			sendLocation(chatRoomApi, locationObj, currentRoom, myprofile);
+			sendLocation(locationObj);
 		});
 		$scope.mapViewModal.show();
 	};
@@ -356,6 +344,9 @@ angular.module('spartan.chat', [])
 		$ionicLoading.show({
 			template: 'Loading..'
 		});
+
+
+	    activate();
 		
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
 			
@@ -556,16 +547,5 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cor
 		.then(function () {
 			$scope.closeMapModal();
 		});
-	});
-}
-
-var sendLocation = function (chatRoomApi, locationObj, currentRoom, myprofile) {
-	chatRoomApi.chat(currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], function (err, res) {
-		if (err || res === null) {
-			console.warn("send message fail.");
-		}
-		else {
-			console.log("send message:", JSON.stringify(res));
-		}
 	});
 }
