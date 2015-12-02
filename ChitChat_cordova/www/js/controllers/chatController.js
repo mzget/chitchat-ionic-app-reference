@@ -54,9 +54,9 @@ angular.module('spartan.chat', [])
 
 			if (joinRoomRes.code !== HttpStatusCode.success) {
 			    //<!-- Block user interface for this chat room.
-			    $scope.inactive = true;
-			}else{
-				$scope.inactive = false;
+			    blockUI(true);
+			} else {
+			    blockUI(false);
 			}
 		});
 	}

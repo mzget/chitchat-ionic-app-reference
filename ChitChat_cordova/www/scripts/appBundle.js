@@ -23,7 +23,6 @@ var BlankCordovaApp1;
         Application.initialize();
     };
 })(BlankCordovaApp1 || (BlankCordovaApp1 = {}));
-/// <reference path="./typings/tsd.d.ts" />
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
@@ -1742,7 +1741,6 @@ var ContentType;
     ContentType[ContentType["Sticker"] = 6] = "Sticker";
     ContentType[ContentType["Location"] = 7] = "Location";
 })(ContentType || (ContentType = {}));
-//<!--- Referrence by http://management.about.com/od/people/a/EEgradelevels.htm
 var JobLevel;
 (function (JobLevel) {
     JobLevel[JobLevel["employees"] = 0] = "employees";
