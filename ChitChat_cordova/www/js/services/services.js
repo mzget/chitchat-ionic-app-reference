@@ -523,7 +523,6 @@ angular.module('spartan.services', [])
 		set: function(json) {
 			chats = json;
       
-      console.log(JSON.stringify(chats));
       if(rid != roomSelected.getRoom()._id){
         rid = roomSelected.getRoom()._id;
         date = [];

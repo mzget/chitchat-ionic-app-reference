@@ -43,7 +43,7 @@ angular.module('spartan.chat', [])
 		};
 		chatRoomComponent.getMessage(currentRoom._id, Chats, function (joinRoomRes) {
 
-		    console.log("getMessageHistory: ", joinRoomRes);
+		    console.log("getMessageHistory: completed", joinRoomRes.code);
 
 			Chats.set(chatRoomComponent.chatMessages);
 			
