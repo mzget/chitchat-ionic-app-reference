@@ -181,7 +181,12 @@
                         if (result._id == id || result.id == id) { indexMember = index; }
                     });
                     $scope.members.splice(indexMember, 1);
-                    $state.go($state.current, {}, { reload: true });
+                    if(id==$scope.myProfile._id){
+                        $state.go('tab.group');
+                    }else{
+                        $state.go($state.current, {}, { reload: true }); 
+                    }
+                    
                 }
                 else {
                     console.warn(err, res);

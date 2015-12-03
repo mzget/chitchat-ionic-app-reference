@@ -5,9 +5,9 @@
         .module('spartan.services')
         .factory('chatslogService', chatslogService);
 
-    chatslogService.$inject = ['$http'];
+    // chatslogService.$inject = ['$http'];
 
-    function chatslogService($http) {
+    function chatslogService($http, $rootScope) {
         var service = {
             getChatsLogComponent: getChatsLogComponent,
             init: init,
@@ -36,12 +36,12 @@
                 listenerImp = function (newMsg) {
                     if (!main.getDataManager().isMySelf(newMsg.sender)) {
                         chatlog_count++;
-
-                        console.warn("chatlogService: ", JSON.stringify(newMsg));
+                        cordova.plugins.notification.badge.increase();
                         
                         var unread = {};
                         unread.message = newMsg;
                         unread.rid = newMsg.rid;
+                        console.warn("room to add: ", unreadMessageMap[newMsg.rid]);
                         var count = Number(unreadMessageMap[newMsg.rid].count);
                         count++;
                         console.log(newMsg.rid, "unread count", unreadMessageMap[newMsg.rid].count);
@@ -68,6 +68,9 @@
                         }
                     });
                 }
+                chatsLogComponent.addNewRoomAccessEvent = function (data) {
+                    getUnreadMessages();
+                }
     
                 chatsLogComponent.onEditedGroupMember = function (newgroup) {
                     console.log('onEditedGroupMember :::::::	');
@@ -89,13 +92,18 @@
                         if(!!unread.message) {
                            organizeUnreadMessageMapForDisplayInfo(unread, null);
                         }
+                        else {
+                            unreadMessageMap[unread.rid] = unread;
+                        }
 
                         var count = Number(unread.count);
                         chatlog_count += count;
 
-                        console.log(unread);
+                        console.log("unread:", JSON.stringify(unread));
                     });
                 }
+                
+                $rootScope.$broadcast('getunreadmessagecomplete', {});
             });
         }
         

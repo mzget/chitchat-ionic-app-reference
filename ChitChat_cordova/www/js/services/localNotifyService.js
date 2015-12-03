@@ -7,7 +7,7 @@
 
     // localNotifyService.$inject = ['$http', '$cordovaLocalNotification'];
 
-    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast) {
+    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, blockNotifications) {
         var service = {
             getData: getData,
             scheduleSingleNotification: scheduleSingleNotification,
@@ -41,30 +41,33 @@
             });
         }
         
-        function makeToastOnCenter(message) {
-             $cordovaToast.showLongCenter(message).then(function(success) {
-                // success
-                console.log('makeToastOnCenter success', success);
-                navigator.notification.beep(1);
-            }, function (error) {
-                // error
-                console.error('error', error);
-            });
+        function makeToastOnCenter(contactId,message) {
+            if(!blockNotifications.isBlockNoti(contactId)) {
+                $cordovaToast.showLongCenter(message).then(function(success) {
+                    // success
+                    console.log('makeToastOnCenter success', success);
+                    navigator.notification.beep(1);
+                }, function (error) {
+                    // error
+                    console.error('error', error);
+                });
+            }
         }
 
-        function scheduleSingleNotification(title, text) {
-            // ========== Scheduling
-            console.log("schedule: ", text);
-            $cordovaLocalNotification.schedule({
-                id: 1,
-                title: title,
-                text: text,
-                data: {
-                    customProperty: 'custom value'
-                }
-            }).then(function (result) {
-                console.log('scheduleSingleNotification', result);
-            });
+        function scheduleSingleNotification(contactId,title, text) {
+            if(!blockNotifications.isBlockNoti(contactId)) {
+                console.log("schedule: ", text);
+                $cordovaLocalNotification.schedule({
+                    id: 1,
+                    title: title,
+                    text: text,
+                    data: {
+                        customProperty: 'custom value'
+                    }
+                }).then(function (result) {
+                    console.log('scheduleSingleNotification', result);
+                });
+            }
         }
 
         function updateSingleNotification() {

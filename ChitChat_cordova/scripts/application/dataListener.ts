@@ -60,6 +60,13 @@
         if (roomAccess !== null && roomAccess.length !== 0) {
             this.dataManager.setRoomAccessForUser(dataEvent);
         }
+
+
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onAddRoomAccess(dataEvent);
+            });
+        }
     }
 
     onCreateGroupSuccess(dataEvent) {

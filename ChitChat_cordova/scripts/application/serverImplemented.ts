@@ -1,5 +1,4 @@
 ﻿
-var appConfig;
 var pomelo;
 var username: string = "";
 var password: string = "";
@@ -31,6 +30,7 @@ module ChatServer {
         host: string;
         port: number;
         authenData: AuthenData;
+        appConfig : any;
         _isInit = false;
         _isConnected = false;
         _isLogedin = false;
@@ -109,7 +109,7 @@ module ChatServer {
                     url: "../www/configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
-                        appConfig = JSON.parse(JSON.stringify(config));
+                        self.appConfig = JSON.parse(JSON.stringify(config));
 
                         resolve();
                     }, error: function (jqXHR, textStatus, errorThrown) {
@@ -118,8 +118,8 @@ module ChatServer {
                     }
                 });
             }).then(function resolve(val) {
-                self.host = appConfig.socketHost;
-                self.port = appConfig.socketPort;
+                self.host = self.appConfig.socketHost;
+                self.port = self.appConfig.socketPort;
                 if (!!pomelo) {
                     //<!-- Connecting gate server.
                     self.connectSocketServer(self.host, self.port, (err) => {
@@ -332,17 +332,35 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, (result) => {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                // if (callback != null){
-                //     if(editType=='add'){
-                //         self.dataManager.myProfile.favoriteGroups.push(group);
-                //     }else{
-                //         var index = self.dataManager.myProfile.favoriteGroups.indexOf(group);
-                //         self.dataManager.myProfile.favoriteGroups.splice( index , 1);
-                //     }
                     callback(null, result);
-                // }
             });
         }
+
+        public updateClosedNoticeMemberList(editType: string, member: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["editType"] = editType;
+            msg["member"] = member;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, (result) => {
+                console.log("updateClosedNoticeUsers: ", JSON.stringify(result));
+                    callback(null, result);
+            });
+        }
+
+        public updateClosedNoticeGroupsList(editType: string, group: string, callback: (err, res) => void) {
+            var msg: IDictionary = {};
+            msg["editType"] = editType;
+            msg["group"] = group;
+            msg["token"] = this.authenData.token;
+            //<!-- Get user info.
+            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, (result) => {
+                console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
+                    callback(null, result);
+            });
+        }
+
+
 
         public getMemberProfile(userId: string, callback: (err, res) => void) {
             var msg: IDictionary = {};
@@ -665,7 +683,7 @@ module ChatServer {
     export class ChatRoomApiProvider {
         serverImp: ServerImplemented = ServerImplemented.getInstance();
         
-        public chat(room_id: string, target: string, sender_id: string, content: string, contentType: string, repalceMessageID: (err, res) => void) {
+        public chat(room_id: string, target: string, sender_id: string, content: string, contentType: string, callback: (err, res) => void) {
             var message: IDictionary = {};
             message["rid"] = room_id;
             message["content"] = content;
@@ -675,8 +693,8 @@ module ChatServer {
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
 
-                if (repalceMessageID !== null)
-                    repalceMessageID(null, data.data);
+                if (callback !== null)
+                    callback(null, data);
             });
         }
         

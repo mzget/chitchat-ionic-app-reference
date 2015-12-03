@@ -52,16 +52,21 @@
 				</p>
 				
 				
-				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage('http://203.113.25.44'+message.body)"/>
+				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.44'+message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
 					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.44'+message.body)"></i>
 					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
 
-				<div class="type-video" ng-if="message.type=='Video'">
-					<video id="{{message._id}}" src="{{message.bodyUrl}}"></video>
-				</div>
+				<div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)" 
+                style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+                	<div style="margin-left:10px;">
+                		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
+                	</div>
+                </div>
+
+
             
 				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
 					<div class="card">
@@ -101,11 +106,11 @@
 					</u>
 				</p>
 				
-                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImg()" ng-src="{{message.body}}" ng-click="viewImage(message.body)"/>
-				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage('http://203.113.25.44'+message.body)"/>
+                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type,message.body)"/>
+				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.44'+message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
-				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice()">
+				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
                     <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
@@ -115,10 +120,13 @@
                 </div>
 
                 <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo(message._id)">
-                	<video id="{{message._id}}" src="{{message.body}}" controls></video>
+                	<video id="{{message._id}}" src="{{message.body}}" controls="controls" preload="metadata"></video>
 				</div>
-                <div class="type-video" ng-if="message.type=='Video' && message.temp==null">
-                	<video id="{{message._id}}" src="{{message.bodyUrl}}" controls></video>
+                <div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)" 
+                style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+                	<div style="margin-left:10px;">
+                		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
+                	</div>
                 </div>
 				
 				
@@ -145,10 +153,13 @@
 </ion-view>
 <ion-footer-bar id="chatMessage" align-title="left" class="bar-light" style="z-index:100;">
 	<div class="buttons">
-		<button id="chatMenu" ng-click="openModal()" class="button" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
+		<button ng-disabled="inactive" id="chatMenu" ng-click="openModal()" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
 	</div>
-	<input id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
+
+	<input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
+	<input ng-disabled="inactive" ng-show="inactive==true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" value="This is Empty Room" />
+
 	<div class="buttons">
-		<button id="sendMsg" class="button" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
+		<button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
 	</div>
 </ion-footer-bar>
