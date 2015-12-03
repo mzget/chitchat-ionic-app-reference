@@ -59,15 +59,6 @@ static char launchNotificationKey;
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
     NSLog(@"currentInstallation %@", currentInstallation.deviceToken);
-    //convert object to data
-//    NSError* error = nil;
-//    NSDictionary model = @{@"deviceToken": @(currentInstallation.deviceToken),
-    //                            @"installationId": @(currentInstallation.installationId)};
-    
-//    NSData* model = { currentInstallation.deviceToken, currentInstallation.installationId};
-//    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:model
-//                                                       options:0
-//                                                         error:nil];
     
     
     PushPlugin *pushHandler = [self getCommandInstance:@"PushNotification"];
@@ -137,6 +128,12 @@ static char launchNotificationKey;
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 
     NSLog(@"active");
+    
+//    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+//    if (currentInstallation.badge != 0) {
+//        currentInstallation.badge = 0;
+//        [currentInstallation saveEventually];
+//    }
 
     PushPlugin *pushHandler = [self getCommandInstance:@"PushNotification"];
     if (pushHandler.clearBadge) {
@@ -145,6 +142,12 @@ static char launchNotificationKey;
         application.applicationIconBadgeNumber = 0;        
     } else {
         NSLog(@"PushPlugin skip clear badge");
+        //<!-- Set badge count for parse push service.
+        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+        currentInstallation.badge = application.applicationIconBadgeNumber;
+        [currentInstallation saveEventually];
+        
+        NSLog(@"PushPlugin skip clear badge %ld", (long)currentInstallation.badge);
     }
 
     if (self.launchNotification) {
@@ -153,6 +156,18 @@ static char launchNotificationKey;
         self.launchNotification = nil;
         [pushHandler performSelectorOnMainThread:@selector(notificationReceived) withObject:pushHandler waitUntilDone:NO];
     }
+}
+
+-(void)applicationDidEnterBackground:(UIApplication *)application {
+    
+    NSLog(@"applicationDidEnterBackground");
+    
+    //<!-- Set badge count for parse push service.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    currentInstallation.badge = application.applicationIconBadgeNumber;
+    [currentInstallation saveEventually];
+    
+    NSLog(@"PushPlugin skip clear badge %ld", (long)currentInstallation.badge);
 }
 
 //For interactive notification only
