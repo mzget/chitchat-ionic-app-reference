@@ -1,7 +1,7 @@
 /// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
-.controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
+.controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicSideMenuDelegate, $ionicLoading, $ionicModal,
 	$sce, $cordovaGeolocation, $cordovaDialogs,
 	Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
 {    		
@@ -415,6 +415,10 @@ angular.module('spartan.chat', [])
 			// Execute action
 		});
 	});
+
+	$scope.toggleSideMenu = function() {
+	    $ionicSideMenuDelegate.toggleRight();
+	};
 
 	// ON LEAVE
 	$scope.$on('$ionicView.beforeLeave', function(){ //This just one when leaving, which happens when I logout

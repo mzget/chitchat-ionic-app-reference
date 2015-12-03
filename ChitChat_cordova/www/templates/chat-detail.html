@@ -1,5 +1,4 @@
 <ion-view id="chatDetail" view-title="{{currentRoom.name}}" cache-view="false" hide-tab-bar>
-
 	<ion-nav-buttons side="right">
 		<div ng-show="currentRoom.type!=3">
 	        <i ng-if="isFavorite(currentRoom._id)" class="ion-heart assertive" style="font-size:25px; line-height:40px;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)"></i>
@@ -23,134 +22,179 @@
 				ng-click="editBlockNoti('add',otherId,currentRoom.type)"></i>
 		</div>
 
+		<div>
+			<i class="ion-navicon-round" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;" ng-click="toggleSideMenu()"></i>
+		</div>
     </ion-nav-buttons>
-	
-	<ion-content delegate-handle="mainScroll" style="bottom:44px;">    
-        <div ng-controller="ImageController">
-        	<div ng-controller="VoiceController">
-        		<div ng-controller="VideoController">
+    <ion-side-menus enable-menu-with-back-views="true">
 
-        
-		<ion-list class="message-list" ng-repeat="message in chat track by $index">
+    
+		<ion-side-menu-content>
+			<ion-content delegate-handle="mainScroll" style="bottom:44px;">    
+		        <div ng-controller="ImageController">
+		        	<div ng-controller="VoiceController">
+		        		<div ng-controller="VideoController">
 
-			<ion-item ng-if="message.firstMsg != undefined" style="text-align:center;">
-				<div style="font-size:12px;"> {{message.firstMsg}} </div>
-			</ion-item>
+		        
+				<ion-list class="message-list" ng-repeat="message in chat track by $index">
 
-			<ion-item ng-if="message.sender != myprofile._id && !!message.sender" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
-				<img ng-src="http://203.113.25.44/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
-				<h2>{{allMembers[message.sender]['displayname']}}</h2>
-				</br>
+					<ion-item ng-if="message.firstMsg != undefined" style="text-align:center;">
+						<div style="font-size:12px;"> {{message.firstMsg}} </div>
+					</ion-item>
 
-				<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
-					{{message.body}}
-				</p>
-				<p id="{{message._id}}" ng-if="message.type=='Text' && isValidURI(message.body)">
-					<u ng-click="webview(message.body)">
-						{{message.body}}
-					</u>
-				</p>
-				
-				
-				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.44'+message.body)"/>
-				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
-				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
-					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.44'+message.body)"></i>
-					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
-				</div>
+					<ion-item ng-if="message.sender != myprofile._id && !!message.sender" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+						<img ng-src="http://203.113.25.44/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
+						<h2>{{allMembers[message.sender]['displayname']}}</h2>
+						</br>
 
-				<div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)" 
-                style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
-                	<div style="margin-left:10px;">
-                		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
-                	</div>
-                </div>
+						<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
+							{{message.body}}
+						</p>
+						<p id="{{message._id}}" ng-if="message.type=='Text' && isValidURI(message.body)">
+							<u ng-click="webview(message.body)">
+								{{message.body}}
+							</u>
+						</p>
+						
+						
+						<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.44'+message.body)"/>
+						<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
+						<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
+							<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.44'+message.body)"></i>
+							<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
+						</div>
+
+						<div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)" 
+		                style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+		                	<div style="margin-left:10px;">
+		                		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
+		                	</div>
+		                </div>
 
 
-            
-				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
-					<div class="card">
-						<div class="item item-text-wrap">
-							{{message.locationName}}     
-                           <br /> {{message.locationAddress}}
-                            <br /> {{message.lat}} , {{message.long}}
-						</div>s
-					</div>
-				</div>
-				
+		            
+						<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
+							<div class="card">
+								<div class="item item-text-wrap">
+									{{message.locationName}}     
+		                           <br /> {{message.locationAddress}}
+		                            <br /> {{message.lat}} , {{message.long}}
+								</div>s
+							</div>
+						</div>
+						
 
-				<div id="{{message._id}}-downloaded" class="hide">
-					<div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
-				</div>
+						<div id="{{message._id}}-downloaded" class="hide">
+							<div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
+						</div>
 
-				</br>
-				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
-			</ion-item>
+						</br>
+						<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+					</ion-item>
 
-			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
-				<label style="clear:none; cursor:pointer;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
+					<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
+						<label style="clear:none; cursor:pointer;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
 
-				<div id="{{message._id}}-resend" class="hide" style="font-size:10px;" ng-click="resend(message.body,message._id)"> Resend </div>
+						<div id="{{message._id}}-resend" class="hide" style="font-size:10px;" ng-click="resend(message.body,message._id)"> Resend </div>
 
-				<div id="{{message._id}}-downloaded" class="hide">
-					<i class="ion-ios-close" style="margin-right:5px; float:left;" ng-click="sentCancel(message._id)"></i>
-					<div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
-				</div>
-			
-				<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
-					{{message.body}}
-				</p>
-				<p id="{{message._id}}" ng-if="message.type=='Text' && isValidURI(message.body)">
-					<u ng-click="webview(message.body)">
-						{{message.body}}
-					</u>
-				</p>
-				
-                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type,message.body)"/>
-				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.44'+message.body)"/>
-				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
+						<div id="{{message._id}}-downloaded" class="hide">
+							<i class="ion-ios-close" style="margin-right:5px; float:left;" ng-click="sentCancel(message._id)"></i>
+							<div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
+						</div>
+					
+						<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
+							{{message.body}}
+						</p>
+						<p id="{{message._id}}" ng-if="message.type=='Text' && isValidURI(message.body)">
+							<u ng-click="webview(message.body)">
+								{{message.body}}
+							</u>
+						</p>
+						
+		                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type,message.body)"/>
+						<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.44'+message.body)"/>
+						<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
-				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
-                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
-                    <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
-				</div>
-                <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp==null">
-                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.44'+message.body)"></i>
-                    <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
-                </div>
+						<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
+		                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
+		                    <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
+						</div>
+		                <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp==null">
+		                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.44'+message.body)"></i>
+		                    <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
+		                </div>
 
-                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo(message._id)">
-                	<video id="{{message._id}}" src="{{message.body}}" controls="controls" preload="metadata"></video>
-				</div>
-                <div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)" 
-                style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
-                	<div style="margin-left:10px;">
-                		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
-                	</div>
-                </div>
-				
-				
-				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
-					<div class="card">
-						<div class="item item-text-wrap">
-							{{message.locationName}}     
-                           <br /> {{message.locationAddress}}
-                            <br /> {{message.lat}} , {{message.long}}
+		                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo(message._id)">
+		                	<video id="{{message._id}}" src="{{message.body}}" controls="controls" preload="metadata"></video>
+						</div>
+		                <div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideo(message.type,message.body)" 
+		                style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+		                	<div style="margin-left:10px;">
+		                		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
+		                	</div>
+		                </div>
+						
+						
+						<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
+							<div class="card">
+								<div class="item item-text-wrap">
+									{{message.locationName}}     
+		                           <br /> {{message.locationAddress}}
+		                            <br /> {{message.lat}} , {{message.long}}
+								</div>
+							</div>
+						</div>
+								
+		                <br />
+						<label ng-if="message.temp != 'true' "> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+					</ion-item>
+				</ion-list>
+
 						</div>
 					</div>
 				</div>
-						
-                <br />
-				<label ng-if="message.temp != 'true' "> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
-			</ion-item>
-		</ion-list>
+			</ion-content>
+		</ion-side-menu-content>
 
-				</div>
-			</div>
-		</div>
 
-	</ion-content>
+		<ion-side-menu side="right">
+		    <header class="bar bar-header bar-stable">
+		      <h1 class="title">Menu</h1>
+		    </header>
+
+		    <ion-content ng-show="currentRoom.type!=3" class="has-header">
+		      <ion-list>
+		        <ion-item menu-close ng-click="">
+		          POST
+		        </ion-item>
+		        <ion-item menu-close href="">
+		          ALBUM
+		        </ion-item>
+		        <ion-item menu-close href="">
+		          MEMBER
+		        </ion-item>
+		      </ion-list>
+		    </ion-content>
+		    <ion-content ng-show="currentRoom.type==3" class="has-header">
+		      <ion-list>
+		        <ion-item menu-close ng-click="">
+		          Profile
+		        </ion-item>
+		        <ion-item menu-close href="">
+		          Free Call
+		        </ion-item>
+		        <ion-item menu-close href="">
+		          Video Call
+		        </ion-item>
+		      </ion-list>
+		    </ion-content>
+
+		</ion-side-menu>
+
+	</ion-side-menus>
+
 </ion-view>
+
 <ion-footer-bar id="chatMessage" align-title="left" class="bar-light" style="z-index:100;">
 	<div class="buttons">
 		<button ng-disabled="inactive" id="chatMenu" ng-click="openModal()" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
@@ -163,3 +207,7 @@
 		<button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
 	</div>
 </ion-footer-bar>
+
+
+
+
