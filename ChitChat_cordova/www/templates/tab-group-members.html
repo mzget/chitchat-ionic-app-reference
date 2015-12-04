@@ -25,13 +25,20 @@
 		        </label>
 			</ion-item>
 		</ion-list>
-	</ion-content>
-	<ion-content style="top:130px;">
 
-		<div class="bar bar-header item-input-inset">
+		<div class="button-bar" style="padding:10px;">
+	        <a class="button button-small " ng-model="button.post" ng-click="selectTab(button.post)" ng-class="button.post.clicked?'button-positive':'button-stable'">POST</a>
+	        <a class="button button-small " ng-model="button.album" ng-click="selectTab(button.album)" ng-class="button.album.clicked?'button-positive':'button-stable'">ALBUM</a>
+	        <a class="button button-small " ng-model="button.members" ng-click="selectTab(button.members)" ng-class="button.members.clicked?'button-positive':'button-stable'">MEMBERS</a>
+    	</div> 
+
+	</ion-content>
+
+	<ion-content ng-show="button.members.clicked == true" style="top:185px;">
+		<div class="bar bar-header item-input-inset" style="margin-top:-18px;">
 		  <label class="item-input-wrapper">
 		    <i class="icon ion-ios-search placeholder-icon"></i>
-		    <input type="search" placeholder="Search" ng-model="search.displayname">
+		    <input type="search" placeholder="Search" ng-model="search.displayname" >
 		  </label>
 		</div>
 
@@ -67,11 +74,11 @@
 				</ion-option-button>
 			</ion-item>
 		</ion-list>
-
 	</ion-content>
+
 </ion-view>
 
-<div class="bar bar-footer bar-positive" ng-show=" chatGroup.type==projectBaseIndex &&  meIsAdmin || chatGroup.type==privateIndex">
+<div class="bar bar-footer bar-positive" ng-show=" chatGroup.type==projectBaseIndex &&  meIsAdmin || chatGroup.type==privateIndex && button.members.clicked == true">
   <div class="title" ng-click='InviteMembers()'>Invite</div> 
 </div>
 
