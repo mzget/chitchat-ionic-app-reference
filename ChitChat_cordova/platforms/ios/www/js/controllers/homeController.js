@@ -7,7 +7,7 @@
 
 	//homeController.$inject = ['$location'];
 
-	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $ionicPlatform,
+	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform,
 		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService) {
 		/* jshint validthis:true */
 		var vm = this;
@@ -213,7 +213,7 @@
 		$scope.openOrgModal = function (groupId) {
 			initOrgModal($state, $scope, groupId, roomSelected, function () {
 				$scope.orgModal.show();
-			});
+			}, $rootScope);
 		};
 		$scope.closeOrgModal = function () {
 			$scope.orgModal.hide();
@@ -222,7 +222,7 @@
 		$scope.openPjbModal = function (groupId) {
 			initPjbModal($state, $scope, groupId, roomSelected, function () {
 				$scope.pjbModal.show();
-			});
+			}, $rootScope);
 		};
 		$scope.closePjbModal = function () {
 			$scope.pjbModal.hide();
@@ -231,7 +231,7 @@
 		$scope.openPvgModal = function (groupId) {
 			initPvgModal($state, $scope, groupId, roomSelected, function () {
 				$scope.pvgModal.show();
-			});
+			}, $rootScope);
 		};
 		$scope.closePvgModal = function () {
 			$scope.pvgModal.hide();
@@ -247,7 +247,7 @@
 		};
 	}
 
-	var initOrgModal = function ($state, $scope, groupId, roomSelected, done) {
+	var initOrgModal = function ($state, $scope, groupId, roomSelected, done, $rootScope) {
 		var group = main.getDataManager().orgGroups[groupId];
 		roomSelected.setRoom(group);
 		$scope.chat = group;
@@ -267,13 +267,14 @@
 		};
 
 		$scope.viewGroupDetail = function (id) {
+			$rootScope.selectTab = 'members';
 			$state.go('tab.group-members', { chatId: id });
 		};
 
 		done();
 	}
 
-	var initPjbModal = function ($state, $scope, groupId, roomSelected, done) {
+	var initPjbModal = function ($state, $scope, groupId, roomSelected, done, $rootScope) {
 		var group = main.getDataManager().projectBaseGroups[groupId];
 		roomSelected.setRoom(group);
 		$scope.chat = group;
@@ -291,13 +292,14 @@
 		};
 
 		$scope.viewGroupDetail = function (id) {
+			$rootScope.selectTab = 'members';
 			$state.go('tab.group-members', { chatId: id });
 		};
 
 		done();
 	}
 
-	var initPvgModal = function ($state, $scope, groupId, roomSelected, done) {
+	var initPvgModal = function ($state, $scope, groupId, roomSelected, done, $rootScope) {
 		var group = main.getDataManager().privateGroups[groupId];
 		roomSelected.setRoom(group);
 		$scope.group = group;
@@ -315,6 +317,7 @@
 		};
 
 		$scope.viewGroupDetail = function (id) {
+			$rootScope.selectTab = 'members';
 			$state.go('tab.group-members', { chatId: id });
 		};
 
@@ -329,7 +332,6 @@
 		server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
 			console.log(JSON.stringify(res));
 			var room = JSON.parse(JSON.stringify(res.data));
-
 			$scope.chat = function () {
 				roomSelected.setRoom(room);
 				location.href = '#/tab/group/chat/' + room._id;

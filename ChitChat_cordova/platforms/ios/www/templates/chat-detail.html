@@ -1,5 +1,4 @@
 <ion-view id="chatDetail" view-title="{{currentRoom.name}}" cache-view="false" hide-tab-bar>
-
 	<ion-nav-buttons side="right">
 		<div ng-show="currentRoom.type!=3">
 	        <i ng-if="isFavorite(currentRoom._id)" class="ion-heart assertive" style="font-size:25px; line-height:40px;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)"></i>
@@ -23,8 +22,10 @@
 				ng-click="editBlockNoti('add',otherId,currentRoom.type)"></i>
 		</div>
 
+		<div>
+			<i class="ion-navicon-round" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;" ng-click="openPopover($event)"></i>
+		</div>
     </ion-nav-buttons>
-	
 	<ion-content delegate-handle="mainScroll" style="bottom:44px;">    
         <div ng-controller="ImageController">
         	<div ng-controller="VoiceController">
@@ -148,18 +149,22 @@
 				</div>
 			</div>
 		</div>
-
 	</ion-content>
 </ion-view>
+
 <ion-footer-bar id="chatMessage" align-title="left" class="bar-light" style="z-index:100;">
 	<div class="buttons">
-		<button ng-disabled="inactive" id="chatMenu" ng-click="openModal()" class="button" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
+		<button ng-disabled="inactive" id="chatMenu" ng-click="openModal()" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
 	</div>
 
 	<input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
 	<input ng-disabled="inactive" ng-show="inactive==true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" value="This is Empty Room" />
 
 	<div class="buttons">
-		<button ng-disabled="inactive" id="sendMsg" class="button" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
+		<button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
 	</div>
 </ion-footer-bar>
+
+
+
+
