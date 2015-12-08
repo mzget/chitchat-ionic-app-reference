@@ -6,7 +6,9 @@ var chatlog_count = 0;
 angular.module('spartan.controllers', [])
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $state,$cordovaProgress,$ionicLoading) {
+.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading, roomSelected) {
+    var room = roomSelected.getRoom();
+
     if ($stateParams.chatId == main.getDataManager().myProfile._id) {
         $scope.chat = main.getDataManager().myProfile;
         $scope.model = {
@@ -67,8 +69,8 @@ angular.module('spartan.controllers', [])
 			member.tel == null || member.tel == "") {
             server.getMemberProfile($stateParams.chatId, function (err, res) {
                 if (!err) {
-                    console.log(JSON.stringify(res));
-                    console.log(res["data"]);
+                    //console.log(JSON.stringify(res));
+                    //console.log(res["data"]);
                     member.firstname = res["data"].firstname;
                     member.lastname = res["data"].lastname;
                     member.mail = res["data"].mail;
@@ -91,6 +93,17 @@ angular.module('spartan.controllers', [])
         $('#viewprofile-input-status').attr('disabled', 'disabled');
         $scope.edit = 'false';
     }
+
+    $rootScope.$ionicGoBack = function () {
+        if(typeof($ionicHistory.backView().stateParams) != 'undefined')
+        {
+            roomSelected.setRoom(room);
+            $ionicHistory.goBack(-1); 
+        }else{
+            $ionicHistory.goBack(-1);
+        }
+        
+    };
 })
 
 .factory('getProfileMember',function(){

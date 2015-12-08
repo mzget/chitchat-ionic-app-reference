@@ -1,51 +1,76 @@
 /// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
-.controller('chatController', function ($scope, $timeout, $stateParams, $ionicScrollDelegate, $ionicLoading, $ionicModal,
+.controller('chatController', function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopover, $ionicLoading, $ionicModal,
 	$sce, $cordovaGeolocation, $cordovaDialogs,
 	Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
 
-	var currentRoom = roomSelected.getRoom();
+	var self = this;
+
+	
+	$scope.chat = [];
+
 	var myprofile = main.getDataManager().myProfile;
 	var allMembers = main.getDataManager().orgMembers;
 	var chatRoomApi = main.getChatRoomApi();
-	var chatRoomComponent = new ChatRoomComponent(main, currentRoom._id);
 
 	function activate() {
 		console.log("chatController is activate");
 
+		self.currentRoom = roomSelected.getRoom();
+		self.chatRoomComponent = new ChatRoomComponent(main, self.currentRoom._id);
+
+		//<!-- Set up roomname for display title of chatroom.
+		var roomName = self.currentRoom.name;
+		if (!roomName || roomName === "") {
+			if (self.currentRoom.type === RoomType.privateChat) {
+				self.currentRoom.members.some(function iterator(member) {
+					if (member.id !== myprofile._id) {
+						self.currentRoom.name = allMembers[member.id].displayname;
+						return true;
+					}
+				});
+			}
+		}
+
+		$scope.currentRoom = self.currentRoom;
+		if($scope.currentRoom.type == RoomType.privateChat){
+			$.each($scope.currentRoom.members, function(index, value){
+				if(value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
+			});
+		}
 		addComponent();
 	}
 
 	function addComponent() {
-		main.dataListener.addChatListenerImp(chatRoomComponent);
+		main.dataListener.addChatListenerImp(self.chatRoomComponent);
 		sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
-		chatRoomComponent.serviceListener = function (event, newMsg) {
+		self.chatRoomComponent.serviceListener = function (event, newMsg) {
 			if (event === "onChat") {
-				Chats.set(chatRoomComponent.chatMessages);
+				Chats.set(self.chatRoomComponent.chatMessages);
 
 				if (newMsg.sender !== main.dataManager.myProfile._id) {
-					chatRoomApi.updateMessageReader(newMsg._id, currentRoom._id);
+					chatRoomApi.updateMessageReader(newMsg._id, self.currentRoom._id);
 				}
 			}
 			else if (event === "onMessageRead") {
-				Chats.set(chatRoomComponent.chatMessages);
+				Chats.set(self.chatRoomComponent.chatMessages);
 			}
 		}
-		chatRoomComponent.notifyEvent = function (event, data) {
+		self.chatRoomComponent.notifyEvent = function (event, data) {
 			if (event === ChatServer.ServerEventListener.ON_CHAT) {
 				var appBackground = cordova.plugins.backgroundMode.isActive();
 				sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
 			}
 		};
-		chatRoomComponent.getMessage(currentRoom._id, Chats, function (joinRoomRes) {
+		self.chatRoomComponent.getMessage(self.currentRoom._id, Chats, function (joinRoomRes) {
 
 		    console.log("getMessageHistory: completed", joinRoomRes.code);
-
-			Chats.set(chatRoomComponent.chatMessages);
+		    $scope.chat = Chats.all();
+			Chats.set(self.chatRoomComponent.chatMessages);
 			
 			setTimeout(function () {
 				$ionicLoading.hide();
@@ -61,22 +86,37 @@ angular.module('spartan.chat', [])
 	}
 
 	function leaveRoom() {
-		chatRoomComponent.leaveRoom(currentRoom._id, function callback(err, res) {
-			localStorage.removeItem(myprofile._id + '_' + currentRoom._id);
-			localStorage.setItem(myprofile._id + '_' + currentRoom._id, JSON.stringify(chatRoomComponent.chatMessages));
-			console.warn("save chat history", currentRoom.name);
+		self.chatRoomComponent.leaveRoom(self.currentRoom._id, function callback(err, res) {
+			localStorage.removeItem(myprofile._id + '_' + self.currentRoom._id);
+			localStorage.setItem(myprofile._id + '_' + self.currentRoom._id, JSON.stringify(self.chatRoomComponent.chatMessages));
+			console.warn("save chat history", self.currentRoom.name);
 
-			currentRoom = null;
-			roomSelected.setRoom(currentRoom);
-			chatRoomComponent.chatMessages = [];
+			self.currentRoom = null;
+			roomSelected.setRoom(self.currentRoom);
+			self.chatRoomComponent.chatMessages = [];
 			Chats.clear();
-			main.dataListener.removeChatListenerImp(chatRoomComponent);
+			main.dataListener.removeChatListenerImp(self.chatRoomComponent);
 			sharedObjectService.regisNotifyNewMessageEvent();
 		});
 	}
+
+	$scope.openPopover = function($event) {
+	    $scope.popover.show($event);
+	};
 	
 	function blockUI(boo) {
 		$scope.inactive = boo;
+	}
+
+	$scope.viewProfile = function(){
+		$scope.popover.hide();
+		$state.go('tab.group-viewprofile', { chatId: $scope.otherId });
+	}
+
+	$scope.groupDetail = function(state){
+		$scope.popover.hide();
+		$rootScope.selectTab = state;
+		$state.go('tab.group-members', { chatId: self.currentRoom._id });
 	}
 	
 	function sendMessageResponse(err, res) {
@@ -87,26 +127,6 @@ angular.module('spartan.chat', [])
 			console.warn("send message fail:", JSON.stringify(res));
 			blockUI(true);
 		}
-	}
-	
-	$scope.chat = [];
-	//<!-- Set up roomname for display title of chatroom.
-	var roomName = currentRoom.name;
-	if (!roomName || roomName === "") {
-		if (currentRoom.type === RoomType.privateChat) {
-			currentRoom.members.some(function iterator(member) {
-				if (member.id !== myprofile._id) {
-					currentRoom.name = allMembers[member.id].displayname;
-					return true;
-				}
-			});
-		}
-	}
-	$scope.currentRoom = currentRoom;
-	if($scope.currentRoom.type == RoomType.privateChat){
-		$.each($scope.currentRoom.members, function(index, value){
-			if(value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
-		});
 	}
 	
 	modalcount = 0;	
@@ -124,7 +144,7 @@ angular.module('spartan.chat', [])
 		$scope.modalSticker.show();
 	};
 	$scope.sendSticker = function(sticker) {
-		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
+		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
 		
 		$scope.modalSticker.hide();
 		$scope.chatMenuModal.hide();
@@ -190,7 +210,7 @@ angular.module('spartan.chat', [])
 		});
 	 
 	var countUp = function () {		
-		if( currentRoom != null )
+		if( self.currentRoom != null )
 		{
 			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
@@ -216,8 +236,8 @@ angular.module('spartan.chat', [])
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
-	$scope.chat = Chats.all();
-	$('#send_message').css({ 'display': 'inline-block' });
+	
+	//$('#send_message').css({ 'display': 'inline-block' });
 	//$('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	// Send Message btn
@@ -235,14 +255,14 @@ angular.module('spartan.chat', [])
 				}
 				else {
 					//var myId = myprofile._id;
-					chatRoomApi.chat(currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
+					chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
 				}
 			});
 		}
 	});
 
 	function sendLocation(locationObj) {
-		chatRoomApi.chat(currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
+		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
 	}
 
 	$scope.image = function(){
@@ -266,22 +286,22 @@ angular.module('spartan.chat', [])
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
 		if(args[1] == ContentType[ContentType.Image] ){
-			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
+			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
 		}else if(args[1] == ContentType[ContentType.Voice] ){
-			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}else if(args[1] == ContentType[ContentType.Video] ){
-			$scope.chat.push( {"rid":currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}
 		
 	});
 	// Send Image and remove temp Image
 	$scope.$on('fileUrl', function(event,args){
 		if(args[2]==ContentType[ContentType.Image]){
-			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], sendMessageResponse);
+			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], sendMessageResponse);
 		}else if(args[2]==ContentType[ContentType.Voice]){
-			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], sendMessageResponse);
+			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], sendMessageResponse);
 		}else if(args[2]==ContentType[ContentType.Video]){
-			chatRoomApi.chat(currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
+			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
 		}
 		$.each($scope.chat, function(index, value){
 			if(value._id == args[1]) { 
@@ -349,6 +369,22 @@ angular.module('spartan.chat', [])
 	    activate();
 		
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
+
+
+		if(self.currentRoom.type!=RoomType.privateChat){
+			$ionicPopover.fromTemplateUrl('templates/popover-group.html', {
+			    scope: $scope,
+			}).then(function(popover) {
+			    $scope.popover = popover;
+			});
+		}else{
+			$ionicPopover.fromTemplateUrl('templates/popover-contact.html', {
+			    scope: $scope,
+			}).then(function(popover) {
+			    $scope.popover = popover;
+			});
+		}
+
 			
 		// Reload Modal - Chat menu
 		$ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
@@ -420,7 +456,7 @@ angular.module('spartan.chat', [])
 	$scope.$on('$ionicView.beforeLeave', function(){ //This just one when leaving, which happens when I logout
 		console.log("chatController beforeLeave.");
 				
-		$('#send_message').css({ 'display': 'none' });
+		//$('#send_message').css({ 'display': 'none' });
 
 		leaveRoom();
 	});
