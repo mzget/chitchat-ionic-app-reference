@@ -6,7 +6,7 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPlatform, $ionicLoading, $state, $cordovaSpinnerDialog, networkService, chatslogService) {
+    function authController($location, $ionicPlatform, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, networkService, chatslogService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -15,7 +15,7 @@
         $ionicPlatform.ready(function () {
             activateBackground();
             activate();
-
+            setConfigTheme();
             main.setDataManager(dataManager);
             main.setServerListener(serverEvents);
             main.setServerImp(server);
@@ -273,7 +273,25 @@
                 });
             }
         }
+
+        $ionicModal.fromTemplateUrl('templates/modal-setConfig.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.setConfigModal = modal
+        })  
+
+        function setConfigTheme(){
+            if(!$localStorage.themeData){
+                $localStorage.themeData = 'themeblue';
+            }
+            $rootScope.theme = $localStorage.themeData;
+            $scope.setConfigModal.show();
+            $scope.setConfigModal.hide();
+        }
     }
+
+    
 
     function noConnection($scope,$ionicNavBarDelegate,$rootScope,$ionicHistory){
         $ionicNavBarDelegate.showBackButton(false);
