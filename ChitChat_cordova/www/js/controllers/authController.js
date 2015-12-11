@@ -282,12 +282,14 @@
         })  
 
         function setConfigTheme(){
-            if(!$localStorage.themeData){
-                $localStorage.themeData = 'themeblue';
+            if(typeof($scope.setConfigModal) != 'undefined'){
+                if(!$localStorage.themeData){
+                    $localStorage.themeData = 'themeblue';
+                }
+                $rootScope.theme = $localStorage.themeData;
+                $scope.setConfigModal.show();
+                $scope.setConfigModal.hide();
             }
-            $rootScope.theme = $localStorage.themeData;
-            $scope.setConfigModal.show();
-            $scope.setConfigModal.hide();
         }
     }
 
