@@ -83,63 +83,62 @@
 
     }
 
-    public getMessage(chatId, Chats, callback) {
+    public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
         var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
 
-        async.waterfall([
-            function (cb) {
-                if (!!chatLog) {
-                    if (JSON.stringify(chatLog) === "") {
-                        self.chatMessages = [];
-                        cb(null, null);
-                    }
-                    else {
-                        var arr_fromLog: Array<Message> = JSON.parse(chatLog);
-                        if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
-                            self.chatMessages = [];
-                            cb(null, null);
-                        }
-                        else {
-                            async.eachSeries(arr_fromLog, function (log, cb) {
-                                var messageImp: any = log;
-                                if (messageImp.type === ContentType[ContentType.Text]) {
-                                    self.main.decodeService(messageImp.body, function (err, res) {
-                                        if (!err) {
-                                            messageImp.body = res;
-                                            self.chatMessages.push(messageImp);
-                                            cb();
-                                        }
-                                        else {
-                                            //console.log(err, res);
-                                            self.chatMessages.push(messageImp);
-                                            cb();
-                                        }
-                                    });
-                                }
-                                else {
-                                    self.chatMessages.push(log);
-                                    cb();
-                                }
-                            }, function (err) {
-                                cb(null, null);
-                            });
-                        }
-                    }
+        var promise = new Promise(function (resolve, reject) {
+            if (!!chatLog) {
+                console.log("Local chat history has a data...");
+
+                if (JSON.stringify(chatLog) === "") {
+                    self.chatMessages = [];
+                    resolve();
                 }
                 else {
-                    self.chatMessages = [];
-                    cb(null, null);
+                    var arr_fromLog: Array<Message> = JSON.parse(chatLog);
+                    if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
+                        self.chatMessages = [];
+                        resolve();
+                    }
+                    else {
+                        console.log("Decode local chat history for displaying:", arr_fromLog.length);
+                        // let count = 0;
+                        arr_fromLog.map((log, i, a) => {
+                            var messageImp: any = log;
+                            if (messageImp.type === ContentType[ContentType.Text]) {
+                                // console.log("item:", count++, log.type);
+                                self.main.decodeService(messageImp.body, function (err, res) {
+                                    if (!err) {
+                                        messageImp.body = res;
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                    else {
+                                        //console.log(err, res);
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                });
+                            }
+                            else {
+                                // console.log("item:", count++, log.type);
+                                self.chatMessages.push(log);
+                            }
+                        });
+                        resolve();
+                    }
                 }
-            },
-            function (arg1, cb) {
-                //console.log("before join", JSON.stringify(chatMessages));
-                cb(null, null);
             }
-        ], function (err, res) {
-            self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
-                if (res.code == 200) {
+            else {
+                console.log("Have no local chat history.");
+                self.chatMessages = [];
+                resolve();
+            }
+        });
+        promise.then(function onFulfilled() {
+            console.log("get local history done:");
+            self.serverImp.JoinChatRoomRequest(chatId, function (err, joinRoomRes) {
+                if (joinRoomRes.code == 200) {
                     var access = new Date();
                     var roomAccess = self.dataManager.myProfile.roomAccess;
                     async.eachSeries(roomAccess, function iterator(item, cb) {
@@ -189,19 +188,25 @@
                                     localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
 
                                     // location.href = '#/tab/message/' + chatId;
-                                    callback();
+                                    callback(joinRoomRes);
                                 });
                             }
                             else {
                                 // location.href = '#/tab/message/' + chatId;
                                 Chats.set(self.chatMessages);
-                                callback();
+                                callback(joinRoomRes);
                             }
                         });
                     });
                 }
+                else {
+                    callback(joinRoomRes);
+                }
             });
-        });
+
+        }).catch(function onRejected(reason) {
+            console.warn("promiss.onRejected", reason);
+            });
     }
 
     public leaveRoom(room_id, callback: (err, res) => void) {

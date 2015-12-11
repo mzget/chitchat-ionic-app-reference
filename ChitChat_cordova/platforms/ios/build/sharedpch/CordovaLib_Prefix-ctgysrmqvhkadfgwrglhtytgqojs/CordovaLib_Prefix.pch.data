@@ -6,9 +6,9 @@ Environment  LANG=en_US.US-ASCII PATH=/Applications/Xcode.app/Contents/Developer
 BuilderIdent ProcessPCH\ /Users/nattapon/Documents/chitchat_cordova/ChitChat_cordova/platforms/ios/build/sharedpch/CordovaLib_Prefix-ctgysrmqvhkadfgwrglhtytgqojs/CordovaLib_Prefix.pch.pch\ CordovaLib_Prefix.pch\ normal\ i386\ objective-c\ com.apple.compilers.llvm.clang.1_0.compiler
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.1.sdk/SDKSettings.plist 0 1444433874 1616 33204
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.1.sdk/System/Library/CoreServices/SystemVersion.plist 0 1444009842 414 33188
-InputFile    /Users/nattapon/Documents/chitchat_cordova/ChitChat_cordova/platforms/ios/CordovaLib/CordovaLib_Prefix.pch 0 1447411181 838 33188
+InputFile    /Users/nattapon/Documents/chitchat_cordova/ChitChat_cordova/platforms/ios/CordovaLib/CordovaLib_Prefix.pch 0 1449104724 838 33188
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.1.sdk/SDKSettings.plist 0 1444433874 1616 33204
-InputFile    /Users/nattapon/Documents/chitchat_cordova/ChitChat_cordova/platforms/ios/CordovaLib/CordovaLib_Prefix.pch 0 1447411181 838 33188
+InputFile    /Users/nattapon/Documents/chitchat_cordova/ChitChat_cordova/platforms/ios/CordovaLib/CordovaLib_Prefix.pch 0 1449104724 838 33188
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.1.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h 0 1439359851 6314 33188
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.1.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h 0 1438663866 2959 33188
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.1.sdk/usr/include/sys/types.h 0 1438924755 8057 33188

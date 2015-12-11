@@ -73,7 +73,7 @@ angular.module('spartan.services', [])
         var name = imageUrl.substr(imageUrl.lastIndexOf('/') + 1);
         var namePath = imageUrl.substr(0, imageUrl.lastIndexOf('/') + 1);
         console.log(imageUrl,namePath);
-        var newName = GenerateID.makeid() + ".MOV";
+        var newName = GenerateID.makeid() + ".mp4";
         $cordovaFile.moveFile(namePath, name, cordova.file.documentsDirectory, newName)
           .then(function(info) {
             setVideoUri(newName);
@@ -320,6 +320,7 @@ angular.module('spartan.services', [])
   }
   function clear(){
     positionRole = [];
+    editPositionMember = [];
   }
   
   return{
@@ -409,7 +410,16 @@ angular.module('spartan.services', [])
   }
   function isBlockNoti(id){
     var isHas = false;
-    if(!isGetFirstData) getBlockNoti();
+    if(!isGetFirstData) {
+      getBlockNoti();
+      var allBlockNoti = getAllBlockNoti();
+      for(var i=0; i<allBlockNoti.length; i++){
+          if(allBlockNoti[i] == id){
+              isHas = true;
+          }
+      }
+      return isHas;
+    }
     else{
       var allBlockNoti = getAllBlockNoti();
       for(var i=0; i<allBlockNoti.length; i++){
@@ -458,6 +468,29 @@ angular.module('spartan.services', [])
   }
 })
 
+.factory('checkFileSize',function($q){
+
+  function checkFile(pathFile){
+    return $q(function(resolve, reject) {
+      window.resolveLocalFileSystemURL(pathFile, 
+        function win(fileEntry){
+          fileEntry.file(function(file){
+            var fileSize = file.size / 1000000;
+            if(fileSize <= 20) resolve(true);
+            else resolve(false);
+          });
+        }, 
+        function fail(e){
+          reject();
+      });
+    })
+  }
+
+  return{
+    checkFile: checkFile
+  }
+})
+
 .factory('Chats', function($sce,$cordovaFile,roomSelected) {
     // Might use a resource here that returns a JSON array
 
@@ -490,7 +523,6 @@ angular.module('spartan.services', [])
 		set: function(json) {
 			chats = json;
       
-      console.log(JSON.stringify(chats));
       if(rid != roomSelected.getRoom()._id){
         rid = roomSelected.getRoom()._id;
         date = [];
@@ -525,6 +557,10 @@ angular.module('spartan.services', [])
               }else{
 
                 chats[i].bodyUrl = $sce.trustAsResourceUrl('http://203.113.25.44' + chats[i].body);
+                var chatBody = chats[i].body;
+                var splitChat = chatBody.split(".");
+                var nameThumbnail = splitChat[0] + '.png';
+                chats[i].thumbnail = $sce.trustAsResourceUrl('http://203.113.25.44' + nameThumbnail);
               }
 			    }
 			    else if (chats[i].type === ContentType[ContentType.Location]) {

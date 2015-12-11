@@ -7,10 +7,9 @@
 
     </ion-nav-buttons>
 
-	<ion-content>
+	<ion-content scroll="false">
 		<ion-list class="group-list" ng-controller="ImageController">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
-
 				<div ng-show="meIsAdmin || chatGroup.type==privateIndex">
 					<img ng-show="chatGroup.image==undefined && !images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" ng-click="addImg()"/>
 					<img ng-show="chatGroup.image!==undefined && !images.length" ng-src="http://203.113.25.44/timthumb.php?src={{chatGroup.image}}&h=60&w=60" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" ng-click="addImg()"/>
@@ -24,14 +23,22 @@
 				<label class="item item-input">
 		            <input type="text" data-ng-model="model.groupname" ng-disabled="chatGroup.type==projectBaseIndex &&  !meIsAdmin || chatGroup.type==orgGroupsIndex" disabled style="background:none;">
 		        </label>
-
 			</ion-item>
 		</ion-list>
 
-		<div class="bar bar-header item-input-inset">
+		<div class="button-bar" style="padding:10px;">
+	        <a class="button button-small " ng-model="button.post" ng-click="selectTab(button.post)" ng-class="button.post.clicked?'button-positive':'button-stable'">POST</a>
+	        <a class="button button-small " ng-model="button.album" ng-click="selectTab(button.album)" ng-class="button.album.clicked?'button-positive':'button-stable'">ALBUM</a>
+	        <a class="button button-small " ng-model="button.members" ng-click="selectTab(button.members)" ng-class="button.members.clicked?'button-positive':'button-stable'">MEMBERS</a>
+    	</div> 
+
+	</ion-content>
+
+	<ion-content ng-show="button.members.clicked == true" style="top:185px;">
+		<div class="bar bar-header item-input-inset" style="margin-top:-18px;">
 		  <label class="item-input-wrapper">
 		    <i class="icon ion-ios-search placeholder-icon"></i>
-		    <input type="search" placeholder="Search" ng-model="search.displayname">
+		    <input type="search" placeholder="Search" ng-model="search.displayname" >
 		  </label>
 		</div>
 
@@ -67,11 +74,11 @@
 				</ion-option-button>
 			</ion-item>
 		</ion-list>
-
 	</ion-content>
+
 </ion-view>
 
-<div class="bar bar-footer bar-positive" ng-show=" chatGroup.type==projectBaseIndex &&  meIsAdmin || chatGroup.type==privateIndex">
+<div class="bar bar-footer bar-positive" ng-show=" chatGroup.type==projectBaseIndex &&  meIsAdmin || chatGroup.type==privateIndex && button.members.clicked == true">
   <div class="title" ng-click='InviteMembers()'>Invite</div> 
 </div>
 

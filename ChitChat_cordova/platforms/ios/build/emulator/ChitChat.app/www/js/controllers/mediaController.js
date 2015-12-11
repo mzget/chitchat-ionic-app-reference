@@ -1,6 +1,6 @@
 angular.module('spartan.media', [])
 
-.controller('ImageController', function($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected) {
+.controller('ImageController', function($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected, checkFileSize) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
@@ -100,11 +100,22 @@ angular.module('spartan.media', [])
 
 	$scope.uploadImage = function(id) {
 		if(FileService.getImages().length!=0) { 
-			var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
-				$scope.$emit('delectTemp', [id]); 
+			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
+				if(canUpload){
+					var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
+						$scope.$emit('delectTemp', [id]); 
+					});
+				mediaUpload[id] = img;
+				mediaUpload[id].upload();
+				}else{
+					navigator.notification.alert(
+					    'This file size is over', 
+					     null,          
+					    'Fail to Upload',          
+					    'OK'   
+					);
+				}
 			});
-			mediaUpload[id] = img;
-			mediaUpload[id].upload();
 		}else{
 			if(mediaUpload[id].hasOwnProperty('url')){
 				$scope.$emit('delectTemp', [id]); 
@@ -173,7 +184,7 @@ angular.module('spartan.media', [])
  	}
 
 })
-.controller('VideoController', function($scope, $q, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress,$cordovaFile,GenerateID,VideoService,roomSelected) {
+.controller('VideoController', function($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile, checkFileSize, GenerateID,VideoService,roomSelected) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
 
@@ -194,7 +205,8 @@ angular.module('spartan.media', [])
 	      		$scope.hideSheet();
 	      		VideoService.handleMediaDialog().then(function() {
 		    		videoURI = VideoService.getVideoUri();
-		    		videoName = videoURI.substr(videoURI.lastIndexOf('/') + 1);
+		    		videoName = (videoURI.substr(videoURI.lastIndexOf('/') + 1));
+		    		console.log(videoName);
 		    		$scope.$emit('fileUri',[videoName,ContentType[ContentType.Video]]);
 		    	});
 	      	}
@@ -214,7 +226,7 @@ angular.module('spartan.media', [])
 	}
 
 	function moveVideoToTmp(uri){
-		videoName = GenerateID.makeid() + '.MOV';
+		videoName = GenerateID.makeid() + '.mp4';
 		var name = uri.substr(uri.lastIndexOf('/') + 1);
         var namePath = uri.substr(0, uri.lastIndexOf('/') + 1);
         var namePathTrim = namePath.substring(0,namePath.length - 1);
@@ -241,11 +253,22 @@ angular.module('spartan.media', [])
 	}
 	$scope.uploadVideo = function(id) {
 		if(videoName != null || videoName != undefined) { 
-			var video = new UploadMedia(roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function(id,messageId){
-				$scope.$emit('delectTemp', [id]); 
+			checkFileSize.checkFile(videoURI).then(function(canUpload) {
+				if(canUpload){
+					var video = new UploadMedia(roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function(id,messageId){
+						$scope.$emit('delectTemp', [id]); 
+					});
+					mediaUpload[id] = video;
+					mediaUpload[id].upload();
+				}else{
+					navigator.notification.alert(
+					    'This file size is over', 
+					     null,          
+					    'Fail to Upload',          
+					    'OK'   
+					);
+				}
 			});
-			mediaUpload[id] = video;
-			mediaUpload[id].upload();
 		}else{
 			if(mediaUpload[id].hasOwnProperty('url')){
 				$scope.$emit('delectTemp', [id]); 
@@ -273,6 +296,7 @@ angular.module('spartan.media', [])
 		    $scope.modalVideo = modal;
 		    $scope.modalVideo.type = type;
 		    $scope.modalVideo.src = src;
+		    $scope.modalVideo.url = $sce.trustAsResourceUrl('http://203.113.25.44' + src);
 		    $scope.modalVideo.show();
 		    document.getElementById("video-player").play();
 		});
@@ -342,7 +366,7 @@ angular.module('spartan.media', [])
 
 
 })
-.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile, GenerateID,roomSelected) {
+.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile, GenerateID,roomSelected, checkFileSize) {
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
 	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
@@ -426,11 +450,22 @@ angular.module('spartan.media', [])
 
 	$scope.uploadVoice = function(id) {
 		if(fileName != null || fileName != undefined) { 
-			var voice = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function(id,messageId){
-				$scope.$emit('delectTemp', [id]); 
+			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
+				if(canUpload){
+					var voice = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function(id,messageId){
+						$scope.$emit('delectTemp', [id]); 
+				});
+				mediaUpload[id] = voice;
+				mediaUpload[id].upload();
+				}else{
+					navigator.notification.alert(
+					    'This file size is over', 
+					     null,          
+					    'Fail to Upload',          
+					    'OK'   
+					);
+				}
 			});
-			mediaUpload[id] = voice;
-			mediaUpload[id].upload();
 		}else{
 			if(mediaUpload[id].hasOwnProperty('url')){
 				$scope.$emit('delectTemp', [id]); 
@@ -446,7 +481,6 @@ var mediaUpload = {};
 
 function UploadMedia(rid,uri,type,callback){
 	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
-	var extension = { "Image":"jpeg", "Video":"mp4", "Voice":"wav" }
 	var uriFile = uri;
 	var mediaName = uri.substr(uri.lastIndexOf('/') + 1);
 	var ft = new FileTransfer();
@@ -459,7 +493,6 @@ function UploadMedia(rid,uri,type,callback){
 		options.fileName = mediaName;
 	    options.mimeType = mimeType[type];
 	    var params = new Object();
-	    params.extension = extension[type];
 	    params.category = 'msg';
 	    options.params = params;
 	    options.chunkedMode = false;

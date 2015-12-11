@@ -84,7 +84,21 @@
     }
 
     function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory, roomSelected, CreateGroup, modalService) {
+        $scope.button = {};
+        $scope.button.post = {};
+        $scope.button.album = {};
+        $scope.button.members = {};
+        $scope.selectTab = function(button){
+            $scope.button.post.clicked = false;
+            $scope.button.album.clicked = false;
+            $scope.button.members.clicked = false;
+            button.clicked = true;
+        };
         $scope.$on('$ionicView.enter', function () {
+            if($rootScope.selectTab=='post') $scope.button.post.clicked = true;
+            else if($rootScope.selectTab=='album') $scope.button.album.clicked = true;
+            else if($rootScope.selectTab=='members') $scope.button.members.clicked = true;
+
             //<!-- Contact modal.
             $ionicModal.fromTemplateUrl('templates/modal-contact.html', {
                 scope: $scope,
@@ -181,7 +195,12 @@
                         if (result._id == id || result.id == id) { indexMember = index; }
                     });
                     $scope.members.splice(indexMember, 1);
-                    $state.go($state.current, {}, { reload: true });
+                    if(id==$scope.myProfile._id){
+                        $state.go('tab.group');
+                    }else{
+                        $state.go($state.current, {}, { reload: true }); 
+                    }
+                    
                 }
                 else {
                     console.warn(err, res);
@@ -240,7 +259,12 @@
         }
 
         $rootScope.$ionicGoBack = function () {
-            console.log($state.current.name);
+
+            if(typeof($ionicHistory.backView().stateParams) != 'undefined')
+            {
+                roomSelected.setRoom(room);
+            }
+            
             if ($state.current.name == 'tab.group-members') {
                 CreateGroup.clear();
                 $rootScope.status = "";

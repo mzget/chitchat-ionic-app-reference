@@ -217,56 +217,52 @@ var ChatRoomComponent = (function () {
         var self = this;
         var myProfile = self.dataManager.myProfile;
         var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
-        async.waterfall([
-            function (cb) {
-                if (!!chatLog) {
-                    if (JSON.stringify(chatLog) === "") {
-                        self.chatMessages = [];
-                        cb(null, null);
-                    }
-                    else {
-                        var arr_fromLog = JSON.parse(chatLog);
-                        if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
-                            self.chatMessages = [];
-                            cb(null, null);
-                        }
-                        else {
-                            async.eachSeries(arr_fromLog, function (log, cb) {
-                                var messageImp = log;
-                                if (messageImp.type === ContentType[ContentType.Text]) {
-                                    self.main.decodeService(messageImp.body, function (err, res) {
-                                        if (!err) {
-                                            messageImp.body = res;
-                                            self.chatMessages.push(messageImp);
-                                            cb();
-                                        }
-                                        else {
-                                            self.chatMessages.push(messageImp);
-                                            cb();
-                                        }
-                                    });
-                                }
-                                else {
-                                    self.chatMessages.push(log);
-                                    cb();
-                                }
-                            }, function (err) {
-                                cb(null, null);
-                            });
-                        }
-                    }
+        var promise = new Promise(function (resolve, reject) {
+            if (!!chatLog) {
+                console.log("Local chat history has a data...");
+                if (JSON.stringify(chatLog) === "") {
+                    self.chatMessages = [];
+                    resolve();
                 }
                 else {
-                    self.chatMessages = [];
-                    cb(null, null);
+                    var arr_fromLog = JSON.parse(chatLog);
+                    if (arr_fromLog === null || arr_fromLog instanceof Array === false) {
+                        self.chatMessages = [];
+                        resolve();
+                    }
+                    else {
+                        console.log("Decode local chat history for displaying:", arr_fromLog.length);
+                        arr_fromLog.map(function (log, i, a) {
+                            var messageImp = log;
+                            if (messageImp.type === ContentType[ContentType.Text]) {
+                                self.main.decodeService(messageImp.body, function (err, res) {
+                                    if (!err) {
+                                        messageImp.body = res;
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                    else {
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                });
+                            }
+                            else {
+                                self.chatMessages.push(log);
+                            }
+                        });
+                        resolve();
+                    }
                 }
-            },
-            function (arg1, cb) {
-                cb(null, null);
             }
-        ], function (err, res) {
-            self.serverImp.JoinChatRoomRequest(chatId, function (err, res) {
-                if (res.code == 200) {
+            else {
+                console.log("Have no local chat history.");
+                self.chatMessages = [];
+                resolve();
+            }
+        });
+        promise.then(function onFulfilled() {
+            console.log("get local history done:");
+            self.serverImp.JoinChatRoomRequest(chatId, function (err, joinRoomRes) {
+                if (joinRoomRes.code == 200) {
                     var access = new Date();
                     var roomAccess = self.dataManager.myProfile.roomAccess;
                     async.eachSeries(roomAccess, function iterator(item, cb) {
@@ -309,17 +305,22 @@ var ChatRoomComponent = (function () {
                                     Chats.set(self.chatMessages);
                                     localStorage.removeItem(myProfile._id + '_' + chatId);
                                     localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
-                                    callback();
+                                    callback(joinRoomRes);
                                 });
                             }
                             else {
                                 Chats.set(self.chatMessages);
-                                callback();
+                                callback(joinRoomRes);
                             }
                         });
                     });
                 }
+                else {
+                    callback(joinRoomRes);
+                }
             });
+        }).catch(function onRejected(reason) {
+            console.warn("promiss.onRejected", reason);
         });
     };
     ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
@@ -852,18 +853,26 @@ var NotifyManager = (function () {
         this.dataManager = main.getDataManager();
     }
     NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
+        var contactName, contactId;
+        if (this.dataManager.getGroup(chatMessageImp.rid) === undefined) {
+            contactName = this.dataManager.getContactProfile(chatMessageImp.sender).displayname;
+            contactId = this.dataManager.getContactProfile(chatMessageImp.sender)._id;
+        }
+        else {
+            contactName = this.dataManager.getGroup(chatMessageImp.rid).name;
+            contactId = this.dataManager.getGroup(chatMessageImp.rid)._id;
+        }
         if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
             var secure = new SecureService();
             secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
                 if (!err) {
                     chatMessageImp.body = res;
-                    var toastMessage = contact.displayname + " sent " + chatMessageImp.body;
+                    var toastMessage = contactName + " sent " + chatMessageImp.body;
                     if (!appBackground) {
-                        notifyService.makeToastOnCenter(toastMessage);
+                        notifyService.makeToastOnCenter(contactId, toastMessage);
                     }
                     else {
-                        notifyService.scheduleSingleNotification(contact.displayname, chatMessageImp.body);
+                        notifyService.scheduleSingleNotification(contactId, contactName, chatMessageImp.body);
                     }
                 }
                 else {
@@ -872,59 +881,53 @@ var NotifyManager = (function () {
             });
         }
         else if (chatMessageImp.type.toString() === ContentType[ContentType.Sticker]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a sticker.";
+            var message = contactName + " sent a sticker.";
             if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
+                notifyService.makeToastOnCenter(contactId, message);
             }
             else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
+                notifyService.scheduleSingleNotification(contactId, contactName, message);
             }
         }
         else if (chatMessageImp.type.toString() === ContentType[ContentType.Voice]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a voice message.";
+            var message = contactName + " sent a voice message.";
             if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
+                notifyService.makeToastOnCenter(contactId, message);
             }
             else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
+                notifyService.scheduleSingleNotification(contactId, contactName, message);
             }
         }
         else if (chatMessageImp.type.toString() === ContentType[ContentType.Image]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a image.";
+            var message = contactName + " sent a image.";
             if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
+                notifyService.makeToastOnCenter(contactId, message);
             }
             else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
+                notifyService.scheduleSingleNotification(contactId, contactName, message);
             }
         }
         else if (chatMessageImp.type.toString() === ContentType[ContentType.Video]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a video.";
+            var message = contactName + " sent a video.";
             if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
+                notifyService.makeToastOnCenter(contactId, message);
             }
             else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
+                notifyService.scheduleSingleNotification(contactId, contactName, message);
             }
         }
         else if (chatMessageImp.type.toString() === ContentType[ContentType.Location]) {
-            var contact = this.dataManager.getContactProfile(chatMessageImp.sender);
-            var message = contact.displayname + " sent a location.";
+            var message = contactName + " sent a location.";
             if (!appBackground) {
-                notifyService.makeToastOnCenter(message);
+                notifyService.makeToastOnCenter(contactId, message);
             }
             else {
-                notifyService.scheduleSingleNotification(contact.displayname, message);
+                notifyService.scheduleSingleNotification(contactId, contactName, message);
             }
         }
     };
     return NotifyManager;
 })();
-var appConfig;
 var pomelo;
 var username = "";
 var password = "";
@@ -1007,7 +1010,7 @@ var ChatServer;
                     url: "../www/configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
-                        appConfig = JSON.parse(JSON.stringify(config));
+                        self.appConfig = JSON.parse(JSON.stringify(config));
                         resolve();
                     }, error: function (jqXHR, textStatus, errorThrown) {
                         console.error(jqXHR, textStatus, errorThrown);
@@ -1015,8 +1018,8 @@ var ChatServer;
                     }
                 });
             }).then(function resolve(val) {
-                self.host = appConfig.socketHost;
-                self.port = appConfig.socketPort;
+                self.host = self.appConfig.socketHost;
+                self.port = self.appConfig.socketPort;
                 if (!!pomelo) {
                     self.connectSocketServer(self.host, self.port, function (err) {
                         callback(err, self);
@@ -1183,6 +1186,26 @@ var ChatServer;
             msg["token"] = this.authenData.token;
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, function (result) {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
+                callback(null, result);
+            });
+        };
+        ServerImplemented.prototype.updateClosedNoticeMemberList = function (editType, member, callback) {
+            var msg = {};
+            msg["editType"] = editType;
+            msg["member"] = member;
+            msg["token"] = this.authenData.token;
+            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, function (result) {
+                console.log("updateClosedNoticeUsers: ", JSON.stringify(result));
+                callback(null, result);
+            });
+        };
+        ServerImplemented.prototype.updateClosedNoticeGroupsList = function (editType, group, callback) {
+            var msg = {};
+            msg["editType"] = editType;
+            msg["group"] = group;
+            msg["token"] = this.authenData.token;
+            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, function (result) {
+                console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
                 callback(null, result);
             });
         };
@@ -1426,7 +1449,7 @@ var ChatServer;
         function ChatRoomApiProvider() {
             this.serverImp = ServerImplemented.getInstance();
         }
-        ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, repalceMessageID) {
+        ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, callback) {
             var message = {};
             message["rid"] = room_id;
             message["content"] = content;
@@ -1435,8 +1458,8 @@ var ChatServer;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
-                if (repalceMessageID !== null)
-                    repalceMessageID(null, data.data);
+                if (callback !== null)
+                    callback(null, data);
             });
         };
         ChatRoomApiProvider.prototype.chatFile = function (room_id, target, sender_id, fileUrl, contentType, setMessageID) {
