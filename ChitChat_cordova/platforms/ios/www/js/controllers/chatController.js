@@ -110,13 +110,23 @@ angular.module('spartan.chat', [])
 
 	$scope.viewProfile = function(){
 		$scope.popover.hide();
-		$state.go('tab.group-viewprofile', { chatId: $scope.otherId });
+		console.log(JSON.stringify($state.current));
+		if($state.current.views.hasOwnProperty('tab-chats')){
+			$state.go('tab.chats-chat-viewprofile', { chatId: $scope.otherId });
+		}else{
+			$state.go('tab.group-viewprofile', { chatId: $scope.otherId });
+		}
+		
 	}
 
 	$scope.groupDetail = function(state){
 		$scope.popover.hide();
 		$rootScope.selectTab = state;
-		$state.go('tab.group-members', { chatId: self.currentRoom._id });
+		if($state.current.views.hasOwnProperty('tab-chats')){
+			$state.go('tab.chats-chat-members', { chatId: self.currentRoom._id });
+		}else{
+			$state.go('tab.group-members', { chatId: self.currentRoom._id });
+		}
 	}
 	
 	function sendMessageResponse(err, res) {
