@@ -34,13 +34,18 @@ angular.module('starter',
 	console.log("cordova detail", cordova.platformId, cordova.version);
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
 	// Ionic uses AngularUI Router which uses the concept of states
 	// Learn more here: https://github.com/angular-ui/ui-router
 	// Set up the various states which the app can be in.
 	// Each state's controller can be found in controllers.js
+
+	$ionicConfigProvider.views.swipeBackEnabled(false);
+	
 	$stateProvider
+
+
 
 	// setup an abstract state for the tabs directive
 	.state('tab', {
@@ -163,6 +168,25 @@ angular.module('starter',
 			'tab-chats': {
 				templateUrl: 'templates/chat-detail.html',
 				controller: 'chatController'
+			}
+		}
+	})
+
+	.state('tab.chats-chat-viewprofile',{
+		url: '/chats/member/:chatId',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/tab-group-viewprofile.html',
+				controller: 'GroupViewprofileCtrl'
+			}
+		}
+	})
+	.state('tab.chats-chat-members', {
+		url: '/chats/members/:chatId',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/tab-group-members.html',
+				controller: 'viewGroupMembersCtrl'
 			}
 		}
 	})

@@ -15,18 +15,26 @@
                 <!-- <img ng-if="access.name===undefined && access.members[0]['id'] != myProfile._id" ng-src="http://203.113.25.44/timthumb.php?src={{orgMembers[access.members[0]['id']]['image']}}&h=40&w=40" />
                 <img ng-if="access.name===undefined && access.members[0]['id'] == myProfile._id" ng-src="http://203.113.25.44/timthumb.php?src={{orgMembers[access.members[1]['id']]['image']}}&h=40&w=40" /> -->
 
-                <h2>{{access.name}}</h2>
+                <div>
+                    <h2 style="display:inline;">{{access.name}}</h2>
+                    <i style="display:inline; margin-top:8px;" class="icon" ng-if="access.body['count'] > 0 ">
+                        <small style="height:20px; line-height:20px; padding:0 5px; border-radius:10px;
+                        font-weight:bold; font-size:14px; color:#fff; background-color:#f00;"><i class="fa fa-clock-o"></i>{{access.body['count']}}</small>
+                    </i>
+                </div>
                 <!-- <h2 ng-if="access.name===undefined && access.members[0]['id'] != myProfile._id">{{orgMembers[access.members[0]['id']]['displayname']}}</h2>
                 <h2 ng-if="access.name===undefined && access.members[0]['id'] == myProfile._id">{{orgMembers[access.members[1]['id']]['displayname']}}</h2> -->
                 <!--	<p>{{access.accessTime.substr(0, 10)}} {{access.accessTime.substr(11, 8)}}</p>-->
 
-                <p>{{ access.body.message.body }}</p>
-                <span class="item-note">{{access.lastTime.substr(0, 10)}} {{access.lastTime.substr(11, 8)}} </span>
+                <div style="margin-top:5px;">
+                    <p style="display:inline;">{{ access.body.message.body }}</p>
+                    <span style="display:inline; float:right; margin-right:-40px;" class="item-note" >{{access.lastTime.substr(0, 10)}} {{access.lastTime.substr(11, 8)}} </span>
+                <div>
                 
-                <i class="icon" ng-if="access.body['count'] > 0 ">
-                    <small style="height:20px; line-height:20px; padding:0 5px; border-radius:10px;
-                    font-weight:bold; font-size:14px; color:#fff; background-color:#f00;"><i class="fa fa-clock-o"></i>{{access.body['count']}}</small>
-                </i>
+
+                <ion-option-button class="button-assertive" ng-click="">
+                    Delete
+                </ion-option-button>
             </ion-item>
         </ion-list>
     </ion-content>
