@@ -59,7 +59,7 @@ ion-header-bar.bar.bar-header.bar-stable > * , #header-modal h1{
 
 /* IONIC TAB / BOTTOM TAB (WHEN ACTIVE) */
 ion-tabs.tabs-color-active-positive .tab-item {
-    background-color: #44A7EA;
+    /*background-color: #44A7EA;*/
     border: none;
     color: #FFFFFF;
 }

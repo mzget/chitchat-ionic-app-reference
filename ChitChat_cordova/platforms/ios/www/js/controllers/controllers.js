@@ -161,8 +161,8 @@ angular.module('spartan.controllers', [])
     }
 
     $scope.save_settings = function( data ) {
-        $localStorage.themeblue_data = data;
-        $rootScope.theme = $localStorage.themeblue_data;
+        $localStorage.themeData = data;
+        $rootScope.theme = $localStorage.themeData;
         console.log($rootScope.themeblue)
     }
 

@@ -171,6 +171,25 @@ angular.module('starter',
 			}
 		}
 	})
+
+	.state('tab.chats-chat-viewprofile',{
+		url: '/chats/member/:chatId',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/tab-group-viewprofile.html',
+				controller: 'GroupViewprofileCtrl'
+			}
+		}
+	})
+	.state('tab.chats-chat-members', {
+		url: '/chats/members/:chatId',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/tab-group-members.html',
+				controller: 'viewGroupMembersCtrl'
+			}
+		}
+	})
 	
 	/*
 	// CHAT : Message
