@@ -32,13 +32,15 @@
         }
         
         function makeToast(message) {
-             $cordovaToast.showLongCenter(message).then(function(success) {
-                // success
-                console.log('makeToastOnCenter success', success);
-            }, function (error) {
-                // error
-                console.error('error', error);
-            });
+            if (cordova.platformId === "ios") {
+                $cordovaToast.showLongCenter(message).then(function (success) {
+                    // success
+                    console.log('makeToastOnCenter success', success);
+                }, function (error) {
+                    // error
+                    console.error('error', error);
+                });
+            }
         }
         
         function makeToastOnCenter(contactId,message) {

@@ -36,8 +36,9 @@
                 listenerImp = function (newMsg) {
                     if (!main.getDataManager().isMySelf(newMsg.sender)) {
                         chatlog_count++;
-                        cordova.plugins.notification.badge.increase();
-                        
+                        if (cordova.platformId === "ios") {
+                            cordova.plugins.notification.badge.increase();
+                        }
                         var unread = {};
                         unread.message = newMsg;
                         unread.rid = newMsg.rid;
