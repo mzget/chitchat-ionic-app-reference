@@ -85,7 +85,7 @@
 				</div>
 
 				</br>
-				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+				<label>{{message.time}}</label>
 			</ion-item>
 
 			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
@@ -142,7 +142,7 @@
 				</div>
 						
                 <br />
-				<label ng-if="message.temp != 'true' "> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+				<label ng-if="message.temp != 'true' "> {{message.time}}</label>
 			</ion-item>
 		</ion-list>
 
