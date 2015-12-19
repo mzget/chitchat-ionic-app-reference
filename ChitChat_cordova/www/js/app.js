@@ -7,18 +7,24 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
      ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
-	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
+	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'spartan.bot',
       'spartan.services', 'spartan.notify', 'ngCordova', 'ngStorage'])
 
 
 .run(function($ionicPlatform) {
+
+    var currentPlatform = ionic.Platform.platform();
+    var currentPlatformVersion = ionic.Platform.version();
+    console.log("currentPlatform", currentPlatform, currentPlatformVersion);
+
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
-		if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-			cordova.plugins.Keyboard.disableScroll(true);
-
+	    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+	        if (currentPlatform !== "win32") {
+	            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+	            cordova.plugins.Keyboard.disableScroll(true);
+	        }
 		}
 		if (window.StatusBar) {
 			// org.apache.cordova.statusbar required
@@ -27,11 +33,6 @@ angular.module('starter',
 		
 		console.log("$ionicPlatform.ready");
 	});
-
-	var currentPlatform = ionic.Platform.platform();
-	var currentPlatformVersion = ionic.Platform.version();
-	console.log("currentPlatform", currentPlatform, currentPlatformVersion);
-	console.log("cordova detail", cordova.platformId, cordova.version);
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -44,9 +45,6 @@ angular.module('starter',
 	$ionicConfigProvider.views.swipeBackEnabled(false);
 	
 	$stateProvider
-
-
-
 	// setup an abstract state for the tabs directive
 	.state('tab', {
 		url: '/tab',
@@ -76,6 +74,17 @@ angular.module('starter',
 				controller: 'noConnection'
 			}
 		}
+	})
+
+	// BOT
+	.state('tab.bot', {
+	    url: '/bot',
+	    views: {
+	        'tab-group': {
+	            templateUrl: 'templates/tab-bot.html',
+	            controller: 'botController'
+	        }
+	    }
 	})
 
 	// GROUP

@@ -16,9 +16,9 @@
 	<script src="lib/ngCordova/dist/ng-cordova.js"></script>
 
 	<!-- cordova script (this will be a 404 during development) -->
-	<script src="cordova.js"></script>
+	<!--<script src="cordova.js"></script>-->
      <script src="js/ngStorage.js"></script>
-     <script src="js/push.js"></script>
+     <!--<script src="js/push.js"></script>-->
 
 	<!-- your app's js -->
 	<script src="js/app.js"></script>
@@ -29,11 +29,13 @@
 	<script src="js/controllers/chatController.js"></script>
 	<script src="js/controllers/mediaController.js"></script>
     <script src="js/controllers/groupDetailController.js"></script>
+    <script src="js/controllers/botController.js"></script>
 	<script src="js/services/services.js"></script>
     <script src="js/services/localNotifyService.js"></script>
     <script src="js/services/networkService.js"></script>
     <script src="js/services/sharedObjectService.js"></script>
     <script src="js/services/chatslogService.js"></script>
+    <script src="js/services/botFactory.js"></script>
     <script src="js/template.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/async.js"></script>
@@ -53,6 +55,7 @@
 		var server = ChatServer.ServerImplemented.prototype;
 		var serverEvents = ChatServer.ServerEventListener.prototype;
 		var dataManager = DataManager.prototype;
+		var dummy = new Dummy();
 	</script>
 
     <ion-nav-bar class="bar-stable" style="display:none;">
@@ -63,7 +66,7 @@
 	 
 	<div id="splash">
 		<div class="container">
-			<img class="login-logo" src="img/logo-main.png" width="30%" /><br /><br />
+			<img class="login-logo" src="img/logo-main.png" width="30" /><br /><br />
 			<ion-spinner icon="spiral"></ion-spinner>
 		</div>
 	</div>

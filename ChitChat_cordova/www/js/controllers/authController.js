@@ -6,7 +6,8 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPlatform, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, networkService, chatslogService) {
+    function authController($location, $ionicPlatform, $ionicLoading, $state, $localStorage, $ionicModal,
+        $scope, $rootScope, $cordovaSpinnerDialog, networkService, chatslogService, botFactory) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -25,17 +26,17 @@
                 $('#splash').css({ 'display': 'none' });
 
                 // Hide spinner dialog
-                if (cordova.platformId === "ios") {
+                if (ionic.Platform.platform() === "ios") {
                     $cordovaSpinnerDialog.hide();
                 }
-                else if (cordova.platformId === "windows") {
+                else if (ionic.Platform.platform() === "windows") {
                     $ionicLoading.hide();
                 }
                     
                 console.log("appConfig", server.appConfig.webserver);
 
                 //location.href = "#/tab/group";
-                $state.go('tab.group');
+                $state.go('tab.bot');
                 activateNetworkService();
             };
             initSpartanServer();
@@ -52,7 +53,7 @@
 
             console.log("init push notification.");
 
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 var push = PushNotification.init({
                     "ios": { "alert": "true", "badge": "true", "sound": "true" }
                 });
@@ -78,7 +79,7 @@
         }
         
         function activateBackground() {
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 // Prevent the app from going to sleep in background
                 cordova.plugins.backgroundMode.enable();
                 // Get informed when the background mode has been activated
@@ -124,10 +125,10 @@
 
         function onDuplicateLogin(param) {
             // Hide spinner dialog
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
             }
-            else if (cordova.platformId === "windows") {
+            else if (ionic.Platform.platform() === "windows") {
                 $ionicLoading.hide();
             }
 
@@ -181,62 +182,59 @@
         }
 
         function onReadyToSigning() {
+            var bot = botFactory.getBot();
             var authen = server.authenData;
+
             console.log("token: ", authen.token);
             if (!authen.token) {
                 $('#splash').css({ 'display': 'none' });
+                $('body #login input').attr('readonly', true);
+                $('body #login #btn-login').attr('disabled', true);
 
-                $('body #login #btn-login').click(function (event) {
-                    event.preventDefault();
+               var email = bot.name;
+               var password = bot.pass;
 
-                    $('body #login input').attr('readonly', true);
-                    $('body #login #btn-login').attr('disabled', true);
-
-                    var email = $('body #login form input[name="email"]').val();
-                    var password = $('body #login form input[name="password"]').val();
-
-                    // console.error(email, ":", password)
-                    if (!email || !password) {
-                        onMissingParams();
-                        $('body #login input').attr('readonly', false);
-                        $('body #login #btn-login').attr('disabled', false);
+                // console.error(email, ":", password)
+                if (!email || !password) {
+                    onMissingParams();
+                    $('body #login input').attr('readonly', false);
+                    $('body #login #btn-login').attr('disabled', false);
+                }
+                else {
+                    // Show spinner dialog
+                    if (ionic.Platform.platform() === "ios") {
+                        $cordovaSpinnerDialog.show(null, "loging in...", true);
                     }
-                    else {
-                        // Show spinner dialog
-                        if (cordova.platformId === "ios") {
-                            $cordovaSpinnerDialog.show(null, "loging in...", true);
-                        }
-                        else if (cordova.platformId === "windows") {
-                            $ionicLoading.show({
-                                template: "loging in..."
-                            });
-                        }
-
-                        main.getHashService(password, function (err, res) {
-                            main.authenUser(server, email, res, function (err, res) {
-                                if (!err && res !== null) {
-                                    if (res.code === HttpStatusCode.success) {
-                                        console.log("Success Login User...");
-                                    }
-                                    else if (res.code === 1004) {
-                                        onDuplicateLogin(res);
-                                    }
-                                    else if (res.code === HttpStatusCode.requestTimeout) {
-                                        $('body #login input').attr('readonly', false);
-                                        $('body #login #btn-login').attr('disabled', false);
-                                        onLoginTimeout(res);
-                                    }
-                                }
-                                else {
-                                    $('body #login input').attr('readonly', false);
-                                    $('body #login #btn-login').attr('disabled', false);
-                                    // maybe user not found.
-                                    onAuthenFail(err);
-                                }
-                            });
+                    else if (ionic.Platform.platform() === "windows") {
+                        $ionicLoading.show({
+                            template: "loging in..."
                         });
                     }
-                });
+
+                    main.getHashService(password, function (err, res) {
+                        main.authenUser(server, email, res, function (err, res) {
+                            if (!err && res !== null) {
+                                if (res.code === HttpStatusCode.success) {
+                                    console.log("Success Login User...");
+                                }
+                                else if (res.code === 1004) {
+                                    onDuplicateLogin(res);
+                                }
+                                else if (res.code === HttpStatusCode.requestTimeout) {
+                                    $('body #login input').attr('readonly', false);
+                                    $('body #login #btn-login').attr('disabled', false);
+                                    onLoginTimeout(res);
+                                }
+                            }
+                            else {
+                                $('body #login input').attr('readonly', false);
+                                $('body #login #btn-login').attr('disabled', false);
+                                // maybe user not found.
+                                onAuthenFail(err);
+                            }
+                        });
+                    });
+                }
             }
             else {
                 server.TokenAuthen(authen.token, function (err, res) {

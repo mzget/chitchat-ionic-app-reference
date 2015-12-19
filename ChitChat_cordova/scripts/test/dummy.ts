@@ -26,7 +26,7 @@ class Dummy {
                     this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
-                }, 5000);
+                }, 2000);
             }
         });
     }

@@ -26,7 +26,6 @@ var BlankCordovaApp1;
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
-        cryptojs: '../js/crypto-js/crypto-js'
     }
 });
 var Main = (function () {
@@ -146,6 +145,7 @@ var Main = (function () {
             }
         });
     };
+    Main.node_module = '../../node_modules/';
     return Main;
 })();
 var ChatRoomComponent = (function () {
@@ -231,36 +231,24 @@ var ChatRoomComponent = (function () {
                     }
                     else {
                         console.log("Decode local chat history for displaying:", arr_fromLog.length);
-                        var count = 0;
-                        async.mapSeries(arr_fromLog, function (log, iteratorCb) {
-                            async.setImmediate(function () {
-                                var messageImp = log;
-                                if (messageImp.type === ContentType[ContentType.Text]) {
-                                    console.log("item:", count++, log.type);
-                                    self.main.decodeService(messageImp.body, function (err, res) {
-                                        if (!err) {
-                                            messageImp.body = res;
-                                            self.chatMessages.push(messageImp);
-                                            iteratorCb(null, messageImp);
-                                        }
-                                        else {
-                                            self.chatMessages.push(messageImp);
-                                            iteratorCb(null, messageImp);
-                                        }
-                                    });
-                                }
-                                else {
-                                    console.log("item:", count++, log.type);
-                                    self.chatMessages.push(log);
-                                    iteratorCb(null, messageImp);
-                                }
-                            });
-                        }, function done(err, results) {
-                            if (!err) {
-                                console.log("Decode local chat history complete...");
+                        arr_fromLog.map(function (log, i, a) {
+                            var messageImp = log;
+                            if (messageImp.type === ContentType[ContentType.Text]) {
+                                self.main.decodeService(messageImp.body, function (err, res) {
+                                    if (!err) {
+                                        messageImp.body = res;
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                    else {
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                });
                             }
-                            resolve();
+                            else {
+                                self.chatMessages.push(log);
+                            }
                         });
+                        resolve();
                     }
                 }
             }
@@ -1835,32 +1823,6 @@ var UserRole;
     UserRole[UserRole["admin"] = 4] = "admin";
 })(UserRole || (UserRole = {}));
 ;
-var Dummy = (function () {
-    function Dummy() {
-        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
-        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
-            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
-            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
-        this.serverApi = ChatServer.ServerImplemented.getInstance();
-    }
-    Dummy.prototype.getBot = function () {
-        var r = Math.floor((Math.random() * this.bots.length) + 1);
-        return this.bots[r];
-    };
-    Dummy.prototype.fireChatInRoom = function (myUid) {
-        var _this = this;
-        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
-            if (!err && res !== null) {
-                setInterval(function () {
-                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
-                        console.log(res);
-                    });
-                }, 1000);
-            }
-        });
-    };
-    return Dummy;
-})();
 var SecureService = (function () {
     function SecureService() {
         this.key = "CHITCHAT!@#$%^&*()_+|===";
@@ -1911,6 +1873,35 @@ var SecureService = (function () {
         });
     };
     return SecureService;
+})();
+var Dummy = (function () {
+    function Dummy() {
+        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
+        this.counter = 0;
+        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
+            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" },
+            { name: "test5@rfl.com", pass: "1234" }, { name: "test6@rfl.com", pass: "1234" },
+            { name: "test7@rfl.com", pass: "1234" }];
+        this.serverApi = ChatServer.ServerImplemented.getInstance();
+    }
+    Dummy.prototype.getBot = function () {
+        var r = Math.floor((Math.random() * this.bots.length) + 1);
+        return this.bots[r];
+    };
+    Dummy.prototype.fireChatInRoom = function (myUid) {
+        var _this = this;
+        this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", function (err, res) {
+            if (!err && res !== null) {
+                setInterval(function () {
+                    var temp = _this.counter++;
+                    _this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
+                        console.log(res);
+                    });
+                }, 2000);
+            }
+        });
+    };
+    return Dummy;
 })();
 var HttpStatusCode = (function () {
     function HttpStatusCode() {

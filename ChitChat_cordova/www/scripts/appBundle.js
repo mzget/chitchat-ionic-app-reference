@@ -23,11 +23,9 @@ var BlankCordovaApp1;
         Application.initialize();
     };
 })(BlankCordovaApp1 || (BlankCordovaApp1 = {}));
-/// <reference path="./typings/tsd.d.ts" />
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
-        cryptojs: '../js/crypto-js/crypto-js'
     }
 });
 var Main = (function () {
@@ -147,6 +145,7 @@ var Main = (function () {
             }
         });
     };
+    Main.node_module = '../../node_modules/';
     return Main;
 })();
 var ChatRoomComponent = (function () {
@@ -1740,7 +1739,6 @@ var ContentType;
     ContentType[ContentType["Sticker"] = 6] = "Sticker";
     ContentType[ContentType["Location"] = 7] = "Location";
 })(ContentType || (ContentType = {}));
-//<!--- Referrence by http://management.about.com/od/people/a/EEgradelevels.htm
 var JobLevel;
 (function (JobLevel) {
     JobLevel[JobLevel["employees"] = 0] = "employees";
@@ -1825,32 +1823,6 @@ var UserRole;
     UserRole[UserRole["admin"] = 4] = "admin";
 })(UserRole || (UserRole = {}));
 ;
-var Dummy = (function () {
-    function Dummy() {
-        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
-        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
-            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
-            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
-        this.serverApi = ChatServer.ServerImplemented.getInstance();
-    }
-    Dummy.prototype.getBot = function () {
-        var r = Math.floor((Math.random() * this.bots.length) + 1);
-        return this.bots[r];
-    };
-    Dummy.prototype.fireChatInRoom = function (myUid) {
-        var _this = this;
-        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
-            if (!err && res !== null) {
-                setInterval(function () {
-                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
-                        console.log(res);
-                    });
-                }, 1000);
-            }
-        });
-    };
-    return Dummy;
-})();
 var SecureService = (function () {
     function SecureService() {
         this.key = "CHITCHAT!@#$%^&*()_+|===";
@@ -1901,6 +1873,35 @@ var SecureService = (function () {
         });
     };
     return SecureService;
+})();
+var Dummy = (function () {
+    function Dummy() {
+        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
+        this.counter = 0;
+        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
+            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" },
+            { name: "test5@rfl.com", pass: "1234" }, { name: "test6@rfl.com", pass: "1234" },
+            { name: "test7@rfl.com", pass: "1234" }];
+        this.serverApi = ChatServer.ServerImplemented.getInstance();
+    }
+    Dummy.prototype.getBot = function () {
+        var r = Math.floor((Math.random() * this.bots.length) + 1);
+        return this.bots[r];
+    };
+    Dummy.prototype.fireChatInRoom = function (myUid) {
+        var _this = this;
+        this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", function (err, res) {
+            if (!err && res !== null) {
+                setInterval(function () {
+                    var temp = _this.counter++;
+                    _this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
+                        console.log(res);
+                    });
+                }, 2000);
+            }
+        });
+    };
+    return Dummy;
 })();
 var HttpStatusCode = (function () {
     function HttpStatusCode() {
