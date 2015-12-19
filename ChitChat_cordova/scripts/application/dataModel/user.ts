@@ -18,4 +18,6 @@
     lastEditProfile: Date;
     favoriteUsers: string[]; // user_id
     favoriteGroups: string[]; // room_id
+    closedNoticeUsers: string[]; //user_id
+    closedNoticeGroups: string[];
 }

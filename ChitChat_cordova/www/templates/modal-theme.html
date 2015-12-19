@@ -1,0 +1,124 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<!-- <ion-modal-view style="width:80%; left:10%; right:10%; top:10%; bottom:10%; min-height:300px;">
+    <ion-header-bar >
+       <div class="theme-title">Theme Colors</div>
+    </ion-header-bar>
+	<ion-content>
+        <link ng-href="css/{{theme}}.css" rel="stylesheet"> -->
+        
+        <!-- <div class="row" action="."  ng-submit="noSubmit($event)">
+            <div class="col" > 
+                <button class="button button-positive" ng-model="data.themeblue" ng-value="'themeblue'" ng-click="save_settings('themeblue')"> Bule Theme
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-royal" ng-model="data.themeviole" ng-value="'themeviole'" ng-click="save_settings('themeviole')"> Violet Theme
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-balanced" ng-model="data.themegreen" ng-value="'themegreen'" ng-click="save_settings('themegreen')" >Green Theme
+                </button>
+            </div>        
+        </div>
+        
+        <div class="row">
+            <div class="col"> 
+                <button class="button button-assertive" ng-model="data.themered" ng-value="'themered'" ng-click="save_settings('themered')">  Red Theme
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-dark" ng-model="data.themebrown" ng-value="'themebrown'" ng-click="save_settings('themebrown')">Brown Theme
+                </button>
+            </div>
+            <div class="col">
+                <button class="button button-energized" ng-model="data.themeyellow" ng-value="'themeyellow'" ng-click="save_settings('themeyellow')">Yellow Theme
+                </button>
+            </div>        
+        </div> -->
+     
+  <!--       <div class="stickertab stickertab-0" style="display:inline-block;">
+            <div style="background-image:url(img/theme/theme_blue.png);"></div>          
+            <div style="background-image:url(img/theme/theme_violet.png);"></div>              
+            <div style="background-image:url(img/theme/theme_green.png);"></div>              
+            <div style="background-image:url(img/theme/theme_red.png);"></div>              
+            <div style="background-image:url(img/theme/theme_brown.png);"></div>              
+            <div style="background-image:url(img/theme/theme_yellow.png);"></div>                  
+        </div>
+
+	   
+	</ion-content>
+
+    <a style="position:fixed; top:0; left:0; width:100%; height:100vh; background-color:rgba(0,0,0,0.6);"></a> -->
+    
+    <!-- <ion-footer-bar  >
+        <button class="button button-block" style="margin:0em;padding:0em"  ng-click="closeThemeModal()" > Cancel </button>
+    </ion-footer-bar> -->
+    
+  
+<!-- </ion-modal-view> -->
+
+<ion-modal-view style="width:90%; left:5%; right:5%; top:20%; bottom:30%; min-height:200px;">
+
+    <ion-header-bar class="bar bar-header bar-stable">
+        <h1 style=" position: absolute; top: 0; right: 0; left: 0; z-index: 0; overflow: hidden; margin: 0 10px; min-width: 30px; height: 43px; text-align: center; text-overflow: ellipsis;
+    white-space: nowrap; font-size: 17px; font-weight: 500; line-height: 64px;">Theme Colors</h1>
+    </ion-header-bar>
+
+    <ion-content class="padding group-detail">
+        <link ng-href="css/{{theme}}.css" rel="stylesheet">
+        <div class="row">
+            <div class="col-33" 
+                style="background-image:url(img/theme/theme_blue.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
+                ng-model="data.themeblue" ng-value="'themeblue'" ng-click="save_settings('themeblue')"></div>          
+            <div class="col-33" 
+                style="background-image:url(img/theme/theme_violet.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
+                ng-model="data.themeviole" ng-value="'themeviole'" ng-click="save_settings('themeviole')"></div>            
+            <div class="col-33" 
+                style="background-image:url(img/theme/theme_green.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
+                ng-model="data.themegreen" ng-value="'themegreen'" ng-click="save_settings('themegreen')"></div>               
+           
+        </div>
+        <div class="row" style="margin-top:30px;">
+            <div class="col-33" 
+                style="background-image:url(img/theme/theme_red.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
+                ng-model="data.themered" ng-value="'themered'" ng-click="save_settings('themered')"></div>          
+            <div class="col-33" 
+                style="background-image:url(img/theme/theme_brown.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
+                ng-model="data.themebrown" ng-value="'themebrown'" ng-click="save_settings('themebrown')"></div>            
+            <div class="col-33" 
+                style="background-image:url(img/theme/theme_yellow.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
+                ng-model="data.themeyellow" ng-value="'themeyellow'" ng-click="save_settings('themeyellow')"></div>               
+           
+        </div>       
+        
+            <!-- <div class="stickertab stickertab-0" style="display:inline-block;" action="." ng-submit="noSubmit($event)">
+                <div style="background-image:url(img/theme/theme_blue.png); margin-bottom:20px;" ng-model="data.themeblue" ng-value="'themeblue'" ng-click="save_settings('themeblue')"></div>          
+                <div style="background-image:url(img/theme/theme_violet.png); margin-bottom:20px;" ng-model="data.themeviole" ng-value="'themeviole'" ng-click="save_settings('themeviole')"></div>       
+                <div style="background-image:url(img/theme/theme_green.png); margin-bottom:20px;" ng-model="data.themegreen" ng-value="'themegreen'" ng-click="save_settings('themegreen')"></div>           
+            </div>
+
+            <div class="stickertab stickertab-0" style="display:inline-block;" action="." ng-submit="noSubmit($event)">
+                <div style="background-image:url(img/theme/theme_red.png); margin-bottom:20px;" ng-model="data.themered" ng-value="'themered'" ng-click="save_settings('themered')"></div>              
+                <div style="background-image:url(img/theme/theme_brown.png); margin-bottom:20px;" ng-model="data.themebrown" ng-value="'themebrown'" ng-click="save_settings('themebrown')"></div>      
+                <div style="background-image:url(img/theme/theme_yellow.png); margin-bottom:20px;" ng-model="data.themeyellow" ng-value="'themeyellow'" ng-click="save_settings('themeyellow')"></div>
+            </div>   -->      
+
+            
+
+    </ion-content>
+
+    <ion-footer-bar  >
+        <button class="button button-block" style="margin:0em;padding:0em"  ng-click="closeThemeModal()" > Cancel </button>
+    </ion-footer-bar>
+
+</ion-modal-view>
+
+
+<a ng-click="closeThemeModal()" style="position:fixed; top:0; left:0; width:100%; height:100vh; background-color:rgba(0,0,0,0.6);"></a>
+ 
+

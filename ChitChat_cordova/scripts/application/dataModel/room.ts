@@ -2,6 +2,11 @@
     uid: string;
     status: string;
 }
+
+
+enum RoomType { organizationGroup = 0, projectBaseGroup, privateGroup, privateChat };
+enum RoomStatus { active, disable, delete };
+
 class Room {
     _id: string;
     nodeId: number;
@@ -12,7 +17,13 @@ class Room {
     description: string;
     status: RoomStatus;
     createTime: Date;
-}
 
-enum RoomType { organizationGroup = 0, projectBaseGroup, privateGroup, privateChat };
-enum RoomStatus { active, disable, delete };
+    public _visibility: boolean = true;
+
+    set visibility(_boo: boolean) {
+        this._visibility = _boo;
+    }
+    get visibilty(): boolean {
+        return this._visibility;
+    }
+}
