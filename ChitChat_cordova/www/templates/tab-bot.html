@@ -1,26 +1,14 @@
 <ion-view view-title = "Bot Chats" cache-view = false >
   <ion-content> 
-	<h1> Hello i'am robot. {{bot.name}}</h1>
+	<h1> Hello i'am robot.</h1>
+      <h3 >{{bot.name}}</h3>
+
+      <button class="button button-block button-positive" ng-click="startBot()">
+          Start Chat.
+      </button>
+
+      <button class="button button-block button-assertive" ng-click="stopBot()">
+          Stop Chat.
+      </button>
     </ion-content>
 </ion-view>
-
-
-<!--<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>React Tutorial</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  </head>
-  <body>
-    <div id="content"></div>
-    <script type="text/babel" src="../../scripts/react/example.js"></script>
-    <script type="text/babel">
-      // To get started with this tutorial running your own code, simply remove
-      // the script tag loading scripts/example.js and start writing code here.
-    </script>
-  </body>
-</html>-->
