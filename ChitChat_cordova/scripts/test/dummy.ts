@@ -3,6 +3,7 @@ class Dummy {
     serverApi: ChatServer.ServerImplemented;
     
     counter: number = 0;
+    intervalNumber: number;
 
     constructor() {
         this.serverApi = ChatServer.ServerImplemented.getInstance();
@@ -21,7 +22,7 @@ class Dummy {
     public fireChatInRoom(myUid: string) {
         this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", (err, res) => {
             if (!err && res !== null) {
-                setInterval(() => {
+                this.intervalNumber = setInterval(() => {
                     var temp = this.counter++;
                     this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
@@ -29,6 +30,10 @@ class Dummy {
                 }, 2000);
             }
         });
+    }
+
+    public stopChat() {
+        clearInterval(this.intervalNumber);
     }
 }
 

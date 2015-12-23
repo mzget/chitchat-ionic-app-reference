@@ -1892,7 +1892,7 @@ var Dummy = (function () {
         var _this = this;
         this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", function (err, res) {
             if (!err && res !== null) {
-                setInterval(function () {
+                _this.intervalNumber = setInterval(function () {
                     var temp = _this.counter++;
                     _this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
@@ -1900,6 +1900,9 @@ var Dummy = (function () {
                 }, 2000);
             }
         });
+    };
+    Dummy.prototype.stopChat = function () {
+        clearInterval(this.intervalNumber);
     };
     return Dummy;
 })();

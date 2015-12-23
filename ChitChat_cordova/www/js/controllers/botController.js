@@ -23,11 +23,16 @@
             if (!vm.isStarting) {
                 $scope.bot = botFactory.getBot();
                 vm.bot.fireChatInRoom(dataManager.myProfile._id);
+
+                vm.isStarting = true;
             }
         }
 
         $scope.stopBot = function () {
-
+            if (vm.isStarting) {
+                vm.bot.stopChat();
+                vm.isStarting = false;
+            }
         }
     }
 })();
