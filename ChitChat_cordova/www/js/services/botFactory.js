@@ -10,7 +10,8 @@
     function botFactory($http) {
         var service = {
             getData: getData,
-            getBot: getBot
+            getBot: getBot,
+            getChats : getChats
         };
 
         return service;

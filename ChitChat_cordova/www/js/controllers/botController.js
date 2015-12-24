@@ -19,6 +19,8 @@
         function activate() {
         }
 
+        $scope.chats = botFactory.getChats();
+
         $scope.startBot = function () {
             if (!vm.isStarting) {
                 $scope.bot = botFactory.getBot();

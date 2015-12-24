@@ -14,7 +14,6 @@ requirejs.config({
 class Main {
     public static node_module: string = '../../node_modules/';
 
-
     private serverImp: ChatServer.ServerImplemented;
     private serverListener: ChatServer.ServerEventListener;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;
