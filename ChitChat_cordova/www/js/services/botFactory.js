@@ -22,5 +22,9 @@
         function getBot() {
             return dummy.getBot();
         }
+
+        function getChats() {
+            return dummy.getChats();
+        }
     }
 })();

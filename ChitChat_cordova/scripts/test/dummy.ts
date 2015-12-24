@@ -1,9 +1,10 @@
-class Dummy {
+class Dummy implements absSpartan.IChatServerListener {
     chatRoom: ChatServer.ChatRoomApiProvider = ChatServer.ChatRoomApiProvider.prototype;
     serverApi: ChatServer.ServerImplemented;
     
     counter: number = 0;
     intervalNumber: number;
+    chatsMsg: Array<String> = new Array<String>;
 
     constructor() {
         this.serverApi = ChatServer.ServerImplemented.getInstance();
@@ -15,8 +16,12 @@ class Dummy {
         { name: "test7@rfl.com", pass: "1234" }];
 
     public getBot() {
+        var main = Main.prototype;
+        var dataListener = main.getDataListener();
+        dataListener.addChatListenerImp(this);
+
         var r = Math.floor((Math.random() * this.bots.length) + 1);
-        return  this.bots[r];
+        return this.bots[r];
     }
 
     public fireChatInRoom(myUid: string) {
@@ -35,6 +40,18 @@ class Dummy {
     public stopChat() {
         clearInterval(this.intervalNumber);
     }
+
+    public getChats() {
+        return this.chatsMsg;
+    }
+
+    public onChat(data) {
+        this.chatsMsg.push(data);
+    }
+    public onLeaveRoom(data) { }
+    public onRoomJoin(data) { }
+    public onMessageRead(dataEvent) { }
+    public onGetMessagesReaders(dataEvent) { }
 }
 
 
