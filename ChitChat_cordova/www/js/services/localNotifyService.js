@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
@@ -24,7 +24,7 @@
         function getData() { }
 
         function registerPermission() {
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 $cordovaLocalNotification.registerPermission(function (granted) {
                     console.warn('Permission has been granted: ' + granted);
                 });
