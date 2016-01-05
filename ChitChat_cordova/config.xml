@@ -143,4 +143,9 @@
   </platform>
   <icon src="resources/ios/icon/icon-small@3x.png" />
   <preference name="Orientation" value="portrait" />
+  <vs:platformSpecificValues xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps">
+    <vs:platformSpecificWidget platformName="windows" id="com.ahoostudio.chitchat" version="1.0.0.0">
+      <vs:name>ChitChat</vs:name>
+    </vs:platformSpecificWidget>
+  </vs:platformSpecificValues>
 </widget>
