@@ -17,19 +17,17 @@ module BlankCordovaApp1 {
 
             // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
             
+            console.warn("onDeviceReady");
         }
 
         function onPause() {
             // TODO: This application has been suspended. Save application state here.
-
-            var serverImp = new ChatServer.ServerImplemented();
-            serverImp.disConnect();
-
-            console.error("disConnect");
+            console.warn('onPause');
         }
 
         function onResume() {
             // TODO: This application has been reactivated. Restore application state here.
+            console.warn('onResume');
         }
 
     }

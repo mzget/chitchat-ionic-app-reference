@@ -1,11 +1,15 @@
-﻿class Dummy {
+class Dummy implements absSpartan.IChatServerListener {
     chatRoom: ChatServer.ChatRoomApiProvider = ChatServer.ChatRoomApiProvider.prototype;
     serverApi: ChatServer.ServerImplemented;
+    main: Main;
     
     counter: number = 0;
+    intervalNumber: number;
+    chatsMsg: Array<any> = new Array<any>();
 
-    constructor() {
+    constructor(main: Main) {
         this.serverApi = ChatServer.ServerImplemented.getInstance();
+        this.main = main;
     }
 
     public bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
@@ -14,22 +18,45 @@
         { name: "test7@rfl.com", pass: "1234" }];
 
     public getBot() {
+        var dataListener = this.main.getDataListener();
+        dataListener.addChatListenerImp(this);
+
         var r = Math.floor((Math.random() * this.bots.length) + 1);
-        return  this.bots[r];
+        return this.bots[r];
+    }
+
+    public getBots() {
+        return this.bots;
     }
 
     public fireChatInRoom(myUid: string) {
         this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", (err, res) => {
             if (!err && res !== null) {
-                setInterval(() => {
+                this.intervalNumber = setInterval(() => {
                     var temp = this.counter++;
                     this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
-                }, 1000);
+                }, 2000);
             }
         });
     }
+
+    public stopChat() {
+        clearInterval(this.intervalNumber);
+    }
+
+    public getChats() {
+        return this.chatsMsg;
+    }
+
+    public onChat(data) {
+        this.chatsMsg.push(data);
+    }
+    public onLeaveRoom(data) { }
+    public onRoomJoin(data) { }
+    public onMessageRead(dataEvent) { }
+    public onGetMessagesReaders(dataEvent) { }
 }
 
 

@@ -14,7 +14,6 @@ requirejs.config({
 class Main {
     public static node_module: string = '../../node_modules/';
 
-
     private serverImp: ChatServer.ServerImplemented;
     private serverListener: ChatServer.ServerEventListener;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;
@@ -69,12 +68,13 @@ class Main {
     }
 
     public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {
-        console.log(email, password)
+        console.log("authenUser:", email, password);
+
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
             callback(err, loginRes);
 
-            if (!err && loginRes !== null && loginRes.code === 200) {    
+            if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {    
                 //<!-- Listen all event in the spartan world.
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);
@@ -84,16 +84,11 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            if (res.code === 200) {
-                                self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                                self.dataManager.setMyProfile(res.data);
-
-                                server.getLastAccessRoomsInfo(function (err, res) {
-                                    console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
-                                });
+                            self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
+                            if (res.code === HttpStatusCode.success) {
                             }
                             else {
-                                console.error("My user profile is empty. please check.");
+                                console.warn("My user profile is empty. please check.");
                             }
                         }
                     });
@@ -103,7 +98,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("companyInfo: ", res);
+                            console.log("companyInfo: ", JSON.stringify(res));
                         }
                     });
 
@@ -147,7 +142,7 @@ class Main {
                 });
             }
             else {
-                console.error(err);
+                console.error(err, JSON.stringify(loginRes));
             }
         });
     }

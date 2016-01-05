@@ -5,32 +5,46 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 'ngCordova'])
+angular.module('starter',
+     ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
+	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'spartan.bot',
+      'spartan.services', 'spartan.notify', 'ngCordova', 'ngStorage'])
+
 
 .run(function($ionicPlatform) {
+
+    var currentPlatform = ionic.Platform.platform();
+    var currentPlatformVersion = ionic.Platform.version();
+    console.log("currentPlatform", currentPlatform, currentPlatformVersion);
+
 	$ionicPlatform.ready(function() {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
-		if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-			cordova.plugins.Keyboard.disableScroll(true);
-
+	    if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
+	        if (currentPlatform !== "win32") {
+	            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+	            cordova.plugins.Keyboard.disableScroll(true);
+	        }
 		}
 		if (window.StatusBar) {
 			// org.apache.cordova.statusbar required
 			StatusBar.styleLightContent();
 		}
+		
+		console.log("$ionicPlatform.ready");
 	});
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
 	// Ionic uses AngularUI Router which uses the concept of states
 	// Learn more here: https://github.com/angular-ui/ui-router
 	// Set up the various states which the app can be in.
 	// Each state's controller can be found in controllers.js
-	$stateProvider
 
+	$ionicConfigProvider.views.swipeBackEnabled(false);
+	
+	$stateProvider
 	// setup an abstract state for the tabs directive
 	.state('tab', {
 		url: '/tab',
@@ -40,18 +54,38 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 
 	// Each tab has its own nav history stack:
 
-
 	// LOGIN
 	.state('tab.login', {
 		url: '/login',
 		views: {
 		    'tab-login': {
 		        templateUrl: 'templates/tab-login.html',
-				controller: 'LoginCtrl'
+		        controller: 'authController'
 			}
 		}
 	})
 
+	// ERROR
+	.state('tab.login-error', {
+		url: '/login/error',
+		views: {
+			'tab-login': {
+				templateUrl: 'templates/tab-login-error.html',
+				controller: 'noConnection'
+			}
+		}
+	})
+
+	// BOT
+	.state('tab.bot', {
+	    url: '/bot',
+	    views: {
+	        'tab-group': {
+	            templateUrl: 'templates/tab-bot.html',
+	            controller: 'botController'
+	        }
+	    }
+	})
 
 	// GROUP
 	.state('tab.group', {
@@ -59,18 +93,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group.html',
-				controller: 'GroupCtrl'
-			}
-		}
-	})
-	
-	// GROUP - Profile
-	.state('tab.group-myprofile', {
-		url: '/group/myprofile',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-myprofile.html',
-				controller: 'GroupMyprofileCtrl'
+				controller: 'homeController'
 			}
 		}
 	})
@@ -85,47 +108,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 			}
 		}
 	})
-	
-	// GROUP - Type
-	.state('tab.group-projectbasegroup', {
-		url: '/group/projectbasegroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupProjectbaseCtrl'
-			}
-		}
-	})
-	
-	.state('tab.group-privategroup', {
-		url: '/group/privategroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupPrivateCtrl'
-			}
-		}
-	})
-	
-	.state('tab.group-orggroup', {
-		url: '/group/orggroup/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-orggroup.html',
-				controller: 'GroupOrggroupsCtrl'
-			}
-		}
-	})
-	
-	.state('tab.group-detail', {
-		url: '/group/detail/:chatId',
-		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-group-detail.html',
-				controller: 'GroupDetailCtrl'
-			}
-		}
-	})
 		
 	// GROUP - Members
 	.state('tab.group-members', {
@@ -133,7 +115,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-members.html',
-				controller: 'GroupMembersCtrl'
+				controller: 'viewGroupMembersCtrl'
+			}
+		}
+	})
+
+	.state('tab.group-members-invite', {
+		url: '/group/members/:chatId/invite',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-account-invite.html',
+				controller: 'editMemberGroup'
+			}
+		}
+	})//
+
+	.state('tab.group-members-edit', {
+		url: '/group/members/:chatId/edit',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-group-members-edit.html',
+				controller: 'editMemberGroup'
 			}
 		}
 	})
@@ -154,22 +156,51 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
-				controller: 'ChatDetailCtrl'
+				controller: 'chatController'
+			}
+		}
+	})
+	
+	.state('tab.chats', {
+		url: '/chats',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/tab-chats.html',
+				controller: 'chatslogController'
+			}
+		}
+	})
+	
+	.state('tab.chats-chat', {
+		url: '/chats/chat/:chatId',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/chat-detail.html',
+				controller: 'chatController'
+			}
+		}
+	})
+
+	.state('tab.chats-chat-viewprofile',{
+		url: '/chats/member/:chatId',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/tab-group-viewprofile.html',
+				controller: 'GroupViewprofileCtrl'
+			}
+		}
+	})
+	.state('tab.chats-chat-members', {
+		url: '/chats/members/:chatId',
+		views: {
+			'tab-chats': {
+				templateUrl: 'templates/tab-group-members.html',
+				controller: 'viewGroupMembersCtrl'
 			}
 		}
 	})
 	
 	/*
-	.state('tab.chat-detail', {
-		url: '/chats/:chatId',
-		views: {
-			'tab-chats': {
-				templateUrl: 'templates/chat-detail.html',
-				controller: 'ChatDetailCtrl'
-			}
-		}
-	})
-
 	// CHAT : Message
 	.state('tab.message', {
 		url: '/message/:chatId',
@@ -197,8 +228,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 		url: '/timeline',
 		views: {
 			'tab-timeline': {
-				templateUrl: 'templates/tab-timeline.html',
-				controller: 'DashCtrl'
+				templateUrl: 'templates/tab-timeline.html'
+//				controller: 'DashCtrl'
 			}
 		}
 	})
@@ -222,17 +253,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services' , 
 			}
 		}
 	})
-	.state('tab.bot', {
-		url: '/bot',
+
+	.state('tab.account-invite', {
+		url: '/account/create/invite',
 		views: {
-			'tab-group': {
-				templateUrl: 'templates/tab-bot.html',
-				controller: 'BotController'
+			'tab-account': {
+				templateUrl: 'templates/tab-account-invite.html',
+				controller: 'AccountInvite'
 			}
 		}
+	})
+	
+	.state('tab.chat.readers', {
+		url: '/group/chat/readers',
+		views: {
+			'tab-group' : {
+				templateUrl : 'templates/reader-view.html',
+				controller: 'chatController'
+			}
+		}	
 	});
 
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/tab/login');
-
 });
