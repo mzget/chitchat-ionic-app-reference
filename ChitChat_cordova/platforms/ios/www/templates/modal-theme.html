@@ -73,28 +73,32 @@
         <link ng-href="css/{{theme}}.css" rel="stylesheet">
         <div class="row">
             <div class="col-33" 
+                style="background-image:url(img/theme/theme_default.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
+                ng-model="data.themedefault" ng-value="'themedefault'" ng-click="save_settings('themedefault')"></div>  
+            <div class="col-33" 
                 style="background-image:url(img/theme/theme_blue.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
                 ng-model="data.themeblue" ng-value="'themeblue'" ng-click="save_settings('themeblue')"></div>          
             <div class="col-33" 
                 style="background-image:url(img/theme/theme_violet.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
                 ng-model="data.themeviole" ng-value="'themeviole'" ng-click="save_settings('themeviole')"></div>            
-            <div class="col-33" 
-                style="background-image:url(img/theme/theme_green.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
-                ng-model="data.themegreen" ng-value="'themegreen'" ng-click="save_settings('themegreen')"></div>               
-           
         </div>
         <div class="row" style="margin-top:30px;">
+            <div class="col-33" 
+                style="background-image:url(img/theme/theme_green.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
+                ng-model="data.themegreen" ng-value="'themegreen'" ng-click="save_settings('themegreen')"></div>    
             <div class="col-33" 
                 style="background-image:url(img/theme/theme_red.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
                 ng-model="data.themered" ng-value="'themered'" ng-click="save_settings('themered')"></div>          
             <div class="col-33" 
                 style="background-image:url(img/theme/theme_brown.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
-                ng-model="data.themebrown" ng-value="'themebrown'" ng-click="save_settings('themebrown')"></div>            
+                ng-model="data.themebrown" ng-value="'themebrown'" ng-click="save_settings('themebrown')"></div>             
+        </div>     
+
+        <div class="row" style="margin-top:30px;">
             <div class="col-33" 
                 style="background-image:url(img/theme/theme_yellow.png); background-position: center center;  background-repeat: no-repeat no-repeat; background-size:contain; height:170px;" 
-                ng-model="data.themeyellow" ng-value="'themeyellow'" ng-click="save_settings('themeyellow')"></div>               
-           
-        </div>       
+                ng-model="data.themeyellow" ng-value="'themeyellow'" ng-click="save_settings('themeyellow')"></div>                         
+        </div>     
         
             <!-- <div class="stickertab stickertab-0" style="display:inline-block;" action="." ng-submit="noSubmit($event)">
                 <div style="background-image:url(img/theme/theme_blue.png); margin-bottom:20px;" ng-model="data.themeblue" ng-value="'themeblue'" ng-click="save_settings('themeblue')"></div>          

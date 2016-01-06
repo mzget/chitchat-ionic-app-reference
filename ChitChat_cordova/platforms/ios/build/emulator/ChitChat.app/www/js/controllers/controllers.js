@@ -152,6 +152,7 @@ angular.module('spartan.controllers', [])
   
  
     $scope.data = {
+        'themedefault': 'css/themedefault.css',
         'themeblue': 'css/themeblue.css',
         'themebrown': 'css/themebrown.css',
         'themegreen': 'css/themegreen.css',
