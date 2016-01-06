@@ -491,7 +491,52 @@ angular.module('spartan.services', [])
   }
 })
 
-.factory('Chats', function($sce,$cordovaFile,roomSelected) {
+.factory('ConvertDateTime', function() {
+
+  var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+  function getTime(date){
+    var dateMsg = new Date(date);
+    var minutes = (dateMsg.getMinutes() < 10? '0' : '') + dateMsg.getMinutes();
+    console.log(dateMsg,dateMsg.getHours() + ":"  + minutes);
+    return dateMsg.getHours() + ":"  + minutes;
+  }
+
+  function getTimeChatlog(date){
+    var dateMsg = new Date(date);
+    var dateNow = new Date();
+
+    if( dateMsg.getFullYear() == dateNow.getFullYear() &&
+     dateMsg.getMonth() == dateNow.getMonth() &&
+     dateMsg.getDate() == dateNow.getDate() )
+    {
+      return getTime(date);
+    }
+    else if( dateMsg.getFullYear() == dateNow.getFullYear() &&
+     dateMsg.getMonth() == dateNow.getMonth() &&
+     dateMsg.getDate() == dateNow.getDate()-1 )
+    {
+      return "Yesterday";
+    }
+    else if( dateMsg.getFullYear() == dateNow.getFullYear() &&
+     dateMsg.getMonth() == dateNow.getMonth() &&
+     dateMsg.getDate()-7 <= dateNow.getDate() )
+    {
+      return days[dateMsg.getDay()];
+    }
+    else
+    {
+      return dateMsg.getMonth()+'/'+dateMsg.getDate();
+    }
+  }
+
+  return{
+    getTime: getTime,
+    getTimeChatlog: getTimeChatlog
+  }
+})
+
+.factory('Chats', function($sce,$cordovaFile,roomSelected,ConvertDateTime) {
     // Might use a resource here that returns a JSON array
 
 	// Some fake testing data
@@ -530,6 +575,7 @@ angular.module('spartan.services', [])
 
 			for (var i = 0; i < chats.length; i++) {
         if(!chats[i].hasOwnProperty('_id')) { continue; }
+        chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
         var dateTime  = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
         if(date.indexOf(dateTime) == -1){ 
           date.push( chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')) );

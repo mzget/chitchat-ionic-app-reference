@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
@@ -13,6 +13,7 @@
         var registrationId = "";
      
         $ionicPlatform.ready(function () {
+            console.log(vm.title + " : ionic ready.");
             activateBackground();
             activate();
             setConfigTheme();
@@ -25,10 +26,10 @@
                 $('#splash').css({ 'display': 'none' });
 
                 // Hide spinner dialog
-                if (cordova.platformId === "ios") {
+                if (ionic.Platform.platform() === "ios") {
                     $cordovaSpinnerDialog.hide();
                 }
-                else if (cordova.platformId === "windows") {
+                else if (ionic.Platform.platform() === "windows") {
                     $ionicLoading.hide();
                 }
                     
@@ -52,7 +53,7 @@
 
             console.log("init push notification.");
 
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 var push = PushNotification.init({
                     "ios": { "alert": "true", "badge": "true", "sound": "true" }
                 });
@@ -78,7 +79,7 @@
         }
         
         function activateBackground() {
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 // Prevent the app from going to sleep in background
                 cordova.plugins.backgroundMode.enable();
                 // Get informed when the background mode has been activated
@@ -203,10 +204,10 @@
                     }
                     else {
                         // Show spinner dialog
-                        if (cordova.platformId === "ios") {
+                        if (ionic.Platform.platform() === "ios") {
                             $cordovaSpinnerDialog.show(null, "loging in...", true);
                         }
-                        else if (cordova.platformId === "windows") {
+                        else if (ionic.Platform.platform() === "windows") {
                             $ionicLoading.show({
                                 template: "loging in..."
                             });
