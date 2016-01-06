@@ -285,7 +285,7 @@
         function setConfigTheme(){
             if(typeof($scope.setConfigModal) != 'undefined'){
                 if(!$localStorage.themeData){
-                    $localStorage.themeData = 'themeblue';
+                    $localStorage.themeData = 'themedefault';
                 }
                 $rootScope.theme = $localStorage.themeData;
                 $scope.setConfigModal.show();
