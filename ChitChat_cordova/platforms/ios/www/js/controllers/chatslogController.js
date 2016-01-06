@@ -7,7 +7,7 @@
 
     // chatslogController.$inject = ['$location', '$scope', '$timeout', 'roomSelected'];
             
-    function chatslogController($location, $scope, $rootScope, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService) {
+    function chatslogController($location, $scope, $rootScope, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService, ConvertDateTime) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
@@ -27,7 +27,6 @@
         function getRoomInfo() {
             myRoomAccess = [];
             roomAccess = dataManager.myProfile.roomAccess;
-            
             console.log("dataManager.myProfile.roomAccess.length", roomAccess.length);
             
             var data = {};
@@ -52,6 +51,7 @@
                     else {
                         data.data.lastTime = item.accessTime;
                     }
+                    data.data.time = ConvertDateTime.getTimeChatlog(data.data.lastTime);
 
                     myRoomAccess.push(data['data']);
                     resultCB(null, null);
@@ -73,6 +73,7 @@
                                 else {
                                     data.data.lastTime = item.accessTime;
                                 }
+                                data.data.time = ConvertDateTime.getTimeChatlog(data.data.lastTime);
 
                                 if (data.data.type == RoomType.privateChat) {
                                     try {
@@ -102,7 +103,6 @@
                         resultCB(null, null);
                     }
                 }
-
             }, function done(err, results) {
                 console.log("getRoomInfo Completed", myRoomAccess.length);
             });
