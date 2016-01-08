@@ -52,6 +52,9 @@
                 var appBackground = cordova.plugins.backgroundMode.isActive();
                 notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
             }
+            else {
+                notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
+            }
         };
     }
 })();
