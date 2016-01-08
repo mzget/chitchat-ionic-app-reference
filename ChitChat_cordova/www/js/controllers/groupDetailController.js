@@ -257,8 +257,10 @@
         }
         function saveSuccess() {
             $ionicLoading.hide();
-            $cordovaProgress.showSuccess(false, "Success!");
-            setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+            if (ionic.Platform.platform() === "ios") {
+                $cordovaProgress.showSuccess(false, "Success!");
+                setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+            }
         }
 
         $rootScope.$ionicGoBack = function () {
