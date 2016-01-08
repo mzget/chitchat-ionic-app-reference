@@ -1,9 +1,8 @@
 /// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
-.controller('chatController', function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopover, $ionicLoading, $ionicModal,
-	$sce, $cordovaGeolocation, $cordovaDialogs,
-	Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
+.controller('chatController', function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
+	$sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
@@ -62,8 +61,41 @@ angular.module('spartan.chat', [])
 		}
 		self.chatRoomComponent.notifyEvent = function (event, data) {
 			if (event === ChatServer.ServerEventListener.ON_CHAT) {
-				var appBackground = cordova.plugins.backgroundMode.isActive();
-				sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                if(ionic.Platform.platform() === "ios") {
+				    var appBackground = cordova.plugins.backgroundMode.isActive();
+				    sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                }
+                else {
+                    //    var myPopup = $ionicPopup.show({
+                    //    title: 'Enter Wi-Fi Password',
+                    //    subTitle: 'Please use normal things',
+                    //    scope: $scope,
+                    //    buttons: [
+                    //    { text: 'Cancel' },
+                    //    {
+                    //        text: '<b>Save</b>',
+                    //        type: 'button-positive',
+                    //        onTap: function(e) {
+                    //        if (!$scope.data.wifi) {
+                    //            //don't allow the user to close unless he enters wifi password
+                    //            e.preventDefault();
+                    //        } else {
+                    //            return $scope.data.wifi;
+                    //        }
+                    //        }
+                    //    }
+                    //    ]
+                    //});
+
+                    //myPopup.then(function(res) {
+                    //    console.log('Tapped!', res);
+                    //});
+
+                    //$timeout(function() {
+                    //    myPopup.close(); //close the popup after 3 seconds for some reason
+                    //}, 3000);
+                    //};
+                }
 			}
 		};
 		self.chatRoomComponent.getMessage(self.currentRoom._id, Chats, function (joinRoomRes) {
