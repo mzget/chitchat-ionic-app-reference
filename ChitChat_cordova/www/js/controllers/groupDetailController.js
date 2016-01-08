@@ -60,10 +60,13 @@
                     console.log(JSON.stringify(res));
                     requestReload = true;
                     $ionicLoading.hide();
-                    $cordovaProgress.showSuccess(false, "Success!");
-                    setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+                    if(ionic.Platform.platform() == "ios") {
+                        $cordovaProgress.showSuccess(false, "Success!");
+                        setTimeout(function () {
+                             $cordovaProgress.hide();
+                        }, 1500); 
+                    }
                     $ionicHistory.goBack(-1);
-
                 }
                 else {
                     console.warn(err, res);
