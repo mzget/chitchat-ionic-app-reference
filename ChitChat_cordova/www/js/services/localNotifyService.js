@@ -5,9 +5,7 @@
         .module('spartan.notify', [])
         .factory('localNotifyService', localNotifyService);
 
-    // localNotifyService.$inject = ['$http', '$cordovaLocalNotification'];
-
-    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, blockNotifications) {
+    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, $ionicPopup, $timeout, blockNotifications) {
         var service = {
             getData: getData,
             scheduleSingleNotification: scheduleSingleNotification,
@@ -44,15 +42,31 @@
         }
         
         function makeToastOnCenter(contactId,message) {
-            if(!blockNotifications.isBlockNoti(contactId)) {
-                $cordovaToast.showLongCenter(message).then(function(success) {
-                    // success
-                    console.log('makeToastOnCenter success', success);
-                    navigator.notification.beep(1);
-                }, function (error) {
-                    // error
-                    console.error('error', error);
-                });
+            if (!blockNotifications.isBlockNoti(contactId)) {
+                if (ionic.Platform.platform() === "ios") {
+                    $cordovaToast.showLongCenter(message).then(function (success) {
+                        // success
+                        console.log('makeToastOnCenter success', success);
+                        navigator.notification.beep(1);
+                    }, function (error) {
+                        // error
+                        console.error('error', error);
+                    });
+                }
+                else {
+                    var myPopup = $ionicPopup.show({
+                        title: 'New message!',
+                        subTitle: message
+                    });
+
+                    myPopup.then(function(res) {
+                        console.log('Tapped!', res);
+                    });
+
+                    $timeout(function() {
+                        myPopup.close(); //close the popup after 2 seconds for some reason
+                    }, 2000);
+                }
             }
         }
 
