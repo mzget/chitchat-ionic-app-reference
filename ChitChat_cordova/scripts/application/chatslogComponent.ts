@@ -86,7 +86,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         
         public getUnreadMessage(roomAccess: RoomAccessData, callback:(err, res) => void) {
             this.server.getUnreadMsgOfRoom(roomAccess.roomId, roomAccess.accessTime.toString(), function res(err, res) {
-                console.warn("getUnreadMsgOfRoom: ", err, JSON.stringify(res));
+                console.warn("getUnreadMsgOfRoom: ", JSON.stringify(res));
                 if (err || res === null) {
                     callback(err, null);
                 }
