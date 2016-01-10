@@ -30,7 +30,7 @@
         }
         
         function makeToast(message) {
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 $cordovaToast.showLongCenter(message).then(function (success) {
                     // success
                     console.log('makeToastOnCenter success', success);
@@ -38,6 +38,18 @@
                     // error
                     console.error('error', error);
                 });
+            }
+            else {
+                var myPopup = $ionicPopup.show({
+                    title: message
+                });
+
+                myPopup.then(function (res) {
+                });
+
+                $timeout(function () {
+                    myPopup.close(); //close the popup after 2 seconds for some reason
+                }, 2000);
             }
         }
         
