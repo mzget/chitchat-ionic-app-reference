@@ -14,114 +14,80 @@
 
         var dataManager = main.getDataManager();
         var listenerImp;
-        var roomAccess = [];
         var myRoomAccess = [];
+        var chatslog = {};
         $scope.myProfile = dataManager.myProfile;
         $scope.orgMembers = dataManager.orgMembers;
         $scope.roomAccess = [];
 
         function activate() { 
             console.warn(vm.title, "activate");
+            
+            myRoomAccess = [];
+            chatslog = {};
+            getRoomInfo();
         }
         
         function getRoomInfo() {
-            myRoomAccess = [];
-            roomAccess = dataManager.myProfile.roomAccess;
-            console.log("dataManager.myProfile.roomAccess.length", roomAccess.length);
+            console.log("my roomAccess.length", dataManager.getRoomAccess().length);
             
-            var data = {};
             var unreadMessageMap = chatslogService.getUnreadMessageMap();
-        
-            async.map(roomAccess, function iterator(item, resultCB) {
-                var room = dataManager.getGroup(item.roomId);
-                if(!!room) {
-                    data.data = room;
-
-                    if (!!unreadMessageMap && !!unreadMessageMap[item.roomId]) {
-                        data.data.body = unreadMessageMap[item.roomId];
-                    
-                        if (!!unreadMessageMap[item.roomId].message) {
-                            data.data.lastTime = unreadMessageMap[item.roomId].message.createTime ?
-                                unreadMessageMap[item.roomId].message.createTime : item.accessTime;
-                        }
-                        else {
-                            data.data.lastTime = item.accessTime;
-                        }
-                    }
-                    else {
-                        data.data.lastTime = item.accessTime;
-                    }
-                    data.data.time = ConvertDateTime.getTimeChatlog(data.data.lastTime);
-
-                    myRoomAccess.push(data['data']);
-                    resultCB(null, null);
+            async.mapSeries(unreadMessageMap, function iterator(item, resultCB) {
+                var roomInfo = dataManager.getGroup(item.rid);
+                if (!!roomInfo) {
+                    chatslogService.organizeChatLogMap(item, roomInfo, function done(log) {
+                        addChatLog(log);
+                        resultCB(null, {});
+                    });
                 }
                 else {
-                    // console.warn("room: ", value.roomId + "is a private chat type..");
-                    if (!!unreadMessageMap[item.roomId]) {
-                        server.getRoomInfo(item.roomId, function (err, res) {
-                            if (res['code'] == 200) {
-                                data.data = res.data;
-                                if (!!unreadMessageMap && !!unreadMessageMap[item.roomId]) {
-                                    data.data.body = unreadMessageMap[item.roomId];
-                                }
+                    console.warn("Can't find roomInfo from persisted data: ", item.rid);
 
-                                if (!!unreadMessageMap && !!unreadMessageMap[item.roomId].message) {
-                                    data.data.lastTime = unreadMessageMap[item.roomId].message.createTime ?
-                                        unreadMessageMap[item.roomId].message.createTime : item.accessTime;
+                    server.getRoomInfo(item.rid, function (err, res) {
+                        if (res['code'] === HttpStatusCode.success) {
+                            var roomInfo = JSON.parse(JSON.stringify(res.data));
+                            if (roomInfo.type === RoomType.privateChat) {
+                                var targetMemberId = "";
+                                roomInfo.members.some(function itorator(item) {
+                                    if (item.id !== dataManager.myProfile._id) {
+                                        targetMemberId = item.id;
+                                        return item.id;
+                                    }
+                                });
+
+                                var contactProfile = dataManager.getContactProfile(targetMemberId);
+                                if (contactProfile == null) {
+                                    roomInfo.name = "EMPTY ROOM";
                                 }
                                 else {
-                                    data.data.lastTime = item.accessTime;
+                                    roomInfo.name = contactProfile.displayname;
                                 }
-                                data.data.time = ConvertDateTime.getTimeChatlog(data.data.lastTime);
-
-                                if (data.data.type == RoomType.privateChat) {
-                                    try {
-                                        if (data.data.members[0].id == main.getDataManager().myProfile._id) {
-                                            data.data.name = main.getDataManager().orgMembers[data.data.members[1].id].displayname;
-                                            data.data.image = main.getDataManager().orgMembers[data.data.members[1].id].image;
-                                        } else {
-                                            data.data.name = main.getDataManager().orgMembers[data.data.members[0].id].displayname;
-                                            data.data.image = main.getDataManager().orgMembers[data.data.members[0].id].image;
-                                        }
-                                    } catch (err) {
-                                        console.error(err);
-                                    }
-                                }
-
-                                myRoomAccess.push(data['data']);
-                                resultCB(null, null);
                             }
                             else {
-                                console.warn("Fail to get room info of room %s", item.roomId, res.message);
-                                resultCB(null, null);
+                                console.warn("OMG: the god only know. May be group status is not active.");
                             }
-                        });
-                    }
-                    else {
-                        console.warn("Fail to get unreadMessageMap of room %s", item.roomId);
-                        resultCB(null, null);
-                    }
+
+                            dataManager.addGroup(roomInfo);
+
+                            chatslogService.organizeChatLogMap(item, roomInfo, function done(log) {
+                                addChatLog(log);
+                                resultCB(null, {});
+                            });
+                        }
+                        else {
+                            console.warn("Fail to get room info of room %s", item.rid, res.message);
+                            resultCB(null, {});
+                        }
+                    });
                 }
             }, function done(err, results) {
-                console.log("getRoomInfo Completed", myRoomAccess.length);
+                console.debug("getRoomInfo Completed.");
             });
         }
 
         function updateUnreadMessageCount() {
             var lastMessageMap = chatslogService.getUnreadMessageMap();
-            // myRoomAccess = [];
-            //  for (var key in lastMessageMap) {
-            //     if (lastMessageMap.hasOwnProperty(key)) {
-            //         var unread = lastMessageMap[key];
-            //         var content = {};
-            //         content.body = unread;
-            //         if(!!unread && !!unread.message) {
-            //             content.lastTime = unread.message.createTime;
-            //             myRoomAccess.push(content);
-            //         }
-            //     }
-            // }
+  
             for (var i = 0; i < myRoomAccess.length; i++) {
                 var rid = myRoomAccess[i]._id;
                 myRoomAccess[i].body = lastMessageMap[rid];
@@ -131,15 +97,44 @@
             }
         }
         
-        var refresh = function () 
-        {
-            updateUnreadMessageCount();
+        function addChatLog(chatLog) {
+            //if (!!unreadMessageMap && !!unreadMessageMap[item.roomId]) {
+            //    log.body = unreadMessageMap[item.roomId];
 
-            $scope.roomAccess = myRoomAccess;
+            //    if (!!unreadMessageMap[item.roomId].message) {
+            //        log.lastTime = unreadMessageMap[item.roomId].message.createTime ?
+            //            unreadMessageMap[item.roomId].message.createTime : item.accessTime;
+            //    }
+            //    else {
+            //        log.lastTime = item.accessTime;
+            //    }
+            //}
+            //else {
+            //    log.lastTime = item.accessTime;
+            //}
+
+            chatLog.time = ConvertDateTime.getTimeChatlog(chatLog.lastMessageTime);
+            chatslog[chatLog.id] = chatLog;
             
-            $timeout(refresh, 1000);
-        } 
-        $timeout(refresh, 1000);
+            myRoomAccess = [];
+            async.mapSeries(chatslog, function itorator(item, cb) {
+                myRoomAccess.push(item);
+                cb(null, item);
+            }, function done(err, results) {
+                // done.
+                $scope.roomAccess = myRoomAccess;
+            });
+        }
+
+        //var refresh = function () 
+        //{
+        //   updateUnreadMessageCount();
+
+        //    $scope.roomAccess = myRoomAccess;
+            
+        //    $timeout(refresh, 1000);
+        //} 
+        //$timeout(refresh, 1000);
         
         $scope.gotoChat = function (accessId, chatlog) 
         {		
@@ -188,14 +183,23 @@
 
         $scope.$on('$ionicView.enter', function() { 
             console.log("$ionicView.enter: ", vm.title);
-            
-            activate();
+        });
 
-            getRoomInfo();
+        $scope.$on('$ionicView.loaded', function () {
+            console.log("$ionicView.loaded: ", vm.title);
+
+            activate();
         });
         
         $scope.$on('getunreadmessagecomplete', function(event, data){
             getRoomInfo();
+        });
+
+        $scope.$on('onUnreadMessageMapChanged', function (event, data) {
+            var roomInfo = dataManager.getGroup(data.data.rid);
+            chatslogService.organizeChatLogMap(data.data, roomInfo, function done(log) {
+                addChatLog(log);
+            });
         });
     }
 })();
