@@ -12,3 +12,4 @@ ChitChat_cordova/platforms/platforms.json
 ChitChat_cordova/plugins/
 .DS_Store
 *.map
+.vscode/tasks.json

@@ -48,7 +48,14 @@
             var key = CryptoJS.enc.Utf8.parse(self.key);
             var iv = CryptoJS.enc.Utf8.parse(self.passiv);
             var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv });
-            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            var plaintext;
+            try {
+                plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            }
+            catch (e) {
+                console.error(e);
+            }
+
             if (!!plaintext)
                 callback(null, plaintext);
             else
