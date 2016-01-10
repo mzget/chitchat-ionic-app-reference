@@ -139,7 +139,7 @@ class Main {
                 });
             }
             else {
-                console.error(err, JSON.stringify(loginRes));
+                console.warn(err, JSON.stringify(loginRes));
             }
         });
     }

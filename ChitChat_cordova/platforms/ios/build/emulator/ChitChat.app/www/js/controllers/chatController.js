@@ -1,9 +1,8 @@
 /// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
-.controller('chatController', function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopover, $ionicLoading, $ionicModal,
-	$sce, $cordovaGeolocation, $cordovaDialogs,
-	Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
+.controller('chatController', function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
+	$sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
@@ -62,12 +61,16 @@ angular.module('spartan.chat', [])
 		}
 		self.chatRoomComponent.notifyEvent = function (event, data) {
 			if (event === ChatServer.ServerEventListener.ON_CHAT) {
-				var appBackground = cordova.plugins.backgroundMode.isActive();
-				sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                if(ionic.Platform.platform() === "ios") {
+				    var appBackground = cordova.plugins.backgroundMode.isActive();
+				    sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                }
+                else {
+                    sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                }
 			}
 		};
 		self.chatRoomComponent.getMessage(self.currentRoom._id, Chats, function (joinRoomRes) {
-
 		    console.log("getMessageHistory: completed", joinRoomRes.code);
 		    $scope.chat = Chats.all();
 			Chats.set(self.chatRoomComponent.chatMessages);
