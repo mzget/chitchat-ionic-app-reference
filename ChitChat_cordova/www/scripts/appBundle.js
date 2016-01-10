@@ -416,7 +416,7 @@ var ChatsLogComponent = (function () {
     };
     ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         this.server.getUnreadMsgOfRoom(roomAccess.roomId, roomAccess.accessTime.toString(), function res(err, res) {
-            console.warn("getUnreadMsgOfRoom: ", err, JSON.stringify(res));
+            console.warn("getUnreadMsgOfRoom: ", JSON.stringify(res));
             if (err || res === null) {
                 callback(err, null);
             }

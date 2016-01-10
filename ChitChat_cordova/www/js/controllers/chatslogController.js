@@ -84,18 +84,6 @@
                 console.debug("getRoomInfo Completed.");
             });
         }
-
-        function updateUnreadMessageCount() {
-            var lastMessageMap = chatslogService.getUnreadMessageMap();
-  
-            for (var i = 0; i < myRoomAccess.length; i++) {
-                var rid = myRoomAccess[i]._id;
-                myRoomAccess[i].body = lastMessageMap[rid];
-                if(!!lastMessageMap[rid] && !!lastMessageMap[rid].message) {
-                    myRoomAccess[i].lastTime = lastMessageMap[rid].message.createTime; 
-                }
-            }
-        }
         
         function addChatLog(chatLog) {
             //if (!!unreadMessageMap && !!unreadMessageMap[item.roomId]) {
@@ -125,60 +113,12 @@
                 $scope.roomAccess = myRoomAccess;
             });
         }
-
-        //var refresh = function () 
-        //{
-        //   updateUnreadMessageCount();
-
-        //    $scope.roomAccess = myRoomAccess;
-            
-        //    $timeout(refresh, 1000);
-        //} 
-        //$timeout(refresh, 1000);
         
-        $scope.gotoChat = function (accessId, chatlog) 
-        {		
-            var accessLength = myRoomAccess.length; 
-            
-            for(var i=0; i< accessLength; i++)
-            {
-                if( myRoomAccess[i]['_id'] == accessId )
-                {
-                    switch( myRoomAccess[i]['type'] )
-                    {
-                        case 0:
-                            var group = main.getDataManager().orgGroups[accessId];
-                            roomSelected.setRoom(group);
-                            location.href = '#/tab/chats/chat/' + accessId;
-                            break;
-                        case 1:
-                            var group = main.getDataManager().projectBaseGroups[accessId];
-                            roomSelected.setRoom(group);
-                            location.href = '#/tab/chats/chat/' + accessId;
-                            break;
-                        case 2:
-                            var group = main.getDataManager().privateGroups[accessId];
-                            roomSelected.setRoom(group);
-                            location.href = '#/tab/chats/chat/' + accessId;
-                            break;
-                        case 3:
-                            var contactId;
-                            if( myRoomAccess[i]['members'][0]['id'] != dataManager.myProfile._id )
-                                contactId = myRoomAccess[i]['members'][0]['id']
-                            else
-                                contactId = myRoomAccess[i]['members'][1]['id']
-                        
-                            server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
-                                console.log(JSON.stringify(res));
-                                var room = JSON.parse(JSON.stringify(res.data));
-                                roomSelected.setRoom(room);
-                                location.href = '#/tab/chats/chat/' + room._id;
-                            });
-                            break;
-                    }
-                    i = accessLength;
-                }
-            }	
+        $scope.gotoChat = function (roomId, chatlog) 
+        {	
+            var group = dataManager.getGroup(roomId);
+            roomSelected.setRoom(group);
+            location.href = '#/tab/chats/chat/' + roomId;
         };
 
         $scope.$on('$ionicView.enter', function() { 
