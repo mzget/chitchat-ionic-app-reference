@@ -20,6 +20,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
     public orgGroups: IRoomMap = {};
     public projectBaseGroups: IRoomMap = {};
     public privateGroups: IRoomMap = {};
+    public privateChats: IRoomMap = {};
     public orgMembers: IMemberMep = {};
     public isOrgMembersReady: boolean = false;
     public companyInfo: CompanyInfo;
@@ -58,6 +59,9 @@ class DataManager implements absSpartan.IFrontendServerListener {
             }
         });
     }
+    public getRoomAccess(): RoomAccessData[] {
+        return this.myProfile.roomAccess;
+    }
 
     public setMembers(data: any) {
 
@@ -91,6 +95,9 @@ class DataManager implements absSpartan.IFrontendServerListener {
         else if(!!this.privateGroups[id]) {
             return this.privateGroups[id];
         }
+        else if (!!this.privateChats && !!this.privateChats[id]) {
+            return this.privateChats[id];
+        }
     }
     public addGroup(data: Room) {
         switch (data.type) {
@@ -107,6 +114,14 @@ class DataManager implements absSpartan.IFrontendServerListener {
             case RoomType.privateGroup:
                 if (!this.privateGroups[data._id]) {
                     this.privateGroups[data._id] = data;
+                }
+                break;
+            case RoomType.privateChat:
+                if (!this.privateChats) {
+                    this.privateChats = {};
+                }
+                if (!this.privateChats[data._id]) {
+                    this.privateChats[data._id] = data;
                 }
                 break;
             default:

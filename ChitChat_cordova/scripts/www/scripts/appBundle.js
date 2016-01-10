@@ -148,6 +148,24 @@ var Main = (function () {
     };
     return Main;
 })();
+var ChatLog = (function () {
+    function ChatLog(room) {
+        this.id = room._id;
+        this.roomName = room.name;
+        this.roomType = room.type;
+        this.room = room;
+    }
+    ChatLog.prototype.setNotiCount = function (count) {
+        this.count = count;
+    };
+    ChatLog.prototype.setLastMessage = function (lastMessage) {
+        this.lastMessage = lastMessage;
+    };
+    ChatLog.prototype.setLastMessageTime = function (lastMessageTime) {
+        this.lastMessageTime = lastMessageTime;
+    };
+    return ChatLog;
+})();
 var ChatRoomComponent = (function () {
     function ChatRoomComponent(main, room_id) {
         this.chatMessages = [];
@@ -231,36 +249,24 @@ var ChatRoomComponent = (function () {
                     }
                     else {
                         console.log("Decode local chat history for displaying:", arr_fromLog.length);
-                        var count = 0;
-                        async.mapSeries(arr_fromLog, function (log, iteratorCb) {
-                            async.setImmediate(function () {
-                                var messageImp = log;
-                                if (messageImp.type === ContentType[ContentType.Text]) {
-                                    console.log("item:", count++, log.type);
-                                    self.main.decodeService(messageImp.body, function (err, res) {
-                                        if (!err) {
-                                            messageImp.body = res;
-                                            self.chatMessages.push(messageImp);
-                                            iteratorCb(null, messageImp);
-                                        }
-                                        else {
-                                            self.chatMessages.push(messageImp);
-                                            iteratorCb(null, messageImp);
-                                        }
-                                    });
-                                }
-                                else {
-                                    console.log("item:", count++, log.type);
-                                    self.chatMessages.push(log);
-                                    iteratorCb(null, messageImp);
-                                }
-                            });
-                        }, function done(err, results) {
-                            if (!err) {
-                                console.log("Decode local chat history complete...");
+                        arr_fromLog.map(function (log, i, a) {
+                            var messageImp = log;
+                            if (messageImp.type === ContentType[ContentType.Text]) {
+                                self.main.decodeService(messageImp.body, function (err, res) {
+                                    if (!err) {
+                                        messageImp.body = res;
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                    else {
+                                        self.chatMessages.push(messageImp);
+                                    }
+                                });
                             }
-                            resolve();
+                            else {
+                                self.chatMessages.push(log);
+                            }
                         });
+                        resolve();
                     }
                 }
             }
@@ -591,6 +597,7 @@ var DataManager = (function () {
         this.orgGroups = {};
         this.projectBaseGroups = {};
         this.privateGroups = {};
+        this.privateChats = {};
         this.orgMembers = {};
         this.isOrgMembersReady = false;
     }
@@ -622,6 +629,9 @@ var DataManager = (function () {
             }
         });
     };
+    DataManager.prototype.getRoomAccess = function () {
+        return this.myProfile.roomAccess;
+    };
     DataManager.prototype.setMembers = function (data) {
     };
     DataManager.prototype.setCompanyInfo = function (data) {
@@ -646,6 +656,9 @@ var DataManager = (function () {
         else if (!!this.privateGroups[id]) {
             return this.privateGroups[id];
         }
+        else if (!!this.privateChats && !!this.privateChats[id]) {
+            return this.privateChats[id];
+        }
     };
     DataManager.prototype.addGroup = function (data) {
         switch (data.type) {
@@ -662,6 +675,14 @@ var DataManager = (function () {
             case RoomType.privateGroup:
                 if (!this.privateGroups[data._id]) {
                     this.privateGroups[data._id] = data;
+                }
+                break;
+            case RoomType.privateChat:
+                if (!this.privateChats) {
+                    this.privateChats = {};
+                }
+                if (!this.privateChats[data._id]) {
+                    this.privateChats[data._id] = data;
                 }
                 break;
             default:
@@ -1808,6 +1829,9 @@ var Room = (function () {
         enumerable: true,
         configurable: true
     });
+    Room.prototype.setName = function (name) {
+        this.name = name;
+    };
     return Room;
 })();
 var RoomAccessData = (function () {
@@ -1903,7 +1927,13 @@ var SecureService = (function () {
             var key = CryptoJS.enc.Utf8.parse(self.key);
             var iv = CryptoJS.enc.Utf8.parse(self.passiv);
             var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv });
-            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            var plaintext;
+            try {
+                plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            }
+            catch (e) {
+                console.error(e);
+            }
             if (!!plaintext)
                 callback(null, plaintext);
             else
