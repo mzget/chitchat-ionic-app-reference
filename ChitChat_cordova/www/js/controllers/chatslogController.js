@@ -131,6 +131,10 @@
             activate();
         });
         
+		$scope.$on('$ionicView.unloaded', function () {
+			console.log("$ionicView.unloaded:", vm.title);
+		});
+        
         $scope.$on('getunreadmessagecomplete', function(event, data){
             getRoomInfo();
         });
