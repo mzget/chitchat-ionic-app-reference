@@ -71,7 +71,6 @@ angular.module('spartan.chat', [])
 			}
 		};
 		self.chatRoomComponent.getMessage(self.currentRoom._id, Chats, function (joinRoomRes) {
-
 		    console.log("getMessageHistory: completed", joinRoomRes.code);
 		    $scope.chat = Chats.all();
 			Chats.set(self.chatRoomComponent.chatMessages);
