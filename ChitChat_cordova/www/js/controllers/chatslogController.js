@@ -13,18 +13,16 @@
         vm.title = 'chatslogController';
 
         var dataManager = main.getDataManager();
-        var listenerImp;
         var myRoomAccess = [];
         var chatslog = {};
-        $scope.myProfile = dataManager.myProfile;
-        $scope.orgMembers = dataManager.orgMembers;
-        $scope.roomAccess = [];
 
         function activate() { 
             console.warn(vm.title, "activate");
             
+            $scope.roomAccess = [];
             myRoomAccess = [];
             chatslog = {};
+            
             getRoomInfo();
         }
         
@@ -123,12 +121,12 @@
 
         $scope.$on('$ionicView.enter', function() { 
             console.log("$ionicView.enter: ", vm.title);
+
+            activate();
         });
 
         $scope.$on('$ionicView.loaded', function () {
             console.log("$ionicView.loaded: ", vm.title);
-
-            activate();
         });
         
 		$scope.$on('$ionicView.unloaded', function () {
