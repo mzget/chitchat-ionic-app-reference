@@ -8,7 +8,7 @@
 angular.module('starter',
      ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
 	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify', 'ngCordova', 'ngStorage'])
+      'spartan.services', 'spartan.notify', 'ngCordova', 'ngStorage', 'angular-toArrayFilter'])
 
 
 .run(function($ionicPlatform) {

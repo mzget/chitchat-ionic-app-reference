@@ -8,10 +8,8 @@
         </div>
         <ion-list>
             <ion-item class="item-remove-animate item-avatar item-icon-right"
-                      ng-repeat="(key, access) in roomAccess | orderBy:'time':true | toArray:false | filter:search" type="item-text-wrap"
+                      ng-repeat="access in roomAccess track by access.id | orderBy:'time':true| filter:search" type="item-text-wrap"
                       ng-click="gotoChat(access.id, access.count)">
-                      {{key}} {{access}}
-                      
                 <img ng-if="access.room.image != null" ng-src="http://203.113.25.44/timthumb.php?src={{access.room.image}}&h=40&w=40" />
                 <img ng-if="access.room.image == null" src="img/img.jpg" height="40" width="40" />
 
