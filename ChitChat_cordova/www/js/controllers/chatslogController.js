@@ -121,12 +121,12 @@
 
         $scope.$on('$ionicView.enter', function() { 
             console.log("$ionicView.enter: ", vm.title);
-
-            activate();
         });
 
         $scope.$on('$ionicView.loaded', function () {
             console.log("$ionicView.loaded: ", vm.title);
+
+            activate();
         });
         
 		$scope.$on('$ionicView.unloaded', function () {
