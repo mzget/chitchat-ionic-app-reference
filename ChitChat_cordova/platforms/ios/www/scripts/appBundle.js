@@ -351,18 +351,18 @@ var ChatRoomComponent = (function () {
 })();
 var ChatsLogComponent = (function () {
     function ChatsLogComponent(main, server) {
-        this.newMessageListeners = new Array();
+        this.chatListeners = new Array();
         this.main = main;
         this.server = server;
         this._isReady = false;
         console.log("ChatsLogComponent : constructor");
     }
-    ChatsLogComponent.prototype.addNewMsgListener = function (listener) {
-        this.newMessageListeners.push(listener);
+    ChatsLogComponent.prototype.addOnChatListener = function (listener) {
+        this.chatListeners.push(listener);
     };
-    ChatsLogComponent.prototype.onNewMessage = function (dataEvent) {
-        console.log("ChatsLogComponent.onNewMessage");
-        this.newMessageListeners.map(function (v, i, a) {
+    ChatsLogComponent.prototype.onChat = function (dataEvent) {
+        console.log("ChatsLogComponent.onChat");
+        this.chatListeners.map(function (v, i, a) {
             v(dataEvent);
         });
     };
@@ -558,7 +558,7 @@ var DataListener = (function () {
         }
         if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
             this.roomAccessListenerImps.map(function (v) {
-                v.onNewMessage(chatMessageImp);
+                v.onChat(chatMessageImp);
             });
         }
     };
