@@ -5,14 +5,14 @@ interface IUnreadMessage {
 }
 
 class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
-    private newMessageListeners = new Array<(param) => void>();
-    public addNewMsgListener (listener) {
-        this.newMessageListeners.push(listener);
+    private chatListeners = new Array<(param) => void>();
+    public addOnChatListener (listener) {
+        this.chatListeners.push(listener);
     }
-    onNewMessage(dataEvent) {
-        console.log("ChatsLogComponent.onNewMessage");
+    onChat(dataEvent) {
+        console.log("ChatsLogComponent.onChat");
         //<!-- Provide chatslog service.
-        this.newMessageListeners.map((v, i, a) => {
+        this.chatListeners.map((v, i, a) => {
             v(dataEvent);
         });
     }

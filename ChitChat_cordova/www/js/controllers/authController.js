@@ -6,7 +6,8 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, networkService, chatslogService) {
+    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog,
+     networkService, chatslogService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -215,7 +216,7 @@
                 $('#login').css('display', 'none');
                 $('.bar-stable').css({ 'display': '' });
                 $('#splash').css({ 'display': 'none' });
-                $cordovaSpinnerDialog.hide();
+                
                 location.href = "#/tab/login/error";
             });
         }
