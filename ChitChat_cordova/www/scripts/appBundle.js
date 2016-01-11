@@ -148,6 +148,24 @@ var Main = (function () {
     };
     return Main;
 })();
+var ChatLog = (function () {
+    function ChatLog(room) {
+        this.id = room._id;
+        this.roomName = room.name;
+        this.roomType = room.type;
+        this.room = room;
+    }
+    ChatLog.prototype.setNotiCount = function (count) {
+        this.count = count;
+    };
+    ChatLog.prototype.setLastMessage = function (lastMessage) {
+        this.lastMessage = lastMessage;
+    };
+    ChatLog.prototype.setLastMessageTime = function (lastMessageTime) {
+        this.lastMessageTime = lastMessageTime;
+    };
+    return ChatLog;
+})();
 var ChatRoomComponent = (function () {
     function ChatRoomComponent(main, room_id) {
         this.chatMessages = [];
@@ -398,7 +416,7 @@ var ChatsLogComponent = (function () {
     };
     ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         this.server.getUnreadMsgOfRoom(roomAccess.roomId, roomAccess.accessTime.toString(), function res(err, res) {
-            console.warn("getUnreadMsgOfRoom: ", err, JSON.stringify(res));
+            console.warn("getUnreadMsgOfRoom: ", JSON.stringify(res));
             if (err || res === null) {
                 callback(err, null);
             }
@@ -579,6 +597,7 @@ var DataManager = (function () {
         this.orgGroups = {};
         this.projectBaseGroups = {};
         this.privateGroups = {};
+        this.privateChats = {};
         this.orgMembers = {};
         this.isOrgMembersReady = false;
     }
@@ -610,6 +629,9 @@ var DataManager = (function () {
             }
         });
     };
+    DataManager.prototype.getRoomAccess = function () {
+        return this.myProfile.roomAccess;
+    };
     DataManager.prototype.setMembers = function (data) {
     };
     DataManager.prototype.setCompanyInfo = function (data) {
@@ -634,6 +656,9 @@ var DataManager = (function () {
         else if (!!this.privateGroups[id]) {
             return this.privateGroups[id];
         }
+        else if (!!this.privateChats && !!this.privateChats[id]) {
+            return this.privateChats[id];
+        }
     };
     DataManager.prototype.addGroup = function (data) {
         switch (data.type) {
@@ -650,6 +675,14 @@ var DataManager = (function () {
             case RoomType.privateGroup:
                 if (!this.privateGroups[data._id]) {
                     this.privateGroups[data._id] = data;
+                }
+                break;
+            case RoomType.privateChat:
+                if (!this.privateChats) {
+                    this.privateChats = {};
+                }
+                if (!this.privateChats[data._id]) {
+                    this.privateChats[data._id] = data;
                 }
                 break;
             default:
@@ -1796,6 +1829,9 @@ var Room = (function () {
         enumerable: true,
         configurable: true
     });
+    Room.prototype.setName = function (name) {
+        this.name = name;
+    };
     return Room;
 })();
 var RoomAccessData = (function () {
@@ -1891,7 +1927,13 @@ var SecureService = (function () {
             var key = CryptoJS.enc.Utf8.parse(self.key);
             var iv = CryptoJS.enc.Utf8.parse(self.passiv);
             var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv });
-            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            var plaintext;
+            try {
+                plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            }
+            catch (e) {
+                console.error(e);
+            }
             if (!!plaintext)
                 callback(null, plaintext);
             else

@@ -3,39 +3,28 @@
         <div class="bar bar-header item-input-inset">
             <label class="item-input-wrapper">
                 <i class="icon ion-ios-search placeholder-icon"></i>
-                <input type="search" placeholder="Search" ng-model="search.name">
+                <input type="search" placeholder="Search" ng-model="search">
             </label>
         </div>
         <ion-list>
             <ion-item class="item-remove-animate item-avatar item-icon-right"
-                      ng-repeat="access in roomAccess | orderBy:'lastTime':true | filter:search " type="item-text-wrap"
-                      ng-click="gotoChat(access._id, access.body['count'])">
-                <img ng-if="access.image != null" ng-src="http://203.113.25.44/timthumb.php?src={{access.image}}&h=40&w=40" />
-                <img ng-if="access.image == null" src="img/img.jpg" height="40" width="40" />
-                <!-- <img ng-if="access.name===undefined && access.members[0]['id'] != myProfile._id" ng-src="http://203.113.25.44/timthumb.php?src={{orgMembers[access.members[0]['id']]['image']}}&h=40&w=40" />
-                <img ng-if="access.name===undefined && access.members[0]['id'] == myProfile._id" ng-src="http://203.113.25.44/timthumb.php?src={{orgMembers[access.members[1]['id']]['image']}}&h=40&w=40" /> -->
+                      ng-repeat="access in roomAccess | orderBy:'time':true | filter:search" type="item-text-wrap"
+                      ng-click="gotoChat(access.id, access.count)">
+                <img ng-if="access.room.image != null" ng-src="http://203.113.25.44/timthumb.php?src={{access.room.image}}&h=40&w=40" />
+                <img ng-if="access.room.image == null" src="img/img.jpg" height="40" width="40" />
 
                 <div>
-                    <h2 style="display:inline;">{{access.name}}</h2>
-                    <i style="display:inline; margin-top:8px;" class="icon" ng-if="access.body['count'] > 0 ">
+                    <h2 style="display:inline;">{{access.roomName}}</h2>
+                    <i style="display:inline; margin-top:8px;" class="icon" ng-if="access.count > 0 ">
                         <small style="height:20px; line-height:20px; padding:0 5px; border-radius:10px;
-                        font-weight:bold; font-size:14px; color:#fff; background-color:#f00;"><i class="fa fa-clock-o"></i>{{access.body['count']}}</small>
+                        font-weight:bold; font-size:14px; color:#fff; background-color:#f00;"><i class="fa fa-clock-o"></i>{{access.count}}</small>
                     </i>
                 </div>
-                <!-- <h2 ng-if="access.name===undefined && access.members[0]['id'] != myProfile._id">{{orgMembers[access.members[0]['id']]['displayname']}}</h2>
-                <h2 ng-if="access.name===undefined && access.members[0]['id'] == myProfile._id">{{orgMembers[access.members[1]['id']]['displayname']}}</h2> -->
-                <!--	<p>{{access.accessTime.substr(0, 10)}} {{access.accessTime.substr(11, 8)}}</p>-->
 
                 <div style="margin-top:5px;">
-                    <p style="display:inline;">{{ access.body.message.body }}</p>
-                    <!-- <span style="display:inline; float:right; margin-right:-40px;" class="item-note" >{{access.lastTime.substr(0, 10)}} {{access.lastTime.substr(11, 8)}} </span> -->
+                    <p style="display:inline;">{{ access.lastMessage }}</p>
                     <span style="display:inline; float:right; margin-right:-40px;" class="item-note"> {{access.time}} </span>
-                <div>
-                
-
-                <ion-option-button class="button-assertive" ng-click="">
-                    Delete
-                </ion-option-button>
+                </div>
             </ion-item>
         </ion-list>
     </ion-content>

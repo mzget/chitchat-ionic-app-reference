@@ -5,8 +5,6 @@
         .module('spartan.services')
         .factory('chatslogService', chatslogService);
 
-    // chatslogService.$inject = ['$http'];
-
     function chatslogService($http, $rootScope) {
         var service = {
             getChatsLogComponent: getChatsLogComponent,
@@ -15,7 +13,7 @@
             decreaseLogsCount: decreaseLogsCount,
             increaseLogsCount: increaseLogsCount,
             getUnreadMessageMap: getUnreadMessageMap,
-            organizeUnreadMessageMapForDisplayInfo: organizeUnreadMessageMapForDisplayInfo
+            organizeChatLogMap: organizeChatLogMap
         };
 
         return service;
@@ -45,11 +43,12 @@
                         console.warn("room to add: ", unreadMessageMap[newMsg.rid]);
                         var count = Number(unreadMessageMap[newMsg.rid].count);
                         count++;
-                        console.log(newMsg.rid, "unread count", unreadMessageMap[newMsg.rid].count);
-                        organizeUnreadMessageMapForDisplayInfo(unread, function done() {
-                            unreadMessageMap[newMsg.rid].count = count;
-                            console.log(newMsg.rid, "unread count++", unreadMessageMap[newMsg.rid].count);
-                        });
+                        unread.count = count;
+                        unreadMessageMap[unread.rid] = unread;
+
+                        $rootScope.$broadcast('onUnreadMessageMapChanged', { data: unread });
+
+           //             chatLogDAL.savePersistedUnreadMsgMap(unread);
                     }
                 }
                 chatsLogComponent = new ChatsLogComponent(main, server);
@@ -63,9 +62,13 @@
                 chatsLogComponent.updatedLastAccessTimeEvent = function (newRoomAccess) {
                     chatsLogComponent.getUnreadMessage(newRoomAccess.roomAccess[0], function(err, unread) {
                         if (!!unread) {
-                            organizeUnreadMessageMapForDisplayInfo(unread, function done() {
-                                calculateUnreadCount();
-                            });
+                            unreadMessageMap[unread.rid] = unread;
+
+                            calculateUnreadCount();
+
+                            $rootScope.$broadcast('onUnreadMessageMapChanged', { data: unread });
+
+                            //chatLogDAL.savePersistedUnreadMsgMap(unread);
                         }
                     });
                 }
@@ -86,22 +89,15 @@
 
         function getUnreadMessages() {
             unreadMessageMap = {};
-            chatlog_count = 0;
             chatsLogComponent.getUnreadMessages(main.getDataManager().myProfile.roomAccess, function done(err, unreadLogs) {
                 if (!!unreadLogs) {
                     unreadLogs.map(function element(unread) {
-                        if(!!unread.message) {
-                           organizeUnreadMessageMapForDisplayInfo(unread, null);
-                        }
-                        else {
-                            unreadMessageMap[unread.rid] = unread;
-                        }
-
-                        var count = Number(unread.count);
-                        chatlog_count += count;
-
+                        unreadMessageMap[unread.rid] = unread;
+                       
                         console.log("unread:", JSON.stringify(unread));
                     });
+
+                    calculateUnreadCount();
                 }
                 
                 $rootScope.$broadcast('getunreadmessagecomplete', {});
@@ -138,45 +134,63 @@
              return unreadMessageMap;
          }
          
-         function organizeUnreadMessageMapForDisplayInfo(unread, done) { 
-            var contact = main.getDataManager().getContactProfile(unread.message.sender);
-            switch (unread.message.type) {
-                case ContentType[ContentType.Text]:  
-                    main.decodeService(unread.message.body, function (err, res) {
-                        if (!err) {
-                            unread.message.body = res;
-                        }
-                        else {
-                            console.log(err, res);
-                        }
-                    });
-                    break;
-                case ContentType[ContentType.Sticker]:
-                    var message = contact.displayname + " sent a sticker.";
-                    unread.message.body = message;
-                    break;
-                case ContentType[ContentType.Voice]:
-                    var message = contact.displayname + " sent a voice message.";
-                    unread.message.body = message;
-                    break;
-                case ContentType[ContentType.Image]:
-                    var message = contact.displayname + " sent a image.";
-                    unread.message.body = message;
-                    break;
-                case ContentType[ContentType.Video]:
-                    var message = contact.displayname + " sent a video."
-                    unread.message.body = message;
-                    break;
-                case ContentType[ContentType.Location]:
-                    var message = contact.displayname + " sent a location.";
-                    unread.message.body = message;
-                    break;
-                default:
-                    break;
-            }
-            
-            unreadMessageMap[unread.rid] = unread;
-            if(!!done) done();
+         function organizeChatLogMap(unread, roomInfo, done) {
+             var log = new ChatLog(roomInfo);
+             log.setNotiCount(unread.count);
+
+             if (!!unread.message) {
+                 log.setLastMessageTime(unread.message.createTime);
+
+                 var contact = main.getDataManager().getContactProfile(unread.message.sender);
+                 var sender = (contact != null) ? contact.displayname : "";
+                 if (unread.message.body != null) {
+                     var displayMsg = unread.message.body;
+                     switch (unread.message.type) {
+                         case ContentType[ContentType.Text]:
+                             main.decodeService(displayMsg, function (err, res) {
+                                 if (!err) {
+                                     displayMsg = res;
+                                 } else { console.warn(err, res); }
+
+                                 setLogProp(log, displayMsg, done);
+                             });
+                             break;
+                         case ContentType[ContentType.Sticker]:
+                             displayMsg = sender + " sent a sticker.";
+                             setLogProp(log, displayMsg, done);
+                             break;
+                         case ContentType[ContentType.Voice]:
+                             displayMsg = sender + " sent a voice message.";
+                             setLogProp(log, displayMsg, done);
+                             break;
+                         case ContentType[ContentType.Image]:
+                             displayMsg = sender + " sent a image.";
+                             setLogProp(log, displayMsg, done);
+                             break;
+                         case ContentType[ContentType.Video]:
+                             displayMsg = sender + " sent a video.";
+                             setLogProp(log, displayMsg, done);
+                             break;
+                         case ContentType[ContentType.Location]:
+                             displayMsg = sender + " sent a location.";
+                             setLogProp(log, displayMsg, done);
+                             break;
+                         default:
+                             break;
+                     }
+                 }
+             }
+             else {
+                 log.setLastMessage("Start Chatting Now!");
+
+                 done(log);
+             }
+         }
+
+         function setLogProp(log, displayMessage, callback) {
+             log.setLastMessage(displayMessage);
+
+             callback(log);
          }
     }
 })();

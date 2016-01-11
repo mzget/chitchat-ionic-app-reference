@@ -26,4 +26,8 @@ class Room {
     get visibilty(): boolean {
         return this._visibility;
     }
+
+    public setName(name: string) {
+        this.name = name;
+    }
 }

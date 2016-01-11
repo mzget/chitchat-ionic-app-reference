@@ -39,6 +39,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
             this.addNewRoomAccessEvent(dataEvent);
         }
     }
+
     onEditedGroupMember(dataEvent) {
         console.warn("ChatsLogComponent.onEditedGroupMember", JSON.stringify(dataEvent));
     }
@@ -55,7 +56,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
             console.log("ChatsLogComponent : constructor");
         }
         
-        public getUnreadMessages(roomAccess: RoomAccessData[], callback:(err: Error, logsData: Array<IUnreadMessage>) => void) {
+        public getUnreadMessages(roomAccess: RoomAccessData[], callback: (err: Error, logsData: Array<IUnreadMessage>) => void) {
             var self = this;
             var unreadLogs = [];
             async.mapSeries(roomAccess, function iterator(item, cb) {
@@ -85,7 +86,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         
         public getUnreadMessage(roomAccess: RoomAccessData, callback:(err, res) => void) {
             this.server.getUnreadMsgOfRoom(roomAccess.roomId, roomAccess.accessTime.toString(), function res(err, res) {
-                console.warn("getUnreadMsgOfRoom: ", err, JSON.stringify(res));
+                console.warn("getUnreadMsgOfRoom: ", JSON.stringify(res));
                 if (err || res === null) {
                     callback(err, null);
                 }

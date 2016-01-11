@@ -6,13 +6,13 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPlatform, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, networkService, chatslogService) {
+    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, networkService, chatslogService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
      
-        $ionicPlatform.ready(function () {
+        ionic.Platform.ready(function () {
             console.log(vm.title + " : ionic ready.");
             activateBackground();
             activate();
@@ -116,7 +116,12 @@
 
         function onLoginTimeout(param) {
             // Hide spinner dialog
-            $cordovaSpinnerDialog.hide();
+            if (ionic.Platform.platform() === "ios") {
+                $cordovaSpinnerDialog.hide();
+            }
+            else {
+                $ionicLoading.hide();
+            }
 
             navigator.notification.alert(param.message, function callback() {
                 location.href = '';
@@ -125,53 +130,94 @@
 
         function onDuplicateLogin(param) {
             // Hide spinner dialog
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
             }
-            else if (cordova.platformId === "windows") {
+            else {
                 $ionicLoading.hide();
             }
 
-            navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices",
-                function (buttonIndex) {
-                    switch (buttonIndex) {
-                        case 1:
-                            location.href = '';
-                            break;
-                        case 2:
-                            server.kickMeAllSession(param.uid);
-                            location.href = "";
-                            break;
-                    }
-                }, "Duplicated login!", ["Cancle", "OK"]);
+            //navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices",
+            //    function (buttonIndex) {
+            //        switch (buttonIndex) {
+            //            case 1:
+            //                location.href = '';
+            //                break;
+            //            case 2:
+            //                server.kickMeAllSession(param.uid);
+            //                location.href = "";
+            //                break;
+            //        }
+            //    }, "Duplicated login!", ["Cancle", "OK"]);
+
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Duplicated login!',
+                template: 'May be you use this app in other devices \n You want to logout other devices'
+            });
+
+            confirmPopup.then(function (res) {
+                if (res) {
+                    server.kickMeAllSession(param.uid);
+                    location.href = "";
+                } else {
+                    location.href = '';
+                }
+            });
         }
 
         function onAuthenFail(errMessage) {
             // Hide spinner dialog
-            $cordovaSpinnerDialog.hide();
+            if (ionic.Platform.platform() === "ios") {
+                $cordovaSpinnerDialog.hide();
+            }
+            else {
+                $ionicLoading.hide();
+            }
 
-            navigator.notification.alert(errMessage, function callback() { }, "Login fail!", "OK");
+            // navigator.notification.alert(errMessage, function callback() { }, "Login fail!", "OK");
+            var alertPopup = $ionicPopup.alert({
+                title: "Login fail!",
+                template: errMessage
+            });
+
+            alertPopup.then(function(res) {
+                console.log(res);
+            });
         }
 
         function onServerConnectionFail(errMessage) {
             // Hide spinner dialog
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
             }
-            else if (cordova.platformId === "windows") {
+            else {
                 $ionicLoading.hide();
             }
 
-            navigator.notification.alert(errMessage, function callback() {
-                console.warn("Just go to no connection page.");
+            // navigator.notification.alert(errMessage, function callback() {
+            //     console.warn("Just go to no connection page.");
 
+            //     $('#login').css('display', 'none');
+            //     $('.bar-stable').css({ 'display': '' });
+            //     $('#splash').css({ 'display': 'none' });
+            //     $cordovaSpinnerDialog.hide();
+            //     location.href = "#/tab/login/error";
+            // },
+            // "Connecting to server fail! \n Please come back again.", "OK");
+            
+            console.warn("Just go to no connection page.");
+             var alertPopup = $ionicPopup.alert({
+                title: "Connecting to server fail! \n Please come back again.",
+                template: errMessage
+            });
+
+            alertPopup.then(function(res) {
                 $('#login').css('display', 'none');
                 $('.bar-stable').css({ 'display': '' });
                 $('#splash').css({ 'display': 'none' });
                 $cordovaSpinnerDialog.hide();
                 location.href = "#/tab/login/error";
-            },
-            "Connecting to server fail! \n Please come back again.", "OK");
+            });
         }
 
         function onMissingParams() {
