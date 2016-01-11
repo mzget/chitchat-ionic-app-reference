@@ -129,7 +129,6 @@
         }
 
         function onDuplicateLogin(param) {
-            console.debug("onDuplicateLogin", param);
             console.log("onDuplicateLogin", param);
             // Hide spinner dialog
             if (ionic.Platform.platform() === "ios") {
