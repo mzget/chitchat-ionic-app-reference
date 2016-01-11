@@ -23,6 +23,7 @@
         var dataListener = null;
         var chatlog_count = 0;
         var unreadMessageMap = {};
+        var chatslog = {};
         var isInit = false;
 
         function init() {
@@ -58,7 +59,7 @@
                     chatsLogComponent.onReady = null;
                 }
                 dataListener.addRoomAccessListenerImp(chatsLogComponent);
-                chatsLogComponent.addNewMsgListener(listenerImp);
+                chatsLogComponent.addOnChatListener(listenerImp);
                 chatsLogComponent.updatedLastAccessTimeEvent = function (newRoomAccess) {
                     chatsLogComponent.getUnreadMessage(newRoomAccess.roomAccess[0], function(err, unread) {
                         if (!!unread) {
@@ -134,7 +135,7 @@
              return unreadMessageMap;
          }
          
-         function organizeChatLogMap(unread, roomInfo, done) {
+         function organizeChatLogMap(unread, roomInfo) {
              var log = new ChatLog(roomInfo);
              log.setNotiCount(unread.count);
 
@@ -152,28 +153,40 @@
                                      displayMsg = res;
                                  } else { console.warn(err, res); }
 
-                                 setLogProp(log, displayMsg, done);
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log);
+                                 });
                              });
                              break;
                          case ContentType[ContentType.Sticker]:
                              displayMsg = sender + " sent a sticker.";
-                             setLogProp(log, displayMsg, done);
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log);
+                                 });
                              break;
                          case ContentType[ContentType.Voice]:
                              displayMsg = sender + " sent a voice message.";
-                             setLogProp(log, displayMsg, done);
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log);
+                                 });
                              break;
                          case ContentType[ContentType.Image]:
                              displayMsg = sender + " sent a image.";
-                             setLogProp(log, displayMsg, done);
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log);
+                                 });
                              break;
                          case ContentType[ContentType.Video]:
                              displayMsg = sender + " sent a video.";
-                             setLogProp(log, displayMsg, done);
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log);
+                                 });
                              break;
                          case ContentType[ContentType.Location]:
                              displayMsg = sender + " sent a location.";
-                             setLogProp(log, displayMsg, done);
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log);
+                                 });
                              break;
                          default:
                              break;
@@ -181,9 +194,11 @@
                  }
              }
              else {
-                 log.setLastMessage("Start Chatting Now!");
+                log.setLastMessage("Start Chatting Now!");
 
-                 done(log);
+                setLogProp(log, displayMsg, function(log) {
+                    addChatLog(log);
+                });
              }
          }
 
@@ -192,5 +207,21 @@
 
              callback(log);
          }
+               
+        function addChatLog(chatLog) {
+            chatLog.time = ConvertDateTime.getTimeChatlog(chatLog.lastMessageTime);
+            chatslog[chatLog.id] = chatLog;
+            
+            console.debug("addChatLog", chatLog);
+            
+            myRoomAccess = [];
+            async.mapSeries(chatslog, function itorator(item, cb) {
+                myRoomAccess.push(item);
+                cb(null, item);
+            }, function done(err, results) {
+                // done.
+                $scope.roomAccess = myRoomAccess;
+            });
+        }
     }
 })();

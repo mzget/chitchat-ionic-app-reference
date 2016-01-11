@@ -13,18 +13,14 @@
         vm.title = 'chatslogController';
 
         var dataManager = main.getDataManager();
-        var listenerImp;
         var myRoomAccess = [];
-        var chatslog = {};
-        $scope.myProfile = dataManager.myProfile;
-        $scope.orgMembers = dataManager.orgMembers;
-        $scope.roomAccess = [];
 
         function activate() { 
             console.warn(vm.title, "activate");
             
+            $scope.roomAccess = [];
             myRoomAccess = [];
-            chatslog = {};
+            
             getRoomInfo();
         }
         
@@ -85,35 +81,6 @@
             });
         }
         
-        function addChatLog(chatLog) {
-            //if (!!unreadMessageMap && !!unreadMessageMap[item.roomId]) {
-            //    log.body = unreadMessageMap[item.roomId];
-
-            //    if (!!unreadMessageMap[item.roomId].message) {
-            //        log.lastTime = unreadMessageMap[item.roomId].message.createTime ?
-            //            unreadMessageMap[item.roomId].message.createTime : item.accessTime;
-            //    }
-            //    else {
-            //        log.lastTime = item.accessTime;
-            //    }
-            //}
-            //else {
-            //    log.lastTime = item.accessTime;
-            //}
-
-            chatLog.time = ConvertDateTime.getTimeChatlog(chatLog.lastMessageTime);
-            chatslog[chatLog.id] = chatLog;
-            
-            myRoomAccess = [];
-            async.mapSeries(chatslog, function itorator(item, cb) {
-                myRoomAccess.push(item);
-                cb(null, item);
-            }, function done(err, results) {
-                // done.
-                $scope.roomAccess = myRoomAccess;
-            });
-        }
-        
         $scope.gotoChat = function (roomId, chatlog) 
         {	
             var group = dataManager.getGroup(roomId);
@@ -141,9 +108,7 @@
 
         $scope.$on('onUnreadMessageMapChanged', function (event, data) {
             var roomInfo = dataManager.getGroup(data.data.rid);
-            chatslogService.organizeChatLogMap(data.data, roomInfo, function done(log) {
-                addChatLog(log);
-            });
+            chatslogService.organizeChatLogMap(data.data, roomInfo);
         });
     }
 })();

@@ -139,7 +139,7 @@
         }
         if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
             this.roomAccessListenerImps.map(v => {
-                v.onNewMessage(chatMessageImp);
+                v.onChat(chatMessageImp);
             });
         }
     };

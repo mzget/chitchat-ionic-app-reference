@@ -1,6 +1,6 @@
 ﻿module absSpartan {
     export interface IRoomAccessListenerImp {
-        onNewMessage(dataEvent);
+        onChat(dataEvent);
         onAccessRoom(dataEvent);
         onUpdatedLastAccessTime(dataEvent);
         onAddRoomAccess(dataEvent);
