@@ -13,72 +13,17 @@
         vm.title = 'chatslogController';
 
         var dataManager = main.getDataManager();
-        var myRoomAccess = [];
 
         function activate() { 
             console.warn(vm.title, "activate");
             
             $scope.roomAccess = [];
-            myRoomAccess = [];
-            
-            getRoomInfo();
+
+            displayLogs();
         }
-        
-        function getRoomInfo() {
-            console.log("my roomAccess.length", dataManager.getRoomAccess().length);
-            
-            var unreadMessageMap = chatslogService.getUnreadMessageMap();
-            async.mapSeries(unreadMessageMap, function iterator(item, resultCB) {
-                var roomInfo = dataManager.getGroup(item.rid);
-                if (!!roomInfo) {
-                    chatslogService.organizeChatLogMap(item, roomInfo, function done(log) {
-                        addChatLog(log);
-                        resultCB(null, {});
-                    });
-                }
-                else {
-                    console.warn("Can't find roomInfo from persisted data: ", item.rid);
 
-                    server.getRoomInfo(item.rid, function (err, res) {
-                        if (res['code'] === HttpStatusCode.success) {
-                            var roomInfo = JSON.parse(JSON.stringify(res.data));
-                            if (roomInfo.type === RoomType.privateChat) {
-                                var targetMemberId = "";
-                                roomInfo.members.some(function itorator(item) {
-                                    if (item.id !== dataManager.myProfile._id) {
-                                        targetMemberId = item.id;
-                                        return item.id;
-                                    }
-                                });
-
-                                var contactProfile = dataManager.getContactProfile(targetMemberId);
-                                if (contactProfile == null) {
-                                    roomInfo.name = "EMPTY ROOM";
-                                }
-                                else {
-                                    roomInfo.name = contactProfile.displayname;
-                                }
-                            }
-                            else {
-                                console.warn("OMG: the god only know. May be group status is not active.");
-                            }
-
-                            dataManager.addGroup(roomInfo);
-
-                            chatslogService.organizeChatLogMap(item, roomInfo, function done(log) {
-                                addChatLog(log);
-                                resultCB(null, {});
-                            });
-                        }
-                        else {
-                            console.warn("Fail to get room info of room %s", item.rid, res.message);
-                            resultCB(null, {});
-                        }
-                    });
-                }
-            }, function done(err, results) {
-                console.debug("getRoomInfo Completed.");
-            });
+        function displayLogs() {
+            $scope.roomAccess = chatslogService.getChatsLog();
         }
         
         $scope.gotoChat = function (roomId, chatlog) 
@@ -103,12 +48,9 @@
 		});
         
         $scope.$on('getunreadmessagecomplete', function(event, data){
-            getRoomInfo();
         });
 
         $scope.$on('onUnreadMessageMapChanged', function (event, data) {
-            var roomInfo = dataManager.getGroup(data.data.rid);
-            chatslogService.organizeChatLogMap(data.data, roomInfo);
         });
     }
 })();
