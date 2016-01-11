@@ -5,6 +5,8 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
+var webChatId = '55d177c2d20212737c46c685';
+
 angular.module('starter',
      ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
 	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
@@ -73,6 +75,27 @@ angular.module('starter',
 			'tab-login': {
 				templateUrl: 'templates/tab-login-error.html',
 				controller: 'noConnection'
+			}
+		}
+	})
+		
+	// WEBSITE
+	.state('tab.web', {
+		url: '/web',
+		views: {
+			'tab-web': {
+				templateUrl: 'templates/tab-web.html',
+				controller: 'homeController'
+			}
+		}
+	})
+	
+	.state('tab.web-chat', {
+		url: '/web/chat/:chatId',
+		views: {
+			'tab-web': {
+				templateUrl: 'templates/tab-web-chatdetail.html',
+				controller: 'chatController'
 			}
 		}
 	})
