@@ -1,6 +1,8 @@
 {
   "name": "chitchat_cordova",
   "dependencies": {
-    "async": "1.5.2"
+    "async": "1.5.2",
+    "angular-toArrayFilter": "1.0.1",
+    "ngCordova": "0.1.23-alpha"
   }
 }
