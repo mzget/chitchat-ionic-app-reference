@@ -21,9 +21,9 @@
             main.setServerListener(serverEvents);
             main.setServerImp(server);
             main.onMyProfileReadyListener = function (dataManager) {
-                $('#login').css('display', 'none');
-                $('.bar-stable').css({ 'display': '' });
-                $('#splash').css({ 'display': 'none' });
+                //$('#login').css('display', 'none');
+                //$('.bar-stable').css({ 'display': '' });
+                //$('#splash').css({ 'display': 'none' });
 
                 // Hide spinner dialog
                 if (ionic.Platform.platform() === "ios") {
@@ -36,7 +36,7 @@
                 console.log("appConfig", server.appConfig.webserver);
 
                 //location.href = "#/tab/group";
-                $state.go('tab.group');
+                $state.go('tab.web');
                 activateNetworkService();
             };
             initSpartanServer();
