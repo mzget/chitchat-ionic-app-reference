@@ -163,3 +163,7 @@ color: #fff;}
   transform: translate3d(0, 49px, 0);
   -webkit-transform: translate3d(0, 49px, 0);
 }
+
+.bar-footer.has-tabs {
+    bottom:0 !important;
+}
