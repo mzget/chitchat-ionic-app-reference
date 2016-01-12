@@ -362,10 +362,6 @@ angular.module('spartan.chat', [])
 		}
 		self.chatRoomComponent.notifyEvent = function (event, data) {
 			if (event === ChatServer.ServerEventListener.ON_CHAT) {
-<<<<<<< HEAD
-				//var appBackground = cordova.plugins.backgroundMode.isActive();
-				//sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
-=======
                 if(ionic.Platform.platform() === "ios") {
 				    var appBackground = cordova.plugins.backgroundMode.isActive();
 				    sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
@@ -373,7 +369,6 @@ angular.module('spartan.chat', [])
                 else {
                     sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
                 }
->>>>>>> 5cee833901c695e2e26286acb64e1ee041789cae
 			}
 		};
 		self.chatRoomComponent.getMessage(self.currentRoom._id, Chats, function (joinRoomRes) {

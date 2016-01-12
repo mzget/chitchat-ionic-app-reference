@@ -14,7 +14,7 @@
         var registrationId = "";
      
         ionic.Platform.ready(function () {
-            console.log(vm.title + " : ionic ready.");
+            console.log(vm.title + " : ionic ready.", ionic.Platform.platform());
             activateBackground();
             activate();
             setConfigTheme();
@@ -36,8 +36,15 @@
                     
                 console.log("appConfig", server.appConfig.webserver);
 
-                //location.href = "#/tab/group";
-                $state.go('tab.web');
+                if (ionic.Platform.platform() == "ios" || ionic.Platform.platform() == "android") {
+                    //location.href = "#/tab/group";
+                    $state.go('tab.group');
+                }
+                else {
+                    //$state.go('tab.web');
+                    location.href = "#/tab/web";
+                }
+
                 activateNetworkService();
             };
             initSpartanServer();

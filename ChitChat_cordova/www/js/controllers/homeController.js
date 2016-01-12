@@ -5,13 +5,12 @@
 		.module('spartan.home', [])
 		.controller('homeController', homeController);
 
-	//homeController.$inject = ['$location'];
-
 	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform,
 		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
+		var webChatId = "";
 
 		function activate() {
 
@@ -162,14 +161,13 @@
 			$scope.$on('modal.removed', function () {
 				// Execute action
 			});
-			
-			
-			// Hook to chat detail
+
+		    // Hook to chat detail
 			initOrgModal($state, $scope, webChatId, roomSelected, function () {
-				//$scope.orgModal.show();			
-				location.href = '#/tab/web/chat/' + webChatId;
-				//RFL 55d177c2d20212737c46c685';
-				//DEV 564185ccd20212c3344642d2';
+			    //$scope.orgModal.show();            
+			    location.href = '#/tab/web/chat/' + webChatId;
+			    //RFL 55d177c2d20212737c46c685';
+			    //DEV 564185ccd20212c3344642d2';
 			}, $rootScope);
 		});
 	

@@ -1039,7 +1039,7 @@ var ChatServer;
             var self = this;
             var promiseForFileConfig = new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: "configs/appconfig.json",
+                    url: "www/configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
                         self.appConfig = JSON.parse(JSON.stringify(config));
@@ -1741,16 +1741,6 @@ var SocketComponent = (function () {
     };
     return SocketComponent;
 })();
-var MessageMeta = (function () {
-    function MessageMeta() {
-    }
-    return MessageMeta;
-})();
-var Message = (function () {
-    function Message() {
-    }
-    return Message;
-})();
 var CompanyInfo = (function () {
     function CompanyInfo() {
     }
@@ -1791,6 +1781,16 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+})();
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
+})();
 var MinLocation = (function () {
     function MinLocation() {
     }
