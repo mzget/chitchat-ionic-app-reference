@@ -5,11 +5,9 @@
         .module('spartan.services')
         .factory('sharedObjectService', sharedObjectService);
 
-    sharedObjectService.$inject = ['$http', 'localNotifyService'];
-
     function sharedObjectService($http, localNotifyService) {
         var notifyManager = null;
-        var dataListener = main.getDataListener();
+        var dataListener = null;
 
         var service = {
             getDataListener: getDataListener,
@@ -36,6 +34,7 @@
         }
 
         function createNotifyManager(main) {
+            dataListener = main.getDataListener();
             if (notifyManager === null || notifyManager === undefined) {
                 notifyManager = new NotifyManager(main);
             }

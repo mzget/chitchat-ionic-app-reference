@@ -23,7 +23,8 @@ angular.module('starter',
 		}
 		if (window.StatusBar) {
 			// org.apache.cordova.statusbar required
-			StatusBar.styleLightContent();
+		    //StatusBar.styleLightContent();
+		    StatusBar.styleDefault();
 		}
 		
 		console.log("$ionicPlatform.ready");
@@ -44,8 +45,6 @@ angular.module('starter',
 	$ionicConfigProvider.views.swipeBackEnabled(false);
 	
 	$stateProvider
-
-
 
 	// setup an abstract state for the tabs directive
 	.state('tab', {

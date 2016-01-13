@@ -5,7 +5,7 @@
         .module('spartan.services')
         .factory('chatslogService', chatslogService);
 
-    function chatslogService($http, $rootScope, ConvertDateTime) {
+    function chatslogService($http, $rootScope, ConvertDateTime, sharedObjectService) {
         var service = {
             getChatsLogComponent: getChatsLogComponent,
             init: init,
@@ -33,7 +33,7 @@
                 isInit = true;
                 
                 chatslog = {};
-                dataListener = main.getDataListener();
+                dataListener = sharedObjectService.getDataListener();
                 dataManager = main.getDataManager();
                 chatlog_count = 0;
                 listenerImp = function (newMsg) {

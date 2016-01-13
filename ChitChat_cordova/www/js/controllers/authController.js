@@ -22,30 +22,30 @@
             main.setServerListener(serverEvents);
             main.setServerImp(server);
             main.onMyProfileReadyListener = function (dataManager) {
-                //$('#login').css('display', 'none');
-                //$('.bar-stable').css({ 'display': '' });
-                //$('#splash').css({ 'display': 'none' });
+                $('#login').css('display', 'none');
+                $('.bar-stable').css({ 'display': '' });
+                $('#splash').css({ 'display': 'none' });
 
                 // Hide spinner dialog
                 if (ionic.Platform.platform() === "ios") {
                     $cordovaSpinnerDialog.hide();
                 }
-                else if (ionic.Platform.platform() === "windows") {
+                else {
                     $ionicLoading.hide();
                 }
                     
                 console.log("appConfig", server.appConfig.webserver);
+
+                activateNetworkService();
 
                 if (ionic.Platform.platform() == "ios" || ionic.Platform.platform() == "android") {
                     //location.href = "#/tab/group";
                     $state.go('tab.group');
                 }
                 else {
-                    //$state.go('tab.web');
-                    location.href = "#/tab/web";
+                //  $state.go('tab.web');
+                  $state.go('tab.group');
                 }
-
-                activateNetworkService();
             };
             initSpartanServer();
             

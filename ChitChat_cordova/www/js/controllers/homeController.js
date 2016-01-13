@@ -16,10 +16,11 @@
 
 			localNotifyService.registerPermission();
 			sharedObjectService.createNotifyManager(main);
-			chatslogService.init();
 
 			vm.dataListener = sharedObjectService.getDataListener();
 			sharedObjectService.regisNotifyNewMessageEvent();
+
+			chatslogService.init();
 		}
 
 		function onLeave() {
@@ -161,14 +162,6 @@
 			$scope.$on('modal.removed', function () {
 				// Execute action
 			});
-
-		    // Hook to chat detail
-			initOrgModal($state, $scope, webChatId, roomSelected, function () {
-			    //$scope.orgModal.show();            
-			    location.href = '#/tab/web/chat/' + webChatId;
-			    //RFL 55d177c2d20212737c46c685';
-			    //DEV 564185ccd20212c3344642d2';
-			}, $rootScope);
 		});
 	
 		$scope.$on('$ionicView.beforeLeave', function () {
