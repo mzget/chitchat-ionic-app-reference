@@ -6,8 +6,7 @@ var chatlog_count = 0;
 angular.module('spartan.controllers', [])
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
- roomSelected) {
+.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress, $cordovaDialogs, $ionicLoading, roomSelected) {
     var room = roomSelected.getRoom();
 
     if ($stateParams.chatId == main.getDataManager().myProfile._id) {
@@ -26,7 +25,6 @@ angular.module('spartan.controllers', [])
             if (url != null) {
                 server.ProfileImageChanged($stateParams.chatId, url[0], function (err, res) {
                     main.getDataManager().myProfile.image = url[0];
-                    $scope.sourceImage = "";
                     saveProfile();
                 });
             } 
@@ -34,6 +32,7 @@ angular.module('spartan.controllers', [])
         $scope.$on('fileUri', function(event, args) {
             $scope.sourceImage = args;
         });
+
         $scope.save = function(){
             if($scope.sourceImage!='' || (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status)){
                 $ionicLoading.show({
@@ -53,12 +52,17 @@ angular.module('spartan.controllers', [])
                     main.getDataManager().myProfile.status = $scope.model.status;
                     saveSuccess();
                 });
+            }else if($scope.sourceImage!='' ){ 
+                saveSuccess();
             }
         }
         function saveSuccess() {
+            $scope.sourceImage = "";
             $ionicLoading.hide();
-            $cordovaProgress.showSuccess(false, "Success!");
-            setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+            $cordovaDialogs.alert('Success', 'Save Success', 'OK')
+            .then(function() {
+              // callback success
+            });
         }
     }
     else {

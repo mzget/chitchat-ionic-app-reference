@@ -38,29 +38,81 @@ angular.module('spartan.media', [])
     	});
   	}
 
-  	$scope.uploadImg = function() {
-  		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
-	    var imageURI = cordova.file.documentsDirectory + FileService.getImages();
-	    var options = new FileUploadOptions();
-	    options.fileKey = "fileToUpload";
-	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-	    options.mimeType = "image/jpeg";
-	    var params = new Object();
-	    options.params = params;
-	    options.chunkedMode = false;
-	    var ft = new FileTransfer();
+  	function uploadImageProfile(){
+  		var formData = new FormData($('#UploadForm')[0]);
+		$.ajax({
+		       	url : 'http://203.113.25.44/?r=api/upload',
+		       	type : 'POST',
+		       	data : formData,
+		       	processData: false,
+			   	contentType: false,
+		       	success : function(data) {
+		       		console.log('success');
+		        	console.log(data);
+		        	$ionicLoading.hide();
+	    			$scope.$emit('fileUrl', [data]);
+	    			document.getElementById("UploadForm").reset();
+		       	},
+		       	error : function(data){
+		       		console.log('error');
+		       		$ionicLoading.hide();
+		       		alert("Fail");
+					console.log(data);
+		       	},
+		       	xhr: function()
+				{
+				    var xhr = new window.XMLHttpRequest();
+				    //Upload progress
+				    xhr.upload.addEventListener("progress", function(evt){
+				      if (evt.lengthComputable) {
+				        var percentComplete = evt.loaded / evt.total;
+				        //Do something with upload progress
+				        console.log(percentComplete);
+				      }
+				    }, false);
+				    return xhr;
+			  	},
+		});
+  	}
 
-	    ft.onprogress = function(progressEvent){
-	    	if (progressEvent.lengthComputable) {
-	    			$ionicLoading.show({
-				      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
-				  });
-		    } else {
-		      //loadingStatus.increment();
-		    }
-	    };
-	    ft.upload(imageURI, "http://203.113.25.44/?r=api/upload", win, fail,
-	        options);
+  	$scope.changeImage = function(){
+        var file    = document.querySelector('input[type=file]').files[0];
+        var reader  = new FileReader();
+        reader.onloadend = function () {
+            $scope.$emit('fileUri',[reader.result]);
+            document.getElementById('AvatarImageProfile').src = reader.result;
+            console.log(reader.result);
+        } 
+        reader.readAsDataURL(file);
+    }
+
+  	$scope.uploadImg = function() {
+  		if (ionic.Platform.platform() === "ios") {
+	  		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
+		    var imageURI = cordova.file.documentsDirectory + FileService.getImages();
+		    var options = new FileUploadOptions();
+		    options.fileKey = "fileToUpload";
+		    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		    options.mimeType = "image/jpeg";
+		    var params = new Object();
+		    options.params = params;
+		    options.chunkedMode = false;
+		    var ft = new FileTransfer();
+
+		    ft.onprogress = function(progressEvent){
+		    	if (progressEvent.lengthComputable) {
+		    			$ionicLoading.show({
+					      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
+					  });
+			    } else {
+			      //loadingStatus.increment();
+			    }
+		    };
+		    ft.upload(imageURI, "http://203.113.25.44/?r=api/upload", win, fail,
+		        options);
+		}else{
+			uploadImageProfile();
+		}
 
 	}
 
