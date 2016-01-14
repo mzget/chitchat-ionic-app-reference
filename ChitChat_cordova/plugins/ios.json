@@ -207,10 +207,10 @@
         "org.pbernasconi.progressindicator": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
-        "phonegap-plugin-push": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
         "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
