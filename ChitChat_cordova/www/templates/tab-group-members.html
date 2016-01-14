@@ -1,3 +1,5 @@
+<ion-nav-bar>
+</ion-nav-bar>
 <ion-view view-title="Members" cache-view="false" hide-tab-bar>
 
 	<ion-nav-buttons side="right">
@@ -11,9 +13,9 @@
 		<ion-list class="group-list" ng-controller="ImageController">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
 				<div ng-show="meIsAdmin || chatGroup.type==privateIndex">
-					<img ng-show="chatGroup.image==undefined && !images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" ng-click="addImg()"/>
-					<img ng-show="chatGroup.image!==undefined && !images.length" ng-src="http://203.113.25.44/timthumb.php?src={{chatGroup.image}}&h=60&w=60" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" ng-click="addImg()"/>
-					<img ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" ng-click="addImg()"/>
+					<img id="AvatarImageGroup" ng-show="chatGroup.image==undefined && !images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" />
+					<img id="AvatarImageGroup" ng-show="chatGroup.image!==undefined && !images.length" ng-src="http://203.113.25.44/timthumb.php?src={{chatGroup.image}}&h=60&w=60" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" />
+					<img id="AvatarImageGroup" ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" />
 				</div>
 				<div ng-show="!meIsAdmin && chatGroup.type==projectBaseIndex || chatGroup.type==orgGroupsIndex">
 					<img ng-show="chatGroup.image==undefined && !images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar"/>
@@ -23,6 +25,16 @@
 				<label class="item item-input">
 		            <input type="text" data-ng-model="model.groupname" ng-disabled="chatGroup.type==projectBaseIndex &&  !meIsAdmin || chatGroup.type==orgGroupsIndex" disabled style="background:none;">
 		        </label>
+
+
+		        <form id="UploadForm" style="margin-top:0px;" ng-show=" (meIsAdmin || chatGroup.type==privateIndex) ">
+		            <input type="file" name="fileToUpload" id="fileToUpload" onchange="angular.element(this).scope().changeImage('AvatarImageGroup')">
+		        </form>
+		        <button 
+		        ng-show=" (model.groupname != model.originalName || sourceImage != '') && (meIsAdmin || chatGroup.type==privateIndex) " class="button button-clear button-positive" ng-click="groupSave()">Save
+		    	</button>
+
+
 			</ion-item>
 		</ion-list>
 
