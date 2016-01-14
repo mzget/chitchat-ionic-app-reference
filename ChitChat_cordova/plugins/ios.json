@@ -204,9 +204,6 @@
         "hu.dpal.phonegap.plugins.SpinnerDialog": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
-        "org.apache.cordova.dialogs": {
-            "PACKAGE_NAME": "com.ahoostudio.chitchat"
-        },
         "org.pbernasconi.progressindicator": {
             "PACKAGE_NAME": "com.ahoostudio.chitchat"
         },
