@@ -38,7 +38,7 @@ angular.module('spartan.media', [])
     	});
   	}
 
-  	function uploadImageProfile(){
+  	function uploadImageForm(){
   		var formData = new FormData($('#UploadForm')[0]);
 		$.ajax({
 		       	url : 'http://203.113.25.44/?r=api/upload',
@@ -75,12 +75,12 @@ angular.module('spartan.media', [])
 		});
   	}
 
-  	$scope.changeImage = function(){
+  	$scope.changeImage = function(img){
         var file    = document.querySelector('input[type=file]').files[0];
         var reader  = new FileReader();
         reader.onloadend = function () {
             $scope.$emit('fileUri',[reader.result]);
-            document.getElementById('AvatarImageProfile').src = reader.result;
+            document.getElementById(img).src = reader.result;
             console.log(reader.result);
         } 
         reader.readAsDataURL(file);
@@ -111,7 +111,7 @@ angular.module('spartan.media', [])
 		    ft.upload(imageURI, "http://203.113.25.44/?r=api/upload", win, fail,
 		        options);
 		}else{
-			uploadImageProfile();
+			uploadImageForm();
 		}
 
 	}

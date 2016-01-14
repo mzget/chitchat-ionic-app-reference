@@ -1,19 +1,27 @@
+<ion-nav-bar>
+</ion-nav-bar>
 <ion-view view-title="Create Group" ng-controller="ImageController" hide-tab-bar>
 
 	<ion-nav-buttons side="right">
         <button ng-show="model.groupname.length > 0 && members.length > 2 " class="button button-clear button-positive" id="viewprofile-save" ng-click="submit()">Save</button>
     </ion-nav-buttons>
 
-	<ion-content class="bar bar-subheader group-create" scroll="false" style="height:120px;">
+	<ion-content class="bar bar-subheader group-create" scroll="false" style="height:130px;">
 
-		<img class="img-group" ng-show="!images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" ng-click="addImg()"/>
-		<img class="img-group" ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" ng-click="addImg()"/>
+		<img id="AvatarImageGroup" class="img-group" ng-show="!images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" style="height:110px;width:110px;"/>
+		<img id="AvatarImageGroup" class="img-group" ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" />
 
 		<div class="list list-inset">
 			<label class="item item-input">
 		    <input type="text" placeholder="Group Name" data-ng-model="model.groupname">
 		  </label>
 		</div>
+
+		<form id="UploadForm" style="margin-top:-20px;">
+            <input type="file" name="fileToUpload" id="fileToUpload" onchange="angular.element(this).scope().changeImage('AvatarImageGroup')">
+        </form>
+        <button ng-show="model.groupname.length > 0 && members.length > 2 " class="button button-clear button-positive" id="viewprofile-save" ng-click="submit()" style="margin-top:-10px;">Save</button>
+
 	</ion-content>
  
 	

@@ -9,95 +9,99 @@ angular.module('spartan.controllers', [])
 .controller('GroupViewprofileCtrl', function ($scope, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress, $cordovaDialogs, $ionicLoading, roomSelected) {
     var room = roomSelected.getRoom();
 
-    if ($stateParams.chatId == main.getDataManager().myProfile._id) {
-        $scope.chat = main.getDataManager().myProfile;
-        $scope.model = {
-            displayname: $scope.chat.displayname,
-            status: $scope.chat.status
-        };
-        $scope.title = "My Profile";
-        $scope.sourceImage = "";
-        $('#viewprofile-input-display').removeAttr('disabled');
-        $('#viewprofile-input-status').removeAttr('disabled');
-        $scope.edit = 'true';
-        //<!-- edit profile image.
-        $scope.$on('fileUrl', function (event, url) {
-            if (url != null) {
-                server.ProfileImageChanged($stateParams.chatId, url[0], function (err, res) {
-                    main.getDataManager().myProfile.image = url[0];
-                    saveProfile();
-                });
-            } 
-        });
-        $scope.$on('fileUri', function(event, args) {
-            $scope.sourceImage = args;
-        });
 
-        $scope.save = function(){
-            if($scope.sourceImage!='' || (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status)){
-                $ionicLoading.show({
-                    template: 'Loading..'
-                });
-                if($scope.sourceImage!=''){ $scope.$broadcast('uploadImg','uploadImg'); }
-                else { saveProfile(); }
-            }
-        }
-        function saveProfile() {
-            if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
-						main.getDataManager().myProfile.status != $scope.model.status) {
-
-                server.UpdateUserProfile($stateParams.chatId, $scope.model, function (err, res) {
-                    console.log(JSON.stringify(res));
-                    main.getDataManager().myProfile.displayname = $scope.model.displayname;
-                    main.getDataManager().myProfile.status = $scope.model.status;
-                    saveSuccess();
-                });
-            }else if($scope.sourceImage!='' ){ 
-                saveSuccess();
-            }
-        }
-        function saveSuccess() {
+    $scope.$on('$ionicView.enter', function(){   
+        if ($stateParams.chatId == main.getDataManager().myProfile._id) {
+            $scope.chat = main.getDataManager().myProfile;
+            $scope.model = {
+                displayname: $scope.chat.displayname,
+                status: $scope.chat.status
+            };
+            $scope.title = "My Profile";
             $scope.sourceImage = "";
-            $ionicLoading.hide();
-            $cordovaDialogs.alert('Success', 'Save Success', 'OK')
-            .then(function() {
-              // callback success
+            $('#viewprofile-input-display').removeAttr('disabled');
+            $('#viewprofile-input-status').removeAttr('disabled');
+            $scope.edit = 'true';
+            //<!-- edit profile image.
+            $scope.$on('fileUrl', function (event, url) {
+                if (url != null) {
+                    server.ProfileImageChanged($stateParams.chatId, url[0], function (err, res) {
+                        main.getDataManager().myProfile.image = url[0];
+                        saveProfile();
+                    });
+                } 
             });
-        }
-    }
-    else {
-        var member = main.getDataManager().orgMembers[$stateParams.chatId];
-        if (member.firstname == null || member.firstname == "" &&
-			member.lastname == null || member.lastname == "" &&
-			member.mail == null || member.mail == "" &&
-			member.role == null || member.role == "" &&
-			member.tel == null || member.tel == "") {
-            server.getMemberProfile($stateParams.chatId, function (err, res) {
-                if (!err) {
-                    //console.log(JSON.stringify(res));
-                    //console.log(res["data"]);
-                    member.firstname = res["data"].firstname;
-                    member.lastname = res["data"].lastname;
-                    member.mail = res["data"].mail;
-                    member.role = res["data"].role;
-                    member.tel = res["data"].tel;
-                    $state.go($state.current, {}, { reload: true });
-                }
-                else {
-                    console.warn(err, res);
-                }
+            $scope.$on('fileUri', function(event, args) {
+                $scope.sourceImage = args;
             });
+
+            $scope.save = function(){
+                if($scope.sourceImage!='' || (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status)){
+                    $ionicLoading.show({
+                        template: 'Loading..'
+                    });
+                    if($scope.sourceImage!=''){ $scope.$broadcast('uploadImg','uploadImg'); }
+                    else { saveProfile(); }
+                }
+            }
+            function saveProfile() {
+                if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+                            main.getDataManager().myProfile.status != $scope.model.status) {
+
+                    server.UpdateUserProfile($stateParams.chatId, $scope.model, function (err, res) {
+                        console.log(JSON.stringify(res));
+                        main.getDataManager().myProfile.displayname = $scope.model.displayname;
+                        main.getDataManager().myProfile.status = $scope.model.status;
+                        saveSuccess();
+                    });
+                }else if($scope.sourceImage!='' ){ 
+                    saveSuccess();
+                }
+            }
+            function saveSuccess() {
+                $scope.sourceImage = "";
+                $ionicLoading.hide();
+                $cordovaDialogs.alert('Success', 'Save Success', 'OK')
+                .then(function() {
+                  // callback success
+                });
+            }
         }
-        $scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
-        $scope.model = {
-            displayname: $scope.chat.displayname,
-            status: $scope.chat.status
-        };
-        $scope.title = $scope.chat.displayname + "'s Profile";
-        $('#viewprofile-input-display').attr('disabled', 'disabled');
-        $('#viewprofile-input-status').attr('disabled', 'disabled');
-        $scope.edit = 'false';
-    }
+        else {
+            var member = main.getDataManager().orgMembers[$stateParams.chatId];
+            if (member.firstname == null || member.firstname == "" &&
+                member.lastname == null || member.lastname == "" &&
+                member.mail == null || member.mail == "" &&
+                member.role == null || member.role == "" &&
+                member.tel == null || member.tel == "") {
+                server.getMemberProfile($stateParams.chatId, function (err, res) {
+                    if (!err) {
+                        //console.log(JSON.stringify(res));
+                        //console.log(res["data"]);
+                        member.firstname = res["data"].firstname;
+                        member.lastname = res["data"].lastname;
+                        member.mail = res["data"].mail;
+                        member.role = res["data"].role;
+                        member.tel = res["data"].tel;
+                        $state.go($state.current, {}, { reload: true });
+                    }
+                    else {
+                        console.warn(err, res);
+                    }
+                });
+            }
+            $scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
+            $scope.model = {
+                displayname: $scope.chat.displayname,
+                status: $scope.chat.status
+            };
+            $scope.title = $scope.chat.displayname + "'s Profile";
+            $('#viewprofile-input-display').attr('disabled', 'disabled');
+            $('#viewprofile-input-status').attr('disabled', 'disabled');
+            $scope.edit = 'false';
+        }
+    });
+
 
     $rootScope.$ionicGoBack = function () {
         if(typeof($ionicHistory.backView().stateParams) != 'undefined')
@@ -181,7 +185,7 @@ angular.module('spartan.controllers', [])
     }
 })
 
-.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
+.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,$cordovaDialogs,CreateGroup,FileService) {
     console.log('AccountCreate',CreateGroup.createType);
     var myProfile = main.getDataManager().myProfile;
     $rootScope.members = CreateGroup.getSelectedMember();
@@ -220,14 +224,30 @@ angular.module('spartan.controllers', [])
     }
     function createSuccess() {
         $ionicLoading.hide();
-        $cordovaProgress.showSuccess(false, "Success!");
-        setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+        if (ionic.Platform.platform() === "ios") {
+            $cordovaProgress.showSuccess(false, "Success!");
+            setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+        }else{
+            $cordovaDialogs.alert('Success', 'Create Success', 'OK')
+            .then(function() {
+              $rootScope.$ionicGoBack();
+            });
+        }
     }
     function uploadImageGroup(){
-        if(FileService.getImages() != '') {
+        if (ionic.Platform.platform() === "ios") {
+            if(FileService.getImages() != '') {
+                $scope.$broadcast('uploadImg','uploadImg');
+            }else{
+                //$state.go('tab.group');
+                createSuccess();
+                $rootScope.$ionicGoBack();
+            }
+        }
+        else if(document.getElementById('fileToUpload').files.length != 0){
             $scope.$broadcast('uploadImg','uploadImg');
-        }else{
-            //$state.go('tab.group');
+        }
+        else{
             createSuccess();
             $rootScope.$ionicGoBack();
         }
@@ -238,12 +258,12 @@ angular.module('spartan.controllers', [])
                 console.log(JSON.stringify(res));
                 createSuccess();
                 //$state.go('tab.group');
-                $rootScope.$ionicGoBack();
             }else{
                 console.warn(err, res);
             }
         });
     });
+
     $rootScope.$ionicGoBack = function() {
         if($state.current.name=='tab.account-create'){
             CreateGroup.clear();
