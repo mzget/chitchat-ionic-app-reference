@@ -345,13 +345,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/phonegap-plugin-push/www/push.js",
-        "id": "phonegap-plugin-push.PushNotification",
-        "clobbers": [
-            "PushNotification"
-        ]
-    },
-    {
         "file": "plugins/cordova-plugin-geolocation/www/Coordinates.js",
         "id": "cordova-plugin-geolocation.Coordinates",
         "clobbers": [
@@ -378,6 +371,20 @@ module.exports = [
         "clobbers": [
             "navigator.geolocation"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-dialogs/www/notification.js",
+        "id": "cordova-plugin-dialogs.notification",
+        "merges": [
+            "navigator.notification"
+        ]
+    },
+    {
+        "file": "plugins/phonegap-plugin-push/www/push.js",
+        "id": "phonegap-plugin-push.PushNotification",
+        "clobbers": [
+            "PushNotification"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -398,8 +405,9 @@ module.exports.metadata =
     "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
     "hu.dpal.phonegap.plugins.SpinnerDialog": "1.3.1",
     "org.pbernasconi.progressindicator": "1.1.0",
-    "phonegap-plugin-push": "1.5.2",
-    "cordova-plugin-geolocation": "1.0.1"
+    "cordova-plugin-geolocation": "1.0.1",
+    "cordova-plugin-dialogs": "1.2.0",
+    "phonegap-plugin-push": "1.5.2"
 }
 // BOTTOM OF METADATA
 });

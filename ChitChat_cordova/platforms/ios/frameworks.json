@@ -2,7 +2,7 @@
     "ImageIO.framework": 2,
     "CoreLocation.framework": 3,
     "AVFoundation.framework": 1,
-    "AudioToolbox.framework": 1,
+    "AudioToolbox.framework": 2,
     "QuartzCore.framework": 1,
     "AddressBook.framework": 1,
     "libsqlite3.tbd": 1,

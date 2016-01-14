@@ -212,6 +212,9 @@
         },
         "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "phonegap-plugin-push": {
+            "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
     "dependent_plugins": {}
