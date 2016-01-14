@@ -588,13 +588,14 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cor
 		$ionicLoading.hide();
 	}, function (err) {
 		// error
-		console.error(err);
-		
+		console.warn(err);
+        
 		$ionicLoading.hide();
 
-		$cordovaDialogs.alert('Get your current position timeout.', 'Location Fail.', 'OK')
+		$cordovaDialogs.alert(err.message, 'Location Fail.', 'OK')
 		.then(function () {
 			$scope.closeMapModal();
+		      $ionicLoading.hide();
 		});
 	});
 }
