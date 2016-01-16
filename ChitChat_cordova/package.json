@@ -5,7 +5,15 @@
     "promise": "7.0.4",
     "crypto-js": "3.1.5"
   },
-  "cordovaPlugins": [],
+  "cordovaPlugins": [
+    "cordova-plugin-device",
+    "cordova-plugin-console",
+    "cordova-plugin-whitelist",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
+    "ionic-plugin-keyboard",
+    "phonegap-plugin-push"
+    ],
   "cordovaPlatforms": [
     "ios"
   ]
