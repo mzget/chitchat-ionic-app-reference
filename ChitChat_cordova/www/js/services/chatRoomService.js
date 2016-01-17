@@ -9,7 +9,9 @@
 
     function chatRoomService($http, $sce, $cordovaFile, roomSelected, ConvertDateTime) {
         var service = {
-            getData: getData,
+            init: init,
+            getPersistendMessage: getPersistendMessage,
+            savePersistendMessage: savePersistendMessage,
             all: function () {
                 return chats;
             },
@@ -81,16 +83,28 @@
             clear: clear
         };
 
-        // Some fake testing data
         var chats = [];
-
         var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         var date = [];
         var rid;
 
         return service;
 
-        function getData() { }
+        function init() {
+
+        }
+
+        function getPersistendMessage() {
+            var curRoom = roomSelected.getRoom();
+            messageDAL.getData(curRoom._id, function done(err, messages) {
+                console.warn("getPersistendMessage: ", messages);
+            });
+        }
+
+        function savePersistendMessage() {
+            var curRoom = roomSelected.getRoom();
+            messageDAL.saveData(curRoom._id, chats);
+        }
 
         function clear() {
             chats = [];

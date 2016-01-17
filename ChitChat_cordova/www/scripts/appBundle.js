@@ -1741,15 +1741,23 @@ var SocketComponent = (function () {
     };
     return SocketComponent;
 })();
-var MessageMeta = (function () {
-    function MessageMeta() {
+var MessageDAL = (function () {
+    function MessageDAL(_store) {
+        this.store = _store;
     }
-    return MessageMeta;
-})();
-var Message = (function () {
-    function Message() {
-    }
-    return Message;
+    MessageDAL.prototype.getData = function (rid, done) {
+        this.store.getItem(rid).then(function (value) {
+            done(null, value);
+        }).catch(function (err) {
+            done(err, null);
+        });
+    };
+    MessageDAL.prototype.saveData = function (rid, chatRecord) {
+        this.store.setItem(rid, chatRecord).then(function (value) {
+            console.log("save persistent success", value.length);
+        });
+    };
+    return MessageDAL;
 })();
 var CompanyInfo = (function () {
     function CompanyInfo() {
@@ -1791,6 +1799,16 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+})();
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
+})();
 var MinLocation = (function () {
     function MinLocation() {
     }
@@ -1859,32 +1877,6 @@ var UserRole;
     UserRole[UserRole["admin"] = 4] = "admin";
 })(UserRole || (UserRole = {}));
 ;
-var Dummy = (function () {
-    function Dummy() {
-        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
-        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
-            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
-            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
-        this.serverApi = ChatServer.ServerImplemented.getInstance();
-    }
-    Dummy.prototype.getBot = function () {
-        var r = Math.floor((Math.random() * this.bots.length) + 1);
-        return this.bots[r];
-    };
-    Dummy.prototype.fireChatInRoom = function (myUid) {
-        var _this = this;
-        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
-            if (!err && res !== null) {
-                setInterval(function () {
-                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
-                        console.log(res);
-                    });
-                }, 1000);
-            }
-        });
-    };
-    return Dummy;
-})();
 var SecureService = (function () {
     function SecureService() {
         this.key = "CHITCHAT!@#$%^&*()_+|===";
@@ -1941,6 +1933,32 @@ var SecureService = (function () {
         });
     };
     return SecureService;
+})();
+var Dummy = (function () {
+    function Dummy() {
+        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
+        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
+            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
+            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
+        this.serverApi = ChatServer.ServerImplemented.getInstance();
+    }
+    Dummy.prototype.getBot = function () {
+        var r = Math.floor((Math.random() * this.bots.length) + 1);
+        return this.bots[r];
+    };
+    Dummy.prototype.fireChatInRoom = function (myUid) {
+        var _this = this;
+        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
+            if (!err && res !== null) {
+                setInterval(function () {
+                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
+                        console.log(res);
+                    });
+                }, 1000);
+            }
+        });
+    };
+    return Dummy;
 })();
 var HttpStatusCode = (function () {
     function HttpStatusCode() {

@@ -498,37 +498,32 @@ angular.module('spartan.services', [])
   function getTime(date){
     var dateMsg = new Date(date);
     var minutes = (dateMsg.getMinutes() < 10? '0' : '') + dateMsg.getMinutes();
-    console.log(dateMsg,dateMsg.getHours() + ":"  + minutes);
 
     return dateMsg.getHours() + ":" + minutes;
   }
 
-  function getTimeChatlog(date){
-    var dateMsg = new Date(date);
-    var dateNow = new Date();
+  function getTimeChatlog(date) {
+      var dateMsg = new Date(date);
+      var dateNow = new Date();
 
-    if( dateMsg.getFullYear() == dateNow.getFullYear() &&
-     dateMsg.getMonth() == dateNow.getMonth() &&
-     dateMsg.getDate() == dateNow.getDate() )
-    {
-      return getTime(date);
-    }
-    else if( dateMsg.getFullYear() == dateNow.getFullYear() &&
-     dateMsg.getMonth() == dateNow.getMonth() &&
-     dateMsg.getDate() == dateNow.getDate()-1 )
-    {
-      return "Yesterday";
-    }
-    else if( dateMsg.getFullYear() == dateNow.getFullYear() &&
-     dateMsg.getMonth() == dateNow.getMonth() &&
-     dateMsg.getDate()-7 <= dateNow.getDate() )
-    {
-      return days[dateMsg.getDay()];
-    }
-    else
-    {
-      return dateMsg.getMonth()+'/'+dateMsg.getDate();
-    }
+      if (dateMsg.getFullYear() == dateNow.getFullYear() &&
+       dateMsg.getMonth() == dateNow.getMonth() &&
+       dateMsg.getDate() == dateNow.getDate()) {
+          return getTime(date);
+      }
+      else if (dateMsg.getFullYear() == dateNow.getFullYear() &&
+       dateMsg.getMonth() == dateNow.getMonth() &&
+       dateMsg.getDate() == dateNow.getDate() - 1) {
+          return "Yesterday";
+      }
+      else if (dateMsg.getFullYear() == dateNow.getFullYear() &&
+       dateMsg.getMonth() == dateNow.getMonth() &&
+       dateMsg.getDate() - 7 <= dateNow.getDate()) {
+          return days[dateMsg.getDay()];
+      }
+      else {
+          return dateMsg.getMonth() + '/' + dateMsg.getDate();
+      }
   }
 
   return{

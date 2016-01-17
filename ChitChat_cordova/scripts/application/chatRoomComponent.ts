@@ -136,6 +136,7 @@
                 resolve();
             }
         });
+
         promise.then(function onFulfilled() {
             console.log("get local history done:");
             self.serverImp.JoinChatRoomRequest(chatId, function (err, joinRoomRes) {
@@ -187,13 +188,11 @@
 
                                     localStorage.removeItem(myProfile._id + '_' + chatId);
                                     localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
-
-                                    // location.href = '#/tab/message/' + chatId;
+                                    
                                     callback(joinRoomRes);
                                 });
                             }
                             else {
-                                // location.href = '#/tab/message/' + chatId;
                                 Chats.set(self.chatMessages);
                                 callback(joinRoomRes);
                             }
@@ -207,7 +206,7 @@
 
         }).catch(function onRejected(reason) {
             console.warn("promiss.onRejected", reason);
-            });
+        });
     }
 
     public leaveRoom(room_id, callback: (err, res) => void) {
