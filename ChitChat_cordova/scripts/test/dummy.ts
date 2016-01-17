@@ -30,11 +30,11 @@ class Dummy implements absSpartan.IChatServerListener {
     }
 
     public fireChatInRoom(myUid: string) {
-        this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", (err, res) => {
+        this.serverApi.JoinChatRoomRequest("569b4972a0a522e06723902a", (err, res) => {
             if (!err && res !== null) {
                 this.intervalNumber = setInterval(() => {
                     var temp = this.counter++;
-                    this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
+                    this.chatRoom.chat("569b4972a0a522e06723902a", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
                 }, 2000);

@@ -1897,11 +1897,11 @@ var Dummy = (function () {
     };
     Dummy.prototype.fireChatInRoom = function (myUid) {
         var _this = this;
-        this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", function (err, res) {
+        this.serverApi.JoinChatRoomRequest("569b4972a0a522e06723902a", function (err, res) {
             if (!err && res !== null) {
                 _this.intervalNumber = setInterval(function () {
                     var temp = _this.counter++;
-                    _this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
+                    _this.chatRoom.chat("569b4972a0a522e06723902a", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
                 }, 2000);
