@@ -7,7 +7,7 @@
 
     //    chatRoomService.$inject = ['$http'];
 
-    function chatRoomService($http, $sce, $cordovaFile, roomSelected, ConvertDateTime) {
+    function chatRoomService($http, $rootScope, $sce, $cordovaFile, roomSelected, ConvertDateTime, sharedObjectService, localNotifyService) {
         var service = {
             init: init,
             getPersistendMessage: getPersistendMessage,
@@ -80,24 +80,61 @@
                     }
                 }
             },
-            clear: clear
+            clear: clear,
+            getChatRoomComponent: getChatRoomComponent
         };
 
         var chats = [];
         var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
         var date = [];
         var rid;
+        var chatRoomComponent;
 
         return service;
 
         function init() {
+            var curRoom = roomSelected.getRoom();
+            var chatRoomApi = main.getChatRoomApi();
+            chatRoomComponent = new ChatRoomComponent(main, curRoom._id);
 
+            sharedObjectService.getDataListener().addChatListenerImp(chatRoomComponent);
+            sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
+
+            chatRoomComponent.serviceListener = function (event, newMsg) {
+                if (event === "onChat") {
+                    chats = chatRoomComponent.chatMessages;
+
+                    if (newMsg.sender !== main.dataManager.myProfile._id) {
+                        chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
+                    }
+
+                    $rootScope.$broadcast('onNewMessage', { data: null });
+                }
+                else if (event === "onMessageRead") {
+                    chats = chatRoomComponent.chatMessages;
+                }
+            }
+            chatRoomComponent.notifyEvent = function (event, data) {
+                if (event === ChatServer.ServerEventListener.ON_CHAT) {
+                    if (ionic.Platform.platform() === "ios") {
+                        var appBackground = cordova.plugins.backgroundMode.isActive();
+                        sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                    }
+                    else {
+                        sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                    }
+                }
+            };
         }
 
         function getPersistendMessage() {
             var curRoom = roomSelected.getRoom();
-            messageDAL.getData(curRoom._id, function done(err, messages) {
-                console.warn("getPersistendMessage: ", messages);
+            chatRoomComponent.getPersistentMessage(messageDAL, curRoom._id, function (err, messages) {
+                console.warn("getPersistendMessage: completed.");
+
+                chats = chatRoomComponent.chatMessages;
+
+                $rootScope.$broadcast('onMessagesReady', { data: null });
             });
         }
 
@@ -108,6 +145,10 @@
 
         function clear() {
             chats = [];
+        }
+
+        function getChatRoomComponent() {
+            return chatRoomComponent;
         }
     }
 })();

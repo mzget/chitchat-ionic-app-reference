@@ -84,6 +84,43 @@
 
     }
 
+    public getPersistentMessage(messageDAL: MessageDAL, rid: string, done: (err, messages) => void) {
+        var self = this;
+        messageDAL.getData(rid, (err, messages) => {
+            if (messages !== null) {
+                var chats: Array<Message> = JSON.parse(JSON.stringify(messages));
+
+                async.mapSeries(chats, function iterator(item, result) {
+                    if (item.type === ContentType.Text) {
+                        // console.log("item:", count++, log.type);
+                        self.main.decodeService(item.body, function (err, res) {
+                            if (!err) {
+                                item.body = res;
+                                self.chatMessages.push(item);
+                            }
+                            else {
+                                self.chatMessages.push(item);
+                            }
+
+                            result(null, item);
+                        });
+                    }
+                    else {
+                        self.chatMessages.push(item);
+                        result(null, item);
+                    }
+                }, function done(err, results) {
+                    console.log("decode chats text completed.");
+                });
+            }
+            else {
+                self.chatMessages = [];
+            }
+
+            done(err, messages);
+        });
+    }
+
     public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
         var self = this;
         var myProfile = self.dataManager.myProfile;

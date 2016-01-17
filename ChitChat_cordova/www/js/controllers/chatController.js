@@ -22,7 +22,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    console.log(self.title + " is activate");
 
 		self.currentRoom = roomSelected.getRoom();
-		self.chatRoomComponent = new ChatRoomComponent(main, self.currentRoom._id);
 
 		//<!-- Set up roomname for display title of chatroom.
 		var roomName = self.currentRoom.name;
@@ -43,62 +42,29 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 				if(value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
 			});
 		}
-        
-		addComponent();
-	}
 
-	function addComponent() {
-		sharedObjectService.getDataListener().addChatListenerImp(self.chatRoomComponent);
-		sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
-	
-    	self.chatRoomComponent.serviceListener = function (event, newMsg) {
-			if (event === "onChat") {
-			    chatRoomService.set(self.chatRoomComponent.chatMessages);
-
-				if (newMsg.sender !== main.dataManager.myProfile._id) {
-					chatRoomApi.updateMessageReader(newMsg._id, self.currentRoom._id);
-				}
-
-				setTimeout(function () {
-				    $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
-				}, 1000);
-			}
-			else if (event === "onMessageRead") {
-				chatRoomService.set(self.chatRoomComponent.chatMessages);
-			}
-		}
-		self.chatRoomComponent.notifyEvent = function (event, data) {
-			if (event === ChatServer.ServerEventListener.ON_CHAT) {
-                if(ionic.Platform.platform() === "ios") {
-				    var appBackground = cordova.plugins.backgroundMode.isActive();
-				    sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
-                }
-                else {
-                    sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
-                }
-			}
-		};
-		self.chatRoomComponent.getMessage(self.currentRoom._id, chatRoomService, function (joinRoomRes) {
-		    console.log("getMessageHistory: completed", joinRoomRes.code);
-		    
-		    chatRoomService.set(self.chatRoomComponent.chatMessages);
-
-		    $scope.chat = chatRoomService.all();
-			
-			setTimeout(function () {
-			    $ionicLoading.hide();
-			    $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
-			}, 1000);
-
-			if (joinRoomRes.code !== HttpStatusCode.success) {
-			    //<!-- Block user interface for this chat room.
-			    blockUI(true);
-			} else {
-			    blockUI(false);
-			}
+		$scope.$on('onNewMessage', function (event, data) {
+		    setTimeout(function () {
+		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
+		    }, 1000);
 		});
+		$scope.$on('onMessagesReady', function (event, data) {
+		    $scope.chat = chatRoomService.all();
 
-		chatRoomService.getPersistendMessage();
+		    setTimeout(function () {
+		        $ionicLoading.hide();
+		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
+		    }, 1000);
+
+		    //if (joinRoomRes.code !== HttpStatusCode.success) {
+		    //    //<!-- Block user interface for this chat room.
+		    //    blockUI(true);
+		    //} else {
+		    //    blockUI(false);
+		    //}
+		});
+		chatRoomService.init();
+		chatRoomService.getPersistendMessage(); 
 	}
 
 	function leaveRoom() {

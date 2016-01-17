@@ -230,6 +230,38 @@ var ChatRoomComponent = (function () {
     };
     ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
     };
+    ChatRoomComponent.prototype.getPersistentMessage = function (messageDAL, rid, done) {
+        var self = this;
+        messageDAL.getData(rid, function (err, messages) {
+            if (messages !== null) {
+                var chats = JSON.parse(JSON.stringify(messages));
+                async.mapSeries(chats, function iterator(item, result) {
+                    if (item.type === ContentType.Text) {
+                        self.main.decodeService(item.body, function (err, res) {
+                            if (!err) {
+                                item.body = res;
+                                self.chatMessages.push(item);
+                            }
+                            else {
+                                self.chatMessages.push(item);
+                            }
+                            result(null, item);
+                        });
+                    }
+                    else {
+                        self.chatMessages.push(item);
+                        result(null, item);
+                    }
+                }, function done(err, results) {
+                    console.log("decode chats text completed.");
+                });
+            }
+            else {
+                self.chatMessages = [];
+            }
+            done(err, messages);
+        });
+    };
     ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
@@ -1747,9 +1779,8 @@ var MessageDAL = (function () {
     }
     MessageDAL.prototype.getData = function (rid, done) {
         this.store.getItem(rid).then(function (value) {
+            console.log("get persistent success");
             done(null, value);
-        }).catch(function (err) {
-            done(err, null);
         });
     };
     MessageDAL.prototype.saveData = function (rid, chatRecord) {
