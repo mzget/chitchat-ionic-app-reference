@@ -167,13 +167,14 @@ var ChatLog = (function () {
     return ChatLog;
 })();
 var ChatRoomComponent = (function () {
-    function ChatRoomComponent(main, room_id) {
+    function ChatRoomComponent(main, room_id, messageDAL) {
         this.chatMessages = [];
         this.main = main;
         this.serverImp = this.main.getServerImp();
         this.chatRoomApi = this.main.getChatRoomApi();
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
+        this.messageDAL = messageDAL;
         console.log("constructor ChatRoomComponent");
     }
     ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
@@ -187,12 +188,14 @@ var ChatRoomComponent = (function () {
                     if (!err) {
                         chatMessageImp.body = res;
                         self.chatMessages.push(chatMessageImp);
+                        self.messageDAL.saveData(self.roomId, self.chatMessages);
                         if (!!_this.serviceListener)
                             _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                     }
                     else {
                         console.log(err, res);
                         self.chatMessages.push(chatMessageImp);
+                        self.messageDAL.saveData(self.roomId, self.chatMessages);
                         if (!!_this.serviceListener)
                             _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                     }
@@ -200,6 +203,7 @@ var ChatRoomComponent = (function () {
             }
             else {
                 self.chatMessages.push(chatMessageImp);
+                self.messageDAL.saveData(self.roomId, self.chatMessages);
                 if (!!this.serviceListener)
                     this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
             }
@@ -219,20 +223,25 @@ var ChatRoomComponent = (function () {
         console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
         var self = this;
         var newMsg = JSON.parse(JSON.stringify(dataEvent));
-        this.chatMessages.some(function callback(value) {
-            if (value._id === newMsg._id) {
-                value.readers = newMsg.readers;
-                if (!!self.serviceListener)
-                    self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
-                return true;
-            }
+        var promise = new Promise(function (resolve, reject) {
+            self.chatMessages.some(function callback(value) {
+                if (value._id === newMsg._id) {
+                    value.readers = newMsg.readers;
+                    if (!!self.serviceListener)
+                        self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
+                    resolve();
+                    return true;
+                }
+            });
+        }).then(function (value) {
+            self.messageDAL.saveData(self.roomId, self.chatMessages);
         });
     };
     ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
     };
-    ChatRoomComponent.prototype.getPersistentMessage = function (messageDAL, rid, done) {
+    ChatRoomComponent.prototype.getPersistentMessage = function (rid, done) {
         var self = this;
-        messageDAL.getData(rid, function (err, messages) {
+        self.messageDAL.getData(rid, function (err, messages) {
             if (messages !== null) {
                 var chats = JSON.parse(JSON.stringify(messages));
                 async.mapSeries(chats, function iterator(item, result) {

@@ -56,6 +56,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    }, 1000);
 
+            //<!-- get newer message history.
+		    chatRoomService.getNewerMessageFromNet();
+
 		    //if (joinRoomRes.code !== HttpStatusCode.success) {
 		    //    //<!-- Block user interface for this chat room.
 		    //    blockUI(true);
@@ -65,23 +68,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		});
 		chatRoomService.init();
 		chatRoomService.getPersistendMessage(); 
-	}
-
-	function leaveRoom() {
-		self.chatRoomComponent.leaveRoom(self.currentRoom._id, function callback(err, res) {
-			localStorage.removeItem(myprofile._id + '_' + self.currentRoom._id);
-			localStorage.setItem(myprofile._id + '_' + self.currentRoom._id, JSON.stringify(self.chatRoomComponent.chatMessages));
-			console.warn("save chat history", self.currentRoom.name);
-			chatRoomService.savePersistendMessage();
-
-			self.currentRoom = null;
-			roomSelected.setRoom(self.currentRoom);
-			self.chatRoomComponent.chatMessages = [];
-			chatRoomService.clear();
-
-			sharedObjectService.getDataListener().removeChatListenerImp(self.chatRoomComponent);
-			sharedObjectService.regisNotifyNewMessageEvent();
-		});
 	}
 
 	function blockUI(boo) {
@@ -512,7 +498,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	    //$('#send_message').css({ 'display': 'none' });
 
-	    leaveRoom();
+	    chatRoomService.leaveRoom();
 	});
 });
 

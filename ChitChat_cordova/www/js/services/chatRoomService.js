@@ -11,7 +11,7 @@
         var service = {
             init: init,
             getPersistendMessage: getPersistendMessage,
-            savePersistendMessage: savePersistendMessage,
+            getNewerMessageFromNet: getNewerMessageFromNet,
             all: function () {
                 return chats;
             },
@@ -80,8 +80,8 @@
                     }
                 }
             },
-            clear: clear,
-            getChatRoomComponent: getChatRoomComponent
+            getChatRoomComponent: getChatRoomComponent,
+            leaveRoom: leaveRoom
         };
 
         var chats = [];
@@ -95,7 +95,7 @@
         function init() {
             var curRoom = roomSelected.getRoom();
             var chatRoomApi = main.getChatRoomApi();
-            chatRoomComponent = new ChatRoomComponent(main, curRoom._id);
+            chatRoomComponent = new ChatRoomComponent(main, curRoom._id, messageDAL);
 
             sharedObjectService.getDataListener().addChatListenerImp(chatRoomComponent);
             sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
@@ -129,7 +129,7 @@
 
         function getPersistendMessage() {
             var curRoom = roomSelected.getRoom();
-            chatRoomComponent.getPersistentMessage(messageDAL, curRoom._id, function (err, messages) {
+            chatRoomComponent.getPersistentMessage(curRoom._id, function (err, messages) {
                 console.warn("getPersistendMessage: completed.");
 
                 chats = chatRoomComponent.chatMessages;
@@ -138,13 +138,24 @@
             });
         }
 
-        function savePersistendMessage() {
-            var curRoom = roomSelected.getRoom();
-            messageDAL.saveData(curRoom._id, chats);
+        function getNewerMessageFromNet() {
+
         }
 
         function clear() {
             chats = [];
+        }
+
+        function leaveRoom() {
+            var curRoom = roomSelected.getRoom();
+            chatRoomComponent.leaveRoom(curRoom._id, function callback(err, res) {
+            	roomSelected.setRoom(null);
+            	chatRoomComponent.chatMessages = [];
+            	clear();
+
+            	sharedObjectService.getDataListener().removeChatListenerImp(chatRoomComponent);
+            	sharedObjectService.regisNotifyNewMessageEvent();
+            });
         }
 
         function getChatRoomComponent() {

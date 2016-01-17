@@ -8,9 +8,8 @@
 
     getData(rid: string, done: (err, messages) => void) {
         this.store.getItem(rid).then(function (value) {
+            console.log("get persistent success");
             done(null, value);
-        }).catch(function (err) {
-            done(err, null);
         });
     }
 
