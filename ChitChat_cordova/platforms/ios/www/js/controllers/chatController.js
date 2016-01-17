@@ -1,15 +1,15 @@
 /// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
-.controller('chatController', function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
-	$sce, $cordovaGeolocation, $cordovaDialogs, Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
+.controller('chatController', 
+function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
+	$sce, $cordovaGeolocation, $cordovaDialogs, chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
 
 	var self = this;
-
-	
+    
 	$scope.chat = [];
 
 	var myprofile = main.getDataManager().myProfile;
@@ -41,22 +41,24 @@ angular.module('spartan.chat', [])
 				if(value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
 			});
 		}
+        
 		addComponent();
 	}
 
 	function addComponent() {
-		main.dataListener.addChatListenerImp(self.chatRoomComponent);
+		sharedObjectService.getDataListener().addChatListenerImp(self.chatRoomComponent);
 		sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
-		self.chatRoomComponent.serviceListener = function (event, newMsg) {
+	
+    	self.chatRoomComponent.serviceListener = function (event, newMsg) {
 			if (event === "onChat") {
-				Chats.set(self.chatRoomComponent.chatMessages);
+				chatRoomService.set(self.chatRoomComponent.chatMessages);
 
 				if (newMsg.sender !== main.dataManager.myProfile._id) {
 					chatRoomApi.updateMessageReader(newMsg._id, self.currentRoom._id);
 				}
 			}
 			else if (event === "onMessageRead") {
-				Chats.set(self.chatRoomComponent.chatMessages);
+				chatRoomService.set(self.chatRoomComponent.chatMessages);
 			}
 		}
 		self.chatRoomComponent.notifyEvent = function (event, data) {
@@ -70,10 +72,10 @@ angular.module('spartan.chat', [])
                 }
 			}
 		};
-		self.chatRoomComponent.getMessage(self.currentRoom._id, Chats, function (joinRoomRes) {
+		self.chatRoomComponent.getMessage(self.currentRoom._id, chatRoomService, function (joinRoomRes) {
 		    console.log("getMessageHistory: completed", joinRoomRes.code);
-		    $scope.chat = Chats.all();
-			Chats.set(self.chatRoomComponent.chatMessages);
+		    $scope.chat = chatRoomService.all();
+			chatRoomService.set(self.chatRoomComponent.chatMessages);
 			
 			setTimeout(function () {
 				$ionicLoading.hide();
@@ -97,7 +99,7 @@ angular.module('spartan.chat', [])
 			self.currentRoom = null;
 			roomSelected.setRoom(self.currentRoom);
 			self.chatRoomComponent.chatMessages = [];
-			Chats.clear();
+			chatRoomService.clear();
 			main.dataListener.removeChatListenerImp(self.chatRoomComponent);
 			sharedObjectService.regisNotifyNewMessageEvent();
 		});
@@ -228,7 +230,7 @@ angular.module('spartan.chat', [])
 			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 			console.info('chatController: refresh view');
-			$scope.chat = Chats.all();
+			$scope.chat = chatRoomService.all();
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
 			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
@@ -243,9 +245,9 @@ angular.module('spartan.chat', [])
 			$timeout(countUp, 1000);
 		}
 	}
-	$timeout(countUp, 1000);
+//	$timeout(countUp, 1000);
 	
-	var chats = Chats.all();
+	var chats = chatRoomService.all();
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
@@ -344,7 +346,7 @@ angular.module('spartan.chat', [])
 	}
 	$scope.viewLocation = function (messageId) {
 		console.info('viewLocation');
-		var message = Chats.get(messageId);
+		var message = chatRoomService.get(messageId);
 		viewLocation($scope, message);
 		$scope.mapViewModal.show();
 	}

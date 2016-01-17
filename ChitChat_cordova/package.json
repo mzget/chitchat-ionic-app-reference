@@ -13,7 +13,7 @@
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
     "phonegap-plugin-push"
-    ],
+  ],
   "cordovaPlatforms": [
     "ios"
   ]

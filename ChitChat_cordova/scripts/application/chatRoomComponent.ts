@@ -23,6 +23,7 @@
         
         if(this.roomId === chatMessageImp.rid) {
             console.log("Implement chat msg hear..", chatMessageImp);
+            
             var secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
                 secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {

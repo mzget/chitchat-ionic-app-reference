@@ -1082,7 +1082,7 @@ var ChatServer;
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
             console.log("socket init connecting to: ", _host, _port);
             pomelo.init({ host: _host, port: _port }, function cb(err) {
-                console.log("socket init result: ", err);
+                console.log("socket init result: " + err);
                 callback(err);
             });
         };
