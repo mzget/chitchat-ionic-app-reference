@@ -499,7 +499,8 @@ angular.module('spartan.services', [])
     var dateMsg = new Date(date);
     var minutes = (dateMsg.getMinutes() < 10? '0' : '') + dateMsg.getMinutes();
     console.log(dateMsg,dateMsg.getHours() + ":"  + minutes);
-    return dateMsg.getHours() + ":"  + minutes;
+
+    return dateMsg.getHours() + ":" + minutes;
   }
 
   function getTimeChatlog(date){

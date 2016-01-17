@@ -26,6 +26,7 @@
 			<i class="ion-navicon-round" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;" ng-click="openPopover($event)"></i>
 		</div>
     </ion-nav-buttons>
+
 	<ion-content delegate-handle="mainScroll" style="bottom:44px;">    
         <div ng-controller="ImageController">
         	<div ng-controller="VoiceController">
@@ -144,7 +145,8 @@
                 <br />
 				<label ng-if="message.temp != 'true' "> {{message.time}}</label>
 			</ion-item>
-		</ion-list>
+		
+        </ion-list>
 
 				</div>
 			</div>
