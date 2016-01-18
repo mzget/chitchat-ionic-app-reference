@@ -122,15 +122,18 @@
                         self.chatMessages.push(item);
                         result(null, item);
                     }
-                }, function done(err, results) {
-                    console.log("decode chats text completed.");
+                }, (err, results) => {
+                    console.log("decode chats text completed.", self.chatMessages.length);
+
+                    done(err, messages);
                 });
             }
             else {
                 self.chatMessages = [];
+                
+                console.debug("chatMessages", self.chatMessages.length);
+                done(err, messages);
             }
-
-            done(err, messages);
         });
     }
 
@@ -162,6 +165,7 @@
 
     private getNewerMessageFromNet(lastMessageTime: Date, callback: (err, res) => void) {
         var self = this;
+       
         self.chatRoomApi.getChatHistory(self.roomId, lastMessageTime, function (err, result) {
             var histories = [];
             if (result.code === 200) {
@@ -338,5 +342,10 @@
             console.log("leave room", JSON.stringify(res));
             callback(err, res);
         });
+    }
+
+    public joinRoom(callback: (err, res) => void) {
+        var self = this;
+        self.serverImp.JoinChatRoomRequest(self.roomId, callback);
     }
 }

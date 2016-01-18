@@ -131,8 +131,7 @@
         function getPersistendMessage() {
             var curRoom = roomSelected.getRoom();
             chatRoomComponent.getPersistentMessage(curRoom._id, function (err, messages) {
-                var printCount = (messages != null) ? messages.length : null;
-                console.log("getPersistendMessage: completed.", printCount);
+                console.log("getPersistendMessage: completed.", chatRoomComponent.chatMessages.length);
 
                 chats = chatRoomComponent.chatMessages;
 
@@ -144,7 +143,7 @@
 
         function getNewerMessageFromNet() {
             chatRoomComponent.getNewerMessageRecord(function done(err, result) {
-
+                $rootScope.$broadcast('onJoinRoomReady', { data: null });
             });
         }
 

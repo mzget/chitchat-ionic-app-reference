@@ -55,15 +55,18 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		        $ionicLoading.hide();
 		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    }, 1000);
-
-
-		    //if (joinRoomRes.code !== HttpStatusCode.success) {
-		    //    //<!-- Block user interface for this chat room.
-		    //    blockUI(true);
-		    //} else {
-		    //    blockUI(false);
-		    //}
 		});
+		$scope.$on('onJoinRoomReady', function (event, data) {
+		    chatRoomService.getChatRoomComponent().joinRoom(function cb(err, result) {
+		        if (result.code !== HttpStatusCode.success) {
+		            //<!-- Block user interface for this chat room.
+		            blockUI(true);
+		        } else {
+		            blockUI(false);
+		        }
+		    });
+		});
+		
 		chatRoomService.init();
 		chatRoomService.getPersistendMessage(); 
 	}
