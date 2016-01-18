@@ -324,7 +324,8 @@ var ChatRoomComponent = (function () {
                         }
                     }, function done(err) {
                         console.log("get newer message completed.");
-                        self.messageDAL.saveData(self.roomId, self.chatMessages);
+                        self.messageDAL.saveData(self.roomId, self.chatMessages, function (err, result) {
+                        });
                     });
                 }
                 else {
@@ -334,7 +335,9 @@ var ChatRoomComponent = (function () {
             else {
                 console.warn("WTF god only know.", result.message);
             }
-            callback(null, result.code);
+            if (callback !== null) {
+                callback(null, result.code);
+            }
         });
     };
     ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
@@ -1862,9 +1865,12 @@ var MessageDAL = (function () {
             done(null, value);
         });
     };
-    MessageDAL.prototype.saveData = function (rid, chatRecord) {
+    MessageDAL.prototype.saveData = function (rid, chatRecord, callback) {
         this.store.setItem(rid, chatRecord).then(function (value) {
             console.log("save persistent success", value.length);
+            if (callback != null) {
+                callback(null, value);
+            }
         });
     };
     MessageDAL.prototype.removeData = function () { };

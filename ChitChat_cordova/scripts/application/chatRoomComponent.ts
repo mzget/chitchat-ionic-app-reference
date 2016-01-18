@@ -137,7 +137,7 @@
         });
     }
 
-    public getNewerMessageRecord(callback: (err, res) => void) {
+    public getNewerMessageRecord(callback?: (err, res) => void) {
         var self = this;
         var lastMessageTime = new Date();
         var promise = new Promise(function promise(resolve, reject) {
@@ -196,7 +196,9 @@
                     }, function done(err) {
                         console.log("get newer message completed.");
                         //<!-- Save persistent chats log here.
-                        self.messageDAL.saveData(self.roomId, self.chatMessages);
+                        self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
+ //                           self.getNewerMessageRecord();
+                        });
                     });
                 }
                 else {
@@ -206,8 +208,10 @@
             else {
                 console.warn("WTF god only know.", result.message);
             }
-            
-            callback(null, result.code);
+
+            if (callback !== null) {
+                callback(null, result.code);
+            }
         });
     }
 

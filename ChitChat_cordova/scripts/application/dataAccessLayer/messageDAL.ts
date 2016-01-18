@@ -13,9 +13,12 @@
         });
     }
 
-    saveData(rid: string, chatRecord: Array<any>) {
+    saveData(rid: string, chatRecord: Array<any>, callback?: (err, result) => void) {
         this.store.setItem(rid, chatRecord).then(function (value) {
             console.log("save persistent success", value.length);
+            if (callback != null) {
+                callback(null, value);
+            }
         });
     }
 
