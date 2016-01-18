@@ -7,7 +7,7 @@
         .controller('noConnection', noConnection);
 
     function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, $cordovaDialogs, 
-     networkService, chatslogService) {
+     networkService, chatslogService, dbAccessService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -19,6 +19,7 @@
             activateBackground();
             activate();
             setConfigTheme();
+
             main.setDataManager(dataManager);
             main.setServerListener(serverEvents);
             main.setServerImp(server);

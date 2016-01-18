@@ -18,4 +18,16 @@
             console.log("save persistent success", value.length);
         });
     }
+
+    removeData() { }
+
+    clearData() {
+        this.store.clear((err) => {
+            if (err != null) {
+                console.warn("Clear database fail", err);
+            }
+
+            console.log("message db now empty.");
+        });
+    }
 }

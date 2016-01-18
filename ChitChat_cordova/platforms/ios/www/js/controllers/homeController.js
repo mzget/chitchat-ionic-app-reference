@@ -8,13 +8,13 @@
 	//homeController.$inject = ['$location'];
 
 	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform,
-		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService) {
+		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
 
 		function activate() {
-
+		    dbAccessService.setMessageDAL(messageDAL);
 			localNotifyService.registerPermission();
 			sharedObjectService.createNotifyManager(main);
 			chatslogService.init();

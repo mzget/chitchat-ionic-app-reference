@@ -166,26 +166,28 @@
             var histories = [];
             if (result.code === 200) {
                 histories = result.data;
-                
+                console.log("Newer message counts.", histories.length);
                 if (histories.length > 0) {
-                    async.eachSeries(histories, function (item, cb) {
-                        var chatMessageImp: Message = JSON.parse(JSON.stringify(item));
-                        if (chatMessageImp.type === ContentType.Text) {
-                            self.main.decodeService(chatMessageImp.body, function (err, res) {
+
+                    var messages: Array<Message> = JSON.parse(JSON.stringify(histories));
+                    
+                    async.mapSeries(messages, function (item, cb) {
+                        if (item.type.toString() === ContentType[ContentType.Text]) {
+                            self.main.decodeService(item.body, function (err, res) {
                                 if (!err) {
-                                    chatMessageImp.body = res;
-                                    self.chatMessages.push(chatMessageImp);
-                                    cb();
+                                    item.body = res;
+                                    self.chatMessages.push(item);
                                 }
                                 else {
-                                    self.chatMessages.push(chatMessageImp);
-                                    cb();
+                                    self.chatMessages.push(item);
                                 }
+
+                                cb(null, item);
                             });
                         }
                         else {
-                            self.chatMessages.push(chatMessageImp);
-                            cb();
+                            self.chatMessages.push(item);
+                            cb(null, item);
                         }
                     }, function done(err) {
                         console.log("get newer message completed.");
