@@ -1006,7 +1006,7 @@ var ChatServer;
             var self = this;
             var promiseForFileConfig = new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: "../www/configs/appconfig.json",
+                    url: "../configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
                         self.appConfig = JSON.parse(JSON.stringify(config));
