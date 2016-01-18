@@ -271,6 +271,70 @@ var ChatRoomComponent = (function () {
             done(err, messages);
         });
     };
+    ChatRoomComponent.prototype.getNewerMessageRecord = function (callback) {
+        var self = this;
+        var lastMessageTime = new Date();
+        var promise = new Promise(function promise(resolve, reject) {
+            if (self.chatMessages[self.chatMessages.length - 1] != null) {
+                lastMessageTime = self.chatMessages[self.chatMessages.length - 1].createTime;
+                resolve();
+            }
+            else {
+                var roomAccess = self.dataManager.getRoomAccess();
+                roomAccess.some(function (val, id, arr) {
+                    if (val.roomId === self.roomId) {
+                        lastMessageTime = val.accessTime;
+                        resolve();
+                        return true;
+                    }
+                });
+            }
+        });
+        promise.then(function (value) {
+            self.getNewerMessageFromNet(lastMessageTime, callback);
+        });
+    };
+    ChatRoomComponent.prototype.getNewerMessageFromNet = function (lastMessageTime, callback) {
+        var self = this;
+        self.chatRoomApi.getChatHistory(self.roomId, lastMessageTime, function (err, result) {
+            var histories = [];
+            if (result.code === 200) {
+                histories = result.data;
+                if (histories.length > 0) {
+                    async.eachSeries(histories, function (item, cb) {
+                        var chatMessageImp = JSON.parse(JSON.stringify(item));
+                        if (chatMessageImp.type === ContentType.Text) {
+                            self.main.decodeService(chatMessageImp.body, function (err, res) {
+                                if (!err) {
+                                    chatMessageImp.body = res;
+                                    self.chatMessages.push(chatMessageImp);
+                                    cb();
+                                }
+                                else {
+                                    self.chatMessages.push(chatMessageImp);
+                                    cb();
+                                }
+                            });
+                        }
+                        else {
+                            self.chatMessages.push(chatMessageImp);
+                            cb();
+                        }
+                    }, function done(err) {
+                        console.log("get newer message completed.");
+                        self.messageDAL.saveData(self.roomId, self.chatMessages);
+                    });
+                }
+                else {
+                    console.log("Have no newer message.");
+                }
+            }
+            else {
+                console.warn("WTF god only know.", result.message);
+            }
+            callback(null, result.code);
+        });
+    };
     ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;

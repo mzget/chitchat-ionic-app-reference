@@ -56,8 +56,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    }, 1000);
 
-            //<!-- get newer message history.
-		    chatRoomService.getNewerMessageFromNet();
 
 		    //if (joinRoomRes.code !== HttpStatusCode.success) {
 		    //    //<!-- Block user interface for this chat room.

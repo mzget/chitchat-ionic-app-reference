@@ -7,7 +7,8 @@
 
     //    chatRoomService.$inject = ['$http'];
 
-    function chatRoomService($http, $rootScope, $sce, $cordovaFile, roomSelected, ConvertDateTime, sharedObjectService, localNotifyService) {
+    function chatRoomService($http, $rootScope, $sce, $cordovaFile, 
+    roomSelected, ConvertDateTime, sharedObjectService, localNotifyService) {
         var service = {
             init: init,
             getPersistendMessage: getPersistendMessage,
@@ -130,16 +131,18 @@
         function getPersistendMessage() {
             var curRoom = roomSelected.getRoom();
             chatRoomComponent.getPersistentMessage(curRoom._id, function (err, messages) {
-                console.warn("getPersistendMessage: completed.");
+                console.warn("getPersistendMessage: completed.", messages.length);
 
                 chats = chatRoomComponent.chatMessages;
 
                 $rootScope.$broadcast('onMessagesReady', { data: null });
+
+                getNewerMessageFromNet();
             });
         }
 
         function getNewerMessageFromNet() {
-
+            chatRoomComponent.getNewerMessageRecord();
         }
 
         function clear() {
