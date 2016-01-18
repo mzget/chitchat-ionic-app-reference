@@ -137,7 +137,7 @@
         });
     }
 
-    public getNewerMessageRecord(callback?: (err, res) => void) {
+    public getNewerMessageRecord(callback: (err, res) => void) {
         var self = this;
         var lastMessageTime = new Date();
         var promise = new Promise(function promise(resolve, reject) {
