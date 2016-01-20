@@ -167,13 +167,14 @@ var ChatLog = (function () {
     return ChatLog;
 })();
 var ChatRoomComponent = (function () {
-    function ChatRoomComponent(main, room_id) {
+    function ChatRoomComponent(main, room_id, messageDAL) {
         this.chatMessages = [];
         this.main = main;
         this.serverImp = this.main.getServerImp();
         this.chatRoomApi = this.main.getChatRoomApi();
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
+        this.messageDAL = messageDAL;
         console.log("constructor ChatRoomComponent");
     }
     ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
@@ -187,12 +188,14 @@ var ChatRoomComponent = (function () {
                     if (!err) {
                         chatMessageImp.body = res;
                         self.chatMessages.push(chatMessageImp);
+                        self.messageDAL.saveData(self.roomId, self.chatMessages);
                         if (!!_this.serviceListener)
                             _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                     }
                     else {
                         console.log(err, res);
                         self.chatMessages.push(chatMessageImp);
+                        self.messageDAL.saveData(self.roomId, self.chatMessages);
                         if (!!_this.serviceListener)
                             _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                     }
@@ -200,6 +203,7 @@ var ChatRoomComponent = (function () {
             }
             else {
                 self.chatMessages.push(chatMessageImp);
+                self.messageDAL.saveData(self.roomId, self.chatMessages);
                 if (!!this.serviceListener)
                     this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
             }
@@ -219,16 +223,122 @@ var ChatRoomComponent = (function () {
         console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
         var self = this;
         var newMsg = JSON.parse(JSON.stringify(dataEvent));
-        this.chatMessages.some(function callback(value) {
-            if (value._id === newMsg._id) {
-                value.readers = newMsg.readers;
-                if (!!self.serviceListener)
-                    self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
-                return true;
-            }
+        var promise = new Promise(function (resolve, reject) {
+            self.chatMessages.some(function callback(value) {
+                if (value._id === newMsg._id) {
+                    value.readers = newMsg.readers;
+                    if (!!self.serviceListener)
+                        self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
+                    resolve();
+                    return true;
+                }
+            });
+        }).then(function (value) {
+            self.messageDAL.saveData(self.roomId, self.chatMessages);
         });
     };
     ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
+    };
+    ChatRoomComponent.prototype.getPersistentMessage = function (rid, done) {
+        var self = this;
+        self.messageDAL.getData(rid, function (err, messages) {
+            if (messages !== null) {
+                var chats = JSON.parse(JSON.stringify(messages));
+                async.mapSeries(chats, function iterator(item, result) {
+                    if (item.type === ContentType.Text) {
+                        self.main.decodeService(item.body, function (err, res) {
+                            if (!err) {
+                                item.body = res;
+                                self.chatMessages.push(item);
+                            }
+                            else {
+                                self.chatMessages.push(item);
+                            }
+                            result(null, item);
+                        });
+                    }
+                    else {
+                        self.chatMessages.push(item);
+                        result(null, item);
+                    }
+                }, function (err, results) {
+                    console.log("decode chats text completed.", self.chatMessages.length);
+                    done(err, messages);
+                });
+            }
+            else {
+                self.chatMessages = [];
+                console.debug("chatMessages", self.chatMessages.length);
+                done(err, messages);
+            }
+        });
+    };
+    ChatRoomComponent.prototype.getNewerMessageRecord = function (callback) {
+        var self = this;
+        var lastMessageTime = new Date();
+        var promise = new Promise(function promise(resolve, reject) {
+            if (self.chatMessages[self.chatMessages.length - 1] != null) {
+                lastMessageTime = self.chatMessages[self.chatMessages.length - 1].createTime;
+                resolve();
+            }
+            else {
+                var roomAccess = self.dataManager.getRoomAccess();
+                roomAccess.some(function (val, id, arr) {
+                    if (val.roomId === self.roomId) {
+                        lastMessageTime = val.accessTime;
+                        resolve();
+                        return true;
+                    }
+                });
+            }
+        });
+        promise.then(function (value) {
+            self.getNewerMessageFromNet(lastMessageTime, callback);
+        });
+    };
+    ChatRoomComponent.prototype.getNewerMessageFromNet = function (lastMessageTime, callback) {
+        var self = this;
+        self.chatRoomApi.getChatHistory(self.roomId, lastMessageTime, function (err, result) {
+            var histories = [];
+            if (result.code === 200) {
+                histories = result.data;
+                console.log("Newer message counts.", histories.length);
+                if (histories.length > 0) {
+                    var messages = JSON.parse(JSON.stringify(histories));
+                    async.mapSeries(messages, function (item, cb) {
+                        if (item.type.toString() === ContentType[ContentType.Text]) {
+                            self.main.decodeService(item.body, function (err, res) {
+                                if (!err) {
+                                    item.body = res;
+                                    self.chatMessages.push(item);
+                                }
+                                else {
+                                    self.chatMessages.push(item);
+                                }
+                                cb(null, item);
+                            });
+                        }
+                        else {
+                            self.chatMessages.push(item);
+                            cb(null, item);
+                        }
+                    }, function done(err) {
+                        console.log("get newer message completed.");
+                        self.messageDAL.saveData(self.roomId, self.chatMessages, function (err, result) {
+                        });
+                    });
+                }
+                else {
+                    console.log("Have no newer message.");
+                }
+            }
+            else {
+                console.warn("WTF god only know.", result.message);
+            }
+            if (callback !== null) {
+                callback(null, result.code);
+            }
+        });
     };
     ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;
@@ -346,6 +456,10 @@ var ChatRoomComponent = (function () {
             console.log("leave room", JSON.stringify(res));
             callback(err, res);
         });
+    };
+    ChatRoomComponent.prototype.joinRoom = function (callback) {
+        var self = this;
+        self.serverImp.JoinChatRoomRequest(self.roomId, callback);
     };
     return ChatRoomComponent;
 })();
@@ -1741,15 +1855,34 @@ var SocketComponent = (function () {
     };
     return SocketComponent;
 })();
-var MessageMeta = (function () {
-    function MessageMeta() {
+var MessageDAL = (function () {
+    function MessageDAL(_store) {
+        this.store = _store;
     }
-    return MessageMeta;
-})();
-var Message = (function () {
-    function Message() {
-    }
-    return Message;
+    MessageDAL.prototype.getData = function (rid, done) {
+        this.store.getItem(rid).then(function (value) {
+            console.log("get persistent success");
+            done(null, value);
+        });
+    };
+    MessageDAL.prototype.saveData = function (rid, chatRecord, callback) {
+        this.store.setItem(rid, chatRecord).then(function (value) {
+            console.log("save persistent success", value.length);
+            if (callback != null) {
+                callback(null, value);
+            }
+        });
+    };
+    MessageDAL.prototype.removeData = function () { };
+    MessageDAL.prototype.clearData = function () {
+        this.store.clear(function (err) {
+            if (err != null) {
+                console.warn("Clear database fail", err);
+            }
+            console.log("message db now empty.");
+        });
+    };
+    return MessageDAL;
 })();
 var CompanyInfo = (function () {
     function CompanyInfo() {
@@ -1791,6 +1924,16 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+})();
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
+})();
 var MinLocation = (function () {
     function MinLocation() {
     }
@@ -1859,32 +2002,6 @@ var UserRole;
     UserRole[UserRole["admin"] = 4] = "admin";
 })(UserRole || (UserRole = {}));
 ;
-var Dummy = (function () {
-    function Dummy() {
-        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
-        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
-            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
-            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
-        this.serverApi = ChatServer.ServerImplemented.getInstance();
-    }
-    Dummy.prototype.getBot = function () {
-        var r = Math.floor((Math.random() * this.bots.length) + 1);
-        return this.bots[r];
-    };
-    Dummy.prototype.fireChatInRoom = function (myUid) {
-        var _this = this;
-        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
-            if (!err && res !== null) {
-                setInterval(function () {
-                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
-                        console.log(res);
-                    });
-                }, 1000);
-            }
-        });
-    };
-    return Dummy;
-})();
 var SecureService = (function () {
     function SecureService() {
         this.key = "CHITCHAT!@#$%^&*()_+|===";
@@ -1941,6 +2058,32 @@ var SecureService = (function () {
         });
     };
     return SecureService;
+})();
+var Dummy = (function () {
+    function Dummy() {
+        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
+        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
+            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
+            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
+        this.serverApi = ChatServer.ServerImplemented.getInstance();
+    }
+    Dummy.prototype.getBot = function () {
+        var r = Math.floor((Math.random() * this.bots.length) + 1);
+        return this.bots[r];
+    };
+    Dummy.prototype.fireChatInRoom = function (myUid) {
+        var _this = this;
+        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
+            if (!err && res !== null) {
+                setInterval(function () {
+                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
+                        console.log(res);
+                    });
+                }, 1000);
+            }
+        });
+    };
+    return Dummy;
 })();
 var HttpStatusCode = (function () {
     function HttpStatusCode() {

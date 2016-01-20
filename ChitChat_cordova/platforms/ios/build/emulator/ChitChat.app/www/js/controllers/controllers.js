@@ -118,7 +118,7 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
+.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, dbAccessService) {
     $scope.settings = {
         logOut: true,
     };
@@ -172,6 +172,8 @@ angular.module('spartan.controllers', [])
         console.warn("logOut...");
         server.logout();
         server.disposeClient();
+
+        dbAccessService.clearMessageDAL();
         //$state.go('tab.login');
         location.href = '';
     }

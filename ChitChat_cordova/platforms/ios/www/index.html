@@ -35,6 +35,7 @@
     <script src="js/services/sharedObjectService.js"></script>
     <script src="js/services/chatslogService.js"></script>
     <script src="js/services/chatRoomService.js"></script>
+    <script src="js/services/dbAccessService.js"></script>
     <script src="js/template.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="lib/async/dist/async.js"></script>
@@ -56,6 +57,11 @@
 		var server = ChatServer.ServerImplemented.prototype;
 		var serverEvents = ChatServer.ServerEventListener.prototype;
 		var dataManager = DataManager.prototype;
+
+		var messageStore = localforage.createInstance({
+		    name: "message"
+		});
+		var messageDAL = new MessageDAL(messageStore);
 	</script>
 
     <ion-nav-bar class="bar-stable" style="display:none;">
