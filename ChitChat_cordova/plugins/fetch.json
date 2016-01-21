@@ -87,14 +87,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "phonegap-plugin-push": {
-        "source": {
-            "type": "registry",
-            "id": "phonegap-plugin-push"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-device": {
         "source": {
             "type": "registry",
@@ -150,6 +142,14 @@
         "source": {
             "type": "registry",
             "id": "hu.dpal.phonegap.plugins.spinnerdialog"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "phonegap-plugin-push": {
+        "source": {
+            "type": "registry",
+            "id": "phonegap-plugin-push"
         },
         "is_top_level": true,
         "variables": {}
