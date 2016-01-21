@@ -64,11 +64,11 @@
                             chats[i].body = cordova.file.documentsDirectory + chats[i]._id;
                         } else {
 
-                            chats[i].bodyUrl = $sce.trustAsResourceUrl('http://203.113.25.44' + chats[i].body);
+                            chats[i].bodyUrl = $sce.trustAsResourceUrl('http://203.113.25.66' + chats[i].body);
                             var chatBody = chats[i].body;
                             var splitChat = chatBody.split(".");
                             var nameThumbnail = splitChat[0] + '.png';
-                            chats[i].thumbnail = $sce.trustAsResourceUrl('http://203.113.25.44' + nameThumbnail);
+                            chats[i].thumbnail = $sce.trustAsResourceUrl('http://203.113.25.66' + nameThumbnail);
                         }
                     }
                     else if (chats[i].type === ContentType[ContentType.Location]) {

@@ -19,7 +19,7 @@
 
 
         <ion-item class="item item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false|filter:search" id="{{member.id}}">
-            <img ng-src="http://203.113.25.44{{member.image}}"/> 
+            <img ng-src="http://203.113.25.66{{member.image}}"/> 
             <div> {{member.displayname}} </div> 
             <div ng-show="member.role!=0 && member.role!=1"> {{member.role}} : {{member.jobPosition}} </div>
             <div ng-show="member.role==0 || member.role==1"> {{member.textRole}} : {{member.jobPosition}} </div>

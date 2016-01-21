@@ -23,7 +23,7 @@
             <label class="checkbox">
               <input type="checkbox" ng-model="member.checked" ng-click="checked(member._id,member.checked)"/>
             </label>
-            <img ng-src="http://203.113.25.44{{member.image}}"/> 
+            <img ng-src="http://203.113.25.66{{member.image}}"/> 
             <div class="member-name"> {{member.displayname}} </div> 
         </ion-item>
 
@@ -32,7 +32,7 @@
             <label class="checkbox">
               <input type="checkbox" ng-model="member.checked" ng-disabled="myProfile._id==member._id" ng-click="checked(member._id,member.checked)" />
             </label>
-            <img ng-src="http://203.113.25.44{{member.image}}"/> 
+            <img ng-src="http://203.113.25.66{{member.image}}"/> 
             <div class="member-name"> {{member.displayname}} </div> 
             <a class="button button-icon icon ion-compose" style="position:absolute; right:0px; margin-right:10px; z-index:4" ng-click="openSelectRole(member._id)"></a>
         </ion-item>
