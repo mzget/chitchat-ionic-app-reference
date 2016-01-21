@@ -58,6 +58,7 @@ static char launchNotificationKey;
     PFInstallation *currentInstallation = [PFInstallation currentInstallation];
     [currentInstallation setDeviceTokenFromData:deviceToken];
     [currentInstallation saveInBackground];
+    NSLog(@"currentInstallation %@", currentInstallation.deviceToken);
     
     PushPlugin *pushHandler = [self getCommandInstance:@"PushNotification"];
     [pushHandler didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
@@ -147,6 +148,12 @@ static char launchNotificationKey;
         application.applicationIconBadgeNumber = 0;
     } else {
         NSLog(@"PushPlugin skip clear badge");
+        //<!-- Set badge count for parse push service.
+        PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+        currentInstallation.badge = application.applicationIconBadgeNumber;
+        [currentInstallation saveEventually];
+        
+        NSLog(@"PushPlugin skip clear badge %ld", (long)currentInstallation.badge);
     }
 
     if (self.launchNotification) {
@@ -157,6 +164,17 @@ static char launchNotificationKey;
     }
 }
 
+-(void)applicationDidEnterBackground:(UIApplication *)application {
+    
+    NSLog(@"applicationDidEnterBackground");
+    
+    //<!-- Set badge count for parse push service.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    currentInstallation.badge = application.applicationIconBadgeNumber;
+    [currentInstallation saveEventually];
+    
+    NSLog(@"PushPlugin skip clear badge %ld", (long)currentInstallation.badge);
+}
 
 - (void)application:(UIApplication *) application handleActionWithIdentifier: (NSString *) identifier
 forRemoteNotification: (NSDictionary *) notification completionHandler: (void (^)()) completionHandler {
