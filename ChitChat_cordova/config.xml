@@ -6,7 +6,7 @@
   <preference name="EnableViewportScale" value="false" />
   <preference name="KeyboardDisplayRequiresUserAction" value="true" />
   <preference name="MediaPlaybackRequiresUserAction" value="false" />
-  <preference name="SuppressesIncrementalRendering" value="false" />
+  <preference name="SuppressesIncrementalRendering" value="True" />
   <preference name="GapBetweenPages" value="0" />
   <preference name="PageLength" value="0" />
   <preference name="PaginationBreakingMode" value="page" />
@@ -22,7 +22,7 @@
   <allow-intent href="sms:*" />
   <allow-intent href="mailto:*" />
   <allow-intent href="geo:*" />
-  <name>ChitChat</name>
+  <name>Mercury-dev</name>
   <description>
        ChitChat team communication, A messaging app for teams.
     </description>
@@ -86,4 +86,8 @@
       <vs:name>ChitChat</vs:name>
     </vs:platformSpecificWidget>
   </vs:platformSpecificValues>
+  <preference name="Fullscreen" value="True" />
+  <preference name="KeepRunning" value="True" />
+  <preference name="ShowTitle" value="True" />
+  <preference name="InAppBrowserStorageEnabled" value="True" />
 </widget>
