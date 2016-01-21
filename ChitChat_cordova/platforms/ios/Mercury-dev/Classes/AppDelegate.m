@@ -30,6 +30,8 @@
 
 #import <Cordova/CDVPlugin.h>
 
+#import <Parse/Parse.h>
+
 @implementation AppDelegate
 
 @synthesize window, viewController;
@@ -84,6 +86,18 @@
 
     // NOTE: To customize the view's frame size (which defaults to full screen), override
     // [self.viewController viewWillAppear:] in your view controller.
+    
+    //<!-- Parse.
+    [Parse setApplicationId:@"J9qL91hE6QFAgPh1rLPhuHJHasMFuhKl70yOx75t"
+                  clientKey:@"xoyzZdbyU8kkC5Wo8T5PWSrGNtEjBR979X1vUfY8"];
+    // Register for Push Notitications
+    UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
+                                                    UIUserNotificationTypeBadge |
+                                                    UIUserNotificationTypeSound);
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
+                                                                             categories:nil];
+    [application registerUserNotificationSettings:settings];
+    [application registerForRemoteNotifications];
 
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
