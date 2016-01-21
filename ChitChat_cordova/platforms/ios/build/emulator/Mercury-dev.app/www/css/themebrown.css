@@ -1,0 +1,74 @@
+/* main*/
+[nav-bar-transition="ios"] [nav-bar="active"] .bar, [nav-bar-transition="ios"] [nav-bar="entering"] .bar {
+    background: transparent none repeat scroll 0% 0%;
+    background-color: #764422;
+}
+
+.bar-header {
+    top: 0px;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    background-color: #764422;
+}
+
+.button.button-block {
+    background-color: #764422;
+    color: #fff;
+}
+
+/* bar*/
+.btn-nav {
+    background-color: #D39871;
+}
+
+.card .item:first-child {
+    border-top: 0px none;
+    background-color: #D39871;
+}
+
+/* main*/
+.tabs {
+    display: flex;
+    justify-content: center;
+    transform: translate3d(0px, 0px, 0px);
+    border-color: #B2B2B2;
+    background-color: #764422;
+    background-image: linear-gradient(0deg, #B2B2B2, #B2B2B2 50%, transparent 50%);
+    color: #444;
+    position: absolute;
+    bottom: 0px;
+    z-index: 5;
+    width: 100%;
+    height: 49px;
+    border-style: solid;
+    border-top: 1px solid #B2B2B2;
+    background-size: 0px auto;
+    line-height: 49px;
+}
+
+/* main*/
+.bar.bar-light {
+    border-color: #DDD;
+    background-color: #764422;
+    color: #444;
+}
+
+/* sub*/
+.group-detail {
+    text-align: center;
+    background-color: #9E663F;
+}
+
+
+
+ion-tabs.tabs-color-active-positive .tab-item {
+    color: #FBFBFB;
+}
+
+ion-tabs.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-color-active-positive .tab-item.active, ion-tabs.tabs-color-active-positive .tab-item.activated {
+    color:rgb(252, 253, 255);
+}
+
+.bar.bar-stable .title {
+    color: #FFFCFC;
+}

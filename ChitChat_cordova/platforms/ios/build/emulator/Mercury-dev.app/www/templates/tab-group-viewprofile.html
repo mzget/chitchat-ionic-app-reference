@@ -1,0 +1,50 @@
+<ion-view view-title="{{title}}" ng-controller="ImageController" hide-tab-bar>
+	<ion-nav-buttons side="right">
+        <button ng-show="edit == 'true' && ( sourceImage != '' || chat.displayname != model.displayname || chat.status != model.status )" 
+        class="button button-clear button-positive" id="viewprofile-save" ng-click="save()">Save</button>
+    </ion-nav-buttons>
+
+  <ion-content>
+    <ion-list>
+
+    <div class="padding group-detail">
+    	<img class="avatar" ng-show="!images.length" ng-src="http://203.113.25.66/timthumb.php?src={{chat.image}}" 
+        ng-click="edit!='true'||addImg()"/>
+        <img class="avatar" ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" 
+        ng-click="addImg()"/>
+    </div>
+
+      <div class="list">
+        <label class="item item-input">
+            <div class="input-label"> Display </div>
+            <input type="text" value="{{chat.displayname}}" id="viewprofile-input-display" disabled style="background:none;" data-ng-model="model.displayname">
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Status </div>
+            <input type="text" value="{{chat.status}}" id="viewprofile-input-status" disabled style="background:none;" data-ng-model="model.status">
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Name </div>
+            <input type="text" value="{{chat.firstname}} {{chat.lastname}}" disabled style="background:none;">
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> User Level </div>
+            <input type="text" value="{{chat.role}}" disabled style="background:none;">
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Tel. </div>
+            <input type="text" value="{{chat.tel}}" disabled style="background:none;">
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Email </div>
+            <input type="text" value="{{chat.mail}}" disabled style="background:none;">
+        </label>
+      </div>
+    </ion-list>
+  </ion-content>
+</ion-view>
