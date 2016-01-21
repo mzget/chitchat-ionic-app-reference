@@ -6,9 +6,9 @@ Environment  LANG=en_US.US-ASCII PATH=/Applications/Xcode.app/Contents/Developer
 BuilderIdent ProcessPCH\ /Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/build/sharedpch/ChitChat-Prefix-azbuosbzfhgvlhesglgzrvenxbpm/ChitChat-Prefix.pch.pch\ ChitChat/ChitChat-Prefix.pch\ normal\ i386\ objective-c\ com.apple.compilers.llvm.clang.1_0.compiler
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.2.sdk/SDKSettings.plist 0 1447712964 1640 33204
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.2.sdk/System/Library/CoreServices/SystemVersion.plist 0 1447466390 413 33188
-InputFile    /Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/ChitChat/ChitChat-Prefix.pch 0 1453016547 959 33188
+InputFile    /Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/ChitChat/ChitChat-Prefix.pch 0 1453371303 959 33188
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.2.sdk/SDKSettings.plist 0 1447712964 1640 33204
-InputFile    /Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/ChitChat/ChitChat-Prefix.pch 0 1453016547 959 33188
+InputFile    /Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/ChitChat/ChitChat-Prefix.pch 0 1453371303 959 33188
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h 0 1445641514 6314 33188
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.2.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h 0 1445641014 2959 33188
 InputFile    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator9.2.sdk/usr/include/sys/types.h 0 1447459546 8057 33188
