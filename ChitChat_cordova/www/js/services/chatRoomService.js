@@ -49,11 +49,13 @@
                          dateMsg.getMonth() == dateNow.getMonth() &&
                          dateMsg.getDate() == dateNow.getDate()) {
                             chats[i].firstMsg = "Today";
-                        } else if (dateMsg.getFullYear() == dateNow.getFullYear() &&
+                        }
+                        else if (dateMsg.getFullYear() == dateNow.getFullYear() &&
                          dateMsg.getMonth() == dateNow.getMonth() &&
                          dateMsg.getDate() == dateNow.getDate() - 1) {
                             chats[i].firstMsg = "Yesterday";
-                        } else {
+                        }
+                        else {
                             chats[i].firstMsg = days[dateMsg.getDay()] + ', ' + (dateMsg.getMonth() + 1) + '/' + dateMsg.getFullYear();
                         }
 
@@ -62,13 +64,13 @@
                     if (chats[i].type == ContentType[ContentType.Video]) {
                         if (chats[i].temp == 'true') {
                             chats[i].body = cordova.file.documentsDirectory + chats[i]._id;
-                        } else {
-
-                            chats[i].bodyUrl = $sce.trustAsResourceUrl('http://203.113.25.66' + chats[i].body);
+                        }
+                        else {
+                            chats[i].bodyUrl = $sce.trustAsResourceUrl(networkService.getWebServer() + chats[i].body);
                             var chatBody = chats[i].body;
                             var splitChat = chatBody.split(".");
                             var nameThumbnail = splitChat[0] + '.png';
-                            chats[i].thumbnail = $sce.trustAsResourceUrl('http://203.113.25.66' + nameThumbnail);
+                            chats[i].thumbnail = $sce.trustAsResourceUrl(networkService.getWebServer() + nameThumbnail);
                         }
                     }
                     else if (chats[i].type === ContentType[ContentType.Location]) {

@@ -1,6 +1,7 @@
 angular.module('spartan.media', [])
 
-.controller('ImageController', function($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected, checkFileSize) {
+.controller('ImageController', function ($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, $ionicModal,
+    ImageService, FileService, roomSelected, checkFileSize, networkService) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
@@ -59,7 +60,7 @@ angular.module('spartan.media', [])
 		      //loadingStatus.increment();
 		    }
 	    };
-	    ft.upload(imageURI, "http://203.113.25.66/?r=api/upload", win, fail,
+	    ft.upload(imageURI, networkService.getWebServer() + "/?r=api/upload", win, fail,
 	        options);
 
 	}
@@ -296,7 +297,7 @@ angular.module('spartan.media', [])
 		    $scope.modalVideo = modal;
 		    $scope.modalVideo.type = type;
 		    $scope.modalVideo.src = src;
-		    $scope.modalVideo.url = $sce.trustAsResourceUrl('http://203.113.25.66' + src);
+		    $scope.modalVideo.url = $sce.trustAsResourceUrl(networkService.getWebServer() + src);
 		    $scope.modalVideo.show();
 		    document.getElementById("video-player").play();
 		});
@@ -307,7 +308,7 @@ angular.module('spartan.media', [])
   	};
 	
  	$scope.saveFile = function(type,url){
- 		$scope.mediaDownload('http://203.113.25.66' + url).then(function(path) { 
+ 		$scope.mediaDownload(networkService.getWebServer() + url).then(function(path) { 
  			saveToCameraRoll(type,path).then(function(){
  				navigator.notification.alert(
 				    'This ' + type +' been saved!', 
@@ -505,7 +506,7 @@ function UploadMedia(rid,uri,type,callback){
 
 		    }
 		};
-		ft.upload(uriFile, "http://203.113.25.66/?r=api/upload", win, fail,
+		ft.upload(uriFile, networkService.getWebServer() + "/?r=api/upload", win, fail,
         options);
 	}
 	this.cancel = function(){
