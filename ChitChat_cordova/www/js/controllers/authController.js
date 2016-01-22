@@ -101,6 +101,7 @@
         }
 
         function activateNetworkService() {
+            networkService.getWebServer();
             networkService.regisSocketListener();
         }
 
