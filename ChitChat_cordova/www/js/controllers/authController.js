@@ -101,7 +101,7 @@
         }
 
         function activateNetworkService() {
-            networkService.getWebServer();
+            $rootScope.webServer = networkService.getWebServer();
             networkService.regisSocketListener();
         }
 

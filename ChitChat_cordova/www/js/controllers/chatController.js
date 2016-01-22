@@ -3,7 +3,8 @@ angular.module('spartan.chat', [])
 
 .controller('chatController', 
 function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
-	$sce, $cordovaGeolocation, $cordovaDialogs, chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
+	$sce, $cordovaGeolocation, $cordovaDialogs,
+    chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
@@ -17,6 +18,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
+	$rootScope.webSerser = networkService.getWebServer();
 
 	function activate() {
 	    console.log(self.title + " is activate");
