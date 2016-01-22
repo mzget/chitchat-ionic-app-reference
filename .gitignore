@@ -14,3 +14,16 @@ ChitChat_cordova/plugins/
 *.map
 .vscode/tasks.json
 ChitChat_cordova/scripts/www/scripts/appBundle.js
+ChitChat_cordova/www/templates/tab-group.html.orig
+ChitChat_cordova/www/templates/tab-group-viewprofile.html.orig
+ChitChat_cordova/www/templates/tab-group-members.html.orig
+ChitChat_cordova/www/templates/tab-group-members-edit.html.orig
+ChitChat_cordova/www/templates/tab-chats.html.orig
+ChitChat_cordova/www/templates/tab-account-invite.html.orig
+ChitChat_cordova/www/templates/tab-account-create.html.orig
+ChitChat_cordova/www/templates/reader-view.html.orig
+ChitChat_cordova/www/templates/modal-projectbasegroup.html.orig
+ChitChat_cordova/www/templates/modal-privategroup.html.orig
+ChitChat_cordova/www/templates/modal-orggroup.html.orig
+ChitChat_cordova/www/templates/modal-myprofile.html.orig
+ChitChat_cordova/www/templates/modal-contact.html.orig
