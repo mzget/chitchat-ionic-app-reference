@@ -10,7 +10,7 @@
             <ion-item class="item-remove-animate item-avatar item-icon-right"
                       ng-repeat="access in roomAccess | orderBy:'time':true" type="item-text-wrap"
                       ng-click="gotoChat(access.id, access.count)">
-                <img ng-if="access.room.image != null" ng-src="http://203.113.25.44/timthumb.php?src={{access.room.image}}&h=40&w=40" />
+                <img ng-if="access.room.image != null" ng-src="{{webServer}}/timthumb.php?src={{access.room.image}}&h=40&w=40" />
                 <img ng-if="access.room.image == null" src="img/img.jpg" height="40" width="40" />
 
                 <div>
