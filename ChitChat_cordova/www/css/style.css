@@ -20,11 +20,6 @@
 #splash .login-logo { max-width:250px; vertical-align:bottom; } 
 #login { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:100; background-color:#2b4c6d; }
 
-	
-	
-	
-
-
 #login .container { float:none; display:table; width:100%; max-width:1000px; margin:10vh auto; text-align:center; }
 #login .login-logo { max-width:250px; vertical-align:bottom; }
 #login form { max-width:300px; margin:0 auto 0; }
@@ -49,6 +44,8 @@
 .group-pvgroup { float:left; display:inline; width:100%; margin-top:0; text-align:center; }
 .group-pvgroup span img { border-radius:50%; }
 .group-pvgroup .length { display:inline-block; min-width:30px; line-height:30px; vertical-align:top; text-align:center; box-shadow:0 0 1px 0 red inset; color:red; text-decoration:none; border-radius:50%; }
+
+.group-ionpane { float:left; position:relative; }
 
 .group-create .avatar { border-radius: 50%; float: left; margin: 0 10px; height: 50px; width: 50px;}
 .group-create .img-group { border-radius: 50%; float: left; margin: 0 10px; height: 100px; width: 100px; }
