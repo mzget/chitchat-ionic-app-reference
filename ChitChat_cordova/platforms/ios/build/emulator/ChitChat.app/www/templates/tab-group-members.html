@@ -12,12 +12,12 @@
 			<ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
 				<div ng-show="meIsAdmin || chatGroup.type==privateIndex">
 					<img ng-show="chatGroup.image==undefined && !images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" ng-click="addImg()"/>
-					<img ng-show="chatGroup.image!==undefined && !images.length" ng-src="http://203.113.25.44/timthumb.php?src={{chatGroup.image}}&h=60&w=60" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" ng-click="addImg()"/>
+					<img ng-show="chatGroup.image!==undefined && !images.length" ng-src="{{webServer}}/timthumb.php?src={{chatGroup.image}}&h=60&w=60" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" ng-click="addImg()"/>
 					<img ng-show="images.length" ng-repeat="image in images" ng-src="{{urlForImage(image)}}" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar" ng-click="addImg()"/>
 				</div>
 				<div ng-show="!meIsAdmin && chatGroup.type==projectBaseIndex || chatGroup.type==orgGroupsIndex">
 					<img ng-show="chatGroup.image==undefined && !images.length" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar"/>
-					<img ng-show="chatGroup.image!==undefined && !images.length" ng-src="http://203.113.25.44/timthumb.php?src={{chatGroup.image}}&h=60&w=60" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar"/>
+					<img ng-show="chatGroup.image!==undefined && !images.length" ng-src="{{webServer}}/timthumb.php?src={{chatGroup.image}}&h=60&w=60" style="top:10px; left:6px; max-width:60px; max-height:60px;" class="avatar"/>
 				</div>
 				
 				<label class="item item-input">
@@ -54,7 +54,7 @@
 		<ion-list class="members-list">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" 
 			ng-repeat="member in members|orderObjectBy:'displayname':false|filter:search" type="item-text-wrap" ng-click="viewContact(member._id)">
-				<img ng-src="http://203.113.25.44/timthumb.php?src={{member.image}}&h=40&w=40" />
+				<img ng-src="{{webServer}}/timthumb.php?src={{member.image}}&h=40&w=40" />
 				<div ng-if="chatGroup.type==privateIndex || chatGroup.type==orgGroupsIndex">
 					<h2>{{member.displayname}}</h2>
 					<p>{{member.status}}</p>

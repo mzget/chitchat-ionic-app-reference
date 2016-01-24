@@ -8,7 +8,7 @@
 	<ion-content class="padding group-detail">
 		<a ng-click="openViewContactProfile(contact._id)"> 
 
-		<img class="avatar-modal" ng-if="contact.image != null" ng-src="http://203.113.25.44/timthumb.php?src={{contact.image}}&h=150&w=150" />
+		<img class="avatar-modal" ng-if="contact.image != null" ng-src="{{webServer}}/timthumb.php?src={{contact.image}}&h=150&w=150" />
 		<img class="avatar-modal" ng-if="contact.image == null" src="img/img.jpg" height="150" width="150"  />
 
 		<a class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closeContactModal()"></a>
