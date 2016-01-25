@@ -2,7 +2,7 @@
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
-        cryptojs: '../js/crypto-js/crypto-js'
+        cryptojs: '../lib/crypto-js/crypto-js'
     }
 });
 
