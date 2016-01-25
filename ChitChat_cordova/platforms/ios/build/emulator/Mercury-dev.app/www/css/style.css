@@ -1,9 +1,24 @@
+/* Default
+#splash { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:1000;
+	background-color:#fff;
+	background: -webkit-linear-gradient(rgba(255,255,255,1), #519cd3); 
+    background: -o-linear-gradient(rgba(255,255,255,1), #519cd3); 
+    background: -moz-linear-gradient(rgba(255,255,255,1), #519cd3); 
+    background: linear-gradient(rgba(255,255,255,1), #519cd3); }
+#splash .container { float:none; display:table; width:100%; max-width:1000px; margin:10vh auto; text-align:center; }
+#splash .login-logo { max-width:250px; vertical-align:bottom; } 
 #login { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:100;
 	background-color:#fff;
-	background: -webkit-linear-gradient(rgba(255,255,255,1), #519cd3); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(rgba(255,255,255,1), #519cd3); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(rgba(255,255,255,1), #519cd3); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(rgba(255,255,255,1), #519cd3); /* Standard syntax (must be last) */ }
+	background: -webkit-linear-gradient(rgba(255,255,255,1), #519cd3);
+    background: -o-linear-gradient(rgba(255,255,255,1), #519cd3);
+    background: -moz-linear-gradient(rgba(255,255,255,1), #519cd3); 
+    background: linear-gradient(rgba(255,255,255,1), #519cd3); }*/
+
+/* JOB TOP GUN */
+#splash { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:1000; background-color:#2b4c6d; }
+#splash .container { float:none; display:table; width:100%; max-width:1000px; margin:10vh auto; text-align:center; }
+#splash .login-logo { max-width:250px; vertical-align:bottom; } 
+#login { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:100; background-color:#2b4c6d; }
 
 #login .container { float:none; display:table; width:100%; max-width:1000px; margin:10vh auto; text-align:center; }
 #login .login-logo { max-width:250px; vertical-align:bottom; }
@@ -25,10 +40,13 @@
 .group-detail .group-menu { display:table; width:100%; max-width:600px; margin:0 auto; }
 .group-detail .group-menu > * { float:left; display:inline; width:100%; max-width:33%; padding:20px 0; font-size:40px; cursor:pointer; text-decoration:none; color:#333; }
 .group-detail .group-menu > * span { font-size:14px; position:relative; top:-10px; }
-.group-detail .group-menu >:hover { background-color:rgba(0,0,0,0.05); }
+.group-detail .group-menu >:hover { background-color:rgba(255,255,255,0.2); }
 .group-pvgroup { float:left; display:inline; width:100%; margin-top:0; text-align:center; }
 .group-pvgroup span img { border-radius:50%; }
 .group-pvgroup .length { display:inline-block; min-width:30px; line-height:30px; vertical-align:top; text-align:center; box-shadow:0 0 1px 0 red inset; color:red; text-decoration:none; border-radius:50%; }
+
+.group-modal-view { width:80%; left:10%; right:10%; top:10%; min-height:301px; background-image:url('../img/bgmodal1.jpg'); background-repeat:no-repeat; background-size:cover; }
+.group-ionpane { position:relative !important; }
 
 .group-create .avatar { border-radius: 50%; float: left; margin: 0 10px; height: 50px; width: 50px;}
 .group-create .img-group { border-radius: 50%; float: left; margin: 0 10px; height: 100px; width: 100px; }
@@ -37,14 +55,6 @@
 .btn-nav { background-color:rgba(0,0,0,0.05); height: 10px; line-height: 0px;}
 .btn-nav .button { border:none; background-color:transparent; color:#ccc; margin-top: -8px; }
 .btn-nav .button.activated { box-shadow:none; }
-
-#splash { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:1000;
-	background-color:#fff;
-	background: -webkit-linear-gradient(rgba(255,255,255,1), #519cd3); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(rgba(255,255,255,1), #519cd3); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(rgba(255,255,255,1), #519cd3); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(rgba(255,255,255,1), #519cd3); /* Standard syntax (must be last) */ }
-#splash .container { float:none; display:table; width:100%; max-width:1000px; margin:10vh auto; text-align:center; }
 #splash .login-logo { max-width:250px; vertical-align:bottom; }
 
 .message-list .item { border:none; padding:0; margin:10px 0; }

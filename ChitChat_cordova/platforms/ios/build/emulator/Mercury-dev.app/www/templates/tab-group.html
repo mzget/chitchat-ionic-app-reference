@@ -21,7 +21,7 @@
 		<ion-list id="list-myProfile" class="group-list">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-click="openProfileModal()"  type="item-text-wrap">
 
-				<img ng-if="myProfile.image != null" ng-src="http://203.113.25.66/timthumb.php?src={{myProfile.image}}&h=40&w=40" />
+				<img ng-if="myProfile.image != null" ng-src="{{webServer}}/timthumb.php?src={{myProfile.image}}&h=40&w=40" />
 				<img ng-if="myProfile.image == null" src="img/img.jpg" height="40" width="40"  />
 
 				<h2>{{myProfile.displayname}}</h2>
@@ -43,7 +43,7 @@
                      type="item-text-wrap"
                        ng-click="openModal(favorite._id,favorite.type)">
 
-				<img ng-if="favorite.image != null" ng-src="http://203.113.25.66/timthumb.php?src={{favorite.image}}&h=40&w=40" />
+				<img ng-if="favorite.image != null" ng-src="{{webServer}}/timthumb.php?src={{favorite.image}}&h=40&w=40" />
 				<img ng-if="favorite.image == null" src="img/img.jpg" height="40" width="40"  />
 
 				<div ng-if="favorite.type=='0' || favorite.type=='1'">
@@ -72,7 +72,7 @@
 		<ion-list id="list-orgGroups" class="group-list">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="orgGroup in orgGroups|orderObjectBy:'name':false|filter:search" ng-click="openOrgModal(orgGroup._id)" type="item-text-wrap">
 				
-				<img ng-if="orgGroup.image != null" ng-src="http://203.113.25.66/timthumb.php?src={{orgGroup.image}}&h=40&w=40" />
+				<img ng-if="orgGroup.image != null" ng-src="{{webServer}}/timthumb.php?src={{orgGroup.image}}&h=40&w=40" />
 				<img ng-if="orgGroup.image == null" src="img/img.jpg" height="40" width="40"  />
 
 				<h2>{{orgGroup.name}}</h2>
@@ -94,7 +94,7 @@
                        ng-if="pjbGroup.visibility === true || pjbGroup.visibility === undefine" 
                        ng-click="openPjbModal(pjbGroup._id)" type="item-text-wrap">
 				
-                <img ng-if="pjbGroup.image != null" ng-src="http://203.113.25.66/timthumb.php?src={{pjbGroup.image}}&h=40&w=40" />
+                <img ng-if="pjbGroup.image != null" ng-src="{{webServer}}/timthumb.php?src={{pjbGroup.image}}&h=40&w=40" />
 				<img ng-if="pjbGroup.image == null" src="img/img.jpg" height="40" width="40"  />
 
 				<h2>{{pjbGroup.name}}</h2>
@@ -116,7 +116,7 @@
                        ng-if="pvGroup.visibility === true || pvGroup.visibility === undefine" 
                        ng-click="openPvgModal(pvGroup._id)" type="item-text-wrap">
 
-				<img ng-if="pvGroup.image != null" ng-src="http://203.113.25.66/timthumb.php?src={{pvGroup.image}}&h=40&w=40" />
+				<img ng-if="pvGroup.image != null" ng-src="{{webServer}}/timthumb.php?src={{pvGroup.image}}&h=40&w=40" />
 				<img ng-if="pvGroup.image == null" src="img/img.jpg" height="40" width="40"  />
 
 				<h2>{{pvGroup.name}}</h2>
@@ -136,7 +136,7 @@
 			ng-if="chat._id != myProfile._id" class="item-remove-animate item-avatar item-icon-right" 
 			ng-click="openContactModal(chat._id)" type="item-text-wrap">
 
-				<img ng-if="chat.image != null" ng-src="http://203.113.25.66/timthumb.php?src={{chat.image}}&h=40&w=40" />
+				<img ng-if="chat.image != null" ng-src="{{webServer}}/timthumb.php?src={{chat.image}}&h=40&w=40" />
 				<img ng-if="chat.image == null" src="img/img.jpg" height="40" width="40"  />
 
 				<h2>{{chat.displayname}}</h2>

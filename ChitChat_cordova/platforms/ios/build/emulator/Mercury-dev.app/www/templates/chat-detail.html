@@ -39,7 +39,7 @@
 			</ion-item>
 
 			<ion-item ng-if="message.sender != myprofile._id && !!message.sender" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
-				<img ng-src="http://203.113.25.66/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
+				<img ng-src="{{webServer}}/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 				<h2>{{allMembers[message.sender]['displayname']}}</h2>
 				</br>
 
@@ -52,11 +52,10 @@
 					</u>
 				</p>
 				
-				
-				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://203.113.25.66{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.66'+message.body)"/>
+				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="{{webServer}}{{message.body}}" ng-click="viewImage(message.type, webServer + message.body)" />
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
-					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.66'+message.body)"></i>
+					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, webServer+message.body)"></i>
 					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
 
@@ -107,8 +106,8 @@
 					</u>
 				</p>
 				
-                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type,message.body)"/>
-				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://203.113.25.66{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.66'+message.body)"/>
+                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type, message.body)"/>
+				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="{{webServer}}{{message.body}}" ng-click="viewImage(message.type, {{webServer}} + message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
@@ -116,7 +115,7 @@
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
                 <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp==null">
-                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.66'+message.body)"></i>
+                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, {{webServer}} + message.body)"></i>
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
                 </div>
 
