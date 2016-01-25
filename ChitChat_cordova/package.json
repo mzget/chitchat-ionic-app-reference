@@ -2,8 +2,7 @@
   "name": "chitchat_cordova",
   "version": "1.0.0",
   "dependencies": {
-    "promise": "7.0.4",
-    "crypto-js": "3.1.5"
+    "promise": "7.0.4"
   },
   "cordovaPlugins": [
     "cordova-plugin-device",
