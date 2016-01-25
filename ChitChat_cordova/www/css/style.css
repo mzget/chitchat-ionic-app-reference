@@ -40,12 +40,13 @@
 .group-detail .group-menu { display:table; width:100%; max-width:600px; margin:0 auto; }
 .group-detail .group-menu > * { float:left; display:inline; width:100%; max-width:33%; padding:20px 0; font-size:40px; cursor:pointer; text-decoration:none; color:#333; }
 .group-detail .group-menu > * span { font-size:14px; position:relative; top:-10px; }
-.group-detail .group-menu >:hover { background-color:rgba(0,0,0,0.05); }
+.group-detail .group-menu >:hover { background-color:rgba(255,255,255,0.2); }
 .group-pvgroup { float:left; display:inline; width:100%; margin-top:0; text-align:center; }
 .group-pvgroup span img { border-radius:50%; }
 .group-pvgroup .length { display:inline-block; min-width:30px; line-height:30px; vertical-align:top; text-align:center; box-shadow:0 0 1px 0 red inset; color:red; text-decoration:none; border-radius:50%; }
 
-.group-ionpane { position:relative; }
+.group-modal-view { width:80%; left:10%; right:10%; top:10%; min-height:301px; background-image:url('../img/bgmodal1.jpg'); background-repeat:no-repeat; background-size:cover; }
+.group-ionpane { position:relative !important; }
 
 .group-create .avatar { border-radius: 50%; float: left; margin: 0 10px; height: 50px; width: 50px;}
 .group-create .img-group { border-radius: 50%; float: left; margin: 0 10px; height: 100px; width: 100px; }
