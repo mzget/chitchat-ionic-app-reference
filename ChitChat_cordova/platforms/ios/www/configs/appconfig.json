@@ -1,5 +1,6 @@
 {
   "socketHost": "203.113.25.44",
   "socketPort": 3015,
-  "webserver": "http://203.113.25.44"
+  "webserver": "http://203.113.25.44",
+  "encryption": false
 }

@@ -4,13 +4,10 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<<<<<<< HEAD
-<ion-modal-view style="width:80%; left:10%; right:10%; top:10%; bottom:10%; min-height:300px;">
-	<ion-content class="padding group-detail">
-=======
+
 <ion-modal-view class="group-modal-view">
 	<ion-content class="padding group-detail group-ionpane">
->>>>>>> 189b37b... add background image in group modal
+
 		<a ng-click="openViewContactProfile(contact._id)"> 
 
 		<img class="avatar-modal" ng-if="contact.image != null" ng-src="{{webServer}}/timthumb.php?src={{contact.image}}&h=150&w=150" />

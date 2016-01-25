@@ -241,15 +241,19 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			// Clear Message
 			$('#send_message').val('')
 			
-			main.encodeService(content, function(err, result) {
-				if (err) {
-					console.error(err);
-				}
-				else {
-					//var myId = myprofile._id;
-					chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
-				}
-			});
+			if (server.appConfig.encryption == true) {
+			    main.encodeService(content, function (err, result) {
+			        if (err) {
+			            console.error(err);
+			        }
+			        else {
+			            chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
+			        }
+			    });
+			}
+			else {
+			    chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, content, ContentType[ContentType.Text], sendMessageResponse);
+			}
 		}
 	});
 

@@ -184,30 +184,22 @@ var ChatRoomComponent = (function () {
             console.log("Implement chat msg hear..", chatMessageImp);
             var secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
-                if (self.serverImp.appConfig.encryption == true) {
-                    secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
-                        if (!err) {
-                            chatMessageImp.body = res;
-                            self.chatMessages.push(chatMessageImp);
-                            self.messageDAL.saveData(self.roomId, self.chatMessages);
-                            if (!!_this.serviceListener)
-                                _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                        }
-                        else {
-                            console.log(err, res);
-                            self.chatMessages.push(chatMessageImp);
-                            self.messageDAL.saveData(self.roomId, self.chatMessages);
-                            if (!!_this.serviceListener)
-                                _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                        }
-                    });
-                }
-                else {
-                    self.chatMessages.push(chatMessageImp);
-                    self.messageDAL.saveData(self.roomId, self.chatMessages);
-                    if (!!this.serviceListener)
-                        this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                }
+                secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
+                    if (!err) {
+                        chatMessageImp.body = res;
+                        self.chatMessages.push(chatMessageImp);
+                        self.messageDAL.saveData(self.roomId, self.chatMessages);
+                        if (!!_this.serviceListener)
+                            _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                    }
+                    else {
+                        console.log(err, res);
+                        self.chatMessages.push(chatMessageImp);
+                        self.messageDAL.saveData(self.roomId, self.chatMessages);
+                        if (!!_this.serviceListener)
+                            _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                    }
+                });
             }
             else {
                 self.chatMessages.push(chatMessageImp);
@@ -435,22 +427,16 @@ var ChatRoomComponent = (function () {
                                 async.eachSeries(histories, function (item, cb) {
                                     var chatMessageImp = JSON.parse(JSON.stringify(item));
                                     if (chatMessageImp.type === ContentType[ContentType.Text]) {
-                                        if (self.serverImp.appConfig.encryption == true) {
-                                            self.main.decodeService(chatMessageImp.body, function (err, res) {
-                                                if (!err) {
-                                                    chatMessageImp.body = res;
-                                                    self.chatMessages.push(chatMessageImp);
-                                                    cb();
-                                                }
-                                                else {
-                                                    cb();
-                                                }
-                                            });
-                                        }
-                                        else {
-                                            self.chatMessages.push(chatMessageImp);
-                                            cb();
-                                        }
+                                        self.main.decodeService(chatMessageImp.body, function (err, res) {
+                                            if (!err) {
+                                                chatMessageImp.body = res;
+                                                self.chatMessages.push(chatMessageImp);
+                                                cb();
+                                            }
+                                            else {
+                                                cb();
+                                            }
+                                        });
                                     }
                                     else {
                                         if (item.type == 'File') {
@@ -1028,10 +1014,8 @@ var NotifyManager = (function () {
     function NotifyManager(main) {
         console.log("NotifyManager.constructor");
         this.dataManager = main.getDataManager();
-        this.serverImp = main.getServerImp();
     }
     NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
-        var self = this;
         var contactName, contactId;
         if (this.dataManager.getGroup(chatMessageImp.rid) === undefined) {
             contactName = this.dataManager.getContactProfile(chatMessageImp.sender).displayname;
@@ -1043,14 +1027,9 @@ var NotifyManager = (function () {
         }
         if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
             var secure = new SecureService();
-            if (self.serverImp.appConfig.encryption == true) {
-                secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
-                    if (!err) {
-                        chatMessageImp.body = res;
-                    }
-                    else {
-                        console.warn(err, res);
-                    }
+            secure.decryptWithSecureRandom(chatMessageImp.body, function done(err, res) {
+                if (!err) {
+                    chatMessageImp.body = res;
                     var toastMessage = contactName + " sent " + chatMessageImp.body;
                     if (!appBackground) {
                         notifyService.makeToastOnCenter(contactId, toastMessage);
@@ -1058,17 +1037,11 @@ var NotifyManager = (function () {
                     else {
                         notifyService.scheduleSingleNotification(contactId, contactName, chatMessageImp.body);
                     }
-                });
-            }
-            else {
-                var toastMessage = contactName + " sent " + chatMessageImp.body;
-                if (!appBackground) {
-                    notifyService.makeToastOnCenter(contactId, toastMessage);
                 }
                 else {
-                    notifyService.scheduleSingleNotification(contactId, contactName, chatMessageImp.body);
+                    console.warn(err, res);
                 }
-            }
+            });
         }
         else if (chatMessageImp.type.toString() === ContentType[ContentType.Sticker]) {
             var message = contactName + " sent a sticker.";

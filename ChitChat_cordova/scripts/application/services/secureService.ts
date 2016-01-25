@@ -1,5 +1,5 @@
 ﻿class SecureService {
-    private key: string = "CHITCHAT!@#$%^&*";
+    private key: string = "CHITCHAT!@#$%^&*()_+|===";
     private passiv: string = "ThisIsUrPassword";
 
     constructor() { }
@@ -45,8 +45,8 @@
     public decryptWithSecureRandom(content: string, callback: Function) {
         var self = this;
         require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
-            var key = CryptoJS.enc.Hex.parse(self.key);
-            var iv = CryptoJS.enc.Hex.parse(self.passiv);
+            var key = CryptoJS.enc.Utf8.parse(self.key);
+            var iv = CryptoJS.enc.Utf8.parse(self.passiv);
             var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv, padding: CryptoJS.pad.Pkcs7, mode: CryptoJS.mode.CBC });
             var plaintext;
             try {
