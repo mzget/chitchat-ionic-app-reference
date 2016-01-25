@@ -4,11 +4,9 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-
-<ion-modal-view class="group-modal-view">
+<ion-modal-view style="width:80%; left:10%; right:10%; top:10%; min-height:300px;">
 	<ion-content class="padding group-detail group-ionpane">
             <img class="avatar-modal" ng-if="chat.image != null" ng-src="{{webServer}}/timthumb.php?src={{chat.image}}&h=150&w=150" />
-
             <img class="avatar-modal" ng-if="chat.image == null" src="img/img.jpg" height="150" width="150"  />
             <a class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closeOrgModal()"></a>
             <div style="margin-bottom:15px;">

@@ -5,7 +5,7 @@
   The Friends service returns an array of friend data
 -->
 
-<ion-modal-view class="group-modal-view">
+<ion-modal-view style="width:80%; left:10%; right:10%; top:10%; min-height:300px;">
 	<ion-content class="padding group-detail group-ionpane">
 
 		<img class="avatar-modal" ng-if="chat.image != null" ng-src="{{webServer}}/timthumb.php?src={{chat.image}}&h=150&w=150" />
@@ -18,6 +18,7 @@
 		</div>
 	</ion-content>
 </ion-modal-view>
+
 
 <a ng-click="closeProfileModal()" style="position:fixed; top:0; left:0; width:100%; height:100vh; background-color:rgba(0,0,0,0.6);"></a>
 
