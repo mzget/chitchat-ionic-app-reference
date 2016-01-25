@@ -7,7 +7,7 @@
 			
 		<ion-list class="members-list">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="user in readers" type="item-text-wrap">
-				<img ng-src="http://203.113.25.66/timthumb.php?src={{allMembers[user._id]['image']}}&h=40&w=40" />
+				<img ng-src="{{webServer}}/timthumb.php?src={{allMembers[user._id]['image']}}&h=40&w=40" />
 				<h2>{{allMembers[user._id]['displayname']}}</h2>
 				<p>{{allMembers[user._id]['status']}}</p>
 				<i class="icon ion-chevron-right icon-accessory"></i>
