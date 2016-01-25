@@ -22,7 +22,8 @@
         function activate() { }
     }
 
-    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $rootScope, CreateGroup, ProjectBase, roomSelected) {
+    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $rootScope,
+        CreateGroup, ProjectBase, roomSelected) {
         id_checked = [];
         $scope.myProfile = main.getDataManager().myProfile;
 

@@ -103,7 +103,7 @@ angular.module('spartan.media', [])
 		if(FileService.getImages().length!=0) { 
 			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
 				if(canUpload){
-					var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
+					var img = new UploadMedia(networkService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
 						$scope.$emit('delectTemp', [id]); 
 					});
 				mediaUpload[id] = img;
@@ -157,7 +157,6 @@ angular.module('spartan.media', [])
  		})
  	}
 
-
  	$scope.mediaDownload = function(url){
  		console.log(url);
  		return $q(function(resolve, reject) {
@@ -185,7 +184,9 @@ angular.module('spartan.media', [])
  	}
 
 })
-.controller('VideoController', function($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile, checkFileSize, GenerateID,VideoService,roomSelected) {
+
+.controller('VideoController', function ($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
+    checkFileSize, GenerateID, VideoService, roomSelected, networkService) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
 
@@ -256,7 +257,7 @@ angular.module('spartan.media', [])
 		if(videoName != null || videoName != undefined) { 
 			checkFileSize.checkFile(videoURI).then(function(canUpload) {
 				if(canUpload){
-					var video = new UploadMedia(roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function(id,messageId){
+					var video = new UploadMedia(networkService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function(id,messageId){
 						$scope.$emit('delectTemp', [id]); 
 					});
 					mediaUpload[id] = video;
@@ -367,7 +368,9 @@ angular.module('spartan.media', [])
 
 
 })
-.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile, GenerateID,roomSelected, checkFileSize) {
+
+.controller('VoiceController', function ($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile,
+    GenerateID, roomSelected, checkFileSize, networkService) {
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
 	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
@@ -453,7 +456,7 @@ angular.module('spartan.media', [])
 		if(fileName != null || fileName != undefined) { 
 			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
 				if(canUpload){
-					var voice = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function(id,messageId){
+				    var voice = new UploadMedia(networkService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
 						$scope.$emit('delectTemp', [id]); 
 				});
 				mediaUpload[id] = voice;
@@ -480,7 +483,7 @@ angular.module('spartan.media', [])
 
 var mediaUpload = {};
 
-function UploadMedia(rid,uri,type,callback){
+function UploadMedia(networkService, rid,uri,type,callback) {
 	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
 	var uriFile = uri;
 	var mediaName = uri.substr(uri.lastIndexOf('/') + 1);

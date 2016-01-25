@@ -571,7 +571,7 @@ angular.module('spartan.services', [])
 
     function setRoom(_room) {
         room = _room;
-        console.debug("setRoom", room);
+        console.log("setRoom", room);
     };
 
     return {
