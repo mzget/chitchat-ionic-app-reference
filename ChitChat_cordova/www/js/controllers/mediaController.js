@@ -339,7 +339,6 @@ angular.module('spartan.media', [])
  		})
  	}
 
-
  	$scope.mediaDownload = function(url){
  		console.log(url);
  		return $q(function(resolve, reject) {
@@ -401,25 +400,37 @@ angular.module('spartan.media', [])
 	}
 
 	var audio;
-	$scope.play = function(id,url){
+	$scope.play = function (id, url) {
+	    console.log("play url: ", url);
 		var fileName = url.substr(url.lastIndexOf('/') + 1);
-		var fileMedia = url.replace('file://','');
+
+		console.log("filename:", fileName);
 
 		$('.ion-pause').css({ 'display': 'none' });
 		$('.ion-play').css({ 'display': 'inline' });
 
 		$cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
 	      .then(function (success) {
-			$('#' + id + '-voice-play').css({ 'display': 'none' });
-			$('#' + id + '-voice-pause').css({ 'display': 'inline' });
-			//audio.stop();
-	        audio = new Media(fileMedia,
-                         function() { $('#' + id + '-voice-play').css({ 'display': 'inline' }); $('#' + id + '-voice-pause').css({ 'display': 'none' }); },
-                         function(err){ console.log("playAudio(): Error: "+ err.code) }
-                         );
-			audio.play();
+	          var fileMedia = success.nativeURL.replace('file://', '');
+	          console.log("filemedia:", fileMedia);
+
+	          console.log("check file success.", JSON.stringify(success));
+	          $('#' + id + '-voice-play').css({ 'display': 'none' });
+	          $('#' + id + '-voice-pause').css({ 'display': 'inline' });
+	          //audio.stop();
+	          audio = new Media(fileMedia, function () {
+	              $('#' + id + '-voice-play').css({ 'display': 'inline' });
+	              $('#' + id + '-voice-pause').css({ 'display': 'none' });
+	          },
+                  function (err) {
+                      console.log("playAudio(): Error: " + JSON.stringify(err));
+                  }
+                           );
+
+	          audio.play();
 	      }, function (error) {
-	        downloadMedia(id,url);
+	          console.error("get file media fail.", JSON.stringify(error));
+	          downloadMedia(id, networkService.getWebServer() + url);
 	      });
 	}
 	$scope.pause = function(id){
