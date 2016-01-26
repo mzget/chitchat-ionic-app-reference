@@ -2095,7 +2095,6 @@ var SecureService = (function () {
             catch (e) {
                 console.error(e);
             }
-            console.warn("decryptWithSecureRandom: ", plaintext);
             if (!!plaintext)
                 callback(null, plaintext);
             else
