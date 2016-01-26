@@ -114,6 +114,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 
 	$scope.openPopover = function ($event) {
+	    console.log("open popover:", JSON.stringify($event));
+
 	    $scope.popover.show($event);
 	};
 	
