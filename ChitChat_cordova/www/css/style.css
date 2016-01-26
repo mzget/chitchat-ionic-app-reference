@@ -179,7 +179,7 @@ color: #fff;}
 	background-image:url(../img/bgmodal1.jpg); background-repeat:no-repeat; background-size:cover; background-position:50% 50%; }
 .freecall .avatar-modal { border-radius:50%; }
 .freecall .freecallmenu { display:inline-block; width:30%; min-width:200px; }
-.freecall .freecallmenu .btn { display:inline-block; width:49%; line-height:40px; color:#fff; background-color:#ff6666; }
+.freecall .freecallmenu .btn { display:inline-block; width:49%; line-height:40px; color:#fff; background-color:#ff6666; cursor:pointer; }
 .freecall .freecallmenu .speaker { float:left; }
 .freecall .freecallmenu .mute { float:right; }
 .freecall .freecallmenu .hangup { float:left; width:100%; background-color:#2828ff; margin-top:3px; }
