@@ -564,18 +564,26 @@ angular.module('spartan.services', [])
 
 .factory('roomSelected', function () {
     var room;
+    var lastJoinRoom;
+
+    function getLastJoinRoom() {
+        return lastJoinRoom;
+    }
 
     function getRoom() {
         return room;
     };
 
-    function setRoom(_room) {
-        room = _room;
+    function setRoom(newRoom) {
+        lastJoinRoom = room;
+        room = newRoom;
+       
         console.log("setRoom", JSON.stringify(room));
     };
 
     return {
         getRoom: getRoom,
-        setRoom: setRoom
+        setRoom: setRoom,
+        getLastJoinRoom: getLastJoinRoom
     }
 });
