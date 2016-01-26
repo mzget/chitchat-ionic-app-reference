@@ -131,12 +131,12 @@
                 </div>
 				
 				
-				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
+				<div class="type-location" ng-if="message.type == 'Location'" ng-init="messagebody=parseJSON(message.body)" ng-click="viewLocation(message._id)">
 					<div>
 						<div class="item item-text-wrap">
-							{{message.locationName}}     
-                           <br /> {{message.locationAddress}}
-                            <br /> {{message.lat}} , {{message.long}}
+							{{messagebody.name}}     
+							<br /> {{messagebody.address}}
+							<br /> {{messagebody.latitude}} , {{messagebody.longitude}}
 						</div>
 					</div>
 				</div>

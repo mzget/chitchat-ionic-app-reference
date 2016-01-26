@@ -325,10 +325,17 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			$scope.openReaderModal();
 		});
 	}
+	$scope.parseJSON= function(json){
+		return JSON.parse(json);
+	}
 	$scope.viewLocation = function (messageId) {
 		console.info('viewLocation');
 		var message = chatRoomService.get(messageId);
-		viewLocation($scope, message);
+		
+		console.log(message);
+		console.log(JSON.parse(message.body));
+		
+		viewLocation($scope, JSON.parse(message.body));
 		$scope.mapViewModal.show();
 	}
 	$scope.openMap = function() {
@@ -511,8 +518,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 var viewLocation = function ($scope, message, $ionicLoading) {
 	$scope.viewOnly = true;
-	$scope.place = message.locationName;
-	$scope.$broadcast('onInitMap', { lat: message.lat, long: message.long });
+	$scope.place = message.name;
+	$scope.$broadcast('onInitMap', { lat: message.latitude, long: message.longitude });
 }
 
 var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, done) {

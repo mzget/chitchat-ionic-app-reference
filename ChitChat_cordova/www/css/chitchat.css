@@ -1,0 +1,15 @@
+/* ChitChat */
+#splash { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:1000;
+	background-color:#fff;
+	background: -webkit-linear-gradient(rgba(255,255,255,1), #519cd3); 
+    background: -o-linear-gradient(rgba(255,255,255,1), #519cd3); 
+    background: -moz-linear-gradient(rgba(255,255,255,1), #519cd3); 
+    background: linear-gradient(rgba(255,255,255,1), #519cd3); }
+#splash .container { float:none; display:table; width:100%; max-width:1000px; margin:10vh auto; text-align:center; }
+#splash .login-logo { max-width:250px; vertical-align:bottom; } 
+#login { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:100;
+	background-color:#fff;
+	background: -webkit-linear-gradient(rgba(255,255,255,1), #519cd3);
+    background: -o-linear-gradient(rgba(255,255,255,1), #519cd3);
+    background: -moz-linear-gradient(rgba(255,255,255,1), #519cd3); 
+    background: linear-gradient(rgba(255,255,255,1), #519cd3); }*/
