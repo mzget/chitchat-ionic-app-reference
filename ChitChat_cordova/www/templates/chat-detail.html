@@ -65,14 +65,14 @@
                 		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
                 	</div>
                 </div>
-
-				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
+                
+                <div class="type-location" ng-if="message.type == 'Location'" ng-init="messagebody=parseJSON(message.body)" ng-click="viewLocation(message._id)">
 					<div>
 						<div class="item item-text-wrap">
-							{{message.locationName}}     
-                           <br /> {{message.locationAddress}}
-                            <br /> {{message.lat}} , {{message.long}}
-						</div>s
+							{{messagebody.name}}     
+							<br /> {{messagebody.address}}
+							<br /> {{messagebody.latitude}} , {{messagebody.longitude}}
+						</div>
 					</div>
 				</div>
 				
@@ -126,7 +126,6 @@
                 		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
                 	</div>
                 </div>
-				
 				
 				<div class="type-location" ng-if="message.type == 'Location'" ng-init="messagebody=parseJSON(message.body)" ng-click="viewLocation(message._id)">
 					<div>
