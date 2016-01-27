@@ -1,6 +1,6 @@
 angular.module('spartan.media', [])
 
-.controller('ImageController', function ($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, $ionicModal,
+.controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, $ionicModal,
     ImageService, FileService, roomSelected, checkFileSize, networkService) {
  
   	$ionicPlatform.ready(function() {
@@ -90,9 +90,11 @@ angular.module('spartan.media', [])
   	});
 	
 
-	$scope.viewImage = function(type, src){
+	$scope.viewImage = function (type, src) {
+	    console.log(type, JSON.stringify(src));
+
 		$scope.modalImage.type = type;
-		$scope.modalImage.src = src;
+		$scope.modalImage.src = $rootScope.webServer + src;
 		$scope.modalImage.show();
 	}
 	$scope.closeImage = function () {
