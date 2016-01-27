@@ -18,7 +18,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
-	$rootScope.webSerser = networkService.getWebServer();
 
 	function activate() {
 	    console.log(self.title + " is activate");
@@ -290,7 +289,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		}else if(args[1] == ContentType[ContentType.Video] ){
 			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}
-		
 	});
 	// Send Image and remove temp Image
 	$scope.$on('fileUrl', function(event,args){

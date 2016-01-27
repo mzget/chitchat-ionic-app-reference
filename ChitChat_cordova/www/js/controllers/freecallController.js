@@ -20,7 +20,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
-	$rootScope.webSerser = networkService.getWebServer();
 
 	function activate() {
 	    console.log(self.title + " is activate");
