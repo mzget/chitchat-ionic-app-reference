@@ -9,19 +9,10 @@
 
     function networkService($http, $state, localNotifyService) {
         var service = {
-            getWebServer: getWebServer,
             regisSocketListener: regisSocketListener
         };
-        var webServer = null;
 
         return service;
-
-        function getWebServer() {
-            console.log("get app config.", JSON.stringify(server.appConfig));
-            webServer = server.appConfig.webserver;
-
-            return webServer;
-        }
 
         function regisSocketListener() {
             console.log("regis socket event.");

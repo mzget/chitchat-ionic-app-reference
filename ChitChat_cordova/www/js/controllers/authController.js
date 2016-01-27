@@ -7,7 +7,7 @@
         .controller('noConnection', noConnection);
 
     function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, $cordovaDialogs, 
-     networkService, chatslogService, dbAccessService) {
+     networkService, chatslogService, dbAccessService, sharedObjectService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -37,6 +37,9 @@
                 }
                     
                 console.log("appConfig", server.appConfig.webserver);
+                
+                $rootScope.webServer = sharedObjectService.getWebServer();
+                $rootScope.appVersion = sharedObjectService.getAppVersion();
 
                 //location.href = "#/tab/group";
                 $state.go('tab.group');

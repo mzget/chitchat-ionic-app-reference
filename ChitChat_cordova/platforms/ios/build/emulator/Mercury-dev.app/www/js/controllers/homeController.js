@@ -337,6 +337,11 @@
 				location.href = '#/tab/group/chat/' + room._id;
 			};
 
+			$scope.freecall = function () {
+				roomSelected.setRoom(room);
+				location.href = '#/tab/group/freecall/' + room._id;
+			};
+
 			$scope.openViewContactProfile = function (id) {
 				location.href = '#/tab/group/member/' + id;
 				//$state.go("tab.group-members", { chatId: id}, { inherit: false });

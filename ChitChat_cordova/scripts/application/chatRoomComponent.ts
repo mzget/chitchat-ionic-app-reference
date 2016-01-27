@@ -16,16 +16,16 @@
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
         this.messageDAL = messageDAL;
-
+        
         console.log("constructor ChatRoomComponent");
     }
 
     onChat(chatMessageImp: Message) {
         var self = this;
-
-        if (this.roomId === chatMessageImp.rid) {
+        
+        if(this.roomId === chatMessageImp.rid) {
             console.log("Implement chat msg hear..", chatMessageImp);
-
+            
             var secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
                 if (self.serverImp.appConfig.encryption == true) {
@@ -114,7 +114,7 @@
 
                 async.mapSeries(chats, function iterator(item, result) {
                     if (item.type === ContentType.Text) {
-                        if (self.serverImp.appConfig.encryption == true) {
+                        if(self.serverImp.appConfig.encryption == true) {
                             self.main.decodeService(item.body, function (err, res) {
                                 if (!err) {
                                     item.body = res;
@@ -144,7 +144,7 @@
             }
             else {
                 self.chatMessages = [];
-
+                
                 console.debug("chatMessages", self.chatMessages.length);
                 done(err, messages);
             }
@@ -179,7 +179,7 @@
 
     private getNewerMessageFromNet(lastMessageTime: Date, callback: (err, res) => void) {
         var self = this;
-
+       
         self.chatRoomApi.getChatHistory(self.roomId, lastMessageTime, function (err, result) {
             var histories = [];
             if (result.code === 200) {
@@ -188,7 +188,7 @@
                 if (histories.length > 0) {
 
                     var messages: Array<Message> = JSON.parse(JSON.stringify(histories));
-
+                    
                     async.mapSeries(messages, function (item, cb) {
                         if (item.type.toString() === ContentType[ContentType.Text]) {
                             if (self.serverImp.appConfig.encryption == true) {
@@ -217,7 +217,7 @@
                         console.log("get newer message completed.");
                         //<!-- Save persistent chats log here.
                         self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
-                            //                           self.getNewerMessageRecord();
+ //                           self.getNewerMessageRecord();
                         });
                     });
                 }
@@ -349,7 +349,7 @@
 
                                     localStorage.removeItem(myProfile._id + '_' + chatId);
                                     localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
-
+                                    
                                     callback(joinRoomRes);
                                 });
                             }
