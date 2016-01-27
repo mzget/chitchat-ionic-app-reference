@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
      ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
-	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
+	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'spartan.freecall',
       'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter'])
 
 
@@ -149,6 +149,16 @@ angular.module('starter',
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
 				controller: 'chatController'
+			}
+		}
+	})
+	
+	.state('tab.group-freecall', {
+		url: '/group/freecall/:chatId',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-freecall.html',
+				controller: 'freecallController'
 			}
 		}
 	})

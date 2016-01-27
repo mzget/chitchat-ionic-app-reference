@@ -41,8 +41,7 @@
 			<ion-item ng-if="message.sender != myprofile._id && !!message.sender" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
 				<img ng-src="{{webServer}}/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 				<h2>{{allMembers[message.sender]['displayname']}}</h2>
-				</br>
-
+                <br />
 				<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
 					{{message.body}}
 				</p>
@@ -52,7 +51,7 @@
 					</u>
 				</p>
 				
-				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="{{webServer}}{{message.body}}" ng-click="viewImage(message.type, webServer + message.body)" />
+				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="{{webServer}}{{message.body}}" ng-click="viewImage(message.type, message.body)" />
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
@@ -66,16 +65,14 @@
                 		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
                 	</div>
                 </div>
-
-
-            
-				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
+                
+                <div class="type-location" ng-if="message.type == 'Location'" ng-init="messagebody=parseJSON(message.body)" ng-click="viewLocation(message._id)">
 					<div>
 						<div class="item item-text-wrap">
-							{{message.locationName}}     
-                           <br /> {{message.locationAddress}}
-                            <br /> {{message.lat}} , {{message.long}}
-						</div>s
+							{{messagebody.name}}     
+							<br /> {{messagebody.address}}
+							<br /> {{messagebody.latitude}} , {{messagebody.longitude}}
+						</div>
 					</div>
 				</div>
 				
@@ -108,7 +105,7 @@
 				</p>
 				
                 <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type, message.body)"/>
-				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="{{webServer}}{{message.body}}" ng-click="viewImage(message.type, {{webServer}} + message.body)"/>
+				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="{{webServer}}{{message.body}}" ng-click="viewImage(message.type, message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
@@ -130,13 +127,12 @@
                 	</div>
                 </div>
 				
-				
-				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
+				<div class="type-location" ng-if="message.type == 'Location'" ng-init="messagebody=parseJSON(message.body)" ng-click="viewLocation(message._id)">
 					<div>
 						<div class="item item-text-wrap">
-							{{message.locationName}}     
-                           <br /> {{message.locationAddress}}
-                            <br /> {{message.lat}} , {{message.long}}
+							{{messagebody.name}}     
+							<br /> {{messagebody.address}}
+							<br /> {{messagebody.latitude}} , {{messagebody.longitude}}
 						</div>
 					</div>
 				</div>
