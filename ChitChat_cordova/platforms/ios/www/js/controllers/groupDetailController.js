@@ -7,7 +7,7 @@
         .controller('viewGroupMembersCtrl', viewGroupMembersCtrl)
         .controller('editMemberGroup', editMemberGroup);
 
-    groupDetailController.$inject = ['$location'];
+//    groupDetailController.$inject = ['$location'];
 
     var requestReload = false;
     var id_checked = [];
@@ -22,11 +22,17 @@
         function activate() { }
     }
 
-    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $rootScope, CreateGroup, ProjectBase, roomSelected) {
+    function editMemberGroup($scope, $stateParams, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $rootScope,
+        CreateGroup, ProjectBase, roomSelected) {
         id_checked = [];
         $scope.myProfile = main.getDataManager().myProfile;
 
         var room = roomSelected.getRoom();
+        console.warn("roomInfo is empty." , JSON.stringify(room));
+        if (room == null) {
+            room = roomSelected.getLastJoinRoom();
+            console.warn("getLastJoinRoom is." , JSON.stringify(room));
+        }
         var group = getGroup(room.type, $stateParams.chatId);
 
         if ($rootScope.status == "invite") {
@@ -60,10 +66,13 @@
                     console.log(JSON.stringify(res));
                     requestReload = true;
                     $ionicLoading.hide();
-                    $cordovaProgress.showSuccess(false, "Success!");
-                    setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+                    if(ionic.Platform.platform() == "ios") {
+                        $cordovaProgress.showSuccess(false, "Success!");
+                        setTimeout(function () {
+                             $cordovaProgress.hide();
+                        }, 1500); 
+                    }
                     $ionicHistory.goBack(-1);
-
                 }
                 else {
                     console.warn(err, res);
@@ -83,7 +92,8 @@
 
     }
 
-    function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory, roomSelected, CreateGroup, modalService) {
+    function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory,
+        roomSelected, CreateGroup, modalService) {
         $scope.button = {};
         $scope.button.post = {};
         $scope.button.album = {};
@@ -145,6 +155,11 @@
         });
 
         var room = roomSelected.getRoom();
+        console.warn("roomInfo is empty.", JSON.stringify(room));
+        if (room == null) {
+            room = roomSelected.getLastJoinRoom();
+            console.warn("LastJoinRoom is.", JSON.stringify(room));
+        }
         var group = getGroup(room.type, $stateParams.chatId);
         var gMembers = group.members;
         $scope.privateIndex = RoomType.privateGroup;
@@ -254,8 +269,10 @@
         }
         function saveSuccess() {
             $ionicLoading.hide();
-            $cordovaProgress.showSuccess(false, "Success!");
-            setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+            if (ionic.Platform.platform() === "ios") {
+                $cordovaProgress.showSuccess(false, "Success!");
+                setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+            }
         }
 
         $rootScope.$ionicGoBack = function () {

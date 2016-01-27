@@ -26,12 +26,12 @@
 			<i class="ion-navicon-round" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;" ng-click="openPopover($event)"></i>
 		</div>
     </ion-nav-buttons>
+
 	<ion-content delegate-handle="mainScroll" style="bottom:44px;">    
         <div ng-controller="ImageController">
         	<div ng-controller="VoiceController">
         		<div ng-controller="VideoController">
 
-        
 		<ion-list class="message-list" ng-repeat="message in chat track by $index">
 
 			<ion-item ng-if="message.firstMsg != undefined" style="text-align:center;">
@@ -39,10 +39,9 @@
 			</ion-item>
 
 			<ion-item ng-if="message.sender != myprofile._id && !!message.sender" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
-				<img ng-src="http://203.113.25.44/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
+				<img ng-src="{{webServer}}/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 				<h2>{{allMembers[message.sender]['displayname']}}</h2>
-				</br>
-
+                <br />
 				<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
 					{{message.body}}
 				</p>
@@ -52,11 +51,11 @@
 					</u>
 				</p>
 				
-				
-				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.44'+message.body)"/>
+				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="{{webServer}}{{message.body}}" ng-click="viewImage(message.type, message.body)" />
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
+
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
-					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.44'+message.body)"></i>
+					<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
 					<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
 
@@ -66,16 +65,14 @@
                 		<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
                 	</div>
                 </div>
-
-
-            
-				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
-					<div class="card">
+                
+                <div class="type-location" ng-if="message.type == 'Location'" ng-init="messagebody=parseJSON(message.body)" ng-click="viewLocation(message._id)">
+					<div>
 						<div class="item item-text-wrap">
-							{{message.locationName}}     
-                           <br /> {{message.locationAddress}}
-                            <br /> {{message.lat}} , {{message.long}}
-						</div>s
+							{{messagebody.name}}     
+							<br /> {{messagebody.address}}
+							<br /> {{messagebody.latitude}} , {{messagebody.longitude}}
+						</div>
 					</div>
 				</div>
 				
@@ -85,7 +82,7 @@
 				</div>
 
 				</br>
-				<label>{{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+				<label>{{message.time}}</label>
 			</ion-item>
 
 			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
@@ -107,16 +104,16 @@
 					</u>
 				</p>
 				
-                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type,message.body)"/>
-				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.44'+message.body)"/>
+                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type, message.body)"/>
+				<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="{{webServer}}{{message.body}}" ng-click="viewImage(message.type, message.body)"/>
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
-                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
+                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 				</div>
                 <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp==null">
-                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,'http://203.113.25.44'+message.body)"></i>
+                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
                     <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
                 </div>
 
@@ -130,22 +127,21 @@
                 	</div>
                 </div>
 				
-				
-				<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
-					<div class="card">
+				<div class="type-location" ng-if="message.type == 'Location'" ng-init="messagebody=parseJSON(message.body)" ng-click="viewLocation(message._id)">
+					<div>
 						<div class="item item-text-wrap">
-							{{message.locationName}}     
-                           <br /> {{message.locationAddress}}
-                            <br /> {{message.lat}} , {{message.long}}
+							{{messagebody.name}}     
+							<br /> {{messagebody.address}}
+							<br /> {{messagebody.latitude}} , {{messagebody.longitude}}
 						</div>
 					</div>
 				</div>
 						
                 <br />
-				<label ng-if="message.temp != 'true' "> {{message.createTime.substr(0,10)}} {{message.createTime.substr(11,8)}}</label>
+				<label ng-if="message.temp != 'true' "> {{message.time}}</label>
 			</ion-item>
-		</ion-list>
-
+		
+        </ion-list>
 				</div>
 			</div>
 		</div>
@@ -153,18 +149,15 @@
 </ion-view>
 
 <ion-footer-bar id="chatMessage" align-title="left" class="bar-light" style="z-index:100;">
-	<div class="buttons">
-		<button ng-disabled="inactive" id="chatMenu" ng-click="openModal()" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
-	</div>
-
-	<input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
-	<input ng-disabled="inactive" ng-show="inactive==true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" value="This is Empty Room" />
-
-	<div class="buttons">
-		<button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
-	</div>
+    <div class="buttons">
+        <button ng-disabled="inactive" id="chatMenu" ng-click="openModal()" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
+    </div>
+    <input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
+    <input ng-disabled="inactive" ng-show="inactive==true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" value="This is Empty Room" />
+    <div class="buttons">
+        <button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
+    </div>
 </ion-footer-bar>
-
 
 
 

@@ -6,7 +6,8 @@ var chatlog_count = 0;
 angular.module('spartan.controllers', [])
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading, roomSelected) {
+.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
+ roomSelected) {
     var room = roomSelected.getRoom();
 
     if ($stateParams.chatId == main.getDataManager().myProfile._id) {
@@ -117,7 +118,7 @@ angular.module('spartan.controllers', [])
 	
 })
 
-.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope) {
+.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, dbAccessService) {
     $scope.settings = {
         logOut: true,
     };
@@ -152,6 +153,7 @@ angular.module('spartan.controllers', [])
   
  
     $scope.data = {
+        'themedefault': 'css/themedefault.css',
         'themeblue': 'css/themeblue.css',
         'themebrown': 'css/themebrown.css',
         'themegreen': 'css/themegreen.css',
@@ -170,6 +172,8 @@ angular.module('spartan.controllers', [])
         console.warn("logOut...");
         server.logout();
         server.disposeClient();
+
+        dbAccessService.clearMessageDAL();
         //$state.go('tab.login');
         location.href = '';
     }

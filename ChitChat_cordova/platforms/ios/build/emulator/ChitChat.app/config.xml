@@ -7,12 +7,14 @@
     <feature name="Camera">
         <param name="ios-package" value="CDVCamera" />
     </feature>
+    <preference name="CameraUsesGeolocation" value="false" />
     <feature name="Console">
         <param name="ios-package" value="CDVLogger" />
     </feature>
     <feature name="Device">
         <param name="ios-package" value="CDVDevice" />
     </feature>
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
     <feature name="File">
         <param name="ios-package" value="CDVFile" />
         <param name="onload" value="true" />
@@ -46,9 +48,6 @@
     <feature name="SpinnerDialog">
         <param name="ios-package" value="CDVSpinnerDialog" />
     </feature>
-    <feature name="Notification">
-        <param name="ios-package" value="CDVNotification" />
-    </feature>
     <feature name="ProgressIndicator">
         <param name="ios-package" value="ProgressIndicator" />
     </feature>
@@ -57,6 +56,9 @@
     </feature>
     <feature name="Geolocation">
         <param name="ios-package" value="CDVLocation" />
+    </feature>
+    <feature name="Notification">
+        <param name="ios-package" value="CDVNotification" />
     </feature>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
@@ -98,8 +100,6 @@
     <preference name="windows-target-version" value="10.0" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
-    <preference name="CameraUsesGeolocation" value="false" />
-    <preference name="AndroidPersistentFileLocation" value="Internal" />
     <allow-intent href="itms:*" />
     <allow-intent href="itms-apps:*" />
     <allow-intent href="http://*/*" />
@@ -119,4 +119,9 @@
     <access origin="*" />
     <icon src="resources/ios/icon/icon-small@3x.png" />
     <preference name="Orientation" value="portrait" />
+    <vs:platformSpecificValues xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps">
+        <vs:platformSpecificWidget id="com.ahoostudio.chitchat" platformName="windows" version="1.0.0.0">
+            <vs:name>ChitChat</vs:name>
+        </vs:platformSpecificWidget>
+    </vs:platformSpecificValues>
 </widget>

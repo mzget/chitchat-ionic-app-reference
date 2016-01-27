@@ -1,6 +1,7 @@
 angular.module('spartan.media', [])
 
-.controller('ImageController', function($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected, checkFileSize) {
+.controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, $ionicModal,
+    ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
@@ -59,7 +60,7 @@ angular.module('spartan.media', [])
 		      //loadingStatus.increment();
 		    }
 	    };
-	    ft.upload(imageURI, "http://203.113.25.44/?r=api/upload", win, fail,
+	    ft.upload(imageURI, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
 	        options);
 
 	}
@@ -89,20 +90,22 @@ angular.module('spartan.media', [])
   	});
 	
 
-	$scope.viewImage = function(type,src){
+	$scope.viewImage = function (type, src) {
+	    console.log(type, JSON.stringify(src));
+
 		$scope.modalImage.type = type;
-		$scope.modalImage.src = src;
+		$scope.modalImage.src = $rootScope.webServer + src;
 		$scope.modalImage.show();
 	}
-	$scope.closeImage = function(){
-		$scope.modalImage.hide();
+	$scope.closeImage = function () {
+	    $scope.modalImage.hide();
 	}
 
 	$scope.uploadImage = function(id) {
 		if(FileService.getImages().length!=0) { 
 			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
 				if(canUpload){
-					var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
+				    var img = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function (id, messageId) {
 						$scope.$emit('delectTemp', [id]); 
 					});
 				mediaUpload[id] = img;
@@ -156,7 +159,6 @@ angular.module('spartan.media', [])
  		})
  	}
 
-
  	$scope.mediaDownload = function(url){
  		console.log(url);
  		return $q(function(resolve, reject) {
@@ -184,7 +186,9 @@ angular.module('spartan.media', [])
  	}
 
 })
-.controller('VideoController', function($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile, checkFileSize, GenerateID,VideoService,roomSelected) {
+
+.controller('VideoController', function ($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
+    checkFileSize, GenerateID, VideoService, roomSelected, sharedObjectService) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
 
@@ -255,7 +259,7 @@ angular.module('spartan.media', [])
 		if(videoName != null || videoName != undefined) { 
 			checkFileSize.checkFile(videoURI).then(function(canUpload) {
 				if(canUpload){
-					var video = new UploadMedia(roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function(id,messageId){
+				    var video = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function (id, messageId) {
 						$scope.$emit('delectTemp', [id]); 
 					});
 					mediaUpload[id] = video;
@@ -296,7 +300,7 @@ angular.module('spartan.media', [])
 		    $scope.modalVideo = modal;
 		    $scope.modalVideo.type = type;
 		    $scope.modalVideo.src = src;
-		    $scope.modalVideo.url = $sce.trustAsResourceUrl('http://203.113.25.44' + src);
+		    $scope.modalVideo.url = $sce.trustAsResourceUrl(sharedObjectService.getWebServer() + src);
 		    $scope.modalVideo.show();
 		    document.getElementById("video-player").play();
 		});
@@ -307,7 +311,7 @@ angular.module('spartan.media', [])
   	};
 	
  	$scope.saveFile = function(type,url){
- 		$scope.mediaDownload('http://203.113.25.44' + url).then(function(path) { 
+ 	    $scope.mediaDownload(sharedObjectService.getWebServer() + url).then(function (path) {
  			saveToCameraRoll(type,path).then(function(){
  				navigator.notification.alert(
 				    'This ' + type +' been saved!', 
@@ -337,7 +341,6 @@ angular.module('spartan.media', [])
  		})
  	}
 
-
  	$scope.mediaDownload = function(url){
  		console.log(url);
  		return $q(function(resolve, reject) {
@@ -366,7 +369,9 @@ angular.module('spartan.media', [])
 
 
 })
-.controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile, GenerateID,roomSelected, checkFileSize) {
+
+.controller('VoiceController', function ($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile,
+    GenerateID, roomSelected, checkFileSize, sharedObjectService) {
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
 	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
@@ -397,25 +402,37 @@ angular.module('spartan.media', [])
 	}
 
 	var audio;
-	$scope.play = function(id,url){
+	$scope.play = function (id, url) {
+	    console.log("play url: ", url);
 		var fileName = url.substr(url.lastIndexOf('/') + 1);
-		var fileMedia = url.replace('file://','');
+
+		console.log("filename:", fileName);
 
 		$('.ion-pause').css({ 'display': 'none' });
 		$('.ion-play').css({ 'display': 'inline' });
 
 		$cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
 	      .then(function (success) {
-			$('#' + id + '-voice-play').css({ 'display': 'none' });
-			$('#' + id + '-voice-pause').css({ 'display': 'inline' });
-			//audio.stop();
-	        audio = new Media(fileMedia,
-                         function() { $('#' + id + '-voice-play').css({ 'display': 'inline' }); $('#' + id + '-voice-pause').css({ 'display': 'none' }); },
-                         function(err){ console.log("playAudio(): Error: "+ err.code) }
-                         );
-			audio.play();
+	          var fileMedia = success.nativeURL.replace('file://', '');
+	          console.log("filemedia:", fileMedia);
+
+	          console.log("check file success.", JSON.stringify(success));
+	          $('#' + id + '-voice-play').css({ 'display': 'none' });
+	          $('#' + id + '-voice-pause').css({ 'display': 'inline' });
+	          //audio.stop();
+	          audio = new Media(fileMedia, function () {
+	              $('#' + id + '-voice-play').css({ 'display': 'inline' });
+	              $('#' + id + '-voice-pause').css({ 'display': 'none' });
+	          },
+                  function (err) {
+                      console.log("playAudio(): Error: " + JSON.stringify(err));
+                  }
+                           );
+
+	          audio.play();
 	      }, function (error) {
-	        downloadMedia(id,url);
+	          console.error("get file media fail.", JSON.stringify(error));
+	          downloadMedia(id, sharedObjectService.getWebServer() + url);
 	      });
 	}
 	$scope.pause = function(id){
@@ -452,7 +469,7 @@ angular.module('spartan.media', [])
 		if(fileName != null || fileName != undefined) { 
 			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
 				if(canUpload){
-					var voice = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function(id,messageId){
+				    var voice = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
 						$scope.$emit('delectTemp', [id]); 
 				});
 				mediaUpload[id] = voice;
@@ -479,7 +496,7 @@ angular.module('spartan.media', [])
 
 var mediaUpload = {};
 
-function UploadMedia(rid,uri,type,callback){
+function UploadMedia(sharedObjectService, rid, uri, type, callback) {
 	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
 	var uriFile = uri;
 	var mediaName = uri.substr(uri.lastIndexOf('/') + 1);
@@ -505,7 +522,7 @@ function UploadMedia(rid,uri,type,callback){
 
 		    }
 		};
-		ft.upload(uriFile, "http://203.113.25.44/?r=api/upload", win, fail,
+		ft.upload(uriFile, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
         options);
 	}
 	this.cancel = function(){

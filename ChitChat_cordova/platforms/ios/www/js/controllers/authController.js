@@ -1,21 +1,25 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
-        .module('spartan.auth', [])
+        .module('spartan.auth', ['ionic'])
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPlatform, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, networkService, chatslogService) {
+    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, $cordovaDialogs, 
+     networkService, chatslogService, dbAccessService, sharedObjectService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
      
-        $ionicPlatform.ready(function () {
+        ionic.Platform.ready(function () {
+            console.log(vm.title + " : ionic ready.");
+            
             activateBackground();
             activate();
             setConfigTheme();
+
             main.setDataManager(dataManager);
             main.setServerListener(serverEvents);
             main.setServerImp(server);
@@ -25,14 +29,17 @@
                 $('#splash').css({ 'display': 'none' });
 
                 // Hide spinner dialog
-                if (cordova.platformId === "ios") {
+                if (ionic.Platform.platform() === "ios") {
                     $cordovaSpinnerDialog.hide();
                 }
-                else if (cordova.platformId === "windows") {
+                else if (ionic.Platform.platform() === "windows") {
                     $ionicLoading.hide();
                 }
                     
                 console.log("appConfig", server.appConfig.webserver);
+                
+                $rootScope.webServer = sharedObjectService.getWebServer();
+                $rootScope.appVersion = sharedObjectService.getAppVersion();
 
                 //location.href = "#/tab/group";
                 $state.go('tab.group');
@@ -52,7 +59,7 @@
 
             console.log("init push notification.");
 
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 var push = PushNotification.init({
                     "ios": { "alert": "true", "badge": "true", "sound": "true" }
                 });
@@ -78,7 +85,7 @@
         }
         
         function activateBackground() {
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 // Prevent the app from going to sleep in background
                 cordova.plugins.backgroundMode.enable();
                 // Get informed when the background mode has been activated
@@ -102,7 +109,7 @@
 
         function initSpartanServer() {
             function initCallback (err, server) {
-                console.log("Init serve completed is connected:", server._isConnected, JSON.stringify(err));
+                console.log("Init serve completed is connected: " + server._isConnected + " : " + err);
                 if (err !== null) {
                     onServerConnectionFail(err);
                 }
@@ -115,7 +122,12 @@
 
         function onLoginTimeout(param) {
             // Hide spinner dialog
-            $cordovaSpinnerDialog.hide();
+            if (ionic.Platform.platform() === "ios") {
+                $cordovaSpinnerDialog.hide();
+            }
+            else {
+                $ionicLoading.hide();
+            }
 
             navigator.notification.alert(param.message, function callback() {
                 location.href = '';
@@ -123,54 +135,110 @@
         }
 
         function onDuplicateLogin(param) {
+            console.log("onDuplicateLogin", param);
             // Hide spinner dialog
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
             }
-            else if (cordova.platformId === "windows") {
+            else {
                 $ionicLoading.hide();
             }
 
-            navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices",
-                function (buttonIndex) {
-                    switch (buttonIndex) {
-                        case 1:
-                            location.href = '';
-                            break;
-                        case 2:
-                            server.kickMeAllSession(param.uid);
-                            location.href = "";
-                            break;
-                    }
-                }, "Duplicated login!", ["Cancle", "OK"]);
+            //navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices",
+            //    function (buttonIndex) {
+            //        switch (buttonIndex) {
+            //            case 1:
+            //                location.href = '';
+            //                break;
+            //            case 2:
+            //                server.kickMeAllSession(param.uid);
+            //                location.href = "";
+            //                break;
+            //        }
+            //    }, "Duplicated login!", ["Cancle", "OK"]);
+
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Duplicated login!',
+                template: 'May be you use this app in other devices \n You want to logout other devices'
+            });
+
+            confirmPopup.then(function (res) {
+                if (res) {
+                    server.kickMeAllSession(param.uid);
+                    location.href = "";
+                } else {
+                    location.href = '';
+                }
+            });
         }
 
         function onAuthenFail(errMessage) {
             // Hide spinner dialog
-            $cordovaSpinnerDialog.hide();
-
-            navigator.notification.alert(errMessage, function callback() { }, "Login fail!", "OK");
-        }
-
-        function onServerConnectionFail(errMessage) {
-            // Hide spinner dialog
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
             }
-            else if (cordova.platformId === "windows") {
+            else {
                 $ionicLoading.hide();
             }
 
-            navigator.notification.alert(errMessage, function callback() {
-                console.warn("Just go to no connection page.");
+            // navigator.notification.alert(errMessage, function callback() { }, "Login fail!", "OK");
+            var alertPopup = $ionicPopup.alert({
+                title: "Login fail!",
+                template: errMessage
+            });
 
+            alertPopup.then(function(res) {
+                console.log(res);
+            });
+        }
+
+        function onServerConnectionFail(errMessage) {
+            
+            console.warn("Just go to no connection page. " + errMessage);
+            
+            // Hide spinner dialog
+            if (ionic.Platform.platform() === "ios") {
+                $cordovaSpinnerDialog.hide();
+                
+
+            // navigator.notification.alert(errMessage, function callback() {
+            //     console.warn("Just go to no connection page.");
+
+            //     $('#login').css('display', 'none');
+            //     $('.bar-stable').css({ 'display': '' });
+            //     $('#splash').css({ 'display': 'none' });
+                
+            //     location.href = "#/tab/login/error";
+            // },
+            // "Connecting to server fail! \n Please come back again.", "OK");
+            
+            }
+            else {
+                // $ionicLoading.hide();
+                
+                // var alertPopup = $ionicPopup.alert({
+                //     title: "Connecting to server fail! \n Please come back again.",
+                //     template: errMessage
+                // });
+
+                // alertPopup.then(function(res) {
+                //     $('#login').css('display', 'none');
+                //     $('.bar-stable').css({ 'display': '' });
+                //     $('#splash').css({ 'display': 'none' });
+                    
+                //     location.href = "#/tab/login/error";
+                // });
+            }
+            
+            $cordovaDialogs.alert('Connecting to server fail! \n Please come back again.', '', 'OK')
+            .then(function() {
+                // callback success
                 $('#login').css('display', 'none');
                 $('.bar-stable').css({ 'display': '' });
                 $('#splash').css({ 'display': 'none' });
-                $cordovaSpinnerDialog.hide();
+                
                 location.href = "#/tab/login/error";
-            },
-            "Connecting to server fail! \n Please come back again.", "OK");
+            });
         }
 
         function onMissingParams() {
@@ -203,10 +271,10 @@
                     }
                     else {
                         // Show spinner dialog
-                        if (cordova.platformId === "ios") {
+                        if (ionic.Platform.platform() === "ios") {
                             $cordovaSpinnerDialog.show(null, "loging in...", true);
                         }
-                        else if (cordova.platformId === "windows") {
+                        else if (ionic.Platform.platform() === "windows") {
                             $ionicLoading.show({
                                 template: "loging in..."
                             });
@@ -284,7 +352,7 @@
         function setConfigTheme(){
             if(typeof($scope.setConfigModal) != 'undefined'){
                 if(!$localStorage.themeData){
-                    $localStorage.themeData = 'themeblue';
+                    $localStorage.themeData = 'themedefault';
                 }
                 $rootScope.theme = $localStorage.themeData;
                 $scope.setConfigModal.show();

@@ -1,3 +1,3 @@
 dependencies: \
-  /Users/nattapon/Documents/chitchat_cordova/ChitChat_cordova/platforms/ios/CordovaLib/Classes/CDVConfigParser.m \
-  /Users/nattapon/Documents/chitchat_cordova/ChitChat_cordova/platforms/ios/CordovaLib/Classes/CDVConfigParser.h
+  /Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/CordovaLib/Classes/CDVConfigParser.m \
+  /Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/CordovaLib/Classes/CDVConfigParser.h

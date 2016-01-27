@@ -5,9 +5,7 @@
         .module('spartan.services')
         .factory('chatslogService', chatslogService);
 
-    // chatslogService.$inject = ['$http'];
-
-    function chatslogService($http, $rootScope) {
+    function chatslogService($http, $rootScope, ConvertDateTime) {
         var service = {
             getChatsLogComponent: getChatsLogComponent,
             init: init,
@@ -15,7 +13,8 @@
             decreaseLogsCount: decreaseLogsCount,
             increaseLogsCount: increaseLogsCount,
             getUnreadMessageMap: getUnreadMessageMap,
-            organizeUnreadMessageMapForDisplayInfo: organizeUnreadMessageMapForDisplayInfo
+            getChatsLog : getChatsLog,
+            organizeChatLogMap: organizeChatLogMap
         };
 
         return service;
@@ -23,32 +22,38 @@
         var chatsLogComponent = null;
         var listenerImp;
         var dataListener = null;
+        var dataManager = null;
         var chatlog_count = 0;
         var unreadMessageMap = {};
+        var chatslog = {};
         var isInit = false;
 
         function init() {
             if(!isInit) {
                 isInit = true;
                 
+                chatslog = {};
                 dataListener = main.getDataListener();
+                dataManager = main.getDataManager();
                 chatlog_count = 0;
                 listenerImp = function (newMsg) {
                     if (!main.getDataManager().isMySelf(newMsg.sender)) {
                         chatlog_count++;
-                        cordova.plugins.notification.badge.increase();
-                        
+                        if (ionic.Platform.platform() === "ios") {
+                            cordova.plugins.notification.badge.increase();
+                        }
                         var unread = {};
                         unread.message = newMsg;
                         unread.rid = newMsg.rid;
-                        console.warn("room to add: ", unreadMessageMap[newMsg.rid]);
+                        console.warn("room to add: ", JSON.stringify(unreadMessageMap[newMsg.rid]));
                         var count = Number(unreadMessageMap[newMsg.rid].count);
                         count++;
-                        console.log(newMsg.rid, "unread count", unreadMessageMap[newMsg.rid].count);
-                        organizeUnreadMessageMapForDisplayInfo(unread, function done() {
-                            unreadMessageMap[newMsg.rid].count = count;
-                            console.log(newMsg.rid, "unread count++", unreadMessageMap[newMsg.rid].count);
-                        });
+                        unread.count = count;
+                        unreadMessageMap[unread.rid] = unread;
+
+                        //$rootScope.$broadcast('onUnreadMessageMapChanged', { data: unread });
+                        onUnreadMessageMapChanged(unread);
+           //             chatLogDAL.savePersistedUnreadMsgMap(unread);
                     }
                 }
                 chatsLogComponent = new ChatsLogComponent(main, server);
@@ -58,13 +63,17 @@
                     chatsLogComponent.onReady = null;
                 }
                 dataListener.addRoomAccessListenerImp(chatsLogComponent);
-                chatsLogComponent.addNewMsgListener(listenerImp);
+                chatsLogComponent.addOnChatListener(listenerImp);
                 chatsLogComponent.updatedLastAccessTimeEvent = function (newRoomAccess) {
                     chatsLogComponent.getUnreadMessage(newRoomAccess.roomAccess[0], function(err, unread) {
                         if (!!unread) {
-                            organizeUnreadMessageMapForDisplayInfo(unread, function done() {
-                                calculateUnreadCount();
-                            });
+                            unreadMessageMap[unread.rid] = unread;
+
+                            calculateUnreadCount();
+
+                            //$rootScope.$broadcast('onUnreadMessageMapChanged', { data: unread });
+                            onUnreadMessageMapChanged(unread);
+                            //chatLogDAL.savePersistedUnreadMsgMap(unread);
                         }
                     });
                 }
@@ -85,25 +94,19 @@
 
         function getUnreadMessages() {
             unreadMessageMap = {};
-            chatlog_count = 0;
             chatsLogComponent.getUnreadMessages(main.getDataManager().myProfile.roomAccess, function done(err, unreadLogs) {
                 if (!!unreadLogs) {
                     unreadLogs.map(function element(unread) {
-                        if(!!unread.message) {
-                           organizeUnreadMessageMapForDisplayInfo(unread, null);
-                        }
-                        else {
-                            unreadMessageMap[unread.rid] = unread;
-                        }
-
-                        var count = Number(unread.count);
-                        chatlog_count += count;
-
+                        unreadMessageMap[unread.rid] = unread;
+                       
                         console.log("unread:", JSON.stringify(unread));
                     });
+
+                    calculateUnreadCount();
                 }
                 
-                $rootScope.$broadcast('getunreadmessagecomplete', {});
+                //$rootScope.$broadcast('getunreadmessagecomplete', {});
+                getunreadmessagecomplete();
             });
         }
         
@@ -136,46 +139,152 @@
          function getUnreadMessageMap() {
              return unreadMessageMap;
          }
+
+         function getChatsLog() {
+             return chatslog;
+         }
          
-         function organizeUnreadMessageMapForDisplayInfo(unread, done) { 
-            var contact = main.getDataManager().getContactProfile(unread.message.sender);
-            switch (unread.message.type) {
-                case ContentType[ContentType.Text]:  
-                    main.decodeService(unread.message.body, function (err, res) {
-                        if (!err) {
-                            unread.message.body = res;
+         function organizeChatLogMap(unread, roomInfo, done) {
+             var log = new ChatLog(roomInfo);
+             log.setNotiCount(unread.count);
+
+             if (!!unread.message) {
+                 log.setLastMessageTime(unread.message.createTime);
+
+                 var contact = main.getDataManager().getContactProfile(unread.message.sender);
+                 var sender = (contact != null) ? contact.displayname : "";
+                 if (unread.message.body != null) {
+                     var displayMsg = unread.message.body;
+                     switch (unread.message.type) {
+                         case ContentType[ContentType.Text]:
+                             main.decodeService(displayMsg, function (err, res) {
+                                 if (!err) {
+                                     displayMsg = res;
+                                 } else { console.warn(err, res); }
+
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log, done);
+                                 });
+                             });
+                             break;
+                         case ContentType[ContentType.Sticker]:
+                             displayMsg = sender + " sent a sticker.";
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log, done);
+                                 });
+                             break;
+                         case ContentType[ContentType.Voice]:
+                             displayMsg = sender + " sent a voice message.";
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log, done);
+                                 });
+                             break;
+                         case ContentType[ContentType.Image]:
+                             displayMsg = sender + " sent a image.";
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log, done);
+                                 });
+                             break;
+                         case ContentType[ContentType.Video]:
+                             displayMsg = sender + " sent a video.";
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log, done);
+                                 });
+                             break;
+                         case ContentType[ContentType.Location]:
+                             displayMsg = sender + " sent a location.";
+                                 setLogProp(log, displayMsg, function(log) {
+                                     addChatLog(log, done);
+                                 });
+                             break;
+                         default:
+                             break;
+                     }
+                 }
+             }
+             else {
+                log.setLastMessage("Start Chatting Now!");
+
+                setLogProp(log, displayMsg, function(log) {
+                    addChatLog(log, done);
+                });
+             }
+         }
+
+         function setLogProp(log, displayMessage, callback) {
+             log.setLastMessage(displayMessage);
+
+             callback(log);
+         }
+               
+        function addChatLog(chatLog, done) {
+            chatLog.time = ConvertDateTime.getTimeChatlog(chatLog.lastMessageTime);
+            chatslog[chatLog.id] = chatLog;
+            done();
+            console.debug("addChatLog", chatLog);
+        }
+
+        function getRoomInfo() {
+            console.log("my roomAccess.length", dataManager.getRoomAccess().length);
+
+            async.mapSeries(unreadMessageMap, function iterator(item, resultCB) {
+                var roomInfo = dataManager.getGroup(item.rid);
+                if (!!roomInfo) {
+                    organizeChatLogMap(item, roomInfo, function done() {
+                        resultCB(null, {});
+                    });
+                }
+                else {
+                    console.warn("Can't find roomInfo from persisted data: ", item.rid);
+
+                    server.getRoomInfo(item.rid, function (err, res) {
+                        if (res['code'] === HttpStatusCode.success) {
+                            var roomInfo = JSON.parse(JSON.stringify(res.data));
+                            if (roomInfo.type === RoomType.privateChat) {
+                                var targetMemberId = "";
+                                roomInfo.members.some(function itorator(item) {
+                                    if (item.id !== dataManager.myProfile._id) {
+                                        targetMemberId = item.id;
+                                        return item.id;
+                                    }
+                                });
+
+                                var contactProfile = dataManager.getContactProfile(targetMemberId);
+                                if (contactProfile == null) {
+                                    roomInfo.name = "EMPTY ROOM";
+                                }
+                                else {
+                                    roomInfo.name = contactProfile.displayname;
+                                }
+                            }
+                            else {
+                                console.warn("OMG: the god only know. May be group status is not active.");
+                            }
+
+                            dataManager.addGroup(roomInfo);
+
+                            organizeChatLogMap(item, roomInfo, function done() {
+                                resultCB(null, {});
+                            });
                         }
                         else {
-                            console.log(err, res);
+                            console.warn("Fail to get room info of room %s", item.rid, res.message);
+                            resultCB(null, {});
                         }
                     });
-                    break;
-                case ContentType[ContentType.Sticker]:
-                    var message = contact.displayname + " sent a sticker.";
-                    unread.message.body = message;
-                    break;
-                case ContentType[ContentType.Voice]:
-                    var message = contact.displayname + " sent a voice message.";
-                    unread.message.body = message;
-                    break;
-                case ContentType[ContentType.Image]:
-                    var message = contact.displayname + " sent a image.";
-                    unread.message.body = message;
-                    break;
-                case ContentType[ContentType.Video]:
-                    var message = contact.displayname + " sent a video."
-                    unread.message.body = message;
-                    break;
-                case ContentType[ContentType.Location]:
-                    var message = contact.displayname + " sent a location.";
-                    unread.message.body = message;
-                    break;
-                default:
-                    break;
-            }
-            
-            unreadMessageMap[unread.rid] = unread;
-            if(!!done) done();
-         }
+                }
+            }, function done(err, results) {
+                console.debug("getRoomInfo Completed.");
+            });
+        }
+
+        function onUnreadMessageMapChanged(unread) {
+            var roomInfo = dataManager.getGroup(unread.rid);
+            organizeChatLogMap(unread, roomInfo, function () { });
+        }
+
+        function getunreadmessagecomplete() {
+            getRoomInfo();
+        }
     }
 })();

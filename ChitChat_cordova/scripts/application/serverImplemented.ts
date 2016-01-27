@@ -157,7 +157,7 @@ module ChatServer {
             
             // var self = this;    
             pomelo.init({ host: _host, port: _port }, function cb(err) {
-                console.log("socket init result: ", err);
+                console.log("socket init result: " + err);
                 callback(err);
             });
         }

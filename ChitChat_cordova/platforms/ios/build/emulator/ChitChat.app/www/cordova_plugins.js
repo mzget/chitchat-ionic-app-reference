@@ -386,14 +386,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/org.apache.cordova.dialogs/www/notification.js",
-        "id": "org.apache.cordova.dialogs.notification",
-        "pluginId": "org.apache.cordova.dialogs",
-        "merges": [
-            "navigator.notification"
-        ]
-    },
-    {
         "file": "plugins/org.pbernasconi.progressindicator/www/progressIndicator.js",
         "id": "org.pbernasconi.progressindicator.ProgressIndicator",
         "pluginId": "org.pbernasconi.progressindicator",
@@ -440,6 +432,14 @@ module.exports = [
         "clobbers": [
             "navigator.geolocation"
         ]
+    },
+    {
+        "file": "plugins/cordova-plugin-dialogs/www/notification.js",
+        "id": "cordova-plugin-dialogs.notification",
+        "pluginId": "cordova-plugin-dialogs",
+        "merges": [
+            "navigator.notification"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -459,10 +459,10 @@ module.exports.metadata =
     "de.appplant.cordova.plugin.badge": "0.7.1",
     "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
     "hu.dpal.phonegap.plugins.SpinnerDialog": "1.3.1",
-    "org.apache.cordova.dialogs": "0.3.0",
     "org.pbernasconi.progressindicator": "1.1.0",
     "phonegap-plugin-push": "1.4.2",
-    "cordova-plugin-geolocation": "1.0.1"
+    "cordova-plugin-geolocation": "1.0.1",
+    "cordova-plugin-dialogs": "1.2.0"
 }
 // BOTTOM OF METADATA
 });

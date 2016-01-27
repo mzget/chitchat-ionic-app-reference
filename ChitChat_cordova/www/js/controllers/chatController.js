@@ -1,27 +1,28 @@
 /// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
-.controller('chatController', function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopover, $ionicLoading, $ionicModal,
+.controller('chatController', 
+function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
 	$sce, $cordovaGeolocation, $cordovaDialogs,
-	Chats, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService)
+    chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
 
 	var self = this;
-
-	
-	$scope.chat = [];
-
+	self.title = 'chatController';
+    
 	var myprofile = main.getDataManager().myProfile;
 	var allMembers = main.getDataManager().orgMembers;
 	var chatRoomApi = main.getChatRoomApi();
 
+	$scope.allMembers = allMembers;
+	$scope.myprofile = myprofile;
+
 	function activate() {
-		console.log("chatController is activate");
+	    console.log(self.title + " is activate");
 
 		self.currentRoom = roomSelected.getRoom();
-		self.chatRoomComponent = new ChatRoomComponent(main, self.currentRoom._id);
 
 		//<!-- Set up roomname for display title of chatroom.
 		var roomName = self.currentRoom.name;
@@ -42,81 +43,63 @@ angular.module('spartan.chat', [])
 				if(value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
 			});
 		}
-		addComponent();
-	}
 
-	function addComponent() {
-		main.dataListener.addChatListenerImp(self.chatRoomComponent);
-		sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
-		self.chatRoomComponent.serviceListener = function (event, newMsg) {
-			if (event === "onChat") {
-				Chats.set(self.chatRoomComponent.chatMessages);
-
-				if (newMsg.sender !== main.dataManager.myProfile._id) {
-					chatRoomApi.updateMessageReader(newMsg._id, self.currentRoom._id);
-				}
-			}
-			else if (event === "onMessageRead") {
-				Chats.set(self.chatRoomComponent.chatMessages);
-			}
-		}
-		self.chatRoomComponent.notifyEvent = function (event, data) {
-			if (event === ChatServer.ServerEventListener.ON_CHAT) {
-				var appBackground = cordova.plugins.backgroundMode.isActive();
-				sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
-			}
-		};
-		self.chatRoomComponent.getMessage(self.currentRoom._id, Chats, function (joinRoomRes) {
-
-		    console.log("getMessageHistory: completed", joinRoomRes.code);
-		    $scope.chat = Chats.all();
-			Chats.set(self.chatRoomComponent.chatMessages);
-			
-			setTimeout(function () {
-				$ionicLoading.hide();
-			}, 1000);
-
-			if (joinRoomRes.code !== HttpStatusCode.success) {
-			    //<!-- Block user interface for this chat room.
-			    blockUI(true);
-			} else {
-			    blockUI(false);
-			}
+		$scope.$on('onNewMessage', function (event, data) {
+		    setTimeout(function () {
+		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
+		    }, 1000);
 		});
-	}
+		$scope.$on('onMessagesReady', function (event, data) {
+		    $scope.chat = chatRoomService.all();
 
-	function leaveRoom() {
-		self.chatRoomComponent.leaveRoom(self.currentRoom._id, function callback(err, res) {
-			localStorage.removeItem(myprofile._id + '_' + self.currentRoom._id);
-			localStorage.setItem(myprofile._id + '_' + self.currentRoom._id, JSON.stringify(self.chatRoomComponent.chatMessages));
-			console.warn("save chat history", self.currentRoom.name);
-
-			self.currentRoom = null;
-			roomSelected.setRoom(self.currentRoom);
-			self.chatRoomComponent.chatMessages = [];
-			Chats.clear();
-			main.dataListener.removeChatListenerImp(self.chatRoomComponent);
-			sharedObjectService.regisNotifyNewMessageEvent();
+		    setTimeout(function () {
+		        $ionicLoading.hide();
+		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
+		    }, 1000);
 		});
+		$scope.$on('onJoinRoomReady', function (event, data) {
+		    chatRoomService.getChatRoomComponent().joinRoom(function cb(err, result) {
+		        if (result.code !== HttpStatusCode.success) {
+		            //<!-- Block user interface for this chat room.
+		            blockUI(true);
+		        } else {
+		            blockUI(false);
+		        }
+		    });
+		});
+		
+		chatRoomService.init();
+		chatRoomService.getPersistendMessage(); 
 	}
 
-	$scope.openPopover = function($event) {
-	    $scope.popover.show($event);
-	};
-	
 	function blockUI(boo) {
 		$scope.inactive = boo;
 	}
 
+	function setupMenuItem() {
+	    if (self.currentRoom.type != RoomType.privateChat) {
+	        $ionicPopover.fromTemplateUrl('templates/popover-group.html', {
+	            scope: $scope,
+	        }).then(function (popover) {
+	            $scope.popover = popover;
+	        });
+	    } else {
+	        $ionicPopover.fromTemplateUrl('templates/popover-contact.html', {
+	            scope: $scope,
+	        }).then(function (popover) {
+	            $scope.popover = popover;
+	        });
+	    }
+	}
+
 	$scope.viewProfile = function(){
-		$scope.popover.hide();
-		console.log(JSON.stringify($state.current));
-		if($state.current.views.hasOwnProperty('tab-chats')){
-			$state.go('tab.chats-chat-viewprofile', { chatId: $scope.otherId });
-		}else{
-			$state.go('tab.group-viewprofile', { chatId: $scope.otherId });
-		}
-		
+	    $scope.popover.hide();
+	    console.log(JSON.stringify($state.current));
+	    if ($state.current.views.hasOwnProperty('tab-chats')) {
+	        $state.go('tab.chats-chat-viewprofile', { chatId: $scope.otherId });
+	    } else {
+	        $state.go('tab.group-viewprofile', { chatId: $scope.otherId });
+	    }
 	}
 
 	$scope.groupDetail = function(state){
@@ -128,6 +111,12 @@ angular.module('spartan.chat', [])
 			$state.go('tab.group-members', { chatId: self.currentRoom._id });
 		}
 	}
+
+	$scope.openPopover = function ($event) {
+	    console.log("open popover:", JSON.stringify($event));
+
+	    $scope.popover.show($event);
+	};
 	
 	function sendMessageResponse(err, res) {
 		if (!!err) {
@@ -160,7 +149,6 @@ angular.module('spartan.chat', [])
 		$scope.chatMenuModal.hide();
 	}
 	// Modal - Audio Recorder
-
 	$scope.openModalRecorder = function(){
 		modalcount++;
 		$scope.modalAudio.show();
@@ -215,9 +203,9 @@ angular.module('spartan.chat', [])
 		$scope.openModalWebview();
 	};
 		
-	$("#modal-webview-iframe").on('load',function() {
-			alert( $(this).contentDocument.title );
-		});
+	$("#modal-webview-iframe").on('load', function () {
+	    alert($(this).contentDocument.title);
+	});
 	 
 	var countUp = function () {		
 		if( self.currentRoom != null )
@@ -225,7 +213,7 @@ angular.module('spartan.chat', [])
 			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
 			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
 			console.info('chatController: refresh view');
-			$scope.chat = Chats.all();
+			$scope.chat = chatRoomService.all();
 			
 			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
 			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
@@ -240,12 +228,7 @@ angular.module('spartan.chat', [])
 			$timeout(countUp, 1000);
 		}
 	}
-	$timeout(countUp, 1000);
-	
-	var chats = Chats.all();
-
-	$scope.allMembers = allMembers;
-	$scope.myprofile = myprofile;
+//	$timeout(countUp, 1000);
 	
 	//$('#send_message').css({ 'display': 'inline-block' });
 	//$('#chatroom_back').css({ 'display': 'inline-block' });
@@ -259,15 +242,19 @@ angular.module('spartan.chat', [])
 			// Clear Message
 			$('#send_message').val('')
 			
-			main.encodeService(content, function(err, result) {
-				if (err) {
-					console.error(err);
-				}
-				else {
-					//var myId = myprofile._id;
-					chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
-				}
-			});
+			if (server.appConfig.encryption == true) {
+			    main.encodeService(content, function (err, result) {
+			        if (err) {
+			            console.error(err);
+			        }
+			        else {
+			            chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
+			        }
+			    });
+			}
+			else {
+			    chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, content, ContentType[ContentType.Text], sendMessageResponse);
+			}
 		}
 	});
 
@@ -339,10 +326,17 @@ angular.module('spartan.chat', [])
 			$scope.openReaderModal();
 		});
 	}
+	$scope.parseJSON= function(json){
+		return JSON.parse(json);
+	}
 	$scope.viewLocation = function (messageId) {
 		console.info('viewLocation');
-		var message = Chats.get(messageId);
-		viewLocation($scope, message);
+		var message = chatRoomService.get(messageId);
+		
+		console.log(message);
+		console.log(JSON.parse(message.body));
+		
+		viewLocation($scope, JSON.parse(message.body));
 		$scope.mapViewModal.show();
 	}
 	$scope.openMap = function() {
@@ -357,8 +351,7 @@ angular.module('spartan.chat', [])
 	};
 	$scope.closeMapModal = function() {
 		$scope.mapViewModal.hide();
-	};
-	
+	};	
 	$scope.isValidURI = function(uri) {
 		if( uri.substr(0, 3) == 'www' || uri.substr(0, 4) == 'http' || uri.substr(0, 3) == 'ftp' )
 			if( uri.split(".").length > 2 && uri.split(".")[1] != '' && uri.split(".")[2] != '' )
@@ -367,109 +360,72 @@ angular.module('spartan.chat', [])
 		return false;
 	};
 	
-	// ON ENTER 
-	$scope.$on('$ionicView.enter', function(){ //This is fired twice in a row
-		console.log("App view (menu) entered.");
+	function setupModals() {
+	    // Reload Modal - Chat menu
+	    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function (modal) {
+	        $scope.chatMenuModal = modal;
+	    })
 
-		$ionicLoading.show({
-			template: 'Loading..'
-		});
+	    // Reload Modal - Sticker
+	    $ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function (modal) {
+	        $scope.modalSticker = modal;
+	    })
 
+	    $ionicModal.fromTemplateUrl('templates/modal-audio-recorder.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function (modal) {
+	        $scope.modalAudio = modal;
+	    })
 
-	    activate();
-		
-		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom();
+	    // Reload Modal - WebView
+	    $ionicModal.fromTemplateUrl('templates/modal-webview.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function (modal) {
+	        $scope.modalWebview = modal;
+	    })
 
+	    // Reader view modal.
+	    $ionicModal.fromTemplateUrl('templates/reader-view.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function (modal) {
+	        $scope.readerViewModal = modal;
+	    });
 
-		if(self.currentRoom.type!=RoomType.privateChat){
-			$ionicPopover.fromTemplateUrl('templates/popover-group.html', {
-			    scope: $scope,
-			}).then(function(popover) {
-			    $scope.popover = popover;
-			});
-		}else{
-			$ionicPopover.fromTemplateUrl('templates/popover-contact.html', {
-			    scope: $scope,
-			}).then(function(popover) {
-			    $scope.popover = popover;
-			});
-		}
+	    // Map modal view modal.
+	    $ionicModal.fromTemplateUrl('templates/map.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function (modal) {
+	        $scope.mapViewModal = modal;
+	    });
 
-			
-		// Reload Modal - Chat menu
-		$ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.chatMenuModal = modal;
-		})
-		
-		// Reload Modal - Sticker
-		$ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.modalSticker = modal;
-		})
-
-		$ionicModal.fromTemplateUrl('templates/modal-audio-recorder.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.modalAudio = modal;
-		})
-		
-		// Reload Modal - WebView
-		$ionicModal.fromTemplateUrl('templates/modal-webview.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.modalWebview = modal;
-		})
-		
-		// Reader view modal.
-		$ionicModal.fromTemplateUrl('templates/reader-view.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.readerViewModal = modal;
-		});
-		
-		// Map modal view modal.
-		$ionicModal.fromTemplateUrl('templates/map.html', {
-			scope: $scope,
-			animation: 'slide-in-up'
-		}).then(function(modal) {
-			$scope.mapViewModal = modal;
-		});
-		
-		//Cleanup the modal when we're done with it!
-		$scope.$on('$destroy', function () {
-			$scope.chatMenuModal.remove();
-			$scope.modalSticker.remove();
-			$scope.modalAudio.remove();
-			$scope.modalWebview.remove();
-			$scope.readerViewModal.remove();
-			$scope.mapViewModal.remove();
-		});
-		// Execute action on hide modal
-		$scope.$on('modal.hidden', function () {
-			// Execute action
-		});
-		// Execute action on remove modal
-		$scope.$on('modal.removed', function () {
-			// Execute action
-		});
-	});
-
-	// ON LEAVE
-	$scope.$on('$ionicView.beforeLeave', function(){ //This just one when leaving, which happens when I logout
-		console.log("chatController beforeLeave.");
-				
-		//$('#send_message').css({ 'display': 'none' });
-
-		leaveRoom();
-	});
+	    //Cleanup the modal when we're done with it!
+	    $scope.$on('$destroy', function () {
+	        $scope.chatMenuModal.remove();
+	        $scope.modalSticker.remove();
+	        $scope.modalAudio.remove();
+	        $scope.modalWebview.remove();
+	        $scope.readerViewModal.remove();
+	        $scope.mapViewModal.remove();
+	    });
+	    // Execute action on hide modal
+	    $scope.$on('modal.hidden', function () {
+	        // Execute action
+	    });
+	    // Execute action on remove modal
+	    $scope.$on('modal.removed', function () {
+	        // Execute action
+	    });
+	}
 
 	$scope.editFavorite = function(editType,id,type){
 		$ionicLoading.show({
@@ -536,13 +492,35 @@ angular.module('spartan.chat', [])
 	}
 	$scope.isBlockNoti = function(id){
 		return blockNotifications.isBlockNoti(id);
-	}        
+	}
+
+    // ON ENTER 
+	$scope.$on('$ionicView.enter', function () { //This is fired twice in a row
+	    console.log("App view (menu) entered.");
+
+	    $ionicLoading.show({
+	        template: 'Loading...'
+	    });
+
+	    activate();
+	    setupMenuItem();
+	    setupModals();
+	});
+
+    // ON LEAVE
+	$scope.$on('$ionicView.beforeLeave', function () { //This just one when leaving, which happens when I logout
+	    console.log(self.title + " beforeLeave.");
+
+	    //$('#send_message').css({ 'display': 'none' });
+
+	    chatRoomService.leaveRoom();
+	});
 });
 
 var viewLocation = function ($scope, message, $ionicLoading) {
 	$scope.viewOnly = true;
-	$scope.place = message.locationName;
-	$scope.$broadcast('onInitMap', { lat: message.lat, long: message.long });
+	$scope.place = message.name;
+	$scope.$broadcast('onInitMap', { lat: message.latitude, long: message.longitude });
 }
 
 var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, done) {
@@ -585,13 +563,14 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cor
 		$ionicLoading.hide();
 	}, function (err) {
 		// error
-		console.error(err);
-		
+		console.warn(err);
+        
 		$ionicLoading.hide();
 
-		$cordovaDialogs.alert('Get your current position timeout.', 'Location Fail.', 'OK')
+		$cordovaDialogs.alert(err.message, 'Location Fail.', 'OK')
 		.then(function () {
 			$scope.closeMapModal();
+		      $ionicLoading.hide();
 		});
 	});
 }

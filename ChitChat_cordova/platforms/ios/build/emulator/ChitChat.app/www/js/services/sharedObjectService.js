@@ -9,30 +9,47 @@
 
     function sharedObjectService($http, localNotifyService) {
         var notifyManager = null;
-        var dataListener = main.getDataListener();
 
         var service = {
             getDataListener: getDataListener,
             regisNotifyNewMessageEvent: regisNotifyNewMessageEvent,
             unsubscribeGlobalNotifyMessageEvent: unsubscribeGlobalNotifyMessageEvent,
             createNotifyManager: createNotifyManager,
-            getNotifyManager: getNotifyManager
+            getNotifyManager: getNotifyManager,
+            getWebServer: getWebServer,
+            getAppVersion: getAppVersion
         };
+        var webServer = null;
+        var appVersion = null;
 
         return service;
 
+        function getWebServer() {
+            console.log("get app config.", JSON.stringify(server.appConfig));
+            webServer = server.appConfig.webserver;
+
+            return webServer;
+        }
+        
+        function getAppVersion() {
+            appVersion = server.appConfig.version;
+            
+            return appVersion;
+        }
+
         function getDataListener() {
+            var dataListener = main.getDataListener();
             return dataListener;
         }
 
         function regisNotifyNewMessageEvent() {
             console.log("subscribe global notify message event");
             
-            dataListener.addNoticeNewMessageEvent(noticeNewMessage);
+            getDataListener().addNoticeNewMessageEvent(noticeNewMessage);
         }
         
         function unsubscribeGlobalNotifyMessageEvent() {
-            dataListener.removeNoticeNewMessageEvent(noticeNewMessage);
+            getDataListener().removeNoticeNewMessageEvent(noticeNewMessage);
         }
 
         function createNotifyManager(main) {
@@ -48,8 +65,11 @@
         function noticeNewMessage(chatMessageImp) {
             console.log("noticeNewMessage", chatMessageImp.type);
 
-            if (cordova.platformId === "ios") {
+            if (ionic.Platform.platform() === "ios") {
                 var appBackground = cordova.plugins.backgroundMode.isActive();
+                notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
+            }
+            else {
                 notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
             }
         };

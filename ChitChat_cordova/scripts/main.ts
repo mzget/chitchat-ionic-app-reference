@@ -2,7 +2,7 @@
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
-        cryptojs: '../js/crypto-js/crypto-js'
+        cryptojs: '../lib/crypto-js/crypto-js'
     }
 });
 
@@ -139,7 +139,7 @@ class Main {
                 });
             }
             else {
-                console.error(err, JSON.stringify(loginRes));
+                console.warn(err, JSON.stringify(loginRes));
             }
         });
     }

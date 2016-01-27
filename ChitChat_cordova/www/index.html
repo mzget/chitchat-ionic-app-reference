@@ -7,6 +7,7 @@
 
 	<link href="lib/ionic/css/ionic.css" rel="stylesheet"/>
     <link href="css/style.css" rel="stylesheet" />
+    <link href="css/chitchat.css" rel="stylesheet" />
 
 	<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
 	<link href="css/ionic.app.css" rel="stylesheet" />
@@ -29,14 +30,19 @@
 	<script src="js/controllers/chatController.js"></script>
 	<script src="js/controllers/mediaController.js"></script>
     <script src="js/controllers/groupDetailController.js"></script>
+    <script src="js/controllers/freecallController.js"></script>
 	<script src="js/services/services.js"></script>
     <script src="js/services/localNotifyService.js"></script>
     <script src="js/services/networkService.js"></script>
     <script src="js/services/sharedObjectService.js"></script>
     <script src="js/services/chatslogService.js"></script>
+    <script src="js/services/chatRoomService.js"></script>
+    <script src="js/services/dbAccessService.js"></script>
     <script src="js/template.js"></script>
     <script src="js/jquery.min.js"></script>
-    <script src="js/async.js"></script>
+    <script src="lib/async/dist/async.js"></script>
+    <script src="lib/angular-toArrayFilter/toArrayFilter.js"></script>
+    <script src="lib/localforage/dist/localforage.js"></script>
     <script src="https://www.promisejs.org/polyfills/promise-done-7.0.4.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHES_5dswUs4LmAJ8FKOaZcDPiuNWdEg&libraries=places"></script>
     <script src="js/directives.js"></script>
@@ -53,6 +59,11 @@
 		var server = ChatServer.ServerImplemented.prototype;
 		var serverEvents = ChatServer.ServerEventListener.prototype;
 		var dataManager = DataManager.prototype;
+
+		var messageStore = localforage.createInstance({
+		    name: "message"
+		});
+		var messageDAL = new MessageDAL(messageStore);
 	</script>
 
     <ion-nav-bar class="bar-stable" style="display:none;">
@@ -67,14 +78,5 @@
 			<ion-spinner icon="spiral"></ion-spinner>
 		</div>
 	</div>
-	
-	<!--
-	<div id="send_message">
-		<button id="chatMenu"><i class="ion-ios-plus-outline"></i></button>
-		<input type="text" name="send_message" />
-		<button id="sendMsg"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
-	</div>
-	-->
-	
 </body>
 </html>

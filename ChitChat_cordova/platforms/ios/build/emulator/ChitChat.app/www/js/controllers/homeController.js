@@ -8,13 +8,13 @@
 	//homeController.$inject = ['$location'];
 
 	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform,
-		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService) {
+		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
 
 		function activate() {
-
+		    dbAccessService.setMessageDAL(messageDAL);
 			localNotifyService.registerPermission();
 			sharedObjectService.createNotifyManager(main);
 			chatslogService.init();
@@ -335,6 +335,11 @@
 			$scope.chat = function () {
 				roomSelected.setRoom(room);
 				location.href = '#/tab/group/chat/' + room._id;
+			};
+
+			$scope.freecall = function () {
+				roomSelected.setRoom(room);
+				location.href = '#/tab/group/freecall/' + room._id;
 			};
 
 			$scope.openViewContactProfile = function (id) {

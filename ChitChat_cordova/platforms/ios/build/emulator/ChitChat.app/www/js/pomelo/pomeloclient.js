@@ -357,7 +357,7 @@ define(['jquery'], function (jq) {
       });
 
       socket.on('error', function (err) {
-          console.error(JSON.stringify(err));
+          console.error("pomelo.init: error! " + JSON.stringify(err) + " : " + url);
 
           cb(err);
       });

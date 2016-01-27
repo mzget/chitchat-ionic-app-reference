@@ -9,13 +9,10 @@
 
     function networkService($http, $state, localNotifyService) {
         var service = {
-            getData: getData,
             regisSocketListener: regisSocketListener
         };
 
         return service;
-
-        function getData() { }
 
         function regisSocketListener() {
             console.log("regis socket event.");

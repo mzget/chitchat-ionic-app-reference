@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
      ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
-	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify', 'ngCordova', 'ngStorage'])
+	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'spartan.freecall',
+      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter'])
 
 
 .run(function($ionicPlatform) {
@@ -22,7 +22,9 @@ angular.module('starter',
 		}
 		if (window.StatusBar) {
 			// org.apache.cordova.statusbar required
-			StatusBar.styleLightContent();
+			
+            //StatusBar.styleLightContent();
+		    StatusBar.styleDefault();            
 		}
 		
 		console.log("$ionicPlatform.ready");
@@ -31,7 +33,6 @@ angular.module('starter',
 	var currentPlatform = ionic.Platform.platform();
 	var currentPlatformVersion = ionic.Platform.version();
 	console.log("currentPlatform", currentPlatform, currentPlatformVersion);
-	console.log("cordova detail", cordova.platformId, cordova.version);
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -148,6 +149,16 @@ angular.module('starter',
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
 				controller: 'chatController'
+			}
+		}
+	})
+	
+	.state('tab.group-freecall', {
+		url: '/group/freecall/:chatId',
+		views: {
+			'tab-group': {
+				templateUrl: 'templates/tab-freecall.html',
+				controller: 'freecallController'
 			}
 		}
 	})
