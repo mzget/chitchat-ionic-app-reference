@@ -67,7 +67,7 @@
 	<script>
         console.log("index....");
 		var socket = io;
-		var main = Main.prototype;
+		var main = Main.getInstance();
 		var server = ChatServer.ServerImplemented.prototype;
 		var serverEvents = ChatServer.ServerEventListener.prototype;
 		var dataManager = DataManager.prototype;

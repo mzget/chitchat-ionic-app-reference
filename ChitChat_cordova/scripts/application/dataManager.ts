@@ -233,10 +233,18 @@ class DataManager implements absSpartan.IFrontendServerListener {
     //<!------------------------------------------------------
 
     public onUserLogin(dataEvent) {
-        let jsonObject = JSON.parse(dataEvent);
-        let _id = jsonObject._id;
+        let jsonObject = JSON.parse(JSON.stringify(dataEvent));
+        let _id: string = jsonObject._id;
+        let self = this;
 
-        console.log("onUserLogin", JSON.stringify(jsonObject));
+        if (!this.orgMembers) this.orgMembers = {};
+        if (!this.orgMembers[_id]) {
+            console.log("Need to get new contact info.");
+            //@ Need to get new contact info.
+            ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, (err, res) => {
+                console.log("getMemberProfile : ", err, JSON.stringify(res));
+            });
+        }
     }
 
     public updateContactImage(contactId: string, url: string) {

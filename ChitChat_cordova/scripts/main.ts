@@ -11,6 +11,15 @@ requirejs.config({
 //require(["../../scripts/server/serverImplemented"]);
 
 class Main {
+    private static instance: Main;
+    public static getInstance(): Main {
+        if (this.instance === null || this.instance === undefined) {
+            this.instance = Main.prototype;
+        }
+        return this.instance;
+    }
+
+
     private serverImp: ChatServer.ServerImplemented;
     private serverListener: ChatServer.ServerEventListener;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;
@@ -27,10 +36,12 @@ class Main {
         return this.dataListener;
     }
     public getServerImp(): ChatServer.ServerImplemented {
+        console.log("getServerImp", this.serverImp);
         return this.serverImp;
     }
     public setServerImp(server: ChatServer.ServerImplemented) {
         this.serverImp = server;
+        console.log("setServerImp", server);
     }
     public getChatRoomApi(): ChatServer.ChatRoomApiProvider {
         if (!this.chatRoomApi) {

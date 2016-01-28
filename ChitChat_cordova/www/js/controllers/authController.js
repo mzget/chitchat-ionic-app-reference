@@ -20,38 +20,38 @@
             activateBackground();
             activate();
             setConfigTheme();
-			
-            main.setDataManager(dataManager);
-            main.setServerListener(serverEvents);
-            main.setServerImp(server);
-            main.onMyProfileReadyListener = function (dataManager) {
-                $('#login').css('display', 'none');
-                $('.bar-stable').css({ 'display': '' });
-                $('#splash').css({ 'display': 'none' });
-
-                // Hide spinner dialog
-                if (ionic.Platform.platform() === "ios") {
-                    $cordovaSpinnerDialog.hide();
-                }
-                else if (ionic.Platform.platform() === "windows") {
-                    $ionicLoading.hide();
-                }
-                    
-                console.log("appConfig", server.appConfig.webserver);
-                
-                $rootScope.webServer = sharedObjectService.getWebServer();
-                $rootScope.appVersion = sharedObjectService.getAppVersion();
-
-                //location.href = "#/tab/group";
-                $state.go('tab.group');
-                activateNetworkService();
-            };
-            initSpartanServer();
             
             setTimeout(function () {
                 if (!!navigator.splashscreen) {
                     navigator.splashscreen.hide();
                 }
+
+                main.setDataManager(dataManager);
+                main.setServerListener(serverEvents);
+                main.setServerImp(server);
+                main.onMyProfileReadyListener = function (dataManager) {
+                    $('#login').css('display', 'none');
+                    $('.bar-stable').css({ 'display': '' });
+                    $('#splash').css({ 'display': 'none' });
+
+                    // Hide spinner dialog
+                    if (ionic.Platform.platform() === "ios") {
+                        $cordovaSpinnerDialog.hide();
+                    }
+                    else if (ionic.Platform.platform() === "windows") {
+                        $ionicLoading.hide();
+                    }
+
+                    console.log("appConfig", server.appConfig.webserver);
+
+                    $rootScope.webServer = sharedObjectService.getWebServer();
+                    $rootScope.appVersion = sharedObjectService.getAppVersion();
+
+                    //location.href = "#/tab/group";
+                    $state.go('tab.group');
+                    activateNetworkService();
+                };
+                initSpartanServer();
             }, 100);
         });
 
@@ -336,8 +336,6 @@
             }
         }
     }
-
-    
 
     function noConnection($scope,$ionicNavBarDelegate,$rootScope,$ionicHistory){
         $ionicNavBarDelegate.showBackButton(false);

@@ -32,6 +32,12 @@ requirejs.config({
 var Main = (function () {
     function Main() {
     }
+    Main.getInstance = function () {
+        if (this.instance === null || this.instance === undefined) {
+            this.instance = Main.prototype;
+        }
+        return this.instance;
+    };
     Main.prototype.getDataManager = function () {
         return this.dataManager;
     };
@@ -43,10 +49,12 @@ var Main = (function () {
         return this.dataListener;
     };
     Main.prototype.getServerImp = function () {
+        console.log("getServerImp", this.serverImp);
         return this.serverImp;
     };
     Main.prototype.setServerImp = function (server) {
         this.serverImp = server;
+        console.log("setServerImp", server);
     };
     Main.prototype.getChatRoomApi = function () {
         if (!this.chatRoomApi) {
@@ -941,9 +949,17 @@ var DataManager = (function () {
         return hasMe;
     };
     DataManager.prototype.onUserLogin = function (dataEvent) {
-        var jsonObject = JSON.parse(dataEvent);
+        var jsonObject = JSON.parse(JSON.stringify(dataEvent));
         var _id = jsonObject._id;
-        console.log("onUserLogin", JSON.stringify(jsonObject));
+        var self = this;
+        if (!this.orgMembers)
+            this.orgMembers = {};
+        if (!this.orgMembers[_id]) {
+            console.log("Need to get new contact info.");
+            ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, function (err, res) {
+                console.log("getMemberProfile : ", err, JSON.stringify(res));
+            });
+        }
     };
     DataManager.prototype.updateContactImage = function (contactId, url) {
         if (!!this.orgMembers[contactId]) {
@@ -1384,10 +1400,10 @@ var ChatServer;
             console.warn("serv imp. constructor");
         }
         ServerImplemented.getInstance = function () {
-            if (!ServerImplemented.Instance) {
-                ServerImplemented.Instance = new ServerImplemented();
+            if (this.Instance === null || this.Instance === undefined) {
+                this.Instance = new ServerImplemented();
             }
-            return ServerImplemented.Instance;
+            return this.Instance;
         };
         ServerImplemented.prototype.setSocketComponent = function (socket) {
             this.socketComponent = socket;

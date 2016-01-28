@@ -20,11 +20,11 @@ module ChatServer {
     export class ServerImplemented {
         private static Instance: ServerImplemented;
         public static getInstance(): ServerImplemented {
-            if (!ServerImplemented.Instance) {
-                ServerImplemented.Instance = new ServerImplemented();
+            if (this.Instance === null || this.Instance === undefined) {
+                this.Instance = new ServerImplemented();
             }
 
-            return ServerImplemented.Instance;
+            return this.Instance;
         }
 
         host: string;
@@ -264,6 +264,10 @@ module ChatServer {
             }
         }
         
+
+
+        //<@--- ServerAPIProvider.
+
         //region <!-- user profile -->
 
         public UpdateUserProfile(myId: string, profileFields: { [k: string]: string }, callback: (err, res) => void) {
