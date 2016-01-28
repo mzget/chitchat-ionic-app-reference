@@ -52,7 +52,10 @@
 	
 	<script>
 	$.getJSON( "configs/appconfig.json", function( json ) {
+		var appName = json.appName;
 		var themename = json.themename;
+		
+		$('title').text(appName);
 		$('head').append('<link href="css/' + themename + '.css" rel="stylesheet" />');
 		$('.login-logo').attr('src', 'img/logo-' + themename + '.png');
 	});
