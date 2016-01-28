@@ -232,6 +232,13 @@ class DataManager implements absSpartan.IFrontendServerListener {
     
     //<!------------------------------------------------------
 
+    public onUserLogin(dataEvent) {
+        let jsonObject = JSON.parse(dataEvent);
+        let _id = jsonObject._id;
+
+        console.log("onUserLogin", JSON.stringify(jsonObject));
+    }
+
     public updateContactImage(contactId: string, url: string) {
         if(!!this.orgMembers[contactId]) {
            this.orgMembers[contactId].image = url;
@@ -279,8 +286,8 @@ class DataManager implements absSpartan.IFrontendServerListener {
     }
 
     public onGetCompanyMemberComplete(dataEvent) {
-        var self = this;
-        var members: Array<ContactInfo> = JSON.parse(JSON.stringify(dataEvent));
+        let self = this;
+        let members: Array<ContactInfo> = JSON.parse(JSON.stringify(dataEvent));
 
         if (!this.orgMembers) this.orgMembers = {};
 

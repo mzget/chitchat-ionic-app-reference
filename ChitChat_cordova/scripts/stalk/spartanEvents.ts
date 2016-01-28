@@ -33,6 +33,7 @@
 
         onUpdateMemberInfoInProjectBase(dataEvent);
 
+        onUserLogin(dataEvent);
         onUserUpdateImageProfile(dataEvent);
         onUserUpdateProfile(dataEvent);
     }
