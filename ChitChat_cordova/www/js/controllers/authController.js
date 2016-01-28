@@ -8,6 +8,7 @@
 
     function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, $cordovaDialogs, 
      networkService, chatslogService, dbAccessService, sharedObjectService) {
+		
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -19,7 +20,7 @@
             activateBackground();
             activate();
             setConfigTheme();
-
+			
             main.setDataManager(dataManager);
             main.setServerListener(serverEvents);
             main.setServerImp(server);
@@ -110,6 +111,7 @@
         function initSpartanServer() {
             function initCallback (err, server) {
                 console.log("Init serve completed is connected: " + server._isConnected + " : " + err);
+			
                 if (err !== null) {
                     onServerConnectionFail(err);
                 }
@@ -249,6 +251,7 @@
         }
 
         function onReadyToSigning() {
+			$rootScope.themename = sharedObjectService.getThemename();
             var authen = server.authenData;
             console.log("token: ", authen.token);
             if (!authen.token) {
