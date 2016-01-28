@@ -137,41 +137,43 @@
         }
 
         function onDuplicateLogin(param) {
-            console.log("onDuplicateLogin", param);
+            console.log("onDuplicateLogin", JSON.stringify(param));
             // Hide spinner dialog
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
+
+                $cordovaDialogs.confirm("May be you use this app in other devices \n You want to logout other devices", "Duplicated login!", ["Cancle", "OK"])
+                .then(function (buttonIndex) {
+                    switch (buttonIndex) {
+                        case 1:
+                            localStorage.clear();
+                            location.href = '';
+                            break;
+                        case 2:
+                            server.kickMeAllSession(param.uid);
+                            location.href = "";
+                            break;
+                    }
+                });
             }
             else {
                 $ionicLoading.hide();
+
+                var confirmPopup = $ionicPopup.confirm({
+                    title: 'Duplicated login!',
+                    template: 'May be you use this app in other devices \n You want to logout other devices'
+                });
+
+                confirmPopup.then(function (res) {
+                    if (res) {
+                        server.kickMeAllSession(param.uid);
+                        location.href = "";
+                    } else {
+                        localStorage.clear();
+                        location.href = '';
+                    }
+                });
             }
-
-            //navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices",
-            //    function (buttonIndex) {
-            //        switch (buttonIndex) {
-            //            case 1:
-            //                location.href = '';
-            //                break;
-            //            case 2:
-            //                server.kickMeAllSession(param.uid);
-            //                location.href = "";
-            //                break;
-            //        }
-            //    }, "Duplicated login!", ["Cancle", "OK"]);
-
-            var confirmPopup = $ionicPopup.confirm({
-                title: 'Duplicated login!',
-                template: 'May be you use this app in other devices \n You want to logout other devices'
-            });
-
-            confirmPopup.then(function (res) {
-                if (res) {
-                    server.kickMeAllSession(param.uid);
-                    location.href = "";
-                } else {
-                    location.href = '';
-                }
-            });
         }
 
         function onAuthenFail(errMessage) {
@@ -194,45 +196,15 @@
             });
         }
 
-        function onServerConnectionFail(errMessage) {
-            
+        function onServerConnectionFail(errMessage) {      
             console.warn("Just go to no connection page. " + errMessage);
             
             // Hide spinner dialog
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
-                
-
-            // navigator.notification.alert(errMessage, function callback() {
-            //     console.warn("Just go to no connection page.");
-
-            //     $('#login').css('display', 'none');
-            //     $('.bar-stable').css({ 'display': '' });
-            //     $('#splash').css({ 'display': 'none' });
-                
-            //     location.href = "#/tab/login/error";
-            // },
-            // "Connecting to server fail! \n Please come back again.", "OK");
-            
-            }
-            else {
-                // $ionicLoading.hide();
-                
-                // var alertPopup = $ionicPopup.alert({
-                //     title: "Connecting to server fail! \n Please come back again.",
-                //     template: errMessage
-                // });
-
-                // alertPopup.then(function(res) {
-                //     $('#login').css('display', 'none');
-                //     $('.bar-stable').css({ 'display': '' });
-                //     $('#splash').css({ 'display': 'none' });
-                    
-                //     location.href = "#/tab/login/error";
-                // });
             }
             
-            $cordovaDialogs.alert('Connecting to server fail! \n Please come back again.', '', 'OK')
+            $cordovaDialogs.alert('Connecting to server fail! \n Please come back again.', 'No internet connection!', 'OK')
             .then(function() {
                 // callback success
                 $('#login').css('display', 'none');
@@ -254,6 +226,8 @@
 			$rootScope.themename = sharedObjectService.getThemename();
             var authen = server.authenData;
             console.log("token: ", authen.token);
+            //<@-- if have no token app wiil take you to signing page.
+            //<@-- else app will auto login by token.
             if (!authen.token) {
                 $('#splash').css({ 'display': 'none' });
 
@@ -290,6 +264,7 @@
                                         console.log("Success Login User...");
                                     }
                                     else if (res.code === 1004) {
+                                        console.warn(JSON.stringify(err), JSON.stringify(res));
                                         onDuplicateLogin(res);
                                     }
                                     else if (res.code === HttpStatusCode.requestTimeout) {
@@ -319,12 +294,10 @@
                                     if (res.code === HttpStatusCode.success) {
                                         console.log("Success Authen User...");
                                     }
-                                    else if(res.code === 1004) {
+                                    else if(res.code === HttpStatusCode.duplicateLogin) {
                                         //<!-- Authen fail.
-                                        server.logout();
-
-                                        console.warn(JSON.stringify(err), JSON.stringify(res));
-                                        onDuplicateLogin(err);
+                                        console.warn("Authen fail:", JSON.stringify(res));
+                                        onDuplicateLogin(res);
                                     }
                                     else if (res.code === HttpStatusCode.requestTimeout) {
                                         onLoginTimeout(res);
@@ -335,7 +308,7 @@
                                     server.logout();
                                     location.href = '';
 
-                                    console.error(err, res);
+                                    console.error("Authen fail", res);
                                     onDuplicateLogin(err);
                                 }
                             });
