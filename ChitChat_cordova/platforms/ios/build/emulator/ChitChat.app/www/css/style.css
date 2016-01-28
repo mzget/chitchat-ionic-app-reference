@@ -14,12 +14,6 @@
     background: -moz-linear-gradient(rgba(255,255,255,1), #519cd3); 
     background: linear-gradient(rgba(255,255,255,1), #519cd3); }*/
 
-/* JOB TOP GUN */
-#splash { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:1000; background-color:#2b4c6d; }
-#splash .container { float:none; display:table; width:100%; max-width:1000px; margin:10vh auto; text-align:center; }
-#splash .login-logo { max-width:250px; vertical-align:bottom; } 
-#login { float:left; display:inline-block; width:100%; height:100vh; position:fixed; top:0; left:0; z-index:100; background-color:#2b4c6d; }
-
 #login .container { float:none; display:table; width:100%; max-width:1000px; margin:10vh auto; text-align:center; }
 #login .login-logo { max-width:250px; vertical-align:bottom; }
 #login form { max-width:300px; margin:0 auto 0; }
@@ -40,11 +34,13 @@
 .group-detail .group-menu { display:table; width:100%; max-width:600px; margin:0 auto; }
 .group-detail .group-menu > * { float:left; display:inline; width:100%; max-width:33%; padding:20px 0; font-size:40px; cursor:pointer; text-decoration:none; color:#333; }
 .group-detail .group-menu > * span { font-size:14px; position:relative; top:-10px; }
-.group-detail .group-menu >:hover { background-color:rgba(0,0,0,0.05); }
+.group-detail .group-menu >:hover { background-color:rgba(255,255,255,0.5); }
 .group-pvgroup { float:left; display:inline; width:100%; margin-top:0; text-align:center; }
 .group-pvgroup span img { border-radius:50%; }
 .group-pvgroup .length { display:inline-block; min-width:30px; line-height:30px; vertical-align:top; text-align:center; box-shadow:0 0 1px 0 red inset; color:red; text-decoration:none; border-radius:50%; }
 
+.group-modal-view { width:80%; left:10%; right:10%; top:10%; min-height:300px; 
+	background-image:url(../img/bgmodal1.jpg); background-position:50% 50%; background-repeat:no-repeat; background-size:cover; }
 .group-ionpane { position:relative; }
 
 .group-create .avatar { border-radius: 50%; float: left; margin: 0 10px; height: 50px; width: 50px;}
@@ -64,7 +60,7 @@
 .message-list .other .avatar { top:0; left:10px; position: absolute; border-radius: 50%; }
 .message-list .other h2 { margin-left:60px; }
 .message-list .other label { margin-left:60px; font-size:10px; line-height:10px; color:#aaa; }
-.message-list .other p { margin:0 0px 0 60px; text-align:left; border-top-left-radius:0; }
+.message-list .other p { max-width:82%; height:auto; margin:0 0px 0 60px; text-align:left; border-top-left-radius:0; }
 .message-list .other p a { color:#666; }
 .message-list .other p u { cursor:pointer; }
 .message-list .other .type-img { width: 160px; height: 160px; margin:0 0px 0 60px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
@@ -76,7 +72,7 @@
 
 .message-list .owner { text-align:right; }
 .message-list .owner > * { display:inline-block; }
-.message-list .owner p { margin:0 5px 0 0; text-align:right; border-top-right-radius:0; }
+.message-list .owner p { max-width:82%; height:auto; margin:0 5px 0 0; text-align:right; border-top-right-radius:0; }
 .message-list .owner p a { color:#666; }
 .message-list .owner p u { cursor:pointer; }
 .message-list .owner label { margin:0 5px 0 0; font-size:10px; line-height:10px; color:#aaa; }

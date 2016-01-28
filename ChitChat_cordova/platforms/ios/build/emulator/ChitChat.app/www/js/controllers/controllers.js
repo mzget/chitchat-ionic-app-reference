@@ -174,6 +174,7 @@ angular.module('spartan.controllers', [])
         server.disposeClient();
 
         dbAccessService.clearMessageDAL();
+        localStorage.clear();
         //$state.go('tab.login');
         location.href = '';
     }

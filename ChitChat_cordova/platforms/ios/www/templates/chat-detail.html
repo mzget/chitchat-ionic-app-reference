@@ -51,7 +51,7 @@
 					</u>
 				</p>
 				
-				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="{{webServer}}{{message.body}}" ng-click="viewImage(message.type, message.body)" />
+				<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="{{webServer}}/timthumb.php?src={{message.body}}" ng-click="viewImage(message.type, '/timthumb.php?src='+message.body)" />
 				<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
 				<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
@@ -81,7 +81,7 @@
 					<div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
 				</div>
 
-				</br>
+				<br />
 				<label>{{message.time}}</label>
 			</ion-item>
 

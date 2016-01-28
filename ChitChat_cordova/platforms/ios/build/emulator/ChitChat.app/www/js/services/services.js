@@ -498,8 +498,13 @@ angular.module('spartan.services', [])
   function getTime(date){
     var dateMsg = new Date(date);
     var minutes = (dateMsg.getMinutes() < 10? '0' : '') + dateMsg.getMinutes();
-
-    return dateMsg.getHours() + ":" + minutes;
+	if( dateMsg.getHours() >= 12)
+	{
+		var uppercase = 'PM';
+	}else{
+		var uppercase = 'AM';	
+	}
+    return dateMsg.getHours() + ":" + minutes + ' ' + uppercase;
   }
 
   function getTimeChatlog(date) {

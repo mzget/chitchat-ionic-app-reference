@@ -297,16 +297,26 @@ var ChatRoomComponent = (function () {
             }
             else {
                 var roomAccess = self.dataManager.getRoomAccess();
-                roomAccess.some(function (val, id, arr) {
+                console.debug("roomAccess", roomAccess.length);
+                var boo = roomAccess.some(function (val, id, arr) {
                     if (val.roomId === self.roomId) {
                         lastMessageTime = val.accessTime;
-                        resolve();
                         return true;
                     }
                 });
+                if (boo) {
+                    resolve();
+                }
+                else {
+                    reject();
+                }
             }
         });
         promise.then(function (value) {
+            self.getNewerMessageFromNet(lastMessageTime, callback);
+        });
+        promise.catch(function (err) {
+            console.warn("this room_id is not contain in roomAccess list.");
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
     };
@@ -1164,7 +1174,6 @@ var ChatServer;
             msg["registrationId"] = registrationId;
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
-            localStorage.clear();
             this.disConnect();
         };
         ServerImplemented.prototype.init = function (callback) {
@@ -1256,9 +1265,14 @@ var ChatServer;
                     console.log("QueryConnectorServ", result.code);
                     if (result.code === 200) {
                         var port = result.port;
-                        self.connectSocketServer(self.host, port, function () {
+                        self.connectSocketServer(self.host, port, function (err) {
                             self._isConnected = true;
-                            self.authenForFrontendServer(callback);
+                            if (!!err) {
+                                callback(err, null);
+                            }
+                            else {
+                                self.authenForFrontendServer(callback);
+                            }
                         });
                     }
                 });
@@ -1272,7 +1286,7 @@ var ChatServer;
             var registrationId = localStorage.getItem("registrationId");
             var msg = { username: username, password: password, registrationId: registrationId };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
-                console.log("login: ", JSON.stringify(res), res.code);
+                console.log("login response: ", JSON.stringify(res), res.code);
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
                         callback(res.message, null);
@@ -2135,5 +2149,6 @@ var HttpStatusCode = (function () {
     HttpStatusCode.success = 200;
     HttpStatusCode.fail = 500;
     HttpStatusCode.requestTimeout = 408;
+    HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
