@@ -56,8 +56,7 @@ module ChatServer {
             pomelo = null;
             console.warn("dispose socket client.");
         }
-        
-
+       
         public logout() {
             var registrationId = localStorage.getItem("registrationId");
             var msg: IDictionary = {};
@@ -65,8 +64,6 @@ module ChatServer {
             msg["registrationId"] = registrationId;
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
-
-            localStorage.clear();
 
             this.disConnect();
         }
@@ -187,10 +184,15 @@ module ChatServer {
                         
                         var port = result.port;
                         //<!-- Connecting to connector server.
-                        self.connectSocketServer(self.host, port, () => {
+                        self.connectSocketServer(self.host, port, (err) => {
                             self._isConnected = true;
 
-                            self.authenForFrontendServer(callback);
+                            if (!!err) {
+                                callback(err, null);
+                            }
+                            else {
+                                self.authenForFrontendServer(callback);
+                            }
                         });
                     }
                 });
@@ -212,7 +214,7 @@ module ChatServer {
 
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, (res) => {
-                console.log("login: ", JSON.stringify(res), res.code);
+                console.log("login response: ", JSON.stringify(res), res.code);
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
                         callback(res.message, null);
