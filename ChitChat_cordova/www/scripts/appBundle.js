@@ -297,16 +297,26 @@ var ChatRoomComponent = (function () {
             }
             else {
                 var roomAccess = self.dataManager.getRoomAccess();
-                roomAccess.some(function (val, id, arr) {
+                console.debug("roomAccess", roomAccess.length);
+                var boo = roomAccess.some(function (val, id, arr) {
                     if (val.roomId === self.roomId) {
                         lastMessageTime = val.accessTime;
-                        resolve();
                         return true;
                     }
                 });
+                if (boo) {
+                    resolve();
+                }
+                else {
+                    reject();
+                }
             }
         });
         promise.then(function (value) {
+            self.getNewerMessageFromNet(lastMessageTime, callback);
+        });
+        promise.catch(function (err) {
+            console.warn("this room_id is not contain in roomAccess list.");
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
     };
