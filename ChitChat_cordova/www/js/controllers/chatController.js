@@ -59,6 +59,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		});
 		$scope.$on('onJoinRoomReady', function (event, data) {
 		    chatRoomService.getChatRoomComponent().joinRoom(function cb(err, result) {
+		        console.log("JoinRoom res:", JSON.stringify(result));
+
 		        if (result.code !== HttpStatusCode.success) {
 		            //<!-- Block user interface for this chat room.
 		            blockUI(true);
