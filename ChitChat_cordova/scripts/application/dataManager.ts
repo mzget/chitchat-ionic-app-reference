@@ -25,7 +25,11 @@ class DataManager implements absSpartan.IFrontendServerListener {
     public isOrgMembersReady: boolean = false;
     public companyInfo: CompanyInfo;
 
-    public onMyProfileReady;
+    public onMyProfileReady: (dataManager: DataManager) => void;
+    public onOrgGroupDataReady: () => void;
+    public onProjectBaseGroupsDataReady: () => void;
+    public onPrivateGroupsDataReady: () => void;
+    public onContactsDataReady: () => void;
 
     public setMyProfile(data: any) {
         this.myProfile = JSON.parse(JSON.stringify(data));
@@ -63,24 +67,8 @@ class DataManager implements absSpartan.IFrontendServerListener {
         return this.myProfile.roomAccess;
     }
 
-    public setMembers(data: any) {
-
-    }
-
     public setCompanyInfo(data: any) {
           this.companyInfo = JSON.parse(JSON.stringify(data));
-    }
-
-    public setOrganizeGroups(data: any) {
-        this.orgGroups = JSON.parse(JSON.stringify(data));
-    }
-
-    public setProjectBaseGroups(data: any) {
-        this.projectBaseGroups = JSON.parse(JSON.stringify(data));
-    }
-
-    public setPrivateGroups(data: any) {
-        this.privateGroups = JSON.parse(JSON.stringify(data));
     }
 
     //<!---------- Group ------------------------------------
@@ -239,10 +227,25 @@ class DataManager implements absSpartan.IFrontendServerListener {
 
         if (!this.orgMembers) this.orgMembers = {};
         if (!this.orgMembers[_id]) {
-            console.log("Need to get new contact info.");
             //@ Need to get new contact info.
             ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, (err, res) => {
                 console.log("getMemberProfile : ", err, JSON.stringify(res));
+
+                let data = JSON.parse(JSON.stringify(res.data));
+                let contact: ContactInfo = new ContactInfo();
+                contact._id = data._id;
+                contact.displayname = data.displayname;
+                contact.image = data.image;
+                contact.status = data.status;
+
+                console.warn(contact);
+                self.orgMembers[contact._id] = contact;
+
+                if (self.onContactsDataReady != null) {
+                    self.onContactsDataReady();
+                }
+
+                console.log("We need to save contacts list to persistence data layer.");
             });
         }
     }
@@ -268,7 +271,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
             return this.orgMembers[contactId];
         }
         else {
-            console.warn('this contactId is invalid.');
+            console.warn('this contactId is invalid. Maybe it not contain in list of contacts.');
         }
     }
     
@@ -307,7 +310,10 @@ class DataManager implements absSpartan.IFrontendServerListener {
             cb();
         }, function done(err) {
             self.isOrgMembersReady = true;
-        });
+            });
+
+        if (this.onContactsDataReady != null)
+            this.onContactsDataReady();
     };
     public onGetOrganizeGroupsComplete(dataEvent) {
         var rooms: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
@@ -319,6 +325,10 @@ class DataManager implements absSpartan.IFrontendServerListener {
                 this.orgGroups[value._id] = value;
             }
         });
+
+        if (this.onOrgGroupDataReady != null) {
+            this.onOrgGroupDataReady();
+        }
     };
     public onGetProjectBaseGroupsComplete(dataEvent) {
         var groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
@@ -330,6 +340,10 @@ class DataManager implements absSpartan.IFrontendServerListener {
                 this.projectBaseGroups[value._id] = value;
             }
         });
+
+        if (this.onProjectBaseGroupsDataReady != null) {
+            this.onProjectBaseGroupsDataReady();
+        }
     };
     public onGetPrivateGroupsComplete(dataEvent) {
         var groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
@@ -341,5 +355,9 @@ class DataManager implements absSpartan.IFrontendServerListener {
                 this.privateGroups[value._id] = value;
             }
         });
+
+        if (this.onPrivateGroupsDataReady != null) {
+            this.onPrivateGroupsDataReady();
+        }
     };
 }

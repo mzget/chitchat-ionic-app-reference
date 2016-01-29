@@ -798,19 +798,8 @@ var DataManager = (function () {
     DataManager.prototype.getRoomAccess = function () {
         return this.myProfile.roomAccess;
     };
-    DataManager.prototype.setMembers = function (data) {
-    };
     DataManager.prototype.setCompanyInfo = function (data) {
         this.companyInfo = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.setOrganizeGroups = function (data) {
-        this.orgGroups = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.setProjectBaseGroups = function (data) {
-        this.projectBaseGroups = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.setPrivateGroups = function (data) {
-        this.privateGroups = JSON.parse(JSON.stringify(data));
     };
     DataManager.prototype.getGroup = function (id) {
         if (!!this.orgGroups[id]) {
@@ -955,9 +944,20 @@ var DataManager = (function () {
         if (!this.orgMembers)
             this.orgMembers = {};
         if (!this.orgMembers[_id]) {
-            console.log("Need to get new contact info.");
             ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, function (err, res) {
                 console.log("getMemberProfile : ", err, JSON.stringify(res));
+                var data = JSON.parse(JSON.stringify(res.data));
+                var contact = new ContactInfo();
+                contact._id = data._id;
+                contact.displayname = data.displayname;
+                contact.image = data.image;
+                contact.status = data.status;
+                console.warn(contact);
+                self.orgMembers[contact._id] = contact;
+                if (self.onContactsDataReady != null) {
+                    self.onContactsDataReady();
+                }
+                console.log("We need to save contacts list to persistence data layer.");
             });
         }
     };
@@ -982,7 +982,7 @@ var DataManager = (function () {
             return this.orgMembers[contactId];
         }
         else {
-            console.warn('this contactId is invalid.');
+            console.warn('this contactId is invalid. Maybe it not contain in list of contacts.');
         }
     };
     DataManager.prototype.onGetMe = function (dataEvent) {
@@ -1018,6 +1018,8 @@ var DataManager = (function () {
         }, function done(err) {
             self.isOrgMembersReady = true;
         });
+        if (this.onContactsDataReady != null)
+            this.onContactsDataReady();
     };
     ;
     DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
@@ -1030,6 +1032,9 @@ var DataManager = (function () {
                 _this.orgGroups[value._id] = value;
             }
         });
+        if (this.onOrgGroupDataReady != null) {
+            this.onOrgGroupDataReady();
+        }
     };
     ;
     DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) {
@@ -1042,6 +1047,9 @@ var DataManager = (function () {
                 _this.projectBaseGroups[value._id] = value;
             }
         });
+        if (this.onProjectBaseGroupsDataReady != null) {
+            this.onProjectBaseGroupsDataReady();
+        }
     };
     ;
     DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) {
@@ -1054,6 +1062,9 @@ var DataManager = (function () {
                 _this.privateGroups[value._id] = value;
             }
         });
+        if (this.onPrivateGroupsDataReady != null) {
+            this.onPrivateGroupsDataReady();
+        }
     };
     ;
     return DataManager;
@@ -1543,7 +1554,7 @@ var ChatServer;
                 console.log("login response: ", JSON.stringify(res), res.code);
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
-                        callback(res.message, null);
+                        callback(res.message, res);
                     }
                 }
                 else if (res.code === HttpStatusCode.success) {

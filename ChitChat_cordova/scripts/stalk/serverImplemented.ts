@@ -217,7 +217,7 @@ module ChatServer {
                 console.log("login response: ", JSON.stringify(res), res.code);
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
-                        callback(res.message, null);
+                        callback(res.message, res);
                     }
                 }
                 else if (res.code === HttpStatusCode.success) {
