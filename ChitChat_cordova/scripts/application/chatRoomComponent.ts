@@ -152,27 +152,38 @@
     }
 
     public getNewerMessageRecord(callback: (err, res) => void) {
-        var self = this;
-        var lastMessageTime = new Date();
-        var promise = new Promise(function promise(resolve, reject) {
+        let self = this;
+        let lastMessageTime = new Date();
+        let promise = new Promise(function promise(resolve, reject) {
             if (self.chatMessages[self.chatMessages.length - 1] != null) {
                 lastMessageTime = self.chatMessages[self.chatMessages.length - 1].createTime;
                 resolve();
             }
             else {
                 var roomAccess = self.dataManager.getRoomAccess();
-                roomAccess.some((val, id, arr) => {
+                console.debug("roomAccess", roomAccess.length)
+                let boo = roomAccess.some((val, id, arr) => {
                     if (val.roomId === self.roomId) {
                         lastMessageTime = val.accessTime;
-
-                        resolve();
                         return true;
                     }
                 });
+
+                if (boo) {
+                    resolve();
+                }
+                else {
+                    reject();
+                }
             }
         });
 
         promise.then((value) => {
+            self.getNewerMessageFromNet(lastMessageTime, callback);
+        });
+        promise.catch(err => {
+            console.warn("this room_id is not contain in roomAccess list.");
+
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
     }

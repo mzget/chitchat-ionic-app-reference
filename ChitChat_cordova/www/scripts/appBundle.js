@@ -32,6 +32,12 @@ requirejs.config({
 var Main = (function () {
     function Main() {
     }
+    Main.getInstance = function () {
+        if (this.instance === null || this.instance === undefined) {
+            this.instance = Main.prototype;
+        }
+        return this.instance;
+    };
     Main.prototype.getDataManager = function () {
         return this.dataManager;
     };
@@ -43,10 +49,12 @@ var Main = (function () {
         return this.dataListener;
     };
     Main.prototype.getServerImp = function () {
+        console.log("getServerImp", this.serverImp);
         return this.serverImp;
     };
     Main.prototype.setServerImp = function (server) {
         this.serverImp = server;
+        console.log("setServerImp", server);
     };
     Main.prototype.getChatRoomApi = function () {
         if (!this.chatRoomApi) {
@@ -297,16 +305,26 @@ var ChatRoomComponent = (function () {
             }
             else {
                 var roomAccess = self.dataManager.getRoomAccess();
-                roomAccess.some(function (val, id, arr) {
+                console.debug("roomAccess", roomAccess.length);
+                var boo = roomAccess.some(function (val, id, arr) {
                     if (val.roomId === self.roomId) {
                         lastMessageTime = val.accessTime;
-                        resolve();
                         return true;
                     }
                 });
+                if (boo) {
+                    resolve();
+                }
+                else {
+                    reject();
+                }
             }
         });
         promise.then(function (value) {
+            self.getNewerMessageFromNet(lastMessageTime, callback);
+        });
+        promise.catch(function (err) {
+            console.warn("this room_id is not contain in roomAccess list.");
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
     };
@@ -677,6 +695,9 @@ var DataListener = (function () {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupMemberDetail(jsonObj);
     };
+    DataListener.prototype.onUserLogin = function (dataEvent) {
+        this.dataManager.onUserLogin(dataEvent);
+    };
     DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         var _id = jsonObj._id;
@@ -777,19 +798,8 @@ var DataManager = (function () {
     DataManager.prototype.getRoomAccess = function () {
         return this.myProfile.roomAccess;
     };
-    DataManager.prototype.setMembers = function (data) {
-    };
     DataManager.prototype.setCompanyInfo = function (data) {
         this.companyInfo = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.setOrganizeGroups = function (data) {
-        this.orgGroups = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.setProjectBaseGroups = function (data) {
-        this.projectBaseGroups = JSON.parse(JSON.stringify(data));
-    };
-    DataManager.prototype.setPrivateGroups = function (data) {
-        this.privateGroups = JSON.parse(JSON.stringify(data));
     };
     DataManager.prototype.getGroup = function (id) {
         if (!!this.orgGroups[id]) {
@@ -927,6 +937,30 @@ var DataManager = (function () {
         console.debug("New data has me", hasMe);
         return hasMe;
     };
+    DataManager.prototype.onUserLogin = function (dataEvent) {
+        var jsonObject = JSON.parse(JSON.stringify(dataEvent));
+        var _id = jsonObject._id;
+        var self = this;
+        if (!this.orgMembers)
+            this.orgMembers = {};
+        if (!this.orgMembers[_id]) {
+            ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, function (err, res) {
+                console.log("getMemberProfile : ", err, JSON.stringify(res));
+                var data = JSON.parse(JSON.stringify(res.data));
+                var contact = new ContactInfo();
+                contact._id = data._id;
+                contact.displayname = data.displayname;
+                contact.image = data.image;
+                contact.status = data.status;
+                console.warn(contact);
+                self.orgMembers[contact._id] = contact;
+                if (self.onContactsDataReady != null) {
+                    self.onContactsDataReady();
+                }
+                console.log("We need to save contacts list to persistence data layer.");
+            });
+        }
+    };
     DataManager.prototype.updateContactImage = function (contactId, url) {
         if (!!this.orgMembers[contactId]) {
             this.orgMembers[contactId].image = url;
@@ -948,7 +982,7 @@ var DataManager = (function () {
             return this.orgMembers[contactId];
         }
         else {
-            console.warn('this contactId is invalid.');
+            console.warn('this contactId is invalid. Maybe it not contain in list of contacts.');
         }
     };
     DataManager.prototype.onGetMe = function (dataEvent) {
@@ -984,6 +1018,8 @@ var DataManager = (function () {
         }, function done(err) {
             self.isOrgMembersReady = true;
         });
+        if (this.onContactsDataReady != null)
+            this.onContactsDataReady();
     };
     ;
     DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
@@ -996,6 +1032,9 @@ var DataManager = (function () {
                 _this.orgGroups[value._id] = value;
             }
         });
+        if (this.onOrgGroupDataReady != null) {
+            this.onOrgGroupDataReady();
+        }
     };
     ;
     DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) {
@@ -1008,6 +1047,9 @@ var DataManager = (function () {
                 _this.projectBaseGroups[value._id] = value;
             }
         });
+        if (this.onProjectBaseGroupsDataReady != null) {
+            this.onProjectBaseGroupsDataReady();
+        }
     };
     ;
     DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) {
@@ -1020,6 +1062,9 @@ var DataManager = (function () {
                 _this.privateGroups[value._id] = value;
             }
         });
+        if (this.onPrivateGroupsDataReady != null) {
+            this.onPrivateGroupsDataReady();
+        }
     };
     ;
     return DataManager;
@@ -1118,6 +1163,236 @@ var NotifyManager = (function () {
     };
     return NotifyManager;
 })();
+var MessageDAL = (function () {
+    function MessageDAL(_store) {
+        this.store = _store;
+    }
+    MessageDAL.prototype.getData = function (rid, done) {
+        this.store.getItem(rid).then(function (value) {
+            console.log("get persistent success");
+            done(null, value);
+        });
+    };
+    MessageDAL.prototype.saveData = function (rid, chatRecord, callback) {
+        this.store.setItem(rid, chatRecord).then(function (value) {
+            console.log("save persistent success", value.length);
+            if (callback != null) {
+                callback(null, value);
+            }
+        });
+    };
+    MessageDAL.prototype.removeData = function () { };
+    MessageDAL.prototype.clearData = function () {
+        this.store.clear(function (err) {
+            if (err != null) {
+                console.warn("Clear database fail", err);
+            }
+            console.log("message db now empty.");
+        });
+    };
+    return MessageDAL;
+})();
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+})();
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
+})();
+var CompanyInfo = (function () {
+    function CompanyInfo() {
+    }
+    return CompanyInfo;
+})();
+var ContactInfo = (function () {
+    function ContactInfo() {
+    }
+    return ContactInfo;
+})();
+var ContentType;
+(function (ContentType) {
+    ContentType[ContentType["Unload"] = 0] = "Unload";
+    ContentType[ContentType["File"] = 1] = "File";
+    ContentType[ContentType["Text"] = 2] = "Text";
+    ContentType[ContentType["Voice"] = 3] = "Voice";
+    ContentType[ContentType["Image"] = 4] = "Image";
+    ContentType[ContentType["Video"] = 5] = "Video";
+    ContentType[ContentType["Sticker"] = 6] = "Sticker";
+    ContentType[ContentType["Location"] = 7] = "Location";
+})(ContentType || (ContentType = {}));
+var JobLevel;
+(function (JobLevel) {
+    JobLevel[JobLevel["employees"] = 0] = "employees";
+    JobLevel[JobLevel["junior"] = 1] = "junior";
+    JobLevel[JobLevel["senior"] = 2] = "senior";
+    JobLevel[JobLevel["directors"] = 3] = "directors";
+    JobLevel[JobLevel["vice_president"] = 4] = "vice_president";
+})(JobLevel || (JobLevel = {}));
+var Member = (function () {
+    function Member() {
+        this.role = MemberRole.member;
+    }
+    return Member;
+})();
+var MemberRole;
+(function (MemberRole) {
+    MemberRole[MemberRole["member"] = 0] = "member";
+    MemberRole[MemberRole["admin"] = 1] = "admin";
+})(MemberRole || (MemberRole = {}));
+var MinLocation = (function () {
+    function MinLocation() {
+    }
+    return MinLocation;
+})();
+var RoomType;
+(function (RoomType) {
+    RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
+    RoomType[RoomType["projectBaseGroup"] = 1] = "projectBaseGroup";
+    RoomType[RoomType["privateGroup"] = 2] = "privateGroup";
+    RoomType[RoomType["privateChat"] = 3] = "privateChat";
+})(RoomType || (RoomType = {}));
+;
+var RoomStatus;
+(function (RoomStatus) {
+    RoomStatus[RoomStatus["active"] = 0] = "active";
+    RoomStatus[RoomStatus["disable"] = 1] = "disable";
+    RoomStatus[RoomStatus["delete"] = 2] = "delete";
+})(RoomStatus || (RoomStatus = {}));
+;
+var Room = (function () {
+    function Room() {
+        this._visibility = true;
+    }
+    Object.defineProperty(Room.prototype, "visibility", {
+        set: function (_boo) {
+            this._visibility = _boo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Room.prototype, "visibilty", {
+        get: function () {
+            return this._visibility;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Room.prototype.setName = function (name) {
+        this.name = name;
+    };
+    return Room;
+})();
+var RoomAccessData = (function () {
+    function RoomAccessData() {
+    }
+    return RoomAccessData;
+})();
+;
+var TokenDecode = (function () {
+    function TokenDecode() {
+    }
+    return TokenDecode;
+})();
+var User = (function () {
+    function User() {
+    }
+    return User;
+})();
+var UserRole;
+(function (UserRole) {
+    UserRole[UserRole["personnel"] = 0] = "personnel";
+    UserRole[UserRole["section_chief"] = 1] = "section_chief";
+    UserRole[UserRole["department_chief"] = 2] = "department_chief";
+    UserRole[UserRole["division_chief"] = 3] = "division_chief";
+    UserRole[UserRole["admin"] = 4] = "admin";
+})(UserRole || (UserRole = {}));
+;
+var SecureService = (function () {
+    function SecureService() {
+        this.key = "CHITCHAT!@#$%^&*()_+|===";
+        this.passiv = "ThisIsUrPassword";
+    }
+    SecureService.prototype.hashCompute = function (content, callback) {
+        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
+            var hash = CryptoJS.MD5(content);
+            var md = hash.toString(CryptoJS.enc.Hex);
+            callback(null, md);
+        });
+    };
+    SecureService.prototype.encryption = function (content, callback) {
+        var self = this;
+        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
+            var ciphertext = CryptoJS.AES.encrypt(content, self.key);
+            callback(null, ciphertext.toString());
+        });
+    };
+    SecureService.prototype.decryption = function (content, callback) {
+        var self = this;
+        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
+            var bytes = CryptoJS.AES.decrypt(content, self.key);
+            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            callback(null, plaintext);
+        });
+    };
+    SecureService.prototype.encryptWithSecureRandom = function (content, callback) {
+        var self = this;
+        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
+            var key = CryptoJS.enc.Utf8.parse(self.key);
+            var iv = CryptoJS.enc.Utf8.parse(self.passiv);
+            var ciphertext = CryptoJS.AES.encrypt(content, key, { iv: iv });
+            callback(null, ciphertext.toString());
+        });
+    };
+    SecureService.prototype.decryptWithSecureRandom = function (content, callback) {
+        var self = this;
+        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
+            var key = CryptoJS.enc.Utf8.parse(self.key);
+            var iv = CryptoJS.enc.Utf8.parse(self.passiv);
+            var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv, padding: CryptoJS.pad.Pkcs7, mode: CryptoJS.mode.CBC });
+            var plaintext;
+            try {
+                plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            }
+            catch (e) {
+                console.error(e);
+            }
+            if (!!plaintext)
+                callback(null, plaintext);
+            else
+                callback(new Error("cannot decrypt content"), content);
+        });
+    };
+    return SecureService;
+})();
+var Dummy = (function () {
+    function Dummy() {
+        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
+        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
+            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
+            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
+        this.serverApi = ChatServer.ServerImplemented.getInstance();
+    }
+    Dummy.prototype.getBot = function () {
+        var r = Math.floor((Math.random() * this.bots.length) + 1);
+        return this.bots[r];
+    };
+    Dummy.prototype.fireChatInRoom = function (myUid) {
+        var _this = this;
+        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
+            if (!err && res !== null) {
+                setInterval(function () {
+                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
+                        console.log(res);
+                    });
+                }, 1000);
+            }
+        });
+    };
+    return Dummy;
+})();
 var pomelo;
 var username = "";
 var password = "";
@@ -1136,10 +1411,10 @@ var ChatServer;
             console.warn("serv imp. constructor");
         }
         ServerImplemented.getInstance = function () {
-            if (!ServerImplemented.Instance) {
-                ServerImplemented.Instance = new ServerImplemented();
+            if (this.Instance === null || this.Instance === undefined) {
+                this.Instance = new ServerImplemented();
             }
-            return ServerImplemented.Instance;
+            return this.Instance;
         };
         ServerImplemented.prototype.setSocketComponent = function (socket) {
             this.socketComponent = socket;
@@ -1164,7 +1439,6 @@ var ChatServer;
             msg["registrationId"] = registrationId;
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
-            localStorage.clear();
             this.disConnect();
         };
         ServerImplemented.prototype.init = function (callback) {
@@ -1256,9 +1530,14 @@ var ChatServer;
                     console.log("QueryConnectorServ", result.code);
                     if (result.code === 200) {
                         var port = result.port;
-                        self.connectSocketServer(self.host, port, function () {
+                        self.connectSocketServer(self.host, port, function (err) {
                             self._isConnected = true;
-                            self.authenForFrontendServer(callback);
+                            if (!!err) {
+                                callback(err, null);
+                            }
+                            else {
+                                self.authenForFrontendServer(callback);
+                            }
                         });
                     }
                 });
@@ -1272,10 +1551,10 @@ var ChatServer;
             var registrationId = localStorage.getItem("registrationId");
             var msg = { username: username, password: password, registrationId: registrationId };
             pomelo.request("connector.entryHandler.login", msg, function (res) {
-                console.log("login: ", JSON.stringify(res), res.code);
+                console.log("login response: ", JSON.stringify(res), res.code);
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
-                        callback(res.message, null);
+                        callback(res.message, res);
                     }
                 }
                 else if (res.code === HttpStatusCode.success) {
@@ -1823,6 +2102,10 @@ var ChatServer;
                 console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, JSON.stringify(data));
                 self.serverListener.onUpdatedLastAccessTime(data);
             });
+            pomelo.on(ServerEventListener.ON_USER_LOGIN, function (data) {
+                console.log(ServerEventListener.ON_USER_LOGIN, JSON.stringify(data));
+                self.serverListener.onUserLogin(data);
+            });
             pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, function (data) {
                 console.log(ServerEventListener.ON_USER_UPDATE_PROFILE, JSON.stringify(data));
                 self.serverListener.onUserUpdateProfile(data);
@@ -1874,6 +2157,7 @@ var ChatServer;
         ServerEventListener.ON_EDITED_GROUP_IMAGE = "onEditGroupImage";
         ServerEventListener.ON_NEW_GROUP_CREATED = "onNewGroupCreated";
         ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE = "onUpdateMemberInfoInProjectBase";
+        ServerEventListener.ON_USER_LOGIN = "onUserLogin";
         ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE = "onUserUpdateImgProfile";
         ServerEventListener.ON_USER_UPDATE_PROFILE = "onUserUpdateProfile";
         ServerEventListener.ON_GET_ME = "onGetMe";
@@ -1899,241 +2183,12 @@ var SocketComponent = (function () {
     };
     return SocketComponent;
 })();
-var MessageDAL = (function () {
-    function MessageDAL(_store) {
-        this.store = _store;
-    }
-    MessageDAL.prototype.getData = function (rid, done) {
-        this.store.getItem(rid).then(function (value) {
-            console.log("get persistent success");
-            done(null, value);
-        });
-    };
-    MessageDAL.prototype.saveData = function (rid, chatRecord, callback) {
-        this.store.setItem(rid, chatRecord).then(function (value) {
-            console.log("save persistent success", value.length);
-            if (callback != null) {
-                callback(null, value);
-            }
-        });
-    };
-    MessageDAL.prototype.removeData = function () { };
-    MessageDAL.prototype.clearData = function () {
-        this.store.clear(function (err) {
-            if (err != null) {
-                console.warn("Clear database fail", err);
-            }
-            console.log("message db now empty.");
-        });
-    };
-    return MessageDAL;
-})();
-var CompanyInfo = (function () {
-    function CompanyInfo() {
-    }
-    return CompanyInfo;
-})();
-var ContactInfo = (function () {
-    function ContactInfo() {
-    }
-    return ContactInfo;
-})();
-var ContentType;
-(function (ContentType) {
-    ContentType[ContentType["Unload"] = 0] = "Unload";
-    ContentType[ContentType["File"] = 1] = "File";
-    ContentType[ContentType["Text"] = 2] = "Text";
-    ContentType[ContentType["Voice"] = 3] = "Voice";
-    ContentType[ContentType["Image"] = 4] = "Image";
-    ContentType[ContentType["Video"] = 5] = "Video";
-    ContentType[ContentType["Sticker"] = 6] = "Sticker";
-    ContentType[ContentType["Location"] = 7] = "Location";
-})(ContentType || (ContentType = {}));
-var JobLevel;
-(function (JobLevel) {
-    JobLevel[JobLevel["employees"] = 0] = "employees";
-    JobLevel[JobLevel["junior"] = 1] = "junior";
-    JobLevel[JobLevel["senior"] = 2] = "senior";
-    JobLevel[JobLevel["directors"] = 3] = "directors";
-    JobLevel[JobLevel["vice_president"] = 4] = "vice_president";
-})(JobLevel || (JobLevel = {}));
-var Member = (function () {
-    function Member() {
-        this.role = MemberRole.member;
-    }
-    return Member;
-})();
-var MemberRole;
-(function (MemberRole) {
-    MemberRole[MemberRole["member"] = 0] = "member";
-    MemberRole[MemberRole["admin"] = 1] = "admin";
-})(MemberRole || (MemberRole = {}));
-var MessageMeta = (function () {
-    function MessageMeta() {
-    }
-    return MessageMeta;
-})();
-var Message = (function () {
-    function Message() {
-    }
-    return Message;
-})();
-var MinLocation = (function () {
-    function MinLocation() {
-    }
-    return MinLocation;
-})();
-var RoomType;
-(function (RoomType) {
-    RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
-    RoomType[RoomType["projectBaseGroup"] = 1] = "projectBaseGroup";
-    RoomType[RoomType["privateGroup"] = 2] = "privateGroup";
-    RoomType[RoomType["privateChat"] = 3] = "privateChat";
-})(RoomType || (RoomType = {}));
-;
-var RoomStatus;
-(function (RoomStatus) {
-    RoomStatus[RoomStatus["active"] = 0] = "active";
-    RoomStatus[RoomStatus["disable"] = 1] = "disable";
-    RoomStatus[RoomStatus["delete"] = 2] = "delete";
-})(RoomStatus || (RoomStatus = {}));
-;
-var Room = (function () {
-    function Room() {
-        this._visibility = true;
-    }
-    Object.defineProperty(Room.prototype, "visibility", {
-        set: function (_boo) {
-            this._visibility = _boo;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Room.prototype, "visibilty", {
-        get: function () {
-            return this._visibility;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Room.prototype.setName = function (name) {
-        this.name = name;
-    };
-    return Room;
-})();
-var RoomAccessData = (function () {
-    function RoomAccessData() {
-    }
-    return RoomAccessData;
-})();
-;
-var TokenDecode = (function () {
-    function TokenDecode() {
-    }
-    return TokenDecode;
-})();
-var User = (function () {
-    function User() {
-    }
-    return User;
-})();
-var UserRole;
-(function (UserRole) {
-    UserRole[UserRole["personnel"] = 0] = "personnel";
-    UserRole[UserRole["section_chief"] = 1] = "section_chief";
-    UserRole[UserRole["department_chief"] = 2] = "department_chief";
-    UserRole[UserRole["division_chief"] = 3] = "division_chief";
-    UserRole[UserRole["admin"] = 4] = "admin";
-})(UserRole || (UserRole = {}));
-;
-var SecureService = (function () {
-    function SecureService() {
-        this.key = "CHITCHAT!@#$%^&*()_+|===";
-        this.passiv = "ThisIsUrPassword";
-    }
-    SecureService.prototype.hashCompute = function (content, callback) {
-        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
-            var hash = CryptoJS.MD5(content);
-            var md = hash.toString(CryptoJS.enc.Hex);
-            callback(null, md);
-        });
-    };
-    SecureService.prototype.encryption = function (content, callback) {
-        var self = this;
-        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
-            var ciphertext = CryptoJS.AES.encrypt(content, self.key);
-            callback(null, ciphertext.toString());
-        });
-    };
-    SecureService.prototype.decryption = function (content, callback) {
-        var self = this;
-        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
-            var bytes = CryptoJS.AES.decrypt(content, self.key);
-            var plaintext = bytes.toString(CryptoJS.enc.Utf8);
-            callback(null, plaintext);
-        });
-    };
-    SecureService.prototype.encryptWithSecureRandom = function (content, callback) {
-        var self = this;
-        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
-            var key = CryptoJS.enc.Utf8.parse(self.key);
-            var iv = CryptoJS.enc.Utf8.parse(self.passiv);
-            var ciphertext = CryptoJS.AES.encrypt(content, key, { iv: iv });
-            callback(null, ciphertext.toString());
-        });
-    };
-    SecureService.prototype.decryptWithSecureRandom = function (content, callback) {
-        var self = this;
-        require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
-            var key = CryptoJS.enc.Utf8.parse(self.key);
-            var iv = CryptoJS.enc.Utf8.parse(self.passiv);
-            var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv, padding: CryptoJS.pad.Pkcs7, mode: CryptoJS.mode.CBC });
-            var plaintext;
-            try {
-                plaintext = bytes.toString(CryptoJS.enc.Utf8);
-            }
-            catch (e) {
-                console.error(e);
-            }
-            if (!!plaintext)
-                callback(null, plaintext);
-            else
-                callback(new Error("cannot decrypt content"), content);
-        });
-    };
-    return SecureService;
-})();
-var Dummy = (function () {
-    function Dummy() {
-        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
-        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
-            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
-            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
-        this.serverApi = ChatServer.ServerImplemented.getInstance();
-    }
-    Dummy.prototype.getBot = function () {
-        var r = Math.floor((Math.random() * this.bots.length) + 1);
-        return this.bots[r];
-    };
-    Dummy.prototype.fireChatInRoom = function (myUid) {
-        var _this = this;
-        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
-            if (!err && res !== null) {
-                setInterval(function () {
-                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
-                        console.log(res);
-                    });
-                }, 1000);
-            }
-        });
-    };
-    return Dummy;
-})();
 var HttpStatusCode = (function () {
     function HttpStatusCode() {
     }
     HttpStatusCode.success = 200;
     HttpStatusCode.fail = 500;
     HttpStatusCode.requestTimeout = 408;
+    HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();

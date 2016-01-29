@@ -174,6 +174,7 @@ angular.module('spartan.controllers', [])
         server.disposeClient();
 
         dbAccessService.clearMessageDAL();
+        localStorage.clear();
         //$state.go('tab.login');
         location.href = '';
     }
@@ -351,16 +352,22 @@ angular.module('spartan.controllers', [])
 		};
 
 })
-.filter('orderObjectBy', function() {
+
+.filter('orderObjectBy', function () {
   return function(items, field, reverse) {
     var filtered = [];
     angular.forEach(items, function(item) {
-      filtered.push(item);
+        filtered.push(item);
     });
     filtered.sort(function (a, b) {
-      return (a[field].toLowerCase() > b[field].toLowerCase() ? 1 : -1);
+        if (!!a[field] && !!b[field]) {
+            return (a[field].toLowerCase() > b[field].toLowerCase() ? 1 : -1);
+        }
+        else {
+            return 1;
+        }
     });
-    if(reverse) filtered.reverse();
+    if (reverse) filtered.reverse();
     return filtered;
   };
 })
