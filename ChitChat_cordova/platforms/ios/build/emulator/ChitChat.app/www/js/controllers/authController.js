@@ -143,16 +143,17 @@
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
 
-                $cordovaDialogs.confirm("May be you use this app in other devices \n You want to logout other devices", "Duplicated login!", ["Cancle", "OK"])
+                $cordovaDialogs.confirm("May be you use this app in other devices \n You want to logout other devices", "Duplicated login!", ["OK", "Cancel"])
                 .then(function (buttonIndex) {
+                    console.log("clicked", buttonIndex);
                     switch (buttonIndex) {
                         case 1:
-                            localStorage.clear();
-                            location.href = '';
-                            break;
-                        case 2:
                             server.kickMeAllSession(param.uid);
                             location.href = "";
+                            break;
+                        case 2:
+                            localStorage.clear();
+                            location.href = '';
                             break;
                     }
                 });
@@ -304,8 +305,6 @@
                                         console.log("Success Authen User...");
                                     }
                                     else if(res.code === HttpStatusCode.duplicateLogin) {
-                                        //<!-- Authen fail.
-                                        console.warn("Authen fail:", JSON.stringify(res));
                                         onDuplicateLogin(res);
                                     }
                                     else if (res.code === HttpStatusCode.requestTimeout) {
