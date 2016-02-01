@@ -582,7 +582,10 @@ angular.module('spartan.chat', [])
 	}
 
 	$scope.image = function(){
-		$scope.$broadcast('addImg', 'addImg');
+		if (ionic.Platform.platform() === "ios") {
+			$scope.$broadcast('addImg', 'addImg');
+		}else
+			$("input[name=fileToUpload]").trigger('click');
 	}
 	$scope.video = function(){
 		$scope.$broadcast('captureVideo', 'captureVideo');
@@ -601,12 +604,19 @@ angular.module('spartan.chat', [])
 	
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
-		if(args[1] == ContentType[ContentType.Image] ){
-			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
-		}else if(args[1] == ContentType[ContentType.Voice] ){
-			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
-		}else if(args[1] == ContentType[ContentType.Video] ){
-			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+		if (ionic.Platform.platform() === "ios") {
+			if(args[1] == ContentType[ContentType.Image] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.Voice] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.Video] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}
+		}else{
+			if(args[1] == ContentType[ContentType.Image] ){
+				console.log("bobobo",args);
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
+			}
 		}
 		
 	});
@@ -628,6 +638,7 @@ angular.module('spartan.chat', [])
 
 	$scope.$on('delectTemp', function(event,args){
 		$.each($scope.chat, function(index, value){
+			console.log(value._id);
 			if(value._id == args[0]) { 
 				$scope.chat[index] = new Object; 
 			}

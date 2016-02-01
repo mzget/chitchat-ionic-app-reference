@@ -1,3 +1,5 @@
+<ion-nav-bar>
+</ion-nav-bar>
 <ion-view id="chatDetail" view-title="{{currentRoom.name}}" cache-view="false" hide-tab-bar>
 	<ion-nav-buttons side="right">
 		<div ng-show="currentRoom.type!=3">
@@ -298,7 +300,9 @@
 						<label ng-if="message.temp != 'true' "> {{message.time}}</label>
 					</ion-item>
 				</ion-list>
-
+				<form id="UploadForm">
+				    <input type="file" name="fileToUpload" id="fileToUpload" onchange="angular.element(this).scope().addImg()">
+				</form>
 						</div>
 					</div>
 				</div>

@@ -16,17 +16,27 @@ angular.module('spartan.media', [])
   	}
  
 	$scope.addImg = function() {
-	    $scope.hideSheet = $ionicActionSheet.show({
-	      buttons: [
-	        { text: 'Take photo' },
-	        { text: 'Photo from library' }
-	      ],
-	      titleText: 'Add images',
-	      cancelText: 'Cancel',
-	      buttonClicked: function(index) {
-	        $scope.addImage(index);
-	      }
-	    });
+		if (ionic.Platform.platform() === "ios") {
+		    $scope.hideSheet = $ionicActionSheet.show({
+		      buttons: [
+		        { text: 'Take photo' },
+		        { text: 'Photo from library' }
+		      ],
+		      titleText: 'Add images',
+		      cancelText: 'Cancel',
+		      buttonClicked: function(index) {
+		        $scope.addImage(index);
+		      }
+		    });
+		}else{
+			var file    = document.querySelector('input[type=file]').files[0];
+	        var reader  = new FileReader();
+	        reader.onloadend = function () {
+	            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.Image]]);
+	            console.log(reader.result);
+	        } 
+	        reader.readAsDataURL(file);
+		}
 	}
  
   	$scope.addImage = function(type) {
@@ -151,29 +161,44 @@ angular.module('spartan.media', [])
 	}
 
 	$scope.uploadImage = function(id) {
-		if(FileService.getImages().length!=0) { 
-			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
-				if(canUpload){
-					var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
-						$scope.$emit('delectTemp', [id]); 
-					});
-				mediaUpload[id] = img;
-				mediaUpload[id].upload();
-				}else{
-					navigator.notification.alert(
-					    'This file size is over', 
-					     null,          
-					    'Fail to Upload',          
-					    'OK'   
-					);
-				}
-			});
-		}else{
-			if(mediaUpload[id].hasOwnProperty('url')){
-				$scope.$emit('delectTemp', [id]); 
+		if (ionic.Platform.platform() === "ios") {
+			if(FileService.getImages().length!=0) { 
+				checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
+					if(canUpload){
+						var img = new UploadMedia(roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function(id,messageId){
+							$scope.$emit('delectTemp', [id]); 
+						});
+					mediaUpload[id] = img;
+					mediaUpload[id].upload();
+					}else{
+						navigator.notification.alert(
+						    'This file size is over', 
+						     null,          
+						    'Fail to Upload',          
+						    'OK'   
+						);
+					}
+				});
 			}else{
-				document.getElementById( id + '-resend').classList.remove("hide");
+				if(mediaUpload[id].hasOwnProperty('url')){
+					$scope.$emit('delectTemp', [id]); 
+				}else{
+					document.getElementById( id + '-resend').classList.remove("hide");
+				}
 			}
+		}else{
+			var file    = document.querySelector('input[type=file]').files[0];
+	        var reader  = new FileReader();
+	        reader.onloadend = function () {
+	            //$scope.$emit('fileUri',[reader.result,ContentType[ContentType.Image]]);
+	            //console.log(reader.result);
+	            var img = new UploadMediaWeb(roomSelected.getRoom().id, reader.result, ContentType[ContentType.Image], function(id,messageId){
+	            	$scope.$emit('delectTemp', [id]); 
+	            });
+	            mediaUpload[id] = img;
+	            mediaUpload[id].upload();
+	        } 
+	        reader.readAsDataURL(file);
 		}
 	}
 
@@ -207,7 +232,6 @@ angular.module('spartan.media', [])
 		 	}
  		})
  	}
-
 
  	$scope.mediaDownload = function(url){
  		console.log(url);
@@ -530,6 +554,73 @@ angular.module('spartan.media', [])
 });
 
 var mediaUpload = {};
+
+function UploadMediaWeb(rid,uri,type,callback){
+
+	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
+	var uriFile = uri;
+	var mediaName = uri
+	var downloadContain;
+	var downloadProgress;
+
+	this.upload = function(){
+		var formData = new FormData($('#UploadForm')[0]);
+		$.ajax({
+		       	url : 'http://203.113.25.44/?r=api/upload',
+		       	type : 'POST',
+		       	data : formData,
+		       	processData: false,
+			   	contentType: false,
+		       	success : function(data) {
+		       		console.log('success');
+		        	console.log(data);
+		        	document.getElementById("UploadForm").reset();
+		        	send(data);
+		       	},
+		       	error : function(data){
+		       		console.log('error');
+		       		alert("Fail");
+					console.log(data);
+		       	},
+		       	xhr: function()
+				{
+				    var xhr = new window.XMLHttpRequest();
+				    //Upload progress
+				    xhr.upload.addEventListener("progress", function(evt){
+				      if (evt.lengthComputable) {
+				        var percentComplete = evt.loaded / evt.total;
+				        //Do something with upload progress
+				        console.log(percentComplete);
+				      }
+				    }, false);
+				    return xhr;
+			  	},
+		});
+	}
+
+	function openProgress(){
+		downloadContain = document.getElementById(mediaName + '-downloaded');
+	    downloadProgress = document.getElementById(mediaName + '-download-progress');
+	    downloadContain.classList.remove("hide");
+	    document.getElementById( mediaName + '-resend').classList.add("hide");
+	}
+	function uploadFail(){
+		document.getElementById( mediaName + '-downloaded').classList.add("hide");
+		document.getElementById( mediaName + '-resend').classList.remove("hide");
+	}
+	function send(url){
+		 main.getChatRoomApi().chat(rid, "*", main.getDataManager().myProfile._id, url, type, function(err, res) {
+			if (err || res === null) {
+				console.warn("send message fail.");
+			}
+			else {
+				console.log("send message:", JSON.stringify(res));
+				jQuery.extend(mediaUpload[mediaName], { 'url' : url, 'messageId' : res.messageId });
+	    		callback.apply(this , [mediaName,res.messageId]);
+			}
+		});
+	}
+}
 
 function UploadMedia(rid,uri,type,callback){
 	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
