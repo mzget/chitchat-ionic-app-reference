@@ -310,13 +310,21 @@
 
     function getMembersInProjectBase(room) {
         for (var x = 0; x < room.members.length; x++) {
-            room.members[x]._id = main.getDataManager().orgMembers[room.members[x].id]._id;
-            room.members[x].displayname = main.getDataManager().orgMembers[room.members[x].id].displayname;
-            room.members[x].image = main.getDataManager().orgMembers[room.members[x].id].image;
-            if (room.members[x].role == null) { room.members[x].role = MemberRole[MemberRole.member]; }
-            if (room.members[x].jobPosition == null) { room.members[x].jobPosition = main.getDataManager().companyInfo.jobPosition[0]; }
-            room.members[x].isAdmin = isAdminInProjectBase(room, room.members[x]._id);
+            var member = dataManager.getContactProfile(room.members[x].id);
+            if (!!member) {
+                room.members[x]._id = member._id;
+                room.members[x].displayname = member.displayname;
+                room.members[x].image = member.image;
+                if (room.members[x].role == null) {
+                    room.members[x].role = MemberRole[MemberRole.member];
+                }
+                if (room.members[x].jobPosition == null) {
+                    room.members[x].jobPosition = main.getDataManager().companyInfo.jobPosition[0];
+                }
+                room.members[x].isAdmin = isAdminInProjectBase(room, room.members[x]._id);
+            }
         }
+
         return room.members;
     }
 
