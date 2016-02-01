@@ -235,6 +235,13 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	//$('#send_message').css({ 'display': 'inline-block' });
 	//$('#chatroom_back').css({ 'display': 'inline-block' });
 	
+	$('#send_message').bind('keypress', function(e) {
+		 var code = e.keyCode || e.which;
+		 if(code == 13 && !e.shiftKey) {
+			$('#sendMsg').click();
+		 }
+	});
+	
 	// Send Message btn
 	$('#sendMsg').click(function()
 	{
@@ -242,7 +249,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		if( content != '' )
 		{
 			// Clear Message
-			$('#send_message').val('')
+			$('#send_message').val('');
+			$('#send_message').empty();
 			
 			if (server.appConfig.encryption == true) {
 			    main.encodeService(content, function (err, result) {
