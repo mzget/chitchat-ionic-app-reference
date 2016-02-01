@@ -152,9 +152,11 @@
 						</div>
 					</div>
 				</div>
-						
-				<label style="float:left; display:inline-block; clear:both; cursor:pointer;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
-				<label ng-if="message.temp != 'true' "> {{message.time}}</label>
+				
+				<div style="width:100%;">
+					<label style="float:left; display:inline-block; cursor:pointer;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
+					<label style="float:right; display:inline-block;" ng-if="message.temp != 'true' "> {{message.time}}</label>
+				</div>
 			</ion-item>
 		
         </ion-list>
