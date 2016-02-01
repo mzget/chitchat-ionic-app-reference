@@ -304,8 +304,6 @@
                 }
             });
         });
-
-
     }
 
     function getMembersInProjectBase(room) {
