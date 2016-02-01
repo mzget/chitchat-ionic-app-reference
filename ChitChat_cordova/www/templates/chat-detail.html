@@ -43,7 +43,7 @@
 		</div>
     </ion-nav-buttons>
 
-	<ion-content delegate-handle="mainScroll" style="bottom:44px;">    
+	<ion-content delegate-handle="mainScroll" style="bottom:44px; margin-bottom:10px;">    
         <div ng-controller="ImageController">
         	<div ng-controller="VoiceController">
         		<div ng-controller="VideoController">
@@ -90,16 +90,14 @@
 							<br /> {{messagebody.latitude}} , {{messagebody.longitude}}
 						</div>
 					</div>
-				</div>
-				
+				</div>				
 
 				<div id="{{message._id}}-downloaded" class="hide">
 					<div id="{{message._id}}-download-contain" class="download-contain">
 						<div id="{{message._id}}-download-progress" class="download-bar"></div><br />
 					</div>
 				</div>
-
-				<br />
+				
 				<label>{{message.time}}</label>
 			</ion-item>
 

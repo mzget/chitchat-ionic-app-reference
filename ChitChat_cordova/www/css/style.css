@@ -58,7 +58,7 @@
 .message-list .lasttime { float:left; display:inline-block; width:100%; max-width:100%; margin-bottom:10px; clear:both; text-align:center; }
 
 .message-list .other { float:left; display:inline-block; width:auto; max-width:80%; margin:0 0 20px; clear:both; }
-.message-list .other > * { float:left; display:inline-block; }
+.message-list .other > * { float:left; display:inline-block; clear:both; }
 .message-list .other .avatar { top:0; left:10px; position: absolute; border-radius: 50%; }
 .message-list .other h2 { line-height:24px; margin-left:60px; }
 .message-list .other label { margin-left:60px; font-size:10px; line-height:10px; color:#aaa; }
@@ -73,7 +73,7 @@
 .message-list .other .type-location > * { width:auto; height:auto; margin:0 0px 0 60px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 
 .message-list .owner { float:right; display:inline-block; width:auto; max-width:80%; margin:0 0 20px; clear:both; }
-.message-list .owner > * { float:right; display:inline-block; margin-right:10px; }
+.message-list .owner > * { float:right; display:inline-block; clear:both; }
 .message-list .owner p { width:auto; max-width:100%; height:auto; text-align:right; border-top-right-radius:0; }
 .message-list .owner p a { color:#666; }
 .message-list .owner p u { cursor:pointer; }
