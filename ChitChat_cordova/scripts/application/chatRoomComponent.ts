@@ -393,4 +393,8 @@
         var self = this;
         self.serverImp.JoinChatRoomRequest(self.roomId, callback);
     }
+
+    public getMemberProfile(member: Member, callback: (err, res) => void) {
+        this.serverImp.getMemberProfile(member.id, callback);
+    }
 }

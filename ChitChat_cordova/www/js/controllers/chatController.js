@@ -66,6 +66,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		            blockUI(true);
 		        } else {
 		            blockUI(false);
+
+		            if (chatRoomService.isPrivateChatRoom()) {
+		                chatRoomService.roomContactIsEmpty(function (boo) {
+		                    blockUI(boo);
+		                });
+		            }
 		        }
 		    });
 		});
@@ -75,6 +81,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 
 	function blockUI(boo) {
+	    console.log("block ui", boo);
 		$scope.inactive = boo;
 	}
 
@@ -135,8 +142,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.openModal = function() {
 		modalcount++;
 		$scope.chatMenuModal.show();
-		$('#chatMessage').animate({'bottom':'180px'}, 350);
-		$('#chatDetail').animate({'top':'-180px'}, 350);
+		$('#chatMessage').animate({'bottom':'272px'}, 350);
+		$('#chatDetail').animate({'top':'-272px'}, 350);
 	};
 	
 	// Modal - Sticker
@@ -235,13 +242,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	//$('#send_message').css({ 'display': 'inline-block' });
 	//$('#chatroom_back').css({ 'display': 'inline-block' });
 	
-	$('#send_message').bind('keypress', function(e) {
-		 var code = e.keyCode || e.which;
-		 if(code == 13 && !e.shiftKey) {
-			$('#sendMsg').click();
-		 }
-	});
-	
 	// Send Message btn
 	$('#sendMsg').click(function()
 	{
@@ -249,8 +249,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		if( content != '' )
 		{
 			// Clear Message
-			$('#send_message').val('');
-			$('#send_message').empty();
+			$('#send_message').val('')
 			
 			if (server.appConfig.encryption == true) {
 			    main.encodeService(content, function (err, result) {
