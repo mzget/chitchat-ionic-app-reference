@@ -63,36 +63,42 @@ angular.module('spartan.controllers', [])
     }
     else {
         var member = main.getDataManager().orgMembers[$stateParams.chatId];
-        if (member.firstname == null || member.firstname == "" &&
-			member.lastname == null || member.lastname == "" &&
-			member.mail == null || member.mail == "" &&
-			member.role == null || member.role == "" &&
-			member.tel == null || member.tel == "") {
-            server.getMemberProfile($stateParams.chatId, function (err, res) {
-                if (!err) {
-                    //console.log(JSON.stringify(res));
-                    //console.log(res["data"]);
-                    member.firstname = res["data"].firstname;
-                    member.lastname = res["data"].lastname;
-                    member.mail = res["data"].mail;
-                    member.role = res["data"].role;
-                    member.tel = res["data"].tel;
-                    $state.go($state.current, {}, { reload: true });
-                }
-                else {
-                    console.warn(err, res);
-                }
-            });
+        if (!!member) {
+            if (member.firstname == null || member.firstname == "" &&
+                member.lastname == null || member.lastname == "" &&
+                member.mail == null || member.mail == "" &&
+                member.role == null || member.role == "" &&
+                member.tel == null || member.tel == "") {
+                server.getMemberProfile($stateParams.chatId, function (err, res) {
+                    if (!err) {
+                        //console.log(JSON.stringify(res));
+                        //console.log(res["data"]);
+                        member.firstname = res["data"].firstname;
+                        member.lastname = res["data"].lastname;
+                        member.mail = res["data"].mail;
+                        member.role = res["data"].role;
+                        member.tel = res["data"].tel;
+                        $state.go($state.current, {}, { reload: true });
+                    }
+                    else {
+                        console.warn(err, res);
+                    }
+                });
+            }
+
+            $scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
+            $scope.model = {
+                displayname: $scope.chat.displayname,
+                status: $scope.chat.status
+            };
+            $scope.title = $scope.chat.displayname + "'s Profile";
+            $('#viewprofile-input-display').attr('disabled', 'disabled');
+            $('#viewprofile-input-status').attr('disabled', 'disabled');
+            $scope.edit = 'false';
         }
-        $scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
-        $scope.model = {
-            displayname: $scope.chat.displayname,
-            status: $scope.chat.status
-        };
-        $scope.title = $scope.chat.displayname + "'s Profile";
-        $('#viewprofile-input-display').attr('disabled', 'disabled');
-        $('#viewprofile-input-status').attr('disabled', 'disabled');
-        $scope.edit = 'false';
+        else {
+            console.warn("A member is no longer in team.");
+        }
     }
 
     $rootScope.$ionicGoBack = function () {
