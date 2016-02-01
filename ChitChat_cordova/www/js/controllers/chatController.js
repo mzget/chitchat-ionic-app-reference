@@ -135,8 +135,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.openModal = function() {
 		modalcount++;
 		$scope.chatMenuModal.show();
-		$('#chatMessage').animate({'bottom':'272px'}, 350);
-		$('#chatDetail').animate({'top':'-272px'}, 350);
+		$('#chatMessage').animate({'bottom':'180px'}, 350);
+		$('#chatDetail').animate({'top':'-180px'}, 350);
 	};
 	
 	// Modal - Sticker

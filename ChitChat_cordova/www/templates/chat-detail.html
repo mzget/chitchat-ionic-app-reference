@@ -108,7 +108,9 @@
 
 				<div id="{{message._id}}-downloaded" class="hide">
 					<i class="ion-ios-close" style="margin-right:5px; float:left;" ng-click="sentCancel(message._id)"></i>
-					<div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
+					<div id="{{message._id}}-download-contain" class="download-contain">
+						<div id="{{message._id}}-download-progress" class="download-bar"></div><br />
+					</div>
 				</div>
 			
 				<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
