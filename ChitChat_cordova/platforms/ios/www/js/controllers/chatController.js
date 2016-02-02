@@ -66,6 +66,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		            blockUI(true);
 		        } else {
 		            blockUI(false);
+
+		            if (chatRoomService.isPrivateChatRoom()) {
+		                chatRoomService.roomContactIsEmpty(function (boo) {
+		                    blockUI(boo);
+		                });
+		            }
 		        }
 		    });
 		});
@@ -75,6 +81,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 
 	function blockUI(boo) {
+	    console.log("block ui", boo);
 		$scope.inactive = boo;
 	}
 
@@ -291,7 +298,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		}else if(args[1] == ContentType[ContentType.Video] ){
 			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}
-		
 	});
 	// Send Image and remove temp Image
 	$scope.$on('fileUrl', function(event,args){

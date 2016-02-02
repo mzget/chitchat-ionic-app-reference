@@ -191,9 +191,6 @@
         "chitchat-plugin-cameraroll": {
             "PACKAGE_NAME": "com.rfl.stalk"
         },
-        "com.raananw.imageResizer": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
         "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.rfl.stalk"
         },
@@ -243,6 +240,9 @@
             "PACKAGE_NAME": "com.rfl.stalk"
         },
         "phonegap-plugin-push": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova.CallCordovaPlugin": {
             "PACKAGE_NAME": "com.rfl.stalk"
         }
     },

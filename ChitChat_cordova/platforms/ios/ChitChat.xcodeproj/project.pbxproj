@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		068439945386470986CB088F /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CF4A133EB14359B4B10EA1 /* CDVLocation.m */; };
 		1023FCB38C3048BA915ECE89 /* CDVSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F33E0433C640DDBD81BB0F /* CDVSound.m */; };
@@ -87,6 +86,33 @@
 		F893CE42CAE341639CA2AA11 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA9CFD995E1F428B9F6182F1 /* CDVNotification.bundle */; };
 		FCDC1170724B4A1F8E2F51EC /* APPBackgroundMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 30758057E8E841C5BE279881 /* APPBackgroundMode.m */; };
 		FF6C75433FF44D309D21AD40 /* APPBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = E6DC5742BADD417788B11B6A /* APPBadge.m */; };
+		01BAEF91FA7E486D944C065E /* IonicCameraRoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 84185F3E3E424A1084813F74 /* IonicCameraRoll.m */; };
+		6D2275E019B144199F6D92C6 /* CallCordovaPlugin.swift in Resources */ = {isa = PBXBuildFile; fileRef = 94A2C81397E24AFEB7F8127F /* CallCordovaPlugin.swift */; };
+		F873A17AF5D9407BBD050C89 /* FreeCallViewController.swift in Resources */ = {isa = PBXBuildFile; fileRef = 17C951AA74504CAA81A9A624 /* FreeCallViewController.swift */; };
+		A5D2D5F4DA0A41A198F1B80D /* SocketAckEmitter.swift in Resources */ = {isa = PBXBuildFile; fileRef = A4D534150CD14B7F8ED8E165 /* SocketAckEmitter.swift */; };
+		F6C3C3D69F114722932C9262 /* SocketAckManager.swift in Resources */ = {isa = PBXBuildFile; fileRef = 1F868C3DB83D4490BFF46137 /* SocketAckManager.swift */; };
+		2E6EA9E4B7CC4F5BB6BD2170 /* SocketAnyEvent.swift in Resources */ = {isa = PBXBuildFile; fileRef = 0D0CE2F5BBC0400D9EEC6D81 /* SocketAnyEvent.swift */; };
+		60F4C859E4D0498BB0F43CEA /* SocketClientSpec.swift in Resources */ = {isa = PBXBuildFile; fileRef = 67A3499DC21342F6AC73BD64 /* SocketClientSpec.swift */; };
+		58E87C3BDA544C2F9F012362 /* SocketEngine.swift in Resources */ = {isa = PBXBuildFile; fileRef = 064B65E3ED5C459C8BA9B7B8 /* SocketEngine.swift */; };
+		08CA67F3FCF5446DA6A92D41 /* SocketEngineClient.swift in Resources */ = {isa = PBXBuildFile; fileRef = 9744844D798F4252A2FD91EF /* SocketEngineClient.swift */; };
+		6A0CC8C51C1B47069929890C /* SocketEnginePacketType.swift in Resources */ = {isa = PBXBuildFile; fileRef = D40D0BC66EA94D34BFD3CD85 /* SocketEnginePacketType.swift */; };
+		3EDEA85D944D40C9B7495AC6 /* SocketEnginePollable.swift in Resources */ = {isa = PBXBuildFile; fileRef = 506DA7088DBB4ECEA19BF457 /* SocketEnginePollable.swift */; };
+		2BC7A01CAA934D0A96ED5069 /* SocketEngineSpec.swift in Resources */ = {isa = PBXBuildFile; fileRef = E1CD193F26A04002B9F8782F /* SocketEngineSpec.swift */; };
+		819A4251CD20414BA6E3FC6E /* SocketEngineWebsocket.swift in Resources */ = {isa = PBXBuildFile; fileRef = 1E27E9F27E1E47B19F0332B6 /* SocketEngineWebsocket.swift */; };
+		EF99F8F58CA8415F8F336BD1 /* SocketEventHandler.swift in Resources */ = {isa = PBXBuildFile; fileRef = E8A8D12019544A44A5DEB6C7 /* SocketEventHandler.swift */; };
+		44E30B73AE2149ABB49AAD49 /* SocketFixUTF8.swift in Resources */ = {isa = PBXBuildFile; fileRef = 2F9C893D704E4538B1EC4BC8 /* SocketFixUTF8.swift */; };
+		4D120507A203417083D5B23E /* SocketIOClient.swift in Resources */ = {isa = PBXBuildFile; fileRef = CFA4E9E96F0944198BCA28DF /* SocketIOClient.swift */; };
+		850B9CD19B94478B980AAD15 /* SocketIOClientOption.swift in Resources */ = {isa = PBXBuildFile; fileRef = 9B26E9F875C14FB5A645C783 /* SocketIOClientOption.swift */; };
+		1CAFE26FF66545A5BC1EFD44 /* SocketIOClientStatus.swift in Resources */ = {isa = PBXBuildFile; fileRef = 7FE9D77618AA483FBE2CFF22 /* SocketIOClientStatus.swift */; };
+		BDB4BC5E4DE448F5AC778F11 /* SocketLogger.swift in Resources */ = {isa = PBXBuildFile; fileRef = 1B7EF688DFE9406C95968101 /* SocketLogger.swift */; };
+		5B4C35816EBB41E089A3D8AD /* SocketPacket.swift in Resources */ = {isa = PBXBuildFile; fileRef = 6B185731FCB94C4DBF99758A /* SocketPacket.swift */; };
+		10D04B0BA1DF4D6F925AF82F /* SocketParsable.swift in Resources */ = {isa = PBXBuildFile; fileRef = 91906BFE14094E4A8CA7552F /* SocketParsable.swift */; };
+		24B4BFCE3A744439ABB60F2A /* SocketStringReader.swift in Resources */ = {isa = PBXBuildFile; fileRef = C65B6D9AD97F41B990E3C7EF /* SocketStringReader.swift */; };
+		EBC565D3629F4254B58A080A /* SocketTypes.swift in Resources */ = {isa = PBXBuildFile; fileRef = 334BCC922BF84C91A6F30BEE /* SocketTypes.swift */; };
+		F14EEC6287A24318895F1D43 /* SwiftRegex.swift in Resources */ = {isa = PBXBuildFile; fileRef = 556185048C1844B49E6228F4 /* SwiftRegex.swift */; };
+		F86284EC18CB45AEA8956D79 /* WebSocket.swift in Resources */ = {isa = PBXBuildFile; fileRef = FA743B930E39449A9A5C1AA0 /* WebSocket.swift */; };
+		E193CB8190664B74AAA840F6 /* CallStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 70B8A61836F54848962588BB /* CallStoryboard.storyboard */; };
+		F538087873144911A74F31F8 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF37EB69411B4F24AD80B7F4 /* libsqlite3.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -228,6 +254,36 @@
 		F57261DBD51E4E55BA3180DD /* CDVFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVFileTransfer.m; path = "cordova-plugin-file-transfer/CDVFileTransfer.m"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ChitChat/config.xml; sourceTree = "<group>"; };
 		FA9CFD995E1F428B9F6182F1 /* CDVNotification.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CDVNotification.bundle; sourceTree = "<group>"; };
+		84185F3E3E424A1084813F74 /* IonicCameraRoll.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "IonicCameraRoll.m"; path = "chitchat-plugin-cameraroll/IonicCameraRoll.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		811FEDBE0B684F65B93451E7 /* IonicCameraRoll.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "IonicCameraRoll.h"; path = "chitchat-plugin-cameraroll/IonicCameraRoll.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		94A2C81397E24AFEB7F8127F /* CallCordovaPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "CallCordovaPlugin.swift"; path = "cordova.CallCordovaPlugin/CallCordovaPlugin.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		17C951AA74504CAA81A9A624 /* FreeCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "FreeCallViewController.swift"; path = "cordova.CallCordovaPlugin/FreeCallViewController.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		A4D534150CD14B7F8ED8E165 /* SocketAckEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketAckEmitter.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketAckEmitter.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		1F868C3DB83D4490BFF46137 /* SocketAckManager.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketAckManager.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketAckManager.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		0D0CE2F5BBC0400D9EEC6D81 /* SocketAnyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketAnyEvent.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketAnyEvent.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		67A3499DC21342F6AC73BD64 /* SocketClientSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketClientSpec.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketClientSpec.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		064B65E3ED5C459C8BA9B7B8 /* SocketEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEngine.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketEngine.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		9744844D798F4252A2FD91EF /* SocketEngineClient.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEngineClient.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketEngineClient.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		D40D0BC66EA94D34BFD3CD85 /* SocketEnginePacketType.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEnginePacketType.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketEnginePacketType.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		506DA7088DBB4ECEA19BF457 /* SocketEnginePollable.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEnginePollable.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketEnginePollable.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		E1CD193F26A04002B9F8782F /* SocketEngineSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEngineSpec.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketEngineSpec.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		1E27E9F27E1E47B19F0332B6 /* SocketEngineWebsocket.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEngineWebsocket.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketEngineWebsocket.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		E8A8D12019544A44A5DEB6C7 /* SocketEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEventHandler.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketEventHandler.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		2F9C893D704E4538B1EC4BC8 /* SocketFixUTF8.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketFixUTF8.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketFixUTF8.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		CFA4E9E96F0944198BCA28DF /* SocketIOClient.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketIOClient.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketIOClient.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		9B26E9F875C14FB5A645C783 /* SocketIOClientOption.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketIOClientOption.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketIOClientOption.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		7FE9D77618AA483FBE2CFF22 /* SocketIOClientStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketIOClientStatus.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketIOClientStatus.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		1B7EF688DFE9406C95968101 /* SocketLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketLogger.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketLogger.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		6B185731FCB94C4DBF99758A /* SocketPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketPacket.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketPacket.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		91906BFE14094E4A8CA7552F /* SocketParsable.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketParsable.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketParsable.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		C65B6D9AD97F41B990E3C7EF /* SocketStringReader.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketStringReader.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketStringReader.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		334BCC922BF84C91A6F30BEE /* SocketTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketTypes.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SocketTypes.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		556185048C1844B49E6228F4 /* SwiftRegex.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SwiftRegex.swift"; path = "cordova.CallCordovaPlugin/SocketIO/SwiftRegex.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		FA743B930E39449A9A5C1AA0 /* WebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "WebSocket.swift"; path = "cordova.CallCordovaPlugin/SocketIO/WebSocket.swift"; sourceTree = "<group>"; fileEncoding = 4; };
+		3BB890049545454BAA9902AB /* cordova-plugin-CallCordovaPlugin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "cordova-plugin-CallCordovaPlugin-Bridging-Header.h"; path = "cordova.CallCordovaPlugin/cordova-plugin-CallCordovaPlugin-Bridging-Header.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		70B8A61836F54848962588BB /* CallStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "CallStoryboard.storyboard"; path = "CallStoryboard.storyboard"; sourceTree = "<group>"; fileEncoding = 4; };
+		3272F75C77D54BFD87018E2D /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "Bridging-Header.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		FF37EB69411B4F24AD80B7F4 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsqlite3.dylib"; path = "usr/lib/libsqlite3.dylib"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -252,6 +308,7 @@
 				20DA7E10D7A3450D9FBE08AF /* QuartzCore.framework in Frameworks */,
 				275EF55BA705450E9B635086 /* CoreLocation.framework in Frameworks */,
 				D0AF42B65C23423AB27921BF /* AudioToolbox.framework in Frameworks */,
+				F538087873144911A74F31F8 /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +374,7 @@
 				2FAC4715605C4BECABBD8DA1 /* appbeep.wav */,
 				C75C7F5FDAE040148F2FEBF5 /* ProgressIndicator.bundle */,
 				FA9CFD995E1F428B9F6182F1 /* CDVNotification.bundle */,
+				70B8A61836F54848962588BB /* CallStoryboard.storyboard */,
 			);
 			name = Resources;
 			path = ChitChat/Resources;
@@ -341,6 +399,7 @@
 				B1BECDE715A549E3AE1956BA /* QuartzCore.framework */,
 				B01CB6CD51104DA98BF58B43 /* CoreLocation.framework */,
 				5FD4DF3BDE1B4F24866780A8 /* AudioToolbox.framework */,
+				FF37EB69411B4F24AD80B7F4 /* libsqlite3.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -417,6 +476,34 @@
 				09ABD6F051B648B2BE44AABA /* CDVLocation.h */,
 				2456CC1D69014BCA9BC5C225 /* CDVNotification.m */,
 				7543D1ECDD2B4049ABC6D640 /* CDVNotification.h */,
+				84185F3E3E424A1084813F74 /* IonicCameraRoll.m */,
+				811FEDBE0B684F65B93451E7 /* IonicCameraRoll.h */,
+				94A2C81397E24AFEB7F8127F /* CallCordovaPlugin.swift */,
+				17C951AA74504CAA81A9A624 /* FreeCallViewController.swift */,
+				A4D534150CD14B7F8ED8E165 /* SocketAckEmitter.swift */,
+				1F868C3DB83D4490BFF46137 /* SocketAckManager.swift */,
+				0D0CE2F5BBC0400D9EEC6D81 /* SocketAnyEvent.swift */,
+				67A3499DC21342F6AC73BD64 /* SocketClientSpec.swift */,
+				064B65E3ED5C459C8BA9B7B8 /* SocketEngine.swift */,
+				9744844D798F4252A2FD91EF /* SocketEngineClient.swift */,
+				D40D0BC66EA94D34BFD3CD85 /* SocketEnginePacketType.swift */,
+				506DA7088DBB4ECEA19BF457 /* SocketEnginePollable.swift */,
+				E1CD193F26A04002B9F8782F /* SocketEngineSpec.swift */,
+				1E27E9F27E1E47B19F0332B6 /* SocketEngineWebsocket.swift */,
+				E8A8D12019544A44A5DEB6C7 /* SocketEventHandler.swift */,
+				2F9C893D704E4538B1EC4BC8 /* SocketFixUTF8.swift */,
+				CFA4E9E96F0944198BCA28DF /* SocketIOClient.swift */,
+				9B26E9F875C14FB5A645C783 /* SocketIOClientOption.swift */,
+				7FE9D77618AA483FBE2CFF22 /* SocketIOClientStatus.swift */,
+				1B7EF688DFE9406C95968101 /* SocketLogger.swift */,
+				6B185731FCB94C4DBF99758A /* SocketPacket.swift */,
+				91906BFE14094E4A8CA7552F /* SocketParsable.swift */,
+				C65B6D9AD97F41B990E3C7EF /* SocketStringReader.swift */,
+				334BCC922BF84C91A6F30BEE /* SocketTypes.swift */,
+				556185048C1844B49E6228F4 /* SwiftRegex.swift */,
+				FA743B930E39449A9A5C1AA0 /* WebSocket.swift */,
+				3BB890049545454BAA9902AB /* cordova-plugin-CallCordovaPlugin-Bridging-Header.h */,
+				3272F75C77D54BFD87018E2D /* Bridging-Header.h */,
 			);
 			name = Plugins;
 			path = ChitChat/Plugins;
@@ -584,6 +671,7 @@
 				9BCE1C6E10CF4E3F85036759 /* appbeep.wav in Resources */,
 				687A48568760472F82D2C8E1 /* ProgressIndicator.bundle in Resources */,
 				F893CE42CAE341639CA2AA11 /* CDVNotification.bundle in Resources */,
+				E193CB8190664B74AAA840F6 /* CallStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,6 +733,31 @@
 				A90DCBC84ACD48C99474B775 /* PushPlugin.m in Sources */,
 				068439945386470986CB088F /* CDVLocation.m in Sources */,
 				C58C1B9F75194DA1BF4702AC /* CDVNotification.m in Sources */,
+				01BAEF91FA7E486D944C065E /* IonicCameraRoll.m in Sources */,
+				6D2275E019B144199F6D92C6 /* CallCordovaPlugin.swift in Resources */,
+				F873A17AF5D9407BBD050C89 /* FreeCallViewController.swift in Resources */,
+				A5D2D5F4DA0A41A198F1B80D /* SocketAckEmitter.swift in Resources */,
+				F6C3C3D69F114722932C9262 /* SocketAckManager.swift in Resources */,
+				2E6EA9E4B7CC4F5BB6BD2170 /* SocketAnyEvent.swift in Resources */,
+				60F4C859E4D0498BB0F43CEA /* SocketClientSpec.swift in Resources */,
+				58E87C3BDA544C2F9F012362 /* SocketEngine.swift in Resources */,
+				08CA67F3FCF5446DA6A92D41 /* SocketEngineClient.swift in Resources */,
+				6A0CC8C51C1B47069929890C /* SocketEnginePacketType.swift in Resources */,
+				3EDEA85D944D40C9B7495AC6 /* SocketEnginePollable.swift in Resources */,
+				2BC7A01CAA934D0A96ED5069 /* SocketEngineSpec.swift in Resources */,
+				819A4251CD20414BA6E3FC6E /* SocketEngineWebsocket.swift in Resources */,
+				EF99F8F58CA8415F8F336BD1 /* SocketEventHandler.swift in Resources */,
+				44E30B73AE2149ABB49AAD49 /* SocketFixUTF8.swift in Resources */,
+				4D120507A203417083D5B23E /* SocketIOClient.swift in Resources */,
+				850B9CD19B94478B980AAD15 /* SocketIOClientOption.swift in Resources */,
+				1CAFE26FF66545A5BC1EFD44 /* SocketIOClientStatus.swift in Resources */,
+				BDB4BC5E4DE448F5AC778F11 /* SocketLogger.swift in Resources */,
+				5B4C35816EBB41E089A3D8AD /* SocketPacket.swift in Resources */,
+				10D04B0BA1DF4D6F925AF82F /* SocketParsable.swift in Resources */,
+				24B4BFCE3A744439ABB60F2A /* SocketStringReader.swift in Resources */,
+				EBC565D3629F4254B58A080A /* SocketTypes.swift in Resources */,
+				F14EEC6287A24318895F1D43 /* SwiftRegex.swift in Resources */,
+				F86284EC18CB45AEA8956D79 /* WebSocket.swift in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,7 +791,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "ChitChat/ChitChat-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					CoreFoundation,
@@ -694,6 +807,9 @@
 				PRODUCT_NAME = ChitChat;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_OBJC_BRIDGING_HEADER = "ChitChat/Plugins/Bridging-Header.h";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 			};
 			name = Debug;
 		};
@@ -714,7 +830,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "ChitChat/ChitChat-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					CoreFoundation,
@@ -730,6 +846,9 @@
 				PRODUCT_NAME = ChitChat;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				SWIFT_OBJC_BRIDGING_HEADER = "ChitChat/Plugins/Bridging-Header.h";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 			};
 			name = Release;
 		};
@@ -757,7 +876,7 @@
 					"\"$(OBJROOT)/UninstalledProducts/include\"",
 					"\"$(BUILT_PRODUCTS_DIR)\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
@@ -774,6 +893,9 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				USER_HEADER_SEARCH_PATHS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "ChitChat/Plugins/Bridging-Header.h";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 			};
 			name = Debug;
 		};
@@ -802,7 +924,7 @@
 					"\"$(BUILT_PRODUCTS_DIR)\"",
 					"\"$(OBJROOT)/UninstalledProducts/$(PLATFORM_NAME)/include\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					CoreFoundation,
@@ -818,6 +940,9 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				USER_HEADER_SEARCH_PATHS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "ChitChat/Plugins/Bridging-Header.h";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 			};
 			name = Release;
 		};

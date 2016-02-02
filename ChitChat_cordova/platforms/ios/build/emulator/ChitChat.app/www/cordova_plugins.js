@@ -440,6 +440,22 @@ module.exports = [
         "merges": [
             "navigator.notification"
         ]
+    },
+    {
+        "file": "plugins/chitchat-plugin-cameraroll/www/CameraRoll.js",
+        "id": "chitchat-plugin-cameraroll.CameraRoll",
+        "pluginId": "chitchat-plugin-cameraroll",
+        "clobbers": [
+            "CameraRoll"
+        ]
+    },
+    {
+        "file": "plugins/cordova.CallCordovaPlugin/www/CallCordovaPlugin.js",
+        "id": "cordova.CallCordovaPlugin.CallCordovaPlugin",
+        "pluginId": "cordova.CallCordovaPlugin",
+        "clobbers": [
+            "cordova.plugins.CallCordovaPlugin"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -462,7 +478,9 @@ module.exports.metadata =
     "org.pbernasconi.progressindicator": "1.1.0",
     "phonegap-plugin-push": "1.4.2",
     "cordova-plugin-geolocation": "1.0.1",
-    "cordova-plugin-dialogs": "1.2.0"
+    "cordova-plugin-dialogs": "1.2.0",
+    "chitchat-plugin-cameraroll": "1.0.0",
+    "cordova.CallCordovaPlugin": "0.0.1"
 }
 // BOTTOM OF METADATA
 });
