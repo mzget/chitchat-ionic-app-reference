@@ -510,6 +510,9 @@ var ChatRoomComponent = (function () {
         var self = this;
         self.serverImp.JoinChatRoomRequest(self.roomId, callback);
     };
+    ChatRoomComponent.prototype.getMemberProfile = function (member, callback) {
+        this.serverImp.getMemberProfile(member.id, callback);
+    };
     return ChatRoomComponent;
 })();
 var ChatsLogComponent = (function () {
@@ -1192,16 +1195,6 @@ var MessageDAL = (function () {
     };
     return MessageDAL;
 })();
-var MessageMeta = (function () {
-    function MessageMeta() {
-    }
-    return MessageMeta;
-})();
-var Message = (function () {
-    function Message() {
-    }
-    return Message;
-})();
 var CompanyInfo = (function () {
     function CompanyInfo() {
     }
@@ -1242,6 +1235,16 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+})();
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
+})();
 var MinLocation = (function () {
     function MinLocation() {
     }
