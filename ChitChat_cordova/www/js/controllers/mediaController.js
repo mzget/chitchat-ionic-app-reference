@@ -152,10 +152,8 @@ angular.module('spartan.media', [])
 	
 
 	$scope.viewImage = function (type, src) {
-	    console.log(type, JSON.stringify(src));
-
 		$scope.modalImage.type = type;
-		$scope.modalImage.src = $rootScope.webServer + src;
+		$scope.modalImage.src = $rootScope.webServer + src + '&w=800';
 		$scope.modalImage.show();
 	}
 	$scope.closeImage = function () {
@@ -190,6 +188,7 @@ angular.module('spartan.media', [])
 	}
 
 	$scope.saveFile = function(type,url){
+		url = url + '&w=1024';
  		$scope.mediaDownload(url).then(function(path) { 
  			saveToCameraRoll(type,path).then(function(){
  				navigator.notification.alert(
