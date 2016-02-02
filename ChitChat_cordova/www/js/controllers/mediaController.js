@@ -188,7 +188,9 @@ angular.module('spartan.media', [])
 	}
 
 	$scope.saveFile = function(type,url){
-		url = url + '&w=1024';
+		if(type=="Image")
+			url = url + '&w=1024';
+		
  		$scope.mediaDownload(url).then(function(path) { 
  			saveToCameraRoll(type,path).then(function(){
  				navigator.notification.alert(
