@@ -191,9 +191,6 @@
         "chitchat-plugin-cameraroll": {
             "PACKAGE_NAME": "com.rfl.stalk"
         },
-        "com.raananw.imageResizer": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
         "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.rfl.stalk"
         },

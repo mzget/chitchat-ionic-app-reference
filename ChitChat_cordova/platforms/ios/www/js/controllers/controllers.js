@@ -3,11 +3,11 @@ var now;
 var newchatmessage;
 var chatlog_count = 0;
 
-angular.module('spartan.controllers', [])
+angular.module('spartan.controllers', ['jrCrop'])
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
- roomSelected) {
+.controller('GroupViewprofileCtrl', function ($scope, $jrCrop, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
+ roomSelected, FileService, sharedObjectService) {
     var room = roomSelected.getRoom();
 
     if ($stateParams.chatId == main.getDataManager().myProfile._id) {
@@ -32,14 +32,27 @@ angular.module('spartan.controllers', [])
             } 
         });
         $scope.$on('fileUri', function(event, args) {
-            $scope.sourceImage = args;
+            document.getElementById("avatar").src = sharedObjectService.getWebServer() + main.getDataManager().myProfile.image;
+            var imageData = cordova.file.documentsDirectory + FileService.getImages();
+            $jrCrop.crop({
+                url: imageData,
+                width: 200,
+                height: 200
+            }).then(function(canvas) {
+                // success!
+                var image = canvas.toDataURL('image/jpeg',1);
+                document.getElementById("avatar").src = image;
+                $scope.sourceImage = image;
+            }, function() {
+                // User canceled or couldn't load image.
+            });
         });
         $scope.save = function(){
             if($scope.sourceImage!='' || (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status)){
                 $ionicLoading.show({
                     template: 'Loading..'
                 });
-                if($scope.sourceImage!=''){ $scope.$broadcast('uploadImg','uploadImg'); }
+                if($scope.sourceImage!=''){ $scope.$broadcast('uploadImgCrop', $scope.sourceImage ); }
                 else { saveProfile(); }
             }
         }
@@ -63,36 +76,42 @@ angular.module('spartan.controllers', [])
     }
     else {
         var member = main.getDataManager().orgMembers[$stateParams.chatId];
-        if (member.firstname == null || member.firstname == "" &&
-			member.lastname == null || member.lastname == "" &&
-			member.mail == null || member.mail == "" &&
-			member.role == null || member.role == "" &&
-			member.tel == null || member.tel == "") {
-            server.getMemberProfile($stateParams.chatId, function (err, res) {
-                if (!err) {
-                    //console.log(JSON.stringify(res));
-                    //console.log(res["data"]);
-                    member.firstname = res["data"].firstname;
-                    member.lastname = res["data"].lastname;
-                    member.mail = res["data"].mail;
-                    member.role = res["data"].role;
-                    member.tel = res["data"].tel;
-                    $state.go($state.current, {}, { reload: true });
-                }
-                else {
-                    console.warn(err, res);
-                }
-            });
+        if (!!member) {
+            if (member.firstname == null || member.firstname == "" &&
+                member.lastname == null || member.lastname == "" &&
+                member.mail == null || member.mail == "" &&
+                member.role == null || member.role == "" &&
+                member.tel == null || member.tel == "") {
+                server.getMemberProfile($stateParams.chatId, function (err, res) {
+                    if (!err) {
+                        //console.log(JSON.stringify(res));
+                        //console.log(res["data"]);
+                        member.firstname = res["data"].firstname;
+                        member.lastname = res["data"].lastname;
+                        member.mail = res["data"].mail;
+                        member.role = res["data"].role;
+                        member.tel = res["data"].tel;
+                        $state.go($state.current, {}, { reload: true });
+                    }
+                    else {
+                        console.warn(err, res);
+                    }
+                });
+            }
+
+            $scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
+            $scope.model = {
+                displayname: $scope.chat.displayname,
+                status: $scope.chat.status
+            };
+            $scope.title = $scope.chat.displayname + "'s Profile";
+            $('#viewprofile-input-display').attr('disabled', 'disabled');
+            $('#viewprofile-input-status').attr('disabled', 'disabled');
+            $scope.edit = 'false';
         }
-        $scope.chat = main.getDataManager().orgMembers[$stateParams.chatId];
-        $scope.model = {
-            displayname: $scope.chat.displayname,
-            status: $scope.chat.status
-        };
-        $scope.title = $scope.chat.displayname + "'s Profile";
-        $('#viewprofile-input-display').attr('disabled', 'disabled');
-        $('#viewprofile-input-status').attr('disabled', 'disabled');
-        $scope.edit = 'false';
+        else {
+            console.warn("A member is no longer in team.");
+        }
     }
 
     $rootScope.$ionicGoBack = function () {

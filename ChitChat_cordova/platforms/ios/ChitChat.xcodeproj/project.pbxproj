@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		068439945386470986CB088F /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CF4A133EB14359B4B10EA1 /* CDVLocation.m */; };
 		1023FCB38C3048BA915ECE89 /* CDVSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 26F33E0433C640DDBD81BB0F /* CDVSound.m */; };
@@ -87,6 +86,7 @@
 		F893CE42CAE341639CA2AA11 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA9CFD995E1F428B9F6182F1 /* CDVNotification.bundle */; };
 		FCDC1170724B4A1F8E2F51EC /* APPBackgroundMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 30758057E8E841C5BE279881 /* APPBackgroundMode.m */; };
 		FF6C75433FF44D309D21AD40 /* APPBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = E6DC5742BADD417788B11B6A /* APPBadge.m */; };
+		844742136B7C433E850B8406 /* IonicCameraRoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 105A9F3E793243CEAAE89856 /* IonicCameraRoll.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -228,6 +228,8 @@
 		F57261DBD51E4E55BA3180DD /* CDVFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVFileTransfer.m; path = "cordova-plugin-file-transfer/CDVFileTransfer.m"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ChitChat/config.xml; sourceTree = "<group>"; };
 		FA9CFD995E1F428B9F6182F1 /* CDVNotification.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CDVNotification.bundle; sourceTree = "<group>"; };
+		105A9F3E793243CEAAE89856 /* IonicCameraRoll.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "IonicCameraRoll.m"; path = "chitchat-plugin-cameraroll/IonicCameraRoll.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		9834E57B7BA74D9A81B21395 /* IonicCameraRoll.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "IonicCameraRoll.h"; path = "chitchat-plugin-cameraroll/IonicCameraRoll.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -417,6 +419,8 @@
 				09ABD6F051B648B2BE44AABA /* CDVLocation.h */,
 				2456CC1D69014BCA9BC5C225 /* CDVNotification.m */,
 				7543D1ECDD2B4049ABC6D640 /* CDVNotification.h */,
+				105A9F3E793243CEAAE89856 /* IonicCameraRoll.m */,
+				9834E57B7BA74D9A81B21395 /* IonicCameraRoll.h */,
 			);
 			name = Plugins;
 			path = ChitChat/Plugins;
@@ -645,6 +649,7 @@
 				A90DCBC84ACD48C99474B775 /* PushPlugin.m in Sources */,
 				068439945386470986CB088F /* CDVLocation.m in Sources */,
 				C58C1B9F75194DA1BF4702AC /* CDVNotification.m in Sources */,
+				844742136B7C433E850B8406 /* IonicCameraRoll.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

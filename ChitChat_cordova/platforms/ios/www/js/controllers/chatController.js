@@ -66,6 +66,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		            blockUI(true);
 		        } else {
 		            blockUI(false);
+
+		            if (chatRoomService.isPrivateChatRoom()) {
+		                chatRoomService.roomContactIsEmpty(function (boo) {
+		                    blockUI(boo);
+		                });
+		            }
 		        }
 		    });
 		});
@@ -75,6 +81,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 
 	function blockUI(boo) {
+	    console.log("block ui", boo);
 		$scope.inactive = boo;
 	}
 

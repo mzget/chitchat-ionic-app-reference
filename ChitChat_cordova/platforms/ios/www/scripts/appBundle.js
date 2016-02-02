@@ -510,6 +510,9 @@ var ChatRoomComponent = (function () {
         var self = this;
         self.serverImp.JoinChatRoomRequest(self.roomId, callback);
     };
+    ChatRoomComponent.prototype.getMemberProfile = function (member, callback) {
+        this.serverImp.getMemberProfile(member.id, callback);
+    };
     return ChatRoomComponent;
 })();
 var ChatsLogComponent = (function () {
