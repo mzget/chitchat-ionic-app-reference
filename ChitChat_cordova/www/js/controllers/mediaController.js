@@ -40,27 +40,64 @@ angular.module('spartan.media', [])
     	});
   	}
 
-  	$scope.uploadImgCrop = function(ImageData){
-  		console.log(ImageData);
-  		// var options = new FileUploadOptions();
-	   //  options.fileKey = "fileToUpload";
-	   //  //options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-	   //  options.mimeType = "image/jpeg";
-	   //  var params = new Object();
-	   //  options.params = params;
-	   //  options.chunkedMode = false;
-	   //  var ft = new FileTransfer();
-  		// ft.onprogress = function(progressEvent){
-	   //  	if (progressEvent.lengthComputable) {
-	   //  			$ionicLoading.show({
-				//       template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
-				//   });
-		  //   } else {
-		  //     //loadingStatus.increment();
-		  //   }
-	   //  };
-	   //  ft.upload(ImageData, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
-	   //      options);
+  	function dataURItoBlob(dataURI) {
+	    // convert base64/URLEncoded data component to raw binary data held in a string
+	    var byteString;
+	    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+	        byteString = atob(dataURI.split(',')[1]);
+	    else
+	        byteString = unescape(dataURI.split(',')[1]);
+
+	    // separate out the mime component
+	    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+	    // write the bytes of the string to a typed array
+	    var ia = new Uint8Array(byteString.length);
+	    for (var i = 0; i < byteString.length; i++) {
+	        ia[i] = byteString.charCodeAt(i);
+	    }
+	    return new Blob([ia], {type:mimeString});
+	}
+
+  	$scope.uploadImgCrop = function(dataURL){
+  		var blob = dataURItoBlob(dataURL);
+		var fd = new FormData(document.forms[0]);
+		fd.append("fileToUpload", blob);
+		$.ajax({
+		       	url :  sharedObjectService.getWebServer()+'/?r=api/upload',
+		       	type : 'POST',
+		       	data : fd,
+		       	processData: false,
+			   	contentType: false,
+		       	success : function(data) {
+		       		console.log('success');
+		        	console.log(data);
+		        	$ionicLoading.hide();
+	    			$scope.$emit('fileUrl', [data]);
+		       	},
+		       	error : function(data){
+		       		console.log('error');
+		       		$ionicLoading.hide();
+		       		alert("Fail");
+					console.log(data);
+		       	},
+		       	xhr: function()
+				{
+				    var xhr = new window.XMLHttpRequest();
+				    //Upload progress
+				    xhr.upload.addEventListener("progress", function(evt){
+				      if (evt.lengthComputable) {
+				        var percentComplete = evt.loaded / evt.total;
+				        //Do something with upload progress
+				        console.log(percentComplete);
+				        $ionicLoading.show({
+						      template: 'Uploading ' + (Math.round(percentComplete * 100)).toFixed(0) + '%'
+						});
+				      }
+				    }, false);
+				    return xhr;
+			  	},
+		});
   	}
 
   	$scope.uploadImg = function() {

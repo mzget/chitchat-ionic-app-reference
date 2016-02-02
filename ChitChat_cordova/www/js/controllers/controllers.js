@@ -7,7 +7,7 @@ angular.module('spartan.controllers', ['jrCrop'])
 
 // Group - View Profile
 .controller('GroupViewprofileCtrl', function ($scope, $jrCrop, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
- roomSelected, FileService) {
+ roomSelected, FileService, sharedObjectService) {
     var room = roomSelected.getRoom();
 
     if ($stateParams.chatId == main.getDataManager().myProfile._id) {
@@ -32,6 +32,7 @@ angular.module('spartan.controllers', ['jrCrop'])
             } 
         });
         $scope.$on('fileUri', function(event, args) {
+            document.getElementById("avatar").src = sharedObjectService.getWebServer() + main.getDataManager().myProfile.image;
             var imageData = cordova.file.documentsDirectory + FileService.getImages();
             $jrCrop.crop({
                 url: imageData,
@@ -39,10 +40,9 @@ angular.module('spartan.controllers', ['jrCrop'])
                 height: 200
             }).then(function(canvas) {
                 // success!
-                var image = new Image();
-                image.src = canvas.toDataURL();
+                var image = canvas.toDataURL('image/jpeg',1);
+                document.getElementById("avatar").src = image;
                 $scope.sourceImage = image;
-                console.log(image);
             }, function() {
                 // User canceled or couldn't load image.
             });
