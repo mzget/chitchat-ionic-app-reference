@@ -10,6 +10,7 @@ angular.module('spartan.media', [])
 
   	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
   	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
+  	$scope.$on('uploadImgCrop', function(event, args) { $scope.uploadImgCrop(args); });
 
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.documentsDirectory + imageName;
@@ -37,6 +38,29 @@ angular.module('spartan.media', [])
     		$scope.$emit('fileUri',[FileService.getImages(),ContentType[ContentType.Image]]);
     		//$scope.uploadImg();
     	});
+  	}
+
+  	$scope.uploadImgCrop = function(ImageData){
+  		console.log(ImageData);
+  		// var options = new FileUploadOptions();
+	   //  options.fileKey = "fileToUpload";
+	   //  //options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+	   //  options.mimeType = "image/jpeg";
+	   //  var params = new Object();
+	   //  options.params = params;
+	   //  options.chunkedMode = false;
+	   //  var ft = new FileTransfer();
+  		// ft.onprogress = function(progressEvent){
+	   //  	if (progressEvent.lengthComputable) {
+	   //  			$ionicLoading.show({
+				//       template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
+				//   });
+		  //   } else {
+		  //     //loadingStatus.increment();
+		  //   }
+	   //  };
+	   //  ft.upload(ImageData, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
+	   //      options);
   	}
 
   	$scope.uploadImg = function() {

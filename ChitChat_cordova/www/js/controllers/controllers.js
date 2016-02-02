@@ -3,11 +3,11 @@ var now;
 var newchatmessage;
 var chatlog_count = 0;
 
-angular.module('spartan.controllers', [])
+angular.module('spartan.controllers', ['jrCrop'])
 
 // Group - View Profile
-.controller('GroupViewprofileCtrl', function ($scope, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
- roomSelected) {
+.controller('GroupViewprofileCtrl', function ($scope, $jrCrop, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
+ roomSelected, FileService) {
     var room = roomSelected.getRoom();
 
     if ($stateParams.chatId == main.getDataManager().myProfile._id) {
@@ -32,14 +32,27 @@ angular.module('spartan.controllers', [])
             } 
         });
         $scope.$on('fileUri', function(event, args) {
-            $scope.sourceImage = args;
+            var imageData = cordova.file.documentsDirectory + FileService.getImages();
+            $jrCrop.crop({
+                url: imageData,
+                width: 200,
+                height: 200
+            }).then(function(canvas) {
+                // success!
+                var image = new Image();
+                image.src = canvas.toDataURL();
+                $scope.sourceImage = image;
+                console.log(image);
+            }, function() {
+                // User canceled or couldn't load image.
+            });
         });
         $scope.save = function(){
             if($scope.sourceImage!='' || (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status)){
                 $ionicLoading.show({
                     template: 'Loading..'
                 });
-                if($scope.sourceImage!=''){ $scope.$broadcast('uploadImg','uploadImg'); }
+                if($scope.sourceImage!=''){ $scope.$broadcast('uploadImgCrop', $scope.sourceImage ); }
                 else { saveProfile(); }
             }
         }
