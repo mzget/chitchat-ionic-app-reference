@@ -13,6 +13,8 @@
             init: init,
             getPersistendMessage: getPersistendMessage,
             getNewerMessageFromNet: getNewerMessageFromNet,
+            isPrivateChatRoom: isPrivateChatRoom,
+            roomContactIsEmpty: roomContactIsEmpty,
             all: function () {
                 return chats;
             },
@@ -167,6 +169,40 @@
 
         function getChatRoomComponent() {
             return chatRoomComponent;
+        }
+
+        function isPrivateChatRoom() {
+            var curRoom = roomSelected.getRoom();
+            if (curRoom.type === RoomType.privateChat) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        function roomContactIsEmpty(callback) {
+            var curRoom = roomSelected.getRoom();
+            if (curRoom.type === RoomType.privateChat) {
+                for (var i = 0; i < curRoom.members.length; i++) {
+                    if (curRoom.members[i].id != dataManager.myProfile._id) {
+                        chatRoomComponent.getMemberProfile(curRoom.members[i], function done(err, res) {
+                            console.warn("getMemberProfile", err, res);
+                            if (res.code === HttpStatusCode.fail) {
+                                callback(true);
+                                return;
+                            }
+                        });
+                    }
+                }
+
+                callback(false);
+                return;
+            } 
+            else {
+                callback(false);
+                return;
+            }
         }
     }
 })();

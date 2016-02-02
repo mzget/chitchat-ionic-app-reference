@@ -8,24 +8,23 @@
 				<i class="ion-heart dark"></i>
 			</div>
 		</div>
-		<div ng-show="currentRoom.type==3">
+		
+		<div ng-show="currentRoom.type==3 && !inactive">
 	        <i ng-if="isFavorite(otherId)" class="ion-heart assertive" style="display:inline-block; font-size:25px; line-height:40px; padding:0 10px;" ng-click="editFavorite('remove',otherId,currentRoom.type)"></i>
 			<i ng-if="!isFavorite(otherId)" class="ion-heart dark" style="display:inline-block; font-size:25px; line-height:40px; padding:0 10px;" ng-click="editFavorite('add',otherId,currentRoom.type)"></i>
 		</div>
 
-		<div ng-show="currentRoom.type==2">
-			<div ng-if="isBlockNoti(currentRoom._id)" style="display:inline-block; margin-left:15px; margin-right:5px; font-size:25px; line-height:40px; padding:0 10px;" 
-				ng-click="editBlockNoti('remove',currentRoom._id,currentRoom.type)">
+		<div ng-show="currentRoom.type==2 && !inactive">
+			<div ng-if="isBlockNoti(currentRoom._id)" style="display:inline-block; font-size:25px; line-height:40px; padding:0 10px;" ng-click="editBlockNoti('remove',currentRoom._id,currentRoom.type)">
 				<i class="ion-android-notifications-off"></i>
 			</div>
-			<div ng-if="!isBlockNoti(currentRoom._id)" style="display:inline-block; margin-left:15px; margin-right:5px; font-size:25px; line-height:40px; padding:0 10px;"
+			<div ng-if="!isBlockNoti(currentRoom._id)" style="display:inline-block; font-size:25px; line-height:40px; padding:0 10px;"
 				ng-click="editBlockNoti('add',currentRoom._id,currentRoom.type)">
 				<i class="ion-android-notifications"></i>
 			</div>
 		</div>
-		<div ng-show="currentRoom.type==3">
-			<div ng-if="isBlockNoti(otherId)" style="display:inline-block; padding:0 10px; font-size:25px; line-height:40px;"
-				ng-click="editBlockNoti('remove',otherId,currentRoom.type)">
+		<div ng-show="currentRoom.type==3 && !inactive">
+			<div ng-if="isBlockNoti(otherId)" style="display:inline-block; padding:0 10px; font-size:25px; line-height:40px;" ng-click="editBlockNoti('remove',otherId,currentRoom.type)">
 				<i class="ion-android-notifications-off"></i>
 			</div>
 				
@@ -36,7 +35,7 @@
 					
 		</div>
 
-		<div>
+		<div ng-show="!inactive">
 			<div style="display:inline-block; padding:0 10px; font-size:25px; line-height:40px;" ng-click="openPopover($event)">
 				<i class="ion-navicon-round"></i>
 			</div>
