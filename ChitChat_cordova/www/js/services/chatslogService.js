@@ -255,6 +255,7 @@
                                 }
                                 else {
                                     roomInfo.name = contactProfile.displayname;
+                                    roomInfo.image = contactProfile.image;
                                 }
                             }
                             else {
