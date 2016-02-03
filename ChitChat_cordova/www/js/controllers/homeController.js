@@ -8,7 +8,7 @@
 	//homeController.$inject = ['$location'];
 
 	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform,
-		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, webRTCFactory) {
+		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
@@ -260,8 +260,8 @@
 			$scope.pvgModal.hide();
 		}
 		//<!-- Contact modal -------------------------->
-		$scope.openContactModal = function(contactId) {
-			initContactModal($scope, contactId, roomSelected, function done() {
+		$scope.openContactModal = function (contactId) {
+            modalFactory.initContactModal($scope, contactId, roomSelected, function done() {
 				$scope.contactModal.show();
 			});
 		};
@@ -269,43 +269,7 @@
 			$scope.contactModal.hide();	
 		};
 
-	    function initContactModal($scope, contactId, roomSelected, done) {
-		    var contact = main.getDataManager().orgMembers[contactId];
-		    console.debug(contact);
-		    $scope.contact = contact;
-
-		    server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
-		        console.log(JSON.stringify(res));
-		        var room = JSON.parse(JSON.stringify(res.data));
-		        $scope.chat = function () {
-		            roomSelected.setRoom(room);
-		            location.href = '#/tab/group/chat/' + room._id;
-		        };
-
-		        $scope.freecall = function () {
-		            roomSelected.setRoom(room);
-
-		            cordova.exec(function (callId) {
-		                console.warn(callId);
-		                server.voiceCallRequest(contactId, callId, function success(err, res) {
-		                    console.log("voiceCallRequest", JSON.stringify(res));
-		                });
-		            }, null, "CallCordovaPlugin", "freeCall");
-		            //cordova.exec(null, null, "", "callerid",[null,"CallCordovaPlugin","freeCall"]);
-
-		            //location.href = '#/tab/group/freecall/' + room._id;
-		        };
-
-		        $scope.openViewContactProfile = function (id) {
-		            location.href = '#/tab/group/member/' + id;
-		            //$state.go("tab.group-members", { chatId: id}, { inherit: false });
-		        }
-
-		        $scope.$apply();
-		    });
-
-		    done();
-		}
+	    
 	}
 
 	var initOrgModal = function ($state, $scope, groupId, roomSelected, done, $rootScope) {

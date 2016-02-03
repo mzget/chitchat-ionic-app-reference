@@ -2,41 +2,59 @@
     'use strict';
 
     angular
-        .module('app')
+        .module('spartan.services')
         .factory('webRTCFactory', webRTCFactory);
 
     webRTCFactory.$inject = ['$http'];
 
     function webRTCFactory($http) {
         var service = {
-            initContactModal: initContactModal
+            init:init,
+            call: call
         };
+        var webRtcComponent;
 
         return service;
 
-        function initContactModal($scope, contactId, roomSelected, done) {
-            var contact = main.getDataManager().orgMembers[contactId];
-            console.debug(contact);
-            $scope.contact = contact;
+        function init() {
+            webRtcComponent = new WebRtcComponent();
+            webRtcComponent.voiceCallEvent = voiceCallHandler;
+            webRtcComponent.videoCallEvent = videoCallHandler;
+            webRtcComponent.lineBusyEvent = lineBusyHandler;
+        }
 
-            server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
-                console.log(JSON.stringify(res));
-                var room = JSON.parse(JSON.stringify(res.data));
+        function call(contactId) {
+            cordova.exec(function success(callId) {
+                console.warn(callId);
+                server.voiceCallRequest(contactId, callId, function success(err, res) {
+                    console.log("voiceCallRequest", JSON.stringify(res));
 
-                $scope.chat = function () {
-                    roomSelected.setRoom(room);
-                    location.href = '#/tab/group/chat/' + room._id;
-                };
+                    if (res.code === HttpStatusCode.fail) {
+                        console.warn("Fail to call. Need to hangup.");
+                    }
+                });
+            }, null, "CallCordovaPlugin", "freeCall", ["", dataManager.getContactProfile(contactId)]);
+        }
+        
+        function voiceCallHandler(contactId, callerId) {           
+            cordova.exec(function success(callId) {
+                console.warn(callId);
+                server.voiceCallRequest(contactId, callId, function success(err, res) {
+                    console.log("voiceCallRequest", JSON.stringify(res));
 
-                $scope.openViewContactProfile = function (id) {
-                    location.href = '#/tab/group/member/' + id;
-                    //$state.go("tab.group-members", { chatId: id}, { inherit: false });
-                }
-
-                $scope.$apply();
-            });
-
-            done();
+                    if (res.code === HttpStatusCode.fail) {
+                        console.warn("Fail to call. Need to hangup.");
+                    }
+                });
+            }, null, "CallCordovaPlugin", "freeCall", [callerId, dataManager.getContactProfile(contactId)]);
+        }
+         
+        function videoCallHandler(contactId, callerId) {
+            
+        }
+        
+        function lineBusyHandler(contactId) {
+            
         }
     }
 })();
