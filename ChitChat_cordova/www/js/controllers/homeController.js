@@ -381,7 +381,12 @@
 			$scope.freecall = function () {
 				roomSelected.setRoom(room);
 
-				cordova.exec(null, null, "CallCordovaPlugin", "freeCall");
+				cordova.exec(function (callId) {
+				    console.warn(callId);
+				    server.voiceCallRequest(contactId, callId, function success(err, res) {
+				        console.log("voiceCallRequest", JSON.stringify(res));
+				    });
+				}, null, "CallCordovaPlugin", "freeCall");
 				//cordova.exec(null, null, "", "callerid",[null,"CallCordovaPlugin","freeCall"]);
                 
 				//location.href = '#/tab/group/freecall/' + room._id;
