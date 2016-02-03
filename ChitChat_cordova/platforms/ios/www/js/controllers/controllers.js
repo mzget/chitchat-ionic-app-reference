@@ -26,7 +26,6 @@ angular.module('spartan.controllers', ['jrCrop'])
             if (url != null) {
                 server.ProfileImageChanged($stateParams.chatId, url[0], function (err, res) {
                     main.getDataManager().myProfile.image = url[0];
-                    $scope.sourceImage = "";
                     saveProfile();
                 });
             } 
@@ -66,6 +65,9 @@ angular.module('spartan.controllers', ['jrCrop'])
                     main.getDataManager().myProfile.status = $scope.model.status;
                     saveSuccess();
                 });
+            }else if( $scope.sourceImage != "") {
+                $scope.sourceImage = "";
+                saveSuccess();
             }
         }
         function saveSuccess() {
@@ -381,6 +383,26 @@ angular.module('spartan.controllers', ['jrCrop'])
     filtered.sort(function (a, b) {
         if (!!a[field] && !!b[field]) {
             return (a[field].toLowerCase() > b[field].toLowerCase() ? 1 : -1);
+        }
+        else {
+            return 1;
+        }
+    });
+    if (reverse) filtered.reverse();
+    return filtered;
+  };
+})
+.filter('orderByDate', function () {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+        filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+        if (!!a[field] && !!b[field]) {
+            if(a[field].isValid() && !b[field].isValid() || new Date(a[field]) > new Date(b[field])) return 1;
+            else if(!a[field].isValid() && b[field].isValid() || new Date(a[field]) < new Date(b[field])) return -1;
+            else return -1;      
         }
         else {
             return 1;

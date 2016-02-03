@@ -87,6 +87,10 @@
                         {
                             "xml": "<feature name=\"CameraRoll\"><param name=\"ios-package\" value=\"IonicCameraRoll\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"CallCordovaPlugin\"><param name=\"ios-package\" value=\"CallCordovaPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -169,6 +173,9 @@
             "PACKAGE_NAME": "com.rfl.stalk"
         },
         "chitchat-plugin-cameraroll": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova.CallCordovaPlugin": {
             "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
@@ -622,6 +629,14 @@
             "clobbers": [
                 "CameraRoll"
             ]
+        },
+        {
+            "file": "plugins/cordova.CallCordovaPlugin/www/CallCordovaPlugin.js",
+            "id": "cordova.CallCordovaPlugin.CallCordovaPlugin",
+            "pluginId": "cordova.CallCordovaPlugin",
+            "clobbers": [
+                "cordova.plugins.CallCordovaPlugin"
+            ]
         }
     ],
     "plugin_metadata": {
@@ -643,6 +658,7 @@
         "phonegap-plugin-push": "1.4.2",
         "cordova-plugin-geolocation": "1.0.1",
         "cordova-plugin-dialogs": "1.2.0",
-        "chitchat-plugin-cameraroll": "1.0.0"
+        "chitchat-plugin-cameraroll": "1.0.0",
+        "cordova.CallCordovaPlugin": "0.0.1"
     }
 }
