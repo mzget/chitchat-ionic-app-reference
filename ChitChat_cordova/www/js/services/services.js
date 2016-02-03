@@ -512,6 +512,14 @@ angular.module('spartan.services', [])
       var dateMsg = new Date(date);
       var dateNow = new Date();
 
+      console.log('date',date,dateMsg);
+
+      Date.prototype.isValid = function () {
+          // An invalid date object returns NaN for getTime() and NaN is the only
+          // object not strictly equal to itself.
+          return this.getTime() === this.getTime();
+      }; 
+
       if (dateMsg.getFullYear() == dateNow.getFullYear() &&
        dateMsg.getMonth() == dateNow.getMonth() &&
        dateMsg.getDate() == dateNow.getDate()) {
@@ -527,8 +535,12 @@ angular.module('spartan.services', [])
        dateMsg.getDate() - 7 <= dateNow.getDate()) {
           return days[dateMsg.getDay()];
       }
-      else {
-          return dateMsg.getMonth() + '/' + dateMsg.getDate();
+      else if( dateMsg.isValid() )
+      {
+          return dateMsg.getMonth()+1 + '/' + dateMsg.getDate() + '/' + dateMsg.getFullYear();
+      }
+      else{
+          return "";
       }
   }
 
