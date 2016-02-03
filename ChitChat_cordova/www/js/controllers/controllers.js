@@ -390,6 +390,26 @@ angular.module('spartan.controllers', ['jrCrop'])
     return filtered;
   };
 })
+.filter('orderByDate', function () {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+        filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+        if (!!a[field] && !!b[field]) {
+            if(a[field].isValid() && !b[field].isValid() || new Date(a[field]) > new Date(b[field])) return 1;
+            else if(!a[field].isValid() && b[field].isValid() || new Date(a[field]) < new Date(b[field])) return -1;
+            else return -1;      
+        }
+        else {
+            return 1;
+        }
+    });
+    if (reverse) filtered.reverse();
+    return filtered;
+  };
+})
 .directive('hideTabBar', function($timeout) {
   var style = angular.element('<style>').html(
     '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +

@@ -219,6 +219,7 @@
                
         function addChatLog(chatLog, done) {
             chatLog.time = ConvertDateTime.getTimeChatlog(chatLog.lastMessageTime);
+            chatLog.timeMsg = new Date(chatLog.lastMessageTime);
             chatslog[chatLog.id] = chatLog;
             done();
             console.debug("addChatLog", chatLog);
