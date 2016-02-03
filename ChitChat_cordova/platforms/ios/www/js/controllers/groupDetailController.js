@@ -93,7 +93,7 @@
     }
 
     function viewGroupMembersCtrl($scope, $state, $stateParams, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory,
-        roomSelected, CreateGroup, modalService) {
+        roomSelected, CreateGroup, modalFactory) {
         $scope.button = {};
         $scope.button.post = {};
         $scope.button.album = {};
@@ -229,7 +229,7 @@
         }
         //<!-- Contact modal -------------------------->
         $scope.openContactModal = function (contactId) {
-            modalService.initContactModal($scope, contactId, roomSelected, function done() {
+            modalFactory.initContactModal($scope, contactId, roomSelected, function done() {
                 $scope.contactModal.show();
             });
         };
