@@ -26,7 +26,6 @@ angular.module('spartan.controllers', ['jrCrop'])
             if (url != null) {
                 server.ProfileImageChanged($stateParams.chatId, url[0], function (err, res) {
                     main.getDataManager().myProfile.image = url[0];
-                    $scope.sourceImage = "";
                     saveProfile();
                 });
             } 
@@ -66,6 +65,9 @@ angular.module('spartan.controllers', ['jrCrop'])
                     main.getDataManager().myProfile.status = $scope.model.status;
                     saveSuccess();
                 });
+            }else if( $scope.sourceImage != "") {
+                $scope.sourceImage = "";
+                saveSuccess();
             }
         }
         function saveSuccess() {
