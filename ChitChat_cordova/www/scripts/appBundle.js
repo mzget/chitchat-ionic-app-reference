@@ -1166,6 +1166,61 @@ var NotifyManager = (function () {
     };
     return NotifyManager;
 })();
+var CallState;
+(function (CallState) {
+    CallState[CallState["idle"] = 0] = "idle";
+    CallState[CallState["signalingCall"] = 1] = "signalingCall";
+    CallState[CallState["calling"] = 2] = "calling";
+})(CallState || (CallState = {}));
+;
+var WebRtcCallState = (function () {
+    function WebRtcCallState() {
+    }
+    return WebRtcCallState;
+})();
+var WebRtcComponent = (function () {
+    function WebRtcComponent() {
+        console.log("starting.. webRtcComponent.");
+        this.webRtcCallState = new WebRtcCallState();
+    }
+    WebRtcComponent.prototype.onVideoCall = function (dataEvent) {
+        var body = dataEvent.body;
+        var contactId = body.from;
+        var peerId = body.peerId;
+        if (this.webRtcCallState.callState === CallState.idle) {
+            if (this.videoCallEvent != null) {
+                this.videoCallEvent(contactId, peerId);
+            }
+        }
+        else {
+            console.warn("Call status is not idle. " + this.webRtcCallState.callState.toString());
+            if (this.lineBusyEvent != null) {
+                this.lineBusyEvent(contactId);
+            }
+        }
+    };
+    WebRtcComponent.prototype.onVoiceCall = function (dataEvent) {
+        var body = dataEvent.body;
+        var contactId = body.from;
+        var peerId = body.peerId;
+        if (this.webRtcCallState.callState === CallState.idle) {
+            if (this.voiceCallEvent != null) {
+                this.voiceCallEvent(contactId, peerId);
+            }
+        }
+        else {
+            console.warn("Call status is not idle. " + this.webRtcCallState.callState.toString());
+            if (this.lineBusyEvent != null) {
+                this.lineBusyEvent(contactId);
+            }
+        }
+    };
+    WebRtcComponent.prototype.onHangupCall = function (dataEvent) {
+    };
+    WebRtcComponent.prototype.onTheLineIsBusy = function (dataEvent) {
+    };
+    return WebRtcComponent;
+})();
 var MessageDAL = (function () {
     function MessageDAL(_store) {
         this.store = _store;
