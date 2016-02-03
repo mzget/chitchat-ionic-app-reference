@@ -380,9 +380,11 @@
 
 			$scope.freecall = function () {
 				roomSelected.setRoom(room);
-                cordova.plugins.CallCordovaPlugin.freeCall();
+
+				cordova.exec(null, null, "CallCordovaPlugin", "freeCall");
+				//cordova.exec(null, null, "", "callerid",[null,"CallCordovaPlugin","freeCall"]);
                 
-				location.href = '#/tab/group/freecall/' + room._id;
+				//location.href = '#/tab/group/freecall/' + room._id;
 			};
 
 			$scope.openViewContactProfile = function (id) {
