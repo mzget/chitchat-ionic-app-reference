@@ -1224,6 +1224,9 @@ var WebRtcComponent = (function () {
         }
     };
     WebRtcComponent.prototype.onTheLineIsBusy = function (dataEvent) {
+        if (this.contactLineBusyEvent != null) {
+            this.contactLineBusyEvent();
+        }
     };
     return WebRtcComponent;
 })();
@@ -2256,3 +2259,4 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
+//# sourceMappingURL=appBundle.js.map

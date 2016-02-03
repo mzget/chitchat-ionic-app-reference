@@ -4,6 +4,7 @@ class WebRtcComponent implements absSpartan.IRTCListener {
     videoCallEvent: (contactId : string, callerId : string) => void;
     voiceCallEvent: (contactId: string, callerId: string) => void;
     hangUpCallEvent: () => void;
+    contactLineBusyEvent: () => void;
 
     constructor() {
         console.log("starting.. webRtcComponent.");
@@ -15,39 +16,25 @@ class WebRtcComponent implements absSpartan.IRTCListener {
         this.webRtcCallState.callState = state;
     }
 
-    public onVideoCall(dataEvent: any):void {
+    public onVideoCall(dataEvent: any): void {
         let body = dataEvent.body;
-        let contactId : string = body.from;
-        let peerId : string = body.peerId;
+        let contactId: string = body.from;
+        let peerId: string = body.peerId;
 
-        if(this.webRtcCallState.callState === CallState.idle) {
-            if(this.videoCallEvent != null) {
+        if (this.webRtcCallState.callState === CallState.idle) {
+            if (this.videoCallEvent != null) {
                 this.videoCallEvent(contactId, peerId);
             }
         }
         else {
             console.warn("Call status is not idle. " + this.webRtcCallState.callState.toString())
-            if(this.lineBusyEvent != null) {
+            if (this.lineBusyEvent != null) {
                 this.lineBusyEvent(contactId);
             }
         }
+    }
 
-/**    From stalk.droid code.
- * 
-        //<!-- Checking WEBRTC controller status.
-        // if (WebRTCCallController.getCallState().equals(WebRTCCallController.CallState.Idle)) {
-        //     Intent intent = RTCReceivedCallActivity.createIntent(context, contactId, peerId, true);
-        //     context.startActivity(intent);
-        // }
-        // else {
-        //     Log.w(this.toString(), "Call status is not idle. " + WebRTCCallController.getCallState().toString());
-        //     ServerAPIProvider.getInstance().theLineIsBusy(contactId);
-        // }
-        
-        **/
-}
-
-    public onVoiceCall(dataEvent:any):void {
+    public onVoiceCall(dataEvent: any): void {
         let body = dataEvent.body;
         let contactId = body.from;
         let peerId = body.peerId;
@@ -63,20 +50,7 @@ class WebRtcComponent implements absSpartan.IRTCListener {
                 this.lineBusyEvent(contactId);
             }
         }
-
-        /**
-         * Form stalk.droid code.
-         *  */    
-        //<!-- Checking WEBRTC controller status.
-        // if (WebRTCCallController.getCallState().equals(WebRTCCallController.CallState.Idle)) {
-        //     Intent intent = RTCReceivedCallActivity.createIntent(context, contactId, peerId, false);
-        //     context.startActivity(intent);
-        // }
-        // else {
-        //     Log.w(this.toString(), "Call status is not idle. " + WebRTCCallController.getCallState().toString());
-        //     ServerAPIProvider.getInstance().theLineIsBusy(contactId);
-        // }
-}
+    }
 
     public onHangupCall(dataEvent: any): void {
         if (this.hangUpCallEvent != null) {
@@ -84,7 +58,9 @@ class WebRtcComponent implements absSpartan.IRTCListener {
         }
     }
     
-    public onTheLineIsBusy(dataEvent: any):void {
-
+    public onTheLineIsBusy(dataEvent: any): void {
+        if (this.contactLineBusyEvent != null) {
+            this.contactLineBusyEvent();
+        }
     }
 }

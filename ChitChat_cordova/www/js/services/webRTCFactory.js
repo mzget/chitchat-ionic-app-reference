@@ -22,6 +22,7 @@
             webRtcComponent.videoCallEvent = videoCallHandler;
             webRtcComponent.lineBusyEvent = lineBusyHandler;
             webRtcComponent.hangUpCallEvent = hangUpCallHandler;
+            webRtcComponent.contactLineBusyEvent = contactLineBusyHandler;
         }
 
         function call(contactId) {
@@ -61,6 +62,12 @@
         function hangUpCallHandler() {
             cordova.exec(null, null, "CallCordovaPlugin", "endCall", []);
             
+            webRtcComponent.setCallState(CallState.idle);
+        }
+
+        function contactLineBusyHandler() {
+            cordova.exec(null, null, "CallCordovaPlugin", "endCall", []);
+
             webRtcComponent.setCallState(CallState.idle);
         }
     }
