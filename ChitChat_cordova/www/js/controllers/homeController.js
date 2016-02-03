@@ -119,6 +119,7 @@
 					if (!err && res.code==200) {
 						console.log(JSON.stringify(res));
 						Favorite.updateFavorite(editType,id,type);
+						$scope.favorites = getFavorite();
 						$ionicLoading.hide();
 					}
 					else {
@@ -131,6 +132,7 @@
 					if (!err && res.code==200) {
 						console.log(JSON.stringify(res));
 						Favorite.updateFavorite(editType,id,type);
+						$scope.favorites = getFavorite();
 						$ionicLoading.hide();
 					}
 					else {
