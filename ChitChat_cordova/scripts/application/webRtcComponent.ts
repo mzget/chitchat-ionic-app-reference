@@ -2,12 +2,17 @@ class WebRtcComponent implements absSpartan.IRTCListener {
     webRtcCallState: WebRtcCallState;
     lineBusyEvent: (contactId: string) => void;
     videoCallEvent: (contactId : string, callerId : string) => void;
-    voiceCallEvent:  (contactId : string, callerId : string) => void;
+    voiceCallEvent: (contactId: string, callerId: string) => void;
+    hangUpCallEvent: () => void;
 
     constructor() {
         console.log("starting.. webRtcComponent.");
         
         this.webRtcCallState = new WebRtcCallState();
+    }
+
+    public setCallState(state: CallState) {
+        this.webRtcCallState.callState = state;
     }
 
     public onVideoCall(dataEvent: any):void {
@@ -73,8 +78,10 @@ class WebRtcComponent implements absSpartan.IRTCListener {
         // }
 }
 
-    public onHangupCall(dataEvent: any):void {
-
+    public onHangupCall(dataEvent: any): void {
+        if (this.hangUpCallEvent != null) {
+            this.hangUpCallEvent();
+        }
     }
     
     public onTheLineIsBusy(dataEvent: any):void {

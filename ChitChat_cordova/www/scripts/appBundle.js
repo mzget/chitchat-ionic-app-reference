@@ -1183,6 +1183,9 @@ var WebRtcComponent = (function () {
         console.log("starting.. webRtcComponent.");
         this.webRtcCallState = new WebRtcCallState();
     }
+    WebRtcComponent.prototype.setCallState = function (state) {
+        this.webRtcCallState.callState = state;
+    };
     WebRtcComponent.prototype.onVideoCall = function (dataEvent) {
         var body = dataEvent.body;
         var contactId = body.from;
@@ -1216,6 +1219,9 @@ var WebRtcComponent = (function () {
         }
     };
     WebRtcComponent.prototype.onHangupCall = function (dataEvent) {
+        if (this.hangUpCallEvent != null) {
+            this.hangUpCallEvent();
+        }
     };
     WebRtcComponent.prototype.onTheLineIsBusy = function (dataEvent) {
     };

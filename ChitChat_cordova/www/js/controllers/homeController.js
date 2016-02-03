@@ -8,7 +8,7 @@
 	//homeController.$inject = ['$location'];
 
 	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform,
-		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory) {
+		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
@@ -21,6 +21,8 @@
 
 			vm.dataListener = sharedObjectService.getDataListener();
 			sharedObjectService.regisNotifyNewMessageEvent();
+
+			webRTCFactory.init();
 		}
 
 		function setupScope() {
@@ -267,9 +269,7 @@
 		};
 		$scope.closeContactModal = function() {
 			$scope.contactModal.hide();	
-		};
-
-	    
+		};   
 	}
 
 	var initOrgModal = function ($state, $scope, groupId, roomSelected, done, $rootScope) {
