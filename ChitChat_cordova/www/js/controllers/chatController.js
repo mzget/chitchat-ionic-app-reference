@@ -615,7 +615,7 @@ angular.module('spartan.chat', [])
 		}else{
 			if(args[1] == ContentType[ContentType.Image] ){
 				console.log("bobobo",args);
-				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 			}
 		}
 		
@@ -638,7 +638,7 @@ angular.module('spartan.chat', [])
 
 	$scope.$on('delectTemp', function(event,args){
 		$.each($scope.chat, function(index, value){
-			console.log(value._id);
+			//console.log('delectTemp',value._id,args[0]);
 			if(value._id == args[0]) { 
 				$scope.chat[index] = new Object; 
 			}

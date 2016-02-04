@@ -32,7 +32,7 @@
 		
 		<!-- -- -- -- -- -- -- -- -- -- -- WEB GROUP -- -- -- -- -- -- -- -- -- -- -->
 		<div id="webgroup" style="float:left; display:inline-block; width:25%; margin:0; overflow-y:scroll; overflow-x:hidden;">
-			<ion-refresher on-refresh="pullRefresh()"></ion-refresher>
+<!-- 			<ion-refresher on-refresh="pullRefresh()"></ion-refresher> -->
 
 			<div class="bar bar-header item-input-inset">
 			  <label class="item-input-wrapper">
@@ -264,6 +264,7 @@
 						
 						<img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type,message.body)"/>
 						<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="http://203.113.25.44{{message.body}}" ng-click="viewImage(message.type,'http://203.113.25.44'+message.body)"/>
+
 						<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
 						<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
@@ -300,7 +301,8 @@
 						<label ng-if="message.temp != 'true' "> {{message.time}}</label>
 					</ion-item>
 				</ion-list>
-				<form id="UploadForm">
+
+				<form id="UploadForm" style="position: absolute; top:-1000px;">
 				    <input type="file" name="fileToUpload" id="fileToUpload" onchange="angular.element(this).scope().addImg()">
 				</form>
 						</div>

@@ -188,17 +188,22 @@ angular.module('spartan.media', [])
 			}
 		}else{
 			var file    = document.querySelector('input[type=file]').files[0];
-	        var reader  = new FileReader();
-	        reader.onloadend = function () {
-	            //$scope.$emit('fileUri',[reader.result,ContentType[ContentType.Image]]);
-	            //console.log(reader.result);
-	            var img = new UploadMediaWeb(roomSelected.getRoom().id, reader.result, ContentType[ContentType.Image], function(id,messageId){
-	            	$scope.$emit('delectTemp', [id]); 
-	            });
-	            mediaUpload[id] = img;
-	            mediaUpload[id].upload();
-	        } 
-	        reader.readAsDataURL(file);
+
+			if(file !== undefined){
+		        var reader  = new FileReader();
+		        reader.onloadend = function () {
+		            //$scope.$emit('fileUri',[reader.result,ContentType[ContentType.Image]]);
+		            //console.log(reader.result);
+		            var img = new UploadMediaWeb(roomSelected.getRoom()._id, reader.result, ContentType[ContentType.Image], function(id,messageId){
+		            	$scope.$emit('delectTemp', [id]); 
+		            });
+		            mediaUpload[id] = img;
+		            mediaUpload[id].upload();
+		        } 
+		        reader.readAsDataURL(file);
+	    	}else{
+	    		$scope.$emit('delectTemp', [id]); 
+	    	}
 		}
 	}
 
