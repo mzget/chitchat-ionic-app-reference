@@ -63,6 +63,22 @@
 		    }
 
 		    $scope.favorites = getFavorite();
+		    tryGetFavorite();
+		}
+
+		function tryGetFavorite(){
+			if(!jQuery.isEmptyObject(main.getDataManager().orgGroups) &&
+				!jQuery.isEmptyObject(main.getDataManager().projectBaseGroups) &&
+				!jQuery.isEmptyObject(main.getDataManager().privateGroups) &&
+				!jQuery.isEmptyObject(main.getDataManager().orgMembers)){
+					setTimeout(function () {
+			        	$scope.favorites = getFavorite();
+			    }, 500);
+			}else{
+				setTimeout(function () {
+			        tryGetFavorite();
+			    }, 1000);
+			}
 		}
 
 		function onLeave() {
