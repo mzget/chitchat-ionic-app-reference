@@ -10,6 +10,7 @@ angular.module('spartan.media', [])
 
   	$scope.$on('addImg', function(event, args) { $scope.addImg(); });
   	$scope.$on('uploadImg', function(event, args) { $scope.uploadImg(); });
+  	$scope.$on('uploadImgCrop', function(event, args) { $scope.uploadImgCrop(args); });
 
   	$scope.urlForImage = function(imageName) {
     	var trueOrigin = cordova.file.documentsDirectory + imageName;
@@ -37,6 +38,66 @@ angular.module('spartan.media', [])
     		$scope.$emit('fileUri',[FileService.getImages(),ContentType[ContentType.Image]]);
     		//$scope.uploadImg();
     	});
+  	}
+
+  	function dataURItoBlob(dataURI) {
+	    // convert base64/URLEncoded data component to raw binary data held in a string
+	    var byteString;
+	    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+	        byteString = atob(dataURI.split(',')[1]);
+	    else
+	        byteString = unescape(dataURI.split(',')[1]);
+
+	    // separate out the mime component
+	    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+	    // write the bytes of the string to a typed array
+	    var ia = new Uint8Array(byteString.length);
+	    for (var i = 0; i < byteString.length; i++) {
+	        ia[i] = byteString.charCodeAt(i);
+	    }
+	    return new Blob([ia], {type:mimeString});
+	}
+
+  	$scope.uploadImgCrop = function(dataURL){
+  		var blob = dataURItoBlob(dataURL);
+		var fd = new FormData(document.forms[0]);
+		fd.append("fileToUpload", blob);
+		$.ajax({
+		       	url :  sharedObjectService.getWebServer()+'/?r=api/upload',
+		       	type : 'POST',
+		       	data : fd,
+		       	processData: false,
+			   	contentType: false,
+		       	success : function(data) {
+		       		console.log('success');
+		        	console.log(data);
+		        	$ionicLoading.hide();
+	    			$scope.$emit('fileUrl', [data]);
+		       	},
+		       	error : function(data){
+		       		console.log('error');
+		       		$ionicLoading.hide();
+		       		alert("Fail");
+					console.log(data);
+		       	},
+		       	xhr: function()
+				{
+				    var xhr = new window.XMLHttpRequest();
+				    //Upload progress
+				    xhr.upload.addEventListener("progress", function(evt){
+				      if (evt.lengthComputable) {
+				        var percentComplete = evt.loaded / evt.total;
+				        //Do something with upload progress
+				        console.log(percentComplete);
+				        $ionicLoading.show({
+						      template: 'Uploading ' + (Math.round(percentComplete * 100)).toFixed(0) + '%'
+						});
+				      }
+				    }, false);
+				    return xhr;
+			  	},
+		});
   	}
 
   	$scope.uploadImg = function() {
@@ -91,10 +152,8 @@ angular.module('spartan.media', [])
 	
 
 	$scope.viewImage = function (type, src) {
-	    console.log(type, JSON.stringify(src));
-
 		$scope.modalImage.type = type;
-		$scope.modalImage.src = $rootScope.webServer + src;
+		$scope.modalImage.src = $rootScope.webServer + src + '&w=800';
 		$scope.modalImage.show();
 	}
 	$scope.closeImage = function () {
@@ -120,15 +179,21 @@ angular.module('spartan.media', [])
 				}
 			});
 		}else{
-			if(mediaUpload[id].hasOwnProperty('url')){
+			if( typeof(mediaUpload[id]) == "undefined" ){
 				$scope.$emit('delectTemp', [id]); 
-			}else{
+			}else if(mediaUpload[id].hasOwnProperty('url')){
+				$scope.$emit('delectTemp', [id]);
+			}
+			else{
 				document.getElementById( id + '-resend').classList.remove("hide");
 			}
 		}
 	}
 
 	$scope.saveFile = function(type,url){
+		if(type=="Image")
+			url = url + '&w=1024';
+
  		$scope.mediaDownload(url).then(function(path) { 
  			saveToCameraRoll(type,path).then(function(){
  				navigator.notification.alert(

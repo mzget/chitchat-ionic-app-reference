@@ -108,7 +108,8 @@ angular.module('spartan.services', [])
       allowEdit: false,
       encodingType: Camera.EncodingType.JPEG,
       popoverOptions: CameraPopoverOptions,
-      saveToPhotoAlbum: false
+      saveToPhotoAlbum: false,
+      correctOrientation: true
     };
   }
  
@@ -498,13 +499,22 @@ angular.module('spartan.services', [])
   function getTime(date){
     var dateMsg = new Date(date);
     var minutes = (dateMsg.getMinutes() < 10? '0' : '') + dateMsg.getMinutes();
-
-    return dateMsg.getHours() + ":" + minutes;
+	if( dateMsg.getHours() >= 12)
+	{
+		var uppercase = 'PM';
+	}else{
+		var uppercase = 'AM';	
+	}
+    return dateMsg.getHours() + ":" + minutes + ' ' + uppercase;
   }
 
   function getTimeChatlog(date) {
       var dateMsg = new Date(date);
       var dateNow = new Date();
+
+      Date.prototype.isValid = function () {
+          return this.getTime() === this.getTime();
+      }; 
 
       if (dateMsg.getFullYear() == dateNow.getFullYear() &&
        dateMsg.getMonth() == dateNow.getMonth() &&
@@ -521,44 +531,18 @@ angular.module('spartan.services', [])
        dateMsg.getDate() - 7 <= dateNow.getDate()) {
           return days[dateMsg.getDay()];
       }
-      else {
-          return dateMsg.getMonth() + '/' + dateMsg.getDate();
+      else if( dateMsg.isValid() )
+      {
+          return dateMsg.getMonth()+1 + '/' + dateMsg.getDate() + '/' + dateMsg.getFullYear();
+      }
+      else{
+          return "";
       }
   }
 
   return{
     getTime: getTime,
     getTimeChatlog: getTimeChatlog
-  }
-})
-
-.factory('modalService', function (){
-  function initContactModal($scope, contactId, roomSelected, done){
-    var contact = main.getDataManager().orgMembers[contactId];
-      console.debug(contact);
-      $scope.contact = contact;
-
-      server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
-          console.log(JSON.stringify(res));
-          var room = JSON.parse(JSON.stringify(res.data));
-
-          $scope.chat = function () {
-              roomSelected.setRoom(room);
-              location.href = '#/tab/group/chat/' + room._id;
-          };
-
-          $scope.openViewContactProfile = function (id) {
-              location.href = '#/tab/group/member/' + id;
-              //$state.go("tab.group-members", { chatId: id}, { inherit: false });
-          }
-
-          $scope.$apply();
-      });
-
-      done();
-  }
-  return {
-      initContactModal: initContactModal
   }
 })
 

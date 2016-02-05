@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.rfl.stalk" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.rfl.stalk" version="0.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="BackupWebStorage" value="cloud" />
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
@@ -59,6 +59,13 @@
     </feature>
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
+    </feature>
+    <feature name="CameraRoll">
+        <param name="ios-package" value="IonicCameraRoll" />
+    </feature>
+    <feature name="CallCordovaPlugin">
+        <param name="ios-package" value="CallCordovaPlugin" />
+        <param name="onload" value="true" />
     </feature>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />

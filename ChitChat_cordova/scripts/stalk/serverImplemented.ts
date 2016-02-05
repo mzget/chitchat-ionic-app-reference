@@ -20,11 +20,11 @@ module ChatServer {
     export class ServerImplemented {
         private static Instance: ServerImplemented;
         public static getInstance(): ServerImplemented {
-            if (!ServerImplemented.Instance) {
-                ServerImplemented.Instance = new ServerImplemented();
+            if (this.Instance === null || this.Instance === undefined) {
+                this.Instance = new ServerImplemented();
             }
 
-            return ServerImplemented.Instance;
+            return this.Instance;
         }
 
         host: string;
@@ -56,8 +56,7 @@ module ChatServer {
             pomelo = null;
             console.warn("dispose socket client.");
         }
-        
-
+       
         public logout() {
             var registrationId = localStorage.getItem("registrationId");
             var msg: IDictionary = {};
@@ -65,8 +64,6 @@ module ChatServer {
             msg["registrationId"] = registrationId;
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
-
-            localStorage.clear();
 
             this.disConnect();
         }
@@ -187,10 +184,15 @@ module ChatServer {
                         
                         var port = result.port;
                         //<!-- Connecting to connector server.
-                        self.connectSocketServer(self.host, port, () => {
+                        self.connectSocketServer(self.host, port, (err) => {
                             self._isConnected = true;
 
-                            self.authenForFrontendServer(callback);
+                            if (!!err) {
+                                callback(err, null);
+                            }
+                            else {
+                                self.authenForFrontendServer(callback);
+                            }
                         });
                     }
                 });
@@ -212,10 +214,10 @@ module ChatServer {
 
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, (res) => {
-                console.log("login: ", JSON.stringify(res), res.code);
+                console.log("login response: ", JSON.stringify(res), res.code);
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
-                        callback(res.message, null);
+                        callback(res.message, res);
                     }
                 }
                 else if (res.code === HttpStatusCode.success) {
@@ -262,8 +264,11 @@ module ChatServer {
             }
         }
         
+
+
+        //<@--- ServerAPIProvider.
+
         //region <!-- user profile -->
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public UpdateUserProfile(myId: string, profileFields: { [k: string]: string }, callback: (err, res) => void) {
             profileFields["token"] = this.authenData.token;
@@ -359,9 +364,7 @@ module ChatServer {
                     callback(null, result);
             });
         }
-
-
-
+        
         public getMemberProfile(userId: string, callback: (err, res) => void) {
             var msg: IDictionary = {};
             msg["userId"] = userId;
@@ -376,8 +379,7 @@ module ChatServer {
         //endregion
 
 
-        //region <!-- Company data. -->
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //region  Company data. 
 
         /// <summary>
         /// Gets the company info.
@@ -424,9 +426,7 @@ module ChatServer {
         //endregion
 
 
-        //region <!-- Project base. -->
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        //region Project base.
         public getProjectBaseGroups(callback: (err, res) => void) {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
@@ -807,7 +807,8 @@ module ChatServer {
         public static ON_EDITED_GROUP_IMAGE: string = "onEditGroupImage";
         public static ON_NEW_GROUP_CREATED: string = "onNewGroupCreated";
         public static ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE: string = "onUpdateMemberInfoInProjectBase";
-        //<!-- User profile -->
+        //<!-- User -->
+        public static ON_USER_LOGIN: string = "onUserLogin";
         public static ON_USER_UPDATE_IMAGE_PROFILE: string = "onUserUpdateImgProfile";
         public static ON_USER_UPDATE_PROFILE: string = "onUserUpdateProfile";
         //<!-- Frontend server --->
@@ -836,10 +837,7 @@ module ChatServer {
         }
 
         constructor() {
-            //this.frontendListener = new Services.FrontendServerListener();
-            //this.onChatListener = new Services.ChatServerListener();
-            //this.rtcCallListener = new Services.RTCListener();
-            //this.serverListener = new Services.ServerListener();
+
         }
 
         public addListenner(resolve, rejected) {
@@ -852,8 +850,7 @@ module ChatServer {
         }
 
         private callFrontendServer() {
-
-            var self = this; 
+            let self = this; 
 
             pomelo.on(ServerEventListener.ON_GET_ME, function(data) {
                 console.log(ServerEventListener.ON_GET_ME, JSON.stringify(data));
@@ -890,7 +887,7 @@ module ChatServer {
         }
 
         private callChatServer() {
-            var self = this;
+            let self = this;
 
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, JSON.stringify(data));
@@ -967,7 +964,12 @@ module ChatServer {
                 self.serverListener.onUpdatedLastAccessTime(data);
             });
 
-            //<!-- User profile -->
+            //<!-- User -->
+            pomelo.on(ServerEventListener.ON_USER_LOGIN, data => {
+                console.log(ServerEventListener.ON_USER_LOGIN, JSON.stringify(data));
+
+                self.serverListener.onUserLogin(data);
+            });
             pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, (data) => {
                 console.log(ServerEventListener.ON_USER_UPDATE_PROFILE, JSON.stringify(data));
 

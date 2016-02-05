@@ -13,6 +13,8 @@
             init: init,
             getPersistendMessage: getPersistendMessage,
             getNewerMessageFromNet: getNewerMessageFromNet,
+            isPrivateChatRoom: isPrivateChatRoom,
+            roomContactIsEmpty: roomContactIsEmpty,
             all: function () {
                 return chats;
             },
@@ -66,11 +68,11 @@
                             chats[i].body = cordova.file.documentsDirectory + chats[i]._id;
                         }
                         else {
-                            chats[i].bodyUrl = $sce.trustAsResourceUrl(networkService.getWebServer() + chats[i].body);
+                            chats[i].bodyUrl = $sce.trustAsResourceUrl($rootScope.webServer + chats[i].body);
                             var chatBody = chats[i].body;
                             var splitChat = chatBody.split(".");
                             var nameThumbnail = splitChat[0] + '.png';
-                            chats[i].thumbnail = $sce.trustAsResourceUrl(networkService.getWebServer() + nameThumbnail);
+                            chats[i].thumbnail = $sce.trustAsResourceUrl($rootScope.webServer + nameThumbnail);
                         }
                     }
                     else if (chats[i].type === ContentType[ContentType.Location]) {
@@ -105,7 +107,7 @@
 
             chatRoomComponent.serviceListener = function (event, newMsg) {
                 if (event === "onChat") {
-                    chats = chatRoomComponent.chatMessages;
+					service.set(chatRoomComponent.chatMessages);
 
                     if (newMsg.sender !== main.dataManager.myProfile._id) {
                         chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
@@ -114,7 +116,7 @@
                     $rootScope.$broadcast('onNewMessage', { data: null });
                 }
                 else if (event === "onMessageRead") {
-                    chats = chatRoomComponent.chatMessages;
+					service.set(chatRoomComponent.chatMessages);
                 }
             }
             chatRoomComponent.notifyEvent = function (event, data) {
@@ -135,7 +137,7 @@
             chatRoomComponent.getPersistentMessage(curRoom._id, function (err, messages) {
                 console.log("getPersistendMessage: completed.", chatRoomComponent.chatMessages.length);
 
-                chats = chatRoomComponent.chatMessages;
+				service.set(chatRoomComponent.chatMessages);
 
                 $rootScope.$broadcast('onMessagesReady', { data: null });
 
@@ -167,6 +169,40 @@
 
         function getChatRoomComponent() {
             return chatRoomComponent;
+        }
+
+        function isPrivateChatRoom() {
+            var curRoom = roomSelected.getRoom();
+            if (curRoom.type === RoomType.privateChat) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        function roomContactIsEmpty(callback) {
+            var curRoom = roomSelected.getRoom();
+            if (curRoom.type === RoomType.privateChat) {
+                for (var i = 0; i < curRoom.members.length; i++) {
+                    if (curRoom.members[i].id != dataManager.myProfile._id) {
+                        chatRoomComponent.getMemberProfile(curRoom.members[i], function done(err, res) {
+                            console.warn("getMemberProfile", err, res);
+                            if (res.code === HttpStatusCode.fail) {
+                                callback(true);
+                                return;
+                            }
+                        });
+                    }
+                }
+
+                callback(false);
+                return;
+            } 
+            else {
+                callback(false);
+                return;
+            }
         }
     }
 })();

@@ -8,7 +8,7 @@
 	//homeController.$inject = ['$location'];
 
 	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform,
-		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService) {
+		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
@@ -21,6 +21,48 @@
 
 			vm.dataListener = sharedObjectService.getDataListener();
 			sharedObjectService.regisNotifyNewMessageEvent();
+
+			webRTCFactory.init();
+		}
+
+		function setupScope() {
+		    $scope.myProfile = main.getDataManager().myProfile;
+		    if (!!main.getDataManager().orgGroups) {
+		        $scope.orgGroups = main.getDataManager().orgGroups;
+		    }
+		    else {
+		        main.getDataManager().onOrgGroupDataReady = function () {
+		            $scope.orgGroups = main.getDataManager().orgGroups;
+		        };
+		    }
+		    if (!!main.getDataManager().projectBaseGroups) {
+		        $scope.pjbGroups = main.getDataManager().projectBaseGroups;
+		    }
+		    else {
+		        main.getDataManager().onProjectBaseGroupsDataReady = function () {
+		            $scope.pjbGroups = main.getDataManager().projectBaseGroups;
+		        }
+		    }
+
+		    if (!!main.getDataManager().privateGroups) {
+		        $scope.pvGroups = main.getDataManager().privateGroups;
+		    }
+		    else {
+		        main.getDataManager().onPrivateGroupsDataReady = function () {
+		            $scope.pvGroups = main.getDataManager().privateGroups;
+		        }
+		    }
+
+		    if (!!main.getDataManager().orgMembers) {
+		        $scope.chats = main.getDataManager().orgMembers;
+		    }
+		    else {
+		        main.getDataManager().onContactsDataReady = function () {
+		            $scope.chats = main.getDataManager().orgMembers;
+		        }
+		    }
+
+		    $scope.favorites = getFavorite();
 		}
 
 		function onLeave() {
@@ -60,6 +102,7 @@
 					if (!err && res.code==200) {
 						console.log(JSON.stringify(res));
 						Favorite.updateFavorite(editType,id,type);
+						$scope.favorites = getFavorite();
 						$ionicLoading.hide();
 					}
 					else {
@@ -72,6 +115,7 @@
 					if (!err && res.code==200) {
 						console.log(JSON.stringify(res));
 						Favorite.updateFavorite(editType,id,type);
+						$scope.favorites = getFavorite();
 						$ionicLoading.hide();
 					}
 					else {
@@ -90,25 +134,7 @@
 			console.log("$ionicView.enter: ", vm.title);
 
 			activate();
-
-			$scope.refreshView = function () {
-				console.debug("homeController : refreshView");
-
-				var dataManager = main.getDataManager();
-
-				$scope.myProfile = dataManager.myProfile;
-				$scope.orgGroups = dataManager.orgGroups;
-				$scope.pjbGroups = dataManager.projectBaseGroups;
-				$scope.pvGroups = dataManager.privateGroups;
-				$scope.chats = dataManager.orgMembers;
-				$scope.favorites = getFavorite();
-				
-				$scope.$apply();
-			};
-	
-			$scope.refreshView();
-	
-			$scope.interval = setInterval(function () { $scope.refreshView(); }, 1000);
+			setupScope();
 
 			//<!-- My profile.
 			$ionicModal.fromTemplateUrl('templates/modal-myprofile.html', {
@@ -171,6 +197,7 @@
 		$scope.$on('$ionicView.leave', function () {
 			console.log("$ionicView.leave:", vm.title);
 		});
+
 		$scope.$on('$ionicView.unloaded', function () {
 			console.log("$ionicView.unloaded:", vm.title);
 
@@ -237,14 +264,14 @@
 			$scope.pvgModal.hide();
 		}
 		//<!-- Contact modal -------------------------->
-		$scope.openContactModal = function(contactId) {
-			initContactModal($scope, contactId, roomSelected, function done() {
+		$scope.openContactModal = function (contactId) {
+            modalFactory.initContactModal($scope, contactId, roomSelected, function done() {
 				$scope.contactModal.show();
 			});
 		};
 		$scope.closeContactModal = function() {
 			$scope.contactModal.hide();	
-		};
+		};   
 	}
 
 	var initOrgModal = function ($state, $scope, groupId, roomSelected, done, $rootScope) {
@@ -320,35 +347,6 @@
 			$rootScope.selectTab = 'members';
 			$state.go('tab.group-members', { chatId: id });
 		};
-
-		done();
-	}
-
-	var initContactModal = function ($scope, contactId, roomSelected, done) {
-		var contact = main.getDataManager().orgMembers[contactId];
-		console.debug(contact);
-		$scope.contact = contact;
-
-		server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
-			console.log(JSON.stringify(res));
-			var room = JSON.parse(JSON.stringify(res.data));
-			$scope.chat = function () {
-				roomSelected.setRoom(room);
-				location.href = '#/tab/group/chat/' + room._id;
-			};
-
-			$scope.freecall = function () {
-				roomSelected.setRoom(room);
-				location.href = '#/tab/group/freecall/' + room._id;
-			};
-
-			$scope.openViewContactProfile = function (id) {
-				location.href = '#/tab/group/member/' + id;
-				//$state.go("tab.group-members", { chatId: id}, { inherit: false });
-			}
-
-			$scope.$apply();
-		});
 
 		done();
 	}

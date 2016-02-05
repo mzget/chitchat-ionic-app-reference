@@ -17,10 +17,12 @@
             createNotifyManager: createNotifyManager,
             getNotifyManager: getNotifyManager,
             getWebServer: getWebServer,
-            getAppVersion: getAppVersion
+            getAppVersion: getAppVersion,
+            getThemename: getThemename
         };
         var webServer = null;
         var appVersion = null;
+        var themename = null;
 
         return service;
 
@@ -35,6 +37,12 @@
             appVersion = server.appConfig.version;
             
             return appVersion;
+        }
+        
+        function getThemename() {
+            themename = server.appConfig.themename;
+            
+            return themename;
         }
 
         function getDataListener() {

@@ -23,7 +23,10 @@
             <label class="checkbox">
               <input type="checkbox" ng-model="member.checked" ng-click="checked(member._id,member.checked)"/>
             </label>
-            <img ng-src="{{webServer}}{{member.image}}"/> 
+
+            <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}"/> 
+            <img ng-if="member.image == null" src="img/img.jpg" />
+
             <div class="member-name"> {{member.displayname}} </div> 
         </ion-item>
 

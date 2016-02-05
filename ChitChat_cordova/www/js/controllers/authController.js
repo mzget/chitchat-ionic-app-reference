@@ -6,8 +6,10 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope, $cordovaSpinnerDialog, $cordovaDialogs, 
-     networkService, chatslogService, dbAccessService, sharedObjectService) {
+    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope,
+        $cordovaSpinnerDialog, $cordovaDialogs,
+        networkService, chatslogService, dbAccessService, sharedObjectService) {
+		
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
@@ -19,38 +21,38 @@
             activateBackground();
             activate();
             setConfigTheme();
-
-            main.setDataManager(dataManager);
-            main.setServerListener(serverEvents);
-            main.setServerImp(server);
-            main.onMyProfileReadyListener = function (dataManager) {
-                $('#login').css('display', 'none');
-                $('.bar-stable').css({ 'display': '' });
-                $('#splash').css({ 'display': 'none' });
-
-                // Hide spinner dialog
-                if (ionic.Platform.platform() === "ios") {
-                    $cordovaSpinnerDialog.hide();
-                }
-                else if (ionic.Platform.platform() === "windows") {
-                    $ionicLoading.hide();
-                }
-                    
-                console.log("appConfig", server.appConfig.webserver);
-                
-                $rootScope.webServer = sharedObjectService.getWebServer();
-                $rootScope.appVersion = sharedObjectService.getAppVersion();
-
-                //location.href = "#/tab/group";
-                $state.go('tab.group');
-                activateNetworkService();
-            };
-            initSpartanServer();
             
             setTimeout(function () {
                 if (!!navigator.splashscreen) {
                     navigator.splashscreen.hide();
                 }
+
+                main.setDataManager(dataManager);
+                main.setServerListener(serverEvents);
+                main.setServerImp(server);
+                main.onMyProfileReadyListener = function (dataManager) {
+                    $('#login').css('display', 'none');
+                    $('.bar-stable').css({ 'display': '' });
+                    $('#splash').css({ 'display': 'none' });
+
+                    // Hide spinner dialog
+                    if (ionic.Platform.platform() === "ios") {
+                        $cordovaSpinnerDialog.hide();
+                    }
+                    else if (ionic.Platform.platform() === "windows") {
+                        $ionicLoading.hide();
+                    }
+
+                    console.log("appConfig", server.appConfig.webserver);
+
+                    $rootScope.webServer = sharedObjectService.getWebServer();
+                    $rootScope.appVersion = sharedObjectService.getAppVersion();
+
+                    //location.href = "#/tab/group";
+                    $state.go('tab.group');
+                    activateNetworkService();
+                };
+                initSpartanServer();
             }, 100);
         });
 
@@ -110,6 +112,7 @@
         function initSpartanServer() {
             function initCallback (err, server) {
                 console.log("Init serve completed is connected: " + server._isConnected + " : " + err);
+			
                 if (err !== null) {
                     onServerConnectionFail(err);
                 }
@@ -135,102 +138,83 @@
         }
 
         function onDuplicateLogin(param) {
-            console.log("onDuplicateLogin", param);
+            console.log("onDuplicateLogin", JSON.stringify(param));
             // Hide spinner dialog
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
+
+                $cordovaDialogs.confirm("May be you use this app in other devices \n You want to logout other devices", "Duplicated login!", ["OK", "Cancel"])
+                .then(function (buttonIndex) {
+                    console.log("clicked", buttonIndex);
+                    switch (buttonIndex) {
+                        case 1:
+                            server.kickMeAllSession(param.uid);
+                            location.href = "";
+                            break;
+                        case 2:
+                            localStorage.clear();
+                            location.href = '';
+                            break;
+                    }
+                });
             }
             else {
                 $ionicLoading.hide();
+
+                var confirmPopup = $ionicPopup.confirm({
+                    title: 'Duplicated login!',
+                    template: 'May be you use this app in other devices \n You want to logout other devices'
+                });
+
+                confirmPopup.then(function (res) {
+                    if (res) {
+                        server.kickMeAllSession(param.uid);
+                        location.href = "";
+                    } else {
+                        localStorage.clear();
+                        location.href = '';
+                    }
+                });
             }
-
-            //navigator.notification.confirm("May be you use this app in other devices \n You want to logout other devices",
-            //    function (buttonIndex) {
-            //        switch (buttonIndex) {
-            //            case 1:
-            //                location.href = '';
-            //                break;
-            //            case 2:
-            //                server.kickMeAllSession(param.uid);
-            //                location.href = "";
-            //                break;
-            //        }
-            //    }, "Duplicated login!", ["Cancle", "OK"]);
-
-            var confirmPopup = $ionicPopup.confirm({
-                title: 'Duplicated login!',
-                template: 'May be you use this app in other devices \n You want to logout other devices'
-            });
-
-            confirmPopup.then(function (res) {
-                if (res) {
-                    server.kickMeAllSession(param.uid);
-                    location.href = "";
-                } else {
-                    location.href = '';
-                }
-            });
         }
 
         function onAuthenFail(errMessage) {
             // Hide spinner dialog
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
+
+                $cordovaDialogs.alert(errMessage, 'Authen Fail!', 'OK')
+                .then(function () {
+                    // callback success
+                    localStorage.clear();
+                    location.href = '';
+                });
             }
             else {
                 $ionicLoading.hide();
+
+                // navigator.notification.alert(errMessage, function callback() { }, "Login fail!", "OK");
+                var alertPopup = $ionicPopup.alert({
+                    title: "Login fail!",
+                    template: errMessage
+                });
+
+                alertPopup.then(function (res) {
+                    localStorage.clear();
+                    location.href = '';
+                });
             }
-
-            // navigator.notification.alert(errMessage, function callback() { }, "Login fail!", "OK");
-            var alertPopup = $ionicPopup.alert({
-                title: "Login fail!",
-                template: errMessage
-            });
-
-            alertPopup.then(function(res) {
-                console.log(res);
-            });
         }
 
-        function onServerConnectionFail(errMessage) {
-            
+        function onServerConnectionFail(errMessage) {      
             console.warn("Just go to no connection page. " + errMessage);
             
             // Hide spinner dialog
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
-                
-
-            // navigator.notification.alert(errMessage, function callback() {
-            //     console.warn("Just go to no connection page.");
-
-            //     $('#login').css('display', 'none');
-            //     $('.bar-stable').css({ 'display': '' });
-            //     $('#splash').css({ 'display': 'none' });
-                
-            //     location.href = "#/tab/login/error";
-            // },
-            // "Connecting to server fail! \n Please come back again.", "OK");
-            
-            }
-            else {
-                // $ionicLoading.hide();
-                
-                // var alertPopup = $ionicPopup.alert({
-                //     title: "Connecting to server fail! \n Please come back again.",
-                //     template: errMessage
-                // });
-
-                // alertPopup.then(function(res) {
-                //     $('#login').css('display', 'none');
-                //     $('.bar-stable').css({ 'display': '' });
-                //     $('#splash').css({ 'display': 'none' });
-                    
-                //     location.href = "#/tab/login/error";
-                // });
             }
             
-            $cordovaDialogs.alert('Connecting to server fail! \n Please come back again.', '', 'OK')
+            $cordovaDialogs.alert('Connecting to server fail! \n Please come back again.', 'No internet connection!', 'OK')
             .then(function() {
                 // callback success
                 $('#login').css('display', 'none');
@@ -249,8 +233,11 @@
         }
 
         function onReadyToSigning() {
+			$rootScope.themename = sharedObjectService.getThemename();
             var authen = server.authenData;
             console.log("token: ", authen.token);
+            //<@-- if have no token app wiil take you to signing page.
+            //<@-- else app will auto login by token.
             if (!authen.token) {
                 $('#splash').css({ 'display': 'none' });
 
@@ -287,6 +274,7 @@
                                         console.log("Success Login User...");
                                     }
                                     else if (res.code === 1004) {
+                                        console.warn(JSON.stringify(err), JSON.stringify(res));
                                         onDuplicateLogin(res);
                                     }
                                     else if (res.code === HttpStatusCode.requestTimeout) {
@@ -312,19 +300,18 @@
                         console.log("Authen result: ", JSON.stringify(res));
                         if (res.success) {
                             main.authenUser(server, res.username, res.password, function (err, res) {
-                                if (!err && res !== null) {
+                                if (res !== null) {
                                     if (res.code === HttpStatusCode.success) {
                                         console.log("Success Authen User...");
                                     }
-                                    else if(res.code === 1004) {
-                                        //<!-- Authen fail.
-                                        server.logout();
-
-                                        console.warn(JSON.stringify(err), JSON.stringify(res));
-                                        onDuplicateLogin(err);
+                                    else if(res.code === HttpStatusCode.duplicateLogin) {
+                                        onDuplicateLogin(res);
                                     }
                                     else if (res.code === HttpStatusCode.requestTimeout) {
                                         onLoginTimeout(res);
+                                    }
+                                    else if (res.code === HttpStatusCode.fail) {
+                                        onAuthenFail(res.message);
                                     }
                                 }
                                 else {
@@ -332,7 +319,7 @@
                                     server.logout();
                                     location.href = '';
 
-                                    console.error(err, res);
+                                    console.error("Authen fail", err, res);
                                     onDuplicateLogin(err);
                                 }
                             });
@@ -360,8 +347,6 @@
             }
         }
     }
-
-    
 
     function noConnection($scope,$ionicNavBarDelegate,$rootScope,$ionicHistory){
         $ionicNavBarDelegate.showBackButton(false);
