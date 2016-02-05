@@ -302,8 +302,11 @@
 					</ion-item>
 				</ion-list>
 
-				<form id="UploadForm" style="position: absolute; top:-1000px;">
-				    <input type="file" name="fileToUpload" id="fileToUpload" onchange="angular.element(this).scope().addImg()">
+				<form id="UploadFormImage" style="position: absolute; top:-1000px;">
+				    <input type="file" name="fileToUpload" id="fileToUploadImage" onchange="angular.element(this).scope().addImg()">
+				</form>
+				<form id="UploadFormVideo" style="position: absolute; top:-1000px;">
+				    <input type="file" name="fileToUpload" id="fileToUploadVideo" onchange="angular.element(this).scope().addVideo()">
 				</form>
 						</div>
 					</div>

@@ -585,10 +585,13 @@ angular.module('spartan.chat', [])
 		if (ionic.Platform.platform() === "ios") {
 			$scope.$broadcast('addImg', 'addImg');
 		}else
-			$("input[name=fileToUpload]").trigger('click');
+			$('#fileToUploadImage').trigger('click');
 	}
 	$scope.video = function(){
-		$scope.$broadcast('captureVideo', 'captureVideo');
+		if (ionic.Platform.platform() === "ios") {
+			$scope.$broadcast('captureVideo', 'captureVideo');
+		}else
+			$('#fileToUploadVideo').trigger('click');
 	}
 	$scope.voice = function(){
 		if($('.audio-recorder').is(".recording")){
@@ -614,8 +617,11 @@ angular.module('spartan.chat', [])
 			}
 		}else{
 			if(args[1] == ContentType[ContentType.Image] ){
-				console.log("bobobo",args);
 				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.Video] ){
+				var file = document.querySelector("[id='fileToUploadVideo']").files[0];
+				var fileUrl = $sce.trustAsResourceUrl( URL.createObjectURL(file) );
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":fileUrl,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 			}
 		}
 		
