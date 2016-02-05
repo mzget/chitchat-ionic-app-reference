@@ -241,9 +241,6 @@
         },
         "phonegap-plugin-push": {
             "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "cordova.CallCordovaPlugin": {
-            "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
     "dependent_plugins": {
