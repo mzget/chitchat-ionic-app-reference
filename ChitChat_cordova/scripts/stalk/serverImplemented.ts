@@ -561,8 +561,6 @@ module ChatServer {
             msg["ownerId"] = myId;
             msg["roommateId"] = myRoommateId;
             pomelo.request("chat.chatRoomHandler.getRoomById", msg, (result) => {
-                console.log("getPrivateChatRoomId", result.toString());
-
                 if (callback != null) {
                     callback(null, result);
                 }

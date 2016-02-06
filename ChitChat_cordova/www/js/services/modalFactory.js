@@ -18,7 +18,8 @@
             var contact = main.getDataManager().orgMembers[contactId];
             $scope.contact = contact;
 
-            server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {               
+            server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
+                console.log('getPrivateChatRoomId', JSON.stringify(res))
                 var room = JSON.parse(JSON.stringify(res.data));
 
                 $scope.chat = function () {
