@@ -215,17 +215,6 @@ angular.module('starter',
 	})
 	*/
 	
-	// Free Call
-	.state('tab.freecall', {
-		url: '/freecall/:chatId',
-		views: {
-			'tab-freecall': {
-				templateUrl: 'templates/tab-freecall.html',
-				controller: 'FreecallCtrl'
-			}
-		}
-	})
-	
 	.state('tab.timeline', {
 		url: '/timeline',
 		views: {

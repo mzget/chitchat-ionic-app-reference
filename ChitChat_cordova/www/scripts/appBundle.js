@@ -1166,6 +1166,70 @@ var NotifyManager = (function () {
     };
     return NotifyManager;
 })();
+var CallState;
+(function (CallState) {
+    CallState[CallState["idle"] = 0] = "idle";
+    CallState[CallState["signalingCall"] = 1] = "signalingCall";
+    CallState[CallState["calling"] = 2] = "calling";
+})(CallState || (CallState = {}));
+;
+var WebRtcCallState = (function () {
+    function WebRtcCallState() {
+    }
+    return WebRtcCallState;
+})();
+var WebRtcComponent = (function () {
+    function WebRtcComponent() {
+        console.log("starting.. webRtcComponent.");
+        this.webRtcCallState = new WebRtcCallState();
+    }
+    WebRtcComponent.prototype.setCallState = function (state) {
+        this.webRtcCallState.callState = state;
+    };
+    WebRtcComponent.prototype.onVideoCall = function (dataEvent) {
+        var body = dataEvent.body;
+        var contactId = body.from;
+        var peerId = body.peerId;
+        if (this.webRtcCallState.callState === CallState.idle) {
+            if (this.videoCallEvent != null) {
+                this.videoCallEvent(contactId, peerId);
+            }
+        }
+        else {
+            console.warn("Call status is not idle. " + this.webRtcCallState.callState.toString());
+            if (this.lineBusyEvent != null) {
+                this.lineBusyEvent(contactId);
+            }
+        }
+    };
+    WebRtcComponent.prototype.onVoiceCall = function (dataEvent) {
+        var body = dataEvent.body;
+        var contactId = body.from;
+        var peerId = body.peerId;
+        if (this.webRtcCallState.callState === CallState.idle) {
+            if (this.voiceCallEvent != null) {
+                this.voiceCallEvent(contactId, peerId);
+            }
+        }
+        else {
+            console.warn("Call status is not idle. " + this.webRtcCallState.callState.toString());
+            if (this.lineBusyEvent != null) {
+                this.lineBusyEvent(contactId);
+            }
+        }
+    };
+    WebRtcComponent.prototype.onHangupCall = function (dataEvent) {
+        if (this.hangUpCallEvent != null) {
+            this.hangUpCallEvent();
+        }
+    };
+    WebRtcComponent.prototype.onTheLineIsBusy = function (dataEvent) {
+        if (this.contactLineBusyEvent != null) {
+            this.contactLineBusyEvent();
+        }
+    };
+    return WebRtcComponent;
+})();
 var MessageDAL = (function () {
     function MessageDAL(_store) {
         this.store = _store;
@@ -1194,6 +1258,16 @@ var MessageDAL = (function () {
         });
     };
     return MessageDAL;
+})();
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+})();
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
 })();
 var CompanyInfo = (function () {
     function CompanyInfo() {
@@ -1235,16 +1309,6 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
-var MessageMeta = (function () {
-    function MessageMeta() {
-    }
-    return MessageMeta;
-})();
-var Message = (function () {
-    function Message() {
-    }
-    return Message;
-})();
 var MinLocation = (function () {
     function MinLocation() {
     }
@@ -2195,3 +2259,4 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
+//# sourceMappingURL=appBundle.js.map

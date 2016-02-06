@@ -179,9 +179,12 @@ angular.module('spartan.media', [])
 				}
 			});
 		}else{
-			if( typeof(mediaUpload[id]) != "undefined" && mediaUpload[id].hasOwnProperty('url')){
+			if( typeof(mediaUpload[id]) == "undefined" ){
 				$scope.$emit('delectTemp', [id]); 
-			}else{
+			}else if(mediaUpload[id].hasOwnProperty('url')){
+				$scope.$emit('delectTemp', [id]);
+			}
+			else{
 				document.getElementById( id + '-resend').classList.remove("hide");
 			}
 		}
