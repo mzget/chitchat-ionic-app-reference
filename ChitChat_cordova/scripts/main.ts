@@ -115,7 +115,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("organize groups: ", res);
+                            console.log("organize groups: ", JSON.stringify(res));
                         }
                     });
 
@@ -124,7 +124,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("project base groups: ", res);
+                            console.log("project base groups: ", JSON.stringify(res));
                         }
                     });
 
@@ -133,7 +133,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("Private groups: ", res);
+                            console.log("Private groups: ", JSON.stringify(res));
                         }
                     });
 
@@ -142,7 +142,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("Company Members: ", res);
+                            console.log("Company Members: ", JSON.stringify(res));
                         }
                     });
                     }).catch(function onRejected(err) {
