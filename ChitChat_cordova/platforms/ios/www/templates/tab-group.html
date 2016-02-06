@@ -136,7 +136,7 @@
 			ng-if="chat._id != myProfile._id" class="item-remove-animate item-avatar item-icon-right" 
 			ng-click="openContactModal(chat._id)" type="item-text-wrap">
 
-				<img ng-if="chat.image != null" ng-src="{{webServer}}{{chat.image}}" />
+				<img ng-if="chat.image != null" ng-src="{{webServer}}/timthumb.php?src={{chat.image}}&h=40&w=40" />
 				<img ng-if="chat.image == null" src="img/img.jpg" height="40" width="40"  />
 
 				<h2>{{chat.displayname}}</h2>
