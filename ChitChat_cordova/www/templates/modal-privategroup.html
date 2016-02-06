@@ -6,13 +6,13 @@
 -->
 
 <ion-modal-view class="group-modal-view">
-	<ion-content class="padding group-detail group-ionpane">
-
-    <img class="avatar-modal" ng-if="group.image != null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=150&w=150" />
-    <img class="avatar-modal" ng-if="group.image == null" src="img/img.jpg" height="150" width="150"  />
-
+	<ion-content class="padding group-detail group-ionpane" scroll="false">
+    <div>
         <a class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closePvgModal()"></a>
-       
+        
+        <img class="avatar-modal" ng-if="group.image != null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=150&w=150" />
+        <img class="avatar-modal" ng-if="group.image == null" src="img/img.jpg" height="150" width="150"  />
+     </div>  
          <div style="margin-bottom:15px;">
           <p class="name-modal" style="display:inline;">{{group.name}}</p>
           <i ng-if="isFavorite(group._id)" class="ion-heart assertive" style="font-size:20px;display:inline;position:absolute;margin-left:10px;" ng-click="editFavorite('remove',group._id,group.type)"></i>
@@ -24,7 +24,7 @@
                     <img ng-src="{{webServer}}/timthumb.php?src={{member.image}}&h=30&w=30" />
                 </span>
                 <a ng-click="viewGroupDetail(group._id)" class="length">{{ members_length }}</a>
-            </div>
+         </div>
 
 		<div class="group-menu">
 			<div style="max-width:50%" ng-click="chat(group._id)">
