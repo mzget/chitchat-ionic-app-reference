@@ -448,14 +448,6 @@ module.exports = [
         "clobbers": [
             "CameraRoll"
         ]
-    },
-    {
-        "file": "plugins/cordova.CallCordovaPlugin/www/CallCordovaPlugin.js",
-        "id": "cordova.CallCordovaPlugin.CallCordovaPlugin",
-        "pluginId": "cordova.CallCordovaPlugin",
-        "clobbers": [
-            "cordova.plugins.CallCordovaPlugin"
-        ]
     }
 ];
 module.exports.metadata = 
@@ -479,8 +471,7 @@ module.exports.metadata =
     "phonegap-plugin-push": "1.4.2",
     "cordova-plugin-geolocation": "1.0.1",
     "cordova-plugin-dialogs": "1.2.0",
-    "chitchat-plugin-cameraroll": "1.0.0",
-    "cordova.CallCordovaPlugin": "0.0.1"
+    "chitchat-plugin-cameraroll": "1.0.0"
 }
 // BOTTOM OF METADATA
 });

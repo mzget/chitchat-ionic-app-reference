@@ -27,7 +27,6 @@
         return service;
 
         function getWebServer() {
-            console.log("get app config.", JSON.stringify(server.appConfig));
             webServer = server.appConfig.webserver;
 
             return webServer;

@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		000007181C51316F0051232D /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000007171C51316F0051232D /* Bolts.framework */; };
 		0000071A1C5131760051232D /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 000007191C5131760051232D /* Parse.framework */; };
