@@ -6,7 +6,7 @@
 -->
 
 <ion-modal-view class="group-modal-view">
-	<ion-content class="padding group-detail group-ionpane">
+	<ion-content class="padding group-detail group-ionpane" scroll="false">
 		<a ng-click="openViewContactProfile(contact._id)"> 
 
 		<img class="avatar-modal" ng-if="contact.image != null" ng-src="{{webServer}}/timthumb.php?src={{contact.image}}&h=150&w=150" />
@@ -21,9 +21,18 @@
 		</div>
 
 		<div class="group-menu">
-			<div ng-click="chat()"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></div>
-			<div ng-click="freecall()"><i class="ion-ios-telephone-outline" data-pack="default" data-tags="talk"></i><br /><span>FreeCall</span></div>
-			<div><i class="ion-videocamera" data-pack="default" data-tags="talk"></i><br /><span>VideoCall</span></div>
+			<div ng-click="chat()">
+                <i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i>
+                <br /><span>Chat</span>
+            </div>
+			<div ng-click="freecall()">
+                <i class="ion-ios-telephone-outline" data-pack="default" data-tags="talk"></i>
+                <br /><span>VoiceCall</span>
+            </div>
+			<div>
+                <i class="ion-videocamera" data-pack="default" data-tags="talk"></i>
+                <br /><span>VideoCall</span>
+            </div>
 		</div>
 	</ion-content>
 </ion-modal-view>

@@ -27,6 +27,7 @@
 
 		function setupScope() {
 		    $scope.myProfile = main.getDataManager().myProfile;
+
 		    if (!!main.getDataManager().orgGroups) {
 		        $scope.orgGroups = main.getDataManager().orgGroups;
 		    }
@@ -35,6 +36,7 @@
 		            $scope.orgGroups = main.getDataManager().orgGroups;
 		        };
 		    }
+
 		    if (!!main.getDataManager().projectBaseGroups) {
 		        $scope.pjbGroups = main.getDataManager().projectBaseGroups;
 		    }
@@ -157,7 +159,7 @@
 				scope: $scope,
 				animation: 'slide-in-up'
 			}).then(function (modal) {
-				$scope.myProfileModal = modal;
+			    $scope.myProfileModal = modal;
 			});
 			//<!-- Org modal.
 			$ionicModal.fromTemplateUrl('templates/modal-orggroup.html', {
@@ -235,7 +237,8 @@
 		//<!-- My profile modal. -->
 		$scope.openProfileModal = function (groupId) {
 			initMyProfileModal($state, $scope, function done(){
-				$scope.myProfileModal.show();
+			    $scope.myProfileModal.show();
+			    //$ionicScrollDelegate.$getByHandle('profileScroll').freezeScroll(true);
 			});
 		};
 		$scope.closeProfileModal = function () {
