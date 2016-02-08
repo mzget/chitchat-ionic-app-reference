@@ -53,7 +53,13 @@ module ChatServer {
             }
         }
         public disposeClient() {
-            pomelo = null;
+            if (!!pomelo) {
+                pomelo.removeAllListeners();
+                pomelo.disconnect();
+                pomelo = null;
+            }
+
+            this.authenData = null;
             console.warn("dispose socket client.");
         }
        
@@ -215,6 +221,7 @@ module ChatServer {
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, (res) => {
                 console.log("login response: ", JSON.stringify(res), res.code);
+
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
                         callback(res.message, res);

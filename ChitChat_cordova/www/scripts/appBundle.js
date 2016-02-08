@@ -1496,7 +1496,12 @@ var ChatServer;
             }
         };
         ServerImplemented.prototype.disposeClient = function () {
-            pomelo = null;
+            if (!!pomelo) {
+                pomelo.removeAllListeners();
+                pomelo.disconnect();
+                pomelo = null;
+            }
+            this.authenData = null;
             console.warn("dispose socket client.");
         };
         ServerImplemented.prototype.logout = function () {

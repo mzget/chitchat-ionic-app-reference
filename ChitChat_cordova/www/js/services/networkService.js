@@ -5,21 +5,29 @@
         .module('spartan.services')
         .factory('networkService', networkService);
 
-    networkService.$inject = ['$http', '$state', '$rootScope', '$cordovaNetwork', "localNotifyService"];
+    networkService.$inject = ['$http', '$state', '$rootScope', '$cordovaNetwork', 'localNotifyService'];
 
     function networkService($http, $state, $rootScope, $cordovaNetwork, localNotifyService) {
         var service = {
             init: init,
             regisSocketListener: regisSocketListener
         };
+        var reconnectingEvent;
 
         return service;
 
         function init() {
+            var networkState = navigator.connection.type;
+            console.log("get network state", networkState);
+
             // listen for Online event
             $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
                 var onlineState = networkState;
                 console.warn('network state', networkState);
+
+                if (!!reconnectingEvent) {
+                    reconnectingEvent();
+                }
             })
 
             // listen for Offline event
@@ -27,7 +35,6 @@
                 var offlineState = networkState;
 
                 console.warn('network state', networkState);
-                localNotifyService.makeToast("Network is unstable.");
             })
         }
 
@@ -35,16 +42,26 @@
             console.log("regis socket event.");
             var socket = new SocketComponent();
             server.setSocketComponent(socket);
-            socket.onDisconnect =  function onDisconnect(reason) {
+            socket.onDisconnect = function onDisconnect(reason) {
+                server.disConnect();
+                socket.onDisconnect = null;
+
                 localNotifyService.makeToast("disconnected.");
 
-                //@-- Todo..
-                if ($cordovaNetwork.isOnline()) {
-                    $state.go("tab.login");
-                }
-                else {
-                    //@ Stay working offline.
-                }
+                setTimeout(function () {
+                    console.error('Try to re connecting...', $cordovaNetwork.getNetwork());
+                    //@-- Todo..
+                    if ($cordovaNetwork.isOnline()) {
+                        $state.go("tab.login");
+                    }
+                    else {
+                        //@ Stay working offline.
+                        reconnectingEvent = function () {
+                            console.log('reconnectingEvent')
+                            $state.go("tab.login");
+                        };
+                    }
+                }, 1000);
             }
         }
     }

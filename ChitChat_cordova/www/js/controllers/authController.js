@@ -18,10 +18,17 @@
         ionic.Platform.ready(function () {
             console.log(vm.title + " : ionic ready.");
 
+            if (ionic.Platform.platform() === 'ios') {
+                $cordovaSpinnerDialog.show("", "Wait for signing...", true);
+            }
+
             activateBackground();
             activate();
             setConfigTheme();
             activateNetworkService();
+            if (!!server) {
+                server.disposeClient();
+            }
 
             setTimeout(function () {
                 if (!!navigator.splashscreen) {
@@ -57,7 +64,7 @@
         });
 
         function activate() {
-            console.warn('activate' + vm.title);
+            console.warn('activate: ' + vm.title);
 
             console.log("init push notification.");
 
@@ -113,6 +120,8 @@
         function initSpartanServer() {
             function initCallback(err, server) {
                 console.log("Init serve completed is connected: " + server._isConnected + " : " + err);
+
+                initCallback = null;
 
                 if (err !== null) {
                     onServerConnectionFail(err);
@@ -257,8 +266,11 @@
             //<@-- if have no token app wiil take you to signing page.
             //<@-- else app will auto login by token.
             if (!authen.token) {
-                $('#splash').css({ 'display': 'none' });
+                if (ionic.Platform.platform() === "ios") {
+                    $cordovaSpinnerDialog.hide();
+                }
 
+                $('#splash').css({ 'display': 'none' });
                 $('body #login #btn-login').click(function (event) {
                     event.preventDefault();
 
