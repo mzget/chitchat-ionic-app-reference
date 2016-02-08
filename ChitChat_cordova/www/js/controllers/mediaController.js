@@ -627,15 +627,14 @@ angular.module('spartan.media', [])
 var mediaUpload = {};
 
 function UploadMediaWeb(rid,uri,type,callback){
-
-	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
-	var uriFile = uri;
 	var mediaName = uri
+	var meta = {};
 	var downloadContain;
 	var downloadProgress;
 
 	this.upload = function(){
 		var formData = new FormData($('#UploadForm')[0]);
+		//formData.append("FileMeta", {"mimeType":"image\/jpeg","name":"Mount_Robson2.jpg"
 		$.ajax({
 		       	url : 'http://203.113.25.44/?r=api/upload',
 		       	type : 'POST',
@@ -679,9 +678,11 @@ function UploadMediaWeb(rid,uri,type,callback){
 		document.getElementById( mediaName + '-downloaded').classList.add("hide");
 		document.getElementById( mediaName + '-resend').classList.remove("hide");
 	}
+	function setMetaFile(name,mimeType){
+		meta = { "name":name,"mimeType":mimeType };
+	}
 	function send(url){
-
-
+		//ChatRoomApiProvider.prototype.chatFile = function (room_id, target, sender_id, fileUrl, contentType, meta, callback)
 		 main.getChatRoomApi().chat(rid, "*", main.getDataManager().myProfile._id, url, type, function(err, res) {
 			if (err || res === null) {
 				console.warn("send message fail.");
