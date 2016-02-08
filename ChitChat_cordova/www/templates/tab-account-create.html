@@ -35,7 +35,12 @@
 
   		<div class="create-group-list-member-selected" style="display:inline-block;" ng-repeat="member in members track by $index">
   			<div class="member-contain" ng-if="member._id=='Add'" onclick="location.href='#/tab/account/create/invite';"> <div class="ion-android-add-circle add-member"></div> <div class="member-name"> {{member.displayname}} </div> </div>
-  			<div class="member-contain" ng-if="member._id!='Add'"> <img ng-src="http://203.113.25.44{{member.image}}"/> <div class="member-name"> {{member.displayname}} </div> </div>
+  			<div class="member-contain" ng-if="member._id!='Add'"> 
+  				<img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}"/> 
+            	<img ng-if="member.image == null" src="img/img.jpg" />
+  				<div class="member-name"> {{member.displayname}} 
+  				</div> 
+  			</div>
       	</div>
     </ion-content>
 

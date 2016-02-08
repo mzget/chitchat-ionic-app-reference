@@ -2,7 +2,7 @@
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
-        cryptojs: '../js/crypto-js/crypto-js'
+        cryptojs: '../lib/crypto-js/crypto-js'
     }
 });
 
@@ -11,6 +11,15 @@ requirejs.config({
 //require(["../../scripts/server/serverImplemented"]);
 
 class Main {
+    private static instance: Main;
+    public static getInstance(): Main {
+        if (this.instance === null || this.instance === undefined) {
+            this.instance = Main.prototype;
+        }
+        return this.instance;
+    }
+
+
     private serverImp: ChatServer.ServerImplemented;
     private serverListener: ChatServer.ServerEventListener;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;
@@ -27,10 +36,12 @@ class Main {
         return this.dataListener;
     }
     public getServerImp(): ChatServer.ServerImplemented {
+        console.log("getServerImp", this.serverImp);
         return this.serverImp;
     }
     public setServerImp(server: ChatServer.ServerImplemented) {
         this.serverImp = server;
+        console.log("setServerImp", server);
     }
     public getChatRoomApi(): ChatServer.ChatRoomApiProvider {
         if (!this.chatRoomApi) {
@@ -104,7 +115,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("organize groups: ", res);
+                            console.log("organize groups: ", JSON.stringify(res));
                         }
                     });
 
@@ -113,7 +124,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("project base groups: ", res);
+                            console.log("project base groups: ", JSON.stringify(res));
                         }
                     });
 
@@ -122,7 +133,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("Private groups: ", res);
+                            console.log("Private groups: ", JSON.stringify(res));
                         }
                     });
 
@@ -131,7 +142,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("Company Members: ", res);
+                            console.log("Company Members: ", JSON.stringify(res));
                         }
                     });
                     }).catch(function onRejected(err) {
@@ -139,7 +150,7 @@ class Main {
                 });
             }
             else {
-                console.error(err, JSON.stringify(loginRes));
+                console.warn(err, JSON.stringify(loginRes));
             }
         });
     }

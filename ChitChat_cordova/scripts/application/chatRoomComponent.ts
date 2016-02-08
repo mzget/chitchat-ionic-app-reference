@@ -6,14 +6,16 @@
     private main: Main;
     private serverImp: ChatServer.ServerImplemented;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;
-    private roomId : string;
+    private roomId: string;
+    private messageDAL: MessageDAL;
 
-    constructor(main: Main, room_id: string) {
+    constructor(main: Main, room_id: string, messageDAL: MessageDAL) {
         this.main = main;
         this.serverImp = this.main.getServerImp();
         this.chatRoomApi = this.main.getChatRoomApi();
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
+        this.messageDAL = messageDAL;
         
         console.log("constructor ChatRoomComponent");
     }
@@ -23,25 +25,41 @@
         
         if(this.roomId === chatMessageImp.rid) {
             console.log("Implement chat msg hear..", chatMessageImp);
+            
             var secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
-                secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
-                    if (!err) {
-                        chatMessageImp.body = res;
-                        self.chatMessages.push(chatMessageImp);
-                        if (!!this.serviceListener)
-                            this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                    }
-                    else {
-                        console.log(err, res);
-                        self.chatMessages.push(chatMessageImp);
-                        if (!!this.serviceListener)
-                            this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
-                    }
-                })
+                if (self.serverImp.appConfig.encryption == true) {
+                    secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
+                        if (!err) {
+                            chatMessageImp.body = res;
+                            self.chatMessages.push(chatMessageImp);
+                            self.messageDAL.saveData(self.roomId, self.chatMessages);
+
+                            if (!!this.serviceListener)
+                                this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                        }
+                        else {
+                            console.log(err, res);
+                            self.chatMessages.push(chatMessageImp);
+                            self.messageDAL.saveData(self.roomId, self.chatMessages);
+
+                            if (!!this.serviceListener)
+                                this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                        }
+                    })
+                }
+                else {
+                    self.chatMessages.push(chatMessageImp);
+                    self.messageDAL.saveData(self.roomId, self.chatMessages);
+
+                    if (!!this.serviceListener)
+                        this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                }
             }
             else {
                 self.chatMessages.push(chatMessageImp);
+                self.messageDAL.saveData(self.roomId, self.chatMessages);
+
                 if (!!this.serviceListener)
                     this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
             }
@@ -67,20 +85,165 @@
         var self = this;
         var newMsg: Message = JSON.parse(JSON.stringify(dataEvent));
 
-        this.chatMessages.some(function callback(value) {
-            if (value._id === newMsg._id) {
-                value.readers = newMsg.readers;
+        var promise = new Promise(function (resolve, reject) {
+            self.chatMessages.some(function callback(value) {
+                if (value._id === newMsg._id) {
+                    value.readers = newMsg.readers;
 
-                if (!!self.serviceListener)
-                    self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
+                    if (!!self.serviceListener)
+                        self.serviceListener(ChatServer.ServerEventListener.ON_MESSAGE_READ, null);
 
-                return true;
-            }
+                    resolve();
+                    return true;
+                }
+            });
+        }).then((value) => {
+            self.messageDAL.saveData(self.roomId, self.chatMessages);
         });
     }
 
     onGetMessagesReaders(dataEvent) {
 
+    }
+
+    public getPersistentMessage(rid: string, done: (err, messages) => void) {
+        var self = this;
+        self.messageDAL.getData(rid, (err, messages) => {
+            if (messages !== null) {
+                var chats: Array<Message> = JSON.parse(JSON.stringify(messages));
+
+                async.mapSeries(chats, function iterator(item, result) {
+                    if (item.type === ContentType.Text) {
+                        if(self.serverImp.appConfig.encryption == true) {
+                            self.main.decodeService(item.body, function (err, res) {
+                                if (!err) {
+                                    item.body = res;
+                                    self.chatMessages.push(item);
+                                }
+                                else {
+                                    self.chatMessages.push(item);
+                                }
+
+                                result(null, item);
+                            });
+                        }
+                        else {
+                            self.chatMessages.push(item);
+                            result(null, item);
+                        }
+                    }
+                    else {
+                        self.chatMessages.push(item);
+                        result(null, item);
+                    }
+                }, (err, results) => {
+                    console.log("decode chats text completed.", self.chatMessages.length);
+
+                    done(err, messages);
+                });
+            }
+            else {
+                self.chatMessages = [];
+                
+                console.debug("chatMessages", self.chatMessages.length);
+                done(err, messages);
+            }
+        });
+    }
+
+    public getNewerMessageRecord(callback: (err, res) => void) {
+        let self = this;
+        let lastMessageTime = new Date();
+        let promise = new Promise(function promise(resolve, reject) {
+            if (self.chatMessages[self.chatMessages.length - 1] != null) {
+                lastMessageTime = self.chatMessages[self.chatMessages.length - 1].createTime;
+                resolve();
+            }
+            else {
+                var roomAccess = self.dataManager.getRoomAccess();
+                console.debug("roomAccess", roomAccess.length)
+                let boo = roomAccess.some((val, id, arr) => {
+                    if (val.roomId === self.roomId) {
+                        lastMessageTime = val.accessTime;
+                        return true;
+                    }
+                });
+
+                if (boo) {
+                    resolve();
+                }
+                else {
+                    reject();
+                }
+            }
+        });
+
+        promise.then((value) => {
+            self.getNewerMessageFromNet(lastMessageTime, callback);
+        });
+        promise.catch(err => {
+            console.warn("this room_id is not contain in roomAccess list.");
+
+            self.getNewerMessageFromNet(lastMessageTime, callback);
+        });
+    }
+
+    private getNewerMessageFromNet(lastMessageTime: Date, callback: (err, res) => void) {
+        var self = this;
+       
+        self.chatRoomApi.getChatHistory(self.roomId, lastMessageTime, function (err, result) {
+            var histories = [];
+            if (result.code === 200) {
+                histories = result.data;
+                console.log("Newer message counts.", histories.length);
+                if (histories.length > 0) {
+
+                    var messages: Array<Message> = JSON.parse(JSON.stringify(histories));
+                    
+                    async.mapSeries(messages, function (item, cb) {
+                        if (item.type.toString() === ContentType[ContentType.Text]) {
+                            if (self.serverImp.appConfig.encryption == true) {
+                                self.main.decodeService(item.body, function (err, res) {
+                                    if (!err) {
+                                        item.body = res;
+                                        self.chatMessages.push(item);
+                                    }
+                                    else {
+                                        self.chatMessages.push(item);
+                                    }
+
+                                    cb(null, item);
+                                });
+                            }
+                            else {
+                                self.chatMessages.push(item);
+                                cb(null, item);
+                            }
+                        }
+                        else {
+                            self.chatMessages.push(item);
+                            cb(null, item);
+                        }
+                    }, function done(err) {
+                        console.log("get newer message completed.");
+                        //<!-- Save persistent chats log here.
+                        self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
+ //                           self.getNewerMessageRecord();
+                        });
+                    });
+                }
+                else {
+                    console.log("Have no newer message.");
+                }
+            }
+            else {
+                console.warn("WTF god only know.", result.message);
+            }
+
+            if (callback !== null) {
+                callback(null, result.code);
+            }
+        });
     }
 
     public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
@@ -108,17 +271,21 @@
                         arr_fromLog.map((log, i, a) => {
                             var messageImp: any = log;
                             if (messageImp.type === ContentType[ContentType.Text]) {
-                                // console.log("item:", count++, log.type);
-                                self.main.decodeService(messageImp.body, function (err, res) {
-                                    if (!err) {
-                                        messageImp.body = res;
-                                        self.chatMessages.push(messageImp);
-                                    }
-                                    else {
-                                        //console.log(err, res);
-                                        self.chatMessages.push(messageImp);
-                                    }
-                                });
+                                if (self.serverImp.appConfig.encryption == true) {
+                                    self.main.decodeService(messageImp.body, function (err, res) {
+                                        if (!err) {
+                                            messageImp.body = res;
+                                            self.chatMessages.push(messageImp);
+                                        }
+                                        else {
+                                            //console.log(err, res);
+                                            self.chatMessages.push(messageImp);
+                                        }
+                                    });
+                                }
+                                else {
+                                    self.chatMessages.push(messageImp);
+                                }
                             }
                             else {
                                 // console.log("item:", count++, log.type);
@@ -135,6 +302,7 @@
                 resolve();
             }
         });
+
         promise.then(function onFulfilled() {
             console.log("get local history done:");
             self.serverImp.JoinChatRoomRequest(chatId, function (err, joinRoomRes) {
@@ -162,17 +330,23 @@
                                 async.eachSeries(histories, function (item, cb) {
                                     var chatMessageImp = JSON.parse(JSON.stringify(item));
                                     if (chatMessageImp.type === ContentType[ContentType.Text]) {
-                                        self.main.decodeService(chatMessageImp.body, function (err, res) {
-                                            if (!err) {
-                                                chatMessageImp.body = res;
-                                                self.chatMessages.push(chatMessageImp);
-                                                cb();
-                                            }
-                                            else {
-                                                //console.warn(err, res);
-                                                cb();
-                                            }
-                                        });
+                                        if (self.serverImp.appConfig.encryption == true) {
+                                            self.main.decodeService(chatMessageImp.body, function (err, res) {
+                                                if (!err) {
+                                                    chatMessageImp.body = res;
+                                                    self.chatMessages.push(chatMessageImp);
+                                                    cb();
+                                                }
+                                                else {
+                                                    //console.warn(err, res);
+                                                    cb();
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            self.chatMessages.push(chatMessageImp);
+                                            cb();
+                                        }
                                     }
                                     else {
                                         if (item.type == 'File') {
@@ -186,13 +360,11 @@
 
                                     localStorage.removeItem(myProfile._id + '_' + chatId);
                                     localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
-
-                                    // location.href = '#/tab/message/' + chatId;
+                                    
                                     callback(joinRoomRes);
                                 });
                             }
                             else {
-                                // location.href = '#/tab/message/' + chatId;
                                 Chats.set(self.chatMessages);
                                 callback(joinRoomRes);
                             }
@@ -206,7 +378,7 @@
 
         }).catch(function onRejected(reason) {
             console.warn("promiss.onRejected", reason);
-            });
+        });
     }
 
     public leaveRoom(room_id, callback: (err, res) => void) {
@@ -215,5 +387,14 @@
             console.log("leave room", JSON.stringify(res));
             callback(err, res);
         });
+    }
+
+    public joinRoom(callback: (err, res) => void) {
+        var self = this;
+        self.serverImp.JoinChatRoomRequest(self.roomId, callback);
+    }
+
+    public getMemberProfile(member: Member, callback: (err, res) => void) {
+        this.serverImp.getMemberProfile(member.id, callback);
     }
 }
