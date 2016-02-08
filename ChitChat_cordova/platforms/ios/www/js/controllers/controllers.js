@@ -3,7 +3,7 @@ var now;
 var newchatmessage;
 var chatlog_count = 0;
 
-angular.module('spartan.controllers', ['jrCrop'])
+angular.module('spartan.controllers', [])
 
 // Group - View Profile
 .controller('GroupViewprofileCtrl', function ($scope, $jrCrop, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
