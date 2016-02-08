@@ -698,7 +698,7 @@ module ChatServer {
             });
         }
         
-        public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: string, setMessageID: (err, res) => void) {
+        public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: string, meta: any, callback: (err, res) => void) {
             console.log("Send file to ", target);
 
             var message: IDictionary = {};
@@ -706,14 +706,15 @@ module ChatServer {
             message["content"] = fileUrl;
             message["sender"] = sender_id;
             message["target"] = target;
+            message["meta"] = meta;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("chatFile callback: ", data);
 
                 if (data.code == 200) {
-                    if (setMessageID != null) {
-                        setMessageID(null, data.data);
+                    if (callback != null) {
+                        callback(null, data.data);
                     }
                 }
                 else {

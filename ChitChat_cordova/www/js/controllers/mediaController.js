@@ -1,5 +1,48 @@
 angular.module('spartan.media', [])
 
+.controller('FileController', function($scope,roomSelected) {
+	$scope.onGetFileSelect = function(){
+		var file    = document.querySelector('input[type=file]').files[0];
+	    var reader  = new FileReader();
+	    reader.onloadend = function () {
+	    	var fileType = file.type.split("/");
+	    	switch(fileType[0]){
+	    		case 'image':
+			        $scope.$broadcast('addImg', 'addImg');
+			        break;
+			    case 'video':
+			        $scope.$broadcast('captureVideo', 'captureVideo');
+			        break;
+			    default:
+			        reader.onloadend = function () {
+			            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.File]]);
+			        } 
+			        reader.readAsDataURL(file);
+			        break;
+	    	}
+	    	//$scope.$emit('fileUri',[reader.result,ContentType[ContentType.Image]]);
+	        //console.log(reader.result);
+	    } 
+		reader.readAsDataURL(file);
+	}
+	$scope.uploadFile = function(id){
+		var file    = document.querySelector('input[type=file]').files[0];
+			if(file !== undefined){
+	        var reader  = new FileReader();
+	        reader.onloadend = function () {
+	            var file = new UploadMediaWeb(roomSelected.getRoom()._id, reader.result, ContentType[ContentType.File], function(id,messageId){
+	            	$scope.$emit('delectTemp', [id]); 
+	            });
+	            mediaUpload[id] = file;
+	            mediaUpload[id].upload();
+	        } 
+	        reader.readAsDataURL(file);
+	    	}else{
+	    		$scope.$emit('delectTemp', [id]); 
+		    }
+	}
+})
+
 .controller('ImageController', function($scope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress,$ionicModal, ImageService, FileService,roomSelected, checkFileSize) {
  
   	$ionicPlatform.ready(function() {
@@ -29,7 +72,7 @@ angular.module('spartan.media', [])
 		      }
 		    });
 		}else{
-			var file    = document.querySelector("[id='fileToUploadImage']").files[0];
+			var file    = document.querySelector('input[type=file]').files[0];
 	        var reader  = new FileReader();
 	        reader.onloadend = function () {
 	            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.Image]]);
@@ -187,7 +230,7 @@ angular.module('spartan.media', [])
 				}
 			}
 		}else{
-			var file    = document.querySelector("[id='fileToUploadImage']").files[0];
+			var file    = document.querySelector('input[type=file]').files[0];
 			if(file !== undefined){
 		        var reader  = new FileReader();
 		        reader.onloadend = function () {
@@ -292,7 +335,7 @@ angular.module('spartan.media', [])
 		      }
 		    });
 		}else{
-			var file    = document.querySelector("[id='fileToUploadVideo']").files[0];
+			var file    = document.querySelector('input[type=file]').files[0];
 	        var reader  = new FileReader();
 	        reader.onloadend = function () {
 	            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.Video]]);
@@ -366,7 +409,7 @@ angular.module('spartan.media', [])
 				}
 			}
 		}else{
-			var file    = document.querySelector("[id='fileToUploadVideo']").files[0];
+			var file    = document.querySelector('input[type=file]').files[0];
 			if(file !== undefined){
 		        var reader  = new FileReader();
 		        reader.onloadend = function () {
@@ -468,7 +511,6 @@ angular.module('spartan.media', [])
 			});
  		})
  	}
-
 
 })
 .controller('VoiceController', function($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile, GenerateID,roomSelected, checkFileSize) {
@@ -593,11 +635,7 @@ function UploadMediaWeb(rid,uri,type,callback){
 	var downloadProgress;
 
 	this.upload = function(){
-		var formData; var uploadForm;
-		if(type == "Image"){ formData = new FormData($('#UploadFormImage')[0]); uploadForm = document.getElementById("UploadFormImage"); }
-		else if(type == "Video") { formData = new FormData($('#UploadFormVideo')[0]); uploadForm = document.getElementById("UploadFormVideo"); }
-		else if(type == "Voice") {  }
-		
+		var formData = new FormData($('#UploadForm')[0]);
 		$.ajax({
 		       	url : 'http://203.113.25.44/?r=api/upload',
 		       	type : 'POST',
@@ -607,7 +645,7 @@ function UploadMediaWeb(rid,uri,type,callback){
 		       	success : function(data) {
 		       		console.log('success');
 		        	console.log(data);
-		        	uploadForm.reset();
+		        	document.getElementById("UploadForm").reset();
 		        	send(data);
 		       	},
 		       	error : function(data){
@@ -642,6 +680,8 @@ function UploadMediaWeb(rid,uri,type,callback){
 		document.getElementById( mediaName + '-resend').classList.remove("hide");
 	}
 	function send(url){
+
+
 		 main.getChatRoomApi().chat(rid, "*", main.getDataManager().myProfile._id, url, type, function(err, res) {
 			if (err || res === null) {
 				console.warn("send message fail.");

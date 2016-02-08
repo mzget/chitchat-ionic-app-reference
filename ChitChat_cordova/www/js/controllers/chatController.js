@@ -585,13 +585,13 @@ angular.module('spartan.chat', [])
 		if (ionic.Platform.platform() === "ios") {
 			$scope.$broadcast('addImg', 'addImg');
 		}else
-			$('#fileToUploadImage').trigger('click');
+			$('#fileToUpload').trigger('click');
 	}
 	$scope.video = function(){
 		if (ionic.Platform.platform() === "ios") {
 			$scope.$broadcast('captureVideo', 'captureVideo');
 		}else
-			$('#fileToUploadVideo').trigger('click');
+			$('#fileToUpload').trigger('click');
 	}
 	$scope.voice = function(){
 		if($('.audio-recorder').is(".recording")){
@@ -603,6 +603,12 @@ angular.module('spartan.chat', [])
 			$('.audio-recorder').addClass("recording");
 			$scope.$broadcast('startRecord', 'startRecord');
 		}
+	}
+	$scope.file = function(){
+		if (ionic.Platform.platform() === "ios") {
+			console.log(" IOS CANT SEND FILE ");
+		}else
+			$('#fileToUpload').trigger('click');
 	}
 	
 	// Recivce ImageUri from Gallery then send to other people
@@ -619,9 +625,12 @@ angular.module('spartan.chat', [])
 			if(args[1] == ContentType[ContentType.Image] ){
 				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 			}else if(args[1] == ContentType[ContentType.Video] ){
-				var file = document.querySelector("[id='fileToUploadVideo']").files[0];
+				var file = document.querySelector("[id='fileToUpload']").files[0];
 				var fileUrl = $sce.trustAsResourceUrl( URL.createObjectURL(file) );
 				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":fileUrl,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.File] ){
+				var file = document.querySelector("[id='fileToUpload']").files[0];
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.File],"body":file.name,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 			}
 		}
 		
