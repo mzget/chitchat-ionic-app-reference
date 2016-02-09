@@ -21,6 +21,11 @@
             if (ionic.Platform.platform() === 'ios') {
                 $cordovaSpinnerDialog.show("", "Wait for signing...", true);
             }
+            else {
+                $ionicLoading.show({
+                    template: 'Wait for signing...'
+                });
+            }
 
             activateBackground();
             activate();
@@ -47,7 +52,7 @@
                     if (ionic.Platform.platform() === "ios") {
                         $cordovaSpinnerDialog.hide();
                     }
-                    else if (ionic.Platform.platform() === "windows") {
+                    else {
                         $ionicLoading.hide();
                     }
 
@@ -223,6 +228,9 @@
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
             }
+            else {
+                $ionicLoading.hide();
+            }
 
             if ($cordovaNetwork.isOnline()) {
                 $cordovaDialogs.confirm('Fail to connecting server! \n Please try again.',
@@ -258,8 +266,13 @@
         }
 
         function onMissingParams() {
-            // Hide spinner dialog
-            $cordovaSpinnerDialog.hide();
+            // Hide spinner dialog.
+            if (ionic.Platform.platform() === "ios") {
+                $cordovaSpinnerDialog.hide();
+            }
+            else {
+                $ionicLoading.hide();
+            }
 
             navigator.notification.alert("Missing username or password.", function callback() { }, "Cannot login.", "OK");
         }
@@ -273,6 +286,9 @@
             if (!authen.token) {
                 if (ionic.Platform.platform() === "ios") {
                     $cordovaSpinnerDialog.hide();
+                }
+                else {
+                    $ionicLoading.hide();
                 }
 
                 $('#splash').css({ 'display': 'none' });

@@ -43,13 +43,12 @@
             var socket = new SocketComponent();
             server.setSocketComponent(socket);
             socket.onDisconnect = function onDisconnect(reason) {
-                server.disConnect();
                 socket.onDisconnect = null;
 
                 localNotifyService.makeToast("disconnected.");
 
                 setTimeout(function () {
-                    console.error('Try to re connecting...', $cordovaNetwork.getNetwork());
+                    console.log('Try to re connecting...', $cordovaNetwork.getNetwork());
                     //@-- Todo..
                     if ($cordovaNetwork.isOnline()) {
                         $state.go("tab.login");
