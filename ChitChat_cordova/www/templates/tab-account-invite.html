@@ -3,7 +3,7 @@
 <ion-view view-title="Invite Members" hide-tab-bar>
 
     <ion-nav-buttons side="right">
-        <button class="button button-clear button-positive" ng-if="status=='invite'" ng-click='invite()'>Invite</button>
+        <button class="button button-clear button-positive" ng-show="status=='invite' && selectedMembers != '0'" ng-click='invite()'>Invite</button>
     </ion-nav-buttons>
 
   <ion-content>

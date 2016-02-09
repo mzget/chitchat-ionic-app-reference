@@ -7,13 +7,20 @@
 
 	//homeController.$inject = ['$location'];
 
-	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform,
+	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform, $cordovaSpinnerDialog,
 		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
 
 		function activate() {
+		    if (ionic.Platform.platform() === 'ios') {
+		        $cordovaSpinnerDialog.hide();
+		    }
+		    if ($ionicLoading) {
+		        $ionicLoading.hide();
+		    }
+
 		    dbAccessService.setMessageDAL(messageDAL);
 			localNotifyService.registerPermission();
 			sharedObjectService.createNotifyManager(main);

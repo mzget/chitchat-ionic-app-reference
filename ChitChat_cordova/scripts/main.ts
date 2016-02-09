@@ -76,7 +76,7 @@ class Main {
     }
 
     public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {
-        console.log("authenUser:", email, password);
+        console.log("authenUser:", email);
 
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
