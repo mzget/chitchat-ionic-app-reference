@@ -27,10 +27,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		$scope.myprofile = myprofile;
 	}
 
-	function activate() {
-	    
-	    console.log(self.title + " is activate");
-	    console.log(self.currentRoom);
+	function setRoom(){
+		console.log(self.title + " is activate");
 		if(self.currentRoom === undefined){
 			var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
             roomSelected.setRoom(group);
@@ -38,7 +36,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		self.currentRoom = roomSelected.getRoom();
 		self.chatRoomComponent = new ChatRoomComponent(main, self.currentRoom._id);
 
-		console.log('currentRoom',self.currentRoom);
 		//<!-- Set up roomname for display title of chatroom.
 		var roomName = self.currentRoom.name;
 		if (!roomName || roomName === "") {
@@ -58,6 +55,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 				if(value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
 			});
 		}
+		setchatRoomService();
+	}
+
+	function activate() {
+	    
+	    setRoom();
 
 		$scope.$on('onNewMessage', function (event, data) {
 		    setTimeout(function () {
@@ -65,8 +68,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    }, 1000);
 		});
 		$scope.$on('onMessagesReady', function (event, data) {
-		    $scope.chat = chatRoomService.all();
-
+			$scope.chat = chatRoomService.all();
 		    setTimeout(function () {
 		        $ionicLoading.hide();
 		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
@@ -81,7 +83,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		            blockUI(true);
 		        } else {
 		            blockUI(false);
-
 		            if (chatRoomService.isPrivateChatRoom()) {
 		                chatRoomService.roomContactIsEmpty(function (boo) {
 		                    blockUI(boo);
@@ -90,7 +91,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		        }
 		    });
 		});
-		
+	}
+
+	function setchatRoomService() {
 		chatRoomService.init();
 		chatRoomService.getPersistendMessage(); 
 	}
@@ -531,8 +534,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.$on('changeChat', function(event, args) { 
 		var newRoom = JSON.parse(JSON.stringify(args));
 		chatRoomService.leaveRoomCB( function(){
+			$ionicLoading.show({
+		        template: 'Loading...'
+		    });
 			roomSelected.setRoom(newRoom);
-			activate();
+			setRoom();
 		});
 		$('#webchatdetail').find('.message-list').empty();
 	});
