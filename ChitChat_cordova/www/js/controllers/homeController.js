@@ -13,6 +13,8 @@
 		var vm = this;
 		vm.title = 'homeController';
 
+		$scope.$on('roomName', function(event, args) { $scope.roomName = args; });
+
 		function activate() {
 		    if (ionic.Platform.platform() === 'ios') {
 		        $cordovaSpinnerDialog.hide();
@@ -324,7 +326,8 @@
 		$scope.toggle = function (chatId) {
 			$scope.closeOrgModal();
 			//       $state.go('', { chatId: chatId });
-			location.href = '#/tab/group/chat/' + chatId;
+			//location.href = '#/tab/group/chat/' + chatId;
+			$scope.$broadcast('changeChat', group);
 		};
 
 		$scope.viewGroupDetail = function (id) {
@@ -349,7 +352,8 @@
 
 		$scope.toggle = function (chatId) {
 			$scope.closePjbModal();
-			location.href = '#/tab/group/chat/' + chatId;
+			//location.href = '#/tab/group/chat/' + chatId;
+			$scope.$broadcast('changeChat', group);
 		};
 
 		$scope.viewGroupDetail = function (id) {
@@ -374,7 +378,8 @@
 
 		$scope.chat = function (chatId) {
 			$scope.closePvgModal();
-			location.href = '#/tab/group/chat/' + chatId;
+			//location.href = '#/tab/group/chat/' + chatId;
+			$scope.$broadcast('changeChat', group);
 		};
 
 		$scope.viewGroupDetail = function (id) {

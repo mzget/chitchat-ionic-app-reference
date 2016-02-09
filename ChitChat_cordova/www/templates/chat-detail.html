@@ -1,6 +1,6 @@
 <ion-nav-bar>
 </ion-nav-bar>
-<ion-view id="chatDetail" view-title="{{currentRoom.name}}" cache-view="false" hide-back-button="true" hide-tab-bar>
+<ion-view id="chatDetail" view-title="{{roomName}}" cache-view="false" hide-tab-bar>
 	<ion-nav-buttons side="right">
 		<div ng-show="currentRoom.type!=3">
 	        <i ng-if="isFavorite(currentRoom._id)" class="ion-heart assertive" style="font-size:25px; line-height:40px;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)"></i>
@@ -103,7 +103,8 @@
 			</div>
 			<ion-list id="list-orgGroups" class="group-list">
 				<!--<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="orgGroup in orgGroups|orderObjectBy:'name':false|filter:search" ng-click="openOrgModal(orgGroup._id)" type="item-text-wrap">-->
-				<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="orgGroup in orgGroups|orderObjectBy:'name':false|filter:search" type="item-text-wrap" ng-click="webhref(orgGroup._id)" onmouseover="this.style.cursor='pointer'">
+				<ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="orgGroup in orgGroups|orderObjectBy:'name':false|filter:search" type="item-text-wrap" 
+				ng-click="openOrgModal(orgGroup._id)" onmouseover="this.style.cursor='pointer'">
 					
 					<img ng-if="orgGroup.image != null" ng-src="http://203.113.25.44/timthumb.php?src={{orgGroup.image}}&h=40&w=40" />
 					<img ng-if="orgGroup.image == null" src="img/img.jpg" height="40" width="40"  />
