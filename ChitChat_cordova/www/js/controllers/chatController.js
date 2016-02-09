@@ -537,6 +537,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			$ionicLoading.show({
 		        template: 'Loading...'
 		    });
+		    $scope.chat = {};
 			roomSelected.setRoom(newRoom);
 			setRoom();
 		});
