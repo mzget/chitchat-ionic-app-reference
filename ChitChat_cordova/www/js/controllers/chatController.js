@@ -56,6 +56,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			});
 		}
 		setchatRoomService();
+		$scope.$emit('roomName', $scope.currentRoom.name);
 	}
 
 	function activate() {
