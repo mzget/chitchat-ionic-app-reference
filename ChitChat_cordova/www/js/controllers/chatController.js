@@ -103,9 +103,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	$scope.viewProfile = function(){
 	    $scope.popover.hide();
-	    console.log(JSON.stringify($state.current));
-	    if ($state.current.views.hasOwnProperty('tab-chats')) {
-	        $state.go('tab.chats-chat-viewprofile', { chatId: $scope.otherId });
+	    if ($state.current.name === NGStateUtil.tab_chats_chat) {
+	        $state.go(NGStateUtil.tab_chats_chat_viewprofile, { chatId: $scope.otherId });
 	    } else {
 	        $state.go('tab.group-viewprofile', { chatId: $scope.otherId });
 	    }
@@ -114,16 +113,14 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.groupDetail = function(state){
 		$scope.popover.hide();
 		$rootScope.selectTab = state;
-		if($state.current.views.hasOwnProperty('tab-chats')){
-			$state.go('tab.chats-chat-members', { chatId: self.currentRoom._id });
+		if ($state.current.name === NGStateUtil.tab_chats_chat) {
+		    $state.go(NGStateUtil.tab_chats_chat_members, { chatId: self.currentRoom._id });
 		}else{
 			$state.go('tab.group-members', { chatId: self.currentRoom._id });
 		}
 	}
 
 	$scope.openPopover = function ($event) {
-	    console.log("open popover:", JSON.stringify($event));
-
 	    $scope.popover.show($event);
 	};
 	
@@ -215,32 +212,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$("#modal-webview-iframe").on('load', function () {
 	    alert($(this).contentDocument.title);
 	});
-	 
-	var countUp = function () {		
-		if( self.currentRoom != null )
-		{
-			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
-			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-			console.info('chatController: refresh view');
-			$scope.chat = chatRoomService.all();
-			
-			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
-			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
-			//console.log( $('#main-chat .scroll').height() ); // Max scroll
-
-			scrolling = $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top;
-			maxscroll = ($('#main-chat .scroll').height() - $('#main-chat').height());
-			
-			if( scrolling-5 <= maxscroll && scrolling+5 >= maxscroll )
-				$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom()
-				
-			$timeout(countUp, 1000);
-		}
-	}
-//	$timeout(countUp, 1000);
-	
-	//$('#send_message').css({ 'display': 'inline-block' });
-	//$('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	// Send Message btn
 	$('#sendMsg').click(function()
@@ -518,8 +489,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     // ON LEAVE
 	$scope.$on('$ionicView.beforeLeave', function () { //This just one when leaving, which happens when I logout
 	    console.log(self.title + " beforeLeave.");
-
-	    //$('#send_message').css({ 'display': 'none' });
 
 	    chatRoomService.leaveRoom();
 	});
