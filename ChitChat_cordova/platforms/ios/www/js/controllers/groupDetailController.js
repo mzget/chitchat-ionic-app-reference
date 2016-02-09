@@ -46,6 +46,7 @@
                 });
                 $scope.allmembers.splice(positionIndex, 1);
             }
+            setSelectedMembers();
         } else if ($rootScope.status = "edit") {
             $scope.allmembers = getMembersInProjectBase(room);
             for (var x = 0; x < room.members.length; x++) {
@@ -88,7 +89,13 @@
                     if (id_checked[i] == id) { id_checked.splice(i, 1); }
                 }
             }
+            setSelectedMembers();
         }
+
+        function setSelectedMembers(){
+            $scope.selectedMembers = id_checked.length;
+        }
+        
 
     }
 

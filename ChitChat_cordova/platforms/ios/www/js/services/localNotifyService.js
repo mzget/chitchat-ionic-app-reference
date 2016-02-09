@@ -33,7 +33,6 @@
             if (ionic.Platform.platform() === "ios") {
                 $cordovaToast.showLongCenter(message).then(function (success) {
                     // success
-                    console.log('makeToastOnCenter success', success);
                 }, function (error) {
                     // error
                     console.error('error', error);
@@ -58,7 +57,6 @@
                 if (ionic.Platform.platform() === "ios") {
                     $cordovaToast.showLongCenter(message).then(function (success) {
                         // success
-                        console.log('makeToastOnCenter success', success);
                         navigator.notification.beep(1);
                     }, function (error) {
                         // error

@@ -7,21 +7,22 @@
         .controller('noConnection', noConnection);
 
     function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope,
-        $cordovaSpinnerDialog, $cordovaDialogs,
+        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork,
         networkService, chatslogService, dbAccessService, sharedObjectService) {
-		
+
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
-     
+
         ionic.Platform.ready(function () {
             console.log(vm.title + " : ionic ready.");
-            
+
             activateBackground();
             activate();
             setConfigTheme();
-            
+            activateNetworkService();
+
             setTimeout(function () {
                 if (!!navigator.splashscreen) {
                     navigator.splashscreen.hide();
@@ -50,14 +51,13 @@
 
                     //location.href = "#/tab/group";
                     $state.go('tab.group');
-                    activateNetworkService();
                 };
                 initSpartanServer();
             }, 100);
         });
 
         function activate() {
-            console.warn('authController activate');
+            console.warn('activate: ' + vm.title);
 
             console.log("init push notification.");
 
@@ -85,7 +85,7 @@
                 });
             }
         }
-        
+
         function activateBackground() {
             if (ionic.Platform.platform() === "ios") {
                 // Prevent the app from going to sleep in background
@@ -106,13 +106,14 @@
         }
 
         function activateNetworkService() {
+            networkService.init();
             networkService.regisSocketListener();
         }
 
         function initSpartanServer() {
-            function initCallback (err, server) {
+            function initCallback(err, server) {
                 console.log("Init serve completed is connected: " + server._isConnected + " : " + err);
-			
+
                 if (err !== null) {
                     onServerConnectionFail(err);
                 }
@@ -206,23 +207,40 @@
             }
         }
 
-        function onServerConnectionFail(errMessage) {      
-            console.warn("Just go to no connection page. " + errMessage);
-            
+        function onServerConnectionFail(errMessage) {
+            console.warn("onServerConnectionFail: " + errMessage);
+
             // Hide spinner dialog
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
             }
-            
-            $cordovaDialogs.alert('Connecting to server fail! \n Please come back again.', 'No internet connection!', 'OK')
-            .then(function() {
-                // callback success
-                $('#login').css('display', 'none');
-                $('.bar-stable').css({ 'display': '' });
-                $('#splash').css({ 'display': 'none' });
-                
-                location.href = "#/tab/login/error";
-            });
+
+            if ($cordovaNetwork.isOnline()) {
+                $cordovaDialogs.alert('Fail to connecting server! \n Please come back again.',
+                    'Fail to connecting server!', 'OK')
+                .then(function () {
+                    // callback success
+                    $('#login').css('display', 'none');
+                    $('.bar-stable').css({ 'display': '' });
+                    $('#splash').css({ 'display': 'none' });
+
+                    location.href = "#/tab/login/error";
+                });
+            }
+            else {
+                console.warn("Just go to no connection page. " + errMessage);
+
+                $cordovaDialogs.alert('Fail to connecting server! \n Please come back again.',
+                    'No internet connection!', 'OK')
+                .then(function () {
+                    // callback success
+                    $('#login').css('display', 'none');
+                    $('.bar-stable').css({ 'display': '' });
+                    $('#splash').css({ 'display': 'none' });
+
+                    location.href = "#/tab/login/error";
+                });
+            }
         }
 
         function onMissingParams() {
@@ -233,7 +251,7 @@
         }
 
         function onReadyToSigning() {
-			$rootScope.themename = sharedObjectService.getThemename();
+            $rootScope.themename = sharedObjectService.getThemename();
             var authen = server.authenData;
             console.log("token: ", authen.token);
             //<@-- if have no token app wiil take you to signing page.
@@ -304,7 +322,7 @@
                                     if (res.code === HttpStatusCode.success) {
                                         console.log("Success Authen User...");
                                     }
-                                    else if(res.code === HttpStatusCode.duplicateLogin) {
+                                    else if (res.code === HttpStatusCode.duplicateLogin) {
                                         onDuplicateLogin(res);
                                     }
                                     else if (res.code === HttpStatusCode.requestTimeout) {
@@ -332,13 +350,13 @@
         $ionicModal.fromTemplateUrl('templates/modal-setConfig.html', {
             scope: $scope,
             animation: 'slide-in-up'
-        }).then(function(modal) {
+        }).then(function (modal) {
             $scope.setConfigModal = modal
-        })  
+        })
 
-        function setConfigTheme(){
-            if(typeof($scope.setConfigModal) != 'undefined'){
-                if(!$localStorage.themeData){
+        function setConfigTheme() {
+            if (typeof ($scope.setConfigModal) != 'undefined') {
+                if (!$localStorage.themeData) {
                     $localStorage.themeData = 'themedefault';
                 }
                 $rootScope.theme = $localStorage.themeData;
@@ -348,9 +366,10 @@
         }
     }
 
-    function noConnection($scope,$ionicNavBarDelegate,$rootScope,$ionicHistory){
+    function noConnection($scope, $ionicNavBarDelegate, $rootScope, $ionicHistory) {
         $ionicNavBarDelegate.showBackButton(false);
-        $scope.goBack = function(){
+
+        $scope.goBack = function () {
             $ionicHistory.goBack(-1);
         }
     }

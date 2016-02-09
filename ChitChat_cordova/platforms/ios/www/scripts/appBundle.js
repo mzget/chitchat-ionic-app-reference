@@ -84,7 +84,7 @@ var Main = (function () {
         crypto.decryptWithSecureRandom(content, callback);
     };
     Main.prototype.authenUser = function (server, email, password, callback) {
-        console.log("authenUser:", email, password);
+        console.log("authenUser:", email);
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
             callback(err, loginRes);
@@ -1495,9 +1495,18 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
-        ServerImplemented.prototype.disposeClient = function () {
-            pomelo = null;
+        ServerImplemented.prototype.dispose = function () {
             console.warn("dispose socket client.");
+            this.disConnect();
+            this.authenData = null;
+        };
+        ServerImplemented.prototype.disConnect = function () {
+            console.log('disconnecting...');
+            if (!!pomelo) {
+                pomelo.removeAllListeners();
+                pomelo.disconnect();
+                pomelo = null;
+            }
         };
         ServerImplemented.prototype.logout = function () {
             var registrationId = localStorage.getItem("registrationId");
@@ -1509,6 +1518,7 @@ var ChatServer;
             this.disConnect();
         };
         ServerImplemented.prototype.init = function (callback) {
+            console.log('serverImp.init()');
             var self = this;
             this._isConnected = false;
             username = localStorage.getItem("username");
@@ -1563,13 +1573,6 @@ var ChatServer;
                 console.log(err);
             });
         };
-        ServerImplemented.prototype.disConnect = function () {
-            if (pomelo !== null) {
-                pomelo.removeAllListeners();
-                pomelo.disconnect();
-            }
-            this.authenData = null;
-        };
         ServerImplemented.prototype.kickMeAllSession = function (uid) {
             if (pomelo !== null) {
                 var msg = { uid: uid };
@@ -1579,7 +1582,7 @@ var ChatServer;
             }
         };
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
-            console.log("socket init connecting to: ", _host, _port);
+            console.log("socket connecting to: ", _host, _port);
             pomelo.init({ host: _host, port: _port }, function cb(err) {
                 console.log("socket init result: " + err);
                 callback(err);
@@ -1595,16 +1598,24 @@ var ChatServer;
                 var msg = { uid: username };
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
                     console.log("QueryConnectorServ", result.code);
-                    if (result.code === 200) {
-                        var port = result.port;
-                        self.connectSocketServer(self.host, port, function (err) {
-                            self._isConnected = true;
-                            if (!!err) {
-                                callback(err, null);
-                            }
-                            else {
-                                self.authenForFrontendServer(callback);
-                            }
+                    if (result.code === HttpStatusCode.success) {
+                        self.disConnect();
+                        var promiseLoadSocket = new Promise(function (resolve, reject) {
+                            self.loadSocket(resolve, reject);
+                        });
+                        promiseLoadSocket.then(function (value) {
+                            var port = result.port;
+                            self.connectSocketServer(self.host, port, function (err) {
+                                self._isConnected = true;
+                                if (!!err) {
+                                    callback(err, null);
+                                }
+                                else {
+                                    self.authenForFrontendServer(callback);
+                                }
+                            });
+                        }).catch(function (error) {
+                            console.error('Load socket fail!');
                         });
                     }
                 });

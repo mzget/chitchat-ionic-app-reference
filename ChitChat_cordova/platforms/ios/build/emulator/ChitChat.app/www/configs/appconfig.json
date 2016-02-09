@@ -1,9 +1,9 @@
 {
   "appName": "ChitChat",
-  "socketHost": "203.113.25.44",
-  "socketPort": 3015,
-  "webserver": "http://203.113.25.44",
+  "socketHost": "git.animation-genius.com",
+  "socketPort": 3010,
+  "webserver": "git.animation-genius.com",
   "encryption": false,
-  "version": "0.0.6",
+  "version": "0.0.7f1",
   "themename": "chitchat"
 }
