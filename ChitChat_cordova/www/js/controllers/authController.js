@@ -26,14 +26,14 @@
                     template: 'Wait for signing...'
                 });
             }
+            if (!!server) {
+                server.dispose();
+            }
 
             activateBackground();
             activate();
             setConfigTheme();
             activateNetworkService();
-            if (!!server) {
-                server.disposeClient();
-            }
 
             setTimeout(function () {
                 if (!!navigator.splashscreen) {
@@ -64,6 +64,7 @@
                     //location.href = "#/tab/group";
                     $state.go('tab.group');
                 };
+
                 initSpartanServer();
             }, 100);
         });
@@ -125,8 +126,6 @@
         function initSpartanServer() {
             function initCallback(err, server) {
                 console.log("Init serve completed is connected: " + server._isConnected + " : " + err);
-
-                initCallback = null;
 
                 if (err !== null) {
                     onServerConnectionFail(err);
@@ -198,7 +197,7 @@
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
 
-                $cordovaDialogs.alert(errMessage, 'Authen Fail!', 'OK')
+                $cordovaDialogs.alert(errMessage, 'Authentication Fail!', 'OK')
                 .then(function () {
                     // callback success
                     localStorage.clear();
@@ -324,7 +323,7 @@
                                     if (res.code === HttpStatusCode.success) {
                                         console.log("Success Login User...");
                                     }
-                                    else if (res.code === 1004) {
+                                    else if (res.code === HttpStatusCode.duplicateLogin) {
                                         console.warn(JSON.stringify(err), JSON.stringify(res));
                                         onDuplicateLogin(res);
                                     }

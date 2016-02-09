@@ -333,8 +333,8 @@ define(['jquery'], function (jq) {
           url += ':' + port;
       }
 
-      //      socket = io.connect(url, { 'force new connection': true, reconnect: true });
-      socket = io.connect(url, { 'force new connection': true, reconnection: false, reconnectionDelay: 1000 });
+      socket = io.connect(url, { 'force new connection': true, reconnect: false });  
+      //      socket = io.connect(url, { 'force new connection': true }); reconnection: false, reconnectionDelay: 1000 
 
       socket.on('connect', function () {
           console.log('[pomeloclient.init] websocket connected!');

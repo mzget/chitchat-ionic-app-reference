@@ -52,12 +52,22 @@ module ChatServer {
                 console.warn("disconnect Event");
             }
         }
-        public disposeClient() {
+
+        public dispose() {
             console.warn("dispose socket client.");
 
             this.disConnect();
 
             this.authenData = null;
+        }
+
+        public disConnect() {
+            console.log('disconnecting...');
+            if (!!pomelo) {
+                pomelo.removeAllListeners();
+                pomelo.disconnect();
+                pomelo = null;
+            }
         }
        
         public logout() {
@@ -72,6 +82,7 @@ module ChatServer {
         }
 
         public init(callback: (err, res) => void) {
+            console.log('serverImp.init()');
             var self = this;
 
             this._isConnected = false;
@@ -133,15 +144,6 @@ module ChatServer {
                 console.log(err)
             });
         }
-
-        public disConnect() {
-            console.log('disconnecting...');
-            if (!!pomelo) {
-                pomelo.removeAllListeners();
-                pomelo.disconnect();
-                pomelo = null;
-            }
-        }
         
         public kickMeAllSession(uid: string) {
             if(pomelo !== null) {
@@ -153,7 +155,7 @@ module ChatServer {
         }
 
         private connectSocketServer(_host: string, _port: number, callback: (err) => void) {
-            console.log("socket init connecting to: ", _host, _port);
+            console.log("socket connecting to: ", _host, _port);
             
             // var self = this;    
             pomelo.init({ host: _host, port: _port }, function cb(err) {
@@ -182,20 +184,27 @@ module ChatServer {
 
                     console.log("QueryConnectorServ", result.code);
 
-                    if (result.code === 200) {
-                        //pomelo.disconnect();
-                        
-                        var port = result.port;
-                        //<!-- Connecting to connector server.
-                        self.connectSocketServer(self.host, port, (err) => {
-                            self._isConnected = true;
+                    if (result.code === HttpStatusCode.success) {
+                        self.disConnect();
 
-                            if (!!err) {
-                                callback(err, null);
-                            }
-                            else {
-                                self.authenForFrontendServer(callback);
-                            }
+                        let promiseLoadSocket = new Promise((resolve, reject) => {
+                            self.loadSocket(resolve, reject);
+                        });
+                        promiseLoadSocket.then((value) => {
+                            var port = result.port;
+                            //<!-- Connecting to connector server.
+                            self.connectSocketServer(self.host, port, (err) => {
+                                self._isConnected = true;
+
+                                if (!!err) {
+                                    callback(err, null);
+                                }
+                                else {
+                                    self.authenForFrontendServer(callback);
+                                }
+                            });
+                        }).catch((error) => {
+                            console.error('Load socket fail!');
                         });
                     }
                 });

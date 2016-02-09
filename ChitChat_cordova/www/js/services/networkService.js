@@ -17,8 +17,10 @@
         return service;
 
         function init() {
-            var networkState = navigator.connection.type;
-            console.log("get network state", networkState);
+            if (ionic.Platform.platform() === 'ios') {
+                var networkState = navigator.connection.type;
+                console.log("get network state", networkState);
+            }
 
             // listen for Online event
             $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
