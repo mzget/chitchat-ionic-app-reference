@@ -53,14 +53,11 @@ module ChatServer {
             }
         }
         public disposeClient() {
-            if (!!pomelo) {
-                pomelo.removeAllListeners();
-                pomelo.disconnect();
-                pomelo = null;
-            }
+            console.warn("dispose socket client.");
+
+            this.disConnect();
 
             this.authenData = null;
-            console.warn("dispose socket client.");
         }
        
         public logout() {
@@ -138,12 +135,12 @@ module ChatServer {
         }
 
         public disConnect() {
-            if (pomelo !== null) {
+            console.log('disconnecting...');
+            if (!!pomelo) {
                 pomelo.removeAllListeners();
                 pomelo.disconnect();
+                pomelo = null;
             }
-
-            this.authenData = null;
         }
         
         public kickMeAllSession(uid: string) {
