@@ -148,7 +148,7 @@ angular.module('starter',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
-				controller: 'chatController'
+				controller: 'homeController'
 			}
 		}
 	})

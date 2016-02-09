@@ -11,19 +11,34 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	var self = this;
 	self.title = 'chatController';
-    
+
 	var myprofile = main.getDataManager().myProfile;
 	var allMembers = main.getDataManager().orgMembers;
 	var chatRoomApi = main.getChatRoomApi();
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
+    
+	function setScopeData(){
+		myprofile = main.getDataManager().myProfile;
+		allMembers = main.getDataManager().orgMembers;
+		chatRoomApi = main.getChatRoomApi();
+		$scope.allMembers = allMembers;
+		$scope.myprofile = myprofile;
+	}
 
 	function activate() {
+	    
 	    console.log(self.title + " is activate");
-
+	    console.log(self.currentRoom);
+		if(self.currentRoom === undefined){
+			var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
+            roomSelected.setRoom(group);
+		}
 		self.currentRoom = roomSelected.getRoom();
+		self.chatRoomComponent = new ChatRoomComponent(main, self.currentRoom._id);
 
+		console.log('currentRoom',self.currentRoom);
 		//<!-- Set up roomname for display title of chatroom.
 		var roomName = self.currentRoom.name;
 		if (!roomName || roomName === "") {
@@ -501,6 +516,27 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.isBlockNoti = function(id){
 		return blockNotifications.isBlockNoti(id);
 	}
+
+	$scope.$on('enterChat', function(event, args) { 
+		console.log("App view (menu) entered.");
+	    $ionicLoading.show({
+	        template: 'Loading...'
+	    });
+	    activate();
+	    setupMenuItem();
+	    setupModals();
+	    setScopeData();
+	 });
+	
+	$scope.$on('changeChat', function(event, args) { 
+		var newRoom = JSON.parse(JSON.stringify(args));
+		chatRoomService.leaveRoomCB( function(){
+			roomSelected.setRoom(newRoom);
+			activate();
+		});
+		$('#webchatdetail').find('.message-list').empty();
+	});
+
 
     // ON ENTER 
 	$scope.$on('$ionicView.enter', function () { //This is fired twice in a row

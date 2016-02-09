@@ -1,5 +1,48 @@
 angular.module('spartan.media', [])
 
+.controller('FileController', function($scope,roomSelected) {
+	$scope.onGetFileSelect = function(){
+		var file    = document.querySelector('input[type=file]').files[0];
+	    var reader  = new FileReader();
+	    reader.onloadend = function () {
+	    	var fileType = file.type.split("/");
+	    	switch(fileType[0]){
+	    		case 'image':
+			        $scope.$broadcast('addImg', 'addImg');
+			        break;
+			    case 'video':
+			        $scope.$broadcast('captureVideo', 'captureVideo');
+			        break;
+			    default:
+			        reader.onloadend = function () {
+			            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.File]]);
+			        } 
+			        reader.readAsDataURL(file);
+			        break;
+	    	}
+	    	//$scope.$emit('fileUri',[reader.result,ContentType[ContentType.Image]]);
+	        //console.log(reader.result);
+	    } 
+		reader.readAsDataURL(file);
+	}
+	$scope.uploadFile = function(id){
+		var file    = document.querySelector('input[type=file]').files[0];
+			if(file !== undefined){
+	        var reader  = new FileReader();
+	        reader.onloadend = function () {
+	            var file = new UploadMediaWeb(roomSelected.getRoom()._id, reader.result, ContentType[ContentType.File], function(id,messageId){
+	            	$scope.$emit('delectTemp', [id]); 
+	            });
+	            mediaUpload[id] = file;
+	            mediaUpload[id].upload();
+	        } 
+	        reader.readAsDataURL(file);
+	    	}else{
+	    		$scope.$emit('delectTemp', [id]); 
+		    }
+	}
+})
+
 .controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, $ionicModal,
     ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
  

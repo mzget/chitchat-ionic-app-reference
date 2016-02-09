@@ -48,8 +48,7 @@
                     $rootScope.webServer = sharedObjectService.getWebServer();
                     $rootScope.appVersion = sharedObjectService.getAppVersion();
 
-                    //location.href = "#/tab/group";
-                    $state.go('tab.group');
+                    location.href = '#/tab/group/chat/55d177c2d20212737c46c685';
                     activateNetworkService();
                 };
                 initSpartanServer();

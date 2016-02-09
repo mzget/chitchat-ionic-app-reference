@@ -23,8 +23,10 @@
                 var room = JSON.parse(JSON.stringify(res.data));
 
                 $scope.chat = function () {
-                    roomSelected.setRoom(room);
-                    location.href = '#/tab/group/chat/' + room._id;
+                    //roomSelected.setRoom(room);
+                    //location.href = '#/tab/group/chat/' + room._id;
+                    console.log("ROOM",room);
+                    $scope.$broadcast('changeChat', room);
                 };
 
                 $scope.freecall = function () {

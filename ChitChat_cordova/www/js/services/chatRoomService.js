@@ -86,7 +86,8 @@
                 }
             },
             getChatRoomComponent: getChatRoomComponent,
-            leaveRoom: leaveRoom
+            leaveRoom: leaveRoom,
+            leaveRoomCB: leaveRoomCB
         };
 
         var chats = [];
@@ -164,6 +165,18 @@
 
             	sharedObjectService.getDataListener().removeChatListenerImp(chatRoomComponent);
             	sharedObjectService.regisNotifyNewMessageEvent();
+            });
+        }
+
+        function leaveRoomCB(cb){
+            var curRoom = roomSelected.getRoom();
+            chatRoomComponent.leaveRoom(curRoom._id, function callback(err, res) {
+                roomSelected.setRoom(null);
+                chatRoomComponent.chatMessages = [];
+                clear();
+                sharedObjectService.getDataListener().removeChatListenerImp(chatRoomComponent);
+                sharedObjectService.regisNotifyNewMessageEvent();
+                cb();
             });
         }
 

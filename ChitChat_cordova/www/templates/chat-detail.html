@@ -1,6 +1,6 @@
 <ion-nav-bar>
 </ion-nav-bar>
-<ion-view id="chatDetail" view-title="{{currentRoom.name}}" cache-view="false" hide-tab-bar>
+<ion-view id="chatDetail" view-title="{{currentRoom.name}}" cache-view="false" hide-back-button="true" hide-tab-bar>
 	<ion-nav-buttons side="right">
 		<div ng-show="currentRoom.type!=3">
 	        <i ng-if="isFavorite(currentRoom._id)" class="ion-heart assertive" style="font-size:25px; line-height:40px;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)"></i>
@@ -28,8 +28,7 @@
 			<i class="ion-navicon-round" style="margin-left:15px; margin-right:5px; font-size:25px; line-height:40px;" ng-click="openPopover($event)"></i>
 		</div>
     </ion-nav-buttons>
-	<ion-content delegate-handle="mainScroll" style="overflow:auto;">
-		
+	<ion-content delegate-handle="mainScroll" style="overflow:auto;" scroll="false">
 		<!-- -- -- -- -- -- -- -- -- -- -- WEB GROUP -- -- -- -- -- -- -- -- -- -- -->
 		<div id="webgroup" style="float:left; display:inline-block; width:25%; margin:0; overflow-y:scroll; overflow-x:hidden;">
 <!-- 			<ion-refresher on-refresh="pullRefresh()"></ion-refresher> -->
@@ -180,7 +179,7 @@
 		</div>
 			
 		<!-- -- -- -- -- -- -- -- -- -- -- WEB DETAIL -- -- -- -- -- -- -- -- -- -- -->
-		<div id="webchatdetail" style="float:left; display:inline-block; width:50%; margin:0; overflow-y:scroll;">
+		<div id="webchatdetail" style="float:left; display:inline-block; width:50%; margin:0; overflow-y:scroll;" ng-controller="chatController">
 			<div style="float:left; display:inline-block; width:100%;">
 				<div ng-controller="FileController">
 					<div ng-controller="ImageController">

@@ -68,6 +68,13 @@
 		    tryGetFavorite();
 		}
 
+		function getChatWeb(){
+			var chatheight = $(window).height() - 43;
+			$('ion-content').find('#webgroup').css({'height':chatheight+'px'});
+			$('ion-content').find('#webchatdetail').css({'height':chatheight-44+'px'});
+			$scope.$broadcast('enterChat','');
+		}
+
 		function tryGetFavorite(){
 			if(!jQuery.isEmptyObject(main.getDataManager().orgGroups) &&
 				!jQuery.isEmptyObject(main.getDataManager().projectBaseGroups) &&
@@ -75,6 +82,7 @@
 				!jQuery.isEmptyObject(main.getDataManager().orgMembers)){
 					setTimeout(function () {
 			        	$scope.favorites = getFavorite();
+			        	getChatWeb();
 			    }, 500);
 			}else{
 				setTimeout(function () {
