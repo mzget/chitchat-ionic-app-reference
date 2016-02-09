@@ -225,15 +225,20 @@
             }
 
             if ($cordovaNetwork.isOnline()) {
-                $cordovaDialogs.alert('Fail to connecting server! \n Please come back again.',
-                    'Fail to connecting server!', 'OK')
-                .then(function () {
+                $cordovaDialogs.confirm('Fail to connecting server! \n Please try again.',
+                    'Fail to connecting server!', ['OK', 'Try Again'])
+                .then(function (buttonId) {
                     // callback success
-                    $('#login').css('display', 'none');
-                    $('.bar-stable').css({ 'display': '' });
-                    $('#splash').css({ 'display': 'none' });
+                    if (buttonId === 1) {
+                        $('#login').css('display', 'none');
+                        $('.bar-stable').css({ 'display': '' });
+                        $('#splash').css({ 'display': 'none' });
 
-                    location.href = "#/tab/login/error";
+                        location.href = "#/tab/login/error";
+                    }
+                    else if (buttonId === 2) {
+                        location.href = '';
+                    }
                 });
             }
             else {
