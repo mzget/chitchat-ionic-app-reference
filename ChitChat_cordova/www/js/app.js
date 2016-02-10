@@ -52,7 +52,6 @@ angular.module('starter',
 		templateUrl: 'templates/tabs.html'
 	})
 	// Each tab has its own nav history stack:
-
         //@ Tab-login state.
 	.state(NGStateUtil.tab_login, {
 		url: '/login',
@@ -84,20 +83,20 @@ angular.module('starter',
 		}
 	})
 	.state(NGStateUtil.tab_group_viewprofile,{
-		url: '/group/member/:chatId',
+		url: '/group/profile/:chatId',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: 'GroupViewprofileCtrl'
+				controller: ngControllerUtil.viewProfileCtrl
 			}
 		}
 	})
 	.state(NGStateUtil.tab_group_members, {
-		url: '/group/members',
+		url: '/group/details',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-members.html',
-				controller: 'viewGroupMembersCtrl'
+				controller: ngControllerUtil.groupDetailCtrl
 			}
 		}
 	})
@@ -120,7 +119,7 @@ angular.module('starter',
 		}
 	})
 	.state(NGStateUtil.tab_group_chat, {
-		url: '/group/chat/:chatId',
+		url: '/group/chat',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
@@ -162,16 +161,16 @@ angular.module('starter',
 		views: {
 			'tab-chats': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: 'GroupViewprofileCtrl'
+				controller: ngControllerUtil.viewProfileCtrl
 			}
 		}
 	})
 	.state(NGStateUtil.tab_chats_chat_members, {
-	    url: '/chats/chat/members/:chatId',
+	    url: '/chats/chat/details',
 		views: {
 			'tab-chats': {
 				templateUrl: 'templates/tab-group-members.html',
-				controller: 'viewGroupMembersCtrl'
+				controller: ngControllerUtil.groupDetailCtrl
 			}
 		}
 	})

@@ -9,7 +9,8 @@
 
     function modalFactory($http, $state, webRTCFactory) {
         var service = {
-            initContactModal: initContactModal
+            initContactModal: initContactModal,
+            initMyProfileModal: initMyProfileModal
         };
 
         return service;
@@ -25,11 +26,10 @@
                 $scope.chat = function () {
                     roomSelected.setRoom(room);
                     if($state.current.name === NGStateUtil.tab_chats_chat_members) {
-                        // location.href = '#/tab/group/chat/' + room._id;
                         $state.go(NGStateUtil.tab_chats_chat);
                     }
-                    else if ($state.current.name === 'tab.group' || $state.current.name === 'tab.group-members') {
-                        $state.go('tab.group-chat');
+                    else if ($state.current.name === NGStateUtil.tab_group || $state.current.name === NGStateUtil.tab_group_members) {
+                        $state.go(NGStateUtil.tab_group_chat);
                     }
                 };
 
@@ -40,12 +40,26 @@
                 };
 
                 $scope.openViewContactProfile = function (id) {
-                    location.href = '#/tab/group/member/' + id;
-                    //$state.go("tab.group-members", { chatId: id}, { inherit: false });
+                    if($state.current.name === NGStateUtil.tab_chats_chat_members) {
+                        $state.go(NGStateUtil.tab_chats_chat_viewprofile, { chatId: id });
+                    }
+                    else if ($state.current.name === NGStateUtil.tab_group || $state.current.name === NGStateUtil.tab_group_members) {
+                        $state.go(NGStateUtil.tab_group_viewprofile, { chatId : id });
+                    }
                 }
 
                 $scope.$apply();
             });
+
+            done();
+        }
+
+        function initMyProfileModal($scope, done) {
+            $scope.chat = main.getDataManager().myProfile;
+
+            $scope.editProfile = function (chatId) {
+                $state.go(NGStateUtil.tab_group_viewprofile, { chatId: chatId });
+            };
 
             done();
         }

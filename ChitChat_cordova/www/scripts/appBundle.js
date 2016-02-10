@@ -1460,6 +1460,13 @@ var Dummy = (function () {
     };
     return Dummy;
 })();
+var ngControllerUtil = (function () {
+    function ngControllerUtil(parameters) {
+    }
+    ngControllerUtil.viewProfileCtrl = "viewProfileCtrl";
+    ngControllerUtil.groupDetailCtrl = "groupDetailCtrl";
+    return ngControllerUtil;
+})();
 var NGStateUtil = (function () {
     function NGStateUtil() {
     }
@@ -2288,4 +2295,3 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
-//# sourceMappingURL=appBundle.js.map

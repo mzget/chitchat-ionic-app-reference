@@ -3,27 +3,14 @@
 
     angular
         .module('spartan.group', [])
-        .controller('groupDetailController', groupDetailController)
-        .controller('viewGroupMembersCtrl', viewGroupMembersCtrl)
+        .controller('groupDetailCtrl', groupDetailCtrl)
         .controller('editMemberGroup', editMemberGroup);
-
-//    groupDetailController.$inject = ['$location'];
 
     var requestReload = false;
     var id_checked = [];
 
-    function groupDetailController($location) {
-        /* jshint validthis:true */
-        var vm = this;
-        vm.title = 'groupDetailController';
-
-        activate();
-
-        function activate() { }
-    }
-
-    function editMemberGroup($scope, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $rootScope,
-        CreateGroup, ProjectBase, roomSelected) {
+    function editMemberGroup($scope, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $rootScope, CreateGroup, ProjectBase, roomSelected)
+    {
         id_checked = [];
         $scope.myProfile = main.getDataManager().myProfile;
 
@@ -98,8 +85,12 @@
 
     }
 
-    function viewGroupMembersCtrl($scope, $state, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory,
-        roomSelected, CreateGroup, modalFactory) {
+    function groupDetailCtrl($scope, $state, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory,
+        roomSelected, CreateGroup, modalFactory)
+    {
+            var self = this;
+            self.name = ngControllerUtil.groupDetailCtrl;
+
         $scope.button = {};
         $scope.button.post = {};
         $scope.button.album = {};
@@ -110,11 +101,22 @@
             $scope.button.members.clicked = false;
             button.clicked = true;
         };
+
         $scope.$on('$ionicView.enter', function () {
+            console.info('view.enter: ', self.name);
+
             if($rootScope.selectTab=='post') $scope.button.post.clicked = true;
             else if($rootScope.selectTab=='album') $scope.button.album.clicked = true;
             else if($rootScope.selectTab=='members') $scope.button.members.clicked = true;
 
+            //<!-- My profile. 
+            //@ it cannot auto close modal when clicked.
+            //$ionicModal.fromTemplateUrl('templates/modal-myprofile.html', {
+            //    scope: $scope,
+            //    animation: 'slide-in-up'
+            //}).then(function (modal) {
+            //    $scope.myProfileModal = modal;
+            //});
             //<!-- Contact modal.
             $ionicModal.fromTemplateUrl('templates/modal-contact.html', {
                 scope: $scope,
@@ -126,6 +128,7 @@
             //Cleanup the modal when we're done with it!
             $scope.$on('$destroy', function () {
                 $scope.contactModal.remove();
+                //$scope.myProfileModal.remove();
             });
             // Execute action on hide modal
             $scope.$on('modal.hidden', function () {
@@ -147,14 +150,16 @@
             }
         });
         $scope.$on('$ionicView.leave', function () {
-            console.debug("leave controller.");
+            console.info("leave: ", self.name);
         });
         $scope.$on('$ionicView.unloaded', function () {
-            console.info("unloaded controller.");
+            console.info("unloaded :", self.name);
         });
         $scope.$on('$ionicView.beforeLeave', function () {
-            console.info("beforeLeave controller.");
+            console.info("beforeLeave :", self.name);
+
             $scope.contactModal.hide();
+            //$scope.myProfileModal.hide();
         });
         $scope.$on('$ionicView.afterLeave', function () {
             console.info("afterLeave controller.");
@@ -175,6 +180,7 @@
         $scope.chatGroup = group;
         $scope.sourceImage = "";
         $scope.model = { groupname: group.name, originalName: group.name };
+
         init();
         function init() {
             if (room.type === RoomType.privateGroup || room.type === RoomType.organizationGroup) {
@@ -214,17 +220,16 @@
         }
         $scope.removeMember = function (id) {
             var idMember = [];
+            console.log(id);
             idMember.push(id);
             server.editGroupMembers("remove", room._id, RoomType[room.type], idMember, function (err, res) {
                 if (!err) {
+                    console.log(JSON.stringify(res));
                     var indexMember;
-                    $.each($scope.members, function (index, result) {
-                        if (result._id == id || result.id == id) { 
-                            indexMember = index;
-                        }
+                    $.each(room.members, function (index, result) {
+                        if (result._id == id || result.id == id) { indexMember = index; }
                     });
                     $scope.members.splice(indexMember, 1);
-            
                     if (id == $scope.myProfile._id) {
                         $state.go('tab.group');
                     }
@@ -239,8 +244,18 @@
         }
 
         $scope.viewContact = function (contactId) {
-            console.debug("viewContact", contactId);
-            $scope.openContactModal(contactId);
+            if (main.getDataManager().isMySelf(contactId)) {
+                $scope.openProfileModal();
+            }
+            else {
+                $scope.openContactModal(contactId);
+            }
+        }
+
+        $scope.openProfileModal = function () {
+            //modalFactory.initMyProfileModal($scope, function done() {
+            //    $scope.myProfileModal.show();
+            //});
         }
         //<!-- Contact modal -------------------------->
         $scope.openContactModal = function (contactId) {
@@ -248,6 +263,7 @@
                 $scope.contactModal.show();
             });
         };
+
         $scope.closeContactModal = function () {
             $scope.contactModal.hide();
         };
