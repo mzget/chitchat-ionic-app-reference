@@ -22,7 +22,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	function activate() {
 	    console.log(self.title + " is activate");
 
-		self.currentRoom = roomSelected.getRoom();
+	    self.currentRoom = roomSelected.getRoom();
+	    if (self.currentRoom == null || self.currentRoom == undefined) {
+	        self.currentRoom = roomSelected.getLastJoinRoom();
+	        roomSelected.setRoom(self.currentRoom);
+	    }
+
 
 		//<!-- Set up roomname for display title of chatroom.
 		var roomName = self.currentRoom.name;
@@ -148,6 +153,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		modalcount++;
 		$scope.modalSticker.show();
 	};
+
 	$scope.sendSticker = function(sticker) {
 		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
 		
@@ -165,6 +171,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		modalcount++;
 		$scope.modalWebview.show();
 	};
+
 	$scope.closeModalWebview = function() {
 		$scope.modalWebview.hide();
 	};
@@ -186,9 +193,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			$scope.$broadcast('cancelRecord', 'cancelRecord');
 		}		
 	});
+
 	$scope.openReaderModal = function() {
 		$scope.readerViewModal.show();
 	};
+
 	$scope.closeReaderModal = function() {
 		$scope.readerViewModal.hide();
 	};
@@ -245,9 +254,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.image = function(){
 		$scope.$broadcast('addImg', 'addImg');
 	}
+
 	$scope.video = function(){
 		$scope.$broadcast('captureVideo', 'captureVideo');
 	}
+
 	$scope.voice = function(){
 		if($('.audio-recorder').is(".recording")){
 			$('.audio-recorder').removeClass("recording");
@@ -270,6 +281,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}
 	});
+
 	// Send Image and remove temp Image
 	$scope.$on('fileUrl', function(event,args){
 		if(args[2]==ContentType[ContentType.Image]){
@@ -436,6 +448,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			});
 		}
 	}
+
 	$scope.editBlockNoti = function(editType,id,type){
 		$ionicLoading.show({
 			  template: 'Loading..'
@@ -466,17 +479,17 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			});
 		}
 	}
+
 	$scope.isFavorite = function(id){
 		return Favorite.isFavorite(id);
 	}
+
 	$scope.isBlockNoti = function(id){
 		return blockNotifications.isBlockNoti(id);
 	}
 
     // ON ENTER 
-	$scope.$on('$ionicView.enter', function () { //This is fired twice in a row
-	    console.log("App view (menu) entered.");
-
+	$scope.$on('$ionicView.enter', function () {
 	    $ionicLoading.show({
 	        template: 'Loading...'
 	    });

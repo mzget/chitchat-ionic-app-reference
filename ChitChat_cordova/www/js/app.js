@@ -54,7 +54,7 @@ angular.module('starter',
 	// Each tab has its own nav history stack:
 
         //@ Tab-login state.
-	.state('tab.login', {
+	.state(NGStateUtil.tab_login, {
 		url: '/login',
 		views: {
 		    'tab-login': {
@@ -63,7 +63,7 @@ angular.module('starter',
 			}
 		}
 	})
-	.state('tab.login-error', {
+	.state(NGStateUtil.tab_login_error, {
 		url: '/login/error',
 		views: {
 			'tab-login': {
@@ -74,7 +74,7 @@ angular.module('starter',
 	})
 
         //@ tab-group state.
-	.state('tab.group', {
+	.state(NGStateUtil.tab_group, {
 		url: '/group',
 		views: {
 			'tab-group': {
@@ -83,7 +83,7 @@ angular.module('starter',
 			}
 		}
 	})
-	.state('tab.group-viewprofile',{
+	.state(NGStateUtil.tab_group_viewprofile,{
 		url: '/group/member/:chatId',
 		views: {
 			'tab-group': {
@@ -92,7 +92,7 @@ angular.module('starter',
 			}
 		}
 	})
-	.state('tab.group-members', {
+	.state(NGStateUtil.tab_group_members, {
 		url: '/group/members',
 		views: {
 			'tab-group': {
@@ -101,7 +101,7 @@ angular.module('starter',
 			}
 		}
 	})
-	.state('tab.group-members-invite', {
+	.state(NGStateUtil.tab_group_members_invite, {
 		url: '/group/members/invite',
 		views: {
 			'tab-group': {
@@ -110,7 +110,7 @@ angular.module('starter',
 			}
 		}
 	})
-	.state('tab.group-members-edit', {
+	.state(NGStateUtil.tab_group_members_edit, {
 		url: '/group/members/:chatId/edit',
 		views: {
 			'tab-group': {
@@ -119,7 +119,7 @@ angular.module('starter',
 			}
 		}
 	})
-	.state('tab.group-chat', {
+	.state(NGStateUtil.tab_group_chat, {
 		url: '/group/chat/:chatId',
 		views: {
 			'tab-group': {
@@ -128,16 +128,7 @@ angular.module('starter',
 			}
 		}
 	})		
-	.state('tab.chat.readers', {
-	    url: '/group/chat/readers',
-	    views: {
-	        'tab-group' : {
-	            templateUrl : 'templates/reader-view.html',
-	            controller: 'chatController'
-	        }
-	    }	
-	})
-	.state('tab.group-freecall', {
+	.state(NGStateUtil.tab_group_freecall, {
 		url: '/group/freecall/:chatId',
 		views: {
 			'tab-group': {
@@ -192,22 +183,9 @@ angular.module('starter',
 	            controller: 'editMemberGroup'
 	        }
 	    }
-	})
-	
-	/*
-	// CHAT : Message
-	.state('tab.message', {
-		url: '/message/:chatId',
-		views: {
-			'tab-message': {
-				templateUrl: 'templates/chat-detail.html',
-				controller: 'ChatDetailCtrl'
-			}
-		}
-	})
-	*/
-	
-        //@ tab-timeline state.
+    })
+
+     //@ tab-timeline state.
 	.state('tab.timeline', {
 		url: '/timeline',
 		views: {
@@ -218,7 +196,7 @@ angular.module('starter',
 		}
 	})
 
-        //@ tab-options state.
+     //@ tab-options state.
 	.state('tab.account', {
 		url: '/account',
 		views: {

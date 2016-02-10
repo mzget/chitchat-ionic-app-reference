@@ -565,9 +565,19 @@ angular.module('spartan.services', [])
         console.log("setRoom", JSON.stringify(room));
     };
 
+    function getRoomOrLastRoom() {
+        if (!!room) {
+            return room;
+        }
+        else {
+            return lastJoinRoom;
+        }
+    }
+
     return {
         getRoom: getRoom,
         setRoom: setRoom,
-        getLastJoinRoom: getLastJoinRoom
+        getLastJoinRoom: getLastJoinRoom,
+        getRoomOrLastRoom: getRoomOrLastRoom
     }
 });

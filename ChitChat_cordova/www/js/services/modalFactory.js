@@ -5,9 +5,9 @@
         .module('spartan.services')
         .factory('modalFactory', modalFactory);
 
-    modalFactory.$inject = ['$http', 'webRTCFactory'];
+    // modalFactory.$inject = ['$http', 'webRTCFactory'];
 
-    function modalFactory($http, webRTCFactory) {
+    function modalFactory($http, $state, webRTCFactory) {
         var service = {
             initContactModal: initContactModal
         };
@@ -24,7 +24,13 @@
 
                 $scope.chat = function () {
                     roomSelected.setRoom(room);
-                    location.href = '#/tab/group/chat/' + room._id;
+                    if($state.current.name === NGStateUtil.tab_chats_chat_members) {
+                        // location.href = '#/tab/group/chat/' + room._id;
+                        $state.go(NGStateUtil.tab_chats_chat);
+                    }
+                    else if ($state.current.name === 'tab.group' || $state.current.name === 'tab.group-members') {
+                        $state.go('tab.group-chat');
+                    }
                 };
 
                 $scope.freecall = function () {

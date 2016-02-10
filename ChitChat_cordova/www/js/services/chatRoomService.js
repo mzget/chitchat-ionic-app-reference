@@ -172,7 +172,7 @@
         }
 
         function isPrivateChatRoom() {
-            var curRoom = roomSelected.getRoom();
+            var curRoom = roomSelected.getRoomOrLastRoom();
             if (curRoom.type === RoomType.privateChat) {
                 return true;
             }
