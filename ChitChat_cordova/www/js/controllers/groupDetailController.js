@@ -214,16 +214,17 @@
         }
         $scope.removeMember = function (id) {
             var idMember = [];
-            console.log(id);
             idMember.push(id);
             server.editGroupMembers("remove", room._id, RoomType[room.type], idMember, function (err, res) {
                 if (!err) {
-                    console.log(JSON.stringify(res));
                     var indexMember;
-                    $.each(room.members, function (index, result) {
-                        if (result._id == id || result.id == id) { indexMember = index; }
+                    $.each($scope.members, function (index, result) {
+                        if (result._id == id || result.id == id) { 
+                            indexMember = index;
+                        }
                     });
                     $scope.members.splice(indexMember, 1);
+            
                     if (id == $scope.myProfile._id) {
                         $state.go('tab.group');
                     }
