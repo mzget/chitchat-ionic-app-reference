@@ -576,9 +576,19 @@ angular.module('spartan.services', [])
         }
     }
 
+    function getCurrentRid() {
+        if (!!room) {
+            return room._id;
+        }
+        else {
+            return lastJoinRoom._id;
+        }
+    }
+
     return {
         getRoom: getRoom,
         setRoom: setRoom,
+        getCurrentRid: getCurrentRid,
         getLastJoinRoom: getLastJoinRoom,
         getRoomOrLastRoom: getRoomOrLastRoom
     }

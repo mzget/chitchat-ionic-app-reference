@@ -11,13 +11,10 @@
         var id_checked = [];
         $scope.myProfile = main.getDataManager().myProfile;
 
-        var room = roomSelected.getRoom();
+        var room_id = roomSelected.getCurrentRid();
+        var room = dataManager.getGroup(room_id);
         console.info("roomInfo." , JSON.stringify(room));
-        if (room == null) {
-            room = roomSelected.getLastJoinRoom();
-            console.warn("getLastJoinRoom is." , JSON.stringify(room));
-        }
-
+ 
         if ($rootScope.status == "invite") {
             $scope.allmembers = CreateGroup.getAllMember();
             for (var i = 0; i < room.members.length; i++) {
@@ -32,10 +29,13 @@
             setSelectedMembers();
         }
         else if ($rootScope.status = "edit") {
-            $scope.allmembers = getMembersInProjectBase(room);
-            for (var x = 0; x < room.members.length; x++) {
-                ProjectBase.setRolePosition($scope.allmembers[x].id, $scope.allmembers[x].role, $scope.allmembers[x].jobPosition);
-            }
+            getMembersInProjectBase(room, function (value) {
+                $scope.allmembers = value;
+                
+                for (var x = 0; x < room.members.length; x++) {
+                    ProjectBase.setRolePosition($scope.allmembers[x].id, $scope.allmembers[x].role, $scope.allmembers[x].jobPosition);
+                }
+            });
         }
 
         $scope.checked = function (id, selected) {
@@ -81,7 +81,9 @@
             $scope.selectedMembers = id_checked.length;
         }
         
-
+        $scope.$on('$ionicView.enter', function () {
+            console.info('view enter: ', ngControllerUtil.editMemberGroup);
+        });
     }
 
     function groupDetailCtrl($scope, $state, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory,
@@ -162,12 +164,10 @@
             console.info("afterLeave controller.");
         });
 
-        var room = roomSelected.getRoom();
+        var room_id = roomSelected.getCurrentRid();
+        var room = dataManager.getGroup(room_id);
         console.info("roomInfo.", JSON.stringify(room));
-        if (room == null) {
-            room = roomSelected.getLastJoinRoom();
-            console.warn("LastJoinRoom is.", JSON.stringify(room));
-        }
+      
         $scope.privateIndex = RoomType.privateGroup;
         $scope.projectBaseIndex = RoomType.projectBaseGroup;
         $scope.orgGroupsIndex = RoomType.organizationGroup;
@@ -185,16 +185,24 @@
                 });
             }
             else if (room.type === RoomType.projectBaseGroup) {
-                $scope.members = getMembersInProjectBase(room);
-                var admin = false;
-                $.each($scope.members, function (index, result) {
-                    if ($scope.myProfile._id == $scope.members[index]._id) {
-                        if ($scope.members[index].role == MemberRole[MemberRole.admin] || $scope.members[index].textRole == MemberRole[MemberRole.admin]) { admin = true; }
-                    }
+                var waitForMembers = new Promise(function executor(resolve, rejected) {
+                    getMembersInProjectBase(room, function (value) {
+                        $scope.members = value;
+                        resolve($scope.members);
+                    });
+                }).then(function onfillful(value) {
+                    var admin = false;
+                    $.each($scope.members, function (index, result) {
+                        if ($scope.myProfile._id == $scope.members[index]._id) {
+                            if ($scope.members[index].role == MemberRole[MemberRole.admin] || $scope.members[index].textRole == MemberRole[MemberRole.admin]) { admin = true; }
+                        }
+                    });
+                    $scope.meIsAdmin = admin;
+
+                    $ionicLoading.hide();
+                }).catch(function onReject(err) {
+
                 });
-                $scope.meIsAdmin = admin;
-                
-                $ionicLoading.hide();
             }
         }
 
@@ -221,7 +229,7 @@
             $ionicLoading.show();
 
             var idMember = [];
-            console.log('remove_id', id);
+            console.warn('remove_member_id', id);
             idMember.push(id);
             server.editGroupMembers("remove", room._id, RoomType[room.type], idMember, function (err, res) {
                 if (res.code === HttpStatusCode.success) {
@@ -230,9 +238,6 @@
                         $ionicLoading.hide();
 
                         $state.go(NGStateUtil.tab_group);
-                    }
-                    else {
-//                       $state.go($state.current, {}, { reload: true });
                     }
 
                     var indexMember;
@@ -356,23 +361,28 @@
         });
     }
 
-    function getMembersInProjectBase(room) {
-        for (var x = 0; x < room.members.length; x++) {
-            var member = dataManager.getContactProfile(room.members[x].id);
+    function getMembersInProjectBase(room, onCompleted) {
+        async.mapSeries(room.members, function iterator(item, cb) {            
+            var member = dataManager.getContactProfile(item.id);
             if (!!member) {
-                room.members[x]._id = member._id;
-                room.members[x].displayname = member.displayname;
-                room.members[x].image = member.image;
-                if (room.members[x].role == null) {
-                    room.members[x].role = MemberRole[MemberRole.member];
+                item._id = member._id;
+                item.displayname = member.displayname;
+                item.image = member.image;
+                if (item.role == null) {
+                    item.role = MemberRole[MemberRole.member];
                 }
-                if (room.members[x].jobPosition == null) {
-                    room.members[x].jobPosition = main.getDataManager().companyInfo.jobPosition[0];
+                if (item.jobPosition == null) {
+                    item.jobPosition = main.getDataManager().companyInfo.jobPosition[0];
                 }
-                room.members[x].isAdmin = isAdminInProjectBase(room, room.members[x]._id);
-            }
-        }
+                item.isAdmin = isAdminInProjectBase(room, item._id);
 
-        return room.members;
+                cb();
+            }
+            else {
+                cb();
+            }
+        }, function done(err) {
+            onCompleted(room.members);
+        });
     }
 })();

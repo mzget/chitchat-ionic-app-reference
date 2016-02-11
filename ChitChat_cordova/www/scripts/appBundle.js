@@ -781,6 +781,7 @@ var DataManager = (function () {
                 this.privateGroups[data._id] = data;
             }
         }
+        console.log('dataManager.updateGroupMembers:');
     };
     DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
         var _this = this;
@@ -1465,6 +1466,7 @@ var ngControllerUtil = (function () {
     }
     ngControllerUtil.viewProfileCtrl = "viewProfileCtrl";
     ngControllerUtil.groupDetailCtrl = "groupDetailCtrl";
+    ngControllerUtil.editMemberGroup = 'editMemberGroup';
     return ngControllerUtil;
 })();
 var NGStateUtil = (function () {

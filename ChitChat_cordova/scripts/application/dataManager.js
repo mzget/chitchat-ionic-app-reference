@@ -155,6 +155,7 @@ var DataManager = (function () {
                 this.privateGroups[data._id] = data;
             }
         }
+        console.log('dataManager.updateGroupMembers:');
     };
     DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
         var _this = this;
