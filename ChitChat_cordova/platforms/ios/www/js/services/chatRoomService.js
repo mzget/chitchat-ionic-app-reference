@@ -157,8 +157,8 @@
 
         function leaveRoom() {
             var curRoom = roomSelected.getRoom();
-            chatRoomComponent.leaveRoom(curRoom._id, function callback(err, res) {
-            	roomSelected.setRoom(null);
+            chatRoomComponent.leaveRoom(curRoom._id, function callback(err, res) 
+            {
             	chatRoomComponent.chatMessages = [];
             	clear();
 
@@ -172,7 +172,7 @@
         }
 
         function isPrivateChatRoom() {
-            var curRoom = roomSelected.getRoom();
+            var curRoom = roomSelected.getRoomOrLastRoom();
             if (curRoom.type === RoomType.privateChat) {
                 return true;
             }

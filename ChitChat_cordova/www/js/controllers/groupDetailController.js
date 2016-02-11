@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
@@ -6,12 +6,9 @@
         .controller('groupDetailCtrl', groupDetailCtrl)
         .controller('editMemberGroup', editMemberGroup);
 
-    var requestReload = false;
-    var id_checked = [];
-
     function editMemberGroup($scope, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $rootScope, CreateGroup, ProjectBase, roomSelected)
     {
-        id_checked = [];
+        var id_checked = [];
         $scope.myProfile = main.getDataManager().myProfile;
 
         var room = roomSelected.getRoom();
@@ -33,7 +30,8 @@
                 $scope.allmembers.splice(positionIndex, 1);
             }
             setSelectedMembers();
-        } else if ($rootScope.status = "edit") {
+        }
+        else if ($rootScope.status = "edit") {
             $scope.allmembers = getMembersInProjectBase(room);
             for (var x = 0; x < room.members.length; x++) {
                 ProjectBase.setRolePosition($scope.allmembers[x].id, $scope.allmembers[x].role, $scope.allmembers[x].jobPosition);
@@ -49,10 +47,9 @@
                 template: 'Loading..'
             });
             server.editGroupMembers("add", room._id, RoomType[room.type], id_checked, function (err, res) {
-                if (!err) {
-                    console.log(JSON.stringify(res));
-                    requestReload = true;
+                if (res.code === HttpStatusCode.success) {
                     $ionicLoading.hide();
+
                     if(ionic.Platform.platform() == "ios") {
                         $cordovaProgress.showSuccess(false, "Success!");
                         setTimeout(function () {
@@ -63,6 +60,8 @@
                 }
                 else {
                     console.warn(err, res);
+
+                    $ionicLoading.hide();
                 }
             });
         }
@@ -91,8 +90,8 @@
             var self = this;
             self.name = ngControllerUtil.groupDetailCtrl;
 
-        $scope.button = {};
-        $scope.button.post = {};
+            $scope.button = {};
+            $scope.button.post = {};
         $scope.button.album = {};
         $scope.button.members = {};
         $scope.selectTab = function(button){
@@ -138,16 +137,14 @@
             $scope.$on('modal.removed', function () {
                 // Execute action
             });
+            
+            //console.debug(room.members.length);
+            //for (var i = 0; i < room.members.length; i++) {
+            //    var member = main.getDataManager().orgMembers[room.members[i].id];
+            //    $scope.members.push(member);
+            //}
 
-            if (requestReload) {
-                var member = [];
-                for (var i = 0; i < id_checked.length; i++) {
-                    var member = main.getDataManager().orgMembers[id_checked[i]];
-                    $scope.members.push(member);
-                }
-                requestReload = false;
-                if (room.type === RoomType.projectBaseGroup) { init(); }
-            }
+            init();
         });
         $scope.$on('$ionicView.leave', function () {
             console.info("leave: ", self.name);
@@ -171,23 +168,23 @@
             room = roomSelected.getLastJoinRoom();
             console.warn("LastJoinRoom is.", JSON.stringify(room));
         }
-        var group = room;
-        var gMembers = group.members;
         $scope.privateIndex = RoomType.privateGroup;
         $scope.projectBaseIndex = RoomType.projectBaseGroup;
         $scope.orgGroupsIndex = RoomType.organizationGroup;
         $scope.myProfile = main.getDataManager().myProfile;
-        $scope.chatGroup = group;
+        $scope.chatGroup = room;
         $scope.sourceImage = "";
-        $scope.model = { groupname: group.name, originalName: group.name };
+        $scope.model = { groupname: room.name, originalName: room.name };
 
-        init();
         function init() {
             if (room.type === RoomType.privateGroup || room.type === RoomType.organizationGroup) {
-                groupMembers(gMembers, gMembers.length, function done(members) {
+                groupMembers(room.members, room.members.length, function done(members) {
                     $scope.members = members;
+                    
+                    $ionicLoading.hide();
                 });
-            } else if (room.type === RoomType.projectBaseGroup) {
+            }
+            else if (room.type === RoomType.projectBaseGroup) {
                 $scope.members = getMembersInProjectBase(room);
                 var admin = false;
                 $.each($scope.members, function (index, result) {
@@ -196,10 +193,12 @@
                     }
                 });
                 $scope.meIsAdmin = admin;
+                
+                $ionicLoading.hide();
             }
         }
 
-        $scope.members_length = gMembers.length;
+        $scope.members_length = room.members.length;
 
         $scope.InviteMembers = function () {
             //location.href = '#/tab/group/members/' + $scope.chatGroup._id + '/invite';
@@ -219,26 +218,46 @@
             CreateGroup.createType = "ProjectBase";
         }
         $scope.removeMember = function (id) {
+            $ionicLoading.show();
+
             var idMember = [];
-            console.log(id);
+            console.log('remove_id', id);
             idMember.push(id);
             server.editGroupMembers("remove", room._id, RoomType[room.type], idMember, function (err, res) {
-                if (!err) {
-                    console.log(JSON.stringify(res));
-                    var indexMember;
-                    $.each(room.members, function (index, result) {
-                        if (result._id == id || result.id == id) { indexMember = index; }
-                    });
-                    $scope.members.splice(indexMember, 1);
+                if (res.code === HttpStatusCode.success) {
+                    //@ if user remove your self.
                     if (id == $scope.myProfile._id) {
-                        $state.go('tab.group');
+                        $ionicLoading.hide();
+
+                        $state.go(NGStateUtil.tab_group);
                     }
                     else {
-                        $state.go($state.current, {}, { reload: true });
+//                       $state.go($state.current, {}, { reload: true });
                     }
+
+                    var indexMember;
+                    async.mapSeries(room.members, function iterator(item, cb) {
+                        if (!!item && item.id === id) {
+                            indexMember = room.members.indexOf(item);
+                            room.members.splice(indexMember, 1);
+
+                            cb();
+                        }
+                        else {
+                            cb();
+                        }
+                    }, function done(err) {
+                        init();
+                    });
+                    //$.each(room.members, function (index, result) {
+                    //    if (result._id == id || result.id == id) { indexMember = index; }
+                    //});
+                    //$scope.members.splice(indexMember, 1);
                 }
                 else {
                     console.warn(err, res);
+
+                    $ionicLoading.hide();
                 }
             });
         }

@@ -147,14 +147,16 @@ angular.module('spartan.services', [])
   function getAllMember(){
     allmembers = [];
     for(var i in members){
-      if(this.createType=="ProjectBase"){
+      if(this.createType=="ProjectBase") {
         if(members[i]._id==main.getDataManager().myProfile._id){
-          allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":true } );
-        }else{
-          allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":getChecked(i) } );
+            allmembers.push({ "_id": members[i]._id, "displayname": members[i].displayname, "image": members[i].image, "checked": true });
         }
-      }else{
-        allmembers.push( {"_id":members[i]._id, "displayname":members[i].displayname, "image":members[i].image, "checked":getChecked(i) } );
+        else {
+            allmembers.push({ "_id": members[i]._id, "displayname": members[i].displayname, "image": members[i].image, "checked": getChecked(i) });
+        }
+      }
+      else {
+          allmembers.push({ "_id": members[i]._id, "displayname": members[i].displayname, "image": members[i].image, "checked": getChecked(i) });
       }
     }
     return allmembers;
