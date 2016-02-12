@@ -9,6 +9,7 @@
 
 	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform, $cordovaSpinnerDialog,
 		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
+
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
@@ -81,7 +82,8 @@
 			var chatheight = $(window).height() - 43;
 			$('ion-content').find('#webgroup').css({'height':chatheight+'px'});
 			$('ion-content').find('#webchatdetail').css({'height':chatheight-44+'px'});
-			$scope.$broadcast('enterChat','');
+			$rootScope.$broadcast('enterChat','');
+			console.log('123456789,BOBOBOBO');
 		}
 
 		function tryGetFavorite(){
@@ -165,7 +167,7 @@
 			return Favorite.isFavorite(id);
 		}
 		
-		$scope.$on('$ionicView.enter', function(){ 
+		
 			console.log("$ionicView.enter: ", vm.title);
 
 			activate();
@@ -223,7 +225,7 @@
 			$scope.$on('modal.removed', function () {
 				// Execute action
 			});
-		});
+		
 	
 		$scope.$on('$ionicView.beforeLeave', function () {
 			console.log("beforeLeave: homeController");
