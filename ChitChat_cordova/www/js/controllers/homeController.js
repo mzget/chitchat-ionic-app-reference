@@ -83,7 +83,6 @@
 			$('ion-content').find('#webgroup').css({'height':chatheight+'px'});
 			$('ion-content').find('#webchatdetail').css({'height':chatheight-44+'px'});
 			$rootScope.$broadcast('enterChat','');
-			console.log('123456789,BOBOBOBO');
 		}
 
 		function tryGetFavorite(){
@@ -303,9 +302,9 @@
 		}
 		//<!-- Contact modal -------------------------->
 		$scope.openContactModal = function (contactId) {
-            modalFactory.initContactModal($scope, contactId, roomSelected, function done() {
+            modalFactory.initContactModal($rootScope, contactId, roomSelected, function done() {
 				$scope.contactModal.show();
-			});
+			}, $rootScope);
 		};
 		$scope.closeContactModal = function() {
 			$scope.contactModal.hide();	

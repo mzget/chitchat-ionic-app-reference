@@ -64,6 +64,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    setRoom();
 
 		$scope.$on('onNewMessage', function (event, data) {
+			$scope.$apply();
 		    setTimeout(function () {
 		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    }, 1000);

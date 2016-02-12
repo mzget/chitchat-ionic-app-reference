@@ -1,11 +1,16 @@
 <div class="row">
-  <div class="span6">
-    <div class="well" ui-view="chats-list" style="background-color:none !important;"></div>        
+  <div style="overflow-y:scroll; margin-left:20px; width:500px;">
+    <div ui-view="chats-list" style="border: 1px solid #E3E3E3;"></div>        
   </div>
-  <div class="span6">
-    <div class="well" ui-view="chats-detail" style="background-color:none !important;"></div>        
+  <div style="overflow-y:scroll; height:95%; width:100%;">
+    <div ui-view="chats-detail"></div>       
   </div>
+
+  <div ui-view="chats-bar"></div>
+
   <div class="span6">
-    <div class="well" ui-view="chats-info"></div>        
+    <div ui-view="chats-info"></div>        
   </div>
 </div>
+
+

@@ -14,7 +14,7 @@
 
         return service;
 
-        function initContactModal($scope, contactId, roomSelected, done) {
+        function initContactModal($scope, contactId, roomSelected, done, $rootScope) {
             var contact = main.getDataManager().orgMembers[contactId];
             $scope.contact = contact;
 
@@ -26,7 +26,7 @@
                     //roomSelected.setRoom(room);
                     //location.href = '#/tab/group/chat/' + room._id;
                     console.log("ROOM",room);
-                    $scope.$broadcast('changeChat', room);
+                    $rootScope.$broadcast('changeChat', room);
                 };
 
                 $scope.freecall = function () {
