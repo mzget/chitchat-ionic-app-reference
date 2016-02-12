@@ -45,20 +45,15 @@ angular.module('starter',
 	$ionicConfigProvider.views.swipeBackEnabled(false);
 	
 	$stateProvider
-
-
-
 	// setup an abstract state for the tabs directive
 	.state('tab', {
 		url: '/tab',
 		abstract: true,
 		templateUrl: 'templates/tabs.html'
 	})
-
 	// Each tab has its own nav history stack:
-
-	// LOGIN
-	.state('tab.login', {
+        //@ Tab-login state.
+	.state(NGStateUtil.tab_login, {
 		url: '/login',
 		views: {
 		    'tab-login': {
@@ -67,9 +62,7 @@ angular.module('starter',
 			}
 		}
 	})
-
-	// ERROR
-	.state('tab.login-error', {
+	.state(NGStateUtil.tab_login_error, {
 		url: '/login/error',
 		views: {
 			'tab-login': {
@@ -79,8 +72,8 @@ angular.module('starter',
 		}
 	})
 
-	// GROUP
-	.state('tab.group', {
+        //@ tab-group state.
+	.state(NGStateUtil.tab_group, {
 		url: '/group',
 		views: {
 			'tab-group': {
@@ -89,40 +82,34 @@ angular.module('starter',
 			}
 		}
 	})
-
-	// GROUP - View Profile
-	.state('tab.group-viewprofile',{
-		url: '/group/member/:chatId',
+	.state(NGStateUtil.tab_group_viewprofile,{
+		url: '/group/profile/:chatId',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: 'GroupViewprofileCtrl'
+				controller: ngControllerUtil.viewProfileCtrl
 			}
 		}
 	})
-		
-	// GROUP - Members
-	.state('tab.group-members', {
-		url: '/group/members/:chatId',
+	.state(NGStateUtil.tab_group_members, {
+		url: '/group/details',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-members.html',
-				controller: 'viewGroupMembersCtrl'
+				controller: ngControllerUtil.groupDetailCtrl
 			}
 		}
 	})
-
-	.state('tab.group-members-invite', {
-		url: '/group/members/:chatId/invite',
+	.state(NGStateUtil.tab_group_members_invite, {
+		url: '/group/members/invite',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-account-invite.html',
 				controller: 'editMemberGroup'
 			}
 		}
-	})//
-
-	.state('tab.group-members-edit', {
+	})
+	.state(NGStateUtil.tab_group_members_edit, {
 		url: '/group/members/:chatId/edit',
 		views: {
 			'tab-group': {
@@ -131,29 +118,16 @@ angular.module('starter',
 			}
 		}
 	})
-	
-	// CHATS - Notification
-	//.state('tab.chats', {
-	//	url: '/chats',
-	//	views: {
-	//		'tab-chats': {
-	//			templateUrl: 'templates/tab-chats.html',
-	//			controller: 'ChatsCtrl'
-	//		}
-	//	}
-	//})
-	
-	.state('tab.group-chat', {
-		url: '/group/chat/:chatId',
+	.state(NGStateUtil.tab_group_chat, {
+		url: '/group/chat',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
 				controller: 'chatController'
 			}
 		}
-	})
-	
-	.state('tab.group-freecall', {
+	})		
+	.state(NGStateUtil.tab_group_freecall, {
 		url: '/group/freecall/:chatId',
 		views: {
 			'tab-group': {
@@ -163,7 +137,8 @@ angular.module('starter',
 		}
 	})
 	
-	.state('tab.chats', {
+        //@ tab-chats state.
+	.state(NGStateUtil.tab_chats, {
 		url: '/chats',
 		views: {
 			'tab-chats': {
@@ -171,50 +146,45 @@ angular.module('starter',
 				controller: 'chatslogController'
 			}
 		}
-	})
-	
-	.state('tab.chats-chat', {
-		url: '/chats/chat/:chatId',
+	})	
+	.state(NGStateUtil.tab_chats_chat, {
+		url: '/chats/chat',
 		views: {
-			'tab-chats': {
+		    'tab-chats': {
 				templateUrl: 'templates/chat-detail.html',
 				controller: 'chatController'
 			}
 		}
 	})
-
-	.state('tab.chats-chat-viewprofile',{
-		url: '/chats/member/:chatId',
+	.state(NGStateUtil.tab_chats_chat_viewprofile, {
+	    url: '/chats/chat/profile/:chatId',
 		views: {
 			'tab-chats': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: 'GroupViewprofileCtrl'
+				controller: ngControllerUtil.viewProfileCtrl
 			}
 		}
 	})
-	.state('tab.chats-chat-members', {
-		url: '/chats/members/:chatId',
+	.state(NGStateUtil.tab_chats_chat_members, {
+	    url: '/chats/chat/details',
 		views: {
 			'tab-chats': {
 				templateUrl: 'templates/tab-group-members.html',
-				controller: 'viewGroupMembersCtrl'
+				controller: ngControllerUtil.groupDetailCtrl
 			}
 		}
 	})
-	
-	/*
-	// CHAT : Message
-	.state('tab.message', {
-		url: '/message/:chatId',
-		views: {
-			'tab-message': {
-				templateUrl: 'templates/chat-detail.html',
-				controller: 'ChatDetailCtrl'
-			}
-		}
-	})
-	*/
-	
+    .state(NGStateUtil.tab_chats_chat_members_invite, {
+	    url: '/chats/members/invite',
+	    views: {
+	        'tab-chats': {
+	            templateUrl: 'templates/tab-account-invite.html',
+	            controller: 'editMemberGroup'
+	        }
+	    }
+    })
+
+     //@ tab-timeline state.
 	.state('tab.timeline', {
 		url: '/timeline',
 		views: {
@@ -225,6 +195,7 @@ angular.module('starter',
 		}
 	})
 
+     //@ tab-options state.
 	.state('tab.account', {
 		url: '/account',
 		views: {
@@ -234,7 +205,6 @@ angular.module('starter',
 			}
 		}
 	})
-
 	.state('tab.account-create', {
 		url: '/account/create',
 		views: {
@@ -244,7 +214,6 @@ angular.module('starter',
 			}
 		}
 	})
-
 	.state('tab.account-invite', {
 		url: '/account/create/invite',
 		views: {
@@ -254,16 +223,6 @@ angular.module('starter',
 			}
 		}
 	})
-	
-	.state('tab.chat.readers', {
-		url: '/group/chat/readers',
-		views: {
-			'tab-group' : {
-				templateUrl : 'templates/reader-view.html',
-				controller: 'chatController'
-			}
-		}	
-	});
 
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/tab/login');

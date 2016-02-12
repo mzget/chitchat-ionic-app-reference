@@ -2,12 +2,12 @@
     'use strict';
 
     angular
-        .module('spartan.chatslog', [])
+        .module('spartan.chatslog', ['ionic'])
         .controller('chatslogController', chatslogController);
 
     // chatslogController.$inject = ['$location', '$scope', '$timeout', 'roomSelected'];
             
-    function chatslogController($location, $scope, $rootScope, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService, ConvertDateTime) {
+    function chatslogController($location, $scope, $rootScope, $state, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService, ConvertDateTime) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
@@ -30,7 +30,7 @@
         {	
             var group = dataManager.getGroup(roomId);
             roomSelected.setRoom(group);
-            location.href = '#/tab/chats/chat/' + roomId;
+            $state.go(NGStateUtil.tab_chats_chat, {});
         };
 
         $scope.$on('$ionicView.enter', function() { 

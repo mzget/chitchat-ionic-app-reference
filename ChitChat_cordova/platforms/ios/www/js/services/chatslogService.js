@@ -81,9 +81,9 @@
                     getUnreadMessages();
                 }
     
-                chatsLogComponent.onEditedGroupMember = function (newgroup) {
-                    console.log('onEditedGroupMember :::::::	');
-                    console.log(newgroup);
+                chatsLogComponent.onEditedGroupMember = function (newgroup)
+                {
+                    console.log('onEditedGroupMember: ', JSON.stringify(newgroup));
                 }
                 
                 server.getLastAccessRoomsInfo(function (err, res) {

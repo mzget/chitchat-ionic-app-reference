@@ -9,12 +9,9 @@
 
 	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform, $cordovaSpinnerDialog,
 		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
-
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
-
-		$scope.$on('roomName', function(event, args) { $scope.roomName = args; });
 
 		function activate() {
 		    if (ionic.Platform.platform() === 'ios') {
@@ -78,13 +75,6 @@
 		    tryGetFavorite();
 		}
 
-		function getChatWeb(){
-			var chatheight = $(window).height() - 43;
-			$('ion-content').find('#webgroup').css({'height':chatheight+'px'});
-			$('ion-content').find('#webchatdetail').css({'height':chatheight-44+'px'});
-			$rootScope.$broadcast('enterChat','');
-		}
-
 		function tryGetFavorite(){
 			if(!jQuery.isEmptyObject(main.getDataManager().orgGroups) &&
 				!jQuery.isEmptyObject(main.getDataManager().projectBaseGroups) &&
@@ -92,7 +82,6 @@
 				!jQuery.isEmptyObject(main.getDataManager().orgMembers)){
 					setTimeout(function () {
 			        	$scope.favorites = getFavorite();
-			        	getChatWeb();
 			    }, 500);
 			}else{
 				setTimeout(function () {
@@ -166,7 +155,7 @@
 			return Favorite.isFavorite(id);
 		}
 		
-		
+		$scope.$on('$ionicView.enter', function(){ 
 			console.log("$ionicView.enter: ", vm.title);
 
 			activate();
@@ -216,6 +205,7 @@
 				$scope.pvgModal.remove();
 				$scope.contactModal.remove();
 			});
+
 			// Execute action on hide modal
 			$scope.$on('modal.hidden', function () {
 				// Execute action
@@ -224,7 +214,7 @@
 			$scope.$on('modal.removed', function () {
 				// Execute action
 			});
-		
+		});
 	
 		$scope.$on('$ionicView.beforeLeave', function () {
 			console.log("beforeLeave: homeController");
@@ -254,26 +244,14 @@
 	
 		//<!-- My profile modal. -->
 		$scope.openProfileModal = function (groupId) {
-			initMyProfileModal($state, $scope, function done(){
+            modalFactory.initMyProfileModal($scope, function done(){
 			    $scope.myProfileModal.show();
-			    //$ionicScrollDelegate.$getByHandle('profileScroll').freezeScroll(true);
 			});
 		};
 		$scope.closeProfileModal = function () {
 			$scope.myProfileModal.hide();
 		};
 		//<!-- Org group modal ////////////////////////////////////////
-		$scope.openModal = function(id,type){
-			if(type==RoomType.organizationGroup){
-				$scope.openOrgModal(id);
-			}else if(type==RoomType.projectBaseGroup){
-				$scope.openPjbModal(id);
-			}else if(type==RoomType.privateGroup){
-				$scope.openPvgModal(id);
-			}else{
-				$scope.openContactModal(id);
-			}
-		}
 		$scope.openOrgModal = function (groupId) {
 			initOrgModal($state, $scope, groupId, roomSelected, function () {
 				$scope.orgModal.show();
@@ -302,13 +280,25 @@
 		}
 		//<!-- Contact modal -------------------------->
 		$scope.openContactModal = function (contactId) {
-            modalFactory.initContactModal($rootScope, contactId, roomSelected, function done() {
+            modalFactory.initContactModal($scope, contactId, roomSelected, function done() {
 				$scope.contactModal.show();
-			}, $rootScope);
+			});
 		};
 		$scope.closeContactModal = function() {
 			$scope.contactModal.hide();	
-		};   
+		};
+        //@ Call all group modal.
+		$scope.openModal = function (id, type) {
+		    if (type == RoomType.organizationGroup) {
+		        $scope.openOrgModal(id);
+		    } else if (type == RoomType.projectBaseGroup) {
+		        $scope.openPjbModal(id);
+		    } else if (type == RoomType.privateGroup) {
+		        $scope.openPvgModal(id);
+		    } else {
+		        $scope.openContactModal(id);
+		    }
+		}
 	}
 
 	var initOrgModal = function ($state, $scope, groupId, roomSelected, done, $rootScope) {
@@ -326,9 +316,8 @@
 		//<!-- Join chat room.
 		$scope.toggle = function (chatId) {
 			$scope.closeOrgModal();
-			//       $state.go('', { chatId: chatId });
+			$state.go(NGStateUtil.tab_group_chat);
 			//location.href = '#/tab/group/chat/' + chatId;
-			$scope.$broadcast('changeChat', group);
 		};
 
 		$scope.viewGroupDetail = function (id) {
@@ -353,8 +342,8 @@
 
 		$scope.toggle = function (chatId) {
 			$scope.closePjbModal();
-			//location.href = '#/tab/group/chat/' + chatId;
-			$scope.$broadcast('changeChat', group);
+		    //location.href = '#/tab/group/chat/' + chatId;
+			$state.go(NGStateUtil.tab_group_chat);
 		};
 
 		$scope.viewGroupDetail = function (id) {
@@ -379,23 +368,13 @@
 
 		$scope.chat = function (chatId) {
 			$scope.closePvgModal();
-			//location.href = '#/tab/group/chat/' + chatId;
-			$scope.$broadcast('changeChat', group);
+		    //location.href = '#/tab/group/chat/' + chatId;
+			$state.go(NGStateUtil.tab_group_chat);
 		};
 
 		$scope.viewGroupDetail = function (id) {
 			$rootScope.selectTab = 'members';
 			$state.go('tab.group-members', { chatId: id });
-		};
-
-		done();
-	}
-
-	var initMyProfileModal = function ($state, $scope, done) {
-		$scope.chat = main.getDataManager().myProfile;
-
-		$scope.editProfile = function (chatId) {
-			$state.go('tab.group-viewprofile', { chatId: chatId });
 		};
 
 		done();
