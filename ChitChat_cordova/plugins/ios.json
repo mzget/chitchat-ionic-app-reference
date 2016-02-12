@@ -4,251 +4,69 @@
         "uninstalled": []
     },
     "config_munge": {
-        "files": {
-            "framework": {
-                "parents": {
-                    "ImageIO.framework": [
-                        {
-                            "xml": true,
-                            "count": 2
-                        }
-                    ],
-                    "CoreLocation.framework": [
-                        {
-                            "xml": false,
-                            "count": 3
-                        }
-                    ],
-                    "CoreGraphics.framework": [
-                        {
-                            "xml": false,
-                            "count": 5
-                        }
-                    ],
-                    "AssetsLibrary.framework": [
-                        {
-                            "xml": false,
-                            "count": 4
-                        }
-                    ],
-                    "MobileCoreServices.framework": [
-                        {
-                            "xml": false,
-                            "count": 4
-                        }
-                    ],
-                    "AVFoundation.framework": [
-                        {
-                            "xml": false,
-                            "count": 1
-                        }
-                    ],
-                    "AudioToolbox.framework": [
-                        {
-                            "xml": true,
-                            "count": 1
-                        }
-                    ],
-                    "QuartzCore.framework": [
-                        {
-                            "xml": false,
-                            "count": 1
-                        }
-                    ],
-                    "AddressBook.framework": [
-                        {
-                            "xml": false,
-                            "count": 1
-                        }
-                    ],
-                    "libsqlite3.tbd": [
-                        {
-                            "xml": false,
-                            "count": 1
-                        }
-                    ],
-                    "libz.tbd": [
-                        {
-                            "xml": false,
-                            "count": 1
-                        }
-                    ]
-                }
-            },
-            "config.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<feature name=\"CameraRoll\"><param name=\"ios-package\" value=\"IonicCameraRoll\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"File\"><param name=\"ios-package\" value=\"CDVFile\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"ImageResizePlugin\"><param name=\"ios-package\" value=\"ImageResize\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Camera\"><param name=\"ios-package\" value=\"CDVCamera\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<preference name=\"CameraUsesGeolocation\" value=\"false\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"FileTransfer\"><param name=\"ios-package\" value=\"CDVFileTransfer\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Geolocation\"><param name=\"ios-package\" value=\"CDVLocation\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Media\"><param name=\"ios-package\" value=\"CDVSound\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Capture\"><param name=\"ios-package\" value=\"CDVCapture\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Toast\"><param name=\"ios-package\" value=\"Toast\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"BackgroundMode\"><param name=\"ios-package\" value=\"APPBackgroundMode\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Badge\"><param name=\"ios-package\" value=\"APPBadge\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"LocalNotification\"><param name=\"ios-package\" onload=\"true\" value=\"APPLocalNotification\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"SpinnerDialog\"><param name=\"ios-package\" value=\"CDVSpinnerDialog\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"ProgressIndicator\"><param name=\"ios-package\" value=\"ProgressIndicator\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"PushNotification\"><param name=\"ios-package\" value=\"PushPlugin\" /></feature>",
-                            "count": 1
-                        }
-                    ]
-                }
-            },
-            "*-Info.plist": {
-                "parents": {
-                    "NSLocationWhenInUseUsageDescription": [
-                        {
-                            "xml": "<string />",
-                            "count": 2
-                        }
-                    ],
-                    "UIBackgroundModes": [
-                        {
-                            "xml": "<array><string>audio</string></array>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<array><string>remote-notification</string></array>",
-                            "count": 1
-                        }
-                    ]
-                }
-            }
-        }
+        "files": {}
     },
     "installed_plugins": {
         "chitchat-plugin-cameraroll": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
         },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
         },
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
         },
         "cordova-plugin-dialogs": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.rfl.mercury"
         },
         "cordova-plugin-file-transfer": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
         },
         "cordova-plugin-geolocation": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
         },
         "cordova-plugin-media": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
         },
         "cordova-plugin-media-capture": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "cordova-plugin-x-toast": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "de.appplant.cordova.common.registerusernotificationsettings": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "de.appplant.cordova.plugin.background-mode": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "de.appplant.cordova.plugin.badge": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "de.appplant.cordova.plugin.local-notification": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "hu.dpal.phonegap.plugins.SpinnerDialog": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "org.pbernasconi.progressindicator": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        },
-        "phonegap-plugin-push": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
         },
         "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.rfl.stalk"
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "de.appplant.cordova.common.registerusernotificationsettings": {
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "de.appplant.cordova.plugin.background-mode": {
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "de.appplant.cordova.plugin.badge": {
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "hu.dpal.phonegap.plugins.SpinnerDialog": {
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "org.pbernasconi.progressindicator": {
+            "PACKAGE_NAME": "com.rfl.mercury"
+        },
+        "phonegap-plugin-push": {
+            "PACKAGE_NAME": "com.rfl.mercury"
         }
     },
-    "dependent_plugins": {
-        "cordova-plugin-file": {
-            "PACKAGE_NAME": "com.rfl.stalk"
-        }
-    }
+    "dependent_plugins": {}
 }
