@@ -52,9 +52,22 @@ module ChatServer {
                 console.warn("disconnect Event");
             }
         }
-        public disposeClient() {
-            pomelo = null;
+
+        public dispose() {
             console.warn("dispose socket client.");
+
+            this.disConnect();
+
+            this.authenData = null;
+        }
+
+        public disConnect() {
+            console.log('disconnecting...');
+            if (!!pomelo) {
+                pomelo.removeAllListeners();
+                pomelo.disconnect();
+                pomelo = null;
+            }
         }
        
         public logout() {
@@ -69,6 +82,7 @@ module ChatServer {
         }
 
         public init(callback: (err, res) => void) {
+            console.log('serverImp.init()');
             var self = this;
 
             this._isConnected = false;
@@ -130,15 +144,6 @@ module ChatServer {
                 console.log(err)
             });
         }
-
-        public disConnect() {
-            if (pomelo !== null) {
-                pomelo.removeAllListeners();
-                pomelo.disconnect();
-            }
-
-            this.authenData = null;
-        }
         
         public kickMeAllSession(uid: string) {
             if(pomelo !== null) {
@@ -150,7 +155,7 @@ module ChatServer {
         }
 
         private connectSocketServer(_host: string, _port: number, callback: (err) => void) {
-            console.log("socket init connecting to: ", _host, _port);
+            console.log("socket connecting to: ", _host, _port);
             
             // var self = this;    
             pomelo.init({ host: _host, port: _port }, function cb(err) {
@@ -179,20 +184,27 @@ module ChatServer {
 
                     console.log("QueryConnectorServ", result.code);
 
-                    if (result.code === 200) {
-                        //pomelo.disconnect();
-                        
-                        var port = result.port;
-                        //<!-- Connecting to connector server.
-                        self.connectSocketServer(self.host, port, (err) => {
-                            self._isConnected = true;
+                    if (result.code === HttpStatusCode.success) {
+                        self.disConnect();
 
-                            if (!!err) {
-                                callback(err, null);
-                            }
-                            else {
-                                self.authenForFrontendServer(callback);
-                            }
+                        let promiseLoadSocket = new Promise((resolve, reject) => {
+                            self.loadSocket(resolve, reject);
+                        });
+                        promiseLoadSocket.then((value) => {
+                            var port = result.port;
+                            //<!-- Connecting to connector server.
+                            self.connectSocketServer(self.host, port, (err) => {
+                                self._isConnected = true;
+
+                                if (!!err) {
+                                    callback(err, null);
+                                }
+                                else {
+                                    self.authenForFrontendServer(callback);
+                                }
+                            });
+                        }).catch((error) => {
+                            console.error('Load socket fail!');
                         });
                     }
                 });
@@ -215,6 +227,7 @@ module ChatServer {
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, (res) => {
                 console.log("login response: ", JSON.stringify(res), res.code);
+
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
                         callback(res.message, res);
@@ -310,7 +323,7 @@ module ChatServer {
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
             pomelo.request("connector.entryHandler.getMe", msg, (result) => {
-                console.log("getMe: ", JSON.stringify(result));
+                console.log("getMe: ", JSON.stringify(result.code));
                 if (callback !== null) {
                     callback(null, result);
                 }
@@ -389,7 +402,6 @@ module ChatServer {
             var msg: IDictionary = {};
             msg["token"] = this.authenData.token;
             pomelo.request("connector.entryHandler.getCompanyInfo", msg, (result) => {
-                console.log("getCompanyInfo", JSON.stringify(result));
                 if (callBack != null)
                     callBack(null, result);
             });
@@ -562,8 +574,6 @@ module ChatServer {
             msg["ownerId"] = myId;
             msg["roommateId"] = myRoommateId;
             pomelo.request("chat.chatRoomHandler.getRoomById", msg, (result) => {
-                console.log("getPrivateChatRoomId", result.toString());
-
                 if (callback != null) {
                     callback(null, result);
                 }
@@ -698,7 +708,7 @@ module ChatServer {
             });
         }
         
-        public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: string, setMessageID: (err, res) => void) {
+        public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: string, meta: any, callback: (err, res) => void) {
             console.log("Send file to ", target);
 
             var message: IDictionary = {};
@@ -706,14 +716,15 @@ module ChatServer {
             message["content"] = fileUrl;
             message["sender"] = sender_id;
             message["target"] = target;
+            message["meta"] = meta;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, (result) => {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("chatFile callback: ", data);
 
                 if (data.code == 200) {
-                    if (setMessageID != null) {
-                        setMessageID(null, data.data);
+                    if (callback != null) {
+                        callback(null, data.data);
                     }
                 }
                 else {
@@ -949,66 +960,66 @@ module ChatServer {
 
             //<!-- AccessRoom Info -->
             pomelo.on(ServerEventListener.ON_ACCESS_ROOMS, (data) => {
-                console.log(ServerEventListener.ON_ACCESS_ROOMS, JSON.stringify(data));
+                console.log(ServerEventListener.ON_ACCESS_ROOMS);
 
                 self.serverListener.onAccessRoom(data);
             });
             pomelo.on(ServerEventListener.ON_ADD_ROOM_ACCESS, (data) => {
-                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS, JSON.stringify(data));
+                console.log(ServerEventListener.ON_ADD_ROOM_ACCESS);
 
                 self.serverListener.onAddRoomAccess(data);
             });
             pomelo.on(ServerEventListener.ON_UPDATED_LASTACCESSTIME, (data) => {
-                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME, JSON.stringify(data));
+                console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME);
 
                 self.serverListener.onUpdatedLastAccessTime(data);
             });
 
             //<!-- User -->
             pomelo.on(ServerEventListener.ON_USER_LOGIN, data => {
-                console.log(ServerEventListener.ON_USER_LOGIN, JSON.stringify(data));
+                console.log(ServerEventListener.ON_USER_LOGIN);
 
                 self.serverListener.onUserLogin(data);
             });
             pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, (data) => {
-                console.log(ServerEventListener.ON_USER_UPDATE_PROFILE, JSON.stringify(data));
+                console.log(ServerEventListener.ON_USER_UPDATE_PROFILE);
 
                 self.serverListener.onUserUpdateProfile(data);
             });
             pomelo.on(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, (data) => {
-                console.log(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, JSON.stringify(data));
+                console.log(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE);
 
                 self.serverListener.onUserUpdateImageProfile(data);
             });
 
             //<!-- Group -->
             pomelo.on(ServerEventListener.ON_CREATE_GROUP_SUCCESS, (data) => {
-                console.log(ServerEventListener.ON_CREATE_GROUP_SUCCESS, JSON.stringify(data));
+                console.log(ServerEventListener.ON_CREATE_GROUP_SUCCESS);
 
                 self.serverListener.onCreateGroupSuccess(data);
             });
             pomelo.on(ServerEventListener.ON_EDITED_GROUP_MEMBER, (data) => {
-                console.log(ServerEventListener.ON_EDITED_GROUP_MEMBER, JSON.stringify(data));
+                console.log(ServerEventListener.ON_EDITED_GROUP_MEMBER);
 
                 self.serverListener.onEditedGroupMember(data);
             });
             pomelo.on(ServerEventListener.ON_EDITED_GROUP_NAME, (data) => {
-                console.log(ServerEventListener.ON_EDITED_GROUP_NAME, JSON.stringify(data));
+                console.log(ServerEventListener.ON_EDITED_GROUP_NAME);
 
                 self.serverListener.onEditedGroupName(data);
             });
             pomelo.on(ServerEventListener.ON_EDITED_GROUP_IMAGE, (data) => {
-                console.log(ServerEventListener.ON_EDITED_GROUP_IMAGE, JSON.stringify(data));
+                console.log(ServerEventListener.ON_EDITED_GROUP_IMAGE);
 
                 self.serverListener.onEditedGroupImage(data);
             });
             pomelo.on(ServerEventListener.ON_NEW_GROUP_CREATED, (data) => {
-                console.log(ServerEventListener.ON_NEW_GROUP_CREATED, JSON.stringify(data));
+                console.log(ServerEventListener.ON_NEW_GROUP_CREATED);
 
                 self.serverListener.onNewGroupCreated(data);
             });
             pomelo.on(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, (data) => {
-                console.log(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, JSON.stringify(data));
+                console.log(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE);
 
                 self.serverListener.onUpdateMemberInfoInProjectBase(data);
             });

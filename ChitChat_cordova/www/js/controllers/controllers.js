@@ -3,10 +3,9 @@ var now;
 var newchatmessage;
 var chatlog_count = 0;
 
-angular.module('spartan.controllers', ['jrCrop'])
+angular.module('spartan.controllers', [])
 
-// Group - View Profile
-.controller('GroupViewprofileCtrl', function ($scope, $jrCrop, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
+.controller('viewProfileCtrl', function ($scope, $jrCrop, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
  roomSelected, FileService, sharedObjectService) {
     var room = roomSelected.getRoom();
 
@@ -192,7 +191,7 @@ angular.module('spartan.controllers', ['jrCrop'])
     $scope.logOut = function () {
         console.warn("logOut...");
         server.logout();
-        server.disposeClient();
+        server.dispose();
 
         dbAccessService.clearMessageDAL();
         localStorage.clear();

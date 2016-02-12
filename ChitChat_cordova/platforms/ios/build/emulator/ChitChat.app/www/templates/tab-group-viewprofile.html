@@ -8,7 +8,7 @@
     <ion-list>
 
     <div class="padding group-detail">
-    	<img class="avatar" ng-show="!images.length" ng-src="{{webServer}}/timthumb.php?src={{chat.image}}" 
+    	<img class="avatar" ng-show="!images.length" ng-src="{{webServer}}/timthumb.php?src={{chat.image}}&h=150&w=150" 
         ng-click="edit!='true'||addImg()"/>
         <img id="avatar" class="avatar" ng-show="images.length" 
         ng-click="addImg()"/>

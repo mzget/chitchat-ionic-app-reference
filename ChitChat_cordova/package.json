@@ -11,11 +11,7 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    "phonegap-plugin-push",
-    {
-      "locator": "https://github.com/thanzero/CallCordovaPlugin",
-      "id": "cordova.CallCordovaPlugin"
-    }
+    "phonegap-plugin-push"
   ],
   "cordovaPlatforms": [
     "ios"

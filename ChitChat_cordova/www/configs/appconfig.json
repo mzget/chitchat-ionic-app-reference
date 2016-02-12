@@ -4,6 +4,6 @@
   "socketPort": 3015,
   "webserver": "http://203.113.25.44",
   "encryption": false,
-  "version": "0.0.7",
+  "version": "0.0.8",
   "themename": "chitchat"
 }

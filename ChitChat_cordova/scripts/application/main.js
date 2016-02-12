@@ -1,88 +1,73 @@
-/// <reference path="./typings/tsd.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
         cryptojs: '../lib/crypto-js/crypto-js'
     }
 });
-
 // Directly call the RequireJS require() function and from here
 // TypeScript's external module support takes over
 //require(["../../scripts/server/serverImplemented"]);
-
-class Main {
-    private static instance: Main;
-    public static getInstance(): Main {
+var Main = (function () {
+    function Main() {
+    }
+    Main.getInstance = function () {
         if (this.instance === null || this.instance === undefined) {
             this.instance = Main.prototype;
         }
         return this.instance;
-    }
-
-
-    private serverImp: ChatServer.ServerImplemented;
-    private serverListener: ChatServer.ServerEventListener;
-    private chatRoomApi: ChatServer.ChatRoomApiProvider;
-    private dataManager: DataManager;
-    public getDataManager(): DataManager {
+    };
+    Main.prototype.getDataManager = function () {
         return this.dataManager;
-    }
-    public setDataManager(data: DataManager) {
+    };
+    Main.prototype.setDataManager = function (data) {
         this.dataManager = data;
         this.dataListener = new DataListener(this.dataManager);
-    }
-    private dataListener: DataListener;
-    public getDataListener(): DataListener {
+    };
+    Main.prototype.getDataListener = function () {
         return this.dataListener;
-    }
-    public getServerImp(): ChatServer.ServerImplemented {
+    };
+    Main.prototype.getServerImp = function () {
         console.log("getServerImp", this.serverImp);
         return this.serverImp;
-    }
-    public setServerImp(server: ChatServer.ServerImplemented) {
+    };
+    Main.prototype.setServerImp = function (server) {
         this.serverImp = server;
         console.log("setServerImp", server);
-    }
-    public getChatRoomApi(): ChatServer.ChatRoomApiProvider {
+    };
+    Main.prototype.getChatRoomApi = function () {
         if (!this.chatRoomApi) {
             this.chatRoomApi = ChatServer.ChatRoomApiProvider.prototype;
         }
-
         return this.chatRoomApi;
-    }
-    public setServerListener(server: ChatServer.ServerEventListener) {
+    };
+    Main.prototype.setServerListener = function (server) {
         this.serverListener = server;
-    }
-
-    public startChatServerListener(resolve, rejected) {
+    };
+    Main.prototype.startChatServerListener = function (resolve, rejected) {
         this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addServerListener(this.dataListener);
         this.serverListener.addChatListener(this.dataListener);
-
         this.serverListener.addListenner(resolve, rejected);
-    }
-
-    public getHashService(content: string, callback: (err, res) => void) {
+    };
+    Main.prototype.getHashService = function (content, callback) {
         var hashService = new SecureService();
         hashService.hashCompute(content, callback);
-    }
-    public encodeService(content: string, callback: Function) {
+    };
+    Main.prototype.encodeService = function (content, callback) {
         var crypto = new SecureService();
         crypto.encryptWithSecureRandom(content, callback);
-    }
-    public decodeService(content: string, callback: Function) {
+    };
+    Main.prototype.decodeService = function (content, callback) {
         var crypto = new SecureService();
         crypto.decryptWithSecureRandom(content, callback);
-    }
-
-    public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {
-        console.log("authenUser:", email, password);
-
+    };
+    Main.prototype.authenUser = function (server, email, password, callback) {
+        console.log("authenUser:", email);
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
             callback(err, loginRes);
-
-            if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {    
+            if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {
                 //<!-- Listen all event in the spartan world.
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);
@@ -100,7 +85,6 @@ class Main {
                             }
                         }
                     });
-
                     server.getCompanyInfo(function (err, res) {
                         if (err || res === null) {
                             console.error(err);
@@ -109,51 +93,46 @@ class Main {
                             console.log("companyInfo: ", JSON.stringify(res));
                         }
                     });
-
                     server.getOrganizationGroups(function (err, res) {
                         if (err || res === null) {
                             console.error(err);
                         }
                         else {
-                            console.log("organize groups: ", res);
+                            console.log("organize groups: ", JSON.stringify(res));
                         }
                     });
-
                     server.getProjectBaseGroups(function (err, res) {
                         if (err || res === null) {
                             console.error(err);
                         }
                         else {
-                            console.log("project base groups: ", res);
+                            console.log("project base groups: ", JSON.stringify(res));
                         }
                     });
-
                     server.getPrivateGroups(function (err, res) {
                         if (err || res === null) {
                             console.error(err);
                         }
                         else {
-                            console.log("Private groups: ", res);
+                            console.log("Private groups: ", JSON.stringify(res));
                         }
                     });
-
                     server.getCompanyMembers(function (err, res) {
                         if (err || res === null) {
                             console.error(err);
                         }
                         else {
-                            console.log("Company Members: ", res);
+                            console.log("Company Members: ", JSON.stringify(res));
                         }
                     });
-                    }).catch(function onRejected(err) {
-                        console.error(err);
+                }).catch(function onRejected(err) {
+                    console.error(err);
                 });
             }
             else {
                 console.warn(err, JSON.stringify(loginRes));
             }
         });
-    }
-
-    public onMyProfileReadyListener:(dataManager: DataManager) => void;
-}
+    };
+    return Main;
+})();

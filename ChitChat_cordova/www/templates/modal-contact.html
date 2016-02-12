@@ -6,13 +6,14 @@
 -->
 
 <ion-modal-view class="group-modal-view">
-	<ion-content class="padding group-detail group-ionpane">
-		<a ng-click="openViewContactProfile(contact._id)"> 
-
-		<img class="avatar-modal" ng-if="contact.image != null" ng-src="{{webServer}}/timthumb.php?src={{contact.image}}&h=150&w=150" />
-		<img class="avatar-modal" ng-if="contact.image == null" src="img/img.jpg" height="150" width="150"  />
-
-		<a class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closeContactModal()"></a>
+	<ion-content class="padding group-detail group-ionpane" scroll="false">
+		<div>
+		  <a class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closeContactModal()"></a>
+          <div ng-click="openViewContactProfile(contact._id)">
+            <img class="avatar-modal" ng-if="contact.image != null" ng-src="{{webServer}}/timthumb.php?src={{contact.image}}&h=150&w=150" />
+            <img class="avatar-modal" ng-if="contact.image == null" src="img/img.jpg" height="150" width="150"  />
+          </div>
+        </div>
 		
 		<div style="margin-bottom:15px;">
 			<p class="name-modal" style="display:inline;">{{contact.displayname}}</p>
@@ -21,9 +22,18 @@
 		</div>
 
 		<div class="group-menu">
-			<div ng-click="chat()"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></div>
-			<div ng-click="freecall()"><i class="ion-ios-telephone-outline" data-pack="default" data-tags="talk"></i><br /><span>FreeCall</span></div>
-			<div><i class="ion-videocamera" data-pack="default" data-tags="talk"></i><br /><span>VideoCall</span></div>
+			<div ng-click="chat()">
+                <i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i>
+                <br /><span>Chat</span>
+            </div>
+			<div ng-click="freecall()">
+                <i class="ion-ios-telephone-outline" data-pack="default" data-tags="talk"></i>
+                <br /><span>VoiceCall</span>
+            </div>
+			<div>
+                <i class="ion-videocamera" data-pack="default" data-tags="talk"></i>
+                <br /><span>VideoCall</span>
+            </div>
 		</div>
 	</ion-content>
 </ion-modal-view>

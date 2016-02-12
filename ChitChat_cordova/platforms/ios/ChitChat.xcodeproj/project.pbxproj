@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		01BAEF91FA7E486D944C065E /* IonicCameraRoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 84185F3E3E424A1084813F74 /* IonicCameraRoll.m */; };
 		068439945386470986CB088F /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CF4A133EB14359B4B10EA1 /* CDVLocation.m */; };
@@ -90,6 +89,9 @@
 		F893CE42CAE341639CA2AA11 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FA9CFD995E1F428B9F6182F1 /* CDVNotification.bundle */; };
 		FCDC1170724B4A1F8E2F51EC /* APPBackgroundMode.m in Sources */ = {isa = PBXBuildFile; fileRef = 30758057E8E841C5BE279881 /* APPBackgroundMode.m */; };
 		FF6C75433FF44D309D21AD40 /* APPBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = E6DC5742BADD417788B11B6A /* APPBadge.m */; };
+		C00611472BD4456B9A4A0E78 /* CDVConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF38DC5FD66493792F81062 /* CDVConnection.m */; };
+		9B22BC73B3CB4E31A675ED5A /* CDVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D0855E650347D494958BF9 /* CDVReachability.m */; };
+		31A27D0B89BE4C5E8F44BF5E /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43758EEB10894F2C8B5D83FD /* CoreTelephony.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -237,6 +239,11 @@
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ChitChat/config.xml; sourceTree = "<group>"; };
 		FA9CFD995E1F428B9F6182F1 /* CDVNotification.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CDVNotification.bundle; sourceTree = "<group>"; };
 		FF37EB69411B4F24AD80B7F4 /* libsqlite3.dylib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		6EF38DC5FD66493792F81062 /* CDVConnection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVConnection.m"; path = "cordova-plugin-network-information/CDVConnection.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		F1D0855E650347D494958BF9 /* CDVReachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVReachability.m"; path = "cordova-plugin-network-information/CDVReachability.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		EAC0B63D8C7942DCA6B6E430 /* CDVConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVConnection.h"; path = "cordova-plugin-network-information/CDVConnection.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		EE6B22A2F4984391AF7AA26B /* CDVReachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVReachability.h"; path = "cordova-plugin-network-information/CDVReachability.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		43758EEB10894F2C8B5D83FD /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "CoreTelephony.framework"; path = "System/Library/Frameworks/CoreTelephony.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -262,6 +269,7 @@
 				275EF55BA705450E9B635086 /* CoreLocation.framework in Frameworks */,
 				D0AF42B65C23423AB27921BF /* AudioToolbox.framework in Frameworks */,
 				F538087873144911A74F31F8 /* libsqlite3.dylib in Frameworks */,
+				31A27D0B89BE4C5E8F44BF5E /* CoreTelephony.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +361,7 @@
 				B01CB6CD51104DA98BF58B43 /* CoreLocation.framework */,
 				5FD4DF3BDE1B4F24866780A8 /* AudioToolbox.framework */,
 				FF37EB69411B4F24AD80B7F4 /* libsqlite3.dylib */,
+				43758EEB10894F2C8B5D83FD /* CoreTelephony.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -433,6 +442,10 @@
 				811FEDBE0B684F65B93451E7 /* IonicCameraRoll.h */,
 				3272F75C77D54BFD87018E2D /* Bridging-Header.h */,
 				233D13A3371143BFAC8934E7 /* cordova-plugin-CallCordovaPlugin-Bridging-Header.h */,
+				6EF38DC5FD66493792F81062 /* CDVConnection.m */,
+				F1D0855E650347D494958BF9 /* CDVReachability.m */,
+				EAC0B63D8C7942DCA6B6E430 /* CDVConnection.h */,
+				EE6B22A2F4984391AF7AA26B /* CDVReachability.h */,
 			);
 			name = Plugins;
 			path = ChitChat/Plugins;
@@ -664,6 +677,8 @@
 				068439945386470986CB088F /* CDVLocation.m in Sources */,
 				C58C1B9F75194DA1BF4702AC /* CDVNotification.m in Sources */,
 				01BAEF91FA7E486D944C065E /* IonicCameraRoll.m in Sources */,
+				C00611472BD4456B9A4A0E78 /* CDVConnection.m in Sources */,
+				9B22BC73B3CB4E31A675ED5A /* CDVReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

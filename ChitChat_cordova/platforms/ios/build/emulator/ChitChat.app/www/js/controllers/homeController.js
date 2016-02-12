@@ -27,6 +27,7 @@
 
 		function setupScope() {
 		    $scope.myProfile = main.getDataManager().myProfile;
+
 		    if (!!main.getDataManager().orgGroups) {
 		        $scope.orgGroups = main.getDataManager().orgGroups;
 		    }
@@ -35,6 +36,7 @@
 		            $scope.orgGroups = main.getDataManager().orgGroups;
 		        };
 		    }
+
 		    if (!!main.getDataManager().projectBaseGroups) {
 		        $scope.pjbGroups = main.getDataManager().projectBaseGroups;
 		    }
@@ -63,6 +65,22 @@
 		    }
 
 		    $scope.favorites = getFavorite();
+		    tryGetFavorite();
+		}
+
+		function tryGetFavorite(){
+			if(!jQuery.isEmptyObject(main.getDataManager().orgGroups) &&
+				!jQuery.isEmptyObject(main.getDataManager().projectBaseGroups) &&
+				!jQuery.isEmptyObject(main.getDataManager().privateGroups) &&
+				!jQuery.isEmptyObject(main.getDataManager().orgMembers)){
+					setTimeout(function () {
+			        	$scope.favorites = getFavorite();
+			    }, 500);
+			}else{
+				setTimeout(function () {
+			        tryGetFavorite();
+			    }, 1000);
+			}
 		}
 
 		function onLeave() {
@@ -141,7 +159,7 @@
 				scope: $scope,
 				animation: 'slide-in-up'
 			}).then(function (modal) {
-				$scope.myProfileModal = modal;
+			    $scope.myProfileModal = modal;
 			});
 			//<!-- Org modal.
 			$ionicModal.fromTemplateUrl('templates/modal-orggroup.html', {
@@ -219,7 +237,8 @@
 		//<!-- My profile modal. -->
 		$scope.openProfileModal = function (groupId) {
 			initMyProfileModal($state, $scope, function done(){
-				$scope.myProfileModal.show();
+			    $scope.myProfileModal.show();
+			    //$ionicScrollDelegate.$getByHandle('profileScroll').freezeScroll(true);
 			});
 		};
 		$scope.closeProfileModal = function () {

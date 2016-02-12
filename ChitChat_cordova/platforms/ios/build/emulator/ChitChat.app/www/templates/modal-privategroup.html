@@ -3,16 +3,17 @@
   'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
--->
+-->3
 
 <ion-modal-view class="group-modal-view">
-	<ion-content class="padding group-detail group-ionpane">
-
-    <img class="avatar-modal" ng-if="group.image != null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=150&w=150" />
-    <img class="avatar-modal" ng-if="group.image == null" src="img/img.jpg" height="150" width="150"  />
-
+	<ion-content class="padding group-detail group-ionpane" scroll="false">
+    <div>
         <a class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closePvgModal()"></a>
-        <div style="margin-bottom:15px;">
+        
+        <img class="avatar-modal" ng-if="group.image != null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=150&w=150" />
+        <img class="avatar-modal" ng-if="group.image == null" src="img/img.jpg" height="150" width="150"  />
+     </div>  
+         <div style="margin-bottom:15px;">
           <p class="name-modal" style="display:inline;">{{group.name}}</p>
           <i ng-if="isFavorite(group._id)" class="ion-heart assertive" style="font-size:20px;display:inline;position:absolute;margin-left:10px;" ng-click="editFavorite('remove',group._id,group.type)"></i>
           <i ng-if="!isFavorite(group._id)" class="ion-heart dark" style="font-size:20px;display:inline;position:absolute;margin-left:10px;" ng-click="editFavorite('add',group._id,group.type)"></i>
@@ -23,12 +24,21 @@
                     <img ng-src="{{webServer}}/timthumb.php?src={{member.image}}&h=30&w=30" />
                 </span>
                 <a ng-click="viewGroupDetail(group._id)" class="length">{{ members_length }}</a>
-            </div>
+         </div>
+
 		<div class="group-menu">
-			<a ng-click="chat(group._id)"><i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i><br /><span>Chat</span></a>
-			<div><i class="ion-ios-telephone-outline" data-pack="default" data-tags="talk"></i><br /><span>FreeCall</span></div>
-			<div><i class="ion-videocamera" data-pack="default" data-tags="talk"></i><br /><span>VideoCall</span></div>
+			<div style="max-width:50%" ng-click="chat(group._id)">
+                <i class="ion-ios-chatbubble-outline" data-pack="default" data-tags="talk"></i>
+                <br />
+                <span>Chat</span>
+            </div>
+			<div style="max-width:50%" ng-click="viewGroupDetail(group._id)">
+                <i class="ion-ios-information-outline" data-pack="default" data-tags="talk"></i>
+                <br />
+                <span>Info</span>
+            </div>
 		</div>
+
 	</ion-content>
 </ion-modal-view>
 

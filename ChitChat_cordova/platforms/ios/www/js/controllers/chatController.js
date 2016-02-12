@@ -22,7 +22,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	function activate() {
 	    console.log(self.title + " is activate");
 
-		self.currentRoom = roomSelected.getRoom();
+	    self.currentRoom = roomSelected.getRoom();
+	    if (self.currentRoom == null || self.currentRoom == undefined) {
+	        self.currentRoom = roomSelected.getLastJoinRoom();
+	        roomSelected.setRoom(self.currentRoom);
+	    }
+
 
 		//<!-- Set up roomname for display title of chatroom.
 		var roomName = self.currentRoom.name;
@@ -103,9 +108,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	$scope.viewProfile = function(){
 	    $scope.popover.hide();
-	    console.log(JSON.stringify($state.current));
-	    if ($state.current.views.hasOwnProperty('tab-chats')) {
-	        $state.go('tab.chats-chat-viewprofile', { chatId: $scope.otherId });
+	    if ($state.current.name === NGStateUtil.tab_chats_chat) {
+	        $state.go(NGStateUtil.tab_chats_chat_viewprofile, { chatId: $scope.otherId });
 	    } else {
 	        $state.go('tab.group-viewprofile', { chatId: $scope.otherId });
 	    }
@@ -114,16 +118,14 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.groupDetail = function(state){
 		$scope.popover.hide();
 		$rootScope.selectTab = state;
-		if($state.current.views.hasOwnProperty('tab-chats')){
-			$state.go('tab.chats-chat-members', { chatId: self.currentRoom._id });
+		if ($state.current.name === NGStateUtil.tab_chats_chat) {
+		    $state.go(NGStateUtil.tab_chats_chat_members, { chatId: self.currentRoom._id });
 		}else{
 			$state.go('tab.group-members', { chatId: self.currentRoom._id });
 		}
 	}
 
 	$scope.openPopover = function ($event) {
-	    console.log("open popover:", JSON.stringify($event));
-
 	    $scope.popover.show($event);
 	};
 	
@@ -151,6 +153,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		modalcount++;
 		$scope.modalSticker.show();
 	};
+
 	$scope.sendSticker = function(sticker) {
 		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
 		
@@ -168,6 +171,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		modalcount++;
 		$scope.modalWebview.show();
 	};
+
 	$scope.closeModalWebview = function() {
 		$scope.modalWebview.hide();
 	};
@@ -189,9 +193,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			$scope.$broadcast('cancelRecord', 'cancelRecord');
 		}		
 	});
+
 	$scope.openReaderModal = function() {
 		$scope.readerViewModal.show();
 	};
+
 	$scope.closeReaderModal = function() {
 		$scope.readerViewModal.hide();
 	};
@@ -215,32 +221,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$("#modal-webview-iframe").on('load', function () {
 	    alert($(this).contentDocument.title);
 	});
-	 
-	var countUp = function () {		
-		if( self.currentRoom != null )
-		{
-			// localStorage.removeItem(myprofile._id+'_'+currentRoom);
-			// localStorage.setItem(myprofile._id+'_'+currentRoom, JSON.stringify(chatRoomControl.chatMessages));
-			console.info('chatController: refresh view');
-			$scope.chat = chatRoomService.all();
-			
-			//$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(); // Scroll to bottom
-			//console.log( $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top ); // get all scroll position
-			//console.log( $('#main-chat .scroll').height() ); // Max scroll
-
-			scrolling = $ionicScrollDelegate.$getByHandle('mainScroll').getScrollPosition().top;
-			maxscroll = ($('#main-chat .scroll').height() - $('#main-chat').height());
-			
-			if( scrolling-5 <= maxscroll && scrolling+5 >= maxscroll )
-				$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom()
-				
-			$timeout(countUp, 1000);
-		}
-	}
-//	$timeout(countUp, 1000);
-	
-	//$('#send_message').css({ 'display': 'inline-block' });
-	//$('#chatroom_back').css({ 'display': 'inline-block' });
 	
 	// Send Message btn
 	$('#sendMsg').click(function()
@@ -274,9 +254,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.image = function(){
 		$scope.$broadcast('addImg', 'addImg');
 	}
+
 	$scope.video = function(){
 		$scope.$broadcast('captureVideo', 'captureVideo');
 	}
+
 	$scope.voice = function(){
 		if($('.audio-recorder').is(".recording")){
 			$('.audio-recorder').removeClass("recording");
@@ -299,6 +281,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 		}
 	});
+
 	// Send Image and remove temp Image
 	$scope.$on('fileUrl', function(event,args){
 		if(args[2]==ContentType[ContentType.Image]){
@@ -465,6 +448,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			});
 		}
 	}
+
 	$scope.editBlockNoti = function(editType,id,type){
 		$ionicLoading.show({
 			  template: 'Loading..'
@@ -495,17 +479,17 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			});
 		}
 	}
+
 	$scope.isFavorite = function(id){
 		return Favorite.isFavorite(id);
 	}
+
 	$scope.isBlockNoti = function(id){
 		return blockNotifications.isBlockNoti(id);
 	}
 
     // ON ENTER 
-	$scope.$on('$ionicView.enter', function () { //This is fired twice in a row
-	    console.log("App view (menu) entered.");
-
+	$scope.$on('$ionicView.enter', function () {
 	    $ionicLoading.show({
 	        template: 'Loading...'
 	    });
@@ -518,8 +502,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     // ON LEAVE
 	$scope.$on('$ionicView.beforeLeave', function () { //This just one when leaving, which happens when I logout
 	    console.log(self.title + " beforeLeave.");
-
-	    //$('#send_message').css({ 'display': 'none' });
 
 	    chatRoomService.leaveRoom();
 	});

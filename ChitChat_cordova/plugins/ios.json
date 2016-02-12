@@ -241,6 +241,9 @@
         },
         "phonegap-plugin-push": {
             "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
     "dependent_plugins": {

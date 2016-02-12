@@ -188,6 +188,8 @@ class DataManager implements absSpartan.IFrontendServerListener {
                 this.privateGroups[data._id] = data;
             }
         }
+
+        console.log('dataManager.updateGroupMembers:');
     }
     public updateGroupMemberDetail(jsonObj: any) {
         var editMember = jsonObj.editMember;
