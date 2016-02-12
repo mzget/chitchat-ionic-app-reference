@@ -23,139 +23,6 @@ var BlankCordovaApp1;
         Application.initialize();
     };
 })(BlankCordovaApp1 || (BlankCordovaApp1 = {}));
-requirejs.config({
-    paths: {
-        jquery: '../js/jquery.min',
-        cryptojs: '../lib/crypto-js/crypto-js'
-    }
-});
-var Main = (function () {
-    function Main() {
-    }
-    Main.getInstance = function () {
-        if (this.instance === null || this.instance === undefined) {
-            this.instance = Main.prototype;
-        }
-        return this.instance;
-    };
-    Main.prototype.getDataManager = function () {
-        return this.dataManager;
-    };
-    Main.prototype.setDataManager = function (data) {
-        this.dataManager = data;
-        this.dataListener = new DataListener(this.dataManager);
-    };
-    Main.prototype.getDataListener = function () {
-        return this.dataListener;
-    };
-    Main.prototype.getServerImp = function () {
-        console.log("getServerImp", this.serverImp);
-        return this.serverImp;
-    };
-    Main.prototype.setServerImp = function (server) {
-        this.serverImp = server;
-        console.log("setServerImp", server);
-    };
-    Main.prototype.getChatRoomApi = function () {
-        if (!this.chatRoomApi) {
-            this.chatRoomApi = ChatServer.ChatRoomApiProvider.prototype;
-        }
-        return this.chatRoomApi;
-    };
-    Main.prototype.setServerListener = function (server) {
-        this.serverListener = server;
-    };
-    Main.prototype.startChatServerListener = function (resolve, rejected) {
-        this.serverListener.addFrontendListener(this.dataManager);
-        this.serverListener.addServerListener(this.dataListener);
-        this.serverListener.addChatListener(this.dataListener);
-        this.serverListener.addListenner(resolve, rejected);
-    };
-    Main.prototype.getHashService = function (content, callback) {
-        var hashService = new SecureService();
-        hashService.hashCompute(content, callback);
-    };
-    Main.prototype.encodeService = function (content, callback) {
-        var crypto = new SecureService();
-        crypto.encryptWithSecureRandom(content, callback);
-    };
-    Main.prototype.decodeService = function (content, callback) {
-        var crypto = new SecureService();
-        crypto.decryptWithSecureRandom(content, callback);
-    };
-    Main.prototype.authenUser = function (server, email, password, callback) {
-        console.log("authenUser:", email, password);
-        var self = this;
-        server.logIn(email, password, function (err, loginRes) {
-            callback(err, loginRes);
-            if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {
-                var promiseForAddListener = new Promise(function callback(resolve, rejected) {
-                    self.startChatServerListener(resolve, rejected);
-                }).then(function onFulfilled(value) {
-                    server.getMe(function (err, res) {
-                        if (err || res === null) {
-                            console.error(err);
-                        }
-                        else {
-                            self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
-                            if (res.code === HttpStatusCode.success) {
-                            }
-                            else {
-                                console.warn("My user profile is empty. please check.");
-                            }
-                        }
-                    });
-                    server.getCompanyInfo(function (err, res) {
-                        if (err || res === null) {
-                            console.error(err);
-                        }
-                        else {
-                            console.log("companyInfo: ", JSON.stringify(res));
-                        }
-                    });
-                    server.getOrganizationGroups(function (err, res) {
-                        if (err || res === null) {
-                            console.error(err);
-                        }
-                        else {
-                            console.log("organize groups: ", JSON.stringify(res));
-                        }
-                    });
-                    server.getProjectBaseGroups(function (err, res) {
-                        if (err || res === null) {
-                            console.error(err);
-                        }
-                        else {
-                            console.log("project base groups: ", JSON.stringify(res));
-                        }
-                    });
-                    server.getPrivateGroups(function (err, res) {
-                        if (err || res === null) {
-                            console.error(err);
-                        }
-                        else {
-                            console.log("Private groups: ", JSON.stringify(res));
-                        }
-                    });
-                    server.getCompanyMembers(function (err, res) {
-                        if (err || res === null) {
-                            console.error(err);
-                        }
-                        else {
-                            console.log("Company Members: ", JSON.stringify(res));
-                        }
-                    });
-                }).catch(function onRejected(err) {
-                    console.error(err);
-                });
-            }
-            else {
-                console.warn(err, JSON.stringify(loginRes));
-            }
-        });
-    };
-    return Main;
-})();
 var ChatLog = (function () {
     function ChatLog(room) {
         this.id = room._id;
@@ -914,6 +781,7 @@ var DataManager = (function () {
                 this.privateGroups[data._id] = data;
             }
         }
+        console.log('dataManager.updateGroupMembers:');
     };
     DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
         var _this = this;
@@ -1071,6 +939,139 @@ var DataManager = (function () {
     };
     ;
     return DataManager;
+})();
+requirejs.config({
+    paths: {
+        jquery: '../js/jquery.min',
+        cryptojs: '../lib/crypto-js/crypto-js'
+    }
+});
+var Main = (function () {
+    function Main() {
+    }
+    Main.getInstance = function () {
+        if (this.instance === null || this.instance === undefined) {
+            this.instance = Main.prototype;
+        }
+        return this.instance;
+    };
+    Main.prototype.getDataManager = function () {
+        return this.dataManager;
+    };
+    Main.prototype.setDataManager = function (data) {
+        this.dataManager = data;
+        this.dataListener = new DataListener(this.dataManager);
+    };
+    Main.prototype.getDataListener = function () {
+        return this.dataListener;
+    };
+    Main.prototype.getServerImp = function () {
+        console.log("getServerImp", this.serverImp);
+        return this.serverImp;
+    };
+    Main.prototype.setServerImp = function (server) {
+        this.serverImp = server;
+        console.log("setServerImp", server);
+    };
+    Main.prototype.getChatRoomApi = function () {
+        if (!this.chatRoomApi) {
+            this.chatRoomApi = ChatServer.ChatRoomApiProvider.prototype;
+        }
+        return this.chatRoomApi;
+    };
+    Main.prototype.setServerListener = function (server) {
+        this.serverListener = server;
+    };
+    Main.prototype.startChatServerListener = function (resolve, rejected) {
+        this.serverListener.addFrontendListener(this.dataManager);
+        this.serverListener.addServerListener(this.dataListener);
+        this.serverListener.addChatListener(this.dataListener);
+        this.serverListener.addListenner(resolve, rejected);
+    };
+    Main.prototype.getHashService = function (content, callback) {
+        var hashService = new SecureService();
+        hashService.hashCompute(content, callback);
+    };
+    Main.prototype.encodeService = function (content, callback) {
+        var crypto = new SecureService();
+        crypto.encryptWithSecureRandom(content, callback);
+    };
+    Main.prototype.decodeService = function (content, callback) {
+        var crypto = new SecureService();
+        crypto.decryptWithSecureRandom(content, callback);
+    };
+    Main.prototype.authenUser = function (server, email, password, callback) {
+        console.log("authenUser:", email);
+        var self = this;
+        server.logIn(email, password, function (err, loginRes) {
+            callback(err, loginRes);
+            if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {
+                var promiseForAddListener = new Promise(function callback(resolve, rejected) {
+                    self.startChatServerListener(resolve, rejected);
+                }).then(function onFulfilled(value) {
+                    server.getMe(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            self.dataManager.onMyProfileReady = self.onMyProfileReadyListener;
+                            if (res.code === HttpStatusCode.success) {
+                            }
+                            else {
+                                console.warn("My user profile is empty. please check.");
+                            }
+                        }
+                    });
+                    server.getCompanyInfo(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("companyInfo: ", JSON.stringify(res));
+                        }
+                    });
+                    server.getOrganizationGroups(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("organize groups: ", JSON.stringify(res));
+                        }
+                    });
+                    server.getProjectBaseGroups(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("project base groups: ", JSON.stringify(res));
+                        }
+                    });
+                    server.getPrivateGroups(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("Private groups: ", JSON.stringify(res));
+                        }
+                    });
+                    server.getCompanyMembers(function (err, res) {
+                        if (err || res === null) {
+                            console.error(err);
+                        }
+                        else {
+                            console.log("Company Members: ", JSON.stringify(res));
+                        }
+                    });
+                }).catch(function onRejected(err) {
+                    console.error(err);
+                });
+            }
+            else {
+                console.warn(err, JSON.stringify(loginRes));
+            }
+        });
+    };
+    return Main;
 })();
 var NotifyManager = (function () {
     function NotifyManager(main) {
@@ -1460,6 +1461,33 @@ var Dummy = (function () {
     };
     return Dummy;
 })();
+var ngControllerUtil = (function () {
+    function ngControllerUtil(parameters) {
+    }
+    ngControllerUtil.viewProfileCtrl = "viewProfileCtrl";
+    ngControllerUtil.groupDetailCtrl = "groupDetailCtrl";
+    ngControllerUtil.editMemberGroup = 'editMemberGroup';
+    return ngControllerUtil;
+})();
+var NGStateUtil = (function () {
+    function NGStateUtil() {
+    }
+    NGStateUtil.tab_login = 'tab.login';
+    NGStateUtil.tab_login_error = 'tab.login-error';
+    NGStateUtil.tab_group = 'tab.group';
+    NGStateUtil.tab_group_viewprofile = 'tab.group-viewprofile';
+    NGStateUtil.tab_group_members = 'tab.group-members';
+    NGStateUtil.tab_group_members_invite = 'tab.group-members-invite';
+    NGStateUtil.tab_group_members_edit = 'tab.group-members-edit';
+    NGStateUtil.tab_group_chat = 'tab.group-chat';
+    NGStateUtil.tab_group_freecall = 'tab.group-freecall';
+    NGStateUtil.tab_chats = 'tab.chats';
+    NGStateUtil.tab_chats_chat = 'tab.chats-chat';
+    NGStateUtil.tab_chats_chat_viewprofile = 'tab.chats-chat-viewprofile';
+    NGStateUtil.tab_chats_chat_members = 'tab.chats-chat-members';
+    NGStateUtil.tab_chats_chat_members_invite = 'tab.chats-chat-members-invite';
+    return NGStateUtil;
+})();
 var pomelo;
 var username = "";
 var password = "";
@@ -1495,9 +1523,18 @@ var ChatServer;
                 console.warn("disconnect Event");
             }
         };
-        ServerImplemented.prototype.disposeClient = function () {
-            pomelo = null;
+        ServerImplemented.prototype.dispose = function () {
             console.warn("dispose socket client.");
+            this.disConnect();
+            this.authenData = null;
+        };
+        ServerImplemented.prototype.disConnect = function () {
+            console.log('disconnecting...');
+            if (!!pomelo) {
+                pomelo.removeAllListeners();
+                pomelo.disconnect();
+                pomelo = null;
+            }
         };
         ServerImplemented.prototype.logout = function () {
             var registrationId = localStorage.getItem("registrationId");
@@ -1509,6 +1546,7 @@ var ChatServer;
             this.disConnect();
         };
         ServerImplemented.prototype.init = function (callback) {
+            console.log('serverImp.init()');
             var self = this;
             this._isConnected = false;
             username = localStorage.getItem("username");
@@ -1563,13 +1601,6 @@ var ChatServer;
                 console.log(err);
             });
         };
-        ServerImplemented.prototype.disConnect = function () {
-            if (pomelo !== null) {
-                pomelo.removeAllListeners();
-                pomelo.disconnect();
-            }
-            this.authenData = null;
-        };
         ServerImplemented.prototype.kickMeAllSession = function (uid) {
             if (pomelo !== null) {
                 var msg = { uid: uid };
@@ -1579,7 +1610,7 @@ var ChatServer;
             }
         };
         ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
-            console.log("socket init connecting to: ", _host, _port);
+            console.log("socket connecting to: ", _host, _port);
             pomelo.init({ host: _host, port: _port }, function cb(err) {
                 console.log("socket init result: " + err);
                 callback(err);
@@ -1595,16 +1626,24 @@ var ChatServer;
                 var msg = { uid: username };
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
                     console.log("QueryConnectorServ", result.code);
-                    if (result.code === 200) {
-                        var port = result.port;
-                        self.connectSocketServer(self.host, port, function (err) {
-                            self._isConnected = true;
-                            if (!!err) {
-                                callback(err, null);
-                            }
-                            else {
-                                self.authenForFrontendServer(callback);
-                            }
+                    if (result.code === HttpStatusCode.success) {
+                        self.disConnect();
+                        var promiseLoadSocket = new Promise(function (resolve, reject) {
+                            self.loadSocket(resolve, reject);
+                        });
+                        promiseLoadSocket.then(function (value) {
+                            var port = result.port;
+                            self.connectSocketServer(self.host, port, function (err) {
+                                self._isConnected = true;
+                                if (!!err) {
+                                    callback(err, null);
+                                }
+                                else {
+                                    self.authenForFrontendServer(callback);
+                                }
+                            });
+                        }).catch(function (error) {
+                            console.error('Load socket fail!');
                         });
                     }
                 });
@@ -1996,20 +2035,21 @@ var ChatServer;
                     callback(null, data);
             });
         };
-        ChatRoomApiProvider.prototype.chatFile = function (room_id, target, sender_id, fileUrl, contentType, setMessageID) {
+        ChatRoomApiProvider.prototype.chatFile = function (room_id, target, sender_id, fileUrl, contentType, meta, callback) {
             console.log("Send file to ", target);
             var message = {};
             message["rid"] = room_id;
             message["content"] = fileUrl;
             message["sender"] = sender_id;
             message["target"] = target;
+            message["meta"] = meta;
             message["type"] = contentType;
             pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("chatFile callback: ", data);
                 if (data.code == 200) {
-                    if (setMessageID != null) {
-                        setMessageID(null, data.data);
+                    if (callback != null) {
+                        callback(null, data.data);
                     }
                 }
                 else {
@@ -2257,4 +2297,3 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
-//# sourceMappingURL=appBundle.js.map

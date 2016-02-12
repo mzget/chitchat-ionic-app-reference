@@ -448,30 +448,35 @@ module.exports = [
         "clobbers": [
             "CameraRoll"
         ]
+    },
+    {
+        "file": "plugins/cordova.CallCordovaPlugin/www/CallCordovaPlugin.js",
+        "id": "cordova.CallCordovaPlugin.CallCordovaPlugin",
+        "pluginId": "cordova.CallCordovaPlugin",
+        "clobbers": [
+            "cordova.plugins.CallCordovaPlugin"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-network-information/www/network.js",
+        "id": "cordova-plugin-network-information.network",
+        "pluginId": "cordova-plugin-network-information",
+        "clobbers": [
+            "navigator.connection",
+            "navigator.network.connection"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+        "id": "cordova-plugin-network-information.Connection",
+        "pluginId": "cordova-plugin-network-information",
+        "clobbers": [
+            "Connection"
+        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
-{
-    "cordova-plugin-camera": "1.2.0",
-    "cordova-plugin-console": "1.0.1",
-    "cordova-plugin-device": "1.0.1",
-    "cordova-plugin-file": "3.0.0",
-    "cordova-plugin-file-transfer": "1.3.0",
-    "cordova-plugin-media": "1.0.1",
-    "cordova-plugin-media-capture": "1.0.1",
-    "cordova-plugin-splashscreen": "2.1.0",
-    "cordova-plugin-x-toast": "2.2.1",
-    "de.appplant.cordova.common.registerusernotificationsettings": "1.0.1",
-    "de.appplant.cordova.plugin.background-mode": "0.6.3",
-    "de.appplant.cordova.plugin.badge": "0.7.1",
-    "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
-    "hu.dpal.phonegap.plugins.SpinnerDialog": "1.3.1",
-    "org.pbernasconi.progressindicator": "1.1.0",
-    "phonegap-plugin-push": "1.4.2",
-    "cordova-plugin-geolocation": "1.0.1",
-    "cordova-plugin-dialogs": "1.2.0",
-    "chitchat-plugin-cameraroll": "1.0.0"
-}
+{}
 // BOTTOM OF METADATA
 });
