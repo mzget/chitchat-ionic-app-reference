@@ -2,9 +2,8 @@
 
 	<ion-nav-buttons side="right">
         <button 
-        ng-show=" (model.groupname != model.originalName || sourceImage != '') && (meIsAdmin || chatGroup.type==privateIndex) " class="button button-clear button-positive" ng-click="groupSave()">Save
+        ng-show="(model.groupname != model.originalName || sourceImage != '') && (meIsAdmin || chatGroup.type==privateIndex) " class="button button-clear button-positive" ng-click="groupSave()">Save
     	</button>
-
     </ion-nav-buttons>
 
 	<ion-content scroll="false">
@@ -49,8 +48,6 @@
 	    	</div>
 		</ion-list>
 
-		
-		
 		<ion-list class="members-list">
 			<ion-item class="item-remove-animate item-avatar item-icon-right" 
 			ng-repeat="member in members|orderObjectBy:'displayname':false|filter:search" type="item-text-wrap" ng-click="viewContact(member._id)">

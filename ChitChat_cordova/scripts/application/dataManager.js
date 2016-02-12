@@ -1,93 +1,62 @@
-interface IRoomMap {
-    [key: string]: Room;
-}
-interface IMemberMep {
-    [key: string]: ContactInfo;
-}
-
-class DataManager implements absSpartan.IFrontendServerListener {
-/*
-    private static _instance: DataManager;
-    public static getInstance(): DataManager {
-        if (this._instance === null || this._instance === undefined) {
-            this._instance = new DataManager();
-        }
-
-        return this._instance;
+var DataManager = (function () {
+    function DataManager() {
+        this.orgGroups = {};
+        this.projectBaseGroups = {};
+        this.privateGroups = {};
+        this.privateChats = {};
+        this.orgMembers = {};
+        this.isOrgMembersReady = false;
     }
-*/
-    public myProfile: User;
-    public orgGroups: IRoomMap = {};
-    public projectBaseGroups: IRoomMap = {};
-    public privateGroups: IRoomMap = {};
-    public privateChats: IRoomMap = {};
-    public orgMembers: IMemberMep = {};
-    public isOrgMembersReady: boolean = false;
-    public companyInfo: CompanyInfo;
-
-    public onMyProfileReady: (dataManager: DataManager) => void;
-    public onOrgGroupDataReady: () => void;
-    public onProjectBaseGroupsDataReady: () => void;
-    public onPrivateGroupsDataReady: () => void;
-    public onContactsDataReady: () => void;
-
-    public setMyProfile(data: any) {
+    DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
-
         if (!!this.onMyProfileReady)
             this.onMyProfileReady(this);
-    }
-    public getMyProfile(): User {
+    };
+    DataManager.prototype.getMyProfile = function () {
         return this.myProfile;
-    }
-    public isMySelf(uid: string): boolean {
+    };
+    DataManager.prototype.isMySelf = function (uid) {
         if (uid === this.myProfile._id) {
             return true;
         }
         else {
             return false;
         }
-    }
-
-
-    public setRoomAccessForUser(data) {
+    };
+    DataManager.prototype.setRoomAccessForUser = function (data) {
         this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
-    }
-    public updateRoomAccessForUser(data) {
-        var arr: Array<RoomAccessData> = JSON.parse(JSON.stringify(data.roomAccess));
-        this.myProfile.roomAccess.forEach(value => {
+    };
+    DataManager.prototype.updateRoomAccessForUser = function (data) {
+        var arr = JSON.parse(JSON.stringify(data.roomAccess));
+        this.myProfile.roomAccess.forEach(function (value) {
             if (value.roomId === arr[0].roomId) {
                 value.accessTime = arr[0].accessTime;
-
                 return;
             }
         });
-    }
-    public getRoomAccess(): RoomAccessData[] {
+    };
+    DataManager.prototype.getRoomAccess = function () {
         return this.myProfile.roomAccess;
-    }
-
-    public setCompanyInfo(data: any) {
-          this.companyInfo = JSON.parse(JSON.stringify(data));
-    }
-
+    };
+    DataManager.prototype.setCompanyInfo = function (data) {
+        this.companyInfo = JSON.parse(JSON.stringify(data));
+    };
     //<!---------- Group ------------------------------------
-
-    public getGroup(id:string) : Room {
-        if(!!this.orgGroups[id]) {
+    DataManager.prototype.getGroup = function (id) {
+        if (!!this.orgGroups[id]) {
             return this.orgGroups[id];
         }
-        else if(!!this.projectBaseGroups[id]) {
+        else if (!!this.projectBaseGroups[id]) {
             return this.projectBaseGroups[id];
         }
-        else if(!!this.privateGroups[id]) {
+        else if (!!this.privateGroups[id]) {
             return this.privateGroups[id];
         }
         else if (!!this.privateChats && !!this.privateChats[id]) {
             return this.privateChats[id];
         }
-    }
-    public addGroup(data: Room) {
+    };
+    DataManager.prototype.addGroup = function (data) {
         switch (data.type) {
             case RoomType.organizationGroup:
                 if (!this.orgGroups[data._id]) {
@@ -114,22 +83,21 @@ class DataManager implements absSpartan.IFrontendServerListener {
                 break;
             default:
                 console.info("new room is not a group type.");
-            break;
+                break;
         }
-    }
-    
-    public updateGroupImage(data: Room) {
-        if(!!this.orgGroups[data._id]) {
+    };
+    DataManager.prototype.updateGroupImage = function (data) {
+        if (!!this.orgGroups[data._id]) {
             this.orgGroups[data._id].image = data.image;
         }
-        else if(!!this.projectBaseGroups[data._id]) {
+        else if (!!this.projectBaseGroups[data._id]) {
             this.projectBaseGroups[data._id].image = data.image;
         }
-        else if(!!this.privateGroups[data._id]) {
+        else if (!!this.privateGroups[data._id]) {
             this.privateGroups[data._id].image = data.image;
         }
-    }
-    public updateGroupName(data: Room) {
+    };
+    DataManager.prototype.updateGroupName = function (data) {
         if (!!this.orgGroups[data._id]) {
             this.orgGroups[data._id].name = data.name;
         }
@@ -139,12 +107,11 @@ class DataManager implements absSpartan.IFrontendServerListener {
         else if (!!this.privateGroups[data._id]) {
             this.privateGroups[data._id].name = data.name;
         }
-    }
-    public updateGroupMembers(data: Room) {
+    };
+    DataManager.prototype.updateGroupMembers = function (data) {
         //<!-- Beware please checking myself before update group members.
         //<!-- May be your id is removed from group.
         var hasMe = this.checkMySelfInNewMembersReceived(data);
-
         if (data.type === RoomType.organizationGroup) {
             if (!!this.orgGroups[data._id]) {
                 //<!-- This statement call when current you still a member.
@@ -188,178 +155,164 @@ class DataManager implements absSpartan.IFrontendServerListener {
                 this.privateGroups[data._id] = data;
             }
         }
-
         console.log('dataManager.updateGroupMembers:');
-    }
-    public updateGroupMemberDetail(jsonObj: any) {
+    };
+    DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
+        var _this = this;
         var editMember = jsonObj.editMember;
         var roomId = jsonObj.roomId;
-
-        var groupMember: Member = new Member();
+        var groupMember = new Member();
         groupMember.id = editMember.id;
-        var role = <string>editMember.role;
+        var role = editMember.role;
         groupMember.role = MemberRole[role];
         groupMember.jobPosition = editMember.jobPosition;
-
-        this.getGroup(roomId).members.forEach((value, index, arr) => {
+        this.getGroup(roomId).members.forEach(function (value, index, arr) {
             if (value.id === groupMember.id) {
-                this.getGroup(roomId).members[index].role = groupMember.role;
-                this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role]
-                this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
+                _this.getGroup(roomId).members[index].role = groupMember.role;
+                _this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role];
+                _this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
             }
         });
-    }
-
-    private checkMySelfInNewMembersReceived(data: Room): boolean {
+    };
+    DataManager.prototype.checkMySelfInNewMembersReceived = function (data) {
         var self = this;
         var hasMe = data.members.some(function isMySelfId(element, index, array) {
-            return element.id === self.myProfile._id; 
+            return element.id === self.myProfile._id;
         });
-
         console.debug("New data has me", hasMe);
         return hasMe;
-    }
-    
+    };
     //<!------------------------------------------------------
-
-    public onUserLogin(dataEvent) {
-        let jsonObject = JSON.parse(JSON.stringify(dataEvent));
-        let _id: string = jsonObject._id;
-        let self = this;
-
-        if (!this.orgMembers) this.orgMembers = {};
+    DataManager.prototype.onUserLogin = function (dataEvent) {
+        var jsonObject = JSON.parse(JSON.stringify(dataEvent));
+        var _id = jsonObject._id;
+        var self = this;
+        if (!this.orgMembers)
+            this.orgMembers = {};
         if (!this.orgMembers[_id]) {
             //@ Need to get new contact info.
-            ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, (err, res) => {
+            ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, function (err, res) {
                 console.log("getMemberProfile : ", err, JSON.stringify(res));
-
-                let data = JSON.parse(JSON.stringify(res.data));
-                let contact: ContactInfo = new ContactInfo();
+                var data = JSON.parse(JSON.stringify(res.data));
+                var contact = new ContactInfo();
                 contact._id = data._id;
                 contact.displayname = data.displayname;
                 contact.image = data.image;
                 contact.status = data.status;
-
                 console.warn(contact);
                 self.orgMembers[contact._id] = contact;
-
                 if (self.onContactsDataReady != null) {
                     self.onContactsDataReady();
                 }
-
                 console.log("We need to save contacts list to persistence data layer.");
             });
         }
-    }
-
-    public updateContactImage(contactId: string, url: string) {
-        if(!!this.orgMembers[contactId]) {
-           this.orgMembers[contactId].image = url;
+    };
+    DataManager.prototype.updateContactImage = function (contactId, url) {
+        if (!!this.orgMembers[contactId]) {
+            this.orgMembers[contactId].image = url;
         }
-    }
-    public updateContactProfile(contactId:string, params: any) {
-        if(!!this.orgMembers[contactId]) {
+    };
+    DataManager.prototype.updateContactProfile = function (contactId, params) {
+        if (!!this.orgMembers[contactId]) {
             var jsonObj = JSON.parse(JSON.stringify(params));
-            if(!!jsonObj.displayname) {
+            if (!!jsonObj.displayname) {
                 this.orgMembers[contactId].displayname = jsonObj.displayname;
             }
-            if(!!jsonObj.status) {
+            if (!!jsonObj.status) {
                 this.orgMembers[contactId].status = jsonObj.status;
             }
         }
-    }
-    public getContactProfile(contactId: string) : ContactInfo {
-        if(!!this.orgMembers[contactId]) {
+    };
+    DataManager.prototype.getContactProfile = function (contactId) {
+        if (!!this.orgMembers[contactId]) {
             return this.orgMembers[contactId];
         }
         else {
             console.warn('this contactId is invalid. Maybe it not contain in list of contacts.');
         }
-    }
-    
-    public onGetMe(dataEvent) {
+    };
+    DataManager.prototype.onGetMe = function (dataEvent) {
         var self = this;
         var _profile = JSON.parse(JSON.stringify(dataEvent));
-        if(dataEvent.code === 200) {
+        if (dataEvent.code === 200) {
             this.setMyProfile(dataEvent.data);
         }
         else {
             console.error("get use profile fail!", dataEvent.message);
         }
-    }
-    public onGetCompanyInfo(dataEvent) {
+    };
+    DataManager.prototype.onGetCompanyInfo = function (dataEvent) {
         var self = this;
         var _company = JSON.parse(JSON.stringify(dataEvent));
-        if(dataEvent.code === 200) {
+        if (dataEvent.code === 200) {
             this.setCompanyInfo(dataEvent.data);
         }
         else {
             console.error("get company info fail!", dataEvent.message);
         }
-    }
-
-    public onGetCompanyMemberComplete(dataEvent) {
-        let self = this;
-        let members: Array<ContactInfo> = JSON.parse(JSON.stringify(dataEvent));
-
-        if (!this.orgMembers) this.orgMembers = {};
-
+    };
+    DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
+        var self = this;
+        var members = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.orgMembers)
+            this.orgMembers = {};
         async.eachSeries(members, function iterator(item, cb) {
             if (!self.orgMembers[item._id]) {
                 self.orgMembers[item._id] = item;
             }
-            
             cb();
         }, function done(err) {
             self.isOrgMembersReady = true;
-            });
-
+        });
         if (this.onContactsDataReady != null)
             this.onContactsDataReady();
     };
-    public onGetOrganizeGroupsComplete(dataEvent) {
-        var rooms: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
+    ;
+    DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var rooms = JSON.parse(JSON.stringify(dataEvent));
         if (!this.orgGroups)
             this.orgGroups = {};
-
-        rooms.forEach(value => {
-            if (!this.orgGroups[value._id]) {
-                this.orgGroups[value._id] = value;
+        rooms.forEach(function (value) {
+            if (!_this.orgGroups[value._id]) {
+                _this.orgGroups[value._id] = value;
             }
         });
-
         if (this.onOrgGroupDataReady != null) {
             this.onOrgGroupDataReady();
         }
     };
-    public onGetProjectBaseGroupsComplete(dataEvent) {
-        var groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
-
-        if (!this.projectBaseGroups) this.projectBaseGroups = {};
-
-        groups.forEach(value => {
-            if (!this.projectBaseGroups[value._id]) {
-                this.projectBaseGroups[value._id] = value;
+    ;
+    DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var groups = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.projectBaseGroups)
+            this.projectBaseGroups = {};
+        groups.forEach(function (value) {
+            if (!_this.projectBaseGroups[value._id]) {
+                _this.projectBaseGroups[value._id] = value;
             }
         });
-
         if (this.onProjectBaseGroupsDataReady != null) {
             this.onProjectBaseGroupsDataReady();
         }
     };
-    public onGetPrivateGroupsComplete(dataEvent) {
-        var groups: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
-
-        if (!this.privateGroups) this.privateGroups = {};
-
-        groups.forEach(value => {
-            if (!this.privateGroups[value._id]) {
-                this.privateGroups[value._id] = value;
+    ;
+    DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) {
+        var _this = this;
+        var groups = JSON.parse(JSON.stringify(dataEvent));
+        if (!this.privateGroups)
+            this.privateGroups = {};
+        groups.forEach(function (value) {
+            if (!_this.privateGroups[value._id]) {
+                _this.privateGroups[value._id] = value;
             }
         });
-
         if (this.onPrivateGroupsDataReady != null) {
             this.onPrivateGroupsDataReady();
         }
     };
-}
+    ;
+    return DataManager;
+})();
