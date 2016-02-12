@@ -99,6 +99,8 @@
         return service;
 
         function init() {
+            console.info('chatRoomService.init()');
+            
             var curRoom = roomSelected.getRoom();
             var chatRoomApi = main.getChatRoomApi();
             chatRoomComponent = new ChatRoomComponent(main, curRoom._id, dbAccessService.getMessageDAL());

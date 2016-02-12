@@ -28,14 +28,15 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 
 	function setRoom() {
+	    self.currentRoom = roomSelected.getRoomOrLastRoom();
 	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
 	        if (self.currentRoom == null || self.currentRoom === undefined) {
 	            var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
 	            roomSelected.setRoom(group);
+	           self.currentRoom = roomSelected.getRoomOrLastRoom();
 	        }
 	    }
         
-	    self.currentRoom = roomSelected.getRoomOrLastRoom();
 	    $scope.currentRoom = self.currentRoom;
 
 	    //<!-- Set up roomname for display title of chatroom.
@@ -60,6 +61,10 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
 	        $scope.$emit('roomName', $scope.currentRoom.name);
 	    }
+        
+        setTimeout(function() {          
+		    chatRoomService.getPersistendMessage(); 
+        }, 100);
 	}
 
 	function activate() {
@@ -101,12 +106,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    });
 		});
 
-	    setchatRoomService();
-	}
-    
-	function setchatRoomService() {
 		chatRoomService.init();
-		chatRoomService.getPersistendMessage(); 
 	}
 
 	function blockUI(boo) {
@@ -514,6 +514,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	$scope.$on('enterChat', function(event, args) { 
 		console.log("App view (menu) entered.");
+        
 	    $ionicLoading.show({
 	        template: 'Loading...'
 	    });
@@ -524,6 +525,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	 });
 	
 	$scope.$on('changeChat', function(event, args) { 
+        console.log('changed chatroom.', event);
+        
 	    var newRoom = JSON.parse(JSON.stringify(args));
 
 		chatRoomService.leaveRoomCB( function(){

@@ -27,7 +27,6 @@
 
                     if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
                         $scope.chat = function () {
-                            console.log("ROOM", room);
                             $rootScope.$broadcast('changeChat', room);
                         };
                     }

@@ -7,7 +7,7 @@
 
 	//homeController.$inject = ['$location'];
 
-	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform, $cordovaSpinnerDialog,
+	function homeController($location, $state, $scope, $rootScope, $timeout, $ionicModal, $ionicLoading, $ionicPlatform, $cordovaSpinnerDialog,
 		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
@@ -170,10 +170,7 @@
 		$scope.isFavorite = function(id){
 			return Favorite.isFavorite(id);
 		}
-		
-		$scope.$on('$ionicView.enter', function(){ 
-			console.log("$ionicView.enter: ", vm.title);
-
+        
 			activate();
 			setupScope();
 
@@ -230,22 +227,6 @@
 			$scope.$on('modal.removed', function () {
 				// Execute action
 			});
-		});
-	
-		$scope.$on('$ionicView.beforeLeave', function () {
-			console.log("beforeLeave: homeController");
-		});
-
-		$scope.$on('$ionicView.leave', function () {
-			console.log("$ionicView.leave:", vm.title);
-		});
-
-		$scope.$on('$ionicView.unloaded', function () {
-			console.log("$ionicView.unloaded:", vm.title);
-
-			clearInterval($scope.interval);
-			onLeave();
-		});
 	
 		$scope.viewlist = function(list) {
 			var listHeight = $('#list-'+list+' .list').height();		
@@ -315,6 +296,22 @@
 		        $scope.openContactModal(id);
 		    }
 		}
+        
+		$scope.$on('$ionicView.enter', function() { 
+			console.log("$ionicView.enter: ", vm.title);
+        });
+		$scope.$on('$ionicView.beforeLeave', function () {
+			console.log("beforeLeave: homeController");
+		});
+		$scope.$on('$ionicView.leave', function () {
+			console.log("$ionicView.leave:", vm.title);
+		});
+		$scope.$on('$ionicView.unloaded', function () {
+			console.log("$ionicView.unloaded:", vm.title);
+
+			clearInterval($scope.interval);
+			onLeave();
+		});
 	}
 
 	var initOrgModal = function ($state, $scope, groupId, roomSelected, done, $rootScope) {
