@@ -62,7 +62,6 @@
                     $rootScope.appVersion = sharedObjectService.getAppVersion();
 
                     if(ionic.Platform.platform() !== "ios") {
-                        //location.href = '#/tab/group/chat/55d177c2d20212737c46c685';
                         $location.path('/chats');
                     }
                     else{

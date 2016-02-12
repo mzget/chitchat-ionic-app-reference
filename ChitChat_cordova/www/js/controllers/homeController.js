@@ -9,12 +9,13 @@
 
 	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform, $cordovaSpinnerDialog,
 		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
-
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
-
-		$scope.$on('roomName', function(event, args) { $scope.roomName = args; });
+        
+        if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+		      $scope.$on('roomName', function(event, args) { $scope.roomName = args; });
+        }
 
 		function activate() {
 		    if (ionic.Platform.platform() === 'ios') {
@@ -77,6 +78,7 @@
 		    $scope.favorites = getFavorite();
 		    tryGetFavorite();
 		}
+        
 
 		function getChatWeb(){
 			var chatheight = $(window).height() - 43;
@@ -92,9 +94,12 @@
 				!jQuery.isEmptyObject(main.getDataManager().orgMembers)){
 					setTimeout(function () {
 			        	$scope.favorites = getFavorite();
-			        	getChatWeb();
+                        if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform !== 'android') {
+                            getChatWeb();
+                        }
 			    }, 500);
-			}else{
+			}
+            else{
 				setTimeout(function () {
 			        tryGetFavorite();
 			    }, 1000);
@@ -166,7 +171,7 @@
 			return Favorite.isFavorite(id);
 		}
 		
-		
+		$scope.$on('$ionicView.enter', function(){ 
 			console.log("$ionicView.enter: ", vm.title);
 
 			activate();
@@ -225,7 +230,7 @@
 			$scope.$on('modal.removed', function () {
 				// Execute action
 			});
-		
+		});
 	
 		$scope.$on('$ionicView.beforeLeave', function () {
 			console.log("beforeLeave: homeController");
@@ -328,8 +333,6 @@
 		$scope.toggle = function (chatId) {
 			$scope.closeOrgModal();
             if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-			    //       $state.go('', { chatId: chatId });
-			    //location.href = '#/tab/group/chat/' + chatId;
 			    $scope.$broadcast('changeChat', group);
             }
             else {
@@ -359,8 +362,8 @@
 
 		$scope.toggle = function (chatId) {
 			$scope.closePjbModal();
+
 			if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-			    //location.href = '#/tab/group/chat/' + chatId;
 			    $scope.$broadcast('changeChat', group);
 			}
             else {
@@ -390,11 +393,11 @@
 
 		$scope.chat = function (chatId) {
 			$scope.closePvgModal();
+
 			if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-			    //location.href = '#/tab/group/chat/' + chatId;
 			    $scope.$broadcast('changeChat', group);
 			}
-			else {		    //location.href = '#/tab/group/chat/' + chatId;
+			else {
 			    $state.go(NGStateUtil.tab_group_chat);
 			}
 		};

@@ -11,7 +11,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	var self = this;
 	self.title = 'chatController';
-
+    
 	var myprofile = main.getDataManager().myProfile;
 	var allMembers = main.getDataManager().orgMembers;
 	var chatRoomApi = main.getChatRoomApi();
@@ -19,7 +19,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
     
-	function setScopeData(){
+    function setScopeData(){
 		myprofile = main.getDataManager().myProfile;
 		allMembers = main.getDataManager().orgMembers;
 		chatRoomApi = main.getChatRoomApi();
@@ -28,16 +28,15 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 
 	function setRoom() {
-	    console.log(self.title + " is activate");
-
 	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
 	        if (self.currentRoom == null || self.currentRoom === undefined) {
 	            var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
 	            roomSelected.setRoom(group);
 	        }
 	    }
-
+        
 	    self.currentRoom = roomSelected.getRoomOrLastRoom();
+	    $scope.currentRoom = self.currentRoom;
 
 	    //<!-- Set up roomname for display title of chatroom.
 	    var roomName = self.currentRoom.name;
@@ -52,14 +51,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        }
 	    }
 
-	    $scope.currentRoom = self.currentRoom;
 	    if ($scope.currentRoom.type == RoomType.privateChat) {
 	        $.each($scope.currentRoom.members, function (index, value) {
 	            if (value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
 	        });
 	    }
-
-	    setchatRoomService();
 
 	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
 	        $scope.$emit('roomName', $scope.currentRoom.name);
@@ -67,16 +63,20 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 
 	function activate() {
+	    console.log(self.title + " is activate");
+        
 	    setRoom();
 
 		$scope.$on('onNewMessage', function (event, data) {
-			$scope.$apply();
+            $scope.$apply();
+            
 		    setTimeout(function () {
 		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    }, 1000);
 		});
 		$scope.$on('onMessagesReady', function (event, data) {
-			$scope.chat = chatRoomService.all();
+		    $scope.chat = chatRoomService.all();
+
 		    setTimeout(function () {
 		        $ionicLoading.hide();
 		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
@@ -91,6 +91,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		            blockUI(true);
 		        } else {
 		            blockUI(false);
+
 		            if (chatRoomService.isPrivateChatRoom()) {
 		                chatRoomService.roomContactIsEmpty(function (boo) {
 		                    blockUI(boo);
@@ -99,8 +100,10 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		        }
 		    });
 		});
-	}
 
+	    setchatRoomService();
+	}
+    
 	function setchatRoomService() {
 		chatRoomService.init();
 		chatRoomService.getPersistendMessage(); 

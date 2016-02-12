@@ -18,16 +18,15 @@
         function initContactModal($scope, $rootScope, contactId, roomSelected, done) {
             var contact = main.getDataManager().orgMembers[contactId];
             $scope.contact = contact;
-            console.debug(contact);
+  
             server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
-                console.log('getPrivateChatRoomId', JSON.stringify(res))
+                console.log('getPrivateChatRoomId', JSON.stringify(res));
+                
                 if (res.code === HttpStatusCode.success) {
                     var room = JSON.parse(JSON.stringify(res.data));
 
                     if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
                         $scope.chat = function () {
-                            //roomSelected.setRoom(room);
-                            //location.href = '#/tab/group/chat/' + room._id;
                             console.log("ROOM", room);
                             $rootScope.$broadcast('changeChat', room);
                         };
