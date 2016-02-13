@@ -8,10 +8,12 @@
 	//homeController.$inject = ['$location'];
 
 	function homeController($location, $state, $scope, $rootScope, $timeout, $ionicModal, $ionicLoading, $ionicPlatform, $cordovaSpinnerDialog,
+    $ionicTabsDelegate,
 		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
+        $ionicTabsDelegate.showBar(true);
         
         if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
 		      $scope.$on('roomName', function(event, args) { $scope.roomName = args; });

@@ -105,7 +105,7 @@ angular.module('starter',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-account-invite.html',
-				controller: 'editMemberGroup'
+				controller: ngControllerUtil.editMemberGroup
 			}
 		}
 	})
@@ -114,7 +114,7 @@ angular.module('starter',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-members-edit.html',
-				controller: 'editMemberGroup'
+				controller: ngControllerUtil.editMemberGroup
 			}
 		}
 	})
@@ -179,7 +179,7 @@ angular.module('starter',
 	    views: {
 	        'tab-chats': {
 	            templateUrl: 'templates/tab-account-invite.html',
-	            controller: 'editMemberGroup'
+	            controller: ngControllerUtil.editMemberGroup
 	        }
 	    }
     })

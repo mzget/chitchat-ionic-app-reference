@@ -2,12 +2,13 @@
 angular.module('spartan.chat', [])
 
 .controller('chatController', 
-function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
+function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
 	$sce, $cordovaGeolocation, $cordovaDialogs,
     chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
+    $ionicTabsDelegate.showBar(false);
 
 	var self = this;
 	self.title = 'chatController';
