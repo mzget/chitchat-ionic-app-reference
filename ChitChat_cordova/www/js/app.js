@@ -6,8 +6,8 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
-     ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
-	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'spartan.freecall',
+     ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
+	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
       'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter', 'jrCrop'])
 
 

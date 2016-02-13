@@ -29,6 +29,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	function setRoom() {
 	    self.currentRoom = roomSelected.getRoomOrLastRoom();
+	    console.info("setup new room: ", self.currentRoom);
+
 	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
 	        if (self.currentRoom == null || self.currentRoom === undefined) {
 	            var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
@@ -62,7 +64,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        $scope.$emit('roomName', $scope.currentRoom.name);
 	    }
         
-        setTimeout(function() {          
+        setTimeout(function() {   
+		    chatRoomService.init();       
 		    chatRoomService.getPersistendMessage(); 
         }, 100);
 	}
@@ -89,8 +92,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		});
 		$scope.$on('onJoinRoomReady', function (event, data) {
 		    chatRoomService.getChatRoomComponent().joinRoom(function cb(err, result) {
-		        console.log("JoinRoom res:", JSON.stringify(result));
-
 		        if (result.code !== HttpStatusCode.success) {
 		            //<!-- Block user interface for this chat room.
 		            blockUI(true);
@@ -105,8 +106,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		        }
 		    });
 		});
-
-		chatRoomService.init();
 	}
 
 	function blockUI(boo) {

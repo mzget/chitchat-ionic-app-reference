@@ -138,7 +138,7 @@
         function getPersistendMessage() {
             var curRoom = roomSelected.getRoom();
             chatRoomComponent.getPersistentMessage(curRoom._id, function (err, messages) {
-                console.log("getPersistendMessage: completed.", chatRoomComponent.chatMessages.length);
+                console.log("getPersistendMessage of room %s: completed.", curRoom.name, chatRoomComponent.chatMessages.length);
 
 				service.set(chatRoomComponent.chatMessages);
 

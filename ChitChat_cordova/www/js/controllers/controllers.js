@@ -3,7 +3,7 @@ var now;
 var newchatmessage;
 var chatlog_count = 0;
 
-angular.module('spartan.controllers', [])
+angular.module('spartan.controllers')
 
 .controller('viewProfileCtrl', function ($scope, $jrCrop, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
  roomSelected, FileService, sharedObjectService) {

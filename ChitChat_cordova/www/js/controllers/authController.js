@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('spartan.auth', ['ionic'])
+        .module('spartan.controllers', [])
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
@@ -158,7 +158,7 @@
         function onDuplicateLogin(param) {
             console.log("onDuplicateLogin", JSON.stringify(param));
             // Hide spinner dialog
-            if (ionic.Platform.platform() === "ios") {
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
                 $cordovaSpinnerDialog.hide();
 
                 $cordovaDialogs.confirm("May be you use this app in other devices \n You want to logout other devices", "Duplicated login!", ["OK", "Cancel"])
