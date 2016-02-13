@@ -67,7 +67,7 @@ angular.module('starter',
 
 	.state('login', {
 		url: '/login',
-		templateUrl: 'templates/tab-login.html',
+		templateUrl: 'templates_web/tab-login.html',
 		controller: 'authController'
 	})
 
@@ -75,14 +75,14 @@ angular.module('starter',
         url: "/chats",
         views: {
             '': {
-            	templateUrl: 'templates/chats.html'
+                templateUrl: 'templates_web/chats.html'
             },
             "chats-list@chats": {
-                templateUrl: "templates/tab-group.html",
+                templateUrl: "templates_web/tab-group.html",
                 controller: "homeController"
             },
             "chats-detail@chats": {
-                templateUrl: "templates/chat-detail.html",
+                templateUrl: "templates_web/chat-detail.html",
                 controller: "chatController"
             },
             
