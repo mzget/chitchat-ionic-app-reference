@@ -117,7 +117,7 @@ module ChatServer {
             var promiseForFileConfig = new Promise(function (resolve, reject) {
                 // This only is an example to create asynchronism
                 $.ajax({
-                    url: "../www/configs/appconfig.json",
+                    url: "configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
                         self.appConfig = JSON.parse(JSON.stringify(config));

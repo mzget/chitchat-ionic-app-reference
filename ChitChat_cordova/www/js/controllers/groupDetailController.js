@@ -6,14 +6,14 @@
         .controller('groupDetailCtrl', groupDetailCtrl)
         .controller('editMemberGroup', editMemberGroup);
 
-    function editMemberGroup($scope, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $rootScope, CreateGroup, ProjectBase, roomSelected)
+    function editMemberGroup($scope, $rootScope, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $ionicTabsDelegate, CreateGroup, ProjectBase, roomSelected)
     {
+        $ionicTabsDelegate.showBar(false);
         var id_checked = [];
         $scope.myProfile = main.getDataManager().myProfile;
 
         var room_id = roomSelected.getCurrentRid();
         var room = dataManager.getGroup(room_id);
-        console.info("roomInfo." , JSON.stringify(room));
  
         if ($rootScope.status == "invite") {
             $scope.allmembers = CreateGroup.getAllMember();
@@ -80,28 +80,29 @@
         function setSelectedMembers(){
             $scope.selectedMembers = id_checked.length;
         }
-        
+
         $scope.$on('$ionicView.enter', function () {
             console.info('view enter: ', ngControllerUtil.editMemberGroup);
         });
     }
 
-    function groupDetailCtrl($scope, $state, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory,
+    function groupDetailCtrl($scope, $state, $ionicModal, $rootScope, $cordovaProgress, $ionicLoading, $ionicHistory, $ionicTabsDelegate,
         roomSelected, CreateGroup, modalFactory)
     {
             var self = this;
             self.name = ngControllerUtil.groupDetailCtrl;
+            $ionicTabsDelegate.showBar(false);
 
             $scope.button = {};
             $scope.button.post = {};
-        $scope.button.album = {};
-        $scope.button.members = {};
-        $scope.selectTab = function(button){
-            $scope.button.post.clicked = false;
-            $scope.button.album.clicked = false;
-            $scope.button.members.clicked = false;
-            button.clicked = true;
-        };
+            $scope.button.album = {};
+            $scope.button.members = {};
+            $scope.selectTab = function (button) {
+                $scope.button.post.clicked = false;
+                $scope.button.album.clicked = false;
+                $scope.button.members.clicked = false;
+                button.clicked = true;
+            };
 
         $scope.$on('$ionicView.enter', function () {
             console.info('view.enter: ', self.name);
@@ -283,7 +284,7 @@
         }
         //<!-- Contact modal -------------------------->
         $scope.openContactModal = function (contactId) {
-            modalFactory.initContactModal($scope, contactId, roomSelected, function done() {
+            modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
                 $scope.contactModal.show();
             });
         };

@@ -86,7 +86,8 @@
                 }
             },
             getChatRoomComponent: getChatRoomComponent,
-            leaveRoom: leaveRoom
+            leaveRoom: leaveRoom,
+            leaveRoomCB: leaveRoomCB
         };
 
         var chats = [];
@@ -98,6 +99,8 @@
         return service;
 
         function init() {
+            console.info('chatRoomService.init()');
+            
             var curRoom = roomSelected.getRoom();
             var chatRoomApi = main.getChatRoomApi();
             chatRoomComponent = new ChatRoomComponent(main, curRoom._id, dbAccessService.getMessageDAL());
@@ -135,7 +138,7 @@
         function getPersistendMessage() {
             var curRoom = roomSelected.getRoom();
             chatRoomComponent.getPersistentMessage(curRoom._id, function (err, messages) {
-                console.log("getPersistendMessage: completed.", chatRoomComponent.chatMessages.length);
+                console.log("getPersistendMessage of room %s: completed.", curRoom.name, chatRoomComponent.chatMessages.length);
 
 				service.set(chatRoomComponent.chatMessages);
 
@@ -164,6 +167,18 @@
 
             	sharedObjectService.getDataListener().removeChatListenerImp(chatRoomComponent);
             	sharedObjectService.regisNotifyNewMessageEvent();
+            });
+        }
+
+        function leaveRoomCB(cb){
+            var curRoom = roomSelected.getRoom();
+            chatRoomComponent.leaveRoom(curRoom._id, function callback(err, res) {
+                roomSelected.setRoom(null);
+                chatRoomComponent.chatMessages = [];
+                clear();
+                sharedObjectService.getDataListener().removeChatListenerImp(chatRoomComponent);
+                sharedObjectService.regisNotifyNewMessageEvent();
+                cb();
             });
         }
 

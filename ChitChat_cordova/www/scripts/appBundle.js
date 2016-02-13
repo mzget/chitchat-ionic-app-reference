@@ -55,6 +55,7 @@ var ChatRoomComponent = (function () {
     ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
         var _this = this;
         var self = this;
+        console.info('chatRoomComponent.onChat');
         if (this.roomId === chatMessageImp.rid) {
             console.log("Implement chat msg hear..", chatMessageImp);
             var secure = new SecureService();
@@ -1576,7 +1577,7 @@ var ChatServer;
             var self = this;
             var promiseForFileConfig = new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: "../www/configs/appconfig.json",
+                    url: "configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
                         self.appConfig = JSON.parse(JSON.stringify(config));

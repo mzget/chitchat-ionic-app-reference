@@ -191,7 +191,7 @@ angular.module('spartan.controllers', [])
     $scope.logOut = function () {
         console.warn("logOut...");
         server.logout();
-        server.dispose();
+        server.disposeClient();
 
         dbAccessService.clearMessageDAL();
         localStorage.clear();

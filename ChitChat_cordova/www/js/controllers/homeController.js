@@ -7,11 +7,17 @@
 
 	//homeController.$inject = ['$location'];
 
-	function homeController($location, $state, $scope, $timeout, $ionicModal, $ionicLoading, $rootScope, $ionicPlatform, $cordovaSpinnerDialog,
+	function homeController($location, $state, $scope, $rootScope, $timeout, $ionicModal, $ionicLoading, $ionicPlatform, $cordovaSpinnerDialog,
+    $ionicTabsDelegate,
 		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
+        $ionicTabsDelegate.showBar(true);
+        
+        if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+		      $scope.$on('roomName', function(event, args) { $scope.roomName = args; });
+        }
 
 		function activate() {
 		    if (ionic.Platform.platform() === 'ios') {
@@ -74,6 +80,14 @@
 		    $scope.favorites = getFavorite();
 		    tryGetFavorite();
 		}
+        
+
+		function getChatWeb(){
+			var chatheight = $(window).height() - 43;
+			$('ion-content').find('#webgroup').css({'height':chatheight+'px'});
+			$('ion-content').find('#webchatdetail').css({'height':chatheight-44+'px'});
+			$rootScope.$broadcast('enterChat','');
+		}
 
 		function tryGetFavorite(){
 			if(!jQuery.isEmptyObject(main.getDataManager().orgGroups) &&
@@ -82,8 +96,12 @@
 				!jQuery.isEmptyObject(main.getDataManager().orgMembers)){
 					setTimeout(function () {
 			        	$scope.favorites = getFavorite();
+                        if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform !== 'android') {
+                            getChatWeb();
+                        }
 			    }, 500);
-			}else{
+			}
+            else{
 				setTimeout(function () {
 			        tryGetFavorite();
 			    }, 1000);
@@ -154,10 +172,7 @@
 		$scope.isFavorite = function(id){
 			return Favorite.isFavorite(id);
 		}
-		
-		$scope.$on('$ionicView.enter', function(){ 
-			console.log("$ionicView.enter: ", vm.title);
-
+        
 			activate();
 			setupScope();
 
@@ -214,22 +229,6 @@
 			$scope.$on('modal.removed', function () {
 				// Execute action
 			});
-		});
-	
-		$scope.$on('$ionicView.beforeLeave', function () {
-			console.log("beforeLeave: homeController");
-		});
-
-		$scope.$on('$ionicView.leave', function () {
-			console.log("$ionicView.leave:", vm.title);
-		});
-
-		$scope.$on('$ionicView.unloaded', function () {
-			console.log("$ionicView.unloaded:", vm.title);
-
-			clearInterval($scope.interval);
-			onLeave();
-		});
 	
 		$scope.viewlist = function(list) {
 			var listHeight = $('#list-'+list+' .list').height();		
@@ -280,7 +279,7 @@
 		}
 		//<!-- Contact modal -------------------------->
 		$scope.openContactModal = function (contactId) {
-            modalFactory.initContactModal($scope, contactId, roomSelected, function done() {
+            modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
 				$scope.contactModal.show();
 			});
 		};
@@ -299,6 +298,22 @@
 		        $scope.openContactModal(id);
 		    }
 		}
+        
+		$scope.$on('$ionicView.enter', function() { 
+			console.log("$ionicView.enter: ", vm.title);
+        });
+		$scope.$on('$ionicView.beforeLeave', function () {
+			console.log("beforeLeave: homeController");
+		});
+		$scope.$on('$ionicView.leave', function () {
+			console.log("$ionicView.leave:", vm.title);
+		});
+		$scope.$on('$ionicView.unloaded', function () {
+			console.log("$ionicView.unloaded:", vm.title);
+
+			clearInterval($scope.interval);
+			onLeave();
+		});
 	}
 
 	var initOrgModal = function ($state, $scope, groupId, roomSelected, done, $rootScope) {
@@ -316,8 +331,12 @@
 		//<!-- Join chat room.
 		$scope.toggle = function (chatId) {
 			$scope.closeOrgModal();
-			$state.go(NGStateUtil.tab_group_chat);
-			//location.href = '#/tab/group/chat/' + chatId;
+            if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+			    $scope.$broadcast('changeChat', group);
+            }
+            else {
+			    $state.go(NGStateUtil.tab_group_chat);
+            }
 		};
 
 		$scope.viewGroupDetail = function (id) {
@@ -342,8 +361,13 @@
 
 		$scope.toggle = function (chatId) {
 			$scope.closePjbModal();
-		    //location.href = '#/tab/group/chat/' + chatId;
-			$state.go(NGStateUtil.tab_group_chat);
+
+			if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+			    $scope.$broadcast('changeChat', group);
+			}
+            else {
+			    $state.go(NGStateUtil.tab_group_chat);
+            }
 		};
 
 		$scope.viewGroupDetail = function (id) {
@@ -368,8 +392,13 @@
 
 		$scope.chat = function (chatId) {
 			$scope.closePvgModal();
-		    //location.href = '#/tab/group/chat/' + chatId;
-			$state.go(NGStateUtil.tab_group_chat);
+
+			if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+			    $scope.$broadcast('changeChat', group);
+			}
+			else {
+			    $state.go(NGStateUtil.tab_group_chat);
+			}
 		};
 
 		$scope.viewGroupDetail = function (id) {
