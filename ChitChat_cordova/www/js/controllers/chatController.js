@@ -78,18 +78,27 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 		$scope.$on('onNewMessage', function (event, data) {
             $scope.$apply();
-            
 		    setTimeout(function () {
-		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
+		    	if (ionic.Platform.platform() === 'ios' && ionic.Platform.platform() === 'android') {
+		    		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
+		    	}else{
+		    		$("#webchat").animate({scrollTop:$("#webchat")[0].scrollHeight}, 200);
+		    	}
 		    }, 1000);
 		});
 		$scope.$on('onMessagesReady', function (event, data) {
 		    $scope.chat = chatRoomService.all();
-
-		    setTimeout(function () {
-		        $ionicLoading.hide();
-		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
-		    }, 1000);
+		    if (ionic.Platform.platform() === 'ios' && ionic.Platform.platform() === 'android') {
+		   		setTimeout(function () {
+			        $ionicLoading.hide();
+			    	$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
+			    }, 1000);
+	    	}else{
+	    		$ionicLoading.hide();
+	    		setTimeout(function () {
+			        $("#webchat").animate({scrollTop:$("#webchat")[0].scrollHeight}, 500);
+			    }, 1000);
+	    	}
 		});
 		$scope.$on('onJoinRoomReady', function (event, data) {
 		    chatRoomService.getChatRoomComponent().joinRoom(function cb(err, result) {
@@ -526,13 +535,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	
 	$scope.$on('changeChat', function(event, args) { 
         console.log('changed chatroom.', event);
-        
+        $ionicLoading.show({
+		    template: 'Loading...'
+		});
 	    var newRoom = JSON.parse(JSON.stringify(args));
 
 		chatRoomService.leaveRoomCB( function(){
-			$ionicLoading.show({
-		        template: 'Loading...'
-		    });
 		    $scope.chat = {};
 			roomSelected.setRoom(newRoom);
 			setRoom();
