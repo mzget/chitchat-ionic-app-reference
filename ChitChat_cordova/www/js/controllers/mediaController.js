@@ -30,7 +30,7 @@ angular.module('spartan.media', [])
 			if(file !== undefined){
 	        var reader  = new FileReader();
 	        reader.onloadend = function () {
-	            var file = new UploadMediaWeb(roomSelected.getRoom()._id, reader.result, ContentType[ContentType.File], function(id,messageId){
+	            var file = new UploadMediaWeb(sharedObjectService, roomSelected.getRoom()._id, reader.result, ContentType[ContentType.File], function(id,messageId){
 	            	$scope.$emit('delectTemp', [id]); 
 	            });
 	            mediaUpload[id] = file;
@@ -331,26 +331,36 @@ angular.module('spartan.media', [])
 	var videoName;
 
 	$scope.addVideo = function() {
-	    $scope.hideSheet = $ionicActionSheet.show({
-	      buttons: [
-	        { text: 'Record Video' },
-	        { text: 'Video from library' }
-	      ],
-	      titleText: 'Add video',
-	      cancelText: 'Cancel',
-	      buttonClicked: function(index) {
-	      	if(index==0){ $scope.captureVideo(); }
-	      	else{ 
-	      		$scope.hideSheet();
-	      		VideoService.handleMediaDialog().then(function() {
-		    		videoURI = VideoService.getVideoUri();
-		    		videoName = (videoURI.substr(videoURI.lastIndexOf('/') + 1));
-		    		console.log(videoName);
-		    		$scope.$emit('fileUri',[videoName,ContentType[ContentType.Video]]);
-		    	});
-	      	}
-	      }
-	    });
+		if (ionic.Platform.platform() === "ios") {
+		    $scope.hideSheet = $ionicActionSheet.show({
+		      buttons: [
+		        { text: 'Record Video' },
+		        { text: 'Video from library' }
+		      ],
+		      titleText: 'Add video',
+		      cancelText: 'Cancel',
+		      buttonClicked: function(index) {
+		      	if(index==0){ $scope.captureVideo(); }
+		      	else{ 
+		      		$scope.hideSheet();
+		      		VideoService.handleMediaDialog().then(function() {
+			    		videoURI = VideoService.getVideoUri();
+			    		videoName = (videoURI.substr(videoURI.lastIndexOf('/') + 1));
+			    		console.log(videoName);
+			    		$scope.$emit('fileUri',[videoName,ContentType[ContentType.Video]]);
+			    	});
+		      	}
+		      }
+		    });
+		}else{
+			var file    = document.querySelector("[id='fileToUpload']").files[0];
+	        var reader  = new FileReader();
+	        reader.onloadend = function () {
+	            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.Video]]);
+	            console.log(reader.result);
+	        } 
+	        reader.readAsDataURL(file);
+		}
 	}
 
 	$scope.captureVideo = function() {
@@ -391,29 +401,46 @@ angular.module('spartan.media', [])
 	      });
 	}
 	$scope.uploadVideo = function(id) {
-		if(videoName != null || videoName != undefined) { 
-			checkFileSize.checkFile(videoURI).then(function(canUpload) {
-				if(canUpload){
-				    var video = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function (id, messageId) {
-						$scope.$emit('delectTemp', [id]); 
-					});
-					mediaUpload[id] = video;
-					mediaUpload[id].upload();
-				}else{
-					navigator.notification.alert(
-					    'This file size is over', 
-					     null,          
-					    'Fail to Upload',          
-					    'OK'   
-					);
-				}
-			});
-		}else{
-			if(mediaUpload[id].hasOwnProperty('url')){
-				$scope.$emit('delectTemp', [id]); 
+		if (ionic.Platform.platform() === "ios") {
+			if(videoName != null || videoName != undefined) { 
+				checkFileSize.checkFile(videoURI).then(function(canUpload) {
+					if(canUpload){
+					    var video = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function (id, messageId) {
+							$scope.$emit('delectTemp', [id]); 
+						});
+						mediaUpload[id] = video;
+						mediaUpload[id].upload();
+					}else{
+						navigator.notification.alert(
+						    'This file size is over', 
+						     null,          
+						    'Fail to Upload',          
+						    'OK'   
+						);
+					}
+				});
 			}else{
-				document.getElementById( id + '-resend').classList.remove("hide");
+				if(mediaUpload[id].hasOwnProperty('url')){
+					$scope.$emit('delectTemp', [id]); 
+				}else{
+					document.getElementById( id + '-resend').classList.remove("hide");
+				}
 			}
+		}else{
+			var file    = document.querySelector("[id='fileToUpload']").files[0];
+			if(file !== undefined){
+		        var reader  = new FileReader();
+		        reader.onloadend = function () {
+		            var video = new UploadMediaWeb(sharedObjectService, roomSelected.getRoom()._id, reader.result, ContentType[ContentType.Video], function(id,messageId){
+		            	$scope.$emit('delectTemp', [id]); 
+		            });
+		            mediaUpload[id] = video;
+		            mediaUpload[id].upload();
+		        } 
+		        reader.readAsDataURL(file);
+	    	}else{
+	    		$scope.$emit('delectTemp', [id]); 
+	    	}
 		}
 	}
 	$scope.resend = function(uri,id){
@@ -436,8 +463,7 @@ angular.module('spartan.media', [])
 		    $scope.modalVideo.type = type;
 		    $scope.modalVideo.src = src;
 		    $scope.modalVideo.url = $sce.trustAsResourceUrl(sharedObjectService.getWebServer() + src);
-		    $scope.modalVideo.show();
-		    document.getElementById("video-player").play();
+		    $scope.modalVideo.show(); document.getElementById("video-player").play();
 		});
 	};
 	$scope.closeVideo = function() {
