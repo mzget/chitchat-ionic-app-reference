@@ -285,11 +285,19 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 
 	$scope.image = function(){
-		$scope.$broadcast('addImg', 'addImg');
+		if (ionic.Platform.platform() === "ios") {
+			$scope.$broadcast('addImg', 'addImg');
+		}else{
+			$('#fileToUpload').trigger('click');
+		}
 	}
 
 	$scope.video = function(){
-		$scope.$broadcast('captureVideo', 'captureVideo');
+		if (ionic.Platform.platform() === "ios") {
+			$scope.$broadcast('captureVideo', 'captureVideo');
+		}else{
+			$('#fileToUpload').trigger('click');
+		}
 	}
 
 	$scope.voice = function(){
@@ -306,12 +314,22 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
-		if(args[1] == ContentType[ContentType.Image] ){
-			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
-		}else if(args[1] == ContentType[ContentType.Voice] ){
-			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
-		}else if(args[1] == ContentType[ContentType.Video] ){
-			$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+		if (ionic.Platform.platform() === "ios") {
+			if(args[1] == ContentType[ContentType.Image] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.Voice] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.Video] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}
+		}else{
+			if(args[1] == ContentType[ContentType.Image] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.Video] ){
+				var file = document.querySelector("[id='fileToUploadVideo']").files[0];
+				var fileUrl = $sce.trustAsResourceUrl( URL.createObjectURL(file) );
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":fileUrl,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}
 		}
 	});
 
