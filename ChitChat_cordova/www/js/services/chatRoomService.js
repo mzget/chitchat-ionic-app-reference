@@ -38,9 +38,13 @@
                 }
 
                 for (var i = 0; i < chats.length; i++) {
-                    if (!chats[i].hasOwnProperty('_id')) { continue; }
-                    chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
-                    var dateTime = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
+                    
+                    if(chats[i].hasOwnProperty('createTime')){
+                        var dateTime = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
+                        chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
+                    }
+                  
+                    
                     if (date.indexOf(dateTime) == -1) {
                         date.push(chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')));
 
@@ -82,6 +86,15 @@
                         chats[i].locationAddress = location.address;
                         chats[i].lat = location.latitude;
                         chats[i].long = location.longitude;
+                    }
+
+                    else if(chats[i].type == ContentType[ContentType.File]){
+                        if (ionic.Platform.platform() !== "ios") {
+                            var meta = jQuery.parseJSON( chats[i].meta );//JSON.parse(JSON.stringify(chats[i].meta));
+                            chats[i].name = meta.name;
+                            console.log("metaJSON.name",meta.name);
+                            chats[i].url = $rootScope.webServer + chats[i].body;
+                        }
                     }
                 }
             },

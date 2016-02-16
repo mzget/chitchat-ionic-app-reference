@@ -27,7 +27,7 @@
 							</p>
 
 							<p id="{{message._id}}" ng-if="message.type=='File'"> 
-								{{message.body}}
+								<a href="{{message.url}}" target="_blank">{{message.name}}</a>
 							</p>
 							
 							
@@ -85,8 +85,11 @@
 								</u>
 							</p>
 
-							<p id="{{message._id}}" ng-if="message.type=='File'" ng-init="uploadFile(message._id)"> 
+							<p id="{{message._id}}" ng-if="message.type=='File' && message.temp=='true'" ng-init="uploadFile(message._id)"> 
 								{{message.body}}
+							</p>
+							<p id="{{message._id}}" ng-if="message.type=='File'"> 
+								<a href="{{message.url}}" target="_blank">{{message.name}}</a>
 							</p>
 							
 							<img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImage(message.type,message.body)"/>
@@ -111,8 +114,7 @@
 								<div style="margin-left:10px;">
 									<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
 								</div>
-							</div>
-							
+							</div>							
 							
 							<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
 								<div>

@@ -10,10 +10,23 @@
     function modalFactory($http, $state, webRTCFactory) {
         var service = {
             initContactModal: initContactModal,
-            initMyProfileModal: initMyProfileModal
+            initMyProfileModal: initMyProfileModal,
+            initContactWeb: initContactWeb
         };
 
         return service;
+
+        function initContactWeb($rootScope, contactId){
+            server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
+                if (res.code === HttpStatusCode.success) {
+                    var room = JSON.parse(JSON.stringify(res.data));
+                    $rootScope.$broadcast('changeChat', room);
+                }
+                else{
+                    console.warn(err, res);
+                }
+            });
+        }
 
         function initContactModal($scope, $rootScope, contactId, roomSelected, done) {
             var contact = main.getDataManager().orgMembers[contactId];
