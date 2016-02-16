@@ -20,8 +20,11 @@
         }
 
 		function activate() {
-		    if (ionic.Platform.platform() === 'ios') {
-		        $cordovaSpinnerDialog.hide();
+		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+                try {
+		          $cordovaSpinnerDialog.hide();
+                }
+                catch(ex) { console.warn(ex); }
 		    }
 		    if ($ionicLoading) {
 		        $ionicLoading.hide();
@@ -252,7 +255,7 @@
 		};
 		//<!-- Org group modal ////////////////////////////////////////
 		$scope.openOrgModal = function (groupId) {
-			if (ionic.Platform.platform() === 'ios' && ionic.Platform.platform() === 'android') {
+			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 				initOrgModal($state, $scope, groupId, roomSelected, function () {
 					$scope.orgModal.show();
 				}, $rootScope);
@@ -266,7 +269,7 @@
 		};
 		//<!-- Project base group modal /////////////////////////////////////////
 		$scope.openPjbModal = function (groupId) {
-			if (ionic.Platform.platform() === 'ios' && ionic.Platform.platform() === 'android') {
+			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 				initPjbModal($state, $scope, groupId, roomSelected, function () {
 					$scope.pjbModal.show();
 				}, $rootScope);
@@ -280,7 +283,7 @@
 		}
 		//<!-- Private group modal ////////////////////////////////////////////
 		$scope.openPvgModal = function (groupId) {
-			if (ionic.Platform.platform() === 'ios' && ionic.Platform.platform() === 'android') {
+			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 				initPvgModal($state, $scope, groupId, roomSelected, function () {
 					$scope.pvgModal.show();
 				}, $rootScope);
@@ -294,7 +297,7 @@
 		}
 		//<!-- Contact modal -------------------------->
 		$scope.openContactModal = function (contactId) {
-			if (ionic.Platform.platform() === 'ios' && ionic.Platform.platform() === 'android') {
+			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 				modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
 					$scope.contactModal.show();
 				});

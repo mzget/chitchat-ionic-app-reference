@@ -6,7 +6,7 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope,
+    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
         $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork,
         networkService, chatslogService, dbAccessService, sharedObjectService) {
 
@@ -14,12 +14,18 @@
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
+        $ionicTabsDelegate.showBar(false);
 
         ionic.Platform.ready(function () {
             console.log(vm.title + " : ionic ready.");
 
-            if (ionic.Platform.platform() === 'ios') {
-                $cordovaSpinnerDialog.show("", "Wait for signing...", true);
+            if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+                try {
+                    $cordovaSpinnerDialog.show("", "Wait for signing...", true);
+                }
+                catch(exception) {
+                    console.warn(exception);
+                }
             }
             else {
                 $ionicLoading.show({
@@ -49,8 +55,13 @@
                     $('#splash').css({ 'display': 'none' });
 
                     // Hide spinner dialog
-                    if (ionic.Platform.platform() === "ios") {
-                        $cordovaSpinnerDialog.hide();
+                    if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                        try {
+                            $cordovaSpinnerDialog.hide();
+                        }
+                        catch(ex) {
+                            console.warn(ex);
+                        }
                     }
                     else {
                         $ionicLoading.hide();
@@ -78,47 +89,58 @@
 
             console.log("init push notification.");
 
-            if (ionic.Platform.platform() === "ios") {
-                var push = PushNotification.init({
-                    "ios": { "alert": "true", "badge": "true", "sound": "true" }
-                });
-
-                push.on('registration', function (data) {
-                    console.log("registration event", JSON.stringify(data));
-                    registrationId = data.registrationId;
-                    localStorage.setItem("registrationId", registrationId);
-                });
-
-                push.on('notification', function (data) {
-                    console.warn("notification event", JSON.stringify(data));
-
-                    push.finish(function () {
-                        console.warn('finish successfully called');
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                try {
+                    var push = PushNotification.init({
+                        "ios": { "alert": "true", "badge": "true", "sound": "true" }
                     });
-                });
 
-                push.on('error', function (e) {
-                    console.error("push error", e.message);
-                });
+                    push.on('registration', function (data) {
+                        console.log("registration event", JSON.stringify(data));
+                        registrationId = data.registrationId;
+                        localStorage.setItem("registrationId", registrationId);
+                    });
+
+                    push.on('notification', function (data) {
+                        console.warn("notification event", JSON.stringify(data));
+
+                        push.finish(function () {
+                            console.warn('finish successfully called');
+                        });
+                    });
+
+                    push.on('error', function (e) {
+                        console.error("push error", e.message);
+                    });
+                }
+                catch(ex) {
+                    console.warn(ex);
+                }
             }
         }
 
         function activateBackground() {
-            if (ionic.Platform.platform() === "ios") {
-                // Prevent the app from going to sleep in background
-                cordova.plugins.backgroundMode.enable();
-                // Get informed when the background mode has been activated
-                cordova.plugins.backgroundMode.onactivate = function () {
-                    console.warn("backgroundMode.onactivate");
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                try {
+                    // Prevent the app from going to sleep in background
+                    cordova.plugins.backgroundMode.enable();
+                    
+                    // Get informed when the background mode has been activated
+                    cordova.plugins.backgroundMode.onactivate = function () {
+                        console.warn("backgroundMode.onactivate");
 
-                    var logCount = chatslogService.getChatsLogCount();
-                    cordova.plugins.notification.badge.set(logCount);
-                };
+                        var logCount = chatslogService.getChatsLogCount();
+                        cordova.plugins.notification.badge.set(logCount);
+                    };
 
-                // Get informed when the background mode has been deactivated
-                cordova.plugins.backgroundMode.ondeactivate = function () {
-                    console.warn("backgroundMode.ondeactivate");
-                };
+                    // Get informed when the background mode has been deactivated
+                    cordova.plugins.backgroundMode.ondeactivate = function () {
+                        console.warn("backgroundMode.ondeactivate");
+                    };
+                }
+                catch(ex) {
+                    console.warn(ex);
+                }
             }
         }
 

@@ -79,16 +79,17 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		$scope.$on('onNewMessage', function (event, data) {
             $scope.$apply();
 		    setTimeout(function () {
-		    	if (ionic.Platform.platform() === 'ios' && ionic.Platform.platform() === 'android') {
+		    	if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 		    		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
-		    	}else{
+		    	}
+                else{
 		    		$("#webchat").animate({scrollTop:$("#webchat")[0].scrollHeight}, 200);
 		    	}
 		    }, 1000);
 		});
 		$scope.$on('onMessagesReady', function (event, data) {
 		    $scope.chat = chatRoomService.all();
-		    if (ionic.Platform.platform() === 'ios' && ionic.Platform.platform() === 'android') {
+		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 		   		setTimeout(function () {
 			        $ionicLoading.hide();
 			    	$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);

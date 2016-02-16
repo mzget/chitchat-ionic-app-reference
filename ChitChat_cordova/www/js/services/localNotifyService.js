@@ -22,10 +22,15 @@
         function getData() { }
 
         function registerPermission() {
-            if (ionic.Platform.platform() === "ios") {
-                $cordovaLocalNotification.registerPermission(function (granted) {
-                    console.warn('Permission has been granted: ' + granted);
-                });
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                try {
+                    $cordovaLocalNotification.registerPermission(function (granted) {
+                        console.warn('Permission has been granted: ' + granted);
+                    });   
+                }
+                catch(ex) {
+                    console.warn(ex);
+                }
             }
         }
         

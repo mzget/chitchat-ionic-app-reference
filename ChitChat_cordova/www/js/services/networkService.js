@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
@@ -17,9 +17,14 @@
         return service;
 
         function init() {
-            if (ionic.Platform.platform() === 'ios') {
-                var networkState = navigator.connection.type;
-                console.log("get network state", networkState);
+            if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+                try {
+                    var networkState = navigator.connection.type;
+                    console.log("get network state", networkState);
+                }
+                catch(ex) {
+                    console.warn(ex);
+                }
             }
 
             // listen for Online event
