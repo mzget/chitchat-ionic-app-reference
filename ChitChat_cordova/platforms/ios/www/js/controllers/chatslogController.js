@@ -7,10 +7,12 @@
 
     // chatslogController.$inject = ['$location', '$scope', '$timeout', 'roomSelected'];
             
-    function chatslogController($location, $scope, $rootScope, $state, $timeout, roomSelected, chatslogService, localNotifyService, sharedObjectService, ConvertDateTime) {
+    function chatslogController($location, $scope, $rootScope, $state, $timeout,$ionicTabsDelegate,
+     roomSelected, chatslogService, localNotifyService, sharedObjectService, ConvertDateTime) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'chatslogController';
+        $ionicTabsDelegate.showBar(true);
 
         var dataManager = main.getDataManager();
 

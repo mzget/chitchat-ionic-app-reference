@@ -3,7 +3,7 @@ var now;
 var newchatmessage;
 var chatlog_count = 0;
 
-angular.module('spartan.controllers', [])
+angular.module('spartan.controllers')
 
 .controller('viewProfileCtrl', function ($scope, $jrCrop, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,
  roomSelected, FileService, sharedObjectService) {
@@ -191,7 +191,7 @@ angular.module('spartan.controllers', [])
     $scope.logOut = function () {
         console.warn("logOut...");
         server.logout();
-        server.disposeClient();
+        server.dispose();
 
         dbAccessService.clearMessageDAL();
         localStorage.clear();
@@ -410,45 +410,45 @@ angular.module('spartan.controllers', [])
     if (reverse) filtered.reverse();
     return filtered;
   };
-})
-.directive('hideTabBar', function($timeout) {
-  var style = angular.element('<style>').html(
-    '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
-    '.no-tabs.has-tabs-top { top: 44px; }');
-  document.body.appendChild(style[0]);
-  return {
-    restrict: 'A',
-    compile: function(element, attr) {
-      var tabBar = document.querySelector('.tab-nav');
-      return function($scope, $element, $attr) {
-        var scroll = $element[0].querySelector('.scroll-content');
-        $scope.$on('$ionicView.beforeEnter', function() {
-          tabBar.classList.add('slide-away');
-          scroll.classList.add('no-tabs');
-        });
-      }
-    }
-  };
-})
-.directive('showTabBar', function($timeout) {
-  var style = angular.element('<style>').html(
-    '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
-    '.no-tabs.has-tabs-top { top: 44px; }');
-  document.body.appendChild(style[0]);
-  return {
-    restrict: 'A',
-    compile: function(element, attr) {
-      var tabBar = document.querySelector('.tab-nav');
-      return function($scope, $element, $attr) {
-        var scroll = $element[0].querySelector('.scroll-content');
-        $scope.$on('$ionicView.beforeEnter', function() {
-          tabBar.classList.remove('slide-away');
-          scroll.classList.remove('no-tabs');
-        });
-      }
-    }
-  };
-}); // <-- LAST CONTROLLER
+});
+// .directive('hideTabBar', function($timeout) {
+//   var style = angular.element('<style>').html(
+//     '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
+//     '.no-tabs.has-tabs-top { top: 44px; }');
+//   document.body.appendChild(style[0]);
+//   return {
+//     restrict: 'A',
+//     compile: function(element, attr) {
+//       var tabBar = document.querySelector('.tab-nav');
+//       return function($scope, $element, $attr) {
+//         var scroll = $element[0].querySelector('.scroll-content');
+//         $scope.$on('$ionicView.beforeEnter', function() {
+//           tabBar.classList.add('slide-away');
+//           scroll.classList.add('no-tabs');
+//         });
+//       }
+//     }
+//   };
+// })
+// .directive('showTabBar', function($timeout) {
+//   var style = angular.element('<style>').html(
+//     '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
+//     '.no-tabs.has-tabs-top { top: 44px; }');
+//   document.body.appendChild(style[0]);
+//   return {
+//     restrict: 'A',
+//     compile: function(element, attr) {
+//       var tabBar = document.querySelector('.tab-nav');
+//       return function($scope, $element, $attr) {
+//         var scroll = $element[0].querySelector('.scroll-content');
+//         $scope.$on('$ionicView.beforeEnter', function() {
+//           tabBar.classList.remove('slide-away');
+//           scroll.classList.remove('no-tabs');
+//         });
+//       }
+//     }
+//   };
+// }); // <-- LAST CONTROLLER
 
 function isAdminInProjectBase(room,memberId){
     var admin = false;

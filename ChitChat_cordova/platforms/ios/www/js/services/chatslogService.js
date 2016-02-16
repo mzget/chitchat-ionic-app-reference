@@ -222,7 +222,7 @@
             chatLog.timeMsg = new Date(chatLog.lastMessageTime);
             chatslog[chatLog.id] = chatLog;
             done();
-            console.debug("addChatLog", chatLog);
+//            console.debug("addChatLog", chatLog);
         }
 
         function getRoomInfo() {

@@ -2,12 +2,13 @@
 angular.module('spartan.chat', [])
 
 .controller('chatController', 
-function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
+function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
 	$sce, $cordovaGeolocation, $cordovaDialogs,
     chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
+    $ionicTabsDelegate.showBar(false);
 
 	var self = this;
 	self.title = 'chatController';
@@ -18,38 +19,66 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
+    
+    function setScopeData(){
+		myprofile = main.getDataManager().myProfile;
+		allMembers = main.getDataManager().orgMembers;
+		chatRoomApi = main.getChatRoomApi();
+		$scope.allMembers = allMembers;
+		$scope.myprofile = myprofile;
+	}
+
+	function setRoom() {
+	    self.currentRoom = roomSelected.getRoomOrLastRoom();
+	    console.info("setup new room: ", self.currentRoom);
+
+	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+	        if (self.currentRoom == null || self.currentRoom === undefined) {
+	            var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
+	            roomSelected.setRoom(group);
+	           self.currentRoom = roomSelected.getRoomOrLastRoom();
+	        }
+	    }
+        
+	    $scope.currentRoom = self.currentRoom;
+
+	    //<!-- Set up roomname for display title of chatroom.
+	    var roomName = self.currentRoom.name;
+	    if (!roomName || roomName === "") {
+	        if (self.currentRoom.type === RoomType.privateChat) {
+	            self.currentRoom.members.some(function iterator(member) {
+	                if (member.id !== myprofile._id) {
+	                    self.currentRoom.name = allMembers[member.id].displayname;
+	                    return true;
+	                }
+	            });
+	        }
+	    }
+
+	    if ($scope.currentRoom.type == RoomType.privateChat) {
+	        $.each($scope.currentRoom.members, function (index, value) {
+	            if (value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
+	        });
+	    }
+
+	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+	        $scope.$emit('roomName', $scope.currentRoom.name);
+	    }
+        
+        setTimeout(function() {   
+		    chatRoomService.init();       
+		    chatRoomService.getPersistendMessage(); 
+        }, 100);
+	}
 
 	function activate() {
 	    console.log(self.title + " is activate");
-
-	    self.currentRoom = roomSelected.getRoom();
-	    if (self.currentRoom == null || self.currentRoom == undefined) {
-	        self.currentRoom = roomSelected.getLastJoinRoom();
-	        roomSelected.setRoom(self.currentRoom);
-	    }
-
-
-		//<!-- Set up roomname for display title of chatroom.
-		var roomName = self.currentRoom.name;
-		if (!roomName || roomName === "") {
-			if (self.currentRoom.type === RoomType.privateChat) {
-				self.currentRoom.members.some(function iterator(member) {
-					if (member.id !== myprofile._id) {
-						self.currentRoom.name = allMembers[member.id].displayname;
-						return true;
-					}
-				});
-			}
-		}
-
-		$scope.currentRoom = self.currentRoom;
-		if($scope.currentRoom.type == RoomType.privateChat){
-			$.each($scope.currentRoom.members, function(index, value){
-				if(value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
-			});
-		}
+        
+	    setRoom();
 
 		$scope.$on('onNewMessage', function (event, data) {
+            $scope.$apply();
+            
 		    setTimeout(function () {
 		        $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    }, 1000);
@@ -64,8 +93,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		});
 		$scope.$on('onJoinRoomReady', function (event, data) {
 		    chatRoomService.getChatRoomComponent().joinRoom(function cb(err, result) {
-		        console.log("JoinRoom res:", JSON.stringify(result));
-
 		        if (result.code !== HttpStatusCode.success) {
 		            //<!-- Block user interface for this chat room.
 		            blockUI(true);
@@ -80,9 +107,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		        }
 		    });
 		});
-		
-		chatRoomService.init();
-		chatRoomService.getPersistendMessage(); 
 	}
 
 	function blockUI(boo) {
@@ -487,6 +511,35 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.isBlockNoti = function(id){
 		return blockNotifications.isBlockNoti(id);
 	}
+
+	$scope.$on('enterChat', function(event, args) { 
+		console.log("App view (menu) entered.");
+        
+	    $ionicLoading.show({
+	        template: 'Loading...'
+	    });
+	    activate();
+	    setupMenuItem();
+	    setupModals();
+	    setScopeData();
+	 });
+	
+	$scope.$on('changeChat', function(event, args) { 
+        console.log('changed chatroom.', event);
+        
+	    var newRoom = JSON.parse(JSON.stringify(args));
+
+		chatRoomService.leaveRoomCB( function(){
+			$ionicLoading.show({
+		        template: 'Loading...'
+		    });
+		    $scope.chat = {};
+			roomSelected.setRoom(newRoom);
+			setRoom();
+		});
+
+		$('#webchatdetail').find('.message-list').empty();
+	});
 
     // ON ENTER 
 	$scope.$on('$ionicView.enter', function () {
