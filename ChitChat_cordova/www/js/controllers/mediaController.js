@@ -1,6 +1,6 @@
 angular.module('spartan.media', [])
 
-.controller('FileController', function($scope,roomSelected) {
+.controller('FileController', function($scope, sharedObjectService, roomSelected) {
 	$scope.onGetFileSelect = function(){
 		var file    = document.querySelector('input[type=file]').files[0];
 	    var reader  = new FileReader();
@@ -677,7 +677,6 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 		       	success : function(data) {
 		       		console.log('success');
 		        	console.log(data);
-		        	document.getElementById("UploadForm").reset();
 		        	send(data);
 		       	},
 		       	error : function(data){
@@ -712,7 +711,22 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 		document.getElementById( mediaName + '-resend').classList.remove("hide");
 	}
 	function send(url){
-		 main.getChatRoomApi().chat(rid, "*", main.getDataManager().myProfile._id, url, type, function(err, res) {
+		if(type == ContentType[ContentType.File]){
+			var file    = document.querySelector('input[type=file]').files[0];
+			var meta = { 'mimeType' : file.type, 'name' : file.name };
+			main.getChatRoomApi().chatFile(rid, "*", main.getDataManager().myProfile._id, url, type, JSON.stringify(meta), function(err, res){
+				if(err || res == null){
+					console.warn("send message fail.");
+				}
+				else {
+					console.log("send message:", JSON.stringify(res));
+					jQuery.extend(mediaUpload[mediaName], { 'url' : url, 'messageId' : res.messageId });
+		    		callback.apply(this , [mediaName,res.messageId]);
+				}
+			});
+
+		}else{
+			main.getChatRoomApi().chat(rid, "*", main.getDataManager().myProfile._id, url, type, function(err, res) {
 			if (err || res === null) {
 				console.warn("send message fail.");
 			}
@@ -722,6 +736,8 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 	    		callback.apply(this , [mediaName,res.messageId]);
 			}
 		});
+		}
+		document.getElementById("UploadForm").reset();
 	}
 }
 

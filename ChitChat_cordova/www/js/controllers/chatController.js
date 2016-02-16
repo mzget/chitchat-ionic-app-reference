@@ -329,6 +329,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 				var file = document.querySelector("[id='fileToUpload']").files[0];
 				var fileUrl = $sce.trustAsResourceUrl( URL.createObjectURL(file) );
 				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":fileUrl,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.File]){
+				var file = document.querySelector("[id='fileToUpload']").files[0];
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.File],"body":file.name,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 			}
 		}
 	});
@@ -341,6 +344,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], sendMessageResponse);
 		}else if(args[2]==ContentType[ContentType.Video]){
 			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
+		}
+		if (ionic.Platform.platform() !== "ios") {
+			if(args[2]==ContentType[ContentType.File]){
+				console.log(args);
+				chatRoomApi.chatFile(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.File], 'bobobobo');
+			}
 		}
 		$.each($scope.chat, function(index, value){
 			if(value._id == args[1]) { 
