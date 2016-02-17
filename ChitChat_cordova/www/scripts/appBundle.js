@@ -1465,7 +1465,7 @@ var Dummy = (function () {
 var ngControllerUtil = (function () {
     function ngControllerUtil(parameters) {
     }
-    ngControllerUtil.viewProfileCtrl = "viewProfileCtrl";
+    ngControllerUtil.viewProfileController = "viewProfileController";
     ngControllerUtil.groupDetailCtrl = "groupDetailCtrl";
     ngControllerUtil.editMemberGroup = 'editMemberGroup';
     return ngControllerUtil;
@@ -2298,3 +2298,4 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
+//# sourceMappingURL=appBundle.js.map

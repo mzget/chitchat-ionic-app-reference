@@ -145,6 +145,7 @@
          }
          
          function organizeChatLogMap(unread, roomInfo, done) {
+             console.debug('before add chatlog: ', JSON.stringify(roomInfo));
              var log = new ChatLog(roomInfo);
              log.setNotiCount(unread.count);
 
@@ -281,6 +282,7 @@
         }
 
         function onUnreadMessageMapChanged(unread) {
+            console.debug('before get roomInfo', JSON.stringify(unread));
             var roomInfo = dataManager.getGroup(unread.rid);
             organizeChatLogMap(unread, roomInfo, function () { });
         }

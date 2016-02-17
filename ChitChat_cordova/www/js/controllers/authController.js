@@ -8,7 +8,8 @@
 
     function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
         $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork,
-        networkService, chatslogService, dbAccessService, sharedObjectService) {
+        networkService, chatslogService, dbAccessService, sharedObjectService)
+        {
 
         /* jshint validthis:true */
         var vm = this;
@@ -292,14 +293,26 @@
 
         function onMissingParams() {
             // Hide spinner dialog.
-            if (ionic.Platform.platform() === "ios") {
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
                 $cordovaSpinnerDialog.hide();
+
+                try {
+                    navigator.notification.alert("Missing username or password.", function callback() { }, "Cannot login.", "OK");
+                }
+                catch (ex) {
+                    console.warn(ex);
+                }
             }
             else {
                 $ionicLoading.hide();
-            }
 
-            navigator.notification.alert("Missing username or password.", function callback() { }, "Cannot login.", "OK");
+                let alertPopup = $ionicPopup.alert({
+                    title: 'Cannot login.',
+                    template: 'Missing username or password.'
+                });
+                alertPopup.then(function (res) {
+                });
+            }
         }
 
         function onReadyToSigning() {
