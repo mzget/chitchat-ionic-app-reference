@@ -77,6 +77,10 @@ angular.module('starter',
             '': {
                 templateUrl: 'templates_web/chats.html'
             },
+            "chats-account@chats": {
+                templateUrl: "templates_web/chat-account.html",
+                controller: "AccountCtrl"
+            },
             "chats-list@chats": {
                 templateUrl: "templates_web/tab-group.html",
                 controller: "homeController"

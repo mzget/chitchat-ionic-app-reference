@@ -563,11 +563,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	
 	$scope.$on('changeChat', function(event, args) { 
         console.log('changed chatroom.', event);
+        var newRoom = JSON.parse(JSON.stringify(args));
+        if(newRoom._id == roomSelected.getRoomOrLastRoom()._id) { return; }
+        
         $ionicLoading.show({
 		    template: 'Loading...'
 		});
-	    var newRoom = JSON.parse(JSON.stringify(args));
-
 		chatRoomService.leaveRoomCB( function(){
 		    $scope.chat = {};
 			roomSelected.setRoom(newRoom);

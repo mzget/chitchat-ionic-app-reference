@@ -16,65 +16,84 @@ angular.module('spartan.controllers')
 	
 })
 
-.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, dbAccessService) {
-    $scope.settings = {
-        logOut: true,
-    };
+.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
+    if (ionic.Platform.platform() === "ios") {
+        $scope.settings = {
+            logOut: true,
+        };
 
-    $scope.myProfile = main.getDataManager().myProfile;
-    $scope.admin = UserRole.admin;
+        $scope.myProfile = main.getDataManager().myProfile;
+        $scope.admin = UserRole.admin;
 
-    $scope.createType = function(type){
-        CreateGroup.createType = type;
-        location.href = '#/tab/account/create'
-        console.log(CreateGroup.createType);
-    }
-    
-    $ionicModal.fromTemplateUrl('templates/modal-theme.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.thememodal = modal
-    })  
+        $scope.createType = function(type){
+            CreateGroup.createType = type;
+            location.href = '#/tab/account/create'
+            console.log(CreateGroup.createType);
+        }
+        
+        $ionicModal.fromTemplateUrl('templates/modal-theme.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.thememodal = modal
+        })  
 
-    $scope.openThemeModal = function() {
-        $scope.thememodal.show()
-    }
+        $scope.openThemeModal = function() {
+            $scope.thememodal.show()
+        }
 
-    $scope.closeThemeModal = function() {
-        $scope.thememodal.hide();
-    };
+        $scope.closeThemeModal = function() {
+            $scope.thememodal.hide();
+        };
 
-    $scope.$on('$destroy', function () {
-        $scope.thememodal.remove();
-    });
-  
- 
-    $scope.data = {
-        'themedefault': 'css/themedefault.css',
-        'themeblue': 'css/themeblue.css',
-        'themebrown': 'css/themebrown.css',
-        'themegreen': 'css/themegreen.css',
-        'themered': 'css/themered.css',
-        'themeviole': 'css/themeviole.css',
-        'themeyellow': 'css/themeyellow.css'
-    }
+        $scope.$on('$destroy', function () {
+            $scope.thememodal.remove();
+        });
+      
+     
+        $scope.data = {
+            'themedefault': 'css/themedefault.css',
+            'themeblue': 'css/themeblue.css',
+            'themebrown': 'css/themebrown.css',
+            'themegreen': 'css/themegreen.css',
+            'themered': 'css/themered.css',
+            'themeviole': 'css/themeviole.css',
+            'themeyellow': 'css/themeyellow.css'
+        }
 
-    $scope.save_settings = function( data ) {
-        $localStorage.themeData = data;
-        $rootScope.theme = $localStorage.themeData;
-        console.log($rootScope.themeblue)
-    }
+        $scope.save_settings = function( data ) {
+            $localStorage.themeData = data;
+            $rootScope.theme = $localStorage.themeData;
+            console.log($rootScope.themeblue)
+        }
 
-    $scope.logOut = function () {
-        console.warn("logOut...");
-        server.logout();
-        server.dispose();
+        $scope.logOut = function () {
+            console.warn("logOut...");
+            server.logout();
+            server.dispose();
 
-        dbAccessService.clearMessageDAL();
-        localStorage.clear();
-        //$state.go('tab.login');
-        location.href = '';
+            dbAccessService.clearMessageDAL();
+            localStorage.clear();
+            //$state.go('tab.login');
+            location.href = '';
+        }
+    }else{
+        $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
+            scope: $scope,
+          }).then(function(popover) {
+            $scope.popover = popover;
+          });
+
+          $scope.logOut = function () {
+            console.warn("logOut...");
+            server.logout();
+            server.dispose();
+
+            dbAccessService.clearMessageDAL();
+            localStorage.clear();
+            //$state.go('tab.login');
+            location.href = '';
+        }
     }
 })
 
