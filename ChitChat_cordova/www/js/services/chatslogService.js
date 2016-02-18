@@ -40,7 +40,12 @@
                     if (!main.getDataManager().isMySelf(newMsg.sender)) {
                         chatlog_count++;
                         if (ionic.Platform.platform() === "ios") {
-                            cordova.plugins.notification.badge.increase();
+                            try {
+                                cordova.plugins.notification.badge.increase();
+                            }
+                            catch (ex) {
+                                console.warn(ex);
+                            }
                         }
                         var unread = {};
                         unread.message = newMsg;
