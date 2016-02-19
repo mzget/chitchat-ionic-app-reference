@@ -1,0 +1,80 @@
+<div>
+    <div>
+        <img class="avatar-modal" ng-if="image != null" ng-src="{{webServer}}/timthumb.php?src={{image}}&h=60&w=60" style="border-radius:50%;"/>
+        <img class="avatar-modal" ng-if="image == null" src="img/img.jpg" height="60" width="60"  style="border-radius:50%;"/>
+        <p style="display:inline; margin-left:10px;"> {{roomName}} </p>
+    </div>
+
+    <hr>
+    
+    <ion-list class="members-list">
+
+        <div ng-show=" roomType==0 || roomType==2 ">
+            <p style="margin-top:-13px;"> Members </p>
+            <ion-item class="item-remove-animate item-avatar item-icon-right" 
+            ng-repeat="member in members|orderObjectBy:'displayname':false|filter:search" type="item-text-wrap" ng-click="openContactModal(member._id)" style="border-style: solid none;">
+                <img ng-src="http://203.113.25.44/timthumb.php?src={{member.image}}&h=40&w=40" />
+                <div ng-if="chatGroup.type==privateIndex || chatGroup.type==orgGroupsIndex">
+                    <h2>{{member.displayname}}</h2>
+                    <p>{{member.status}}</p>
+                </div>
+            </ion-item>
+        </div>
+
+        <div ng-show=" roomType==1 ">
+            <p style="margin-top:-13px;"> Members </p>
+            <ion-item class="item-remove-animate item-avatar item-icon-right" 
+            ng-repeat="member in members|orderObjectBy:'displayname':false|filter:search" type="item-text-wrap" ng-click="openContactModal(member._id)" style="border-style: solid none;">
+                <img ng-src="http://203.113.25.44/timthumb.php?src={{member.image}}&h=40&w=40" />
+                <h2>{{member.displayname}}</h2>
+                <p style="float:right; position:absolute; right:5px;" ng-show="member.role!=0 && member.role!=1">{{member.role}}</p>
+                <p style="float:right;" ng-show="member.role==0 || member.role==1">{{member.textRole}}</p>
+                <p>{{member.jobPosition}}</p>
+            </ion-item>
+        </div>
+
+        <div ng-show=" roomType==3 ">
+            <p style="margin-top:-13px; text-align:center;"> {{member.displayname}}'s Profile </p>
+            <div class="list">
+                <label class="item item-input">
+                    <div class="input-label"> Display </div>
+                    <p>{{member.displayname}}</p>
+                    <!-- <input type="text" value="{{member.displayname}}" id="viewprofile-input-display" disabled style="background:none;"> -->
+                </label>
+
+                <label class="item item-input">
+                    <div class="input-label"> Status </div>
+                    <p>{{member.status}}</p>
+                    <!-- <input type="text" value="{{member.status}}" id="viewprofile-input-status" disabled style="background:none;"> -->
+                </label>
+
+                <label class="item item-input">
+                    <div class="input-label"> Name </div>
+                    <p>{{member.firstname}} {{member.lastname}}</p>
+                    <!-- <input type="text" value="{{member.firstname}} {{member.lastname}}" disabled style="background:none;"> -->
+                </label>
+
+                <label class="item item-input">
+                    <div class="input-label"> User Level </div>
+                    <p>{{member.role}}</p>
+                    <!-- <input type="text" value="{{member.role}}" disabled style="background:none;"> -->
+                </label>
+
+                <label class="item item-input">
+                    <div class="input-label"> Tel. </div>
+                    <p>{{member.tel}}</p>
+                    <!-- <input type="text" value="{{member.tel}}" disabled style="background:none;"> -->
+                </label>
+
+                <label class="item item-input">
+                    <div class="input-label"> Email </div>
+                    <p>{{member.mail}}</p>
+                    <!-- <input type="text" value="{{member.mail}}" disabled style="background:none;"> -->
+                </label>
+            </div>
+        </div>
+
+
+    </ion-list>
+        
+</div>

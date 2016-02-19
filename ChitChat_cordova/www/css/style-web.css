@@ -171,3 +171,7 @@ color: #fff;}
 .popover {
   display: inline !important;
 }
+
+[nav-view-transition="ios"][nav-view-direction="forward"], [nav-view-transition="ios"][nav-view-direction="back"] {
+  background-color: white;
+}

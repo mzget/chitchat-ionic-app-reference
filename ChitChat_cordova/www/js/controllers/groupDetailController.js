@@ -4,7 +4,8 @@
     angular
         .module('spartan.group', [])
         .controller('groupDetailCtrl', groupDetailCtrl)
-        .controller('editMemberGroup', editMemberGroup);
+        .controller('editMemberGroup', editMemberGroup)
+        .controller('InfoCtrl', InfoCtrl);
 
     function editMemberGroup($scope, $rootScope, $ionicHistory, $ionicLoading, $cordovaProgress, $ionicModal, $ionicTabsDelegate, CreateGroup, ProjectBase, roomSelected)
     {
@@ -360,6 +361,86 @@
                 }
             });
         });
+    }
+
+
+    function InfoCtrl($scope, $rootScope, modalFactory, roomSelected){
+        $scope.$on('toggleInfo', function(event, args) {
+            $scope.viewInfo = args;
+        });
+        $scope.$on('roomName', function(event, args) {
+            var room = roomSelected.getRoom(); 
+            console.log('room',room);
+            $scope.viewInfo = true;
+            $scope.roomName = args;
+            $scope.roomType = room.type;
+            if(room.type === RoomType.privateGroup || room.type === RoomType.organizationGroup){
+                $scope.image = room.image;
+                groupMembers(room.members, room.members.length, function done(members) {
+                    $scope.members = members;
+                    $scope.$apply();
+                }); 
+            }else if(room.type === RoomType.privateChat){
+                var id;
+                $.each(room.members, function (index, result) {
+                    if (result.id != main.getDataManager().myProfile._id) { 
+                        id = result.id;
+                    }
+                });
+                var member = main.getDataManager().orgMembers[id];
+                if (!!member) {
+                    if (member.firstname == null || member.firstname == "" &&
+                        member.lastname == null || member.lastname == "" &&
+                        member.mail == null || member.mail == "" &&
+                        member.role == null || member.role == "" &&
+                        member.tel == null || member.tel == "") {
+                        server.getMemberProfile(id, function (err, res) {
+                            if (!err) {
+                                member.firstname = res["data"].firstname;
+                                member.lastname = res["data"].lastname;
+                                member.mail = res["data"].mail;
+                                member.role = res["data"].role;
+                                member.tel = res["data"].tel;
+                            }
+                            else {
+                                console.warn(err, res);
+                            }
+                            $scope.$apply();
+                        });
+                    }
+                    $scope.image = main.getDataManager().orgMembers[id].image;
+                    $scope.member = main.getDataManager().orgMembers[id];
+                }
+                else {
+                    console.warn("A member is no longer in team.");
+                }
+            }else if (room.type === RoomType.projectBaseGroup) {
+                $scope.image = room.image;
+                var waitForMembers = new Promise(function executor(resolve, rejected) {
+                    getMembersInProjectBase(room, function (value) {
+                        $scope.members = value;
+                        $scope.$apply();
+                        resolve($scope.members);
+                    });
+                }).then(function onfillful(value) {
+                    var admin = false;
+                    $.each($scope.members, function (index, result) {
+                        if ($scope.myProfile._id == $scope.members[index]._id) {
+                            if ($scope.members[index].role == MemberRole[MemberRole.admin] || $scope.members[index].textRole == MemberRole[MemberRole.admin]) { admin = true; }
+                        }
+                    });
+                    $scope.meIsAdmin = admin;
+                    $scope.$apply();
+                }).catch(function onReject(err) {
+
+                });
+            }
+            
+        });
+        $scope.openContactModal = function (contactId) {
+            if(contactId!=main.getDataManager().myProfile._id) 
+                modalFactory.initContactWeb($rootScope, contactId);    
+        };
     }
 
     function getMembersInProjectBase(room, onCompleted) {

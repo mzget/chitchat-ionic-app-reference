@@ -16,6 +16,23 @@ angular.module('spartan.controllers')
 	
 })
 
+.controller('HeaderChatCtrl', function($scope, $rootScope){
+    $scope.$on('roomName', function(event, args) {
+        $scope.roomName = args;
+    });
+    window.onresize = function(event) {
+        document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
+    };
+
+    document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
+
+    var viewInfo = true;
+    $scope.toggleInfo = function() {
+        viewInfo = !viewInfo;
+        $rootScope.$broadcast('toggleInfo',viewInfo);
+    }
+})
+
 .controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
     if (ionic.Platform.platform() === "ios") {
         $scope.settings = {
