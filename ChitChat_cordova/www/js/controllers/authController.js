@@ -322,8 +322,13 @@
             //<@-- if have no token app wiil take you to signing page.
             //<@-- else app will auto login by token.
             if (!authen.token) {
-                if (ionic.Platform.platform() === "ios") {
-                    $cordovaSpinnerDialog.hide();
+                if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                    try {
+                        $cordovaSpinnerDialog.hide();
+                    }
+                    catch (ex) {
+                        console.warn(ex);
+                    }
                 }
                 else {
                     $ionicLoading.hide();
@@ -347,10 +352,13 @@
                     }
                     else {
                         // Show spinner dialog
-                        if (ionic.Platform.platform() === "ios") {
-                            $cordovaSpinnerDialog.show(null, "loging in...", true);
+                        if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                            try {
+                                $cordovaSpinnerDialog.show(null, "loging in...", true);
+                            }
+                            catch (ex) { console.warn(ex) }
                         }
-                        else if (ionic.Platform.platform() === "windows") {
+                        else {
                             $ionicLoading.show({
                                 template: "loging in..."
                             });
