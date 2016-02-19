@@ -1311,11 +1311,6 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
-var MinLocation = (function () {
-    function MinLocation() {
-    }
-    return MinLocation;
-})();
 var RoomType;
 (function (RoomType) {
     RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
@@ -1435,32 +1430,6 @@ var SecureService = (function () {
         });
     };
     return SecureService;
-})();
-var Dummy = (function () {
-    function Dummy() {
-        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
-        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
-            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
-            { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
-        this.serverApi = ChatServer.ServerImplemented.getInstance();
-    }
-    Dummy.prototype.getBot = function () {
-        var r = Math.floor((Math.random() * this.bots.length) + 1);
-        return this.bots[r];
-    };
-    Dummy.prototype.fireChatInRoom = function (myUid) {
-        var _this = this;
-        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
-            if (!err && res !== null) {
-                setInterval(function () {
-                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
-                        console.log(res);
-                    });
-                }, 1000);
-            }
-        });
-    };
-    return Dummy;
 })();
 var ngControllerUtil = (function () {
     function ngControllerUtil(parameters) {
@@ -2297,5 +2266,54 @@ var HttpStatusCode = (function () {
     HttpStatusCode.requestTimeout = 408;
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
+})();
+var Dummy = (function () {
+    function Dummy(main) {
+        this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
+        this.counter = 0;
+        this.chatsMsg = new Array();
+        this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
+            { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" },
+            { name: "test5@rfl.com", pass: "1234" }, { name: "test6@rfl.com", pass: "1234" },
+            { name: "test7@rfl.com", pass: "1234" }];
+        this.main = main;
+        this.serverImp = main.getServerImp();
+    }
+    Dummy.prototype.getBot = function () {
+        var dataListener = this.main.getDataListener();
+        dataListener.addChatListenerImp(this);
+        var r = Math.floor((Math.random() * this.bots.length) + 1);
+        return this.bots[r];
+    };
+    Dummy.prototype.getBots = function () {
+        return this.bots;
+    };
+    Dummy.prototype.fireChatInRoom = function (myUid) {
+        var _this = this;
+        this.serverImp.JoinChatRoomRequest("569b4972a0a522e06723902a", function (err, res) {
+            if (!err && res !== null) {
+                _this.intervalNumber = setInterval(function () {
+                    var temp = _this.counter++;
+                    _this.chatRoom.chat("569b4972a0a522e06723902a", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
+                        console.log(res);
+                    });
+                }, 2000);
+            }
+        });
+    };
+    Dummy.prototype.stopChat = function () {
+        clearInterval(this.intervalNumber);
+    };
+    Dummy.prototype.getChats = function () {
+        return this.chatsMsg;
+    };
+    Dummy.prototype.onChat = function (data) {
+        this.chatsMsg.push(data);
+    };
+    Dummy.prototype.onLeaveRoom = function (data) { };
+    Dummy.prototype.onRoomJoin = function (data) { };
+    Dummy.prototype.onMessageRead = function (dataEvent) { };
+    Dummy.prototype.onGetMessagesReaders = function (dataEvent) { };
+    return Dummy;
 })();
 //# sourceMappingURL=appBundle.js.map

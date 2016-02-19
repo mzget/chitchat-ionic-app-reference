@@ -38,9 +38,13 @@
                 }
 
                 for (var i = 0; i < chats.length; i++) {
-                    if (!chats[i].hasOwnProperty('_id')) { continue; }
-                    chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
-                    var dateTime = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
+                    
+                    if(chats[i].hasOwnProperty('createTime')){
+                        var dateTime = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
+                        chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
+                    }
+                  
+                    
                     if (date.indexOf(dateTime) == -1) {
                         date.push(chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')));
 
@@ -83,6 +87,14 @@
                         chats[i].lat = location.latitude;
                         chats[i].long = location.longitude;
                     }
+
+                    else if(chats[i].type == ContentType[ContentType.File]){
+                        if (ionic.Platform.platform() !== "ios") {
+                            var meta = jQuery.parseJSON( chats[i].meta );
+                            chats[i].name = meta.name;
+                            chats[i].url = $rootScope.webServer + chats[i].body;
+                        }
+                    }
                 }
             },
             getChatRoomComponent: getChatRoomComponent,
@@ -124,9 +136,14 @@
             }
             chatRoomComponent.notifyEvent = function (event, data) {
                 if (event === ChatServer.ServerEventListener.ON_CHAT) {
-                    if (ionic.Platform.platform() === "ios") {
-                        var appBackground = cordova.plugins.backgroundMode.isActive();
-                        sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                    if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                        try {
+                            var appBackground = cordova.plugins.backgroundMode.isActive();
+                            sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                        }
+                        catch (ex) {
+                            console.warn(ex);
+                        }
                     }
                     else {
                         sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);

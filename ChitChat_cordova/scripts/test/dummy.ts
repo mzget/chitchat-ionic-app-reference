@@ -1,6 +1,6 @@
 class Dummy implements absSpartan.IChatServerListener {
     chatRoom: ChatServer.ChatRoomApiProvider = ChatServer.ChatRoomApiProvider.prototype;
-    serverApi: ChatServer.ServerImplemented;
+    serverImp: ChatServer.ServerImplemented;
     main: Main;
     
     counter: number = 0;
@@ -8,8 +8,8 @@ class Dummy implements absSpartan.IChatServerListener {
     chatsMsg: Array<any> = new Array<any>();
 
     constructor(main: Main) {
-        this.serverApi = ChatServer.ServerImplemented.getInstance();
         this.main = main;
+        this.serverImp = main.getServerImp();
     }
 
     public bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
@@ -30,11 +30,11 @@ class Dummy implements absSpartan.IChatServerListener {
     }
 
     public fireChatInRoom(myUid: string) {
-        this.serverApi.JoinChatRoomRequest("564f01c6394ffb2e5dbfeeab", (err, res) => {
+        this.serverImp.JoinChatRoomRequest("569b4972a0a522e06723902a", (err, res) => {
             if (!err && res !== null) {
                 this.intervalNumber = setInterval(() => {
                     var temp = this.counter++;
-                    this.chatRoom.chat("564f01c6394ffb2e5dbfeeab", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
+                    this.chatRoom.chat("569b4972a0a522e06723902a", "bot", myUid, "bot: " + temp, ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
                 }, 2000);

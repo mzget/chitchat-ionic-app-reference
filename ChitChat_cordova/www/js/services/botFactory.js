@@ -9,12 +9,18 @@
 
     function botFactory($http) {
         var service = {
+            init: init,
             getData: getData,
             getBot: getBot,
             getChats : getChats
         };
+        var dummy;
 
         return service;
+
+        function init() {
+            dummy = new Dummy(main);
+        }
 
         function getData() {
             return dummy;

@@ -22,7 +22,7 @@
 
 	<!-- your app's js -->
 	<script src="js/bot.js"></script>
-	<script src="js/controllers/authController.js"></script>
+	<script src="js/controllers/botAuthController.js"></script>
 	<script src="js/controllers/controllers.js"></script>
     <script src="js/controllers/homeController.js"></script>
     <script src="js/controllers/chatslogController.js"></script>
@@ -30,15 +30,18 @@
 	<script src="js/controllers/mediaController.js"></script>
     <script src="js/controllers/groupDetailController.js"></script>
     <script src="js/controllers/botController.js"></script>
+    
 	<script src="js/services/services.js"></script>
     <script src="js/services/localNotifyService.js"></script>
     <script src="js/services/networkService.js"></script>
     <script src="js/services/sharedObjectService.js"></script>
     <script src="js/services/chatslogService.js"></script>
     <script src="js/services/botFactory.js"></script>
+    <script src="js/services/dbAccessService.js"></script>
+    
     <script src="js/template.js"></script>
     <script src="js/jquery.min.js"></script>
-    <script src="js/async.js"></script>
+    <script src="lib/async/dist/async.js"></script>
     <script src="https://www.promisejs.org/polyfills/promise-done-7.0.4.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHES_5dswUs4LmAJ8FKOaZcDPiuNWdEg&libraries=places"></script>
     <script src="js/directives.js"></script>
@@ -51,11 +54,10 @@
 	<script>
         console.log("index....");
 		var socket = io;
-		var main = Main.prototype;
-		var server = ChatServer.ServerImplemented.prototype;
+		var main = Main.getInstance();
+		var server = ChatServer.ServerImplemented.getInstance();
 		var serverEvents = ChatServer.ServerEventListener.prototype;
 		var dataManager = DataManager.prototype;
-		var dummy = new Dummy(main);
 	</script>
 
     <ion-nav-bar class="bar-stable" style="display:none;">

@@ -17,6 +17,7 @@
         activate();
 
         function activate() {
+
         }
 
         $scope.chats = botFactory.getChats();

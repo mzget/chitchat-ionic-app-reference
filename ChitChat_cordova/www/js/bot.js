@@ -8,7 +8,7 @@
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
 	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'spartan.bot',
-      'spartan.services', 'spartan.notify', 'ngCordova', 'ngStorage'])
+      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage'])
 
 
 .run(function($ionicPlatform) {
@@ -60,7 +60,7 @@ angular.module('starter',
 		views: {
 		    'tab-login': {
 		        templateUrl: 'templates/tab-login.html',
-		        controller: 'authController'
+		        controller: 'botAuthController'
 			}
 		}
 	})
