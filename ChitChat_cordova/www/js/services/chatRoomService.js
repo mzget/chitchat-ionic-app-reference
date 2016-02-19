@@ -136,9 +136,14 @@
             }
             chatRoomComponent.notifyEvent = function (event, data) {
                 if (event === ChatServer.ServerEventListener.ON_CHAT) {
-                    if (ionic.Platform.platform() === "ios") {
-                        var appBackground = cordova.plugins.backgroundMode.isActive();
-                        sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                    if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                        try {
+                            var appBackground = cordova.plugins.backgroundMode.isActive();
+                            sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                        }
+                        catch (ex) {
+                            console.warn(ex);
+                        }
                     }
                     else {
                         sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
