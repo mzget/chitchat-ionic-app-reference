@@ -105,6 +105,13 @@
         this.dataManager.updateGroupMemberDetail(jsonObj);
     }
 
+
+    //#region User.
+
+    onUserLogin(dataEvent) {
+        this.dataManager.onUserLogin(dataEvent);
+    }
+
     onUserUpdateImageProfile(dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         var _id = jsonObj._id;
@@ -120,6 +127,8 @@
         
         this.dataManager.updateContactProfile(_id, params);
     }
+
+    //#endregion
 
     /*******************************************************************************/
     //<!-- chat room data listener.
@@ -139,7 +148,7 @@
         }
         if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
             this.roomAccessListenerImps.map(v => {
-                v.onNewMessage(chatMessageImp);
+                v.onChat(chatMessageImp);
             });
         }
     };

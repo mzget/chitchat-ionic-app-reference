@@ -15,14 +15,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "org.apache.cordova.dialogs": {
-        "source": {
-            "type": "registry",
-            "id": "org.apache.cordova.dialogs"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "org.apache.cordova.media": {
         "source": {
             "type": "registry",
@@ -158,6 +150,14 @@
         "source": {
             "type": "registry",
             "id": "hu.dpal.phonegap.plugins.spinnerdialog"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-network-information": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-network-information"
         },
         "is_top_level": true,
         "variables": {}

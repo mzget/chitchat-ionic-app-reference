@@ -333,17 +333,30 @@ define(['jquery'], function (jq) {
           url += ':' + port;
       }
 
-      socket = io.connect(url, { 'force new connection': true, reconnect: false });
+      socket = io.connect(url, { 'force new connection': true, reconnect: false });  
+      //      socket = io.connect(url, { 'force new connection': true }); reconnection: false, reconnectionDelay: 1000 
 
       socket.on('connect', function () {
           console.log('[pomeloclient.init] websocket connected!');
 
           cb(null);
+      }); 
+      socket.on('connect_timeout', function () {
+          console.log('connect_timeout');
+      });
+      socket.on('connect_error', function () {
+          console.log('connect_error');
       });
 
       socket.on('reconnect', function () {
           console.log('reconnect');
       });
+      socket.on('reconnect_failed', function () {
+          console.log('reconnect_failed');
+      }); 
+      socket.on('reconnect_error', function () {
+          console.log('reconnect_error');
+      }); 
 
       socket.on('message', function (data) {
           if (typeof data === 'string') {
@@ -357,7 +370,7 @@ define(['jquery'], function (jq) {
       });
 
       socket.on('error', function (err) {
-          console.error(JSON.stringify(err));
+          console.error("pomelo.init: error! " + JSON.stringify(err) + " : " + url);
 
           cb(err);
       });
