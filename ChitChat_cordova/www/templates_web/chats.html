@@ -1,16 +1,48 @@
 <div class="row">
-  <div style="overflow-y:scroll; margin-left:20px; width:500px;">
+
+ <!--  <div >
+    <div ng-include src="'templates_web/chat-account.html'"></div>
+  </div> -->
+
+  <div style="margin-left:20px; margin-top:-5px; width:260px; position:absolute; border: 1px solid #E3E3E3; height:50px;">
+    <div ui-view="chats-account"></div>  
+  </div>
+  
+
+  <div style="overflow-y:scroll; margin-left:20px; width:100%; margin-top:44px; mix-width:260px; max-width:260px;">
     <div ui-view="chats-list" style="border: 1px solid #E3E3E3;"></div>        
   </div>
-  <div style="overflow-y:scroll; height:95%; width:100%;" id="webchat">
-    <div ui-view="chats-detail"></div>       
+
+
+  
+ <!--  <div style="margin-top:-5px; width:85%; position:absolute; border: 1px solid #E3E3E3; height:50px; z-index:10;">
+    
+  </div> -->
+
+  <div style="width:100%">
+    <div ui-view="chats-detail" style="height:100%;"></div>
   </div>
 
-  <div ui-view="chats-bar"></div>
+  
 
-  <div class="span6">
-    <div ui-view="chats-info"></div>        
-  </div>
+  <!-- <div class="col">
+    <div ui-view="chats-header" style="position:relative; margin-top:-10px; margin-left:-5px; height:50px; border: 1px solid #E3E3E3;"></div>  
+
+    <div class="row">
+      <div style="width:100%; margin-left:30px;" >
+        <div ui-view="chats-detail" style="position:fixed; width:60%; margin-top:-80px; overflow-y:scroll; height:89%;" id="webchat"></div>
+        <div ui-view="chats-typing" style="position:fixed; width:60%; bottom:80px; z-index:1000;"></div>
+      </div>
+
+
+      <div class="span6">
+        <div ui-view="chats-info"></div>  
+        <h1>BOBOBOBOBOBBOBO</h1>      
+      </div>
+    </div>
+  </div> -->
+
+
 </div>
 
 

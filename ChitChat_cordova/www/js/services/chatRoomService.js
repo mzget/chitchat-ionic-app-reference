@@ -90,9 +90,8 @@
 
                     else if(chats[i].type == ContentType[ContentType.File]){
                         if (ionic.Platform.platform() !== "ios") {
-                            var meta = jQuery.parseJSON( chats[i].meta );//JSON.parse(JSON.stringify(chats[i].meta));
+                            var meta = jQuery.parseJSON( chats[i].meta );
                             chats[i].name = meta.name;
-                            console.log("metaJSON.name",meta.name);
                             chats[i].url = $rootScope.webServer + chats[i].body;
                         }
                     }

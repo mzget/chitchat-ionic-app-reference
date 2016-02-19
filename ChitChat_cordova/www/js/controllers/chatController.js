@@ -61,10 +61,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        });
 	    }
 
-	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-	        $scope.$emit('roomName', $scope.currentRoom.name);
-	    }
-        
         setTimeout(function() {   
 		    chatRoomService.init();       
 		    chatRoomService.getPersistendMessage(); 
@@ -83,7 +79,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    	}
                 else{
-		    		$("#webchat").animate({scrollTop:$("#webchat")[0].scrollHeight}, 200);
+		    		$("#webchatdetail").animate({scrollTop:$("#webchatdetail")[0].scrollHeight}, 200);
 		    	}
 		    }, 1000);
 		});
@@ -97,7 +93,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    	}else{
 	    		$ionicLoading.hide();
 	    		setTimeout(function () {
-			        $("#webchat").animate({scrollTop:$("#webchat")[0].scrollHeight}, 500);
+			        $("#webchatdetail").animate({scrollTop:$("#webchatdetail")[0].scrollHeight}, 500);
 			    }, 1000);
 	    	}
 		});
@@ -563,11 +559,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	
 	$scope.$on('changeChat', function(event, args) { 
         console.log('changed chatroom.', event);
+        var newRoom = JSON.parse(JSON.stringify(args));
+        if(newRoom._id == roomSelected.getRoomOrLastRoom()._id) { return; }
+        
         $ionicLoading.show({
 		    template: 'Loading...'
 		});
-	    var newRoom = JSON.parse(JSON.stringify(args));
-
 		chatRoomService.leaveRoomCB( function(){
 		    $scope.chat = {};
 			roomSelected.setRoom(newRoom);

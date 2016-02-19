@@ -167,3 +167,7 @@ color: #fff;}
 .bar-footer.has-tabs {
     bottom:0 !important;
 }
+
+.popover {
+  display: inline !important;
+}
