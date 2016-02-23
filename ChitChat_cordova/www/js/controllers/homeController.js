@@ -94,7 +94,7 @@
 		}
 
 		function tryGetFavorite() {
-            let interval = setInterval(function () {
+            var interval = setInterval(function () {
 			        FavoriteReady();
 			    }, 500);
             
