@@ -166,16 +166,25 @@
 
         function onLoginTimeout(param) {
             // Hide spinner dialog
-            if (ionic.Platform.platform() === "ios") {
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
                 $cordovaSpinnerDialog.hide();
+               
+                navigator.notification.alert(param.message, function callback() {
+                    location.href = '';
+                }, "Login Timeout!", "OK");
             }
             else {
                 $ionicLoading.hide();
-            }
+                
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Login Timeout!'
+                    // template: 'It might taste good'
+                });
 
-            navigator.notification.alert(param.message, function callback() {
-                location.href = '';
-            }, "Login Timeout!", "OK");
+                alertPopup.then(function(res) {
+                    location.href = '';
+                });
+            }
         }
 
         function onDuplicateLogin(param) {
@@ -306,7 +315,7 @@
             else {
                 $ionicLoading.hide();
 
-                let alertPopup = $ionicPopup.alert({
+                var alertPopup = $ionicPopup.alert({
                     title: 'Cannot login.',
                     template: 'Missing username or password.'
                 });

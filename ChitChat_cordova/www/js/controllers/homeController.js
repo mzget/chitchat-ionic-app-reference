@@ -89,26 +89,30 @@
 			var chatheight = $(window).height() - 43;
 			$('ion-content').find('#webgroup').css({'height':chatheight+'px'});
 			$('ion-content').find('#webchatdetail').css({'height':chatheight-44+'px'});
+            
 			$rootScope.$broadcast('enterChat','');
 		}
 
-		function tryGetFavorite(){
-			if(!jQuery.isEmptyObject(main.getDataManager().orgGroups) &&
-				!jQuery.isEmptyObject(main.getDataManager().projectBaseGroups) &&
-				!jQuery.isEmptyObject(main.getDataManager().privateGroups) &&
-				!jQuery.isEmptyObject(main.getDataManager().orgMembers)){
-					setTimeout(function () {
-			        	$scope.favorites = getFavorite();
-                        if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform !== 'android') {
-                            getChatWeb();
-                        }
+		function tryGetFavorite() {
+            var interval = setInterval(function () {
+			        FavoriteReady();
 			    }, 500);
-			}
-            else{
-				setTimeout(function () {
-			        tryGetFavorite();
-			    }, 1000);
-			}
+            
+            function FavoriteReady() {
+                if(!!main.getDataManager().orgGroups && !!main.getDataManager().projectBaseGroups &&
+                    !!main.getDataManager().privateGroups && !!main.getDataManager().orgMembers)
+                    {
+                        clearInterval(interval);
+                        
+                        setTimeout(function () {
+                            $scope.favorites = getFavorite();
+                            
+                            if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform !== 'android') {
+                            getChatWeb();
+                            }
+                    }, 500);
+                }
+            }
 		}
 
 		function onLeave() {
