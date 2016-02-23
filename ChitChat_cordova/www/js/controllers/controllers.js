@@ -97,11 +97,24 @@ angular.module('spartan.controllers')
     }else{
         $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
             scope: $scope,
-          }).then(function(popover) {
+        }).then(function(popover) {
             $scope.popover = popover;
-          });
+        });
 
-          $scope.logOut = function () {
+        $ionicModal.fromTemplateUrl('templates_web/modal-myprofile.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $scope.myProfileModal = modal;
+        });
+
+        $scope.openProfileModal = function () {
+            $scope.myProfileModal.show();
+        };
+
+        $scope.myProfile = main.getDataManager().myProfile;
+
+        $scope.logOut = function () {
             console.warn("logOut...");
             server.logout();
             server.dispose();
