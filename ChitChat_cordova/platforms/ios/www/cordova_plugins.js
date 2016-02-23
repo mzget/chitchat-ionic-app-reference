@@ -450,14 +450,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/cordova.CallCordovaPlugin/www/CallCordovaPlugin.js",
-        "id": "cordova.CallCordovaPlugin.CallCordovaPlugin",
-        "pluginId": "cordova.CallCordovaPlugin",
-        "clobbers": [
-            "cordova.plugins.CallCordovaPlugin"
-        ]
-    },
-    {
         "file": "plugins/cordova-plugin-network-information/www/network.js",
         "id": "cordova-plugin-network-information.network",
         "pluginId": "cordova-plugin-network-information",

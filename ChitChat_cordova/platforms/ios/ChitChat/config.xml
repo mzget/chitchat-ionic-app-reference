@@ -63,10 +63,6 @@
     <feature name="CameraRoll">
         <param name="ios-package" value="IonicCameraRoll" />
     </feature>
-    <feature name="CallCordovaPlugin">
-        <param name="ios-package" value="CallCordovaPlugin" />
-        <param name="onload" value="true" />
-    </feature>
     <feature name="NetworkStatus">
         <param name="ios-package" value="CDVConnection" />
     </feature>

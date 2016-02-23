@@ -17,6 +17,11 @@
         return service;
 
         function init() {
+            if (ionic.Platform.platform() === 'ios') {
+                var networkState = navigator.connection.type;
+                console.log("get network state", networkState);
+            }
+
             // listen for Online event
             $rootScope.$on('$cordovaNetwork:online', function (event, networkState) {
                 var onlineState = networkState;
@@ -40,20 +45,24 @@
             var socket = new SocketComponent();
             server.setSocketComponent(socket);
             socket.onDisconnect = function onDisconnect(reason) {
-                console.error('onDisconnect', reason);
+                socket.onDisconnect = null;
+
                 localNotifyService.makeToast("disconnected.");
 
-                //@-- Todo..
-                if ($cordovaNetwork.isOnline()) {
-                    $state.go("tab.login");
-                }
-                else {
-                    //@ Stay working offline.
-                    reconnectingEvent = function () {
-                        console.error('reconnectingEvent')
-                       // $state.go("tab.login");
-                    };
-                }
+                setTimeout(function () {
+                    console.log('Try to re connecting...', $cordovaNetwork.getNetwork());
+                    //@-- Todo..
+                    if ($cordovaNetwork.isOnline()) {
+                        $state.go("tab.login");
+                    }
+                    else {
+                        //@ Stay working offline.
+                        reconnectingEvent = function () {
+                            console.log('reconnectingEvent')
+                            $state.go("tab.login");
+                        };
+                    }
+                }, 1000);
             }
         }
     }

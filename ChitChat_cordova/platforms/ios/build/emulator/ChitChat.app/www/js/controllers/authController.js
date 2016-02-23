@@ -18,6 +18,18 @@
         ionic.Platform.ready(function () {
             console.log(vm.title + " : ionic ready.");
 
+            if (ionic.Platform.platform() === 'ios') {
+                $cordovaSpinnerDialog.show("", "Wait for signing...", true);
+            }
+            else {
+                $ionicLoading.show({
+                    template: 'Wait for signing...'
+                });
+            }
+            if (!!server) {
+                server.dispose();
+            }
+
             activateBackground();
             activate();
             setConfigTheme();
@@ -40,7 +52,7 @@
                     if (ionic.Platform.platform() === "ios") {
                         $cordovaSpinnerDialog.hide();
                     }
-                    else if (ionic.Platform.platform() === "windows") {
+                    else {
                         $ionicLoading.hide();
                     }
 
@@ -52,6 +64,7 @@
                     //location.href = "#/tab/group";
                     $state.go('tab.group');
                 };
+
                 initSpartanServer();
             }, 100);
         });
@@ -184,7 +197,7 @@
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
 
-                $cordovaDialogs.alert(errMessage, 'Authen Fail!', 'OK')
+                $cordovaDialogs.alert(errMessage, 'Authentication Fail!', 'OK')
                 .then(function () {
                     // callback success
                     localStorage.clear();
@@ -214,17 +227,25 @@
             if (ionic.Platform.platform() === "ios") {
                 $cordovaSpinnerDialog.hide();
             }
+            else {
+                $ionicLoading.hide();
+            }
 
             if ($cordovaNetwork.isOnline()) {
-                $cordovaDialogs.alert('Fail to connecting server! \n Please come back again.',
-                    'Fail to connecting server!', 'OK')
-                .then(function () {
+                $cordovaDialogs.confirm('Fail to connecting server! \n Please try again.',
+                    'Fail to connecting server!', ['OK', 'Try Again'])
+                .then(function (buttonId) {
                     // callback success
-                    $('#login').css('display', 'none');
-                    $('.bar-stable').css({ 'display': '' });
-                    $('#splash').css({ 'display': 'none' });
+                    if (buttonId === 1) {
+                        $('#login').css('display', 'none');
+                        $('.bar-stable').css({ 'display': '' });
+                        $('#splash').css({ 'display': 'none' });
 
-                    location.href = "#/tab/login/error";
+                        location.href = "#/tab/login/error";
+                    }
+                    else if (buttonId === 2) {
+                        location.href = '';
+                    }
                 });
             }
             else {
@@ -244,8 +265,13 @@
         }
 
         function onMissingParams() {
-            // Hide spinner dialog
-            $cordovaSpinnerDialog.hide();
+            // Hide spinner dialog.
+            if (ionic.Platform.platform() === "ios") {
+                $cordovaSpinnerDialog.hide();
+            }
+            else {
+                $ionicLoading.hide();
+            }
 
             navigator.notification.alert("Missing username or password.", function callback() { }, "Cannot login.", "OK");
         }
@@ -257,8 +283,14 @@
             //<@-- if have no token app wiil take you to signing page.
             //<@-- else app will auto login by token.
             if (!authen.token) {
-                $('#splash').css({ 'display': 'none' });
+                if (ionic.Platform.platform() === "ios") {
+                    $cordovaSpinnerDialog.hide();
+                }
+                else {
+                    $ionicLoading.hide();
+                }
 
+                $('#splash').css({ 'display': 'none' });
                 $('body #login #btn-login').click(function (event) {
                     event.preventDefault();
 
@@ -291,7 +323,7 @@
                                     if (res.code === HttpStatusCode.success) {
                                         console.log("Success Login User...");
                                     }
-                                    else if (res.code === 1004) {
+                                    else if (res.code === HttpStatusCode.duplicateLogin) {
                                         console.warn(JSON.stringify(err), JSON.stringify(res));
                                         onDuplicateLogin(res);
                                     }
