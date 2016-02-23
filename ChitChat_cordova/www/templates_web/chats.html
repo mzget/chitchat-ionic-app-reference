@@ -9,7 +9,7 @@
   </div>
   
 
-  <div style="overflow-y:scroll; margin-left:20px; width:100%; margin-top:44px; mix-width:260px; max-width:260px;">
+  <div id="chat-list" style="overflow-y:scroll; margin-left:20px; width:100%; margin-top:44px; mix-width:260px; max-width:260px;">
     <div ui-view="chats-list" style="border: 1px solid #E3E3E3;"></div>        
   </div>
 
@@ -23,12 +23,11 @@
 
 
     <div style="width:100%; margin-top:45px; min-width:330px; height:95%;">
-      <div ui-view="chats-detail" style="height:100%;"></div>
+      <div ui-view="chats-detail" style="height:95%;"></div>
     </div>
 
-    <div style="margin-top:45px; height:95%;" class="span6" ng-show="viewInfo">
-      <div ui-view="chats-info" style="margin-left:-20px; margin-top:5px; overflow-y:scroll; overflow-x:hidden; height:100%"> 
-        
+    <div style="margin-top:45px; overflow-y:scroll; overflow-x:hidden;" ng-show="viewInfo==true">
+      <div ui-view="chats-info" style="margin-top:5px;"> 
       </div>       
     </div>
 </div>
