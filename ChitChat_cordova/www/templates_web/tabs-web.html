@@ -1,14 +1,14 @@
 <div ng-cloak>
     <md-content>
         <md-tabs md-dynamic-height md-border-bottom>
-            <md-tab label="Chats">
-                <div ng-include src="'templates_web/tab-chats-web.html'" ng-controller="chatslogController"></div>
-            </md-tab>
             <md-tab label="Contact" >
                <div ng-include src="'templates_web/tab-group-web.html'" ng-controller="homeController"></div>
             </md-tab>
+            <md-tab label="Chats">
+                <div ng-include src="'templates_web/tab-chats-web.html'" ng-controller="chatslogController"></div>
+            </md-tab>
             <md-tab label="Options">
-                <div ng-include src="'templates_web/tab-account.html'" ng-controller="AccountCtrl"></div>
+                <div ng-include src="'templates_web/tab-options-web.html'" ng-controller="optionsController"></div>
             </md-tab>
         </md-tabs>
     </md-content>

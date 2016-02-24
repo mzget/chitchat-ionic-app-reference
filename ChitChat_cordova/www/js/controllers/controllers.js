@@ -43,8 +43,7 @@ angular.module('spartan.controllers')
     }
 })
 
-.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
-    if (ionic.Platform.platform() === "ios") {
+.controller('optionsController', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
         $scope.settings = {
             logOut: true,
         };
@@ -104,7 +103,8 @@ angular.module('spartan.controllers')
             //$state.go('tab.login');
             location.href = '';
         }
-    }else{
+})
+.controller('options2', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
         $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
             scope: $scope,
         }).then(function(popover) {
@@ -134,9 +134,7 @@ angular.module('spartan.controllers')
             //$state.go('tab.login');
             location.href = '';
         }
-    }
 })
-
 .controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
     console.log('AccountCreate',CreateGroup.createType);
     var myProfile = main.getDataManager().myProfile;

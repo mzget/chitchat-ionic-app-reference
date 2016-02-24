@@ -61,7 +61,7 @@ angular.module('starter',
             },
             "chats-account@chats": {
                 templateUrl: "templates_web/chat-account.html",
-                controller: "AccountCtrl"
+                controller: "options2"
             },
             "chats-list@chats": {
                 abstract: true,
