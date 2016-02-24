@@ -8,8 +8,7 @@
 
     function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
         $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork,
-        networkService, chatslogService, dbAccessService, sharedObjectService)
-        {
+        networkService, chatslogService, dbAccessService, sharedObjectService) {
 
         /* jshint validthis:true */
         var vm = this;
@@ -24,7 +23,7 @@
                 try {
                     $cordovaSpinnerDialog.show("", "Wait for signing...", true);
                 }
-                catch(exception) {
+                catch (exception) {
                     console.warn(exception);
                 }
             }
@@ -60,7 +59,7 @@
                         try {
                             $cordovaSpinnerDialog.hide();
                         }
-                        catch(ex) {
+                        catch (ex) {
                             console.warn(ex);
                         }
                     }
@@ -73,10 +72,10 @@
                     $rootScope.webServer = sharedObjectService.getWebServer();
                     $rootScope.appVersion = sharedObjectService.getAppVersion();
 
-                    if(ionic.Platform.platform() !== "ios") {
+                    if (ionic.Platform.platform() !== "ios") {
                         $location.path('/chats');
                     }
-                    else{
+                    else {
                         $state.go('tab.group');
                     }
                 };
@@ -114,7 +113,7 @@
                         console.error("push error", e.message);
                     });
                 }
-                catch(ex) {
+                catch (ex) {
                     console.warn(ex);
                 }
             }
@@ -125,7 +124,7 @@
                 try {
                     // Prevent the app from going to sleep in background
                     cordova.plugins.backgroundMode.enable();
-                    
+
                     // Get informed when the background mode has been activated
                     cordova.plugins.backgroundMode.onactivate = function () {
                         console.warn("backgroundMode.onactivate");
@@ -139,7 +138,7 @@
                         console.warn("backgroundMode.ondeactivate");
                     };
                 }
-                catch(ex) {
+                catch (ex) {
                     console.warn(ex);
                 }
             }
@@ -168,20 +167,20 @@
             // Hide spinner dialog
             if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
                 $cordovaSpinnerDialog.hide();
-               
+
                 navigator.notification.alert(param.message, function callback() {
                     location.href = '';
                 }, "Login Timeout!", "OK");
             }
             else {
                 $ionicLoading.hide();
-                
+
                 var alertPopup = $ionicPopup.alert({
                     title: 'Login Timeout!'
                     // template: 'It might taste good'
                 });
 
-                alertPopup.then(function(res) {
+                alertPopup.then(function (res) {
                     location.href = '';
                 });
             }
@@ -377,7 +376,7 @@
                             main.authenUser(server, email, res, function (err, res) {
                                 if (!err && res !== null) {
                                     if (res.code === HttpStatusCode.success) {
-                                        console.log("Success Login User...");
+                                        console.log("Success Authen User via siging...");
                                     }
                                     else if (res.code === HttpStatusCode.duplicateLogin) {
                                         console.warn(JSON.stringify(err), JSON.stringify(res));
@@ -408,7 +407,7 @@
                             main.authenUser(server, res.username, res.password, function (err, res) {
                                 if (res !== null) {
                                     if (res.code === HttpStatusCode.success) {
-                                        console.log("Success Authen User...");
+                                        console.log("Success Authen User via token...");
                                     }
                                     else if (res.code === HttpStatusCode.duplicateLogin) {
                                         onDuplicateLogin(res);
