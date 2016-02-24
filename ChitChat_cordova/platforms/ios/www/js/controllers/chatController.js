@@ -61,6 +61,10 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        });
 	    }
 
+	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+	        $rootScope.$broadcast('roomName', $scope.currentRoom.name);
+	    }
+
         setTimeout(function() {   
 		    chatRoomService.init();       
 		    chatRoomService.getPersistendMessage(); 
