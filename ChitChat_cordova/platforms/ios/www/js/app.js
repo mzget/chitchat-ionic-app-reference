@@ -87,7 +87,7 @@ angular.module('starter',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: ngControllerUtil.viewProfileCtrl
+				controller: ngControllerUtil.viewProfileController
 			}
 		}
 	})
@@ -161,7 +161,7 @@ angular.module('starter',
 		views: {
 			'tab-chats': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: ngControllerUtil.viewProfileCtrl
+				controller: ngControllerUtil.viewProfileController
 			}
 		}
 	})

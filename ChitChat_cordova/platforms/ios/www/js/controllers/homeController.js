@@ -20,8 +20,11 @@
         }
 
 		function activate() {
-		    if (ionic.Platform.platform() === 'ios') {
-		        $cordovaSpinnerDialog.hide();
+		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+                try {
+		          $cordovaSpinnerDialog.hide();
+                }
+                catch(ex) { console.warn(ex); }
 		    }
 		    if ($ionicLoading) {
 		        $ionicLoading.hide();
@@ -252,36 +255,55 @@
 		};
 		//<!-- Org group modal ////////////////////////////////////////
 		$scope.openOrgModal = function (groupId) {
-			initOrgModal($state, $scope, groupId, roomSelected, function () {
-				$scope.orgModal.show();
-			}, $rootScope);
+			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+				initOrgModal($state, $scope, groupId, roomSelected, function () {
+					$scope.orgModal.show();
+				}, $rootScope);
+			}else{
+				var group = main.getDataManager().orgGroups[groupId];
+				$rootScope.$broadcast('changeChat', group);
+			}
 		};
 		$scope.closeOrgModal = function () {
 			$scope.orgModal.hide();
 		};
 		//<!-- Project base group modal /////////////////////////////////////////
 		$scope.openPjbModal = function (groupId) {
-			initPjbModal($state, $scope, groupId, roomSelected, function () {
-				$scope.pjbModal.show();
-			}, $rootScope);
+			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+				initPjbModal($state, $scope, groupId, roomSelected, function () {
+					$scope.pjbModal.show();
+				}, $rootScope);
+			}else{
+				var group = main.getDataManager().projectBaseGroups[groupId];
+				$rootScope.$broadcast('changeChat', group);
+			}
 		};
 		$scope.closePjbModal = function () {
 			$scope.pjbModal.hide();
 		}
 		//<!-- Private group modal ////////////////////////////////////////////
 		$scope.openPvgModal = function (groupId) {
-			initPvgModal($state, $scope, groupId, roomSelected, function () {
-				$scope.pvgModal.show();
-			}, $rootScope);
+			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+				initPvgModal($state, $scope, groupId, roomSelected, function () {
+					$scope.pvgModal.show();
+				}, $rootScope);
+			}else{
+				var group = main.getDataManager().privateGroups[groupId];
+				$rootScope.$broadcast('changeChat', group);
+			}
 		};
 		$scope.closePvgModal = function () {
 			$scope.pvgModal.hide();
 		}
 		//<!-- Contact modal -------------------------->
 		$scope.openContactModal = function (contactId) {
-            modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
-				$scope.contactModal.show();
-			});
+			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+				modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
+					$scope.contactModal.show();
+				});
+			}else{
+				modalFactory.initContactWeb($rootScope, contactId);
+			}		
 		};
 		$scope.closeContactModal = function() {
 			$scope.contactModal.hide();	

@@ -306,7 +306,7 @@
             else {
                 $ionicLoading.hide();
 
-                let alertPopup = $ionicPopup.alert({
+                var alertPopup = $ionicPopup.alert({
                     title: 'Cannot login.',
                     template: 'Missing username or password.'
                 });
