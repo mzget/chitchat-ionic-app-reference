@@ -72,11 +72,11 @@
                     $rootScope.webServer = sharedObjectService.getWebServer();
                     $rootScope.appVersion = sharedObjectService.getAppVersion();
 
-                    if (ionic.Platform.platform() !== "ios") {
-                        $location.path('/chats');
+                    if (ionic.Platform.platform() == "ios" || ionic.Platform.platform() == 'android') {
+                        $state.go('tab.group');
                     }
                     else {
-                        $state.go('tab.group');
+                        $location.path('/chats');
                     }
                 };
 
