@@ -10,11 +10,12 @@
 
     public notify(chatMessageImp: Message, appBackground: boolean, notifyService) {
         let self = this;
-        var contactName,contactId;
-        if(this.dataManager.getGroup(chatMessageImp.rid) === undefined){
+        var contactName, contactId;
+        if (this.dataManager.getGroup(chatMessageImp.rid) === undefined) {
             contactName = this.dataManager.getContactProfile(chatMessageImp.sender).displayname;
             contactId = this.dataManager.getContactProfile(chatMessageImp.sender)._id;
-        }else{
+        }
+        else {
             contactName = this.dataManager.getGroup(chatMessageImp.rid).name;
             contactId = this.dataManager.getGroup(chatMessageImp.rid)._id;
         }

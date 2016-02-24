@@ -149,7 +149,6 @@
         }
 
         function organizeChatLogMap(unread, roomInfo, done) {
-            console.debug('before add chatlog: ', JSON.stringify(roomInfo));
             var log = new ChatLog(roomInfo);
             log.setNotiCount(unread.count);
 
@@ -198,6 +197,12 @@
                             break;
                         case ContentType[ContentType.Location]:
                             displayMsg = sender + " sent a location.";
+                            setLogProp(log, displayMsg, function (log) {
+                                addChatLog(log, done);
+                            });
+                            break;
+                        case ContentType[ContentType.File]:
+                            displayMsg = sender + " sent a File.";
                             setLogProp(log, displayMsg, function (log) {
                                 addChatLog(log, done);
                             });

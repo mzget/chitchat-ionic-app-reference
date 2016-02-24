@@ -23,7 +23,7 @@
     onChat(chatMessageImp: Message) {
         var self = this;
 
-        console.info('chatRoomComponent.onChat');
+        console.log('chatRoomComponent.onChat');
 
         if(this.roomId === chatMessageImp.rid) {
             console.log("Implement chat msg hear..", chatMessageImp);
@@ -68,6 +68,7 @@
         }
         else {
             console.log("this msg come from other room.");
+            
             if (!!this.notifyEvent) {
                 this.notifyEvent(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
             }

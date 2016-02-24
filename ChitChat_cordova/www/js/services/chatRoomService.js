@@ -121,16 +121,29 @@
             sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
 
             chatRoomComponent.serviceListener = function (event, newMsg) {
-                if (event === "onChat") {
+                if (event === ChatServer.ServerEventListener.ON_CHAT) {
 					service.set(chatRoomComponent.chatMessages);
 
                     if (newMsg.sender !== main.dataManager.myProfile._id) {
                         chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
                     }
 
+                    //@ When app state is join room but not active.
+                    if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                        try {
+                            var appBackground = cordova.plugins.backgroundMode.isActive();
+                            if (appBackground == true) {
+                                sharedObjectService.getNotifyManager().notify(newMsg, appBackground, localNotifyService);
+                            }
+                        }
+                        catch (ex) {
+                            console.warn(ex);
+                        }
+                    }
+
                     $rootScope.$broadcast('onNewMessage', { data: null });
                 }
-                else if (event === "onMessageRead") {
+                else if (event === ChatServer.ServerEventListener.ON_MESSAGE_READ) {
 					service.set(chatRoomComponent.chatMessages);
                 }
             }
