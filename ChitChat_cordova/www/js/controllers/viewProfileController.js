@@ -58,34 +58,19 @@
                     // User canceled or couldn't load image.
                 });
             });
+            
             $scope.save = function(){
                 if($scope.sourceImage!='' || (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status)){
                     $ionicLoading.show({
                         template: 'Loading..'
                     });
-                    if($scope.sourceImage!=''){ $scope.$broadcast('uploadImgCrop', $scope.sourceImage ); }
-                    else { saveProfile(); }
+                    if($scope.sourceImage!='') {
+                         $scope.$broadcast('uploadImgCrop', $scope.sourceImage ); 
+                    }
+                    else {
+                         saveProfile();
+                    }
                 }
-            }
-            function saveProfile() {
-                if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
-                            main.getDataManager().myProfile.status != $scope.model.status) {
-
-                    server.UpdateUserProfile($stateParams.chatId, $scope.model, function (err, res) {
-                        console.log(JSON.stringify(res));
-                        main.getDataManager().myProfile.displayname = $scope.model.displayname;
-                        main.getDataManager().myProfile.status = $scope.model.status;
-                        saveSuccess();
-                    });
-                }else if( $scope.sourceImage != "") {
-                    $scope.sourceImage = "";
-                    saveSuccess();
-                }
-            }
-            function saveSuccess() {
-                $ionicLoading.hide();
-                $cordovaProgress.showSuccess(false, "Success!");
-                setTimeout(function () { $cordovaProgress.hide(); }, 1500);
             }
         }
         else {
@@ -126,6 +111,27 @@
             else {
                 console.warn("A member is no longer in team.");
             }
+        }
+
+        function saveProfile() {
+            if (main.getDataManager().myProfile.displayname != $scope.model.displayname ||
+                        main.getDataManager().myProfile.status != $scope.model.status) {
+
+                server.UpdateUserProfile($stateParams.chatId, $scope.model, function (err, res) {
+                    console.log(JSON.stringify(res));
+                    main.getDataManager().myProfile.displayname = $scope.model.displayname;
+                    main.getDataManager().myProfile.status = $scope.model.status;
+                    saveSuccess();
+                });
+            } else if ($scope.sourceImage != "") {
+                $scope.sourceImage = "";
+                saveSuccess();
+            }
+        }
+        function saveSuccess() {
+            $ionicLoading.hide();
+            $cordovaProgress.showSuccess(false, "Success!");
+            setTimeout(function () { $cordovaProgress.hide(); }, 1500);
         }
 
         $rootScope.$ionicGoBack = function () {

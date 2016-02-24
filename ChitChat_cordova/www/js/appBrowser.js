@@ -75,7 +75,8 @@ angular.module('starter',
         url: "/chats",
         views: {
             '': {
-                templateUrl: 'templates_web/chats.html'
+                templateUrl: 'templates_web/chats.html',
+                controller: "InfoCtrl"
             },
             "chats-account@chats": {
                 templateUrl: "templates_web/chat-account.html",
@@ -88,6 +89,9 @@ angular.module('starter',
             "chats-detail@chats": {
                 templateUrl: "templates_web/chat-detail.html",
                 controller: "chatController"
+            },
+            "chats-info@chats": {
+                templateUrl: "templates_web/chat-info.html"
             },
             
         }

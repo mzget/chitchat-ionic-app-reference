@@ -16,6 +16,33 @@ angular.module('spartan.controllers')
 	
 })
 
+.controller('HeaderChatCtrl', function($scope, $rootScope){
+    
+    $scope.$on('roomName', function(event, args) {
+        $scope.roomName = args;
+        setTimeout(function () {
+            document.getElementById('chatMessage').style.display = "flex";
+            resizeUI();
+        }, 1000);
+    });
+    window.onresize = function(event) {
+        document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
+        document.getElementById('chatMessage').style.left = jQuery('#chat-list').offset().left + jQuery('#chat-list').width() + "px";
+        document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
+    };
+    document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
+
+    var viewInfo = true;
+    $scope.toggleInfo = function() {
+        viewInfo = !viewInfo;
+        $rootScope.$broadcast('toggleInfo',viewInfo);
+    }
+    function resizeUI(){
+        document.getElementById('chatMessage').style.left = jQuery('#chat-list').offset().left + jQuery('#chat-list').width() + "px";
+        document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
+    }
+})
+
 .controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
     if (ionic.Platform.platform() === "ios") {
         $scope.settings = {
@@ -80,11 +107,24 @@ angular.module('spartan.controllers')
     }else{
         $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
             scope: $scope,
-          }).then(function(popover) {
+        }).then(function(popover) {
             $scope.popover = popover;
-          });
+        });
 
-          $scope.logOut = function () {
+        $ionicModal.fromTemplateUrl('templates_web/modal-myprofile.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function (modal) {
+            $scope.myProfileModal = modal;
+        });
+
+        $scope.openProfileModal = function () {
+            $scope.myProfileModal.show();
+        };
+
+        $scope.myProfile = main.getDataManager().myProfile;
+
+        $scope.logOut = function () {
             console.warn("logOut...");
             server.logout();
             server.dispose();

@@ -168,6 +168,18 @@ color: #fff;}
     bottom:0 !important;
 }
 
+.overflow-scroll{
+  overflow-y:hidden;
+}
+
+.modal-backdrop{
+  opacity: 1 !important;
+}
+
 .popover {
   display: inline !important;
+}
+
+[nav-view-transition="ios"][nav-view-direction="forward"], [nav-view-transition="ios"][nav-view-direction="back"] {
+  background-color: white;
 }
