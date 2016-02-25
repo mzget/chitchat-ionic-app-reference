@@ -107,7 +107,8 @@ angular.module('spartan.controllers')
             location.href = '';
         }
 })
-.controller('options2', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
+.controller('options2', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, $mdDialog, $mdMedia, dbAccessService) {
+
         $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
             scope: $scope,
         }).then(function(popover) {
@@ -136,6 +137,32 @@ angular.module('spartan.controllers')
             localStorage.clear();
             //$state.go('tab.login');
             location.href = '';
+        }
+
+        $scope.showMyProfile = function(ev) {
+            //var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+            $mdDialog.show({
+              controller: ProfileController,
+              templateUrl: 'templates_web/modal-myprofile.html',
+              parent: angular.element(document.body),
+              targetEvent: ev,
+              clickOutsideToClose:true,
+              onRemoving: closeDialog
+              //fullscreen: useFullScreen
+            });
+            // .then(function(answer) {
+            //   $scope.status = 'You said the information was "' + answer + '".';
+            // }, function() {
+            //   $scope.status = 'You cancelled the dialog.';
+            // });
+            // $scope.$watch(function() {
+            //   return $mdMedia('xs') || $mdMedia('sm');
+            // }, function(wantsFullScreen) {
+            //   $scope.customFullscreen = (wantsFullScreen === true);
+            // });
+        };
+        function closeDialog(){
+            document.getElementById("UploadAvatar").reset();
         }
 })
 .controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
@@ -387,6 +414,58 @@ angular.module('spartan.controllers')
 //     }
 //   };
 // }); // <-- LAST CONTROLLER
+
+function ProfileController($scope, $mdDialog, $rootScope ) {
+    $scope.myProfile = main.getDataManager().myProfile;
+    $scope.webServer = $rootScope.webServer;
+    $scope.model = {
+        displayname: $scope.myProfile.displayname,
+        status: $scope.myProfile.status
+    };
+
+    $scope.image = function(){
+        $('#avatarToUpload').trigger('click');
+    }
+
+    $scope.save = function(){
+        saveImg();
+    }
+
+    $scope.imageSource = function(){
+        var file    = document.querySelector('#avatarToUpload').files[0];
+        if(file === undefined)
+            return false;
+        else
+            return true;
+    }
+
+    function saveImg(){
+        if($scope.imageSource()){
+            $rootScope.$broadcast('uploadImg','uploadImg');
+        }
+        else
+            saveInfo();
+    }
+
+    function saveInfo() {
+        if (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status) {
+            server.UpdateUserProfile(main.getDataManager().myProfile._id, $scope.model, function (err, res) {
+                main.getDataManager().myProfile.displayname = $scope.model.displayname;
+                main.getDataManager().myProfile.status = $scope.model.status;
+                $scope.$apply();
+            });
+        }
+    }
+
+    $scope.$on('avatarUrl', function(event, args) {
+        server.ProfileImageChanged(main.getDataManager().myProfile._id, args, function (err, res) {
+            main.getDataManager().myProfile.image = args;
+            $scope.$apply();
+            document.getElementById("UploadAvatar").reset();
+            saveInfo();
+        });
+    });
+}
 
 function isAdminInProjectBase(room,memberId){
     var admin = false;

@@ -25,6 +25,20 @@ angular.module('spartan.media', [])
 	    } 
 		reader.readAsDataURL(file);
 	}
+
+	$scope.onGetAvatarSelect = function(){
+		var file    = document.querySelector('#avatarToUpload').files[0];
+		var reader  = new FileReader();
+		var image = document.getElementById('avatar');
+		//var image = new Image;
+		reader.onloadend = function () {
+			image.src = reader.result;
+            console.log(reader.result);
+            $scope.$apply();
+        } 
+        reader.readAsDataURL(file);
+	}
+
 	$scope.uploadFile = function(id){
 		var file    = document.querySelector('input[type=file]').files[0];
 			if(file !== undefined){
@@ -154,29 +168,63 @@ angular.module('spartan.media', [])
   	}
 
   	$scope.uploadImg = function() {
-  		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
-	    var imageURI = cordova.file.documentsDirectory + FileService.getImages();
-	    var options = new FileUploadOptions();
-	    options.fileKey = "fileToUpload";
-	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-	    options.mimeType = "image/jpeg";
-	    var params = new Object();
-	    options.params = params;
-	    options.chunkedMode = false;
-	    var ft = new FileTransfer();
+  		if (ionic.Platform.platform() === "ios") {
+	  		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
+		    var imageURI = cordova.file.documentsDirectory + FileService.getImages();
+		    var options = new FileUploadOptions();
+		    options.fileKey = "fileToUpload";
+		    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		    options.mimeType = "image/jpeg";
+		    var params = new Object();
+		    options.params = params;
+		    options.chunkedMode = false;
+		    var ft = new FileTransfer();
 
-	    ft.onprogress = function(progressEvent){
-	    	if (progressEvent.lengthComputable) {
-	    			$ionicLoading.show({
-				      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
-				  });
-		    } else {
-		      //loadingStatus.increment();
-		    }
-	    };
-	    ft.upload(imageURI, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
-	        options);
-
+		    ft.onprogress = function(progressEvent){
+		    	if (progressEvent.lengthComputable) {
+		    			$ionicLoading.show({
+					      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
+					  });
+			    } else {
+			      //loadingStatus.increment();
+			    }
+		    };
+		    ft.upload(imageURI, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
+		        options);
+		}else{
+	  		var formData = new FormData($('#UploadAvatar')[0]); 
+			$.ajax({
+			       	url : sharedObjectService.getWebServer() + "/?r=api/upload",
+			       	type : 'POST',
+			       	data : formData,
+			       	processData: false,
+				   	contentType: false,
+			       	success : function(data) {
+			       		console.log('success');
+			        	console.log(data);
+			        	$rootScope.$broadcast('avatarUrl', data);
+			        	document.getElementById("UploadAvatar").reset();
+			       	},
+			       	error : function(data){
+			       		console.log('error');
+			       		alert("Fail");
+						console.log(data);
+			       	},
+			       	xhr: function()
+					{
+					    var xhr = new window.XMLHttpRequest();
+					    //Upload progress
+					    xhr.upload.addEventListener("progress", function(evt){
+					      if (evt.lengthComputable) {
+					        var percentComplete = evt.loaded / evt.total;
+					        //Do something with upload progress
+					        console.log(percentComplete);
+					      }
+					    }, false);
+					    return xhr;
+				  	},
+			});
+		}
 	}
 
 	function win(r) {
