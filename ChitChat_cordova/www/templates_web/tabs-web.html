@@ -1,14 +1,29 @@
 <div ng-cloak>
     <md-content>
-        <md-tabs md-dynamic-height md-border-bottom>
-            <md-tab label="Contact" >
-               <div ng-include src="'templates_web/tab-group-web.html'" ng-controller="homeController"></div>
+        <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+            <md-tab label="Contacts" >
+                <md-tab-label>
+                    <md-icon class="material-icons">contacts</md-icon>
+                </md-tab-label>
+                <md-tab-body>
+                    <div ng-include src="'templates_web/tab-group-web.html'" ng-controller="homeController"></div>
+                </md-tab-body>
             </md-tab>
             <md-tab label="Chats">
-                <div ng-include src="'templates_web/tab-chats-web.html'" ng-controller="chatslogController"></div>
+                <md-tab-label>
+                    <md-icon class="material-icons">chat_bubble</md-icon>
+                </md-tab-label>
+                <md-tab-body>
+                    <div ng-include src="'templates_web/tab-chats-web.html'" ng-controller="chatslogController"></div>
+                </md-tab-body>
             </md-tab>
             <md-tab label="Options">
-                <div ng-include src="'templates_web/tab-options-web.html'" ng-controller="optionsController"></div>
+                <md-tab-label>
+                    <md-icon class="material-icons">settings</md-icon>
+                </md-tab-label>
+                <md-tab-body>
+                    <div ng-include src="'templates_web/tab-options-web.html'" ng-controller="optionsController"></div>
+                </md-tab-body>
             </md-tab>
         </md-tabs>
     </md-content>
