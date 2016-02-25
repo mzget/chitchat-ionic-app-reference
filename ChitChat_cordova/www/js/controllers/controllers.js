@@ -36,6 +36,9 @@ angular.module('spartan.controllers')
     $scope.toggleInfo = function() {
         viewInfo = !viewInfo;
         $rootScope.$broadcast('toggleInfo',viewInfo);
+        setTimeout(function () {
+            resizeUI();
+        }, 100);
     }
     function resizeUI(){
         document.getElementById('chatMessage').style.left = jQuery('#chat-list').offset().left + jQuery('#chat-list').width() + "px";
