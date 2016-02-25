@@ -1,21 +1,36 @@
-<div class="row" ng-cloak>
+<div layout="row" ng-cloak>
 
  <!--  <div >
     <div ng-include src="'templates_web/chat-account.html'"></div>
   </div> -->
 
-  <div style="margin-left:20px; margin-top:-5px; width:260px; position:absolute; border: 1px solid #E3E3E3; height:50px;">
-    <div ui-view="chats-account"></div>  
-  </div>
-  
+    <div style="width:300px">
+        <!--<div style="margin-top:-5px; width:260px; position:absolute;">
+            <div ui-view="chats-account"></div>
+        </div>-->
 
-  <div id="chat-list" style="overflow-y:scroll; margin-left:20px; width:100%; margin-top:44px; mix-width:260px; max-width:260px;">
-    <div ui-view="chats-list" style="border: 1px solid #E3E3E3;"></div>        
-  </div>
+        <md-content ng-controller="companyController">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="popover.show($event)">
+                        <!--<md-icon md-svg-icon="img/icons/menu.svg"></md-icon>-->
+                        <md-icon class="material-icons">menu</md-icon>
+                    </md-button>
+                    <p>
+                        <span class="md-body-2">{{teamInfo.name}}</span>
+                    </p>
+                </div>
+            </md-toolbar>
+        </md-content>
 
-    <div ng-controller="HeaderChatCtrl" id="chatHeader" style="margin-top:-5px;">
+        <md-content>
+            <div ui-view="chats-list" style="border: 1px solid #E3E3E3;"></div>
+        </md-content>
+    </div>
+
+    <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" flex layout-fill>
         <md-toolbar>
-            <div class="md-toolbar-tools" style="width:100%">
+            <div class="md-toolbar-tools">
                 <span>{{roomName}}</span>
                 <!-- fill up the space between left and right area -->
                 <span flex></span>
@@ -25,17 +40,15 @@
             </div>
         </md-toolbar>
         
-        <md-content>
             <div layout="row">
-                <div style="width:100%; min-width:330px; height:95%;">
-                    <div ui-view="chats-detail" style="height:95%;"></div>
+                <div style="overflow-y:scroll; overflow-x:hidden; width:60%; min-width:330px;">
+                    <div ui-view="chats-detail"></div>
                 </div>
-                <div style="overflow-y:scroll; overflow-x:hidden; width:380px;" ng-show="viewInfo==true">
-                    <div ui-view="chats-info" style="margin-top:5px;">
+                <div style="overflow-y:scroll; overflow-x:hidden; width:40%; min-width:380px;" ng-show="viewInfo==true">
+                    <div ui-view="chats-info">
                     </div>
                 </div>
             </div>
-            </md-content>
 </div>
 
   <!--<div style="position:absolute; border: 1px solid #E3E3E3; margin-top:-5px; height:50px; text-align:center; line-height:50px; font-size:30px; min-width:330px; left:284px;" 
