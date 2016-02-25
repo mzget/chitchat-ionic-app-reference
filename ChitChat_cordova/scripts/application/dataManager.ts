@@ -67,7 +67,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
     }
 
     public setCompanyInfo(data: any) {
-          this.companyInfo = JSON.parse(JSON.stringify(data));
+        this.companyInfo = JSON.parse(JSON.stringify(data));
     }
 
     //<!---------- Group ------------------------------------
