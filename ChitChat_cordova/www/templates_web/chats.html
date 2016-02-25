@@ -4,32 +4,31 @@
     <div ng-include src="'templates_web/chat-account.html'"></div>
   </div> -->
 
-    <div style="width:300px">
         <!--<div style="margin-top:-5px; width:260px; position:absolute;">
             <div ui-view="chats-account"></div>
         </div>-->
 
-        <md-content ng-controller="companyController">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <md-button class="md-icon-button" aria-label="Settings" ng-click="popover.show($event)">
-                        <!--<md-icon md-svg-icon="img/icons/menu.svg"></md-icon>-->
-                        <md-icon class="material-icons">menu</md-icon>
-                    </md-button>
-                    <p>
-                        <span class="md-body-2">{{teamInfo.name}}</span>
-                    </p>
-                </div>
-            </md-toolbar>
-        </md-content>
 
-        <md-content>
+    <div ng-controller="companyController" layout="column" style="width:30%">
+        <md-toolbar md-scroll-shrink>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Settings" ng-click="popover.show($event)">
+                    <!--<md-icon md-svg-icon="img/icons/menu.svg"></md-icon>-->
+                    <md-icon class="material-icons">menu</md-icon>
+                </md-button>
+                <p>
+                    <span class="md-body-2">{{teamInfo.name}}</span>
+                </p>
+            </div>
+        </md-toolbar>
+
+        <div style="overflow-y:scroll; overflow-x:hidden;">
             <div ui-view="chats-list" style="border: 1px solid #E3E3E3;"></div>
-        </md-content>
+        </div>
     </div>
 
-    <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" flex layout-fill>
-        <md-toolbar>
+    <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" style="width:70%">
+        <md-toolbar md-scroll-shrink>
             <div class="md-toolbar-tools">
                 <span>{{roomName}}</span>
                 <!-- fill up the space between left and right area -->
