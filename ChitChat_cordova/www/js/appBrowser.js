@@ -8,7 +8,7 @@
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
 	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter', 'ui.router'])
+      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'ngMaterial', 'angular-toArrayFilter', 'ui.router'])
 
 
 .run(function($ionicPlatform) {
@@ -46,25 +46,6 @@ angular.module('starter',
 	
 	$stateProvider
 
-
-	// Each tab has its own nav history stack:
-
-	// LOGIN
-	// .state('login', {
-	// 	url: '/login',
-	// 	
-	// })
-	// .state('chats', {
-	// 	url: '/chats',
-	// 	templateUrl: 'templates/chats.html'
-	// })
-	// .state('chats.detail',{
-	// 	views: {
-	// 		"detail@chats" : { templateUrl: 'templates/chats.detail.html'  }
-	// 	}
-		
-	// })
-
 	.state('login', {
 		url: '/login',
 		templateUrl: 'templates_web/tab-login.html',
@@ -80,11 +61,11 @@ angular.module('starter',
             },
             "chats-account@chats": {
                 templateUrl: "templates_web/chat-account.html",
-                controller: "AccountCtrl"
+                controller: "options2"
             },
             "chats-list@chats": {
-                templateUrl: "templates_web/tab-group.html",
-                controller: "homeController"
+                abstract: true,
+                templateUrl: 'templates_web/tabs-web.html',     
             },
             "chats-detail@chats": {
                 templateUrl: "templates_web/chat-detail.html",
@@ -93,9 +74,11 @@ angular.module('starter',
             "chats-info@chats": {
                 templateUrl: "templates_web/chat-info.html"
             },
-            
         }
-    })
+	})
+
+	// if none of the above states are matched, use this as the fallback
+	$urlRouterProvider.otherwise('/login');
 
     // .state('chats.detail', {
     // 	views: {
@@ -302,7 +285,4 @@ angular.module('starter',
 // 			}
 // 		}	
 // 	});
-
-	// if none of the above states are matched, use this as the fallback
-	$urlRouterProvider.otherwise('/login');
 });

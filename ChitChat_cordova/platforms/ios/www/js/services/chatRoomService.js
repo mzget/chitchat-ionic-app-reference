@@ -38,9 +38,13 @@
                 }
 
                 for (var i = 0; i < chats.length; i++) {
-                    if (!chats[i].hasOwnProperty('_id')) { continue; }
-                    chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
-                    var dateTime = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
+                    
+                    if(chats[i].hasOwnProperty('createTime')){
+                        var dateTime = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
+                        chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
+                    }
+                  
+                    
                     if (date.indexOf(dateTime) == -1) {
                         date.push(chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')));
 
@@ -83,6 +87,14 @@
                         chats[i].lat = location.latitude;
                         chats[i].long = location.longitude;
                     }
+
+                    else if(chats[i].type == ContentType[ContentType.File]){
+                        if (ionic.Platform.platform() !== "ios") {
+                            var meta = jQuery.parseJSON( chats[i].meta );
+                            chats[i].name = meta.name;
+                            chats[i].url = $rootScope.webServer + chats[i].body;
+                        }
+                    }
                 }
             },
             getChatRoomComponent: getChatRoomComponent,
@@ -109,24 +121,60 @@
             sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
 
             chatRoomComponent.serviceListener = function (event, newMsg) {
-                if (event === "onChat") {
-					service.set(chatRoomComponent.chatMessages);
+                if (event === ChatServer.ServerEventListener.ON_CHAT) {
+                    service.set(chatRoomComponent.chatMessages);
 
-                    if (newMsg.sender !== main.dataManager.myProfile._id) {
-                        chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
+                    //@ Tell message doccument who read this message_id.
+                    // - This will work when message_sender is not me. 
+                    // - Message displaying in chat room.
+                    // - Chatroom is not run in background.
+                    if (newMsg.sender !== main.getDataManager().myProfile._id) {
+                        //@ Check app not run in background.
+                        if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                            try {
+                                var appBackground = cordova.plugins.backgroundMode.isActive();
+                                if (appBackground == false) {
+                                    chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
+                                }
+                            }
+                            catch (ex) {
+                                console.warn(ex);
+                            }
+                        }
+                        else {
+                            chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
+                        }
+                    }
+
+                    //@ When app state is join room but not active.
+                    if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                        try {
+                            var appBackground = cordova.plugins.backgroundMode.isActive();
+                            if (appBackground == true) {
+                                sharedObjectService.getNotifyManager().notify(newMsg, appBackground, localNotifyService);
+                            }
+                        }
+                        catch (ex) {
+                            console.warn(ex);
+                        }
                     }
 
                     $rootScope.$broadcast('onNewMessage', { data: null });
                 }
-                else if (event === "onMessageRead") {
+                else if (event === ChatServer.ServerEventListener.ON_MESSAGE_READ) {
 					service.set(chatRoomComponent.chatMessages);
                 }
             }
             chatRoomComponent.notifyEvent = function (event, data) {
                 if (event === ChatServer.ServerEventListener.ON_CHAT) {
-                    if (ionic.Platform.platform() === "ios") {
-                        var appBackground = cordova.plugins.backgroundMode.isActive();
-                        sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                    if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                        try {
+                            var appBackground = cordova.plugins.backgroundMode.isActive();
+                            sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
+                        }
+                        catch (ex) {
+                            console.warn(ex);
+                        }
                     }
                     else {
                         sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);

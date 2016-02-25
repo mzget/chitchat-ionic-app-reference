@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('spartan.chatslog', ['ionic'])
+        .module('spartan.chatslog', [])
         .controller('chatslogController', chatslogController);
 
     // chatslogController.$inject = ['$location', '$scope', '$timeout', 'roomSelected'];
@@ -16,6 +16,8 @@
 
         var dataManager = main.getDataManager();
 
+        activate();
+            
         function activate() { 
             console.warn(vm.title, "activate");
             
@@ -34,20 +36,6 @@
             roomSelected.setRoom(group);
             $state.go(NGStateUtil.tab_chats_chat, {});
         };
-
-        $scope.$on('$ionicView.enter', function() { 
-            console.log("$ionicView.enter: ", vm.title);
-        });
-
-        $scope.$on('$ionicView.loaded', function () {
-            console.log("$ionicView.loaded: ", vm.title);
-
-            activate();
-        });
-        
-		$scope.$on('$ionicView.unloaded', function () {
-		    console.log("$ionicView.unloaded:", vm.title);
-		});
         
         $scope.$on('getunreadmessagecomplete', function(event, data){
         });

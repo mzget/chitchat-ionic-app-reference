@@ -55,19 +55,23 @@
                 localNotifyService.makeToast("disconnected.");
 
                 setTimeout(function () {
-                    console.log('Try to re connecting...', $cordovaNetwork.getNetwork());
-                    //@-- Todo..
-                    if ($cordovaNetwork.isOnline()) {
-                        $state.go("tab.login");
-                    }
-                    else {
-                        //@ Stay working offline.
-                        reconnectingEvent = function () {
-                            console.log('reconnectingEvent')
+                    try {
+                        console.log('Try to re connecting...', $cordovaNetwork.getNetwork());
+                        //@-- Todo..
+                        if ($cordovaNetwork.isOnline()) {
                             $state.go("tab.login");
-                        };
+                        }
+                        else {
+                            //@ Stay working offline.
+                            reconnectingEvent = function () {
+                                console.log('reconnectingEvent')
+                                $state.go("tab.login");
+                            };
+                        }
                     }
-                }, 1000);
+                    catch (ex) { console.warn(ex) };
+                    }, 1000);
+
             }
         }
     }

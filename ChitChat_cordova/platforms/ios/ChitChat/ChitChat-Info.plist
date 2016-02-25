@@ -64,15 +64,15 @@
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleVersion</key>
-    <string>0.0.8</string>
+    <string>0.0.9</string>
     <key>CFBundleShortVersionString</key>
-    <string>0.0.8</string>
+    <string>0.0.9</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
     <key>NSMainNibFile</key>
-    <string/>
+    <string></string>
     <key>NSMainNibFile~ipad</key>
-    <string/>
+    <string></string>
     <key>UISupportedInterfaceOrientations</key>
     <array>
       <string>UIInterfaceOrientationPortrait</string>
@@ -193,7 +193,7 @@
       <string>UIInterfaceOrientationPortrait</string>
     </array>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string/>
+    <string></string>
     <key>UIBackgroundModes</key>
     <array>
       <string>audio</string>

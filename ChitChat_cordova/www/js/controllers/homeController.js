@@ -14,10 +14,6 @@
 		var vm = this;
 		vm.title = 'homeController';
         $ionicTabsDelegate.showBar(true);
-        
-        // if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-		      // $scope.$on('roomName', function(event, args) { $scope.roomName = args; });
-        // }
 
 		function activate() {
 		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {

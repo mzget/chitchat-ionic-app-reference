@@ -121,16 +121,47 @@
             sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
 
             chatRoomComponent.serviceListener = function (event, newMsg) {
-                if (event === "onChat") {
-					service.set(chatRoomComponent.chatMessages);
+                if (event === ChatServer.ServerEventListener.ON_CHAT) {
+                    service.set(chatRoomComponent.chatMessages);
 
-                    if (newMsg.sender !== main.dataManager.myProfile._id) {
-                        chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
+                    //@ Tell message doccument who read this message_id.
+                    // - This will work when message_sender is not me. 
+                    // - Message displaying in chat room.
+                    // - Chatroom is not run in background.
+                    if (newMsg.sender !== main.getDataManager().myProfile._id) {
+                        //@ Check app not run in background.
+                        if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                            try {
+                                var appBackground = cordova.plugins.backgroundMode.isActive();
+                                if (appBackground == false) {
+                                    chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
+                                }
+                            }
+                            catch (ex) {
+                                console.warn(ex);
+                            }
+                        }
+                        else {
+                            chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
+                        }
+                    }
+
+                    //@ When app state is join room but not active.
+                    if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                        try {
+                            var appBackground = cordova.plugins.backgroundMode.isActive();
+                            if (appBackground == true) {
+                                sharedObjectService.getNotifyManager().notify(newMsg, appBackground, localNotifyService);
+                            }
+                        }
+                        catch (ex) {
+                            console.warn(ex);
+                        }
                     }
 
                     $rootScope.$broadcast('onNewMessage', { data: null });
                 }
-                else if (event === "onMessageRead") {
+                else if (event === ChatServer.ServerEventListener.ON_MESSAGE_READ) {
 					service.set(chatRoomComponent.chatMessages);
                 }
             }

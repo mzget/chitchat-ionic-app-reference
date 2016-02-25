@@ -72,9 +72,14 @@
         function noticeNewMessage(chatMessageImp) {
             console.log("noticeNewMessage", chatMessageImp.type);
 
-            if (ionic.Platform.platform() === "ios") {
-                var appBackground = cordova.plugins.backgroundMode.isActive();
-                notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                try {
+                    var appBackground = cordova.plugins.backgroundMode.isActive();
+                    notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
+                }
+                catch (ex) {
+                    console.warn(ex);
+                }
             }
             else {
                 notifyManager.notify(chatMessageImp, appBackground, localNotifyService);

@@ -364,7 +364,7 @@
     }
 
 
-    function InfoCtrl($scope, $rootScope, modalFactory, roomSelected){
+    function InfoCtrl($scope, $rootScope, modalFactory, roomSelected) {
         $scope.$on('toggleInfo', function(event, args) {
             $scope.viewInfo = args;
         });
