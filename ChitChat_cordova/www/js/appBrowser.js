@@ -59,10 +59,10 @@ angular.module('starter',
                 templateUrl: 'templates_web/chats.html',
                 controller: "InfoCtrl"
             },
-            "chats-account@chats": {
-                templateUrl: "templates_web/chat-account.html",
-                controller: "options2"
-            },
+            //"chats-account@chats": {
+            //    templateUrl: "templates_web/teamInfo-web.html",
+            //    controller: "companyController"
+            //},
             "chats-list@chats": {
                 abstract: true,
                 templateUrl: 'templates_web/tabs-web.html',     

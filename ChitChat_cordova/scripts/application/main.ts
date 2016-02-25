@@ -108,7 +108,7 @@ class Main {
                             console.error(err);
                         }
                         else {
-                            console.log("companyInfo: ", JSON.stringify(res));
+                            console.log("get companyInfo: ", JSON.stringify(res.code));
                         }
                     });
 
