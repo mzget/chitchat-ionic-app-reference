@@ -669,6 +669,9 @@ var DataManager = (function () {
     DataManager.prototype.getRoomAccess = function () {
         return this.myProfile.roomAccess;
     };
+    DataManager.prototype.getCompanyInfo = function () {
+        return this.companyInfo;
+    };
     DataManager.prototype.setCompanyInfo = function (data) {
         this.companyInfo = JSON.parse(JSON.stringify(data));
     };
@@ -1028,7 +1031,7 @@ var Main = (function () {
                             console.error(err);
                         }
                         else {
-                            console.log("companyInfo: ", JSON.stringify(res));
+                            console.log("get companyInfo: ", JSON.stringify(res.code));
                         }
                     });
                     server.getOrganizationGroups(function (err, res) {

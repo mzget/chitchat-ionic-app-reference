@@ -107,37 +107,6 @@ angular.module('spartan.controllers')
             location.href = '';
         }
 })
-.controller('options2', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
-        $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
-            scope: $scope,
-        }).then(function(popover) {
-            $scope.popover = popover;
-        });
-
-        $ionicModal.fromTemplateUrl('templates_web/modal-myprofile.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function (modal) {
-            $scope.myProfileModal = modal;
-        });
-
-        $scope.openProfileModal = function () {
-            $scope.myProfileModal.show();
-        };
-
-        $scope.myProfile = main.getDataManager().myProfile;
-
-        $scope.logOut = function () {
-            console.warn("logOut...");
-            server.logout();
-            server.dispose();
-
-            dbAccessService.clearMessageDAL();
-            localStorage.clear();
-            //$state.go('tab.login');
-            location.href = '';
-        }
-})
 .controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
     console.log('AccountCreate',CreateGroup.createType);
     var myProfile = main.getDataManager().myProfile;

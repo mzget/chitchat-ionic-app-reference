@@ -60,8 +60,8 @@ angular.module('starter',
                 controller: "InfoCtrl"
             },
             "chats-account@chats": {
-                templateUrl: "templates_web/chat-account.html",
-                controller: "options2"
+                templateUrl: "templates_web/teamInfo-web.html",
+                controller: "companyController"
             },
             "chats-list@chats": {
                 abstract: true,
