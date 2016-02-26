@@ -49,28 +49,30 @@
         }
 
         $scope.showMyProfile = function(ev) {
-            //var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
             $mdDialog.show({
               controller: ProfileController,
               templateUrl: 'templates_web/modal-myprofile.html',
               parent: angular.element(document.body),
               targetEvent: ev,
               clickOutsideToClose:true,
-              onRemoving: closeDialog
-              //fullscreen: useFullScreen
+              onRemoving: closeDialogProfile
             });
-            // .then(function(answer) {
-            //   $scope.status = 'You said the information was "' + answer + '".';
-            // }, function() {
-            //   $scope.status = 'You cancelled the dialog.';
-            // });
-            // $scope.$watch(function() {
-            //   return $mdMedia('xs') || $mdMedia('sm');
-            // }, function(wantsFullScreen) {
-            //   $scope.customFullscreen = (wantsFullScreen === true);
-            // });
         };
-        function closeDialog(){
+        function closeDialogProfile(){
+            document.getElementById("UploadAvatar").reset();
+        }
+        $scope.createGroup = function(ev) {
+            $mdDialog.show({
+              controller: CreateController,
+              templateUrl: 'templates_web/modal-creategroup.html',
+              parent: angular.element(document.body),
+              targetEvent: ev,
+              clickOutsideToClose:true,
+              onRemoving: closeDialogCreateGroup
+            });
+        }
+        function closeDialogCreateGroup(){
+            CreateGroup.clear();
             document.getElementById("UploadAvatar").reset();
         }
     }

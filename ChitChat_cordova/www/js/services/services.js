@@ -145,6 +145,7 @@ angular.module('spartan.services', [])
   var members = main.getDataManager().orgMembers;
   
   function getAllMember(){
+    members = main.getDataManager().orgMembers;
     allmembers = [];
     for(var i in members){
       if(this.createType=="ProjectBase") {
@@ -159,6 +160,7 @@ angular.module('spartan.services', [])
           allmembers.push({ "_id": members[i]._id, "displayname": members[i].displayname, "image": members[i].image, "checked": getChecked(i) });
       }
     }
+    console.log(allmembers);
     return allmembers;
   }
   function getSelectedMember(){
@@ -211,8 +213,11 @@ angular.module('spartan.services', [])
   }
 
   function getSelectedIdWithMe(){ 
-    var id = id_checked;
-    id[id.length] = main.getDataManager().myProfile._id;
+    var id = [];
+    id = id_checked;
+    if(!getChecked(main.getDataManager().myProfile._id)){
+      id[id.length] = main.getDataManager().myProfile._id;
+    }
     return id; 
   }
 
