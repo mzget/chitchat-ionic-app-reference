@@ -674,6 +674,9 @@ var DataManager = (function () {
     };
     DataManager.prototype.setCompanyInfo = function (data) {
         this.companyInfo = JSON.parse(JSON.stringify(data));
+        if (!!this.onCompanyInfoReady) {
+            this.onCompanyInfoReady();
+        }
     };
     DataManager.prototype.getGroup = function (id) {
         if (!!this.orgGroups[id]) {
@@ -2301,4 +2304,3 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
-//# sourceMappingURL=appBundle.js.map

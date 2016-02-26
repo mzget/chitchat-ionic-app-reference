@@ -7,7 +7,7 @@
         .controller('noConnection', noConnection);
 
     function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
-        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork,
+        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork, $mdDialog,
         networkService, chatslogService, dbAccessService, sharedObjectService) {
 
         /* jshint validthis:true */
@@ -42,8 +42,13 @@
             activateNetworkService();
 
             setTimeout(function () {
-                if (!!navigator.splashscreen) {
-                    navigator.splashscreen.hide();
+                if(ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                    if (!!navigator.splashscreen) {
+                        navigator.splashscreen.hide();
+                    }
+                }
+                else{
+                    document.getElementById('splash').style.display = 'none';
                 }
 
                 main.setDataManager(dataManager);
@@ -209,20 +214,19 @@
             }
             else {
                 $ionicLoading.hide();
-
-                var confirmPopup = $ionicPopup.confirm({
-                    title: 'Duplicated login!',
-                    template: 'May be you use this app in other devices \n You want to logout other devices'
-                });
-
-                confirmPopup.then(function (res) {
-                    if (res) {
+                
+                // Appending dialog to document.body to cover sidenav in docs app
+                var confirm = $mdDialog.confirm()
+                      .title('Duplicated login!')
+                      .textContent('May be you use this app in other devices \n You want to logout other devices')
+                      .ok('OK')
+                      .cancel('Cancel');
+                $mdDialog.show(confirm).then(function() {
                         server.kickMeAllSession(param.uid);
                         location.href = "";
-                    } else {
+                }, function() {
                         localStorage.clear();
                         location.href = '';
-                    }
                 });
             }
         }

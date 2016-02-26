@@ -15,6 +15,10 @@
         activate();
 
         function activate() {
+            main.getDataManager().onCompanyInfoReady = function teamDataReady() {
+                $scope.teamInfo = main.getDataManager().getCompanyInfo();
+                //$scope.$apply();
+            }
             $scope.teamInfo = main.getDataManager().getCompanyInfo();
         }
 
