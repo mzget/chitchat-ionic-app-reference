@@ -1,0 +1,85 @@
+<md-dialog aria-label="Create Group" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create Group</h2>
+        <span flex></span>
+        <md-button ng-if="isCreate()==true" ng-click="create()">Create</md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="overflow-x: hidden; overflow-y: hidden; ">
+      <div class="md-dialog-content" style="width:500px;">
+        
+
+        <!-- <div style="height:150px; text-align:center; margin-bottom:10px;" >
+            
+        </div>
+ -->
+        <div layout-gt-sm="row">
+          <img id="avatar" class="avatar-modal" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"  style="border-radius:50%;width:100px;height:100px;" 
+          ng-click="image()"/>
+            <md-input-container class="md-block" style="width:100%; margin-left:20px; margin-top:40px;">
+              <label>Group Name</label>
+              <input ng-model="model.groupname" >
+            </md-input-container>
+        </div>
+
+        <div style="overflow-y: scroll; overflow-x: hidden; height:500px;">
+          <ion-item id="{{member._id}}" class="item item-checkbox item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false">
+              <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
+              <div class="member-name" style="display:inline;"> {{member.displayname}} </div> 
+              <md-checkbox type="checkbox" style="position:absolute; width:100%; height:100%; left:0px; top:0px; margin-left:20px;"
+              ng-model="member.checked" ng-click="checked(member._id,!member.checked)"/>
+          </ion-item>
+        </div>
+        
+
+        <!-- <ion-item class="item item-checkbox item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false|filter:search" 
+        ng-if=" createType=='PrivateGroup' && myProfile._id!=member._id || invite && myProfile._id!=member._id" id="{{member._id}}">
+            <label class="checkbox">
+              <input type="checkbox" ng-model="member.checked" ng-click="checked(member._id,member.checked)"/>
+            </label>
+
+            <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}"/> 
+            <img ng-if="member.image == null" src="img/img.jpg" />
+
+            <div class="member-name"> {{member.displayname}} </div> 
+        </ion-item> -->
+
+
+      <!-- <form name="CreateGroup">
+        <md-input-container class="md-block">
+          <label>Display</label>
+          <input ng-model="model.displayname">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Status</label>
+          <input ng-model="model.status">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Name</label>
+          <input value="{{myProfile.firstname}} {{myProfile.lastname}}" disabled>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>User Level</label>
+          <input value="{{myProfile.role}}" disabled>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Tel.</label>
+          <input value="{{myProfile.tel}}" disabled>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Email</label>
+          <input value="{{myProfile.mail}}" disabled>
+        </md-input-container>
+      </form> -->
+
+    </md-dialog-content>
+  </form>
+
+</md-dialog>

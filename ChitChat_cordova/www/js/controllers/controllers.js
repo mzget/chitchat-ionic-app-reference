@@ -358,7 +358,55 @@ angular.module('spartan.controllers')
 //   };
 // }); // <-- LAST CONTROLLER
 
-function ProfileController($scope, $mdDialog, $rootScope ) {
+function CreateController($scope, $mdDialog, $rootScope, CreateGroup ) {
+    $scope.allmembers = CreateGroup.getAllMember();
+    $scope.webServer = $rootScope.webServer;
+    $scope.model = { groupname: "" };
+    var roomId = "";
+    $scope.checked = function(id,selected){
+        CreateGroup.setMemberSelected(id,selected);
+    }
+    $scope.create = function(){
+        server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
+            if (!err) {
+                console.log(JSON.stringify(res));
+                roomId = res.data._id;
+                uploadImageGroup();
+            }
+            else {
+                console.warn(err, res);
+            }
+        });
+    }
+    $scope.image = function(){
+        $('#avatarToUpload').trigger('click');
+    }
+    $scope.isCreate = function(){
+        if($scope.model.groupname.length > 0 && CreateGroup.getSelectedMember().length >2) return true;
+        else return false;
+    }
+    $scope.$on('avatarUrl', function(event, args) {
+        server.UpdatedGroupImage(roomId,args, function(err, res){
+            if(!err){
+                console.log(JSON.stringify(res));
+                $mdDialog.hide();
+            }else{
+                console.warn(err, res);
+            }
+        });
+    });
+    function uploadImageGroup(){
+        var file    = document.querySelector('#avatarToUpload').files[0];
+        if(file === undefined) {
+            $mdDialog.hide();
+        }else{
+            $rootScope.$broadcast('uploadImg','uploadImg');
+        }
+    }
+
+}
+
+function ProfileController($scope, $rootScope ) {
     $scope.myProfile = main.getDataManager().myProfile;
     $scope.webServer = $rootScope.webServer;
     $scope.model = {
