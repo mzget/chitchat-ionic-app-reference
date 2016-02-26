@@ -285,14 +285,14 @@
 		}
 		//<!-- Private group modal ////////////////////////////////////////////
 		$scope.openPvgModal = function (groupId) {
-			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
-				initPvgModal($state, $scope, groupId, roomSelected, function () {
-					$scope.pvgModal.show();
-				}, $rootScope);
-			}else{
-				var group = main.getDataManager().privateGroups[groupId];
-				$rootScope.$broadcast('changeChat', group);
-			}
+		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+		        initPvgModal($state, $scope, groupId, roomSelected, function () {
+		            $scope.pvgModal.show();
+		        }, $rootScope);
+		    } else {
+		        var group = main.getDataManager().privateGroups[groupId];
+		        $rootScope.$broadcast('changeChat', group);
+		    }
 		};
 		$scope.closePvgModal = function () {
 			$scope.pvgModal.hide();

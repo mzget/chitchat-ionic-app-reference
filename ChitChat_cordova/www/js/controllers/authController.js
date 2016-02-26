@@ -15,6 +15,10 @@
         vm.title = 'authController';
         var registrationId = "";
         $ionicTabsDelegate.showBar(false);
+        $scope.user = {
+            email: "",
+            password: ""
+        }
 
         ionic.Platform.ready(function () {
             console.log(vm.title + " : ionic ready.");
@@ -347,18 +351,19 @@
                 }
 
                 $('#splash').css({ 'display': 'none' });
-                $('body #login #btn-login').click(function (event) {
-                    event.preventDefault();
+                $scope.login = function() {
+                    console.warn('Login');
 
                     $('body #login input').attr('readonly', true);
                     $('body #login #btn-login').attr('disabled', true);
 
-                    var email = $('body #login form input[name="email"]').val();
-                    var password = $('body #login form input[name="password"]').val();
+                    var email = $scope.user.email;
+                    var password = $scope.user.password;
 
                     // console.error(email, ":", password)
                     if (!email || !password) {
                         onMissingParams();
+                        
                         $('body #login input').attr('readonly', false);
                         $('body #login #btn-login').attr('disabled', false);
                     }
@@ -401,7 +406,7 @@
                             });
                         });
                     }
-                });
+                }
             }
             else {
                 server.TokenAuthen(authen.token, function (err, res) {

@@ -562,7 +562,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	 });
 	
 	$scope.$on('changeChat', function(event, args) { 
-        console.log('changed chatroom.', event);
+	    console.log('changed chatroom.', args);
         var newRoom = JSON.parse(JSON.stringify(args));
         if(newRoom._id == roomSelected.getRoomOrLastRoom()._id) { return; }
         

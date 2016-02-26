@@ -1,13 +1,36 @@
-<div ng-cloak>
-	<div id="login">
-			<div class="container">
-				<img class="login-logo" ng-src="img/logo-{{themename}}.png" width="80%" /><br />
-				<form>
-					<label class="message">username or password is not valid.</label>
-					<input name="email" class="form-control" type="email" placeholder="Email" />
-					<input name="password" class="form-control" type="password" placeholder="Password" />
-					<button id="btn-login">Login</button>
-				</form>
-			</div>
-		</div>
+<div ng-cloak class="background" flex layout="colume" layout-align="center center">
+
+    <!--<img class="login-logo" ng-src="img/logo-{{themename}}.png" style="width:auto" />
+    <p></p>-->
+    <div>
+        <md-content layout-padding style="border-radius:10px; min-width:500px; width:500px; text-align:center">
+
+            <span class="md-headline md-padding">Sign-in</span>
+            <br />
+            <span class="md-caption md-padding" style="color:gray">Enter your email and password</span>
+            <form>
+                <!-- <label class="message">username or password is not valid.</label>-->
+                <!--  <input name="email" class="form-control" type="email" placeholder="Email" />-->
+                <!-- <input name="password" class="form-control" type="password" placeholder="Password" />-->
+
+
+                <md-input-container style="width:80%;">
+                    <label>Email</label>
+                    <input name="email" type="email" ng-model="user.email" />
+                </md-input-container>
+
+                <md-input-container style="width:80%; margin-bottom:-15px; margin-top:-15px;">
+                    <label>Password</label>
+                    <input name="password" type="password" ng-model="user.password" />
+                </md-input-container>
+
+                <md-button style="width:80%" ng-click="login()" class="md-raised md-primary">Login</md-button>
+            </form>
+        </md-content>
+        <br />
+        <div layout="row" layout-align="center center" layout-padding style="border-radius:10px; min-width:500px; width:500px; text-align:center">
+            <span class="md-body-1 md-padding" style="color:white;">New to ChitChat?</span>
+            <md-button ng-click="signup()" class="md-raised md-primary edgePadding">Sign up now</md-button>
+        </div>
+    </div>
 </div>

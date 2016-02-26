@@ -33,8 +33,13 @@
         $scope.gotoChat = function (roomId, chatlog) 
         {	
             var group = dataManager.getGroup(roomId);
-            roomSelected.setRoom(group);
-            $state.go(NGStateUtil.tab_chats_chat, {});
+            if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                roomSelected.setRoom(group);
+                $state.go(NGStateUtil.tab_chats_chat, {});
+            }
+            else {
+                $rootScope.$broadcast('changeChat', group);
+            }
         };
         
         $scope.$on('getunreadmessagecomplete', function(event, data){

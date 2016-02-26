@@ -38,12 +38,12 @@ class Main {
         return this.dataListener;
     }
     public getServerImp(): ChatServer.ServerImplemented {
-        console.log("getServerImp", this.serverImp);
+        //console.log("getServerImp", this.serverImp);
         return this.serverImp;
     }
     public setServerImp(server: ChatServer.ServerImplemented) {
         this.serverImp = server;
-        console.log("setServerImp", server);
+        //console.log("setServerImp", server);
     }
     public getChatRoomApi(): ChatServer.ChatRoomApiProvider {
         if (!this.chatRoomApi) {
