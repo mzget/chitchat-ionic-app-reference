@@ -40,7 +40,6 @@ angular.module('spartan.controllers')
         }, 100);
     }
     function resizeUI(){
-        console.log('bobobobooboboboboobob',window.innerHeight - 110 );
         document.getElementById('chatMessage').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
         document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
         document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
