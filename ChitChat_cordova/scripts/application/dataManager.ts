@@ -25,6 +25,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
     public isOrgMembersReady: boolean = false;
     public companyInfo: CompanyInfo;
 
+    public onCompanyInfoReady: () => void;
     public onMyProfileReady: (dataManager: DataManager) => void;
     public onOrgGroupDataReady: () => void;
     public onProjectBaseGroupsDataReady: () => void;
@@ -71,6 +72,10 @@ class DataManager implements absSpartan.IFrontendServerListener {
     }
     public setCompanyInfo(data: any) {
         this.companyInfo = JSON.parse(JSON.stringify(data));
+        
+        if(!!this.onCompanyInfoReady) {
+            this.onCompanyInfoReady();
+        }
     }
 
     //<!---------- Group ------------------------------------
