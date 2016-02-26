@@ -2,7 +2,7 @@
  * ngControllerUtil
  */
 class ngControllerUtil {
-    static viewProfileCtrl : string = "viewProfileCtrl";
+    static viewProfileController: string = "viewProfileController";
     static groupDetailCtrl: string = "groupDetailCtrl";
     static editMemberGroup: string = 'editMemberGroup';
     

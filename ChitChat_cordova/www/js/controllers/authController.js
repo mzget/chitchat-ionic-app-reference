@@ -2,11 +2,11 @@
     'use strict';
 
     angular
-        .module('spartan.auth', ['ionic'])
+        .module('spartan.controllers', [])
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $scope, $rootScope,
+    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
         $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork,
         networkService, chatslogService, dbAccessService, sharedObjectService) {
 
@@ -14,12 +14,18 @@
         var vm = this;
         vm.title = 'authController';
         var registrationId = "";
+        $ionicTabsDelegate.showBar(false);
 
         ionic.Platform.ready(function () {
             console.log(vm.title + " : ionic ready.");
 
-            if (ionic.Platform.platform() === 'ios') {
-                $cordovaSpinnerDialog.show("", "Wait for signing...", true);
+            if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+                try {
+                    $cordovaSpinnerDialog.show("", "Wait for signing...", true);
+                }
+                catch (exception) {
+                    console.warn(exception);
+                }
             }
             else {
                 $ionicLoading.show({
@@ -49,8 +55,13 @@
                     $('#splash').css({ 'display': 'none' });
 
                     // Hide spinner dialog
-                    if (ionic.Platform.platform() === "ios") {
-                        $cordovaSpinnerDialog.hide();
+                    if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                        try {
+                            $cordovaSpinnerDialog.hide();
+                        }
+                        catch (ex) {
+                            console.warn(ex);
+                        }
                     }
                     else {
                         $ionicLoading.hide();
@@ -61,8 +72,12 @@
                     $rootScope.webServer = sharedObjectService.getWebServer();
                     $rootScope.appVersion = sharedObjectService.getAppVersion();
 
-                    //location.href = "#/tab/group";
-                    $state.go('tab.group');
+                    if (ionic.Platform.platform() !== "ios") {
+                        $location.path('/chats');
+                    }
+                    else {
+                        $state.go('tab.group');
+                    }
                 };
 
                 initSpartanServer();
@@ -74,47 +89,58 @@
 
             console.log("init push notification.");
 
-            if (ionic.Platform.platform() === "ios") {
-                var push = PushNotification.init({
-                    "ios": { "alert": "true", "badge": "true", "sound": "true" }
-                });
-
-                push.on('registration', function (data) {
-                    console.log("registration event", JSON.stringify(data));
-                    registrationId = data.registrationId;
-                    localStorage.setItem("registrationId", registrationId);
-                });
-
-                push.on('notification', function (data) {
-                    console.warn("notification event", JSON.stringify(data));
-
-                    push.finish(function () {
-                        console.warn('finish successfully called');
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                try {
+                    var push = PushNotification.init({
+                        "ios": { "alert": "true", "badge": "true", "sound": "true" }
                     });
-                });
 
-                push.on('error', function (e) {
-                    console.error("push error", e.message);
-                });
+                    push.on('registration', function (data) {
+                        console.log("registration event", JSON.stringify(data));
+                        registrationId = data.registrationId;
+                        localStorage.setItem("registrationId", registrationId);
+                    });
+
+                    push.on('notification', function (data) {
+                        console.warn("notification event", JSON.stringify(data));
+
+                        push.finish(function () {
+                            console.warn('finish successfully called');
+                        });
+                    });
+
+                    push.on('error', function (e) {
+                        console.error("push error", e.message);
+                    });
+                }
+                catch (ex) {
+                    console.warn(ex);
+                }
             }
         }
 
         function activateBackground() {
-            if (ionic.Platform.platform() === "ios") {
-                // Prevent the app from going to sleep in background
-                cordova.plugins.backgroundMode.enable();
-                // Get informed when the background mode has been activated
-                cordova.plugins.backgroundMode.onactivate = function () {
-                    console.warn("backgroundMode.onactivate");
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                try {
+                    // Prevent the app from going to sleep in background
+                    cordova.plugins.backgroundMode.enable();
 
-                    var logCount = chatslogService.getChatsLogCount();
-                    cordova.plugins.notification.badge.set(logCount);
-                };
+                    // Get informed when the background mode has been activated
+                    cordova.plugins.backgroundMode.onactivate = function () {
+                        console.warn("backgroundMode.onactivate");
 
-                // Get informed when the background mode has been deactivated
-                cordova.plugins.backgroundMode.ondeactivate = function () {
-                    console.warn("backgroundMode.ondeactivate");
-                };
+                        var logCount = chatslogService.getChatsLogCount();
+                        cordova.plugins.notification.badge.set(logCount);
+                    };
+
+                    // Get informed when the background mode has been deactivated
+                    cordova.plugins.backgroundMode.ondeactivate = function () {
+                        console.warn("backgroundMode.ondeactivate");
+                    };
+                }
+                catch (ex) {
+                    console.warn(ex);
+                }
             }
         }
 
@@ -139,22 +165,31 @@
 
         function onLoginTimeout(param) {
             // Hide spinner dialog
-            if (ionic.Platform.platform() === "ios") {
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
                 $cordovaSpinnerDialog.hide();
+
+                navigator.notification.alert(param.message, function callback() {
+                    location.href = '';
+                }, "Login Timeout!", "OK");
             }
             else {
                 $ionicLoading.hide();
-            }
 
-            navigator.notification.alert(param.message, function callback() {
-                location.href = '';
-            }, "Login Timeout!", "OK");
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Login Timeout!'
+                    // template: 'It might taste good'
+                });
+
+                alertPopup.then(function (res) {
+                    location.href = '';
+                });
+            }
         }
 
         function onDuplicateLogin(param) {
             console.log("onDuplicateLogin", JSON.stringify(param));
             // Hide spinner dialog
-            if (ionic.Platform.platform() === "ios") {
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
                 $cordovaSpinnerDialog.hide();
 
                 $cordovaDialogs.confirm("May be you use this app in other devices \n You want to logout other devices", "Duplicated login!", ["OK", "Cancel"])
@@ -266,14 +301,26 @@
 
         function onMissingParams() {
             // Hide spinner dialog.
-            if (ionic.Platform.platform() === "ios") {
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
                 $cordovaSpinnerDialog.hide();
+
+                try {
+                    navigator.notification.alert("Missing username or password.", function callback() { }, "Cannot login.", "OK");
+                }
+                catch (ex) {
+                    console.warn(ex);
+                }
             }
             else {
                 $ionicLoading.hide();
-            }
 
-            navigator.notification.alert("Missing username or password.", function callback() { }, "Cannot login.", "OK");
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Cannot login.',
+                    template: 'Missing username or password.'
+                });
+                alertPopup.then(function (res) {
+                });
+            }
         }
 
         function onReadyToSigning() {
@@ -283,8 +330,13 @@
             //<@-- if have no token app wiil take you to signing page.
             //<@-- else app will auto login by token.
             if (!authen.token) {
-                if (ionic.Platform.platform() === "ios") {
-                    $cordovaSpinnerDialog.hide();
+                if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                    try {
+                        $cordovaSpinnerDialog.hide();
+                    }
+                    catch (ex) {
+                        console.warn(ex);
+                    }
                 }
                 else {
                     $ionicLoading.hide();
@@ -308,10 +360,13 @@
                     }
                     else {
                         // Show spinner dialog
-                        if (ionic.Platform.platform() === "ios") {
-                            $cordovaSpinnerDialog.show(null, "loging in...", true);
+                        if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                            try {
+                                $cordovaSpinnerDialog.show(null, "loging in...", true);
+                            }
+                            catch (ex) { console.warn(ex) }
                         }
-                        else if (ionic.Platform.platform() === "windows") {
+                        else {
                             $ionicLoading.show({
                                 template: "loging in..."
                             });
@@ -321,7 +376,7 @@
                             main.authenUser(server, email, res, function (err, res) {
                                 if (!err && res !== null) {
                                     if (res.code === HttpStatusCode.success) {
-                                        console.log("Success Login User...");
+                                        console.log("Success Authen User via siging...");
                                     }
                                     else if (res.code === HttpStatusCode.duplicateLogin) {
                                         console.warn(JSON.stringify(err), JSON.stringify(res));
@@ -352,7 +407,7 @@
                             main.authenUser(server, res.username, res.password, function (err, res) {
                                 if (res !== null) {
                                     if (res.code === HttpStatusCode.success) {
-                                        console.log("Success Authen User...");
+                                        console.log("Success Authen User via token...");
                                     }
                                     else if (res.code === HttpStatusCode.duplicateLogin) {
                                         onDuplicateLogin(res);

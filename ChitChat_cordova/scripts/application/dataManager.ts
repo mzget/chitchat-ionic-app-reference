@@ -31,6 +31,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
     public onPrivateGroupsDataReady: () => void;
     public onContactsDataReady: () => void;
 
+    //@ Profile...
     public setMyProfile(data: any) {
         this.myProfile = JSON.parse(JSON.stringify(data));
 
@@ -48,8 +49,6 @@ class DataManager implements absSpartan.IFrontendServerListener {
             return false;
         }
     }
-
-
     public setRoomAccessForUser(data) {
         this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
     }

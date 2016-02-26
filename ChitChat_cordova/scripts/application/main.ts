@@ -23,6 +23,7 @@ class Main {
     private serverImp: ChatServer.ServerImplemented;
     private serverListener: ChatServer.ServerEventListener;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;
+
     private dataManager: DataManager;
     public getDataManager(): DataManager {
         return this.dataManager;
@@ -31,6 +32,7 @@ class Main {
         this.dataManager = data;
         this.dataListener = new DataListener(this.dataManager);
     }
+
     private dataListener: DataListener;
     public getDataListener(): DataListener {
         return this.dataListener;

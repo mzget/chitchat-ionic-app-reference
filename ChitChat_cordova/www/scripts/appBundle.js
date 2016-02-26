@@ -55,6 +55,7 @@ var ChatRoomComponent = (function () {
     ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
         var _this = this;
         var self = this;
+        console.log('chatRoomComponent.onChat');
         if (this.roomId === chatMessageImp.rid) {
             console.log("Implement chat msg hear..", chatMessageImp);
             var secure = new SecureService();
@@ -1464,7 +1465,7 @@ var Dummy = (function () {
 var ngControllerUtil = (function () {
     function ngControllerUtil(parameters) {
     }
-    ngControllerUtil.viewProfileCtrl = "viewProfileCtrl";
+    ngControllerUtil.viewProfileController = "viewProfileController";
     ngControllerUtil.groupDetailCtrl = "groupDetailCtrl";
     ngControllerUtil.editMemberGroup = 'editMemberGroup';
     return ngControllerUtil;
@@ -1576,7 +1577,7 @@ var ChatServer;
             var self = this;
             var promiseForFileConfig = new Promise(function (resolve, reject) {
                 $.ajax({
-                    url: "../www/configs/appconfig.json",
+                    url: "configs/appconfig.json",
                     dataType: "json",
                     success: function (config) {
                         self.appConfig = JSON.parse(JSON.stringify(config));
@@ -2297,3 +2298,4 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
+//# sourceMappingURL=appBundle.js.map

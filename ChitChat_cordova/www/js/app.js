@@ -6,8 +6,8 @@
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
-     ['ionic','spartan.controllers','spartan.auth', 'spartan.home', 'spartan.chatslog',
-	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'spartan.freecall',
+     ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
+	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
       'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter', 'jrCrop'])
 
 
@@ -87,7 +87,7 @@ angular.module('starter',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: ngControllerUtil.viewProfileCtrl
+				controller: ngControllerUtil.viewProfileController
 			}
 		}
 	})
@@ -105,7 +105,7 @@ angular.module('starter',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-account-invite.html',
-				controller: 'editMemberGroup'
+				controller: ngControllerUtil.editMemberGroup
 			}
 		}
 	})
@@ -114,7 +114,7 @@ angular.module('starter',
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/tab-group-members-edit.html',
-				controller: 'editMemberGroup'
+				controller: ngControllerUtil.editMemberGroup
 			}
 		}
 	})
@@ -161,7 +161,7 @@ angular.module('starter',
 		views: {
 			'tab-chats': {
 				templateUrl: 'templates/tab-group-viewprofile.html',
-				controller: ngControllerUtil.viewProfileCtrl
+				controller: ngControllerUtil.viewProfileController
 			}
 		}
 	})
@@ -179,7 +179,7 @@ angular.module('starter',
 	    views: {
 	        'tab-chats': {
 	            templateUrl: 'templates/tab-account-invite.html',
-	            controller: 'editMemberGroup'
+	            controller: ngControllerUtil.editMemberGroup
 	        }
 	    }
     })

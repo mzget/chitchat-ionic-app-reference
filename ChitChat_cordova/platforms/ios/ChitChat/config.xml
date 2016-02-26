@@ -1,8 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.rfl.stalk" version="0.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.rfl.stalk" version="0.0.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="BackupWebStorage" value="cloud" />
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
+    </feature>
+    <feature name="CameraRoll">
+        <param name="ios-package" value="IonicCameraRoll" />
     </feature>
     <feature name="Camera">
         <param name="ios-package" value="CDVCamera" />
@@ -14,6 +17,9 @@
     <feature name="Device">
         <param name="ios-package" value="CDVDevice" />
     </feature>
+    <feature name="Notification">
+        <param name="ios-package" value="CDVNotification" />
+    </feature>
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <feature name="File">
         <param name="ios-package" value="CDVFile" />
@@ -22,11 +28,17 @@
     <feature name="FileTransfer">
         <param name="ios-package" value="CDVFileTransfer" />
     </feature>
+    <feature name="Geolocation">
+        <param name="ios-package" value="CDVLocation" />
+    </feature>
     <feature name="Media">
         <param name="ios-package" value="CDVSound" />
     </feature>
     <feature name="Capture">
         <param name="ios-package" value="CDVCapture" />
+    </feature>
+    <feature name="NetworkStatus">
+        <param name="ios-package" value="CDVConnection" />
     </feature>
     <feature name="SplashScreen">
         <param name="ios-package" value="CDVSplashScreen" />
@@ -53,18 +65,6 @@
     </feature>
     <feature name="PushNotification">
         <param name="ios-package" value="PushPlugin" />
-    </feature>
-    <feature name="Geolocation">
-        <param name="ios-package" value="CDVLocation" />
-    </feature>
-    <feature name="Notification">
-        <param name="ios-package" value="CDVNotification" />
-    </feature>
-    <feature name="CameraRoll">
-        <param name="ios-package" value="IonicCameraRoll" />
-    </feature>
-    <feature name="NetworkStatus">
-        <param name="ios-package" value="CDVConnection" />
     </feature>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />

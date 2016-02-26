@@ -1,0 +1,71 @@
+<!-- <ion-modal-view class="group-modal-view" >
+	<ion-content class="padding group-detail group-ionpane" scroll="false">
+        <div>
+            <div class="button button-icon icon ion-ios-close-empty close-modal" ng-click="closeProfileModal()"></div>
+            
+            <img class="avatar-modal" ng-if="chat.image != null" ng-src="{{webServer}}/timthumb.php?src={{chat.image}}&h=150&w=150" />
+            <img class="avatar-modal" ng-if="chat.image == null" src="img/img.jpg" height="150" width="150"  />
+        </div>
+        
+        <p class="name-modal">{{chat.displayname}}</p>
+		<div class="group-menu" style="width:100px;">
+		    <div ng-click="editProfile(chat._id)"  style="max-width:100%;">
+                <i class="ion-ios-gear-outline" data-pack="default" data-tags="talk"></i>
+                <br />
+                <span>Edit Profile</span>
+            </div>
+		</div>
+	</ion-content>
+</ion-modal-view> -->
+
+
+
+<ion-modal-view >
+    <ion-header-bar class="bar-positive">
+        <h1 class="title"> {{myProfile.displayname}}'s Profile </h1>
+
+        <div class="button button-clear" ng-click=""> Save </div>
+    </ion-header-bar>
+
+
+
+    <ion-content class="padding" scroll="false">
+
+        <div style="height:150px; text-align:center; margin-bottom:10px;">
+            <img class="avatar-modal" ng-src="{{webServer}}/timthumb.php?src={{myProfile.image}}&h=150&w=150" style="border-radius:50%;"/>
+        </div>
+
+         <div class="list">
+        <label class="item item-input">
+            <div class="input-label"> Display </div>
+            <input type="text" value="{{myProfile.displayname}}" id="viewprofile-input-display" style="background:none; height:30px;" >
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Status </div>
+            <input type="text" value="{{myProfile.status}}" id="viewprofile-input-status" style="background:none; height:30px;" >
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Name </div>
+            <input type="text" value="{{myProfile.firstname}} {{myProfile.lastname}}" disabled style="background:none; height:30px;">
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> User Level </div>
+            <input type="text" value="{{myProfile.role}}" disabled style="background:none; height:30px;">
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Tel. </div>
+            <input type="text" value="{{myProfile.tel}}" disabled style="background:none; height:30px;">
+        </label>
+        
+        <label class="item item-input">
+            <div class="input-label"> Email </div>
+            <input type="text" value="{{myProfile.mail}}" disabled style="background:none; height:30px;">
+        </label>
+      </div>
+
+    </ion-content>
+</ion-modal-view>
