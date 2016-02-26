@@ -1,13 +1,4 @@
 <div layout="row" ng-cloak>
-
- <!--  <div >
-    <div ng-include src="'templates_web/chat-account.html'"></div>
-  </div> -->
-
-        <!--<div style="margin-top:-5px; width:260px; position:absolute;">
-            <div ui-view="chats-account"></div>
-        </div>-->
-
     <div ng-controller="companyController" layout="column" style="width:30%" id="leftLayout">
         <md-toolbar md-scroll-shrink>
             <div class="md-toolbar-tools">
@@ -15,9 +6,11 @@
                     <!--<md-icon md-svg-icon="img/icons/menu.svg"></md-icon>-->
                     <md-icon class="material-icons">menu</md-icon>
                 </md-button>
-                <p>
+                <div>
                     <span class="md-body-2">{{teamInfo.name}}</span>
-                </p>
+                    <br />
+                    <span class="md-caption">{{mySelf.displayname}}</span>
+                </div>
             </div>
         </md-toolbar>
 
@@ -46,16 +39,7 @@
                 </div>
             </div>
         </div>
-</div>
-
-  <!--<div style="position:absolute; border: 1px solid #E3E3E3; margin-top:-5px; height:50px; text-align:center; line-height:50px; font-size:30px; min-width:330px; left:284px;" 
-  ng-controller="HeaderChatCtrl" id="chatHeader">
-    {{roomName}}
-    <button class="button button-icon ion-information-circled" style="font-size:30px; line-height:50px; position:absolute; right:0px; top:0px; margin-right:10px;" ng-click="toggleInfo()">
-    </button>
-  </div>-->
-
-
+    </div>
 </div>
 
 

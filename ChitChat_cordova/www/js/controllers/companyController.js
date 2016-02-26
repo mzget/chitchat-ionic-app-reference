@@ -20,6 +20,7 @@
                 //$scope.$apply();
             }
             $scope.teamInfo = main.getDataManager().getCompanyInfo();
+            $scope.mySelf = main.getDataManager().getMyProfile();
         }
 
         $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
