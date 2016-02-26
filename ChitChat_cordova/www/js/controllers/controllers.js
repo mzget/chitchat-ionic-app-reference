@@ -26,11 +26,10 @@ angular.module('spartan.controllers')
         }, 1000);
     });
     window.onresize = function(event) {
-        document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
-        document.getElementById('chatMessage').style.left = jQuery('#chat-list').offset().left + jQuery('#chat-list').width() + "px";
-        document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
+        //document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
+        resizeUI();
     };
-    document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
+    //document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
 
     var viewInfo = true;
     $scope.toggleInfo = function() {
@@ -41,8 +40,11 @@ angular.module('spartan.controllers')
         }, 100);
     }
     function resizeUI(){
-        document.getElementById('chatMessage').style.left = jQuery('#chat-list').offset().left + jQuery('#chat-list').width() + "px";
+        console.log('bobobobooboboboboobob',window.innerHeight - 110 );
+        document.getElementById('chatMessage').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
         document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
+        document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
+        document.getElementById('infoLayout').style.height = window.innerHeight - 66 + "px";
     }
 })
 
