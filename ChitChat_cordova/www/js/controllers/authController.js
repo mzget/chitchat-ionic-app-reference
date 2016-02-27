@@ -7,7 +7,7 @@
         .controller('noConnection', noConnection);
 
     function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
-        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork, $mdDialog,
+        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork, $mdDialog, $http,
         networkService, chatslogService, dbAccessService, sharedObjectService) {
 
         /* jshint validthis:true */
@@ -172,6 +172,135 @@
             server.init(initCallback);
         }
 
+        function onReadyToSigning() {
+            $rootScope.themename = sharedObjectService.getThemename();
+            var authen = server.authenData;
+            console.log("token: ", authen.token);
+            //<@-- if have no token app wiil take you to signing page.
+            //<@-- else app will auto login by token.
+            if (!authen.token) {
+                if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                    try {
+                        $cordovaSpinnerDialog.hide();
+                    }
+                    catch (ex) {
+                        console.warn(ex);
+                    }
+                }
+                else {
+                    $ionicLoading.hide();
+                }
+
+                $('#splash').css({ 'display': 'none' });
+                $scope.signin = function () {
+                    console.warn('Signin');
+
+                    $('body #login input').attr('readonly', true);
+                    $('body #login #btn-login').attr('disabled', true);
+
+                    var email = $scope.user.email;
+                    var password = $scope.user.password;
+
+                    // console.error(email, ":", password)
+                    if (!email || !password) {
+                        onMissingParams();
+
+                        $('body #login input').attr('readonly', false);
+                        $('body #login #btn-login').attr('disabled', false);
+                    }
+                    else {
+                        // Show spinner dialog
+                        if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                            try {
+                                $cordovaSpinnerDialog.show(null, "loging in...", true);
+                            }
+                            catch (ex) { console.warn(ex) }
+                        }
+                        else {
+                            $ionicLoading.show({
+                                template: "loging in..."
+                            });
+                        }
+
+                        main.getHashService(password, function (err, res) {
+                            main.authenUser(server, email, res, function (err, res) {
+                                if (!err && res !== null) {
+                                    if (res.code === HttpStatusCode.success) {
+                                        console.log("Success Authen User via siging...");
+                                    }
+                                    else if (res.code === HttpStatusCode.duplicateLogin) {
+                                        console.warn(JSON.stringify(err), JSON.stringify(res));
+                                        onDuplicateLogin(res);
+                                    }
+                                    else if (res.code === HttpStatusCode.requestTimeout) {
+                                        $('body #login input').attr('readonly', false);
+                                        $('body #login #btn-login').attr('disabled', false);
+                                        onLoginTimeout(res);
+                                    }
+                                }
+                                else {
+                                    $('body #login input').attr('readonly', false);
+                                    $('body #login #btn-login').attr('disabled', false);
+                                    // maybe user not found.
+                                    onAuthenFail(err);
+                                }
+                            });
+                        });
+                    }
+                }
+                
+                $scope.signup = function() {
+//                    $http({ method: 'GET', url: 'http://localhost:3000/users' }).
+//                      success(function (data, status, headers, config) {
+//                        console.info(data, status, headers, config);
+//                      }).
+//                      error(function (data, status, headers, config) {
+//                        console.error(data, status, headers, config);
+//                      });
+                    
+                    $http.post('http://localhost:3000/users/signup', {})
+                        .then(function successCallback(response) {                                                          
+                              console.log(response);
+                              }, function errorCallback(response) {
+                        console.error(response);
+                    });
+                }
+            }
+            else {
+                server.TokenAuthen(authen.token, function (err, res) {
+                    if (!err && res !== null) {
+                        console.log("Authen result: ", JSON.stringify(res));
+                        if (res.success) {
+                            main.authenUser(server, res.username, res.password, function (err, res) {
+                                if (res !== null) {
+                                    if (res.code === HttpStatusCode.success) {
+                                        console.log("Success Authen User via token...");
+                                    }
+                                    else if (res.code === HttpStatusCode.duplicateLogin) {
+                                        onDuplicateLogin(res);
+                                    }
+                                    else if (res.code === HttpStatusCode.requestTimeout) {
+                                        onLoginTimeout(res);
+                                    }
+                                    else if (res.code === HttpStatusCode.fail) {
+                                        onAuthenFail(res.message);
+                                    }
+                                }
+                                else {
+                                    //<!-- Authen fail.
+                                    server.logout();
+                                    location.href = '';
+
+                                    console.error("Authen fail", err, res);
+                                    onDuplicateLogin(err);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+
         function onLoginTimeout(param) {
             // Hide spinner dialog
             if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
@@ -327,118 +456,6 @@
                     template: 'Missing username or password.'
                 });
                 alertPopup.then(function (res) {
-                });
-            }
-        }
-
-        function onReadyToSigning() {
-            $rootScope.themename = sharedObjectService.getThemename();
-            var authen = server.authenData;
-            console.log("token: ", authen.token);
-            //<@-- if have no token app wiil take you to signing page.
-            //<@-- else app will auto login by token.
-            if (!authen.token) {
-                if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
-                    try {
-                        $cordovaSpinnerDialog.hide();
-                    }
-                    catch (ex) {
-                        console.warn(ex);
-                    }
-                }
-                else {
-                    $ionicLoading.hide();
-                }
-
-                $('#splash').css({ 'display': 'none' });
-                $scope.login = function() {
-                    console.warn('Login');
-
-                    $('body #login input').attr('readonly', true);
-                    $('body #login #btn-login').attr('disabled', true);
-
-                    var email = $scope.user.email;
-                    var password = $scope.user.password;
-
-                    // console.error(email, ":", password)
-                    if (!email || !password) {
-                        onMissingParams();
-                        
-                        $('body #login input').attr('readonly', false);
-                        $('body #login #btn-login').attr('disabled', false);
-                    }
-                    else {
-                        // Show spinner dialog
-                        if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
-                            try {
-                                $cordovaSpinnerDialog.show(null, "loging in...", true);
-                            }
-                            catch (ex) { console.warn(ex) }
-                        }
-                        else {
-                            $ionicLoading.show({
-                                template: "loging in..."
-                            });
-                        }
-
-                        main.getHashService(password, function (err, res) {
-                            main.authenUser(server, email, res, function (err, res) {
-                                if (!err && res !== null) {
-                                    if (res.code === HttpStatusCode.success) {
-                                        console.log("Success Authen User via siging...");
-                                    }
-                                    else if (res.code === HttpStatusCode.duplicateLogin) {
-                                        console.warn(JSON.stringify(err), JSON.stringify(res));
-                                        onDuplicateLogin(res);
-                                    }
-                                    else if (res.code === HttpStatusCode.requestTimeout) {
-                                        $('body #login input').attr('readonly', false);
-                                        $('body #login #btn-login').attr('disabled', false);
-                                        onLoginTimeout(res);
-                                    }
-                                }
-                                else {
-                                    $('body #login input').attr('readonly', false);
-                                    $('body #login #btn-login').attr('disabled', false);
-                                    // maybe user not found.
-                                    onAuthenFail(err);
-                                }
-                            });
-                        });
-                    }
-                }
-            }
-            else {
-                server.TokenAuthen(authen.token, function (err, res) {
-                    if (!err && res !== null) {
-                        console.log("Authen result: ", JSON.stringify(res));
-                        if (res.success) {
-                            main.authenUser(server, res.username, res.password, function (err, res) {
-                                if (res !== null) {
-                                    if (res.code === HttpStatusCode.success) {
-                                        console.log("Success Authen User via token...");
-                                    }
-                                    else if (res.code === HttpStatusCode.duplicateLogin) {
-                                        onDuplicateLogin(res);
-                                    }
-                                    else if (res.code === HttpStatusCode.requestTimeout) {
-                                        onLoginTimeout(res);
-                                    }
-                                    else if (res.code === HttpStatusCode.fail) {
-                                        onAuthenFail(res.message);
-                                    }
-                                }
-                                else {
-                                    //<!-- Authen fail.
-                                    server.logout();
-                                    location.href = '';
-
-                                    console.error("Authen fail", err, res);
-                                    onDuplicateLogin(err);
-                                }
-                            });
-                        }
-                    }
                 });
             }
         }
