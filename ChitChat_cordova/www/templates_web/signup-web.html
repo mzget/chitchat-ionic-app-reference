@@ -1,7 +1,7 @@
-﻿<md-content ng-cloak class="background" layout="colume" layout-align="center center" style="overflow:scroll">
+﻿<div ng-cloak class="background" layout="colume" layout-align="center" style="overflow-y:scroll; overflow-x:hidden; height:100%">
     <!--<img class="login-logo" ng-src="img/logo-{{themename}}.png" style="width:auto" />
     <p></p>-->
-    <md-content style="background-color:transparent;">
+    <div style="background-color:transparent; margin-top:20px; margin-bottom:20px;">
         <md-content layout-padding style="border-radius:10px; min-width:500px; width:500px; text-align:center;">
             <span class="md-headline md-padding">Sign-up</span>
             <br />
@@ -68,15 +68,15 @@
                     </div>
                 </md-input-container>
 
-                <md-input-container style="width:80%; margin-top:-20px; margin-bottom:-10px;">
+                <!--<md-input-container style="width:80%; margin-top:-20px; margin-bottom:-10px;">
                     <label>Tel</label>
                     <input name="tel" type="tel" ng-model="account.tel" />
                 </md-input-container>
                 <br />
-                <!--<md-input-container style="width:80%">
+                <md-input-container style="width:80%">
                     <input class="md-button md-raised md-primary" aria-label="Continue" type="submit" name="Continue"/>
                 </md-input-container>-->
-                <md-button ng-click="continue()" class="md-raised md-primary edgePadding" style="width:80%;">Continue</md-button>
+                <md-button ng-click="continue()" class="md-raised md-primary edgePadding" style="width:80%; margin-top:-20px;">Continue</md-button>
             </form>
         </md-content>
         <br />
@@ -84,5 +84,5 @@
             <span class="md-body-1 md-padding" style="color:white;">Already have account?</span>
             <md-button ng-click="gotoSigning()" class="md-raised md-primary edgePadding">sign-in</md-button>
         </md-content>
-    </md-content>
-</md-content>
+    </div>
+</div>
