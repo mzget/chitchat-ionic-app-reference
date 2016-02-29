@@ -33,7 +33,7 @@
 
                 <md-input-container style="width:80%; margin-top:-20px;">
                     <label>Password</label>
-                    <input name="password" type="password" required ng-model="user.password" />
+                    <input name="password" type="password" required ng-model="account.password" />
                     <div ng-messages="userForm.password.$error">
                         <div ng-message="required">Password is required.    </div>
                     </div>
@@ -42,7 +42,7 @@
 
                 <md-input-container style="width:80%; margin-top:-20px;">
                     <label>Confirm Password</label>
-                    <input name="confirmPassword" type="password" required ng-model="user.confirmPassword" />
+                    <input name="confirmPassword" type="password" required ng-model="account.confirmPassword" />
                     <div ng-messages="userForm.confirmPassword.$error">
                         <div ng-message="required">Confirm password is required.</div>
                     </div>

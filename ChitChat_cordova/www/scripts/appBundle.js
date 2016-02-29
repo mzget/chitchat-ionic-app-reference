@@ -510,6 +510,7 @@ var DataListener = (function () {
         this.roomAccessListenerImps.splice(id, 1);
     };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
+        console.info('onRoomAccess: ', dataEvent);
         this.dataManager.setRoomAccessForUser(dataEvent);
         if (!!this.roomAccessListenerImps) {
             this.roomAccessListenerImps.map(function (value) {
@@ -655,7 +656,9 @@ var DataManager = (function () {
         }
     };
     DataManager.prototype.setRoomAccessForUser = function (data) {
-        this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
+        if (!!data.roomAccess) {
+            this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
+        }
     };
     DataManager.prototype.updateRoomAccessForUser = function (data) {
         var arr = JSON.parse(JSON.stringify(data.roomAccess));
@@ -1595,7 +1598,7 @@ var ChatServer;
                 self.host = self.appConfig.socketHost;
                 self.port = self.appConfig.socketPort;
                 if (!!pomelo) {
-                    self.connectSocketServer(self.host, self.port, function (err) {
+                    self.connectServer(self.host, self.port, function (err) {
                         callback(err, self);
                     });
                 }
@@ -1606,20 +1609,14 @@ var ChatServer;
                 console.log(err);
             });
         };
-        ServerImplemented.prototype.kickMeAllSession = function (uid) {
-            if (pomelo !== null) {
-                var msg = { uid: uid };
-                pomelo.request("connector.entryHandler.kickMe", msg, function (result) {
-                    console.log("kickMe", JSON.stringify(result));
-                });
-            }
-        };
-        ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
+        ServerImplemented.prototype.connectServer = function (_host, _port, callback) {
             console.log("socket connecting to: ", _host, _port);
             pomelo.init({ host: _host, port: _port }, function cb(err) {
                 console.log("socket init result: " + err);
                 callback(err);
             });
+        };
+        ServerImplemented.prototype.connectToConnectorServer = function (callback) {
         };
         ServerImplemented.prototype.logIn = function (_username, _hash, callback) {
             var self = this;
@@ -1637,8 +1634,8 @@ var ChatServer;
                             self.loadSocket(resolve, reject);
                         });
                         promiseLoadSocket.then(function (value) {
-                            var port = result.port;
-                            self.connectSocketServer(self.host, port, function (err) {
+                            var connectorPort = result.port;
+                            self.connectServer(self.host, connectorPort, function (err) {
                                 self._isConnected = true;
                                 if (!!err) {
                                     callback(err, null);
@@ -1706,6 +1703,14 @@ var ChatServer;
             else {
                 if (onSuccessCheckToken != null)
                     onSuccessCheckToken(null, null);
+            }
+        };
+        ServerImplemented.prototype.kickMeAllSession = function (uid) {
+            if (pomelo !== null) {
+                var msg = { uid: uid };
+                pomelo.request("connector.entryHandler.kickMe", msg, function (result) {
+                    console.log("kickMe", JSON.stringify(result));
+                });
             }
         };
         ServerImplemented.prototype.UpdateUserProfile = function (myId, profileFields, callback) {
@@ -2302,4 +2307,3 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
-//# sourceMappingURL=appBundle.js.map

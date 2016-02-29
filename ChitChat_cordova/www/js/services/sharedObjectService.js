@@ -17,19 +17,26 @@
             createNotifyManager: createNotifyManager,
             getNotifyManager: getNotifyManager,
             getWebServer: getWebServer,
+            getRestServer: getRestServer,
             getAppVersion: getAppVersion,
             getThemename: getThemename
         };
         var webServer = null;
         var appVersion = null;
         var themename = null;
-
+        var restServer = null;
         return service;
 
         function getWebServer() {
             webServer = server.appConfig.webserver;
 
             return webServer;
+        }
+
+        function getRestServer() {
+            restServer = server.appConfig.restServer;
+
+            return restServer;
         }
         
         function getAppVersion() {

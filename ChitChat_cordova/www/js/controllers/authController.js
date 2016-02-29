@@ -80,6 +80,7 @@
 
                     $rootScope.webServer = sharedObjectService.getWebServer();
                     $rootScope.appVersion = sharedObjectService.getAppVersion();
+                    $rootScope.restServer = sharedObjectService.getRestServer();
 
                     if (ionic.Platform.platform() == "ios" || ionic.Platform.platform() == 'android') {
                         $state.go('tab.group');
@@ -252,20 +253,6 @@
                 
                 $scope.signup = function () {
                     $state.go('signup');
-//                    $http({ method: 'GET', url: 'http://localhost:3000/users' }).
-//                      success(function (data, status, headers, config) {
-//                        console.info(data, status, headers, config);
-//                      }).
-//                      error(function (data, status, headers, config) {
-//                        console.error(data, status, headers, config);
-//                      });
-                    //'http://localhost:3000/users/signup'
-                    //$http.post('http://git.animation-genius.com:3000/users/signup', {})
-                    //    .then(function successCallback(response) {                                                          
-                    //          console.log(response);
-                    //          }, function errorCallback(response) {
-                    //    console.error(response);
-                    //});
                 }
             }
             else {
