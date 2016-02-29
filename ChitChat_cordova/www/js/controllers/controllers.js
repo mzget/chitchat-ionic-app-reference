@@ -358,7 +358,10 @@ angular.module('spartan.controllers')
 //   };
 // }); // <-- LAST CONTROLLER
 
-function CreateController($scope, $mdDialog, $rootScope, CreateGroup ) {
+function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBase ) {
+    $scope.createType = $rootScope.createType;
+    CreateGroup.createType = $scope.createType;
+    $scope.myProfile = main.getDataManager().myProfile;
     $scope.allmembers = CreateGroup.getAllMember();
     $scope.webServer = $rootScope.webServer;
     $scope.model = { groupname: "" };
@@ -367,16 +370,30 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup ) {
         CreateGroup.setMemberSelected(id,selected);
     }
     $scope.create = function(){
-        server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
-            if (!err) {
-                console.log(JSON.stringify(res));
-                roomId = res.data._id;
-                uploadImageGroup();
-            }
-            else {
-                console.warn(err, res);
-            }
-        });
+        if($scope.createType=='PrivateGroup')
+        {
+            server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    roomId = res.data._id;
+                    uploadImageGroup();
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }else{
+            server.requestCreateProjectBaseGroup($scope.model.groupname,CreateGroup.getSelectedMemberProjectBaseWithMe(), function(err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    roomId = res.data._id;
+                    uploadImageGroup();
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }
     }
     $scope.image = function(){
         $('#avatarToUpload').trigger('click');
@@ -404,6 +421,24 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup ) {
         }
     }
 
+    if($scope.createType == "ProjectBase"){
+        $scope.jobPosition=[];
+        $scope.rolePosition = [
+            {"role": MemberRole[MemberRole.member]},
+            {"role": MemberRole[MemberRole.admin]}];
+        for(x=0; x<main.getDataManager().companyInfo.jobPosition.length; x++){
+            $scope.jobPosition.push({"job":main.getDataManager().companyInfo.jobPosition[x]});
+        }
+    }
+
+
+
+    $scope.setRole = function(id,role){
+        ProjectBase.setRole(id,role);
+    }
+    $scope.setPosition = function(id,position){
+        ProjectBase.setPosition(id,position);
+    }
 }
 
 function ProfileController($scope, $rootScope ) {
