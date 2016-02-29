@@ -2,5 +2,6 @@
 	name: string;
 	detail: string;
 	image: string;
-	jobPosition:string[];
+    jobPosition: string[];
+    root: string;
 }
