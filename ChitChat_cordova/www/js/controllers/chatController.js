@@ -255,6 +255,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$("#modal-webview-iframe").on('load', function () {
 	    alert($(this).contentDocument.title);
 	});
+
+	$("#send_message").on("keyup", function (event) {
+	    if (event.keyCode==13) {
+	        $("#sendMsg").get(0).click();
+	    }
+	});
 	
 	// Send Message btn
 	$('#sendMsg').click(function()
