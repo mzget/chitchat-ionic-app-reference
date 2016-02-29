@@ -86,7 +86,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    	}
                 else{
-		    		$("#webchatdetail").animate({scrollTop:$("#webchatdetail")[0].scrollHeight}, 200);
+		    		$("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 200);
 		    	}
 		    }, 1000);
 		});
@@ -100,7 +100,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    	}else{
 	    		$ionicLoading.hide();
 	    		setTimeout(function () {
-			        $("#webchatdetail").animate({scrollTop:$("#webchatdetail")[0].scrollHeight}, 500);
+			        $("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 500);
 			    }, 1000);
 	    	}
 		});
@@ -257,6 +257,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		
 	$("#modal-webview-iframe").on('load', function () {
 	    alert($(this).contentDocument.title);
+	});
+
+	$("#send_message").on("keyup", function (event) {
+	    if (event.keyCode==13) {
+	        $("#sendMsg").get(0).click();
+	    }
 	});
 	
 	// Send Message btn
