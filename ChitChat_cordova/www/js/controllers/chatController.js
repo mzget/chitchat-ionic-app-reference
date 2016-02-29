@@ -83,7 +83,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    	}
                 else{
-		    		$("#webchatdetail").animate({scrollTop:$("#webchatdetail")[0].scrollHeight}, 200);
+		    		$("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 200);
 		    	}
 		    }, 1000);
 		});
@@ -97,7 +97,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    	}else{
 	    		$ionicLoading.hide();
 	    		setTimeout(function () {
-			        $("#webchatdetail").animate({scrollTop:$("#webchatdetail")[0].scrollHeight}, 500);
+			        $("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 500);
 			    }, 1000);
 	    	}
 		});
