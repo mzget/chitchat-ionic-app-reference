@@ -1,0 +1,88 @@
+﻿<md-content ng-cloak class="background" layout="colume" layout-align="center center" style="overflow:scroll">
+    <!--<img class="login-logo" ng-src="img/logo-{{themename}}.png" style="width:auto" />
+    <p></p>-->
+    <md-content style="background-color:transparent;">
+        <md-content layout-padding style="border-radius:10px; min-width:500px; width:500px; text-align:center;">
+            <span class="md-headline md-padding">Sign-up</span>
+            <br />
+            <span class="md-caption md-padding" style="color:gray">Enter your informations below</span>
+
+            <form name="userForm">
+                <p></p>
+                <span class="md-subhead md-padding">Account information</span>
+
+                <md-input-container style="width:80%;">
+                    <label>Username</label>
+                    <input name="username" type="text" required md-maxlength="30" minlength="4" ng-model="account.username" />
+                    <div ng-messages="userForm.username.$error">
+                        <div ng-message="required">Username is required.</div>
+                        <div ng-message="md-maxlength">The name has to be less than 30 characters long.</div>
+                        <div ng-message="minlength">That's too short!</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container style="width:80%; margin-top:-20px;">
+                    <label>Email address</label>
+                    <input name="email" type="email" required ng-model="account.email" />
+                    <div ng-messages="userForm.email.$error">
+                        <div ng-message="required">
+                            Your email must be look like an e-mail address.
+                        </div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container style="width:80%; margin-top:-20px;">
+                    <label>Password</label>
+                    <input name="password" type="password" required ng-model="user.password" />
+                    <div ng-messages="userForm.password.$error">
+                        <div ng-message="required">Password is required.    </div>
+                    </div>
+                </md-input-container>
+
+
+                <md-input-container style="width:80%; margin-top:-20px;">
+                    <label>Confirm Password</label>
+                    <input name="confirmPassword" type="password" required ng-model="user.confirmPassword" />
+                    <div ng-messages="userForm.confirmPassword.$error">
+                        <div ng-message="required">Confirm password is required.</div>
+                    </div>
+                </md-input-container>
+
+
+                <br />
+                <span style="margin-top:-20px;" class="md-subhead md-padding">General information</span>
+                <md-input-container style="width:80%;">
+                    <label>Firstname</label>
+                    <input name="firstname" type="text" required ng-model="account.firstname" />
+                    <div ng-messages="userForm.firstname.$error">
+                        <div ng-message="required">Firstname is required.</div>
+                    </div>
+                </md-input-container>
+
+
+                <md-input-container style="width:80%; margin-top:-20px;">
+                    <label>Lastname</label>
+                    <input name="lastname" type="text" required ng-model="account.lastname" />
+                    <div ng-messages="userForm.lastname.$error">
+                        <div ng-message="required">Lastname is required.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container style="width:80%; margin-top:-20px; margin-bottom:-10px;">
+                    <label>Tel</label>
+                    <input name="tel" type="tel" ng-model="account.tel" />
+                </md-input-container>
+                <br />
+                <!--<md-input-container style="width:80%">
+                    <input class="md-button md-raised md-primary" aria-label="Continue" type="submit" name="Continue"/>
+                </md-input-container>-->
+                <md-button ng-click="continue()" class="md-raised md-primary edgePadding" style="width:80%;">Continue</md-button>
+            </form>
+        </md-content>
+        <br />
+        <md-content layout="row" layout-align="center center" layout-padding style="border-radius:10px; min-width:500px; width:500px; text-align:center; background-color:transparent">
+            <span class="md-body-1 md-padding" style="color:white;">Already have account?</span>
+            <md-button ng-click="gotoSigning()" class="md-raised md-primary edgePadding">sign-in</md-button>
+        </md-content>
+    </md-content>
+</md-content>

@@ -176,6 +176,7 @@
             $rootScope.themename = sharedObjectService.getThemename();
             var authen = server.authenData;
             console.log("token: ", authen.token);
+
             //<@-- if have no token app wiil take you to signing page.
             //<@-- else app will auto login by token.
             if (!authen.token) {
@@ -249,7 +250,8 @@
                     }
                 }
                 
-                $scope.signup = function() {
+                $scope.signup = function () {
+                    $state.go('signup');
 //                    $http({ method: 'GET', url: 'http://localhost:3000/users' }).
 //                      success(function (data, status, headers, config) {
 //                        console.info(data, status, headers, config);
@@ -257,13 +259,13 @@
 //                      error(function (data, status, headers, config) {
 //                        console.error(data, status, headers, config);
 //                      });
-                    
-                    $http.post('http://localhost:3000/users/signup', {})
-                        .then(function successCallback(response) {                                                          
-                              console.log(response);
-                              }, function errorCallback(response) {
-                        console.error(response);
-                    });
+                    //'http://localhost:3000/users/signup'
+                    //$http.post('http://git.animation-genius.com:3000/users/signup', {})
+                    //    .then(function successCallback(response) {                                                          
+                    //          console.log(response);
+                    //          }, function errorCallback(response) {
+                    //    console.error(response);
+                    //});
                 }
             }
             else {

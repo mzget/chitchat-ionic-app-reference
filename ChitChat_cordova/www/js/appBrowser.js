@@ -8,7 +8,7 @@
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
 	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'ngMaterial', 'angular-toArrayFilter', 'ui.router'])
+      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'ngMaterial', 'ngMessages', 'angular-toArrayFilter', 'ui.router'])
 
 
 .run(function($ionicPlatform) {
@@ -47,11 +47,15 @@ angular.module('starter',
 	$stateProvider
 
 	.state('login', {
-		url: '/login',
-		templateUrl: 'templates_web/tab-login.html',
-		controller: 'authController'
+	    url: '/login',
+	    templateUrl: 'templates_web/tab-login.html',
+	    controller: 'authController'
 	})
-
+        .state('signup', {
+            url:"signup",
+            templateUrl: "templates_web/signup-web.html",
+            controller: 'signupController'
+        }) 
 	.state('chats', {
         url: "/chats",
         views: {
