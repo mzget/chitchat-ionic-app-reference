@@ -66,7 +66,8 @@
         function closeDialogProfile(){
             document.getElementById("UploadAvatar").reset();
         }
-        $scope.createGroup = function(ev) {
+        $scope.createGroup = function(ev,type) {
+            $rootScope.createType = type;
             $mdDialog.show({
               controller: CreateController,
               templateUrl: 'templates_web/modal-creategroup.html',

@@ -273,6 +273,33 @@ angular.module('spartan.services', [])
       editPositionMember.push( { "_id":id,"role":role,"position":position } );
     }
   }
+
+
+  function setRole(id,role){
+    if(containID(id)){
+      for(var i=0; i<editPositionMember.length; i++){
+        if(editPositionMember[i]._id==id){
+          editPositionMember[i].role = role;
+        }
+      }
+    }else{
+      editPositionMember.push( { "_id":id,"role":role,"position":main.getDataManager().companyInfo.jobPosition[0] } );
+    }
+  }
+  function setPosition(id,position){
+    if(containID(id)){
+      for(var i=0; i<editPositionMember.length; i++){
+        if(editPositionMember[i]._id==id){
+          editPositionMember[i].position = position;
+        }
+      }
+    }else{
+      editPositionMember.push( { "_id":id,"role": MemberRole[MemberRole.member],"position":position } );
+    }
+  }
+
+
+
   function getRolePosition(id){
     var positionRole = [];
     if(containID(id)){
@@ -333,6 +360,8 @@ angular.module('spartan.services', [])
   
   return{
     setRolePosition: setRolePosition,
+    setRole: setRole,
+    setPosition: setPosition,
     getRolePosition: getRolePosition,
     getRolePositionIndex: getRolePositionIndex,
     clear: clear
