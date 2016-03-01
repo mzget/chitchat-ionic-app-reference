@@ -7,14 +7,14 @@
 		</div> -->
     
         <!-- My profile. -->
-        <div id="nav-myProfile" ng-click="viewlist('myProfile')" class="item item-button-right btn-nav">
+        <div id="nav-myProfile" class="item item-button-right btn-nav">
             Profile
             <button class="button">
                 <i class="icon ion-chevron-up"></i>
             </button>
         </div>
         <ion-list id="list-myProfile" class="group-list">
-            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-click="openProfileModal()" type="item-text-wrap">
+            <ion-item class="item-remove-animate item-avatar item-icon-right" ng-click="showMyProfile($event)" type="item-text-wrap">
                 <img ng-if="myProfile.image != null" ng-src="{{webServer}}/timthumb.php?src={{myProfile.image}}&h=40&w=40" />
                 <img ng-if="myProfile.image == null" src="img/img.jpg" height="40" width="40" />
                 <h2>{{myProfile.displayname}}</h2>
