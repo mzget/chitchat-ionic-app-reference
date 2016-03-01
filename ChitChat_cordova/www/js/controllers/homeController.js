@@ -22,9 +22,13 @@
                 }
                 catch(ex) { console.warn(ex); }
 		    }
-		    if ($ionicLoading) {
+            else {
 		        $ionicLoading.hide();
-		    }
+                
+                if(!server._isConnected) {
+                    location.href = '';
+                }
+            }
 
 		    dbAccessService.setMessageDAL(messageDAL);
 			localNotifyService.registerPermission();

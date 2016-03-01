@@ -55,10 +55,7 @@
                 else{
                     document.getElementById('splash').style.display = 'none';
                 }
-
-                main.setDataManager(dataManager);
-                main.setServerListener(serverEvents);
-                main.setServerImp(server);
+                
                 main.onMyProfileReadyListener = function (dataManager) {
                     $('#login').css('display', 'none');
                     $('.bar-stable').css({ 'display': '' });
