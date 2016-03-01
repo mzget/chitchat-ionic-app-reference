@@ -36,6 +36,7 @@
                     template: 'Wait for signing...'
                 });
             }
+
             if (!!server) {
                 server.dispose();
             }

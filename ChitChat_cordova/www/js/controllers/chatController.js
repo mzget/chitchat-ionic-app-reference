@@ -13,7 +13,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	var self = this;
 	self.title = 'chatController';
     
-	var dataManager = null;
 	var myprofile = main.getDataManager().myProfile;
 	var allMembers = main.getDataManager().orgMembers;
 	var chatRoomApi = main.getChatRoomApi();
@@ -29,13 +28,13 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		$scope.myprofile = myprofile;
 	}
 
-	function setRoom() {
+    function setRoom() {
 	    self.currentRoom = roomSelected.getRoomOrLastRoom();
 	    console.info("setup new room: ", self.currentRoom);
 
 	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
 	        if (self.currentRoom == null || self.currentRoom === undefined) {
-	            var group = dataManager.getGroup(dataManager.getCompanyInfo().root);
+	            var group = main.getDataManager().getGroup($rootScope.teamInfo.root);
 	            roomSelected.setRoom(group);
 	           self.currentRoom = roomSelected.getRoomOrLastRoom();
 	        }
@@ -74,8 +73,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	function activate() {
 	    console.log(self.title + " is activate");
-        
-        dataManager = main.getDataManager();
 
 	    setRoom();
 
