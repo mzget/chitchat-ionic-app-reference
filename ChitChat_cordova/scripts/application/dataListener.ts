@@ -35,6 +35,8 @@
     }
 
     onAccessRoom(dataEvent) {
+        console.info('onRoomAccess: ', dataEvent);
+        
         this.dataManager.setRoomAccessForUser(dataEvent);
 
         if (!!this.roomAccessListenerImps) {

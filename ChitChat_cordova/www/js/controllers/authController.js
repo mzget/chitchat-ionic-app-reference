@@ -36,6 +36,7 @@
                     template: 'Wait for signing...'
                 });
             }
+
             if (!!server) {
                 server.dispose();
             }
@@ -75,11 +76,6 @@
                     else {
                         $ionicLoading.hide();
                     }
-
-                    console.log("appConfig", server.appConfig.webserver);
-
-                    $rootScope.webServer = sharedObjectService.getWebServer();
-                    $rootScope.appVersion = sharedObjectService.getAppVersion();
 
                     if (ionic.Platform.platform() == "ios" || ionic.Platform.platform() == 'android') {
                         $state.go('tab.group');
@@ -168,6 +164,16 @@
                 else {
                     onReadyToSigning();
                 }
+
+                $rootScope.webServer = sharedObjectService.getWebServer();
+                $rootScope.appVersion = sharedObjectService.getAppVersion();
+                $rootScope.restServer = sharedObjectService.getRestServer();
+                $http.post($rootScope.restServer + '/api/teamInfo', { id: '55794a33615e3952009e77c6' }).then(function success(res) {
+                    console.info('getTeamInfo;', res.data);
+                    $rootScope.teamInfo = res.data.result;
+                }, function errorCallback(err) {
+                    console.error('Fail to getTeamInfo;', err.status);
+                });
             }
             server.init(initCallback);
         }
@@ -252,20 +258,6 @@
                 
                 $scope.signup = function () {
                     $state.go('signup');
-//                    $http({ method: 'GET', url: 'http://localhost:3000/users' }).
-//                      success(function (data, status, headers, config) {
-//                        console.info(data, status, headers, config);
-//                      }).
-//                      error(function (data, status, headers, config) {
-//                        console.error(data, status, headers, config);
-//                      });
-                    //'http://localhost:3000/users/signup'
-                    //$http.post('http://git.animation-genius.com:3000/users/signup', {})
-                    //    .then(function successCallback(response) {                                                          
-                    //          console.log(response);
-                    //          }, function errorCallback(response) {
-                    //    console.error(response);
-                    //});
                 }
             }
             else {

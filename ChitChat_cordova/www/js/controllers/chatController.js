@@ -28,13 +28,13 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		$scope.myprofile = myprofile;
 	}
 
-	function setRoom() {
+    function setRoom() {
 	    self.currentRoom = roomSelected.getRoomOrLastRoom();
 	    console.info("setup new room: ", self.currentRoom);
 
 	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
 	        if (self.currentRoom == null || self.currentRoom === undefined) {
-	            var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
+	            var group = main.getDataManager().getGroup($rootScope.teamInfo.root);
 	            roomSelected.setRoom(group);
 	           self.currentRoom = roomSelected.getRoomOrLastRoom();
 	        }
@@ -73,7 +73,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	function activate() {
 	    console.log(self.title + " is activate");
-        
+
 	    setRoom();
 
 		$scope.$on('onNewMessage', function (event, data) {
