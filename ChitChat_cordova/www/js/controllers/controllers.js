@@ -16,20 +16,31 @@ angular.module('spartan.controllers')
 	
 })
 
-.controller('HeaderChatCtrl', function($scope, $rootScope){
-    
+.controller('HeaderChatCtrl', function($scope, $rootScope, $ionicLoading, Favorite, blockNotifications, roomSelected){
+    $scope.isFavorite = function(id){
+        return Favorite.isFavorite(id);
+    }
+    $scope.isBlockNoti = function(id){
+        return blockNotifications.isBlockNoti(id);
+    }
     $scope.$on('roomName', function(event, args) {
         $scope.roomName = args;
+        $scope.currentRoom = roomSelected.getRoomOrLastRoom();
+        if($scope.currentRoom.type === RoomType.privateChat){
+            $.each($scope.currentRoom.members, function(index, value){
+                if(value.id != main.getDataManager().myProfile._id) { 
+                    $scope.otherId = value.id; 
+                }
+            });
+        }
         setTimeout(function () {
             document.getElementById('chatMessage').style.display = "flex";
             resizeUI();
         }, 1000);
     });
     window.onresize = function(event) {
-        //document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
         resizeUI();
     };
-    //document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
 
     var viewInfo = true;
     $scope.toggleInfo = function() {
@@ -44,6 +55,69 @@ angular.module('spartan.controllers')
         document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
         document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
         document.getElementById('infoLayout').style.height = window.innerHeight - 66 + "px";
+    }
+    $scope.editFavorite = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==RoomType.privateChat){
+            server.updateFavoriteMember(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    Favorite.updateFavorite(editType,id,type);
+                    $ionicLoading.hide();
+                    $rootScope.$broadcast('editFavorite','editFavorite');
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }else{
+            server.updateFavoriteGroups(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    Favorite.updateFavorite(editType,id,type);
+                    $ionicLoading.hide();
+                    $rootScope.$broadcast('editFavorite','editFavorite');
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }
+    }
+
+    $scope.editBlockNoti = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==RoomType.privateChat){
+            server.updateClosedNoticeMemberList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }else{
+            server.updateClosedNoticeGroupsList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }
     }
 })
 
