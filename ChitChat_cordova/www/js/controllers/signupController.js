@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     'use strict';
 
     angular
@@ -34,16 +34,6 @@
         }
 
         function submitForm() {
-            
-//                    $http({ method: 'GET', url: 'http://localhost:3000/users' }).
-//                      success(function (data, status, headers, config) {
-//                        console.info(data, status, headers, config);
-//                      }).
-//                      error(function (data, status, headers, config) {
-//                        console.error(data, status, headers, config);
-//                      });
-            //'http://localhost:3000/users/signup' $rootScope.restServer
-
             var account = JSON.parse(JSON.stringify($scope.account));
             if (!!account.username && !!account.email && !!account.password && !!account.firstname && !!account.lastname) {
                 if (account.password === account.confirmPassword) {
@@ -51,7 +41,12 @@
                         account.password = res;
                         delete account.confirmPassword;
 
-                        $http.post('http://localhost:3000' + '/users/signup', account)
+
+                        var data = {
+                            user: account,
+                            teamRegister: $rootScope.teamInfo.root
+                        };
+                        $http.post($rootScope.restServer + '/users/signup', data)
                             .then(function successCallback(response) {
                                 console.log(response);
                             }, function errorCallback(response) {
