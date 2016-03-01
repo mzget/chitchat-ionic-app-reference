@@ -102,14 +102,18 @@
                         
                         setTimeout(function () {
                             $scope.favorites = getFavorite();
-                            
+
                             if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform !== 'android') {
-                            getChatWeb();
+                            	getChatWeb();
                             }
-                    }, 500);
+                    }, 1000);
                 }
             }
 		}
+
+		$scope.$on('editFavorite', function(event, args) {
+			$scope.$apply(function(){$scope.favorites = getFavorite();});
+		})
 
 		function onLeave() {
 		

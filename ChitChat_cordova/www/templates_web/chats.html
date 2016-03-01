@@ -62,16 +62,38 @@
 
                 <!-- fill up the space between left and right area -->
                 <span flex></span>
-                <md-button class="md-raised" aria-label="Reload" ng-show="warnMessage != ''" ng-click="reload()">
-                    Reload
-                </md-button>
-                <md-button class="md-icon-button" aria-label="Notification">
-                    <i class="material-icons">notifications_none</i>
+
+                    <md-button class="md-raised" aria-label="Reload" ng-show="warnMessage != ''" ng-click="reload()">
+                        Reload
+                    </md-button>
+                <md-button class="md-icon-button" aria-label="Notification" ng-if="isBlockNoti(currentRoom._id) && (currentRoom.type==2 || currentRoom.type==3)" 
+                    ng-click="editBlockNoti('remove',currentRoom._id,currentRoom.type)">
                     <i class="material-icons">notifications_off</i>
                 </md-button>
-                <md-button class="md-icon-button" aria-label="Favorite">
-                    <i class="material-icons">favorite_border</i>
+                <md-button class="md-icon-button" aria-label="Notification" ng-if="!isBlockNoti(currentRoom._id) && (currentRoom.type==2 || currentRoom.type==3)" 
+                ng-click="editBlockNoti('add',currentRoom._id,currentRoom.type)">
+                    <i class="material-icons">notifications_none</i> 
                 </md-button>
+
+
+                <div ng-if="currentRoom.type == '3'">
+                    <md-button class="md-icon-button" aria-label="Favorite" ng-if="!isFavorite(otherId)" ng-click="editFavorite('add',otherId,currentRoom.type)">
+                        <i class="material-icons">favorite</i>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Favorite" ng-if="isFavorite(otherId)" style="color:red;" ng-click="editFavorite('remove',otherId,currentRoom.type)">
+                        <i class="material-icons" style="color:red;">favorite</i>
+                    </md-button>
+                </div>
+                <div ng-if="currentRoom.type != '3'">
+                    <md-button class="md-icon-button" aria-label="Favorite" ng-if="!isFavorite(currentRoom._id)" ng-click="editFavorite('add',currentRoom._id,currentRoom.type)">
+                        <i class="material-icons">favorite</i>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Favorite" ng-if="isFavorite(currentRoom._id)" style="color:red;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)">
+                        <i class="material-icons" style="color:red;">favorite</i>
+                    </md-button>
+                </div>
+
+
                 <md-button class="md-icon-button" aria-label="More" ng-click="toggleInfo()">
                     <i class="material-icons">more_horiz</i>
                 </md-button>

@@ -16,11 +16,25 @@ angular.module('spartan.controllers')
 	
 })
 
-.controller('HeaderChatCtrl', function ($state, $scope, $rootScope, networkService) {
+.controller('HeaderChatCtrl', function($state, $scope, $rootScope, $ionicLoading, Favorite, blockNotifications, roomSelected, networkService){ 
     $scope.warnMessage = '';
     $scope.reload = reload;
+    $scope.isFavorite = function(id){
+        return Favorite.isFavorite(id);
+    }
+    $scope.isBlockNoti = function(id){
+        return blockNotifications.isBlockNoti(id);
+    }
     $scope.$on('roomName', function(event, args) {
         $scope.roomName = args;
+        $scope.currentRoom = roomSelected.getRoomOrLastRoom();
+        if($scope.currentRoom.type === RoomType.privateChat){
+            $.each($scope.currentRoom.members, function(index, value){
+                if(value.id != main.getDataManager().myProfile._id) { 
+                    $scope.otherId = value.id; 
+                }
+            });
+        }
         setTimeout(function () {
             document.getElementById('chatMessage').style.display = "flex";
             resizeUI();
@@ -33,10 +47,8 @@ angular.module('spartan.controllers')
     });
 
     window.onresize = function(event) {
-        //document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
         resizeUI();
     };
-    //document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
 
     var viewInfo = true;
     $scope.toggleInfo = function() {
@@ -46,14 +58,80 @@ angular.module('spartan.controllers')
             resizeUI();
         }, 100);
     }
+
     function resizeUI(){
         document.getElementById('chatMessage').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
         document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
         document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
         document.getElementById('infoLayout').style.height = window.innerHeight - 66 + "px";
     }
+
     function reload() {
         location.href = '';
+    }
+
+    $scope.editFavorite = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==RoomType.privateChat){
+            server.updateFavoriteMember(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    Favorite.updateFavorite(editType,id,type);
+                    $ionicLoading.hide();
+                    $rootScope.$broadcast('editFavorite','editFavorite');
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }else{
+            server.updateFavoriteGroups(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    Favorite.updateFavorite(editType,id,type);
+                    $ionicLoading.hide();
+                    $rootScope.$broadcast('editFavorite','editFavorite');
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }
+    }
+
+    $scope.editBlockNoti = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==RoomType.privateChat){
+            server.updateClosedNoticeMemberList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }else{
+            server.updateClosedNoticeGroupsList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }
     }
 })
 
