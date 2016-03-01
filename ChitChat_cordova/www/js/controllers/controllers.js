@@ -16,8 +16,9 @@ angular.module('spartan.controllers')
 	
 })
 
-.controller('HeaderChatCtrl', function($scope, $rootScope){
-    
+.controller('HeaderChatCtrl', function ($state, $scope, $rootScope, networkService) {
+    $scope.warnMessage = '';
+    $scope.reload = reload;
     $scope.$on('roomName', function(event, args) {
         $scope.roomName = args;
         setTimeout(function () {
@@ -25,6 +26,12 @@ angular.module('spartan.controllers')
             resizeUI();
         }, 1000);
     });
+    $scope.$on('onSocketDisconnected', function (event, args) {
+        //@ Changed toolbar for tell user what happened.
+        document.getElementById('chatToolbar').className = 'md-warn';
+        $scope.warnMessage = 'Server connection problems.';
+    });
+
     window.onresize = function(event) {
         //document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
         resizeUI();
@@ -44,6 +51,9 @@ angular.module('spartan.controllers')
         document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
         document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
         document.getElementById('infoLayout').style.height = window.innerHeight - 66 + "px";
+    }
+    function reload() {
+        location.href = '';
     }
 })
 

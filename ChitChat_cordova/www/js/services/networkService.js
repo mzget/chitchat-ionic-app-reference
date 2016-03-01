@@ -1,3 +1,6 @@
+/**
+* AhooStudio.co.th
+*/
 (function () {
     'use strict';
 
@@ -52,6 +55,7 @@
             socket.onDisconnect = function onDisconnect(reason) {
                 socket.onDisconnect = null;
 
+                $rootScope.$broadcast('onSocketDisconnected');
                 localNotifyService.makeToast("disconnected.");
 
                 setTimeout(function () {

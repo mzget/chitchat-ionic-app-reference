@@ -1,6 +1,6 @@
 <div layout="row" ng-cloak>
     <div ng-controller="companyController" layout="column" style="width:30%" id="leftLayout">
-        <md-toolbar md-scroll-shrink>
+        <md-toolbar>
             <div class="md-toolbar-tools">
 
                 <md-menu style="margin:0 0;">
@@ -55,11 +55,16 @@
     </div>
 
     <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" style="width:70%">
-        <md-toolbar md-scroll-shrink>
+        <md-toolbar id="chatToolbar">
             <div class="md-toolbar-tools">
-                <span class="md-title">{{roomName}}</span>
+                <span class="md-title" ng-show="warnMessage == ''" style="text-align:center;">{{roomName}}</span>
+                <span class="md-title" ng-show="warnMessage != ''" style="text-align:center;">{{warnMessage}}</span>
+
                 <!-- fill up the space between left and right area -->
                 <span flex></span>
+                <md-button class="md-raised" aria-label="Reload" ng-show="warnMessage != ''" ng-click="reload()">
+                    Reload
+                </md-button>
                 <md-button class="md-icon-button" aria-label="Notification">
                     <i class="material-icons">notifications_none</i>
                     <i class="material-icons">notifications_off</i>

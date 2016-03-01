@@ -35,7 +35,7 @@
         }
         
         function makeToast(message) {
-            if (ionic.Platform.platform() === "ios") {
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
                 $cordovaToast.showLongCenter(message).then(function (success) {
                     // success
                 }, function (error) {
