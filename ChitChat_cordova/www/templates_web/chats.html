@@ -57,8 +57,9 @@
     <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" style="width:70%">
         <md-toolbar id="chatToolbar">
             <div class="md-toolbar-tools">
-                <span class="md-title" ng-show="warnMessage == ''" style="text-align:center;">{{roomName}}</span>
-                <span class="md-title" ng-show="warnMessage != ''" style="text-align:center;">{{warnMessage}}</span>
+                <span class="md-title">{{roomName}}</span>
+                <br />
+                <span class="md-caption" ng-show="warnMessage != ''">{{warnMessage}}</span>
 
                 <!-- fill up the space between left and right area -->
                 <span flex></span>

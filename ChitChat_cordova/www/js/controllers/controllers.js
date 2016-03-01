@@ -43,7 +43,7 @@ angular.module('spartan.controllers')
     $scope.$on('onSocketDisconnected', function (event, args) {
         //@ Changed toolbar for tell user what happened.
         document.getElementById('chatToolbar').className = 'md-warn';
-        $scope.warnMessage = 'Server connection problems.';
+        $scope.warnMessage = 'Server connection problems. App still working offline.';
     });
 
     window.onresize = function(event) {

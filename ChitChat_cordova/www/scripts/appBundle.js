@@ -369,10 +369,16 @@ var ChatRoomComponent = (function () {
     };
     ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
         var self = this;
-        this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
-            console.log("leave room", JSON.stringify(res));
-            callback(err, res);
-        });
+        if (self.serverImp._isConnected) {
+            self.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
+                console.log("leave room", JSON.stringify(res));
+                callback(err, res);
+            });
+        }
+        else {
+            console.warn(ChatServer.ServerImplemented.connectionProblemString);
+            callback(new Error(ChatServer.ServerImplemented.connectionProblemString), null);
+        }
     };
     ChatRoomComponent.prototype.joinRoom = function (callback) {
         var self = this;
@@ -1508,7 +1514,6 @@ var ChatServer;
     })();
     var ServerImplemented = (function () {
         function ServerImplemented() {
-            this._isInit = false;
             this._isConnected = false;
             this._isLogedin = false;
             console.warn("serv imp. constructor");
@@ -1673,6 +1678,7 @@ var ChatServer;
                         callback(null, res);
                     }
                     pomelo.on('disconnect', function data(reason) {
+                        self._isConnected = false;
                         if (self.socketComponent !== null)
                             self.socketComponent.disconnected(reason);
                     });
@@ -2025,6 +2031,7 @@ var ChatServer;
                 console.log("theLineIsBusy response: " + JSON.stringify(result));
             });
         };
+        ServerImplemented.connectionProblemString = 'Server connection is unstable.';
         return ServerImplemented;
     })();
     ChatServer.ServerImplemented = ServerImplemented;
@@ -2307,4 +2314,3 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
-//# sourceMappingURL=appBundle.js.map

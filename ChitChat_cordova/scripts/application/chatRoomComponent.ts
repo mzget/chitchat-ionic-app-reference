@@ -386,10 +386,18 @@
 
     public leaveRoom(room_id, callback: (err, res) => void) {
         var self = this;
-        this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
-            console.log("leave room", JSON.stringify(res));
-            callback(err, res);
-        });
+       
+       if(self.serverImp._isConnected) {
+            self.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
+                console.log("leave room", JSON.stringify(res));
+                callback(err, res);
+            });
+       }
+       else {
+           console.warn(ChatServer.ServerImplemented.connectionProblemString);
+           
+           callback(new Error(ChatServer.ServerImplemented.connectionProblemString), null);
+       }
     }
 
     public joinRoom(callback: (err, res) => void) {
