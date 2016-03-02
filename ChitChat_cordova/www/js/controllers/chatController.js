@@ -28,13 +28,13 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		$scope.myprofile = myprofile;
 	}
 
-	function setRoom() {
+    function setRoom() {
 	    self.currentRoom = roomSelected.getRoomOrLastRoom();
 	    console.info("setup new room: ", self.currentRoom);
 
 	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
 	        if (self.currentRoom == null || self.currentRoom === undefined) {
-	            var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
+	            var group = main.getDataManager().getGroup($rootScope.teamInfo.root);
 	            roomSelected.setRoom(group);
 	           self.currentRoom = roomSelected.getRoomOrLastRoom();
 	        }
@@ -73,7 +73,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	function activate() {
 	    console.log(self.title + " is activate");
-        
+
 	    setRoom();
 
 		$scope.$on('onNewMessage', function (event, data) {
@@ -83,7 +83,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    	}
                 else{
-		    		$("#webchatdetail").animate({scrollTop:$("#webchatdetail")[0].scrollHeight}, 200);
+		    		$("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 200);
 		    	}
 		    }, 1000);
 		});
@@ -97,7 +97,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    	}else{
 	    		$ionicLoading.hide();
 	    		setTimeout(function () {
-			        $("#webchatdetail").animate({scrollTop:$("#webchatdetail")[0].scrollHeight}, 500);
+			        $("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 500);
 			    }, 1000);
 	    	}
 		});
@@ -237,23 +237,39 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	};
 	
 	// WebView
-	$scope.webview = function(uri){
-		http = '';
-		if( uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp' )
-			http = 'http://';
-		http += uri;
-		//window.open(http, '_blank');
-		
-		//window.open(encodeURI(http), '_blank', 'location=yes');
-		
-		//$scope.webviewUrl = 'http://www.google.com';
-		$scope.webviewUrl = $sce.trustAsResourceUrl(http);
-		$scope.webviewTitle = uri;
-		$scope.openModalWebview();
+	$scope.webview = function (uri) {
+	    if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+	        http = '';
+	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
+	            http = 'http://';
+	        http += uri;
+	        //window.open(http, '_blank');
+
+	        //window.open(encodeURI(http), '_blank', 'location=yes');
+
+	        //$scope.webviewUrl = 'http://www.google.com';
+	        $scope.webviewUrl = $sce.trustAsResourceUrl(http);
+	        $scope.webviewTitle = uri;
+	        $scope.openModalWebview();
+	    }
+	    else {
+	        http = '';
+	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
+	            http = 'http://';
+	        http += uri;
+
+	        window.open(http);
+	    }
 	};
 		
 	$("#modal-webview-iframe").on('load', function () {
 	    alert($(this).contentDocument.title);
+	});
+
+	$("#send_message").on("keyup", function (event) {
+	    if (event.keyCode==13) {
+	        $("#sendMsg").get(0).click();
+	    }
 	});
 	
 	// Send Message btn
@@ -562,7 +578,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	 });
 	
 	$scope.$on('changeChat', function(event, args) { 
-        console.log('changed chatroom.', event);
+	    console.log('changed chatroom.', args);
         var newRoom = JSON.parse(JSON.stringify(args));
         if(newRoom._id == roomSelected.getRoomOrLastRoom()._id) { return; }
         

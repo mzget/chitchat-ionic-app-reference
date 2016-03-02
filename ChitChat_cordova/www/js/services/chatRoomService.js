@@ -45,7 +45,7 @@
                     }
                   
                     
-                    if (date.indexOf(dateTime) == -1) {
+                    if (date.indexOf(dateTime) == -1 && chats[i].hasOwnProperty('createTime')) {
                         date.push(chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')));
 
                         var dateMsg = new Date(dateTime);

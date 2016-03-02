@@ -369,10 +369,16 @@ var ChatRoomComponent = (function () {
     };
     ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
         var self = this;
-        this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
-            console.log("leave room", JSON.stringify(res));
-            callback(err, res);
-        });
+        if (self.serverImp._isConnected) {
+            self.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
+                console.log("leave room", JSON.stringify(res));
+                callback(err, res);
+            });
+        }
+        else {
+            console.warn(ChatServer.ServerImplemented.connectionProblemString);
+            callback(new Error(ChatServer.ServerImplemented.connectionProblemString), null);
+        }
     };
     ChatRoomComponent.prototype.joinRoom = function (callback) {
         var self = this;
@@ -510,6 +516,7 @@ var DataListener = (function () {
         this.roomAccessListenerImps.splice(id, 1);
     };
     DataListener.prototype.onAccessRoom = function (dataEvent) {
+        console.info('onRoomAccess: ', dataEvent);
         this.dataManager.setRoomAccessForUser(dataEvent);
         if (!!this.roomAccessListenerImps) {
             this.roomAccessListenerImps.map(function (value) {
@@ -655,7 +662,10 @@ var DataManager = (function () {
         }
     };
     DataManager.prototype.setRoomAccessForUser = function (data) {
-        this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
+        if (!!data.roomAccess) {
+            this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
+            console.info('set user roomAccess info.');
+        }
     };
     DataManager.prototype.updateRoomAccessForUser = function (data) {
         var arr = JSON.parse(JSON.stringify(data.roomAccess));
@@ -669,8 +679,14 @@ var DataManager = (function () {
     DataManager.prototype.getRoomAccess = function () {
         return this.myProfile.roomAccess;
     };
+    DataManager.prototype.getCompanyInfo = function () {
+        return this.companyInfo;
+    };
     DataManager.prototype.setCompanyInfo = function (data) {
         this.companyInfo = JSON.parse(JSON.stringify(data));
+        if (!!this.onCompanyInfoReady) {
+            this.onCompanyInfoReady();
+        }
     };
     DataManager.prototype.getGroup = function (id) {
         if (!!this.orgGroups[id]) {
@@ -967,12 +983,10 @@ var Main = (function () {
         return this.dataListener;
     };
     Main.prototype.getServerImp = function () {
-        console.log("getServerImp", this.serverImp);
         return this.serverImp;
     };
     Main.prototype.setServerImp = function (server) {
         this.serverImp = server;
-        console.log("setServerImp", server);
     };
     Main.prototype.getChatRoomApi = function () {
         if (!this.chatRoomApi) {
@@ -1028,7 +1042,7 @@ var Main = (function () {
                             console.error(err);
                         }
                         else {
-                            console.log("companyInfo: ", JSON.stringify(res));
+                            console.log("get companyInfo: ", JSON.stringify(res.code));
                         }
                     });
                     server.getOrganizationGroups(function (err, res) {
@@ -1501,7 +1515,6 @@ var ChatServer;
     })();
     var ServerImplemented = (function () {
         function ServerImplemented() {
-            this._isInit = false;
             this._isConnected = false;
             this._isLogedin = false;
             console.warn("serv imp. constructor");
@@ -1591,7 +1604,7 @@ var ChatServer;
                 self.host = self.appConfig.socketHost;
                 self.port = self.appConfig.socketPort;
                 if (!!pomelo) {
-                    self.connectSocketServer(self.host, self.port, function (err) {
+                    self.connectServer(self.host, self.port, function (err) {
                         callback(err, self);
                     });
                 }
@@ -1602,20 +1615,14 @@ var ChatServer;
                 console.log(err);
             });
         };
-        ServerImplemented.prototype.kickMeAllSession = function (uid) {
-            if (pomelo !== null) {
-                var msg = { uid: uid };
-                pomelo.request("connector.entryHandler.kickMe", msg, function (result) {
-                    console.log("kickMe", JSON.stringify(result));
-                });
-            }
-        };
-        ServerImplemented.prototype.connectSocketServer = function (_host, _port, callback) {
+        ServerImplemented.prototype.connectServer = function (_host, _port, callback) {
             console.log("socket connecting to: ", _host, _port);
             pomelo.init({ host: _host, port: _port }, function cb(err) {
                 console.log("socket init result: " + err);
                 callback(err);
             });
+        };
+        ServerImplemented.prototype.connectToConnectorServer = function (callback) {
         };
         ServerImplemented.prototype.logIn = function (_username, _hash, callback) {
             var self = this;
@@ -1633,8 +1640,8 @@ var ChatServer;
                             self.loadSocket(resolve, reject);
                         });
                         promiseLoadSocket.then(function (value) {
-                            var port = result.port;
-                            self.connectSocketServer(self.host, port, function (err) {
+                            var connectorPort = result.port;
+                            self.connectServer(self.host, connectorPort, function (err) {
                                 self._isConnected = true;
                                 if (!!err) {
                                     callback(err, null);
@@ -1672,6 +1679,7 @@ var ChatServer;
                         callback(null, res);
                     }
                     pomelo.on('disconnect', function data(reason) {
+                        self._isConnected = false;
                         if (self.socketComponent !== null)
                             self.socketComponent.disconnected(reason);
                     });
@@ -1702,6 +1710,14 @@ var ChatServer;
             else {
                 if (onSuccessCheckToken != null)
                     onSuccessCheckToken(null, null);
+            }
+        };
+        ServerImplemented.prototype.kickMeAllSession = function (uid) {
+            if (pomelo !== null) {
+                var msg = { uid: uid };
+                pomelo.request("connector.entryHandler.kickMe", msg, function (result) {
+                    console.log("kickMe", JSON.stringify(result));
+                });
             }
         };
         ServerImplemented.prototype.UpdateUserProfile = function (myId, profileFields, callback) {
@@ -2016,6 +2032,7 @@ var ChatServer;
                 console.log("theLineIsBusy response: " + JSON.stringify(result));
             });
         };
+        ServerImplemented.connectionProblemString = 'Server connection is unstable.';
         return ServerImplemented;
     })();
     ChatServer.ServerImplemented = ServerImplemented;
@@ -2298,4 +2315,3 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
-//# sourceMappingURL=appBundle.js.map

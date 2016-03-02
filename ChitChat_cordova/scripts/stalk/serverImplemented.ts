@@ -27,11 +27,12 @@ module ChatServer {
             return this.Instance;
         }
 
+        static connectionProblemString : string = 'Server connection is unstable.';
+
         host: string;
         port: number;
         authenData: AuthenData;
         appConfig : any;
-        _isInit = false;
         _isConnected = false;
         _isLogedin = false;
         socketComponent: SocketComponent;
@@ -133,7 +134,7 @@ module ChatServer {
                 self.port = self.appConfig.socketPort;
                 if (!!pomelo) {
                     //<!-- Connecting gate server.
-                    self.connectSocketServer(self.host, self.port, (err) => {
+                    self.connectServer(self.host, self.port, (err) => {
                         callback(err, self);
                     });
                 }
@@ -145,16 +146,7 @@ module ChatServer {
             });
         }
         
-        public kickMeAllSession(uid: string) {
-            if(pomelo !== null) {
-                var msg = { uid: uid };
-                pomelo.request("connector.entryHandler.kickMe", msg, function (result) { 
-                    console.log("kickMe", JSON.stringify(result));
-                });
-            }
-        }
-
-        private connectSocketServer(_host: string, _port: number, callback: (err) => void) {
+        private connectServer(_host: string, _port: number, callback: (err) => void) {
             console.log("socket connecting to: ", _host, _port);
             
             // var self = this;    
@@ -162,6 +154,10 @@ module ChatServer {
                 console.log("socket init result: " + err);
                 callback(err);
             });
+        }
+
+        public connectToConnectorServer(callback:(err, res) => void) {
+
         }
 
         // region <!-- Authentication...
@@ -191,9 +187,9 @@ module ChatServer {
                             self.loadSocket(resolve, reject);
                         });
                         promiseLoadSocket.then((value) => {
-                            var port = result.port;
+                            var connectorPort = result.port;
                             //<!-- Connecting to connector server.
-                            self.connectSocketServer(self.host, port, (err) => {
+                            self.connectServer(self.host, connectorPort, (err) => {
                                 self._isConnected = true;
 
                                 if (!!err) {
@@ -243,6 +239,7 @@ module ChatServer {
                     }
                     
                     pomelo.on('disconnect', function data(reason) {
+                        self._isConnected = false;
                         if (self.socketComponent !== null)
                             self.socketComponent.disconnected(reason);
                     });
@@ -276,8 +273,15 @@ module ChatServer {
                     onSuccessCheckToken(null, null);
             }
         }
-        
 
+        public kickMeAllSession(uid: string) {
+            if (pomelo !== null) {
+                var msg = { uid: uid };
+                pomelo.request("connector.entryHandler.kickMe", msg, function (result) {
+                    console.log("kickMe", JSON.stringify(result));
+                });
+            }
+        }
 
         //<@--- ServerAPIProvider.
 

@@ -1,0 +1,73 @@
+<md-dialog aria-label="Create Group" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create {{createType}}</h2>
+        <span flex></span>
+        <md-button ng-if="isCreate()==true" ng-click="create()">Create</md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="overflow-x: hidden; overflow-y: hidden; ">
+      <div class="md-dialog-content" style="width:500px;">
+        
+        <div layout-gt-sm="row">
+          <img id="avatar" class="avatar-modal" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"  style="border-radius:50%;width:100px;height:100px;" 
+          ng-click="image()"/>
+            <md-input-container class="md-block" style="width:100%; margin-left:20px; margin-top:40px;">
+              <label>Group Name</label>
+              <input ng-model="model.groupname" >
+            </md-input-container>
+        </div>
+
+
+        <div style="overflow-y: scroll; overflow-x: hidden; height:410px;" ng-if="createType=='PrivateGroup' && myProfile._id!=member._id ">
+          <ion-item id="{{member._id}}" class="item item-checkbox item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false" ng-if="myProfile._id!=member._id ">
+              <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
+              <img ng-if="member.image == null" src="img/img.jpg" style="border-radius:50%;width:50px;height:50px;"/>
+              <div class="member-name" style="display:inline;"> {{member.displayname}} </div> 
+              <md-checkbox type="checkbox" style="position:absolute; width:100%; height:100%; left:0px; top:0px; margin-left:20px;"
+              ng-model="member.checked" ng-click="checked(member._id,!member.checked)"/>
+          </ion-item>
+        </div>
+
+        <div style="overflow-y: scroll; overflow-x: hidden; height:410px;" ng-if="createType=='ProjectBase'">
+          <ion-item id="{{member._id}}" class="item item-checkbox item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false">
+
+              <div layout="row">
+              <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
+              <img ng-if="member.image == null" src="img/img.jpg" style="border-radius:50%;width:50px;height:50px;"/>
+              <div class="member-name" style="display:inline;"> {{member.displayname}} </div> 
+              <md-checkbox type="checkbox" style="position:absolute; width:60%; height:100%; left:0px; top:0px; margin-left:20px;"
+              ng-model="member.checked" ng-click="checked(member._id,!member.checked)" ng-disabled="myProfile._id==member._id"/>
+              </div>
+           
+
+            <div style="position:absolute; left:280px; width:150px; margin-top:-55px;">
+
+
+              <md-input-container style="display:block; margin-top:-10px;" ng-if="myProfile._id!=member._id">
+                <md-select ng-model="role" ng-init="role = rolePosition[0].role" ng-change="setRole(member._id,role)">
+                    <md-option ng-value="role.role" ng-repeat="role in rolePosition">{{role.role}}</md-option>
+                </md-select>
+              </md-input-container>
+              <md-input-container style="display:block; margin-top:-10px;" ng-if="myProfile._id==member._id">
+                <md-select ng-model="role" ng-init="role = rolePosition[1].role" ng-change="setRole(member._id,role)" ng-disabled="myProfile._id==member._id">
+                    <md-option ng-value="role.role" ng-repeat="role in rolePosition">{{role.role}}</md-option>
+                </md-select>
+              </md-input-container>
+
+
+              <md-input-container style="display:block; margin-top:-10px;">
+                <md-select ng-model="job" ng-init="job = jobPosition[0].job" ng-change="setPosition(member._id,job)">
+                    <md-option ng-value="job.job" ng-repeat="job in jobPosition">{{job.job}}</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+
+          </ion-item>
+        <div>
+
+    </md-dialog-content>
+  </form>
+
+</md-dialog>

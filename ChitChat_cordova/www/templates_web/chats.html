@@ -1,36 +1,146 @@
-<div class="row">
+<div layout="row" ng-cloak>
+    <div ng-controller="companyController" layout="column" style="width:30%" id="leftLayout">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
 
- <!--  <div >
-    <div ng-include src="'templates_web/chat-account.html'"></div>
-  </div> -->
+                <md-menu style="margin:0 0;">
 
-  <div style="margin-left:20px; margin-top:-5px; width:260px; position:absolute; border: 1px solid #E3E3E3; height:50px;">
-    <div ui-view="chats-account"></div>  
-  </div>
-  
+                    <md-button class="md-icon-button" aria-label="Settings" ng-click="$mdOpenMenu($event)" 
+                    style="margin:0 0; padding:0 0;">
+                        <!--<md-icon md-svg-icon="img/icons/menu.svg"></md-icon>-->
+                        <md-icon class="material-icons">menu</md-icon>
+                    </md-button>
 
-  <div id="chat-list" style="overflow-y:scroll; margin-left:20px; width:100%; margin-top:44px; mix-width:260px; max-width:260px;">
-    <div ui-view="chats-list" style="border: 1px solid #E3E3E3;"></div>        
-  </div>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="createGroup($event,'PrivateGroup')"> 
+                                <i class="ion-android-person-add" style="margin-right:10px;"></i> Create Group 
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-show="myProfile.role=='4'">
+                            <md-button ng-click="createGroup($event,'ProjectBase')"> 
+                                <i class="ion-android-person-add" style="margin-right:10px;"></i> Create ProjectBase 
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="logOut();"> 
+                                <i class="icon ion-log-out" style="margin-right:10px;"></i> Log Out 
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button onclick="location.href='';"> 
+                                <i class="icon ion-log-in" style="margin-right:10px;"></i> Refresh 
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-disabled="true"> 
+                                <i class="ion-information-circled" style="margin-right:10px;"></i> Version: {{appVersion}} 
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
 
 
-  <div style="position:absolute; border: 1px solid #E3E3E3; margin-top:-5px; height:50px; text-align:center; line-height:50px; font-size:30px; min-width:330px; left:284px;" 
-  ng-controller="HeaderChatCtrl" id="chatHeader">
-    {{roomName}}
-    <button class="button button-icon ion-information-circled" style="font-size:30px; line-height:50px; position:absolute; right:0px; top:0px; margin-right:10px;" ng-click="toggleInfo()">
-    </button>
-  </div>
+                <div>
+                    <span class="md-body-2">{{teamInfo.name}}</span>
+                    <br />
+                    <span class="md-caption">{{mySelf.displayname}}</span>
+                </div>
+            </div>
+        </md-toolbar>
 
-
-    <div style="width:100%; margin-top:45px; min-width:330px; height:95%;">
-      <div ui-view="chats-detail" style="height:95%;"></div>
+        <div style="overflow-y:scroll; overflow-x:hidden; height:100%;">
+            <div ui-view="chats-list" style="border: 1px solid #E3E3E3;"></div>
+        </div>
     </div>
 
-    <div style="margin-top:45px; overflow-y:scroll; overflow-x:hidden; width:380px;" ng-show="viewInfo==true">
-      <div ui-view="chats-info" style="margin-top:5px;"> 
-      </div>       
+    <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" style="width:70%">
+        <md-toolbar id="chatToolbar">
+            <div class="md-toolbar-tools">
+                <div> 
+                    <span class="md-title">{{roomName}}</span>
+                    <br />
+                    <span class="md-caption" ng-show="warnMessage != ''">{{warnMessage}}</span>
+                </div>
+
+                <!-- fill up the space between left and right area -->
+                <span flex></span>
+
+                    <md-button class="md-raised" aria-label="Reload" ng-show="warnMessage != ''" ng-click="reload()">
+                        Reload
+                    </md-button>
+                <md-button class="md-icon-button" aria-label="Notification" ng-if="isBlockNoti(currentRoom._id) && (currentRoom.type==2 || currentRoom.type==3)" 
+                    ng-click="editBlockNoti('remove',currentRoom._id,currentRoom.type)">
+                    <i class="material-icons">notifications_off</i>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Notification" ng-if="!isBlockNoti(currentRoom._id) && (currentRoom.type==2 || currentRoom.type==3)" 
+                ng-click="editBlockNoti('add',currentRoom._id,currentRoom.type)">
+                    <i class="material-icons">notifications_none</i> 
+                </md-button>
+
+
+                <div ng-if="currentRoom.type == '3'">
+                    <md-button class="md-icon-button" aria-label="Favorite" ng-if="!isFavorite(otherId)" ng-click="editFavorite('add',otherId,currentRoom.type)">
+                        <i class="material-icons">favorite</i>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Favorite" ng-if="isFavorite(otherId)" style="color:red;" ng-click="editFavorite('remove',otherId,currentRoom.type)">
+                        <i class="material-icons" style="color:red;">favorite</i>
+                    </md-button>
+                </div>
+                <div ng-if="currentRoom.type != '3'">
+                    <md-button class="md-icon-button" aria-label="Favorite" ng-if="!isFavorite(currentRoom._id)" ng-click="editFavorite('add',currentRoom._id,currentRoom.type)">
+                        <i class="material-icons">favorite</i>
+                    </md-button>
+                    <md-button class="md-icon-button" aria-label="Favorite" ng-if="isFavorite(currentRoom._id)" style="color:red;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)">
+                        <i class="material-icons" style="color:red;">favorite</i>
+                    </md-button>
+                </div>
+
+
+                <md-button class="md-icon-button" aria-label="More" ng-click="toggleInfo()">
+                    <i class="material-icons">more_horiz</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div layout="row" style="height:100%">
+            <div id="chatLayout" style="overflow-y:scroll; overflow-x:hidden; width:100%; min-width:330px;">
+                <div ui-view="chats-detail"></div>
+            </div>
+            <div id="infoLayout" style="overflow-y:scroll; overflow-x:hidden; width:40%; min-width:380px;" ng-show="viewInfo==true">
+                <div ui-view="chats-info">
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+    <!-- <div class="menus" layout-wrap="" layout="row" layout-fill="" layout-align="space-between center" style="min-height:100px;">
+      <div layout="column" flex="33" flex-sm="100" layout-align="center center">
+        <p>Wide menu (<code>width=6</code>)</p>
+        <md-menu md-offset="0 -7">
+          <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-icon md-menu-origin="" md-svg-icon="call:phone"></md-icon>
+          </md-button>
+          <md-menu-content width="6">
+            <md-menu-item ng-repeat="item in [1, 2, 3]">
+              <md-button ng-click="ctrl.announceClick($index)"> <span md-menu-align-target="">Option</span> {{item}} </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div>
+    <div layout="column" flex-sm="100" flex="33" layout-align="center center">
+        <p>Medium menu (<code>width=4</code>)</p>
+        <md-menu md-offset="0 -7">
+          <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-icon md-menu-origin="" md-svg-icon="call:email"></md-icon>
+          </md-button>
+          <md-menu-content width="4">
+            <md-menu-item ng-repeat="item in [1, 2, 3]">
+              <md-button ng-click="ctrl.announceClick($index)"> <span md-menu-align-target="">Option</span> {{item}} </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+      </div> -->
 
 
 
