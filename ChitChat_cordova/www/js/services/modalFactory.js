@@ -5,9 +5,7 @@
         .module('spartan.services')
         .factory('modalFactory', modalFactory);
 
-    // modalFactory.$inject = ['$http', 'webRTCFactory'];
-
-    function modalFactory($http, $state, webRTCFactory) {
+    function modalFactory($http, $state, webRTCFactory, localNotifyService, sharedObjectService) {
         var service = {
             initContactModal: initContactModal,
             initMyProfileModal: initMyProfileModal,
@@ -16,16 +14,21 @@
 
         return service;
 
-        function initContactWeb($rootScope, contactId){
-            server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
-                if (res.code === HttpStatusCode.success) {
-                    var room = JSON.parse(JSON.stringify(res.data));
-                    $rootScope.$broadcast('changeChat', room);
-                }
-                else{
-                    console.warn(err, res);
-                }
-            });
+        function initContactWeb($rootScope, contactId) {
+            if (server._isConnected) {
+                server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
+                    if (res.code === HttpStatusCode.success) {
+                        var room = JSON.parse(JSON.stringify(res.data));
+                        $rootScope.$broadcast('changeChat', room);
+                    }
+                    else {
+                        console.warn(err, res);
+                    }
+                });
+            }
+            else {
+                localNotifyService.makeToast(sharedObjectService.getStringValue().connectionProblem);
+            }
         }
 
         function initContactModal($scope, $rootScope, contactId, roomSelected, done) {

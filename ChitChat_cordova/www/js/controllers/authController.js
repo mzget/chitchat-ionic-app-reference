@@ -171,6 +171,8 @@
                 }, function errorCallback(err) {
                     console.error('Fail to getTeamInfo;', err.status);
                 });
+
+                sharedObjectService.loadLocalizationFile();
             }
             server.init(initCallback);
         }

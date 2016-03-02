@@ -196,7 +196,8 @@ angular.module('spartan.controllers')
             location.href = '';
         }
 })
-.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
+
+.controller('AccountCreate', function ($scope, $rootScope, $state, $ionicHistory, $ionicLoading, $cordovaProgress, CreateGroup, FileService) {
     console.log('AccountCreate',CreateGroup.createType);
     var myProfile = main.getDataManager().myProfile;
     $rootScope.members = CreateGroup.getSelectedMember();
@@ -387,6 +388,7 @@ angular.module('spartan.controllers')
     return filtered;
   };
 })
+
 .filter('orderByDate', function () {
   return function(items, field, reverse) {
     var filtered = [];
@@ -407,6 +409,7 @@ angular.module('spartan.controllers')
     return filtered;
   };
 });
+
 // .directive('hideTabBar', function($timeout) {
 //   var style = angular.element('<style>').html(
 //     '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
