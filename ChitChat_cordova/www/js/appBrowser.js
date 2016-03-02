@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
-	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
+	  'spartan.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
       'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'ngMaterial', 'ngMessages', 'angular-toArrayFilter', 'angular-web-notification', 'ui.router'])
 
 

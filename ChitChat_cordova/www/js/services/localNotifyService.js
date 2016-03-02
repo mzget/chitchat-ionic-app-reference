@@ -5,7 +5,7 @@
         .module('spartan.notify', [])
         .factory('localNotifyService', localNotifyService);
 
-    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, $ionicPopup, $timeout, $mdToast, blockNotifications) {
+    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, $ionicPopup, $timeout, $mdToast, $rootScope, blockNotifications) {
         var service = {
             getData: getData,
             scheduleSingleNotification: scheduleSingleNotification,
@@ -71,6 +71,8 @@
                             .hideDelay(3000)
                         .position('top right')
                     );
+
+                    $rootScope.$broadcast('onNotify', { });
                 }
             }
         }

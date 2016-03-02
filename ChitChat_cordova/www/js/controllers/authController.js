@@ -7,8 +7,7 @@
         .controller('noConnection', noConnection);
 
     function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
-        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork, $mdDialog, $http,
-        networkService, chatslogService, dbAccessService, sharedObjectService) {
+        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork, $mdDialog, $http, networkService, chatslogService, dbAccessService, sharedObjectService) {
 
         /* jshint validthis:true */
         var vm = this;
@@ -41,8 +40,8 @@
                 server.dispose();
             }
 
-            activateBackground();
-            activate();
+            regisBackgroundMode();
+            regisNotificationService();
             setConfigTheme();
             activateNetworkService();
 
@@ -86,7 +85,7 @@
             }, 100);
         });
 
-        function activate() {
+        function regisNotificationService() {
             console.warn('activate: ' + vm.title);
 
             console.log("init push notification.");
@@ -119,9 +118,12 @@
                     console.warn(ex);
                 }
             }
+            else {
+                
+            }
         }
 
-        function activateBackground() {
+        function regisBackgroundMode() {
             if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
                 try {
                     // Prevent the app from going to sleep in background

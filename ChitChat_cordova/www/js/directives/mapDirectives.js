@@ -1,5 +1,5 @@
 
-angular.module('starter.directives', [])
+angular.module('spartan.directives', [])
 
 .directive('map', function() {
   return {
