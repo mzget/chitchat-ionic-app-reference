@@ -2,17 +2,17 @@
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Create {{createType}}</h2>
+        <h2>Edit Group</h2>
         <span flex></span>
-        <md-button ng-if="isCreate()==true" ng-click="create()">Create</md-button>
+        <md-button ng-if="isEdit()==true" ng-click="save()">Save</md-button>
       </div>
     </md-toolbar>
     <md-dialog-content style="overflow-x: hidden; overflow-y: hidden; ">
       <div class="md-dialog-content" style="width:500px;">
         
         <div layout-gt-sm="row">
-          <img id="avatar" class="avatar-modal" ng-src="http://ahwilkens.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"  style="border-radius:50%;width:100px;height:100px;" 
-          ng-click="image()"/>
+          <img id="avatar" class="avatar-modal" ng-if="currentRoom.image==null" src="img/img.jpg"  style="border-radius:50%;width:100px;height:100px;" ng-click="image()"/>
+          <img id="avatar" class="avatar-modal" ng-if="currentRoom.image!=null" ng-src="{{webServer}}/timthumb.php?src={{currentRoom.image}}"  style="border-radius:50%;width:100px;height:100px;" ng-click="image()"/>
             <md-input-container class="md-block" style="width:100%; margin-left:20px; margin-top:40px;">
               <label>Group Name</label>
               <input ng-model="model.groupname" >
@@ -20,16 +20,19 @@
         </div>
 
 
-        <div style="overflow-y: scroll; overflow-x: hidden; height:410px;" ng-if="createType=='PrivateGroup' && myProfile._id!=member._id ">
-          <ion-item id="{{member._id}}" class="item item-checkbox item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false" ng-if="myProfile._id!=member._id ">
+        <div style="overflow-y: scroll; overflow-x: hidden; height:410px;">
+          <ion-item id="{{member._id}}" class="item item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false">
               <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
               <img ng-if="member.image == null" src="img/img.jpg" style="border-radius:50%;width:50px;height:50px;"/>
               <div class="member-name" style="display:inline;"> {{member.displayname}} </div> 
-              <md-checkbox type="checkbox" style="position:absolute; width:100%; height:100%; left:0px; top:0px; margin-left:20px;"
-              ng-model="member.checked" ng-click="checked(member._id,!member.checked)"/>
+              
+              
+              <md-button class="md-icon-button" style="position:absolute; right:0px; margin-top:3px;" ng-click="removeMember(member._id)">
+                  <i class="material-icons">close</i>
+              </md-button>
           </ion-item>
         </div>
-
+<!-- 
         <div style="overflow-y: scroll; overflow-x: hidden; height:410px;" ng-if="createType=='ProjectBase'">
           <ion-item id="{{member._id}}" class="item item-checkbox item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false">
 
@@ -65,7 +68,7 @@
             </div>
 
           </ion-item>
-        <div>
+        <div> -->
 
     </md-dialog-content>
   </form>

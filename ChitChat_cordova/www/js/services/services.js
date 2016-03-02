@@ -160,7 +160,6 @@ angular.module('spartan.services', [])
           allmembers.push({ "_id": members[i]._id, "displayname": members[i].displayname, "image": members[i].image, "checked": getChecked(i) });
       }
     }
-    console.log(allmembers);
     return allmembers;
   }
   function getSelectedMember(){

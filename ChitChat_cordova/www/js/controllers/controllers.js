@@ -515,6 +515,107 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
     }
 }
 
+function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, roomSelected) {
+    var members = main.getDataManager().orgMembers;
+    $scope.currentRoom = roomSelected.getRoomOrLastRoom();
+    $scope.webServer = $rootScope.webServer;
+    $scope.allmembers = getMembersInRoom();
+    $scope.model = { groupname: $scope.currentRoom.name };
+    
+    function getMembersInRoom(){
+        var allmembers = [];
+        $.each($scope.currentRoom.members, function (index, result) {
+            if(members[result.id] !== undefined)
+                allmembers.push({ "_id": members[result.id]._id, "displayname": members[result.id].displayname, "image": members[result.id].image });
+        });
+        return allmembers;
+    }
+    $scope.isEdit = function(){
+        if($scope.model.groupname != $scope.currentRoom.name || isImageSource()) return true;
+        else return false;
+    }
+    $scope.image = function(){
+        $('#avatarToUpload').trigger('click');
+    }
+    $scope.save = function(){
+        saveImg();
+    }
+    $scope.removeMember = function (id) {
+        var idMember = [];
+        console.warn('remove_member_id', id);
+        idMember.push(id);
+        server.editGroupMembers("remove", $scope.currentRoom._id, RoomType[$scope.currentRoom.type], idMember, function (err, res) {
+            if (res.code === HttpStatusCode.success) {
+                //@ if user remove your self.
+                if (id == main.getDataManager().myProfile._id) {
+                    $mdDialog.hide();
+                    var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
+                    $rootScope.$broadcast('changeChat', group);
+                }
+                var indexMember;
+                async.mapSeries($scope.currentRoom.members, function iterator(item, cb) {
+                    if (!!item && item.id === id) {
+                        indexMember = $scope.currentRoom.members.indexOf(item);
+                        $scope.currentRoom.members.splice(indexMember, 1);
+                        cb();
+                    }
+                    else {
+                        cb();
+                    }
+                }, function done(err) {
+                    $scope.allmembers = getMembersInRoom();
+                    $rootScope.$broadcast('editGroup',[]);
+                });
+            }
+            else {
+                console.warn(err, res);
+            }
+        });
+    }
+    function isImageSource(){
+        var file    = document.querySelector('#avatarToUpload').files[0];
+        if(file === undefined)
+            return false;
+        else
+            return true;
+    }
+    function saveImg(){
+        if(isImageSource()){
+            $rootScope.$broadcast('uploadImg','uploadImg');
+        }
+        else
+            changeNameGroup();
+    }
+    function changeNameGroup() {
+        if ($scope.model.groupname != $scope.currentRoom.name) {
+            server.editGroupName($scope.currentRoom._id, RoomType[$scope.currentRoom.type], $scope.model.groupname, function (err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    $scope.currentRoom.name = $scope.model.groupname;
+                    $rootScope.$broadcast('roomName', $scope.currentRoom.name);
+                } else {
+                    console.warn(err, res);
+                }
+            });
+        } else {
+            //saveSuccess();
+        }
+    }
+    $scope.$on('avatarUrl', function(event, args) {
+        server.UpdatedGroupImage($scope.currentRoom._id, args, function (err, res) {
+            if (!err) {
+                console.log(JSON.stringify(res));
+                document.getElementById("UploadAvatar").reset();
+                $rootScope.$broadcast('editGroup',args);
+                changeNameGroup();
+                $scope.$apply();
+            } else {
+                console.warn(err, res);
+            }
+        });
+    });
+}
+
 function ProfileController($scope, $rootScope ) {
     $scope.myProfile = main.getDataManager().myProfile;
     $scope.webServer = $rootScope.webServer;
