@@ -20,15 +20,15 @@
 
         function link($scope, $element, $attrs) {
             $scope.$on('onNotify', function (event, data) {
-                notify();
+                notify(data);
             });
 
-            function notify() {
-                webNotification.showNotification('Example Notification', {
-                    body: 'Notification Text...',
-                    icon: '../bower_components/HTML5-Desktop-Notifications/alert.ico',
+            function notify(data) {
+                webNotification.showNotification('ChitChat Notification', {
+                    body: data.body,
+                    icon: '../../favicon.ico',
                     onClick: function onNotificationClicked() {
-                        window.alert('Notification clicked.');
+                       
                     },
                     autoClose: 3000 
                 },

@@ -72,7 +72,8 @@
                         .position('top right')
                     );
 
-                    $rootScope.$broadcast('onNotify', { });
+                    var data = { body: message };
+                    $rootScope.$broadcast('onNotify', data);
                 }
             }
         }
