@@ -531,7 +531,40 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
         ProjectBase.setPosition(id,position);
     }
 }
-
+function InviteController($scope,$rootScope,$mdDialog,CreateGroup,roomSelected){
+    $scope.myProfile = main.getDataManager().myProfile;
+    $scope.allmembers = CreateGroup.getAllMember();
+    $scope.webServer = $rootScope.webServer;
+    var room = roomSelected.getRoomOrLastRoom();
+    for (var i = 0; i < room.members.length; i++) {
+        var positionIndex;
+        $.each($scope.allmembers, function (index, result) {
+            if (result._id == room.members[i].id) {
+                positionIndex = index;
+            }
+        });
+        $scope.allmembers.splice(positionIndex, 1);
+    }
+    $scope.invite = function(){
+        server.editGroupMembers("add", room._id, RoomType[room.type], CreateGroup.getSelectedId(), function (err, res) {
+            if (res.code === HttpStatusCode.success) {
+                console.log(JSON.stringify(res));
+                $rootScope.$broadcast('inviteGroup',CreateGroup.getSelectedId());
+                $mdDialog.hide();
+            }
+            else {
+                console.warn(err, res);
+            }
+        });
+    }
+    $scope.isInvite = function(){
+        if(CreateGroup.getSelectedMember().length >2) return true;
+        else return false;
+    }
+    $scope.checked = function(id,selected){
+        CreateGroup.setMemberSelected(id,selected);
+    }
+}
 function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, roomSelected) {
     var members = main.getDataManager().orgMembers;
     $scope.currentRoom = roomSelected.getRoomOrLastRoom();

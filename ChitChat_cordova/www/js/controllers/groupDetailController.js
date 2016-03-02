@@ -364,7 +364,7 @@
     }
 
 
-    function InfoCtrl($scope, $rootScope, $mdDialog, modalFactory, roomSelected) {
+    function InfoCtrl($scope, $rootScope, $mdDialog, modalFactory, roomSelected, CreateGroup) {
         $scope.$on('toggleInfo', function(event, args) {
             $scope.viewInfo = args;
         });
@@ -440,6 +440,19 @@
             if(contactId!=main.getDataManager().myProfile._id) 
                 modalFactory.initContactWeb($rootScope, contactId);    
         };
+        $scope.invite = function(ev){
+            $mdDialog.show({
+              controller: InviteController,
+              templateUrl: 'templates_web/modal-invite.html',
+              parent: angular.element(document.body),
+              targetEvent: ev,
+              clickOutsideToClose:true,
+              onRemoving: closeDialogInvite
+            });
+        }
+        function closeDialogInvite(){
+            CreateGroup.clear();
+        }
 
         $scope.editGroup = function(ev) {
             $mdDialog.show({
@@ -452,9 +465,20 @@
             });
         }
         function closeDialogEditGroup(){
-            CreateGroup.clear();
             document.getElementById("UploadAvatar").reset();
         }
+        $scope.$on('inviteGroup', function(event, args) {
+            var room = roomSelected.getRoomOrLastRoom();
+            var newMember = [];
+            for (var i = 0; i < args.length; i++) {
+                newMember.push({ "id": args[i] });
+            };
+            room.members = room.members.concat(newMember);
+            groupMembers(room.members, room.members.length, function done(members) {
+                $scope.members = members;
+                $scope.$apply();
+            }); 
+        });
         $scope.$on('editGroup', function(event, args) {
             var room = roomSelected.getRoomOrLastRoom(); 
             if(args.length == 0){
@@ -466,7 +490,6 @@
             else{
                 $scope.image = args;
                 room.image = args;
-                console.log(main.getDataManager().privateGroups[room._id],room.type);
                 $scope.$apply();
             }
         });

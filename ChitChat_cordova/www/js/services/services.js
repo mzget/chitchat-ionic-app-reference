@@ -219,6 +219,9 @@ angular.module('spartan.services', [])
     }
     return id; 
   }
+  function getSelectedId(){ 
+    return id_checked; 
+  }
 
   function getChecked(id){
     var checked = false;
@@ -253,6 +256,7 @@ angular.module('spartan.services', [])
     getSelectedMember: getSelectedMember,
     getSelectedMemberProjectBaseWithMe: getSelectedMemberProjectBaseWithMe,
     getSelectedIdWithMe: getSelectedIdWithMe,
+    getSelectedId: getSelectedId,
     setMemberSelected: setMemberSelected,
     clear: clear
   }
