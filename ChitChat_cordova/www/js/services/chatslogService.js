@@ -51,7 +51,7 @@
                         unread.message = newMsg;
                         unread.rid = newMsg.rid;
                         console.warn("room to add: ", JSON.stringify(unreadMessageMap[newMsg.rid]));
-                        var count = Number(unreadMessageMap[newMsg.rid].count);
+                        var count = (!!unreadMessageMap[newMsg.rid]) ? Number(unreadMessageMap[newMsg.rid].count): 0;
                         count++;
                         unread.count = count;
                         unreadMessageMap[unread.rid] = unread;

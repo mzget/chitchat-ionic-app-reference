@@ -16,7 +16,9 @@ angular.module('spartan.controllers')
 	
 })
 
-.controller('HeaderChatCtrl', function($scope, $rootScope, $ionicLoading, Favorite, blockNotifications, roomSelected){
+.controller('HeaderChatCtrl', function($state, $scope, $rootScope, $ionicLoading, Favorite, blockNotifications, roomSelected, networkService){ 
+    $scope.warnMessage = '';
+    $scope.reload = reload;
     $scope.isFavorite = function(id){
         return Favorite.isFavorite(id);
     }
@@ -38,6 +40,12 @@ angular.module('spartan.controllers')
             resizeUI();
         }, 1000);
     });
+    $scope.$on('onSocketDisconnected', function (event, args) {
+        //@ Changed toolbar for tell user what happened.
+        document.getElementById('chatToolbar').className = 'md-warn';
+        $scope.warnMessage = 'Server connection problems. App still working offline.';
+    });
+
     window.onresize = function(event) {
         resizeUI();
     };
@@ -50,12 +58,18 @@ angular.module('spartan.controllers')
             resizeUI();
         }, 100);
     }
+
     function resizeUI(){
         document.getElementById('chatMessage').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
         document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
         document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
         document.getElementById('infoLayout').style.height = window.innerHeight - 66 + "px";
     }
+
+    function reload() {
+        location.href = '';
+    }
+
     $scope.editFavorite = function(editType,id,type){
         $ionicLoading.show({
               template: 'Loading..'
@@ -182,7 +196,8 @@ angular.module('spartan.controllers')
             location.href = '';
         }
 })
-.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
+
+.controller('AccountCreate', function ($scope, $rootScope, $state, $ionicHistory, $ionicLoading, $cordovaProgress, CreateGroup, FileService) {
     console.log('AccountCreate',CreateGroup.createType);
     var myProfile = main.getDataManager().myProfile;
     $rootScope.members = CreateGroup.getSelectedMember();
@@ -373,6 +388,7 @@ angular.module('spartan.controllers')
     return filtered;
   };
 })
+
 .filter('orderByDate', function () {
   return function(items, field, reverse) {
     var filtered = [];
@@ -393,6 +409,7 @@ angular.module('spartan.controllers')
     return filtered;
   };
 });
+
 // .directive('hideTabBar', function($timeout) {
 //   var style = angular.element('<style>').html(
 //     '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +

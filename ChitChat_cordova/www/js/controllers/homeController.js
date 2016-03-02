@@ -22,9 +22,13 @@
                 }
                 catch(ex) { console.warn(ex); }
 		    }
-		    if ($ionicLoading) {
+            else {
 		        $ionicLoading.hide();
-		    }
+                
+                if(!server._isConnected) {
+                    location.href = '';
+                }
+            }
 
 		    dbAccessService.setMessageDAL(messageDAL);
 			localNotifyService.registerPermission();
@@ -111,10 +115,6 @@
             }
 		}
 
-		$scope.$on('editFavorite', function(event, args) {
-			$scope.$apply(function(){$scope.favorites = getFavorite();});
-		})
-
 		function onLeave() {
 		
 		}
@@ -180,8 +180,8 @@
 			return Favorite.isFavorite(id);
 		}
         
-			activate();
-			setupScope();
+		activate();
+		setupScope();
 
 			//<!-- My profile.
 			$ionicModal.fromTemplateUrl('templates/modal-myprofile.html', {
@@ -236,6 +236,10 @@
 			$scope.$on('modal.removed', function () {
 				// Execute action
 			});
+
+			$scope.$on('editFavorite', function (event, args) {
+			    $scope.$apply(function () { $scope.favorites = getFavorite(); });
+			})
 	
 		$scope.viewlist = function(list) {
 			var listHeight = $('#list-'+list+' .list').height();		
@@ -304,11 +308,11 @@
 		//<!-- Contact modal -------------------------->
 		$scope.openContactModal = function (contactId) {
 			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
-				modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
-					$scope.contactModal.show();
-				});
+			    modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
+			        $scope.contactModal.show();
+			    });
 			}else{
-				modalFactory.initContactWeb($rootScope, contactId);
+			    modalFactory.initContactWeb($rootScope, contactId);
 			}		
 		};
 		$scope.closeContactModal = function() {

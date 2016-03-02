@@ -27,11 +27,12 @@ module ChatServer {
             return this.Instance;
         }
 
+        static connectionProblemString : string = 'Server connection is unstable.';
+
         host: string;
         port: number;
         authenData: AuthenData;
         appConfig : any;
-        _isInit = false;
         _isConnected = false;
         _isLogedin = false;
         socketComponent: SocketComponent;
@@ -238,6 +239,7 @@ module ChatServer {
                     }
                     
                     pomelo.on('disconnect', function data(reason) {
+                        self._isConnected = false;
                         if (self.socketComponent !== null)
                             self.socketComponent.disconnected(reason);
                     });

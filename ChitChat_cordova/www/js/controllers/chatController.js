@@ -237,19 +237,29 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	};
 	
 	// WebView
-	$scope.webview = function(uri){
-		http = '';
-		if( uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp' )
-			http = 'http://';
-		http += uri;
-		//window.open(http, '_blank');
-		
-		//window.open(encodeURI(http), '_blank', 'location=yes');
-		
-		//$scope.webviewUrl = 'http://www.google.com';
-		$scope.webviewUrl = $sce.trustAsResourceUrl(http);
-		$scope.webviewTitle = uri;
-		$scope.openModalWebview();
+	$scope.webview = function (uri) {
+	    if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+	        http = '';
+	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
+	            http = 'http://';
+	        http += uri;
+	        //window.open(http, '_blank');
+
+	        //window.open(encodeURI(http), '_blank', 'location=yes');
+
+	        //$scope.webviewUrl = 'http://www.google.com';
+	        $scope.webviewUrl = $sce.trustAsResourceUrl(http);
+	        $scope.webviewTitle = uri;
+	        $scope.openModalWebview();
+	    }
+	    else {
+	        http = '';
+	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
+	            http = 'http://';
+	        http += uri;
+
+	        window.open(http);
+	    }
 	};
 		
 	$("#modal-webview-iframe").on('load', function () {

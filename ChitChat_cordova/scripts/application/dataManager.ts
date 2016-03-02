@@ -53,6 +53,8 @@ class DataManager implements absSpartan.IFrontendServerListener {
     public setRoomAccessForUser(data) {
         if(!!data.roomAccess) {
             this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
+            
+            console.info('set user roomAccess info.');
         }
     }
     public updateRoomAccessForUser(data) {

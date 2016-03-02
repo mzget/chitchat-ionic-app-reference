@@ -1,4 +1,4 @@
-﻿
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,17 +61,31 @@
     <script src="js/directives.js"></script>
 	<script src="js/require.js" data-main="scripts/appBundle"></script>
 	<script src="scripts/appBundle.js"></script>
-
+    
+    <script type="application/javascript">          
+        function loadBody() {
+            console.log('loadBody');
+        }
+        function unloadBody() {
+            console.log('unloadBody');
+        }
+    </script>
 </head>
-<body ng-app="starter" ng-cloak>    
+    
+<body ng-app="starter" ng-cloak onload="javascript:loadBody()" onunload="javascript:unloadBody()">    
 	<script src="js/socket.io.js"></script>
 	<script>
         console.log("index....");
+        
 		var socket = io;
 		var main = Main.prototype;
 		var server = ChatServer.ServerImplemented.prototype;
 		var serverEvents = ChatServer.ServerEventListener.prototype;
 		var dataManager = DataManager.prototype;
+
+        main.setDataManager(dataManager);
+        main.setServerListener(serverEvents);
+        main.setServerImp(server);
 
 		var messageStore = localforage.createInstance({
 		    name: "message"
