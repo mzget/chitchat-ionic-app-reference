@@ -5,7 +5,7 @@
         .module('spartan.notify', [])
         .factory('localNotifyService', localNotifyService);
 
-    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, $ionicPopup, $timeout, blockNotifications) {
+    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, $ionicPopup, $timeout, $mdToast, blockNotifications) {
         var service = {
             getData: getData,
             scheduleSingleNotification: scheduleSingleNotification,
@@ -44,16 +44,23 @@
                 });
             }
             else {
-                var myPopup = $ionicPopup.show({
-                    title: message
-                });
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent('Simple Toast!')
+                        .position($scope.getToastPosition())
+                        .hideDelay(3000)
+                );
+                
+                // var myPopup = $ionicPopup.show({
+                //     title: message
+                // });
 
-                myPopup.then(function (res) {
-                });
+                // myPopup.then(function (res) {
+                // });
 
-                $timeout(function () {
-                    myPopup.close(); //close the popup after 2 seconds for some reason
-                }, 2000);
+                // $timeout(function () {
+                //     myPopup.close(); //close the popup after 2 seconds for some reason
+                // }, 2000);
             }
         }
         
