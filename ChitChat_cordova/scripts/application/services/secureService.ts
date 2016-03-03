@@ -53,7 +53,7 @@
                 plaintext = bytes.toString(CryptoJS.enc.Utf8);
             }
             catch (e) {
-                console.error(e);
+                console.warn(e);
             }
             
             if (!!plaintext)

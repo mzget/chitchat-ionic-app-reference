@@ -256,6 +256,7 @@
                 //@ todo.
                 /**
                  * Merge messages record to chatMessages array.
+                 * Never save message to persistend layer.
                  */
                 let datas = [];
                 datas = res.data;

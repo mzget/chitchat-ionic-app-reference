@@ -11,6 +11,8 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'companyController';
+        $scope.logOut = logOut;
+        $scope.showMyProfile = showMyProfile;
 
         activate();
 
@@ -42,7 +44,7 @@
 
         $scope.myProfile = main.getDataManager().myProfile;
 
-        $scope.logOut = function () {
+        function logOut() {
             console.warn("logOut...");
             server.logout();
             server.dispose();
@@ -53,7 +55,7 @@
             location.href = '';
         }
 
-        $scope.showMyProfile = function(ev) {
+        function showMyProfile(ev) {
             $mdDialog.show({
               controller: ProfileController,
               templateUrl: 'templates_web/modal-myprofile.html',

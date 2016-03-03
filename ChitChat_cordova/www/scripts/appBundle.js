@@ -1293,6 +1293,8 @@ var MessageDAL = (function () {
         this.store.getItem(rid).then(function (value) {
             console.log("get persistent success");
             done(null, value);
+        }).catch(function rejected(err) {
+            console.warn(err);
         });
     };
     MessageDAL.prototype.saveData = function (rid, chatRecord, callback) {
@@ -1301,6 +1303,8 @@ var MessageDAL = (function () {
             if (callback != null) {
                 callback(null, value);
             }
+        }).catch(function rejected(err) {
+            console.warn(err);
         });
     };
     MessageDAL.prototype.removeData = function () { };
@@ -1479,7 +1483,7 @@ var SecureService = (function () {
                 plaintext = bytes.toString(CryptoJS.enc.Utf8);
             }
             catch (e) {
-                console.error(e);
+                console.warn(e);
             }
             if (!!plaintext)
                 callback(null, plaintext);

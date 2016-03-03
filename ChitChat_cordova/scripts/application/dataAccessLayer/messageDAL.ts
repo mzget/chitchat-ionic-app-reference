@@ -10,6 +10,8 @@
         this.store.getItem(rid).then(function (value) {
             console.log("get persistent success");
             done(null, value);
+        }).catch(function rejected(err) {
+            console.warn(err);
         });
     }
 
@@ -19,6 +21,8 @@
             if (callback != null) {
                 callback(null, value);
             }
+        }).catch(function rejected(err) {
+            console.warn(err);
         });
     }
 
