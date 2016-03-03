@@ -184,6 +184,19 @@ color: #fff;}
   background-color: white;
 }
 
+.md-select-value :first-child {
+  flex: 1 0 0 !important;
+  -webkit-flex: 1 0 0 !important;
+  -ms-flex: 1 0 0 !important;
+}
+
+md-toast.md-success-toast-theme .md-toast-content {
+  background-color: green;
+}
+md-toast.md-error-toast-theme .md-toast-content {
+  background-color: red;
+}
+
 
 .background {
     background: rgba(31,183,229,1);

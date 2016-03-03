@@ -29,11 +29,11 @@
 
         <div ng-show=" roomType==1 " style="margin-top:-25px;">
             <p style="margin-top:-13px; display:inline; line-height:50px;"> Members </p>
-            <md-button class="md-icon-button" style="position:absolute; margin-left:255px; margin-top:5px;" >
+            <md-button class="md-icon-button" style="position:absolute; margin-left:255px; margin-top:5px;" ng-click="editGroup($event)" ng-if="isAdmin(myProfile._id)">
                 <i class="material-icons">settings</i>
             </md-button>
             <ion-item class="item-remove-animate item-avatar item-icon-right" 
-            ng-repeat="member in members|orderObjectBy:'displayname':false|filter:search" type="item-text-wrap" ng-click="openContactModal(member._id)" style="border-style: solid none;">
+            ng-repeat="member in members|orderObjectBy:'displayname':false track by $index" type="item-text-wrap" ng-click="openContactModal(member._id)" style="border-style: solid none;">
                 <img ng-src="http://203.113.25.44/timthumb.php?src={{member.image}}&h=40&w=40" />
                 <h2>{{member.displayname}}</h2>
                 <p style="float:right; position:absolute; right:5px;" ng-show="member.role!=0 && member.role!=1">{{member.role}}</p>

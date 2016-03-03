@@ -365,6 +365,7 @@
 
 
     function InfoCtrl($scope, $rootScope, $mdDialog, modalFactory, roomSelected, CreateGroup) {
+        $scope.myProfile = main.getDataManager().myProfile;
         $scope.$on('toggleInfo', function(event, args) {
             $scope.viewInfo = args;
         });
@@ -467,6 +468,12 @@
         function closeDialogEditGroup(){
             document.getElementById("UploadAvatar").reset();
         }
+        $scope.isAdmin = function(id){
+            if(roomSelected.getRoom() !== undefined)
+                return isAdminInProjectBase(roomSelected.getRoom(),id);
+            else
+                return false;
+        }
         $scope.$on('inviteGroup', function(event, args) {
             var room = roomSelected.getRoomOrLastRoom();
             var newMember = [];
@@ -482,10 +489,17 @@
         $scope.$on('editGroup', function(event, args) {
             var room = roomSelected.getRoomOrLastRoom(); 
             if(args.length == 0){
-                groupMembers(room.members, room.members.length, function done(members) {
-                    $scope.members = members;
-                    $scope.$apply();
-                });
+                if(room.type == RoomType.privateGroup){
+                    groupMembers(room.members, room.members.length, function done(members) {
+                        $scope.members = members;
+                        $scope.$apply();
+                    });
+                }else if(room.type == RoomType.projectBaseGroup){
+                    getMembersInProjectBase(room, function (value) {
+                        $scope.allmembers = value;
+                        $scope.$apply();
+                    });
+                }
             }
             else{
                 $scope.image = args;

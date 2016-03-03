@@ -522,8 +522,6 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
         }
     }
 
-
-
     $scope.setRole = function(id,role){
         ProjectBase.setRole(id,role);
     }
@@ -565,20 +563,69 @@ function InviteController($scope,$rootScope,$mdDialog,CreateGroup,roomSelected){
         CreateGroup.setMemberSelected(id,selected);
     }
 }
-function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, roomSelected) {
+function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, $mdToast, roomSelected, ProjectBase) {
     var members = main.getDataManager().orgMembers;
     $scope.currentRoom = roomSelected.getRoomOrLastRoom();
     $scope.webServer = $rootScope.webServer;
     $scope.allmembers = getMembersInRoom();
     $scope.model = { groupname: $scope.currentRoom.name };
+    if($scope.currentRoom.type == RoomType.projectBaseGroup)
+        $scope.jobPosition=[];
+        $scope.rolePosition = [
+            {"role": MemberRole[MemberRole.member]},
+            {"role": MemberRole[MemberRole.admin]}];
+        for(x=0; x<main.getDataManager().companyInfo.jobPosition.length; x++){
+            $scope.jobPosition.push({"job":main.getDataManager().companyInfo.jobPosition[x]});
+        }
+    }
     
     function getMembersInRoom(){
         var allmembers = [];
         $.each($scope.currentRoom.members, function (index, result) {
-            if(members[result.id] !== undefined)
-                allmembers.push({ "_id": members[result.id]._id, "displayname": members[result.id].displayname, "image": members[result.id].image });
+            if($scope.currentRoom.type == RoomType.projectBaseGroup){
+                if(members[result.id] !== undefined){
+                    allmembers.push({ "_id": members[result.id]._id, "displayname": members[result.id].displayname, "image": members[result.id].image, "isAdmin": isAdminInProjectBase($scope.currentRoom,result.id) });
+                    ProjectBase.setRolePosition(result.id,result.role,result.jobPosition);
+                }
+            }else{
+                if(members[result.id] !== undefined)
+                    allmembers.push({ "_id": members[result.id]._id, "displayname": members[result.id].displayname, "image": members[result.id].image });
+            }
         });
         return allmembers;
+    }
+    $scope.changeRole = function(id,role){
+        ProjectBase.setRole(id,role);
+        saveRolePosition(id);
+    }
+    $scope.changePosition = function(id,position){
+        ProjectBase.setPosition(id,position);
+        saveRolePosition(id);
+    }
+    function saveRolePosition(id){
+        var member = new function(){
+            this.id = id;
+            this.role = MemberRole[ ProjectBase.getRolePositionIndex(id)[0] ];
+            this.jobPosition = ProjectBase.getRolePosition(id)[1];
+        }
+        server.editMemberInfoInProjectBase($scope.currentRoom._id,RoomType[$scope.currentRoom.type],member, function(err, res) {
+            if (!err) {
+                console.log(JSON.stringify(res));
+                $.each($scope.currentRoom.members, function(index, result) {
+                    if(result._id == id){
+                        result.role = member.role;
+                        result.jobPosition = member.jobPosition;
+                    }
+                });
+                showToastEditGroup('success','Change Complete');
+                $rootScope.$broadcast('editGroup',[]);
+                //saveSuccess();
+            }
+            else {
+                console.warn(err, res);
+                showToastEditGroup('error','Cannot Change');
+            }
+        });
     }
     $scope.isEdit = function(){
         if($scope.model.groupname != $scope.currentRoom.name || isImageSource()) return true;
@@ -598,6 +645,7 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, roomS
             if (res.code === HttpStatusCode.success) {
                 //@ if user remove your self.
                 if (id == main.getDataManager().myProfile._id) {
+                    showToastEditGroup('success','Leave group complete');
                     $mdDialog.hide();
                     var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
                     $rootScope.$broadcast('changeChat', group);
@@ -613,12 +661,14 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, roomS
                         cb();
                     }
                 }, function done(err) {
+                    showToastEditGroup('success','Remove Complete');
                     $scope.allmembers = getMembersInRoom();
                     $rootScope.$broadcast('editGroup',[]);
                 });
             }
             else {
                 console.warn(err, res);
+                showToastEditGroup('error','Cannot Remove or Leave');
             }
         });
     }
@@ -643,14 +693,36 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, roomS
                     console.log(JSON.stringify(res));
                     $scope.currentRoom.name = $scope.model.groupname;
                     $rootScope.$broadcast('roomName', $scope.currentRoom.name);
+                    showToastEditGroup('success','Change Complete');
                 } else {
                     console.warn(err, res);
                 }
             });
         } else {
             //saveSuccess();
+            showToastEditGroup('success','Change Complete');
         }
     }
+
+    $scope.getRole = function(id){
+        var role = ProjectBase.getRolePosition(id);
+        return role[0];
+    }
+    $scope.getPosition = function(id){
+        var position = ProjectBase.getRolePosition(id);
+        return position[1];
+    }
+
+    function showToastEditGroup(type,msg) {
+        $mdToast.show(
+            $mdToast.simple()
+                .textContent(msg)
+                .hideDelay(3000)
+                .position('top right')
+                .theme(type + '-toast')
+        );
+    }
+
     $scope.$on('avatarUrl', function(event, args) {
         server.UpdatedGroupImage($scope.currentRoom._id, args, function (err, res) {
             if (!err) {
