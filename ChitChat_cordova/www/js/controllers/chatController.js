@@ -19,58 +19,33 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
+	$scope.viewProfile = viewProfile;
+	$scope.groupDetail = groupDetail;
+	$scope.openPopover = openPopover;
+	$scope.openModal = openModal;
+	$scope.openModalSticker = openModalSticker;
+	$scope.sendSticker = sendSticker;
+	$scope.openModalRecorder = openModalRecorder;
+	$scope.openModalWebview = openModalWebview;
+	$scope.closeModalWebview = closeModalWebview;
+    $scope.openReaderModal = openReaderModal;
+    $scope.closeReaderModal = closeReaderModal;
+    $scope.webview = webview;
+    $scope.image = image;
+    $scope.video = video;
+    $scope.voice = voice;
+    $scope.viewReader = viewReader;
+    $scope.parseJSON= parseJSON;
+    $scope.viewLocation = viewLocation;
+    $scope.openMap = openMap;
+    $scope.openMapModal = openMapModal;
+    $scope.closeMapModal = closeMapModal;
+    $scope.isValidURI = isValidURI;
+    $scope.editFavorite = editFavorite;
+    $scope.editBlockNoti = editBlockNoti;
+    $scope.isFavorite = isFavorite;
+    $scope.isBlockNoti = isBlockNoti;
     
-    function setScopeData(){
-		myprofile = main.getDataManager().myProfile;
-		allMembers = main.getDataManager().orgMembers;
-		chatRoomApi = main.getChatRoomApi();
-		$scope.allMembers = allMembers;
-		$scope.myprofile = myprofile;
-	}
-
-    function setRoom() {
-	    self.currentRoom = roomSelected.getRoomOrLastRoom();
-	    console.info("setup new room: ", self.currentRoom);
-
-	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-	        if (self.currentRoom == null || self.currentRoom === undefined) {
-	            var group = main.getDataManager().getGroup($rootScope.teamInfo.root);
-	            roomSelected.setRoom(group);
-	           self.currentRoom = roomSelected.getRoomOrLastRoom();
-	        }
-	    }
-        
-	    $scope.currentRoom = self.currentRoom;
-
-	    //<!-- Set up roomname for display title of chatroom.
-	    var roomName = self.currentRoom.name;
-	    if (!roomName || roomName === "") {
-	        if (self.currentRoom.type === RoomType.privateChat) {
-	            self.currentRoom.members.some(function iterator(member) {
-	                if (member.id !== myprofile._id) {
-	                    self.currentRoom.name = allMembers[member.id].displayname;
-	                    return true;
-	                }
-	            });
-	        }
-	    }
-
-	    if ($scope.currentRoom.type == RoomType.privateChat) {
-	        $.each($scope.currentRoom.members, function (index, value) {
-	            if (value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
-	        });
-	    }
-
-	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-	        $rootScope.$broadcast('roomName', $scope.currentRoom.name);
-	    }
-
-        setTimeout(function() {   
-		    chatRoomService.init();       
-		    chatRoomService.getPersistendMessage(); 
-        }, 100);
-	}
-
 	function activate() {
 	    console.log(self.title + " is activate");
 
@@ -118,12 +93,59 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    });
 		});
 	}
+	function setScopeData() {
+	    myprofile = main.getDataManager().myProfile;
+	    allMembers = main.getDataManager().orgMembers;
+	    chatRoomApi = main.getChatRoomApi();
+	    $scope.allMembers = allMembers;
+	    $scope.myprofile = myprofile;
+	}
+	function setRoom() {
+	    self.currentRoom = roomSelected.getRoomOrLastRoom();
+	    console.info("setup new room: ", self.currentRoom);
 
+	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+	        if (self.currentRoom == null || self.currentRoom === undefined) {
+	            var group = main.getDataManager().getGroup($rootScope.teamInfo.root);
+	            roomSelected.setRoom(group);
+	            self.currentRoom = roomSelected.getRoomOrLastRoom();
+	        }
+	    }
+
+	    $scope.currentRoom = self.currentRoom;
+
+	    //<!-- Set up roomname for display title of chatroom.
+	    var roomName = self.currentRoom.name;
+	    if (!roomName || roomName === "") {
+	        if (self.currentRoom.type === RoomType.privateChat) {
+	            self.currentRoom.members.some(function iterator(member) {
+	                if (member.id !== myprofile._id) {
+	                    self.currentRoom.name = allMembers[member.id].displayname;
+	                    return true;
+	                }
+	            });
+	        }
+	    }
+
+	    if ($scope.currentRoom.type == RoomType.privateChat) {
+	        $.each($scope.currentRoom.members, function (index, value) {
+	            if (value.id != main.getDataManager().myProfile._id) { $scope.otherId = value.id; }
+	        });
+	    }
+
+	    if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+	        $rootScope.$broadcast('roomName', $scope.currentRoom.name);
+	    }
+
+	    setTimeout(function () {
+	        chatRoomService.init();
+	        chatRoomService.getPersistendMessage();
+	    }, 100);
+	}
 	function blockUI(boo) {
 	    console.log("block ui", boo);
 		$scope.inactive = boo;
 	}
-
 	function setupMenuItem() {
 	    if (self.currentRoom.type != RoomType.privateChat) {
 	        $ionicPopover.fromTemplateUrl('templates/popover-group.html', {
@@ -139,8 +161,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        });
 	    }
 	}
-
-	$scope.viewProfile = function(){
+	function viewProfile() {
 	    $scope.popover.hide();
 	    if ($state.current.name === NGStateUtil.tab_chats_chat) {
 	        $state.go(NGStateUtil.tab_chats_chat_viewprofile, { chatId: $scope.otherId });
@@ -148,8 +169,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        $state.go('tab.group-viewprofile', { chatId: $scope.otherId });
 	    }
 	}
-
-	$scope.groupDetail = function(state){
+	function groupDetail(state) {
 		$scope.popover.hide();
 		$rootScope.selectTab = state;
 		if ($state.current.name === NGStateUtil.tab_chats_chat) {
@@ -158,11 +178,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			$state.go('tab.group-members', { chatId: self.currentRoom._id });
 		}
 	}
-
-	$scope.openPopover = function ($event) {
+	function openPopover($event) {
 	    $scope.popover.show($event);
-	};
-	
+	};	
 	function sendMessageResponse(err, res) {
 		if (!!err) {
 			console.warn("send message fail.", err);
@@ -172,218 +190,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			blockUI(true);
 		}
 	}
-	
-	modalcount = 0;	
-	// Modal - Chat menu 
-	$scope.openModal = function() {
-		modalcount++;
-		$scope.chatMenuModal.show();
-		$('#chatMessage').animate({'bottom':'272px'}, 350);
-		$('#chatDetail').animate({'top':'-272px'}, 350);
-	};
-	
-	// Modal - Sticker
-	$scope.openModalSticker = function() {
-		modalcount++;
-		$scope.modalSticker.show();
-	};
-
-	$scope.sendSticker = function(sticker) {
-		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
-		
-		$scope.modalSticker.hide();
-		$scope.chatMenuModal.hide();
-	}
-	// Modal - Audio Recorder
-	$scope.openModalRecorder = function(){
-		modalcount++;
-		$scope.modalAudio.show();
-	}
-	
-	// Modal - Webview 
-	$scope.openModalWebview = function() {
-		modalcount++;
-		$scope.modalWebview.show();
-	};
-
-	$scope.closeModalWebview = function() {
-		$scope.modalWebview.hide();
-	};
-	
-	// Modal Hidden		 
-	$scope.$on('modal.hidden', function() {
-		modalcount--;
-		
-		if( modalcount == 1 )
-		{
-			$scope.chatMenuModal.hide();			
-		}
-		$('#chatMessage').animate({'bottom':'0'}, 350);
-		$('#chatDetail').animate({'top':'0'}, 350);
-
-		if($('.audio-recorder').is(".recording")){
-			$('.audio-recorder').removeClass("recording");
-			$('.audio-recorder').addClass("unrecording");
-			$scope.$broadcast('cancelRecord', 'cancelRecord');
-		}		
-	});
-
-	$scope.openReaderModal = function() {
-		$scope.readerViewModal.show();
-	};
-
-	$scope.closeReaderModal = function() {
-		$scope.readerViewModal.hide();
-	};
-	
-	// WebView
-	$scope.webview = function (uri) {
-	    if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
-	        http = '';
-	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
-	            http = 'http://';
-	        http += uri;
-	        //window.open(http, '_blank');
-
-	        //window.open(encodeURI(http), '_blank', 'location=yes');
-
-	        //$scope.webviewUrl = 'http://www.google.com';
-	        $scope.webviewUrl = $sce.trustAsResourceUrl(http);
-	        $scope.webviewTitle = uri;
-	        $scope.openModalWebview();
-	    }
-	    else {
-	        http = '';
-	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
-	            http = 'http://';
-	        http += uri;
-
-	        window.open(http);
-	    }
-	};
-		
-	$("#modal-webview-iframe").on('load', function () {
-	    alert($(this).contentDocument.title);
-	});
-
-	$("#send_message").on("keyup", function (event) {
-	    if (event.keyCode==13) {
-	        $("#sendMsg").get(0).click();
-	    }
-	});
-	
-	// Send Message btn
-	$('#sendMsg').click(function()
-	{
-		var content = $('#send_message').val();
-		if( content != '' )
-		{
-			// Clear Message
-			$('#send_message').val('')
-			
-			if (server.appConfig.encryption == true) {
-			    main.encodeService(content, function (err, result) {
-			        if (err) {
-			            console.error(err);
-			        }
-			        else {
-			            chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
-			        }
-			    });
-			}
-			else {
-			    chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, content, ContentType[ContentType.Text], sendMessageResponse);
-			}
-		}
-	});
-
-	function sendLocation(locationObj) {
-		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
-	}
-
-	$scope.image = function(){
-		if (ionic.Platform.platform() === "ios") {
-			$scope.$broadcast('addImg', 'addImg');
-		}else{
-			$('#fileToUpload').trigger('click');
-		}
-	}
-
-	$scope.video = function(){
-		if (ionic.Platform.platform() === "ios") {
-			$scope.$broadcast('captureVideo', 'captureVideo');
-		}else{
-			$('#fileToUpload').trigger('click');
-		}
-	}
-
-	$scope.voice = function(){
-		if($('.audio-recorder').is(".recording")){
-			$('.audio-recorder').removeClass("recording");
-			$('.audio-recorder').addClass("unrecording");
-			$scope.$broadcast('stopRecord', 'stopRecord');
-		}else{
-			$('.audio-recorder').removeClass("unrecording");
-			$('.audio-recorder').addClass("recording");
-			$scope.$broadcast('startRecord', 'startRecord');
-		}
-	}
-	
-	// Recivce ImageUri from Gallery then send to other people
-	$scope.$on('fileUri', function(event, args) {
-		if (ionic.Platform.platform() === "ios") {
-			if(args[1] == ContentType[ContentType.Image] ){
-				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
-			}else if(args[1] == ContentType[ContentType.Voice] ){
-				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
-			}else if(args[1] == ContentType[ContentType.Video] ){
-				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
-			}
-		}else{
-			if(args[1] == ContentType[ContentType.Image] ){
-				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
-			}else if(args[1] == ContentType[ContentType.Video] ){
-				var file = document.querySelector("[id='fileToUpload']").files[0];
-				var fileUrl = $sce.trustAsResourceUrl( URL.createObjectURL(file) );
-				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":fileUrl,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
-			}else if(args[1] == ContentType[ContentType.File]){
-				var file = document.querySelector("[id='fileToUpload']").files[0];
-				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.File],"body":file.name,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
-			}
-		}
-	});
-
-	// Send Image and remove temp Image
-	$scope.$on('fileUrl', function(event,args){
-		if(args[2]==ContentType[ContentType.Image]){
-			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], sendMessageResponse);
-		}else if(args[2]==ContentType[ContentType.Voice]){
-			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], sendMessageResponse);
-		}else if(args[2]==ContentType[ContentType.Video]){
-			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
-		}
-		if (ionic.Platform.platform() !== "ios") {
-			if(args[2]==ContentType[ContentType.File]){
-				console.log(args);
-				chatRoomApi.chatFile(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.File], 'bobobobo');
-			}
-		}
-		$.each($scope.chat, function(index, value){
-			if(value._id == args[1]) { 
-				$scope.chat[index] = new Object; 
-			}
-		});
-	});
-
-	$scope.$on('delectTemp', function(event,args){
-		$.each($scope.chat, function(index, value){
-			if(value._id == args[0]) { 
-				$scope.chat[index] = new Object; 
-			}
-		});
-	});
-
-	$scope.viewReader = function (readers) {
+	function viewReader(readers) {
 		var members = [];
 		async.eachSeries(readers, function iterator(item, cb) {
 			var member = dataManager.orgMembers[item];
@@ -394,10 +201,10 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			$scope.openReaderModal();
 		});
 	}
-	$scope.parseJSON= function(json){
+	function parseJSON(json){
 		return JSON.parse(json);
 	}
-	$scope.viewLocation = function (messageId) {
+	function viewLocation(messageId) {
 		console.info('viewLocation');
 		var message = chatRoomService.get(messageId);
 		
@@ -407,27 +214,26 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		viewLocation($scope, JSON.parse(message.body));
 		$scope.mapViewModal.show();
 	}
-	$scope.openMap = function() {
+	function openMap() {
 		$scope.chatMenuModal.hide();
 		$scope.openMapModal();
 	}
-	$scope.openMapModal = function() {
+	function openMapModal() {
 		callGeolocation($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, function (locationObj) {
 			sendLocation(locationObj);
 		});
 		$scope.mapViewModal.show();
 	};
-	$scope.closeMapModal = function() {
+	function closeMapModal() {
 		$scope.mapViewModal.hide();
 	};	
-	$scope.isValidURI = function(uri) {
+	function isValidURI(uri) {
 		if( uri.substr(0, 3) == 'www' || uri.substr(0, 4) == 'http' || uri.substr(0, 3) == 'ftp' )
 			if( uri.split(".").length > 2 && uri.split(".")[1] != '' && uri.split(".")[2] != '' )
 				return true;
 		
 		return false;
-	};
-	
+	};	
 	function setupModals() {
 	    // Reload Modal - Chat menu
 	    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
@@ -494,8 +300,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        // Execute action
 	    });
 	}
-
-	$scope.editFavorite = function(editType,id,type){
+	function editFavorite(editType, id, type) {
 		$ionicLoading.show({
 			  template: 'Loading..'
 		});
@@ -525,8 +330,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			});
 		}
 	}
-
-	$scope.editBlockNoti = function(editType,id,type){
+	function editBlockNoti(editType,id,type){
 		$ionicLoading.show({
 			  template: 'Loading..'
 		});
@@ -556,14 +360,206 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			});
 		}
 	}
-
-	$scope.isFavorite = function(id){
+	function isFavorite(id){
 		return Favorite.isFavorite(id);
 	}
-
-	$scope.isBlockNoti = function(id){
+	function isBlockNoti(id){
 		return blockNotifications.isBlockNoti(id);
 	}
+
+	modalcount = 0;	
+	// Modal - Chat menu 
+	function openModal() {
+		modalcount++;
+		$scope.chatMenuModal.show();
+		$('#chatMessage').animate({'bottom':'272px'}, 350);
+		$('#chatDetail').animate({'top':'-272px'}, 350);
+	};	
+	// Modal - Sticker
+	function openModalSticker() {
+		modalcount++;
+		$scope.modalSticker.show();
+	};
+	function sendSticker(sticker) {
+		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
+		
+		$scope.modalSticker.hide();
+		$scope.chatMenuModal.hide();
+	}
+	// Modal - Audio Recorder
+	function openModalRecorder(){
+		modalcount++;
+		$scope.modalAudio.show();
+	}	
+	// Modal - Webview 
+	function openModalWebview() {
+		modalcount++;
+		$scope.modalWebview.show();
+	};
+	function closeModalWebview() {
+		$scope.modalWebview.hide();
+	};	
+	function openReaderModal() {
+		$scope.readerViewModal.show();
+	};
+	function closeReaderModal() {
+		$scope.readerViewModal.hide();
+	};	
+	// WebView
+	function webview(uri) {
+	    if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+	        http = '';
+	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
+	            http = 'http://';
+	        http += uri;
+	        //window.open(http, '_blank');
+
+	        //window.open(encodeURI(http), '_blank', 'location=yes');
+
+	        //$scope.webviewUrl = 'http://www.google.com';
+	        $scope.webviewUrl = $sce.trustAsResourceUrl(http);
+	        $scope.webviewTitle = uri;
+	        $scope.openModalWebview();
+	    }
+	    else {
+	        http = '';
+	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
+	            http = 'http://';
+	        http += uri;
+
+	        window.open(http);
+	    }
+	};		
+	function sendLocation(locationObj) {
+		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
+	}
+	function image(){
+		if (ionic.Platform.platform() === "ios") {
+			$scope.$broadcast('addImg', 'addImg');
+		}else{
+			$('#fileToUpload').trigger('click');
+		}
+	}
+	function video(){
+		if (ionic.Platform.platform() === "ios") {
+			$scope.$broadcast('captureVideo', 'captureVideo');
+		}else{
+			$('#fileToUpload').trigger('click');
+		}
+	}
+	function voice() {
+		if($('.audio-recorder').is(".recording")){
+			$('.audio-recorder').removeClass("recording");
+			$('.audio-recorder').addClass("unrecording");
+			$scope.$broadcast('stopRecord', 'stopRecord');
+		}else{
+			$('.audio-recorder').removeClass("unrecording");
+			$('.audio-recorder').addClass("recording");
+			$scope.$broadcast('startRecord', 'startRecord');
+		}
+	}
+
+	$("#modal-webview-iframe").on('load', function () {
+	    alert($(this).contentDocument.title);
+	});
+	$("#send_message").on("keyup", function (event) {
+	    if (event.keyCode == 13) {
+	        $("#sendMsg").get(0).click();
+	    }
+	});
+    // Send Message btn
+	$('#sendMsg').click(function () {
+	    var content = $('#send_message').val();
+	    if (content != '') {
+	        // Clear Message
+	        $('#send_message').val('')
+
+	        if (server.appConfig.encryption == true) {
+	            main.encodeService(content, function (err, result) {
+	                if (err) {
+	                    console.error(err);
+	                }
+	                else {
+	                    chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
+	                }
+	            });
+	        }
+	        else {
+	            chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, content, ContentType[ContentType.Text], sendMessageResponse);
+	        }
+	    }
+	});
+
+    // Modal Hidden		 
+	$scope.$on('modal.hidden', function () {
+	    modalcount--;
+
+	    if (modalcount == 1) {
+	        $scope.chatMenuModal.hide();
+	    }
+	    $('#chatMessage').animate({ 'bottom': '0' }, 350);
+	    $('#chatDetail').animate({ 'top': '0' }, 350);
+
+	    if ($('.audio-recorder').is(".recording")) {
+	        $('.audio-recorder').removeClass("recording");
+	        $('.audio-recorder').addClass("unrecording");
+	        $scope.$broadcast('cancelRecord', 'cancelRecord');
+	    }
+	});
+
+	// Recivce ImageUri from Gallery then send to other people
+	$scope.$on('fileUri', function(event, args) {
+		if (ionic.Platform.platform() === "ios") {
+			if(args[1] == ContentType[ContentType.Image] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0][0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.Voice] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Voice],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.Video] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":cordova.file.documentsDirectory + args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}
+		}else{
+			if(args[1] == ContentType[ContentType.Image] ){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Image],"body":args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.Video] ){
+				var file = document.querySelector("[id='fileToUpload']").files[0];
+				var fileUrl = $sce.trustAsResourceUrl( URL.createObjectURL(file) );
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Video],"body":fileUrl,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}else if(args[1] == ContentType[ContentType.File]){
+				var file = document.querySelector("[id='fileToUpload']").files[0];
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.File],"body":file.name,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}
+		}
+	});
+
+	// Send Image and remove temp Image
+	$scope.$on('fileUrl', function(event,args){
+		if(args[2]==ContentType[ContentType.Image]){
+			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], sendMessageResponse);
+		}else if(args[2]==ContentType[ContentType.Voice]){
+			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], sendMessageResponse);
+		}else if(args[2]==ContentType[ContentType.Video]){
+			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
+		}
+		if (ionic.Platform.platform() !== "ios") {
+			if(args[2]==ContentType[ContentType.File]){
+				console.log(args);
+				chatRoomApi.chatFile(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.File], 'bobobobo');
+			}
+		}
+		$.each($scope.chat, function(index, value){
+			if(value._id == args[1]) { 
+				$scope.chat[index] = new Object; 
+			}
+		});
+	});
+
+	$scope.$on('delectTemp', function(event,args){
+		$.each($scope.chat, function(index, value){
+			if(value._id == args[0]) { 
+				$scope.chat[index] = new Object; 
+			}
+		});
+	});
 
 	$scope.$on('enterChat', function(event, args) { 
 		console.log("App view (menu) entered.");

@@ -249,6 +249,10 @@
         });
     }
 
+    public getOlderMessageRecord(callback: (err, res) => void) {
+
+    }
+
     public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
