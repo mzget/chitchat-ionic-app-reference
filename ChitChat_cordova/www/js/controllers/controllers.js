@@ -569,7 +569,7 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, $mdTo
     $scope.webServer = $rootScope.webServer;
     $scope.allmembers = getMembersInRoom();
     $scope.model = { groupname: $scope.currentRoom.name };
-    if($scope.currentRoom.type == RoomType.projectBaseGroup)
+    if($scope.currentRoom.type == RoomType.projectBaseGroup){
         $scope.jobPosition=[];
         $scope.rolePosition = [
             {"role": MemberRole[MemberRole.member]},
