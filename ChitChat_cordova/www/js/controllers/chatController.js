@@ -1,10 +1,8 @@
-/// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
 .controller('chatController', 
 function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
-	$sce, $cordovaGeolocation, $cordovaDialogs,
-    chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
+	$sce, $cordovaGeolocation, $cordovaDialogs, chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
@@ -45,6 +43,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     $scope.editBlockNoti = editBlockNoti;
     $scope.isFavorite = isFavorite;
     $scope.isBlockNoti = isBlockNoti;
+    $scope.loadOlderMessage = loadOlderMessage;
+    $scope.hasOldMessage = false;
     
 	function activate() {
 	    console.log(self.title + " is activate");
@@ -92,6 +92,10 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		        }
 		    });
 		});
+        $scope.$on('onOlderMessageReady', function ready(event, data) {
+            $scope.hasOldMessage = true;
+            $scope.$apply();
+        });
 	}
 	function setScopeData() {
 	    myprofile = main.getDataManager().myProfile;
@@ -365,6 +369,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 	function isBlockNoti(id){
 		return blockNotifications.isBlockNoti(id);
+	}
+	function loadOlderMessage() {
+        chatRoomService.getOlderMessageChunk();
 	}
 
 	modalcount = 0;	

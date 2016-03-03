@@ -7,12 +7,12 @@
 
     //    chatRoomService.$inject = ['$http'];
 
-    function chatRoomService($http, $rootScope, $sce, $cordovaFile, 
-    roomSelected, ConvertDateTime, sharedObjectService, localNotifyService, dbAccessService) {
+    function chatRoomService($http, $rootScope, $sce, $cordovaFile, roomSelected, ConvertDateTime, sharedObjectService, localNotifyService, dbAccessService) {
         var service = {
             init: init,
             getPersistendMessage: getPersistendMessage,
             getNewerMessageFromNet: getNewerMessageFromNet,
+            getOlderMessageChunk: getOlderMessageChunk,
             isPrivateChatRoom: isPrivateChatRoom,
             roomContactIsEmpty: roomContactIsEmpty,
             all: function () {
@@ -198,12 +198,29 @@
                 $rootScope.$broadcast('onMessagesReady', { data: null });
 
                 getNewerMessageFromNet();
+                checkOlderMessages();
             });
         }
 
         function getNewerMessageFromNet() {
             chatRoomComponent.getNewerMessageRecord(function done(err, result) {
                 $rootScope.$broadcast('onJoinRoomReady', { data: null });
+            });
+        }
+
+        function getOlderMessageChunk() {
+            chatRoomComponent.getOlderMessageChunk(function done(err, res) {
+                console.info(res.data);
+            });
+        }
+        
+        function checkOlderMessages() {
+            chatRoomComponent.checkOlderMessages(function done(err, res) {
+                if(!err) {
+                    if (res.data > 0) {
+                        $rootScope.$broadcast('onOlderMessageReady');
+                    }
+                }
             });
         }
 

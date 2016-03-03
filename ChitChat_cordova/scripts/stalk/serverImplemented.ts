@@ -769,6 +769,31 @@ module ChatServer {
             });
         }
         
+        /**
+         * get older message histories.
+         */
+        public getOlderMessageChunk(roomId: string, topEdgeMessageTime: Date, callback: (err, res) => void) {
+            var message: IDictionary = {};
+            message["rid"] = roomId;
+            message["topEdgeMessageTime"] = topEdgeMessageTime.toString();
+
+            pomelo.request("chat.chatHandler.getOlderMessageChunk", message, (result) => {
+                if (callback !== null)
+                    callback(null, result);
+            });
+        }
+
+        public checkOlderMessagesCount(roomId: string, topEdgeMessageTime: Date, callback: (err, res) => void) {
+            var message: IDictionary = {};
+            message["rid"] = roomId;
+            message["topEdgeMessageTime"] = topEdgeMessageTime.toString();
+
+            pomelo.request("chat.chatHandler.checkOlderMessagesCount", message, (result) => {
+                if (callback !== null)
+                    callback(null, result);
+            });
+        }
+        
         public getMessagesReaders() {
             var message: IDictionary = {};
             message["token"] = this.serverImp.authenData.token;

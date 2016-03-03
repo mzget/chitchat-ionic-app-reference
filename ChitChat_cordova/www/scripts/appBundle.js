@@ -246,6 +246,41 @@ var ChatRoomComponent = (function () {
             }
         });
     };
+    ChatRoomComponent.prototype.getOlderMessageChunk = function (callback) {
+        var self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {
+                callback(err, res);
+            });
+        });
+    };
+    ChatRoomComponent.prototype.checkOlderMessages = function (callback) {
+        var self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.checkOlderMessagesCount(self.roomId, res, function response(err, res) {
+                callback(err, res);
+            });
+        });
+    };
+    ChatRoomComponent.prototype.getTopEdgeMessageTime = function (callback) {
+        var self = this;
+        var topEdgeMessageTime = null;
+        if (self.chatMessages != null && self.chatMessages.length != 0) {
+            if (!!self.chatMessages[0].createTime) {
+                topEdgeMessageTime = self.chatMessages[0].createTime;
+            }
+            else {
+                topEdgeMessageTime = new Date();
+            }
+            self.chatMessages.map(function itor(item, id, arr) {
+                console.info(item);
+            });
+        }
+        else {
+            topEdgeMessageTime = new Date();
+        }
+        callback(null, topEdgeMessageTime);
+    };
     ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
@@ -2095,6 +2130,24 @@ var ChatServer;
                     callback(null, result);
             });
         };
+        ChatRoomApiProvider.prototype.getOlderMessageChunk = function (roomId, topEdgeMessageTime, callback) {
+            var message = {};
+            message["rid"] = roomId;
+            message["topEdgeMessageTime"] = topEdgeMessageTime.toString();
+            pomelo.request("chat.chatHandler.getOlderMessageChunk", message, function (result) {
+                if (callback !== null)
+                    callback(null, result);
+            });
+        };
+        ChatRoomApiProvider.prototype.checkOlderMessagesCount = function (roomId, topEdgeMessageTime, callback) {
+            var message = {};
+            message["rid"] = roomId;
+            message["topEdgeMessageTime"] = topEdgeMessageTime.toString();
+            pomelo.request("chat.chatHandler.checkOlderMessagesCount", message, function (result) {
+                if (callback !== null)
+                    callback(null, result);
+            });
+        };
         ChatRoomApiProvider.prototype.getMessagesReaders = function () {
             var message = {};
             message["token"] = this.serverImp.authenData.token;
@@ -2315,3 +2368,4 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
+//# sourceMappingURL=appBundle.js.map

@@ -377,7 +377,7 @@ define(['jquery'], function (jq) {
 
       socket.on('disconnect', function (reason) {
           pomelo.emit('disconnect', reason);
-          console.error("disconnect: ", reason);
+          console.warn("disconnect: ", reason);
       });
   };
 

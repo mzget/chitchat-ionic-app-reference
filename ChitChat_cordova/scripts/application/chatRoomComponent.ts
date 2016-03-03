@@ -249,8 +249,40 @@
         });
     }
 
-    public getOlderMessageRecord(callback: (err, res) => void) {
+    public getOlderMessageChunk(callback: (err, res) => void) {
+        let self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {
+                callback(err, res);
+            }); 
+        });
+    }
 
+    private checkOlderMessages(callback: (err, res) => void) {
+        let self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.checkOlderMessagesCount(self.roomId, res, function response(err, res) {
+                callback(err, res);
+            });
+        });
+    }
+
+    private getTopEdgeMessageTime(callback: (err, res) => void) {
+        let self = this;
+        let topEdgeMessageTime: Date = null;
+        if (self.chatMessages != null && self.chatMessages.length != 0) {
+            if (!!self.chatMessages[0].createTime) {
+                topEdgeMessageTime = self.chatMessages[0].createTime;
+            }
+            else {
+                topEdgeMessageTime = new Date();
+            }
+        }
+        else {
+            topEdgeMessageTime = new Date();
+        }
+
+        callback(null, topEdgeMessageTime);
     }
 
     public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
