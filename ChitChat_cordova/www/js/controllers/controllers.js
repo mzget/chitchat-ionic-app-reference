@@ -521,7 +521,6 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
             $scope.jobPosition.push({"job":main.getDataManager().companyInfo.jobPosition[x]});
         }
     }
-
     $scope.setRole = function(id,role){
         ProjectBase.setRole(id,role);
     }
@@ -533,18 +532,18 @@ function InviteController($scope,$rootScope,$mdDialog,CreateGroup,roomSelected){
     $scope.myProfile = main.getDataManager().myProfile;
     $scope.allmembers = CreateGroup.getAllMember();
     $scope.webServer = $rootScope.webServer;
-    var room = roomSelected.getRoomOrLastRoom();
-    for (var i = 0; i < room.members.length; i++) {
+    $scope.currentRoom = roomSelected.getRoomOrLastRoom();
+    for (var i = 0; i < $scope.currentRoom.members.length; i++) {
         var positionIndex;
         $.each($scope.allmembers, function (index, result) {
-            if (result._id == room.members[i].id) {
+            if (result._id == $scope.currentRoom.members[i].id) {
                 positionIndex = index;
             }
         });
         $scope.allmembers.splice(positionIndex, 1);
     }
     $scope.invite = function(){
-        server.editGroupMembers("add", room._id, RoomType[room.type], CreateGroup.getSelectedId(), function (err, res) {
+        server.editGroupMembers("add", $scope.currentRoom._id, RoomType[$scope.currentRoom.type], CreateGroup.getSelectedId(), function (err, res) {
             if (res.code === HttpStatusCode.success) {
                 console.log(JSON.stringify(res));
                 $rootScope.$broadcast('inviteGroup',CreateGroup.getSelectedId());
@@ -645,7 +644,6 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, $mdTo
             if (res.code === HttpStatusCode.success) {
                 //@ if user remove your self.
                 if (id == main.getDataManager().myProfile._id) {
-                    showToastEditGroup('success','Leave group complete');
                     $mdDialog.hide();
                     var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
                     $rootScope.$broadcast('changeChat', group);
