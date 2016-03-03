@@ -15,88 +15,10 @@
             getOlderMessageChunk: getOlderMessageChunk,
             isPrivateChatRoom: isPrivateChatRoom,
             roomContactIsEmpty: roomContactIsEmpty,
-            all: function () {
-                return chats;
-            },
-            remove: function (chat) {
-                chats.splice(chats.indexOf(chat), 1);
-            },
-            get: function (chatId) {
-                for (var i = 0; i < chats.length; i++) {
-                    if (chats[i]._id === chatId) {
-                        return chats[i];
-                    }
-                }
-                return null;
-            },
-            set: function (json) {
-                chats = json;
-
-                if (rid != roomSelected.getRoom()._id) {
-                    rid = roomSelected.getRoom()._id;
-                    date = [];
-                }
-
-                for (var i = 0; i < chats.length; i++) {
-                    
-                    if(chats[i].hasOwnProperty('createTime')){
-                        var dateTime = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
-                        chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
-                    }
-                  
-                    
-                    if (date.indexOf(dateTime) == -1 && chats[i].hasOwnProperty('createTime')) {
-                        date.push(chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')));
-
-                        var dateMsg = new Date(dateTime);
-                        var dateNow = new Date();
-
-                        if (dateMsg.getFullYear() == dateNow.getFullYear() &&
-                         dateMsg.getMonth() == dateNow.getMonth() &&
-                         dateMsg.getDate() == dateNow.getDate()) {
-                            chats[i].firstMsg = "Today";
-                        }
-                        else if (dateMsg.getFullYear() == dateNow.getFullYear() &&
-                         dateMsg.getMonth() == dateNow.getMonth() &&
-                         dateMsg.getDate() == dateNow.getDate() - 1) {
-                            chats[i].firstMsg = "Yesterday";
-                        }
-                        else {
-                            chats[i].firstMsg = days[dateMsg.getDay()] + ', ' + (dateMsg.getMonth() + 1) + '/' + dateMsg.getFullYear();
-                        }
-
-
-                    }
-                    if (chats[i].type == ContentType[ContentType.Video]) {
-                        if (chats[i].temp == 'true') {
-                            chats[i].body = cordova.file.documentsDirectory + chats[i]._id;
-                        }
-                        else {
-                            chats[i].bodyUrl = $sce.trustAsResourceUrl($rootScope.webServer + chats[i].body);
-                            var chatBody = chats[i].body;
-                            var splitChat = chatBody.split(".");
-                            var nameThumbnail = splitChat[0] + '.png';
-                            chats[i].thumbnail = $sce.trustAsResourceUrl($rootScope.webServer + nameThumbnail);
-                        }
-                    }
-                    else if (chats[i].type === ContentType[ContentType.Location]) {
-                        var location = JSON.parse(chats[i].body);
-
-                        chats[i].locationName = location.name;
-                        chats[i].locationAddress = location.address;
-                        chats[i].lat = location.latitude;
-                        chats[i].long = location.longitude;
-                    }
-
-                    else if(chats[i].type == ContentType[ContentType.File]){
-                        if (ionic.Platform.platform() !== "ios") {
-                            var meta = jQuery.parseJSON( chats[i].meta );
-                            chats[i].name = meta.name;
-                            chats[i].url = $rootScope.webServer + chats[i].body;
-                        }
-                    }
-                }
-            },
+            all: all,
+            remove:remove,
+            get:get ,
+            set: set,
             getChatRoomComponent: getChatRoomComponent,
             leaveRoom: leaveRoom,
             leaveRoomCB: leaveRoomCB
@@ -210,7 +132,10 @@
 
         function getOlderMessageChunk() {
             chatRoomComponent.getOlderMessageChunk(function done(err, res) {
-                console.info(res.data);
+                console.info('olderMessages %s => %s', res.data.length, chatRoomComponent.chatMessages.length);
+                
+                set(chatRoomComponent.chatMessages);
+                $rootScope.$broadcast('onMessageChanged');
             });
         }
         
@@ -218,6 +143,7 @@
             chatRoomComponent.checkOlderMessages(function done(err, res) {
                 if(!err) {
                     if (res.data > 0) {
+                        console.info('has olderMessage => ', res.data);
                         $rootScope.$broadcast('onOlderMessageReady');
                     }
                 }
@@ -226,6 +152,88 @@
 
         function clear() {
             chats = [];
+        }
+        function all() {
+            return chats;
+        }
+        function get(chatId) {
+            for (var i = 0; i < chats.length; i++) {
+                if (chats[i]._id === chatId) {
+                    return chats[i];
+                }
+            }
+            return null;
+        }
+        function set(json) {
+            chats = json;
+
+            if (rid != roomSelected.getRoom()._id) {
+                rid = roomSelected.getRoom()._id;
+                date = [];
+            }
+
+            for (var i = 0; i < chats.length; i++) {
+                    
+                if(chats[i].hasOwnProperty('createTime')){
+                    var dateTime = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
+                    chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
+                }
+                  
+                    
+                if (date.indexOf(dateTime) == -1 && chats[i].hasOwnProperty('createTime')) {
+                    date.push(chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')));
+
+                    var dateMsg = new Date(dateTime);
+                    var dateNow = new Date();
+
+                    if (dateMsg.getFullYear() == dateNow.getFullYear() &&
+                     dateMsg.getMonth() == dateNow.getMonth() &&
+                     dateMsg.getDate() == dateNow.getDate()) {
+                        chats[i].firstMsg = "Today";
+                    }
+                    else if (dateMsg.getFullYear() == dateNow.getFullYear() &&
+                     dateMsg.getMonth() == dateNow.getMonth() &&
+                     dateMsg.getDate() == dateNow.getDate() - 1) {
+                        chats[i].firstMsg = "Yesterday";
+                    }
+                    else {
+                        chats[i].firstMsg = days[dateMsg.getDay()] + ', ' + (dateMsg.getMonth() + 1) + '/' + dateMsg.getFullYear();
+                    }
+
+
+                }
+                if (chats[i].type == ContentType[ContentType.Video]) {
+                    if (chats[i].temp == 'true') {
+                        chats[i].body = cordova.file.documentsDirectory + chats[i]._id;
+                    }
+                    else {
+                        chats[i].bodyUrl = $sce.trustAsResourceUrl($rootScope.webServer + chats[i].body);
+                        var chatBody = chats[i].body;
+                        var splitChat = chatBody.split(".");
+                        var nameThumbnail = splitChat[0] + '.png';
+                        chats[i].thumbnail = $sce.trustAsResourceUrl($rootScope.webServer + nameThumbnail);
+                    }
+                }
+                else if (chats[i].type === ContentType[ContentType.Location]) {
+                    var location = JSON.parse(chats[i].body);
+
+                    chats[i].locationName = location.name;
+                    chats[i].locationAddress = location.address;
+                    chats[i].lat = location.latitude;
+                    chats[i].long = location.longitude;
+                }
+
+                else if(chats[i].type == ContentType[ContentType.File]){
+                    if (ionic.Platform.platform() !== "ios") {
+                        var meta = jQuery.parseJSON( chats[i].meta );
+                        chats[i].name = meta.name;
+                        chats[i].url = $rootScope.webServer + chats[i].body;
+                    }
+                }
+            }
+        }
+        function remove(chat) {
+            chats.splice(chats.indexOf(chat), 1);
         }
 
         function leaveRoom() {

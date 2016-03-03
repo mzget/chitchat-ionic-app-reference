@@ -250,6 +250,13 @@ var ChatRoomComponent = (function () {
         var self = this;
         self.getTopEdgeMessageTime(function done(err, res) {
             self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {
+                var datas = [];
+                datas = res.data;
+                var clientMessages = self.chatMessages.slice(0);
+                if (datas.length > 0) {
+                    var messages = JSON.parse(JSON.stringify(datas));
+                    self.chatMessages = messages.concat(clientMessages);
+                }
                 callback(err, res);
             });
         });
@@ -272,9 +279,6 @@ var ChatRoomComponent = (function () {
             else {
                 topEdgeMessageTime = new Date();
             }
-            self.chatMessages.map(function itor(item, id, arr) {
-                console.info(item);
-            });
         }
         else {
             topEdgeMessageTime = new Date();

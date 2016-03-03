@@ -252,7 +252,19 @@
     public getOlderMessageChunk(callback: (err, res) => void) {
         let self = this;
         self.getTopEdgeMessageTime(function done(err, res) {
-            self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {
+            self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {                
+                //@ todo.
+                /**
+                 * Merge messages record to chatMessages array.
+                 */
+                let datas = [];
+                datas = res.data;
+                let clientMessages = self.chatMessages.slice(0);
+                if(datas.length > 0) {
+                    var messages: Array<Message> = JSON.parse(JSON.stringify(datas));
+                    self.chatMessages = messages.concat(clientMessages);
+                }
+                
                 callback(err, res);
             }); 
         });
