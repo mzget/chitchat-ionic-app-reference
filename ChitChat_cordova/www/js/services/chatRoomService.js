@@ -158,6 +158,11 @@
                             console.warn(ex);
                         }
                     }
+                    else{
+                        if(!$rootScope.isPageFocus) {
+                            sharedObjectService.getNotifyManager().notify(newMsg, appBackground, localNotifyService);
+                        }
+                    }
 
                     $rootScope.$broadcast('onNewMessage', { data: null });
                 }

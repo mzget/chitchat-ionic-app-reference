@@ -119,7 +119,22 @@
                 }
             }
             else {
-                
+                window.onpageshow = function onPageShow(pageTransition) {    
+//                    console.info('page hide');
+                }
+                window.onpagehide = function onPageHide(pageTrans) {
+//                    console.info('page hide');
+                }
+                window.onfocus = function onFocus(focusEvent) {
+//                    console.info('page onfocus');
+                                    
+                    $rootScope.isPageFocus = true;
+                }
+                window.onblur = function onBlur(focusEvent) {
+//                    console.info('page blur');
+                    
+                    $rootScope.isPageFocus = false;
+                }
             }
         }
 
