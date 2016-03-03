@@ -481,10 +481,17 @@
                 newMember.push({ "id": args[i] });
             };
             room.members = room.members.concat(newMember);
-            groupMembers(room.members, room.members.length, function done(members) {
-                $scope.members = members;
-                $scope.$apply();
-            }); 
+            if(room.type == RoomType.privateGroup){
+                groupMembers(room.members, room.members.length, function done(members) {
+                    $scope.members = members;
+                    $scope.$apply();
+                }); 
+            }else{
+                getMembersInProjectBase(room, function (value) {
+                    $scope.members = value;
+                    $scope.$apply();
+                });
+            }
         });
         $scope.$on('editGroup', function(event, args) {
             var room = roomSelected.getRoomOrLastRoom(); 
