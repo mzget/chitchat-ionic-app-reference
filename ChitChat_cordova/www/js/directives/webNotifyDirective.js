@@ -26,7 +26,7 @@
             function notify(data) {
                 webNotification.showNotification('ChitChat Notification', {
                     body: data.body,
-                    icon: '../../favicon.ico',
+                    icon: './favicon.ico',
                     onClick: function onNotificationClicked() {
                        
                     },
