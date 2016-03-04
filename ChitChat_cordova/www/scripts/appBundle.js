@@ -253,11 +253,29 @@ var ChatRoomComponent = (function () {
                 var datas = [];
                 datas = res.data;
                 var clientMessages = self.chatMessages.slice(0);
+                var mergedArray = [];
                 if (datas.length > 0) {
                     var messages = JSON.parse(JSON.stringify(datas));
-                    self.chatMessages = messages.concat(clientMessages);
+                    mergedArray = messages.concat(clientMessages);
                 }
-                callback(err, res);
+                var resultsArray = [];
+                async.map(mergedArray, function iterator(item, cb) {
+                    var hasMessage = resultsArray.some(function itor(value, id, arr) {
+                        if (value._id == item._id) {
+                            return true;
+                        }
+                    });
+                    if (hasMessage == false) {
+                        resultsArray.push(item);
+                        cb(null, null);
+                    }
+                    else {
+                        cb(null, null);
+                    }
+                }, function done(err, results) {
+                    self.chatMessages = resultsArray;
+                    callback(err, resultsArray);
+                });
             });
         });
     };
@@ -283,6 +301,7 @@ var ChatRoomComponent = (function () {
         else {
             topEdgeMessageTime = new Date();
         }
+        console.debug('topEdgeMsg:', topEdgeMessageTime, JSON.stringify(self.chatMessages[0]));
         callback(null, topEdgeMessageTime);
     };
     ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {

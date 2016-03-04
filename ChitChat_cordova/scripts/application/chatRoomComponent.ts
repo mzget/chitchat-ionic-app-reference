@@ -261,12 +261,32 @@
                 let datas = [];
                 datas = res.data;
                 let clientMessages = self.chatMessages.slice(0);
+                let mergedArray: Array<Message> = [];
                 if(datas.length > 0) {
                     var messages: Array<Message> = JSON.parse(JSON.stringify(datas));
-                    self.chatMessages = messages.concat(clientMessages);
+                    mergedArray = messages.concat(clientMessages);
                 }
                 
-                callback(err, res);
+                let resultsArray: Array<Message> = [];
+                async.map(mergedArray, function  iterator(item, cb) {
+                    let hasMessage = resultsArray.some(function itor(value, id, arr) {
+                        if(value._id == item._id) {
+                            return true;  
+                        }
+                    });
+                    
+                    if(hasMessage == false) {
+                        resultsArray.push(item);
+                        cb(null, null);
+                    }
+                    else{
+                        cb(null, null);
+                    }
+                }, function done(err, results: Array<Message>) {
+                    self.chatMessages = resultsArray;
+                
+                    callback(err, resultsArray);
+                });
             }); 
         });
     }
@@ -295,6 +315,7 @@
             topEdgeMessageTime = new Date();
         }
 
+        console.debug('topEdgeMsg:', topEdgeMessageTime, JSON.stringify(self.chatMessages[0]));
         callback(null, topEdgeMessageTime);
     }
 

@@ -34,6 +34,6 @@
     "commit": "757253aa8fd177fb87efb822d7f497f82811574e"
   },
   "_source": "git://github.com/mozilla/localForage.git",
-  "_target": "*",
+  "_target": "1.4.0",
   "_originalSource": "localforage"
 }

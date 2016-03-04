@@ -132,10 +132,13 @@
 
         function getOlderMessageChunk() {
             chatRoomComponent.getOlderMessageChunk(function done(err, res) {
-                console.info('olderMessages %s => %s', res.data.length, chatRoomComponent.chatMessages.length);
+                console.info('olderMessages %s => %s', res.length, chatRoomComponent.chatMessages.length);
                 
                 set(chatRoomComponent.chatMessages);
                 $rootScope.$broadcast('onMessageChanged');
+                
+                //@ check older message again.
+                checkOlderMessages();
             });
         }
         
@@ -144,9 +147,14 @@
                 if(!err) {
                     if (res.data > 0) {
                         console.info('has olderMessage => ', res.data);
-                        $rootScope.$broadcast('onOlderMessageReady');
+                        $rootScope.$broadcast('onOlderMessageReady', true);
+                        
+                        return;
                     }
                 }
+                
+                
+                $rootScope.$broadcast('onOlderMessageReady', false);
             });
         }
 

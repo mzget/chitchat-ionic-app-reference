@@ -3,8 +3,8 @@
   "dependencies": {
     "async": "*",
     "angular-toArrayFilter": "1.0.1",
-    "angular-material": "*",
-    "localforage": "*",
+    "angular-material": "1.0.6",
+    "localforage": "1.4.0",
     "crypto-js": "3.1.6",
     "jr-crop": "^1.1.2",
     "ngCordova": "~0.1.24-alpha",

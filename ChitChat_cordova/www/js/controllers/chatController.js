@@ -95,8 +95,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    });
 		});
         $scope.$on('onOlderMessageReady', function ready(event, data) {
-            $scope.hasOldMessage = true;
-            $scope.$apply();
+            console.debug('onOlderMessageReady', data)
+            $scope.hasOldMessage = data;
         });
         $scope.$on('onMessageChanged', function (event, data) {
             $scope.chat = chatRoomService.all();
