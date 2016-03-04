@@ -585,6 +585,21 @@ angular.module('spartan.services', [])
   }
 })
 
+.factory('mdToast',function($mdToast) {
+  function showToast(type,msg) {
+    $mdToast.show(
+        $mdToast.simple()
+            .textContent(msg)
+            .hideDelay(3000)
+            .position('top right')
+            .theme(type + '-toast')
+    );
+  }
+  return{
+    showToast: showToast
+  }
+})
+
 .factory('roomSelected', function () {
     var room;
     var lastJoinRoom;

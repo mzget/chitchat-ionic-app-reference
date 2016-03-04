@@ -449,7 +449,7 @@ angular.module('spartan.controllers')
 //   };
 // }); // <-- LAST CONTROLLER
 
-function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBase ) {
+function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBase, mdToast) {
     $scope.createType = $rootScope.createType;
     CreateGroup.createType = $scope.createType;
     $scope.myProfile = main.getDataManager().myProfile;
@@ -471,6 +471,7 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
                 }
                 else {
                     console.warn(err, res);
+                    mdToast.showToast('error','Cannot Create');
                 }
             });
         }else{
@@ -482,6 +483,7 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
                 }
                 else {
                     console.warn(err, res);
+                    mdToast.showToast('error','Cannot Create');
                 }
             });
         }
@@ -498,8 +500,10 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
             if(!err){
                 console.log(JSON.stringify(res));
                 $mdDialog.hide();
+                mdToast.showToast('success','Create Complete');
             }else{
                 console.warn(err, res);
+                mdToast.showToast('error','Cannot Create');
             }
         });
     });
@@ -507,6 +511,7 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
         var file    = document.querySelector('#avatarToUpload').files[0];
         if(file === undefined) {
             $mdDialog.hide();
+            mdToast.showToast('success','Create Complete');
         }else{
             $rootScope.$broadcast('uploadImg','uploadImg');
         }
@@ -528,7 +533,7 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
         ProjectBase.setPosition(id,position);
     }
 }
-function InviteController($scope,$rootScope,$mdDialog,CreateGroup,roomSelected){
+function InviteController($scope,$rootScope,$mdDialog,CreateGroup,mdToast,roomSelected){
     $scope.myProfile = main.getDataManager().myProfile;
     $scope.allmembers = CreateGroup.getAllMember();
     $scope.webServer = $rootScope.webServer;
@@ -545,12 +550,14 @@ function InviteController($scope,$rootScope,$mdDialog,CreateGroup,roomSelected){
     $scope.invite = function(){
         server.editGroupMembers("add", $scope.currentRoom._id, RoomType[$scope.currentRoom.type], CreateGroup.getSelectedId(), function (err, res) {
             if (res.code === HttpStatusCode.success) {
+                mdToast.showToast('success','Invite Complete');
                 console.log(JSON.stringify(res));
                 $rootScope.$broadcast('inviteGroup',CreateGroup.getSelectedId());
                 $mdDialog.hide();
             }
             else {
                 console.warn(err, res);
+                mdToast.showToast('error','Cannot Invite');
             }
         });
     }
@@ -562,7 +569,7 @@ function InviteController($scope,$rootScope,$mdDialog,CreateGroup,roomSelected){
         CreateGroup.setMemberSelected(id,selected);
     }
 }
-function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, $mdToast, roomSelected, ProjectBase) {
+function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, mdToast, roomSelected, ProjectBase) {
     var members = main.getDataManager().orgMembers;
     $scope.currentRoom = roomSelected.getRoomOrLastRoom();
     $scope.webServer = $rootScope.webServer;
@@ -616,13 +623,13 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, $mdTo
                         result.jobPosition = member.jobPosition;
                     }
                 });
-                showToastEditGroup('success','Change Complete');
+                mdToast.showToast('success','Change Complete');
                 $rootScope.$broadcast('editGroup',[]);
                 //saveSuccess();
             }
             else {
                 console.warn(err, res);
-                showToastEditGroup('error','Cannot Change');
+                mdToast.showToast('error','Cannot Change');
             }
         });
     }
@@ -659,14 +666,14 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, $mdTo
                         cb();
                     }
                 }, function done(err) {
-                    showToastEditGroup('success','Remove Complete');
+                    mdToast.showToast('success','Remove Complete');
                     $scope.allmembers = getMembersInRoom();
                     $rootScope.$broadcast('editGroup',[]);
                 });
             }
             else {
                 console.warn(err, res);
-                showToastEditGroup('error','Cannot Remove or Leave');
+                mdToast.showToast('error','Cannot Remove or Leave');
             }
         });
     }
@@ -691,14 +698,14 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, $mdTo
                     console.log(JSON.stringify(res));
                     $scope.currentRoom.name = $scope.model.groupname;
                     $rootScope.$broadcast('roomName', $scope.currentRoom.name);
-                    showToastEditGroup('success','Change Complete');
+                    mdToast.showToast('success','Change Complete');
                 } else {
                     console.warn(err, res);
                 }
             });
         } else {
             //saveSuccess();
-            showToastEditGroup('success','Change Complete');
+            mdToast.showToast('success','Change Complete');
         }
     }
 
@@ -709,16 +716,6 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, $mdTo
     $scope.getPosition = function(id){
         var position = ProjectBase.getRolePosition(id);
         return position[1];
-    }
-
-    function showToastEditGroup(type,msg) {
-        $mdToast.show(
-            $mdToast.simple()
-                .textContent(msg)
-                .hideDelay(3000)
-                .position('top right')
-                .theme(type + '-toast')
-        );
     }
 
     $scope.$on('avatarUrl', function(event, args) {
@@ -735,8 +732,7 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, $mdTo
         });
     });
 }
-
-function ProfileController($scope, $rootScope ) {
+function ProfileController($scope, $rootScope, mdToast ) {
     $scope.myProfile = main.getDataManager().myProfile;
     $scope.webServer = $rootScope.webServer;
     $scope.model = {
@@ -774,7 +770,10 @@ function ProfileController($scope, $rootScope ) {
                 main.getDataManager().myProfile.displayname = $scope.model.displayname;
                 main.getDataManager().myProfile.status = $scope.model.status;
                 $scope.$apply();
+                mdToast.showToast('success','Change Complete');
             });
+        }else{
+            mdToast.showToast('success','Change Complete');
         }
     }
 
