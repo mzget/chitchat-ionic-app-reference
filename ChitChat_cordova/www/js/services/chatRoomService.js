@@ -137,6 +137,7 @@
                 set(chatRoomComponent.chatMessages);
                 $rootScope.$broadcast('onMessageChanged');
                 
+                
                 //@ check older message again.
                 checkOlderMessages();
             });
@@ -153,8 +154,9 @@
                     }
                 }
                 
-                
-                $rootScope.$broadcast('onOlderMessageReady', false);
+                setTimeout(function handler() {
+                    $rootScope.$broadcast('onOlderMessageReady', false); 
+                }, 1000);
             });
         }
 
