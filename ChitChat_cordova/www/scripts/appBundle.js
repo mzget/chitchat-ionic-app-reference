@@ -273,7 +273,8 @@ var ChatRoomComponent = (function () {
                         cb(null, null);
                     }
                 }, function done(err, results) {
-                    self.chatMessages = resultsArray;
+                    resultsArray.sort(self.compareMessage);
+                    self.chatMessages = resultsArray.slice(0);
                     callback(err, resultsArray);
                 });
             });
@@ -303,6 +304,15 @@ var ChatRoomComponent = (function () {
         }
         console.debug('topEdgeMsg:', topEdgeMessageTime, JSON.stringify(self.chatMessages[0]));
         callback(null, topEdgeMessageTime);
+    };
+    ChatRoomComponent.prototype.compareMessage = function (a, b) {
+        if (a.createTime > b.createTime) {
+            return 1;
+        }
+        if (a.createTime < b.createTime) {
+            return -1;
+        }
+        return 0;
     };
     ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;

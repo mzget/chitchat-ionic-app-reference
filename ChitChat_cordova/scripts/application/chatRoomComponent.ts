@@ -283,7 +283,9 @@
                         cb(null, null);
                     }
                 }, function done(err, results: Array<Message>) {
-                    self.chatMessages = resultsArray;
+                    resultsArray.sort(self.compareMessage);
+
+                    self.chatMessages = resultsArray.slice(0);
                 
                     callback(err, resultsArray);
                 });
@@ -318,6 +320,17 @@
         console.debug('topEdgeMsg:', topEdgeMessageTime, JSON.stringify(self.chatMessages[0]));
         callback(null, topEdgeMessageTime);
     }
+
+    private compareMessage(a: Message, b: Message) {
+        if (a.createTime > b.createTime) {
+            return 1;
+        }
+        if (a.createTime < b.createTime) {
+            return -1;
+        }
+        // a must be equal to b
+        return 0;
+}
 
     public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
         var self = this;
