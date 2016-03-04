@@ -5,23 +5,28 @@ angular.module('spartan.media', [])
 		var file    = document.querySelector('input[type=file]').files[0];
 	    var reader  = new FileReader();
 	    reader.onloadend = function () {
-	    	var fileType = file.type.split("/");
-	    	switch(fileType[0]){
-	    		case 'image':
-			        $scope.$broadcast('addImg', 'addImg');
-			        break;
-			    case 'video':
-			        $scope.$broadcast('captureVideo', 'captureVideo');
-			        break;
-			    default:
-			        reader.onloadend = function () {
-			            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.File]]);
-			        } 
-			        reader.readAsDataURL(file);
-			        break;
-	    	}
-	    	//$scope.$emit('fileUri',[reader.result,ContentType[ContentType.Image]]);
-	        //console.log(reader.result);
+	    	if( file.name.substring(file.name.lastIndexOf(".") + 1) == 'psd' ){
+	    		reader.onloadend = function () {
+		            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.File]]);
+		        } 
+		        reader.readAsDataURL(file);
+	    	}else{
+		    	var fileType = file.type.split("/");
+		    	switch(fileType[0]){
+		    		case 'image':
+				        $scope.$broadcast('addImg', 'addImg');
+				        break;
+				    case 'video':
+				        $scope.$broadcast('captureVideo', 'captureVideo');
+				        break;
+				    default:
+				        reader.onloadend = function () {
+				            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.File]]);
+				        } 
+				        reader.readAsDataURL(file);
+				        break;
+		    	}
+		    }
 	    } 
 		reader.readAsDataURL(file);
 	}
