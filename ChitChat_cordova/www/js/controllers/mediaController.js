@@ -655,7 +655,8 @@ angular.module('spartan.media', [])
 	    audioRecorder = new Recorder(_realAudioInput);
 	}
 	function handlerErrorUserMedia(e) {
-	      logHTML('No live audio input: ' + e);
+			console.log('No live audio input: ' + e)
+	      //logHTML('No live audio input: ' + e);
 	}
 
 	var audio;
