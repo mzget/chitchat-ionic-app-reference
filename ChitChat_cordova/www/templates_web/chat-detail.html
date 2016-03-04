@@ -9,10 +9,15 @@
 					<div ng-controller="ImageController">
 						<div ng-controller="VoiceController">
 							<div ng-controller="VideoController">
-                                <div ng-show="hasOldMessage">
+                                <div ng-show="showLoadMessage">
                                     <md-button class="md-raised md-primary md-hue-3" ng-click="loadOlderMessage()">Show more message!</md-button>
                                     <md-divider md-inset></md-divider> 
                                 </div>  
+                                
+                                <div ng-show="isLoadingMessage">
+                                    <md-subheader class="md-primary">Loading messages</md-subheader>
+                                    <md-progress-linear md-mode="indeterminate" class="md-hue-3"></md-progress-linear>
+                                </div>
 
 					<ion-list class="message-list" ng-repeat="message in chat track by $index">
 

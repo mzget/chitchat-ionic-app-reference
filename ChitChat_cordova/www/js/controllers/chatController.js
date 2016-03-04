@@ -1,8 +1,10 @@
 angular.module('spartan.chat', [])
 
 .controller('chatController', 
-function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
-	$sce, $cordovaGeolocation, $cordovaDialogs, chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
+function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate,
+    $ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
+	$sce, $cordovaGeolocation, $cordovaDialogs, chatRoomService, roomSelected,
+    Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
@@ -14,6 +16,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	var myprofile = main.getDataManager().myProfile;
 	var allMembers = main.getDataManager().orgMembers;
 	var chatRoomApi = main.getChatRoomApi();
+    var hasOlderMessage = false;
 
 	$scope.allMembers = allMembers;
 	$scope.myprofile = myprofile;
@@ -44,7 +47,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     $scope.isFavorite = isFavorite;
     $scope.isBlockNoti = isBlockNoti;
     $scope.loadOlderMessage = loadOlderMessage;
-    $scope.hasOldMessage = false;
+    $scope.isLoadingMessage = false;
+    $scope.showLoadMessage = false;
     $scope.chat = [];
     
 	function activate() {
@@ -96,11 +100,13 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		});
         $scope.$on('onOlderMessageReady', function ready(event, data) {
             console.debug('onOlderMessageReady', data)
-            $scope.hasOldMessage = data;
+            
+            hasOlderMessage = data;
+            $scope.showLoadMessage = hasOlderMessage;
         });
         $scope.$on('onMessageChanged', function (event, data) {
             $scope.chat = chatRoomService.all();
-            
+            $scope.isLoadingMessage = false;
             console.debug('chats.all: ', chatRoomService.all().length, $scope.chat.length);
 		});
 	}
@@ -379,6 +385,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 	function loadOlderMessage() {
         chatRoomService.getOlderMessageChunk();
+        $scope.isLoadingMessage = true;
+        $scope.showLoadMessage = false;
 	}
 
 	modalcount = 0;	
