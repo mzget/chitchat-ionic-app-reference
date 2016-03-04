@@ -249,8 +249,74 @@
         });
     }
 
-    public getOlderMessageRecord(callback: (err, res) => void) {
+    public getOlderMessageChunk(callback: (err, res) => void) {
+        let self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {                
+                //@ todo.
+                /**
+                 * Merge messages record to chatMessages array.
+                 * Never save message to persistend layer.
+                 */
+                let datas = [];
+                datas = res.data;
+                let clientMessages = self.chatMessages.slice(0);
+                let mergedArray: Array<Message> = [];
+                if(datas.length > 0) {
+                    var messages: Array<Message> = JSON.parse(JSON.stringify(datas));
+                    mergedArray = messages.concat(clientMessages);
+                }
+                
+                let resultsArray: Array<Message> = [];
+                async.map(mergedArray, function  iterator(item, cb) {
+                    let hasMessage = resultsArray.some(function itor(value, id, arr) {
+                        if(value._id == item._id) {
+                            return true;  
+                        }
+                    });
+                    
+                    if(hasMessage == false) {
+                        resultsArray.push(item);
+                        cb(null, null);
+                    }
+                    else{
+                        cb(null, null);
+                    }
+                }, function done(err, results: Array<Message>) {
+                    self.chatMessages = resultsArray;
+                
+                    callback(err, resultsArray);
+                });
+            }); 
+        });
+    }
 
+    private checkOlderMessages(callback: (err, res) => void) {
+        let self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.checkOlderMessagesCount(self.roomId, res, function response(err, res) {
+                callback(err, res);
+            });
+        });
+    }
+
+    private getTopEdgeMessageTime(callback: (err, res) => void) {
+        let self = this;
+        let topEdgeMessageTime: Date = null;
+        if (self.chatMessages != null && self.chatMessages.length != 0) {
+            if (!!self.chatMessages[0].createTime) {
+                topEdgeMessageTime = self.chatMessages[0].createTime;
+            }
+            else {
+                topEdgeMessageTime = new Date();
+            }
+        }
+        else {
+            topEdgeMessageTime = new Date();
+        }
+
+        console.debug('topEdgeMsg:', topEdgeMessageTime, JSON.stringify(self.chatMessages[0]));
+        callback(null, topEdgeMessageTime);
     }
 
     public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {

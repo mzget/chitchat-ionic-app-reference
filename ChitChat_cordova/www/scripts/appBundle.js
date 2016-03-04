@@ -246,6 +246,64 @@ var ChatRoomComponent = (function () {
             }
         });
     };
+    ChatRoomComponent.prototype.getOlderMessageChunk = function (callback) {
+        var self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {
+                var datas = [];
+                datas = res.data;
+                var clientMessages = self.chatMessages.slice(0);
+                var mergedArray = [];
+                if (datas.length > 0) {
+                    var messages = JSON.parse(JSON.stringify(datas));
+                    mergedArray = messages.concat(clientMessages);
+                }
+                var resultsArray = [];
+                async.map(mergedArray, function iterator(item, cb) {
+                    var hasMessage = resultsArray.some(function itor(value, id, arr) {
+                        if (value._id == item._id) {
+                            return true;
+                        }
+                    });
+                    if (hasMessage == false) {
+                        resultsArray.push(item);
+                        cb(null, null);
+                    }
+                    else {
+                        cb(null, null);
+                    }
+                }, function done(err, results) {
+                    self.chatMessages = resultsArray;
+                    callback(err, resultsArray);
+                });
+            });
+        });
+    };
+    ChatRoomComponent.prototype.checkOlderMessages = function (callback) {
+        var self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.checkOlderMessagesCount(self.roomId, res, function response(err, res) {
+                callback(err, res);
+            });
+        });
+    };
+    ChatRoomComponent.prototype.getTopEdgeMessageTime = function (callback) {
+        var self = this;
+        var topEdgeMessageTime = null;
+        if (self.chatMessages != null && self.chatMessages.length != 0) {
+            if (!!self.chatMessages[0].createTime) {
+                topEdgeMessageTime = self.chatMessages[0].createTime;
+            }
+            else {
+                topEdgeMessageTime = new Date();
+            }
+        }
+        else {
+            topEdgeMessageTime = new Date();
+        }
+        console.debug('topEdgeMsg:', topEdgeMessageTime, JSON.stringify(self.chatMessages[0]));
+        callback(null, topEdgeMessageTime);
+    };
     ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
@@ -1254,6 +1312,8 @@ var MessageDAL = (function () {
         this.store.getItem(rid).then(function (value) {
             console.log("get persistent success");
             done(null, value);
+        }).catch(function rejected(err) {
+            console.warn(err);
         });
     };
     MessageDAL.prototype.saveData = function (rid, chatRecord, callback) {
@@ -1262,6 +1322,8 @@ var MessageDAL = (function () {
             if (callback != null) {
                 callback(null, value);
             }
+        }).catch(function rejected(err) {
+            console.warn(err);
         });
     };
     MessageDAL.prototype.removeData = function () { };
@@ -1440,7 +1502,7 @@ var SecureService = (function () {
                 plaintext = bytes.toString(CryptoJS.enc.Utf8);
             }
             catch (e) {
-                console.error(e);
+                console.warn(e);
             }
             if (!!plaintext)
                 callback(null, plaintext);
@@ -2095,6 +2157,24 @@ var ChatServer;
                     callback(null, result);
             });
         };
+        ChatRoomApiProvider.prototype.getOlderMessageChunk = function (roomId, topEdgeMessageTime, callback) {
+            var message = {};
+            message["rid"] = roomId;
+            message["topEdgeMessageTime"] = topEdgeMessageTime.toString();
+            pomelo.request("chat.chatHandler.getOlderMessageChunk", message, function (result) {
+                if (callback !== null)
+                    callback(null, result);
+            });
+        };
+        ChatRoomApiProvider.prototype.checkOlderMessagesCount = function (roomId, topEdgeMessageTime, callback) {
+            var message = {};
+            message["rid"] = roomId;
+            message["topEdgeMessageTime"] = topEdgeMessageTime.toString();
+            pomelo.request("chat.chatHandler.checkOlderMessagesCount", message, function (result) {
+                if (callback !== null)
+                    callback(null, result);
+            });
+        };
         ChatRoomApiProvider.prototype.getMessagesReaders = function () {
             var message = {};
             message["token"] = this.serverImp.authenData.token;
@@ -2315,3 +2395,4 @@ var HttpStatusCode = (function () {
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
 })();
+//# sourceMappingURL=appBundle.js.map

@@ -3,8 +3,8 @@
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": true,
-    "sourceMap": false,
-    "out": "www/scripts/appBundle.js",
+    "sourceMap": true,
+    "out": "ChitChat_cordova/www/scripts/appBundle.js",
     "target": "es5",
     "jsx": "react"
   },

@@ -1,10 +1,8 @@
-/// <reference path="../bootstrap.js" />
 angular.module('spartan.chat', [])
 
 .controller('chatController', 
 function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate, $ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
-	$sce, $cordovaGeolocation, $cordovaDialogs,
-    chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
+	$sce, $cordovaGeolocation, $cordovaDialogs, chatRoomService, roomSelected, Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
 {    		
 	// Hide nav-tab # in chat detail
 	$('#chatMessage').animate({'bottom':'0'}, 350);
@@ -45,6 +43,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     $scope.editBlockNoti = editBlockNoti;
     $scope.isFavorite = isFavorite;
     $scope.isBlockNoti = isBlockNoti;
+    $scope.loadOlderMessage = loadOlderMessage;
+    $scope.hasOldMessage = false;
+    $scope.chat = [];
     
 	function activate() {
 	    console.log(self.title + " is activate");
@@ -52,7 +53,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    setRoom();
 
 		$scope.$on('onNewMessage', function (event, data) {
-            $scope.$apply();
+            $scope.chat = chatRoomService.all();
+            
 		    setTimeout(function () {
 		    	if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 		    		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
@@ -60,7 +62,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
                 else{
 		    		$("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 200);
 		    	}
-		    }, 1000);
+		    }, 100);
 		});
 		$scope.$on('onMessagesReady', function (event, data) {
 		    $scope.chat = chatRoomService.all();
@@ -68,12 +70,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		   		setTimeout(function () {
 			        $ionicLoading.hide();
 			    	$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
-			    }, 1000);
+			    }, 100);
 	    	}else{
 	    		$ionicLoading.hide();
 	    		setTimeout(function () {
 			        $("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 500);
-			    }, 1000);
+			    }, 100);
 	    	}
 		});
 		$scope.$on('onJoinRoomReady', function (event, data) {
@@ -91,6 +93,15 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		            }
 		        }
 		    });
+		});
+        $scope.$on('onOlderMessageReady', function ready(event, data) {
+            console.debug('onOlderMessageReady', data)
+            $scope.hasOldMessage = data;
+        });
+        $scope.$on('onMessageChanged', function (event, data) {
+            $scope.chat = chatRoomService.all();
+            
+            console.debug('chats.all: ', chatRoomService.all().length, $scope.chat.length);
 		});
 	}
 	function setScopeData() {
@@ -365,6 +376,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 	function isBlockNoti(id){
 		return blockNotifications.isBlockNoti(id);
+	}
+	function loadOlderMessage() {
+        chatRoomService.getOlderMessageChunk();
 	}
 
 	modalcount = 0;	

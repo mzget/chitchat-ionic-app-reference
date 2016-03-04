@@ -10,8 +10,11 @@
 					<div ng-controller="ImageController">
 						<div ng-controller="VoiceController">
 							<div ng-controller="VideoController">
+                                <div ng-show="hasOldMessage">
+                                    <md-button class="md-raised md-primary md-hue-3" ng-click="loadOlderMessage()">Show more message!</md-button>
+                                    <md-divider md-inset></md-divider> 
+                                </div>  
 
-					
 					<ion-list class="message-list" ng-repeat="message in chat track by $index">
 
 						<ion-item ng-if="message.firstMsg != undefined" style="text-align:center;">
@@ -140,9 +143,11 @@
 					<form id="UploadForm" style="position: absolute; top:-1000px;">
 					    <input type="file" name="fileToUpload" id="fileToUpload" onchange="angular.element(this).scope().onGetFileSelect()">
 					</form>
+
 					<form id="UploadAvatar" style="position: absolute; top:-1000px;">
-				        <input type="file" name="fileToUpload" id="avatarToUpload" onchange="angular.element(this).scope().onGetAvatarSelect()">
-				    </form>
+                        <input type="file" name="fileToUpload" id="avatarToUpload" onchange="angular.element(this).scope().onGetAvatarSelect()">
+                    </form>
+
 
 				    <audio id="audio" style="position: absolute; top:-1000px;" controls>
 					  <source src="">
