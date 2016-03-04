@@ -582,72 +582,145 @@ angular.module('spartan.media', [])
 .controller('VoiceController', function ($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile,
     GenerateID, roomSelected, checkFileSize, sharedObjectService) {
 
-	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
-	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
-	$scope.$on('cancelRecord', function(event, args) { $scope.cancelRecord(); });
+	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); console.log("startRecord"); });
+	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); console.log("stopRecord"); });
+	$scope.$on('cancelRecord', function(event, args) { cancelRecord(); });
 
-    var fileName;
-	var src;
-	var mediaRec;
+	if (ionic.Platform.platform() === "ios") {
+	    var fileName;
+		var src;
+		var mediaRec;
+	}else{
+		var audioContext;
+  		var audioRecorder;
+  		var _realAudioInput;
+  		window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+	    navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+	    window.URL = window.URL || window.webkitURL;
+	    audioContext = new AudioContext;
+	    console.log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+	    navigator.getUserMedia({vide:false, audio: true}, handlerStartUserMedia, handlerErrorUserMedia);
+	}
 
 	$scope.startRecord = function() {
-        fileName = GenerateID.makeid() + ".wav";
-		src = "documents://"+ fileName;
-	    mediaRec = new Media(src,
-	        function() { console.log("recordAudio():Audio Success"); },
-	        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
-	    });
-	    mediaRec.startRecord();
+		if (ionic.Platform.platform() === "ios") {
+	        fileName = GenerateID.makeid() + ".wav";
+			src = "documents://"+ fileName;
+		    mediaRec = new Media(src,
+		        function() { console.log("recordAudio():Audio Success"); },
+		        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
+		    });
+		    mediaRec.startRecord();
+		}else{
+			if(!audioRecorder)
+	      	return;
+
+	    	audioRecorder && audioRecorder.record();
+		}
 	}
 
 	$scope.stopRecord = function(){
-		mediaRec.stopRecord();
-		$scope.$emit('fileUri',[fileName,ContentType[ContentType.Voice]]);
-		//$scope.uploadVoice();
+		if (ionic.Platform.platform() === "ios") {
+			mediaRec.stopRecord();
+			$scope.$emit('fileUri',[fileName,ContentType[ContentType.Voice]]);
+		}else{
+			if(!audioRecorder)
+		      return;
+		    audioRecorder && audioRecorder.stop();
+		    audioRecorder.registerCB(onFinnishRecord);
+		}
+
+		
+	}
+	function onFinnishRecord(url){
+		console.log(url);
+		$scope.$emit('fileUri',[url,ContentType[ContentType.Voice]]);
+		//$scope.uploadVoice(url);
+	}
+	function cancelRecord(){
+		if (ionic.Platform.platform() === "ios") {
+			mediaRec.stopRecord();
+		}else{
+			if(!audioRecorder)
+		      return;
+		    audioRecorder && audioRecorder.stop();
+		}
 	}
 
-	function cancelRecord(){
-		mediaRec.stopRecord();
+	function handlerStartUserMedia(stream) {
+	    console.log('handlerStartUserMedia');
+	    console.log('sampleRate:'+ audioContext.sampleRate);
+	    // MEDIA STREAM SOURCE -> ZERO GAIN >
+	    _realAudioInput = audioContext.createMediaStreamSource(stream);
+	    audioRecorder = new Recorder(_realAudioInput);
+	}
+	function handlerErrorUserMedia(e) {
+	      logHTML('No live audio input: ' + e);
 	}
 
 	var audio;
 	$scope.play = function (id, url) {
-	    console.log("play url: ", url);
-		var fileName = url.substr(url.lastIndexOf('/') + 1);
+		if (ionic.Platform.platform() === "ios") {
+		    console.log("play url: ", url);
+			var fileName = url.substr(url.lastIndexOf('/') + 1);
 
-		console.log("filename:", fileName);
+			console.log("filename:", fileName);
 
-		$('.ion-pause').css({ 'display': 'none' });
-		$('.ion-play').css({ 'display': 'inline' });
+			$('.ion-pause').css({ 'display': 'none' });
+			$('.ion-play').css({ 'display': 'inline' });
 
-		$cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
-	      .then(function (success) {
-	          var fileMedia = success.nativeURL.replace('file://', '');
-	          console.log("filemedia:", fileMedia);
+			$cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
+		      .then(function (success) {
+		          var fileMedia = success.nativeURL.replace('file://', '');
+		          console.log("filemedia:", fileMedia);
 
-	          console.log("check file success.", JSON.stringify(success));
-	          $('#' + id + '-voice-play').css({ 'display': 'none' });
-	          $('#' + id + '-voice-pause').css({ 'display': 'inline' });
-	          //audio.stop();
-	          audio = new Media(fileMedia, function () {
-	              $('#' + id + '-voice-play').css({ 'display': 'inline' });
-	              $('#' + id + '-voice-pause').css({ 'display': 'none' });
-	          },
-                  function (err) {
-                      console.log("playAudio(): Error: " + JSON.stringify(err));
-                  }
-                           );
+		          console.log("check file success.", JSON.stringify(success));
+		          $('#' + id + '-voice-play').css({ 'display': 'none' });
+		          $('#' + id + '-voice-pause').css({ 'display': 'inline' });
+		          //audio.stop();
+		          audio = new Media(fileMedia, function () {
+		              $('#' + id + '-voice-play').css({ 'display': 'inline' });
+		              $('#' + id + '-voice-pause').css({ 'display': 'none' });
+		          },
+	                  function (err) {
+	                      console.log("playAudio(): Error: " + JSON.stringify(err));
+	                  }
+	                           );
 
-	          audio.play();
-	      }, function (error) {
-	          console.error("get file media fail.", JSON.stringify(error));
-	          downloadMedia(id, sharedObjectService.getWebServer() + url);
-	      });
+		          audio.play();
+		    }, function (error) {
+		          console.error("get file media fail.", JSON.stringify(error));
+		          downloadMedia(id, sharedObjectService.getWebServer() + url);
+		    });
+	  	}else{
+	  		$('.ion-pause').css({ 'display': 'none' });
+			$('.ion-play').css({ 'display': 'inline' });
+	  		$('#' + id + '-voice-play').css({ 'display': 'none' });
+		    $('#' + id + '-voice-pause').css({ 'display': 'inline' });
+		    //voiceAudio.src = 'audio/mp3/' + sharedObjectService.getWebServer() + url;
+		    var voiceAudio = document.getElementById('audio'); 
+		    voiceAudio.src = url; 
+		    voiceAudio.load();
+			voiceAudio.play();
+			console.log(voiceAudio);
+		}
+	  		
 	}
+
+	$("#audio").bind('ended', function(){
+	   	$('.ion-pause').css({ 'display': 'none' });
+		$('.ion-play').css({ 'display': 'inline' });
+	});
+
 	$scope.pause = function(id){
 		$('#' + id + '-voice-play').css({ 'display': 'inline' });
 		$('#' + id + '-voice-pause').css({ 'display': 'none' });
-		audio.stop();
+		if (ionic.Platform.platform() === "ios") 
+			audio.stop();
+		else{
+			var voiceAudio = document.getElementById('audio');
+			voiceAudio.pause();
+		}
 	}
 
 	function downloadMedia(id,media){
@@ -675,29 +748,38 @@ angular.module('spartan.media', [])
 	}
 
 	$scope.uploadVoice = function(id) {
-		if(fileName != null || fileName != undefined) { 
-			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
-				if(canUpload){
-				    var voice = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
-						$scope.$emit('delectTemp', [id]); 
+		if (ionic.Platform.platform() === "ios") {
+			if(fileName != null || fileName != undefined) { 
+				checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
+					if(canUpload){
+					    var voice = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
+							$scope.$emit('delectTemp', [id]); 
+					});
+					mediaUpload[id] = voice;
+					mediaUpload[id].upload();
+					}else{
+						navigator.notification.alert(
+						    'This file size is over', 
+						     null,          
+						    'Fail to Upload',          
+						    'OK'   
+						);
+					}
 				});
-				mediaUpload[id] = voice;
-				mediaUpload[id].upload();
-				}else{
-					navigator.notification.alert(
-					    'This file size is over', 
-					     null,          
-					    'Fail to Upload',          
-					    'OK'   
-					);
-				}
-			});
-		}else{
-			if(mediaUpload[id].hasOwnProperty('url')){
-				$scope.$emit('delectTemp', [id]); 
 			}else{
-				document.getElementById( id + '-resend').classList.remove("hide");
+				if(mediaUpload[id].hasOwnProperty('url')){
+					$scope.$emit('delectTemp', [id]); 
+				}else{
+					document.getElementById( id + '-resend').classList.remove("hide");
+				}
 			}
+		}
+		else{
+	            var voice = new UploadMediaWeb(sharedObjectService, roomSelected.getRoom()._id, id, ContentType[ContentType.Voice], function(id,messageId){
+	            	$scope.$emit('delectTemp', [id]); 
+	            });
+	            mediaUpload[id] = voice;
+	            mediaUpload[id].upload();
 		}
 	}
 
@@ -714,38 +796,45 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 	var downloadProgress;
 
 	this.upload = function(){
-		var formData = new FormData($('#UploadForm')[0]); 
 		
-		$.ajax({
-		       	url : sharedObjectService.getWebServer() + "/?r=api/upload",
-		       	type : 'POST',
-		       	data : formData,
-		       	processData: false,
-			   	contentType: false,
-		       	success : function(data) {
-		       		console.log('success');
-		        	console.log(data);
-		        	send(data);
-		       	},
-		       	error : function(data){
-		       		console.log('error');
-		       		alert("Fail");
-					console.log(data);
-		       	},
-		       	xhr: function()
-				{
-				    var xhr = new window.XMLHttpRequest();
-				    //Upload progress
-				    xhr.upload.addEventListener("progress", function(evt){
-				      if (evt.lengthComputable) {
-				        var percentComplete = evt.loaded / evt.total;
-				        //Do something with upload progress
-				        console.log(percentComplete);
-				      }
-				    }, false);
-				    return xhr;
-			  	},
-		});
+			if($('#fileToUpload')[0].files.length != 0){
+				var formData = new FormData($('#UploadForm')[0]); 
+			}
+			else{
+				var formData = new FormData();
+				formData.append('fileToUpload', uri);
+			}
+
+			$.ajax({
+			       	url : sharedObjectService.getWebServer() + "/?r=api/upload",
+			       	type : 'POST',
+			       	data : formData,
+			       	processData: false,
+				   	contentType: false,
+			       	success : function(data) {
+			       		console.log('success');
+			        	console.log(data);
+			        	send(data);
+			       	},
+			       	error : function(data){
+			       		console.log('error');
+			       		alert("Fail");
+						console.log(data);
+			       	},
+			       	xhr: function()
+					{
+					    var xhr = new window.XMLHttpRequest();
+					    //Upload progress
+					    xhr.upload.addEventListener("progress", function(evt){
+					      if (evt.lengthComputable) {
+					        var percentComplete = evt.loaded / evt.total;
+					        //Do something with upload progress
+					        console.log(percentComplete);
+					      }
+					    }, false);
+					    return xhr;
+				  	},
+			});
 	}
 
 	function openProgress(){

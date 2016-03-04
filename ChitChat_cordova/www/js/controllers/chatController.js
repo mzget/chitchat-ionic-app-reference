@@ -451,11 +451,17 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		if($('.audio-recorder').is(".recording")){
 			$('.audio-recorder').removeClass("recording");
 			$('.audio-recorder').addClass("unrecording");
-			$scope.$broadcast('stopRecord', 'stopRecord');
+			if (ionic.Platform.platform() === "ios") 
+				$scope.$broadcast('stopRecord', 'stopRecord');
+			else
+				$rootScope.$broadcast('stopRecord', 'stopRecord');
 		}else{
 			$('.audio-recorder').removeClass("unrecording");
 			$('.audio-recorder').addClass("recording");
-			$scope.$broadcast('startRecord', 'startRecord');
+			if (ionic.Platform.platform() === "ios") 
+				$scope.$broadcast('startRecord', 'startRecord');
+			else
+				$rootScope.$broadcast('startRecord', 'startRecord');
 		}
 	}
 
@@ -527,6 +533,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			}else if(args[1] == ContentType[ContentType.File]){
 				var file = document.querySelector("[id='fileToUpload']").files[0];
 				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.File],"body":file.name,"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
+			}
+			else if(args[1] == ContentType[ContentType.Voice]){
+				$scope.chat.push( {"rid":self.currentRoom._id,"type":ContentType[ContentType.Voice],"body":args[0],"sender":myprofile._id,"_id":args[0],"createTime": new Date(),"temp":"true"});
 			}
 		}
 	});

@@ -144,6 +144,10 @@
 				        <input type="file" name="fileToUpload" id="avatarToUpload" onchange="angular.element(this).scope().onGetAvatarSelect()">
 				    </form>
 
+				    <audio id="audio" style="position: absolute; top:-1000px;" controls>
+					  <source src="">
+					</audio>
+
 							</div>
 						</div>
 					</div>
@@ -154,8 +158,7 @@
 
 <ion-footer-bar id="chatMessage" align-title="left" class="bar-light" style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none;">
 	<div class="buttons">
-		<button ng-disabled="inactive" ng-click="image()" class="button button-clear" style="width:15px; font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
-		<button ng-disabled="inactive" ng-click="openModalSticker()" class="button button-clear" style="width:15px; font-size:20px; padding:0 40px;"><i class="ion-happy-outline"></i></button>
+		<button ng-disabled="inactive" ng-click="openModal()" class="button button-clear" style="font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
 	</div>
 
 	<input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
