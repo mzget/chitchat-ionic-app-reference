@@ -534,6 +534,7 @@
                 cb();
             }
             else {
+                item = null;
                 cb();
             }
         }, function done(err) {
