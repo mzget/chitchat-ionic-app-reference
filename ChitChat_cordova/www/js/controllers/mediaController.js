@@ -63,7 +63,7 @@ angular.module('spartan.media', [])
 })
 
 .controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, $ionicModal,
-    ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
+    $mdDialog, ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
@@ -265,6 +265,18 @@ angular.module('spartan.media', [])
 	$scope.closeImage = function () {
 	    $scope.modalImage.hide();
 	}
+	$scope.viewImageWeb = function(ev,type,src) {
+        $mdDialog.show({
+          controller: function($scope){
+          	$scope.imageType = type;
+			$scope.imageSrc = src;
+          },
+          templateUrl: 'templates_web/modal-image.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true
+        });
+    }
 
 	$scope.uploadImage = function(id) {
 		if (ionic.Platform.platform() === "ios") {

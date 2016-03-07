@@ -24,7 +24,7 @@
           <ion-item id="{{member._id}}" class="item item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false">
               <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
               <img ng-if="member.image == null" src="img/img.jpg" style="border-radius:50%;width:50px;height:50px;"/>
-              <div class="member-name" style="display:inline;"> {{member.displayname}} </div> 
+              <div class="member-name" style="display:inline; margin-left:20px;"> {{member.displayname}} </div> 
               
               
               <md-button class="md-icon-button" style="position:absolute; right:0px; margin-top:3px;" ng-click="removeMember(member._id)">
@@ -39,7 +39,7 @@
               <div layout="row">
               <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
               <img ng-if="member.image == null" src="img/img.jpg" style="border-radius:50%;width:50px;height:50px;"/>
-              <div class="member-name" style="display:inline;"> {{member.displayname}} </div> 
+              <div class="member-name" style="display:inline; margin-left:20px;"> {{member.displayname}} </div> 
            
 
             <div style="position:absolute; left:240px; width:150px; margin-top:-5px;">

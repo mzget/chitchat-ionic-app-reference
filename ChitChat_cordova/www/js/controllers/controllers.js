@@ -652,7 +652,7 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, mdToa
                 //@ if user remove your self.
                 if (id == main.getDataManager().myProfile._id) {
                     $mdDialog.hide();
-                    var group = main.getDataManager().orgGroups['55d177c2d20212737c46c685'];
+                    var group = main.getDataManager().getGroup($rootScope.teamInfo.root);
                     $rootScope.$broadcast('changeChat', group);
                 }
                 var indexMember;
