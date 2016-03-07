@@ -387,7 +387,7 @@ angular.module('spartan.media', [])
 
 })
 
-.controller('VideoController', function ($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
+.controller('VideoController', function ($scope, $q, $sce, $cordovaFileTransfer, $timeout, $mdDialog, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
     checkFileSize, GenerateID, VideoService, roomSelected, sharedObjectService) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
@@ -535,6 +535,18 @@ angular.module('spartan.media', [])
 		angular.element(document.getElementById("video-player").pause());
     	$scope.modalVideo.remove();
   	};
+
+  	$scope.openVideoWeb = function(ev,type,src) {
+        $mdDialog.show({
+          controller: function($scope){
+          	$scope.videoSrc = $sce.trustAsResourceUrl(sharedObjectService.getWebServer() + src);
+          },
+          templateUrl: 'templates_web/modal-video.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true
+        });
+    }
 	
  	$scope.saveFile = function(type,url){
  	    $scope.mediaDownload(sharedObjectService.getWebServer() + url).then(function (path) {
