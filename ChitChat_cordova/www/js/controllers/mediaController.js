@@ -206,7 +206,7 @@ angular.module('spartan.media', [])
 
 	$scope.viewImage = function (type, src) {
 		$scope.modalImage.type = type;
-		$scope.modalImage.src = src;
+		$scope.modalImage.src = sharedObjectService.getWebServer() + src;
 		$scope.modalImage.show();
 	}
 	$scope.closeImage = function () {
