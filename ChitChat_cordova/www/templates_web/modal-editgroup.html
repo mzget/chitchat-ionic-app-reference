@@ -20,7 +20,7 @@
         </div>
 
 
-        <div style="overflow-y: scroll; overflow-x: hidden; height:85%;" ng-show="currentRoom.type == 2">
+        <div style="overflow-y: scroll; overflow-x: hidden; height:80%;" ng-show="currentRoom.type == 2">
           <ion-item id="{{member._id}}" class="item item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false">
               <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
               <img ng-if="member.image == null" src="img/img.jpg" style="border-radius:50%;width:50px;height:50px;"/>
@@ -33,7 +33,7 @@
           </ion-item>
         </div>
 
-        <div style="overflow-y: scroll; overflow-x: hidden; height:85%;" ng-show="currentRoom.type == 1">
+        <div style="overflow-y: scroll; overflow-x: hidden; height:80%;" ng-show="currentRoom.type == 1">
           <ion-item id="{{member._id}}" class="item item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false">
 
               <div layout="row">
