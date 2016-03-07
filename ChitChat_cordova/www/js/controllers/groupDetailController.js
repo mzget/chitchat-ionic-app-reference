@@ -389,18 +389,18 @@
                 });
                 var member = main.getDataManager().orgMembers[id];
                 if (!!member) {
-                    if (member.firstname == null || member.firstname == "" &&
-                        member.lastname == null || member.lastname == "" &&
-                        member.mail == null || member.mail == "" &&
-                        member.role == null || member.role == "" &&
-                        member.tel == null || member.tel == "") {
+                    if (member.firstname == null ||
+                        member.lastname == null ||
+                        member.mail == null ||
+                        member.role == null ||
+                        member.tel == null ) {
                         server.getMemberProfile(id, function (err, res) {
                             if (!err) {
-                                member.firstname = res["data"].firstname;
-                                member.lastname = res["data"].lastname;
-                                member.mail = res["data"].mail;
-                                member.role = res["data"].role;
-                                member.tel = res["data"].tel;
+                                member.firstname = res.data[0].firstname;
+                                member.lastname = res.data[0].lastname;
+                                member.mail = res.data[0].mail;
+                                member.role = res.data[0].role;
+                                member.tel = res.data[0].tel;
                             }
                             else {
                                 console.warn(err, res);
