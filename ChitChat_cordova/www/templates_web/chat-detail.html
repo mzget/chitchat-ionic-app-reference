@@ -26,7 +26,7 @@
 							<div style="font-size:12px;"> {{message.firstMsg}} </div>
 						</ion-item>
 
-						<ion-item ng-if="message.sender != myprofile._id && !!message.sender" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+						<ion-item ng-if="message.sender != myprofile._id && !!message.sender" class="other item-remove-animate item-avatar item-icon-right" type="item-text-wrap" style="white-space:normal !important;">
 							<img ng-src="http://203.113.25.44/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 							<h2>{{allMembers[message.sender]['displayname']}}</h2>
 							</br>
@@ -79,7 +79,7 @@
 							<label>{{message.time}}</label>
 						</ion-item>
 
-						<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
+						<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap" style="white-space:normal !important;">
 							<label style="clear:none; cursor:pointer;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
 
 							<div id="{{message._id}}-resend" class="hide" style="font-size:10px;" ng-click="resend(message.body,message._id)"> Resend </div>
