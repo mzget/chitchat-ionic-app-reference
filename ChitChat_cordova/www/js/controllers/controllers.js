@@ -535,18 +535,29 @@ function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBas
 }
 function InviteController($scope,$rootScope,$mdDialog,CreateGroup,mdToast,roomSelected){
     $scope.myProfile = main.getDataManager().myProfile;
-    $scope.allmembers = CreateGroup.getAllMember();
     $scope.webServer = $rootScope.webServer;
     $scope.currentRoom = roomSelected.getRoomOrLastRoom();
-    for (var i = 0; i < $scope.currentRoom.members.length; i++) {
-        var positionIndex;
-        $.each($scope.allmembers, function (index, result) {
-            if (result._id == $scope.currentRoom.members[i].id) {
-                positionIndex = index;
+    $scope.allmembers = [];
+    var membersOrg = CreateGroup.getAllMember();
+    var members = [];
+    
+    for (var x = 0; x < membersOrg.length; x++) {
+        var isHas = false;
+        for (var i = 0; i < $scope.currentRoom.members.length; i++) {
+            if(membersOrg[x]._id == $scope.currentRoom.members[i].id)
+            {
+                isHas = true;
             }
-        });
-        $scope.allmembers.splice(positionIndex, 1);
+        }
+        if(!isHas)
+            members.push(membersOrg[x]._id);
     }
+    for(var y =0; y < members.length; y++){
+        var member = dataManager.getContactProfile(members[y]);
+        member.checked = false;
+        $scope.allmembers.push(member);
+    }
+
     $scope.invite = function(){
         server.editGroupMembers("add", $scope.currentRoom._id, RoomType[$scope.currentRoom.type], CreateGroup.getSelectedId(), function (err, res) {
             if (res.code === HttpStatusCode.success) {
