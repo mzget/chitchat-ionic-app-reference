@@ -1,8 +1,9 @@
 <div>
     <div>
-        <img class="avatar-modal" ng-if="image != null" ng-src="{{webServer}}/timthumb.php?src={{image}}&h=60&w=60" style="border-radius:50%;"/>
-        <img class="avatar-modal" ng-if="image == null" src="img/img.jpg" height="60" width="60"  style="border-radius:50%;"/>
-        <p style="display:inline; margin-left:10px;"> {{nameInfo}} </p>
+        <img class="avatar-modal" ng-if="group.image != null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=60&w=60" style="border-radius:50%;"/>
+        <img class="avatar-modal" ng-if="group.image == null" src="img/img.jpg" height="60" width="60"  style="border-radius:50%;"/>
+        <p style="display:inline; margin-left:10px;" ng-if="group.name != null"> {{group.name}} </p>
+        <p style="display:inline; margin-left:10px;" ng-if="group.name == null"> {{group.displayname}} </p>
     </div>
 
     <hr>
@@ -46,41 +47,41 @@
         </div>
 
         <div ng-show=" roomType==3 ">
-            <p style="margin-top:-13px; text-align:center;"> {{member.displayname}}'s Profile </p>
+            <p style="margin-top:-13px; text-align:center;"> {{group.displayname}}'s Profile </p>
             <div class="list">
                 <label class="item item-input">
                     <div class="input-label"> Display </div>
-                    <p>{{member.displayname}}</p>
+                    <p>{{group.displayname}}</p>
                     <!-- <input type="text" value="{{member.displayname}}" id="viewprofile-input-display" disabled style="background:none;"> -->
                 </label>
 
                 <label class="item item-input">
                     <div class="input-label"> Status </div>
-                    <p>{{member.status}}</p>
+                    <p>{{group.status}}</p>
                     <!-- <input type="text" value="{{member.status}}" id="viewprofile-input-status" disabled style="background:none;"> -->
                 </label>
 
                 <label class="item item-input">
                     <div class="input-label"> Name </div>
-                    <p>{{member.firstname}} {{member.lastname}}</p>
+                    <p>{{group.firstname}} {{group.lastname}}</p>
                     <!-- <input type="text" value="{{member.firstname}} {{member.lastname}}" disabled style="background:none;"> -->
                 </label>
 
                 <label class="item item-input">
                     <div class="input-label"> User Level </div>
-                    <p>{{member.role}}</p>
+                    <p>{{group.role}}</p>
                     <!-- <input type="text" value="{{member.role}}" disabled style="background:none;"> -->
                 </label>
 
                 <label class="item item-input">
                     <div class="input-label"> Tel. </div>
-                    <p>{{member.tel}}</p>
+                    <p>{{group.tel}}</p>
                     <!-- <input type="text" value="{{member.tel}}" disabled style="background:none;"> -->
                 </label>
 
                 <label class="item item-input">
                     <div class="input-label"> Email </div>
-                    <p>{{member.mail}}</p>
+                    <p>{{group.mail}}</p>
                     <!-- <input type="text" value="{{member.mail}}" disabled style="background:none;"> -->
                 </label>
             </div>

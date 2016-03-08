@@ -372,15 +372,22 @@
         $scope.$on('roomName', function(event, args) {
             var room = roomSelected.getRoom();
             $scope.viewInfo = true;
-            $scope.nameInfo = args;
+            //$scope.nameInfo = args;
             $scope.roomType = room.type;
-            if(room.type === RoomType.privateGroup || room.type === RoomType.organizationGroup){
-                $scope.image = room.image;
+            if(room.type === RoomType.privateGroup){
+                $scope.group = main.getDataManager().privateGroups[room._id];
                 groupMembers(room.members, room.members.length, function done(members) {
                     $scope.members = members;
                     $scope.$apply();
                 }); 
-            }else if(room.type === RoomType.privateChat){
+            }else if(room.type === RoomType.organizationGroup){
+                $scope.group = main.getDataManager().orgGroups[room._id];
+                groupMembers(room.members, room.members.length, function done(members) {
+                    $scope.members = members;
+                    $scope.$apply();
+                }); 
+            }
+            else if(room.type === RoomType.privateChat){
                 var id;
                 $.each(room.members, function (index, result) {
                     if (result.id != main.getDataManager().myProfile._id) { 
@@ -408,14 +415,13 @@
                             $scope.$apply();
                         });
                     }
-                    $scope.image = main.getDataManager().orgMembers[id].image;
-                    $scope.member = main.getDataManager().orgMembers[id];
+                    $scope.group = main.getDataManager().orgMembers[id];
                 }
                 else {
                     console.warn("A member is no longer in team.");
                 }
             }else if (room.type === RoomType.projectBaseGroup) {
-                $scope.image = room.image;
+                $scope.group = main.getDataManager().projectBaseGroups[room._id];
                 var waitForMembers = new Promise(function executor(resolve, rejected) {
                     getMembersInProjectBase(room, function (value) {
                         $scope.members = value;
