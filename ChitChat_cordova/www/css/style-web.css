@@ -173,7 +173,16 @@ color: #fff;}
 }
 
 .modal-backdrop{
+  background-color: transparent !important;
   opacity: 1 !important;
+}
+
+.modal-backdrop-bg{
+  background-color: transparent !important;
+}
+
+.modal {
+  margin-left: 0px !important;
 }
 
 .popover {
@@ -196,7 +205,6 @@ md-toast.md-success-toast-theme .md-toast-content {
 md-toast.md-error-toast-theme .md-toast-content {
   background-color: red;
 }
-
 
 .background {
     background: rgba(31,183,229,1);

@@ -1,6 +1,6 @@
 angular.module('spartan.media', [])
 
-.controller('FileController', function($scope, sharedObjectService, roomSelected) {
+.controller('FileController', function($rootScope, $scope, sharedObjectService, roomSelected) {
 	$scope.onGetFileSelect = function(){
 		var file    = document.querySelector('input[type=file]').files[0];
 	    var reader  = new FileReader();
@@ -27,6 +27,7 @@ angular.module('spartan.media', [])
 				        break;
 		    	}
 		    }
+		    $rootScope.$broadcast('menuChat.hidden', []);
 	    } 
 		reader.readAsDataURL(file);
 	}
