@@ -231,7 +231,7 @@
                         console.log("get newer message completed.");
                         //<!-- Save persistent chats log here.
                         self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
- //                           self.getNewerMessageRecord();
+                           //self.getNewerMessageRecord();
                         });
                     });
                 }
@@ -286,8 +286,11 @@
                     resultsArray.sort(self.compareMessage);
 
                     self.chatMessages = resultsArray.slice(0);
-                
+                    
                     callback(err, resultsArray);
+                    
+                    self.messageDAL.removeData();
+                    self.messageDAL.saveData(self.roomId, self.chatMessages);
                 });
             }); 
         });

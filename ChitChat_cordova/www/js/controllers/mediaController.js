@@ -620,6 +620,7 @@ angular.module('spartan.media', [])
 		var src;
 		var mediaRec;
 	}else{
+        try {
 		var audioContext;
   		var audioRecorder;
   		var _realAudioInput;
@@ -629,6 +630,10 @@ angular.module('spartan.media', [])
 	    audioContext = new AudioContext;
 	    console.log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
 	    navigator.getUserMedia({vide:false, audio: true}, handlerStartUserMedia, handlerErrorUserMedia);
+        }
+        catch (ex) {
+            console.warn(ex);
+        } 
 	}
 
 	$scope.startRecord = function() {
