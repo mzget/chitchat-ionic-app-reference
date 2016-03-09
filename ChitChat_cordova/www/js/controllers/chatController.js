@@ -546,6 +546,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.$on('menuChat.hidden', function () {
 	    modalcount--;
         $scope.chatMenuModal.hide();
+        $scope.modalAudio.hide();
 	    $('#chatMessage').animate({ 'bottom': '0' }, 350);
 	    $('#chatDetail').animate({ 'top': '0' }, 350);
 
