@@ -26,7 +26,15 @@
         });
     }
 
-    removeData() { }
+    removeData(rid: string, callback: (err, res) => void) {
+        this.store.removeItem(rid).then(() => {
+            console.info('room_id %s is removed: ', rid);
+            callback(null, null);
+        }).catch((err) => {
+            console.warn(err);
+        });
+        
+     }
 
     clearData() {
         this.store.clear((err) => {
