@@ -88,6 +88,7 @@
 
                 chatsLogComponent.onEditedGroupMember = function (newgroup) {
                     console.log('onEditedGroupMember: ', JSON.stringify(newgroup));
+                    $rootScope.$broadcast('onEditedGroupMember',[]);
                 }
 
                 server.getLastAccessRoomsInfo(function (err, res) {

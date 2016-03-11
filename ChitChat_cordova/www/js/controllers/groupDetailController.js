@@ -370,13 +370,19 @@
             $scope.viewInfo = args;
         });
         $scope.$on('roomName', function(event, args) {
+            getInfo();
+        });
+        $scope.$on('onEditedGroupMember', function(event, args) {
+            getInfo();
+        });
+        function getInfo(){
             var room = roomSelected.getRoom();
             $scope.viewInfo = true;
             //$scope.nameInfo = args;
             $scope.roomType = room.type;
             if(room.type === RoomType.privateGroup){
                 $scope.group = main.getDataManager().privateGroups[room._id];
-                groupMembers(room.members, room.members.length, function done(members) {
+                groupMembers($scope.group.members, $scope.group.members.length, function done(members) {
                     $scope.members = members;
                     $scope.$apply();
                 }); 
@@ -423,7 +429,7 @@
             }else if (room.type === RoomType.projectBaseGroup) {
                 $scope.group = main.getDataManager().projectBaseGroups[room._id];
                 var waitForMembers = new Promise(function executor(resolve, rejected) {
-                    getMembersInProjectBase(room, function (value) {
+                    getMembersInProjectBase($scope.group, function (value) {
                         $scope.members = value;
                         $scope.$apply();
                         resolve($scope.members);
@@ -441,8 +447,7 @@
 
                 });
             }
-            
-        });
+        }
         $scope.openContactModal = function (contactId) {
             if(contactId!=main.getDataManager().myProfile._id) 
                 modalFactory.initContactWeb($rootScope, contactId);    

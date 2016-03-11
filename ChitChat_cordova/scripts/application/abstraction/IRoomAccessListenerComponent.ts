@@ -5,5 +5,6 @@
         onUpdatedLastAccessTime(dataEvent);
         onAddRoomAccess(dataEvent);
         onEditedGroupMember(dataEvent);
+        onUpdateMemberInfoInProjectBase(dataEvent);
     }
 }

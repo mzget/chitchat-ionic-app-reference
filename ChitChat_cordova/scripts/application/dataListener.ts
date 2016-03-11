@@ -105,6 +105,11 @@
     onUpdateMemberInfoInProjectBase(dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupMemberDetail(jsonObj);
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onUpdateMemberInfoInProjectBase(dataEvent);
+            });
+        }
     }
 
 
