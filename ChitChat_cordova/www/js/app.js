@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
-	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter', 'jrCrop'])
+	  'spartan.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
+      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter', 'jrCrop', 'ngMaterial'])
 
 
 .run(function($ionicPlatform) {
@@ -201,7 +201,7 @@ angular.module('starter',
 		views: {
 			'tab-account': {
 				templateUrl: 'templates/tab-account.html',
-				controller: 'AccountCtrl'
+				controller: 'optionsController'
 			}
 		}
 	})

@@ -289,7 +289,6 @@
                     
                     callback(err, resultsArray);
                     
-                    self.messageDAL.removeData();
                     self.messageDAL.saveData(self.roomId, self.chatMessages);
                 });
             }); 
