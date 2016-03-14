@@ -10,6 +10,8 @@
         this.store.getItem(rid).then(function (value) {
             console.log("get persistent success");
             done(null, value);
+        }).catch(function rejected(err) {
+            console.warn(err);
         });
     }
 
@@ -19,10 +21,20 @@
             if (callback != null) {
                 callback(null, value);
             }
+        }).catch(function rejected(err) {
+            console.warn(err);
         });
     }
 
-    removeData() { }
+    removeData(rid: string, callback: (err, res) => void) {
+        this.store.removeItem(rid).then(() => {
+            console.info('room_id %s is removed: ', rid);
+            callback(null, null);
+        }).catch((err) => {
+            console.warn(err);
+        });
+        
+     }
 
     clearData() {
         this.store.clear((err) => {

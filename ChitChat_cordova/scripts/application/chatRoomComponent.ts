@@ -231,7 +231,7 @@
                         console.log("get newer message completed.");
                         //<!-- Save persistent chats log here.
                         self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
- //                           self.getNewerMessageRecord();
+                           //self.getNewerMessageRecord();
                         });
                     });
                 }
@@ -248,6 +248,92 @@
             }
         });
     }
+
+    public getOlderMessageChunk(callback: (err, res) => void) {
+        let self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {                
+                //@ todo.
+                /**
+                 * Merge messages record to chatMessages array.
+                 * Never save message to persistend layer.
+                 */
+                let datas = [];
+                datas = res.data;
+                let clientMessages = self.chatMessages.slice(0);
+                let mergedArray: Array<Message> = [];
+                if(datas.length > 0) {
+                    var messages: Array<Message> = JSON.parse(JSON.stringify(datas));
+                    mergedArray = messages.concat(clientMessages);
+                }
+                
+                let resultsArray: Array<Message> = [];
+                async.map(mergedArray, function  iterator(item, cb) {
+                    let hasMessage = resultsArray.some(function itor(value, id, arr) {
+                        if(value._id == item._id) {
+                            return true;  
+                        }
+                    });
+                    
+                    if(hasMessage == false) {
+                        resultsArray.push(item);
+                        cb(null, null);
+                    }
+                    else{
+                        cb(null, null);
+                    }
+                }, function done(err, results: Array<Message>) {
+                    resultsArray.sort(self.compareMessage);
+
+                    self.chatMessages = resultsArray.slice(0);
+                    
+                    callback(err, resultsArray);
+                    
+                    self.messageDAL.removeData();
+                    self.messageDAL.saveData(self.roomId, self.chatMessages);
+                });
+            }); 
+        });
+    }
+
+    private checkOlderMessages(callback: (err, res) => void) {
+        let self = this;
+        self.getTopEdgeMessageTime(function done(err, res) {
+            self.chatRoomApi.checkOlderMessagesCount(self.roomId, res, function response(err, res) {
+                callback(err, res);
+            });
+        });
+    }
+
+    private getTopEdgeMessageTime(callback: (err, res) => void) {
+        let self = this;
+        let topEdgeMessageTime: Date = null;
+        if (self.chatMessages != null && self.chatMessages.length != 0) {
+            if (!!self.chatMessages[0].createTime) {
+                topEdgeMessageTime = self.chatMessages[0].createTime;
+            }
+            else {
+                topEdgeMessageTime = new Date();
+            }
+        }
+        else {
+            topEdgeMessageTime = new Date();
+        }
+
+        console.debug('topEdgeMsg:', topEdgeMessageTime, JSON.stringify(self.chatMessages[0]));
+        callback(null, topEdgeMessageTime);
+    }
+
+    private compareMessage(a: Message, b: Message) {
+        if (a.createTime > b.createTime) {
+            return 1;
+        }
+        if (a.createTime < b.createTime) {
+            return -1;
+        }
+        // a must be equal to b
+        return 0;
+}
 
     public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
         var self = this;
@@ -386,10 +472,18 @@
 
     public leaveRoom(room_id, callback: (err, res) => void) {
         var self = this;
-        this.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
-            console.log("leave room", JSON.stringify(res));
-            callback(err, res);
-        });
+       
+       if(self.serverImp._isConnected) {
+            self.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
+                console.log("leave room", JSON.stringify(res));
+                callback(err, res);
+            });
+       }
+       else {
+           console.warn(ChatServer.ServerImplemented.connectionProblemString);
+           
+           callback(new Error(ChatServer.ServerImplemented.connectionProblemString), null);
+       }
     }
 
     public joinRoom(callback: (err, res) => void) {

@@ -14,10 +14,6 @@
 		var vm = this;
 		vm.title = 'homeController';
         $ionicTabsDelegate.showBar(true);
-        
-        // if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-		      // $scope.$on('roomName', function(event, args) { $scope.roomName = args; });
-        // }
 
 		function activate() {
 		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
@@ -26,9 +22,13 @@
                 }
                 catch(ex) { console.warn(ex); }
 		    }
-		    if ($ionicLoading) {
+            else {
 		        $ionicLoading.hide();
-		    }
+                
+                if(!server._isConnected) {
+                    location.href = '';
+                }
+            }
 
 		    dbAccessService.setMessageDAL(messageDAL);
 			localNotifyService.registerPermission();
@@ -106,11 +106,11 @@
                         
                         setTimeout(function () {
                             $scope.favorites = getFavorite();
-                            
+
                             if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform !== 'android') {
-                            getChatWeb();
+                            	getChatWeb();
                             }
-                    }, 500);
+                    }, 1000);
                 }
             }
 		}
@@ -180,8 +180,8 @@
 			return Favorite.isFavorite(id);
 		}
         
-			activate();
-			setupScope();
+		activate();
+		setupScope();
 
 			//<!-- My profile.
 			$ionicModal.fromTemplateUrl('templates/modal-myprofile.html', {
@@ -236,6 +236,10 @@
 			$scope.$on('modal.removed', function () {
 				// Execute action
 			});
+
+			$scope.$on('editFavorite', function (event, args) {
+			    $scope.$apply(function () { $scope.favorites = getFavorite(); });
+			})
 	
 		$scope.viewlist = function(list) {
 			var listHeight = $('#list-'+list+' .list').height();		
@@ -289,14 +293,14 @@
 		}
 		//<!-- Private group modal ////////////////////////////////////////////
 		$scope.openPvgModal = function (groupId) {
-			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
-				initPvgModal($state, $scope, groupId, roomSelected, function () {
-					$scope.pvgModal.show();
-				}, $rootScope);
-			}else{
-				var group = main.getDataManager().privateGroups[groupId];
-				$rootScope.$broadcast('changeChat', group);
-			}
+		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+		        initPvgModal($state, $scope, groupId, roomSelected, function () {
+		            $scope.pvgModal.show();
+		        }, $rootScope);
+		    } else {
+		        var group = main.getDataManager().privateGroups[groupId];
+		        $rootScope.$broadcast('changeChat', group);
+		    }
 		};
 		$scope.closePvgModal = function () {
 			$scope.pvgModal.hide();
@@ -304,11 +308,11 @@
 		//<!-- Contact modal -------------------------->
 		$scope.openContactModal = function (contactId) {
 			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
-				modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
-					$scope.contactModal.show();
-				});
+			    modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
+			        $scope.contactModal.show();
+			    });
 			}else{
-				modalFactory.initContactWeb($rootScope, contactId);
+			    modalFactory.initContactWeb($rootScope, contactId);
 			}		
 		};
 		$scope.closeContactModal = function() {

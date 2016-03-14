@@ -1,3 +1,6 @@
+/**
+* AhooStudio.co.th
+*/
 (function () {
     'use strict';
 
@@ -52,26 +55,28 @@
             socket.onDisconnect = function onDisconnect(reason) {
                 socket.onDisconnect = null;
 
+                $rootScope.$broadcast('onSocketDisconnected');
                 localNotifyService.makeToast("disconnected.");
 
-                setTimeout(function () {
-                    try {
-                        console.log('Try to re connecting...', $cordovaNetwork.getNetwork());
-                        //@-- Todo..
-                        if ($cordovaNetwork.isOnline()) {
-                            $state.go("tab.login");
-                        }
-                        else {
-                            //@ Stay working offline.
-                            reconnectingEvent = function () {
-                                console.log('reconnectingEvent')
+                if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform == 'android') {
+                    setTimeout(function () {
+                        try {
+                            console.log('Try to re connecting...', $cordovaNetwork.getNetwork());
+                            //@-- Todo..
+                            if ($cordovaNetwork.isOnline()) {
                                 $state.go("tab.login");
-                            };
+                            }
+                            else {
+                                //@ Stay working offline.
+                                reconnectingEvent = function () {
+                                    console.log('reconnectingEvent')
+                                    $state.go("tab.login");
+                                };
+                            }
                         }
-                    }
-                    catch (ex) { console.warn(ex) };
+                        catch (ex) { console.warn(ex) };
                     }, 1000);
-
+                }
             }
         }
     }

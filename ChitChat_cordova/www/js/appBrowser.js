@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
-	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter', 'ui.router'])
+	  'spartan.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
+      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'ngMaterial', 'ngMessages', 'angular-toArrayFilter', 'angular-web-notification', 'ui.router'])
 
 
 .run(function($ionicPlatform) {
@@ -43,265 +43,45 @@ angular.module('starter',
 	// Each state's controller can be found in controllers.js
 
 	$ionicConfigProvider.views.swipeBackEnabled(false);
+
+	console.info('state config...');
 	
 	$stateProvider
 
-
-	// Each tab has its own nav history stack:
-
-	// LOGIN
-	// .state('login', {
-	// 	url: '/login',
-	// 	
-	// })
-	// .state('chats', {
-	// 	url: '/chats',
-	// 	templateUrl: 'templates/chats.html'
-	// })
-	// .state('chats.detail',{
-	// 	views: {
-	// 		"detail@chats" : { templateUrl: 'templates/chats.detail.html'  }
-	// 	}
-		
-	// })
-
 	.state('login', {
-		url: '/login',
-		templateUrl: 'templates_web/tab-login.html',
-		controller: 'authController'
+	    url: '/login',
+	    templateUrl: 'templates_web/tab-login.html',
+	    controller: 'authController'
 	})
-
+        .state('signup', {
+            url: "signup",
+            templateUrl: "templates_web/signup-web.html",
+            controller: 'signupController'
+        })
 	.state('chats', {
-        url: "/chats",
-        views: {
-            '': {
-                templateUrl: 'templates_web/chats.html',
-                controller: "InfoCtrl"
-            },
-            "chats-account@chats": {
-                templateUrl: "templates_web/chat-account.html",
-                controller: "AccountCtrl"
-            },
-            "chats-list@chats": {
-                templateUrl: "templates_web/tab-group.html",
-                controller: "homeController"
-            },
-            "chats-detail@chats": {
-                templateUrl: "templates_web/chat-detail.html",
-                controller: "chatController"
-            },
-            "chats-info@chats": {
-                templateUrl: "templates_web/chat-info.html"
-            },
-            
-        }
-    })
-
-    // .state('chats.detail', {
-    // 	views: {
-    // 		"detail" : { templateUrl: 'templates/chats.html', controller: 'homeController' }, 
-    // 		"detail@contacts" : {  templateUrl: 'templates/chats.html', controller: 'homeController'  }
-    // 	}
-    // })
-
-
-
-// 	// ERROR
-// 	.state('tab.login-error', {
-// 		url: '/login/error',
-// 		views: {
-// 			'tab-login': {
-// 				templateUrl: 'templates/tab-login-error.html',
-// 				controller: 'noConnection'
-// 			}
-// 		}
-// 	})
-
-// 	// GROUP
-// 	.state('tab.group', {
-// 		url: '/group',
-// 		views: {
-// 			'tab-group': {
-// 				templateUrl: 'templates/tab-group.html',
-// 				controller: 'homeController'
-// 			}
-// 		}
-// 	})
-
-// 	// GROUP - View Profile
-// 	.state('tab.group-viewprofile',{
-// 		url: '/group/member/:chatId',
-// 		views: {
-// 			'tab-group': {
-// 				templateUrl: 'templates/tab-group-viewprofile.html',
-// 				controller: 'GroupViewprofileCtrl'
-// 			}
-// 		}
-// 	})
-		
-// 	// GROUP - Members
-// 	.state('tab.group-members', {
-// 		url: '/group/members/:chatId',
-// 		views: {
-// 			'tab-group': {
-// 				templateUrl: 'templates/tab-group-members.html',
-// 				controller: 'viewGroupMembersCtrl'
-// 			}
-// 		}
-// 	})
-
-// 	.state('tab.group-members-invite', {
-// 		url: '/group/members/:chatId/invite',
-// 		views: {
-// 			'tab-group': {
-// 				templateUrl: 'templates/tab-account-invite.html',
-// 				controller: 'editMemberGroup'
-// 			}
-// 		}
-// 	})//
-
-// 	.state('tab.group-members-edit', {
-// 		url: '/group/members/:chatId/edit',
-// 		views: {
-// 			'tab-group': {
-// 				templateUrl: 'templates/tab-group-members-edit.html',
-// 				controller: 'editMemberGroup'
-// 			}
-// 		}
-// 	})
-	
-// 	// CHATS - Notification
-// 	//.state('tab.chats', {
-// 	//	url: '/chats',
-// 	//	views: {
-// 	//		'tab-chats': {
-// 	//			templateUrl: 'templates/tab-chats.html',
-// 	//			controller: 'ChatsCtrl'
-// 	//		}
-// 	//	}
-// 	//})
-	
-// 	.state('tab.group-chat', {
-// 		url: '/group/chat/:chatId',
-// 		views: {
-// 			'tab-group': {
-// 				templateUrl: 'templates/chat-detail.html',
-// 				controller: 'homeController'
-// 			}
-// 		}
-// 	})
-	
-// 	.state('tab.group-freecall', {
-// 		url: '/group/freecall/:chatId',
-// 		views: {
-// 			'tab-group': {
-// 				templateUrl: 'templates/tab-freecall.html',
-// 				controller: 'freecallController'
-// 			}
-// 		}
-// 	})
-	
-// 	.state('tab.chats', {
-// 		url: '/chats',
-// 		views: {
-// 			'tab-chats': {
-// 				templateUrl: 'templates/tab-chats.html',
-// 				controller: 'chatslogController'
-// 			}
-// 		}
-// 	})
-	
-// 	.state('tab.chats-chat', {
-// 		url: '/chats/chat/:chatId',
-// 		views: {
-// 			'tab-chats': {
-// 				templateUrl: 'templates/chat-detail.html',
-// 				controller: 'chatController'
-// 			}
-// 		}
-// 	})
-
-// 	.state('tab.chats-chat-viewprofile',{
-// 		url: '/chats/member/:chatId',
-// 		views: {
-// 			'tab-chats': {
-// 				templateUrl: 'templates/tab-group-viewprofile.html',
-// 				controller: 'GroupViewprofileCtrl'
-// 			}
-// 		}
-// 	})
-// 	.state('tab.chats-chat-members', {
-// 		url: '/chats/members/:chatId',
-// 		views: {
-// 			'tab-chats': {
-// 				templateUrl: 'templates/tab-group-members.html',
-// 				controller: 'viewGroupMembersCtrl'
-// 			}
-// 		}
-// 	})
-	
-// 	/*
-// 	// CHAT : Message
-// 	.state('tab.message', {
-// 		url: '/message/:chatId',
-// 		views: {
-// 			'tab-message': {
-// 				templateUrl: 'templates/chat-detail.html',
-// 				controller: 'ChatDetailCtrl'
-// 			}
-// 		}
-// 	})
-// 	*/
-	
-// 	.state('tab.timeline', {
-// 		url: '/timeline',
-// 		views: {
-// 			'tab-timeline': {
-// 				templateUrl: 'templates/tab-timeline.html'
-// //				controller: 'DashCtrl'
-// 			}
-// 		}
-// 	})
-
-// 	.state('tab.account', {
-// 		url: '/account',
-// 		views: {
-// 			'tab-account': {
-// 				templateUrl: 'templates/tab-account.html',
-// 				controller: 'AccountCtrl'
-// 			}
-// 		}
-// 	})
-
-// 	.state('tab.account-create', {
-// 		url: '/account/create',
-// 		views: {
-// 			'tab-account': {
-// 				templateUrl: 'templates/tab-account-create.html',
-// 				controller: 'AccountCreate'
-// 			}
-// 		}
-// 	})
-
-// 	.state('tab.account-invite', {
-// 		url: '/account/create/invite',
-// 		views: {
-// 			'tab-account': {
-// 				templateUrl: 'templates/tab-account-invite.html',
-// 				controller: 'AccountInvite'
-// 			}
-// 		}
-// 	})
-	
-// 	.state('tab.chat.readers', {
-// 		url: '/group/chat/readers',
-// 		views: {
-// 			'tab-group' : {
-// 				templateUrl : 'templates/reader-view.html',
-// 				controller: 'chatController'
-// 			}
-// 		}	
-// 	});
+	    url: "/chats",
+	    views: {
+	        '': {
+	            templateUrl: 'templates_web/chats.html',
+	            controller: "InfoCtrl"
+	        },
+	        //"chats-account@chats": {
+	        //    templateUrl: "templates_web/teamInfo-web.html",
+	        //    controller: "companyController"
+	        //},
+	        "chats-list@chats": {
+	            abstract: true,
+	            templateUrl: 'templates_web/tabs-web.html',
+	        },
+	        "chats-detail@chats": {
+	            templateUrl: "templates_web/chat-detail.html",
+	            controller: "chatController"
+	        },
+	        "chats-info@chats": {
+	            templateUrl: "templates_web/chat-info.html"
+	        },
+	    }
+	})
 
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/login');

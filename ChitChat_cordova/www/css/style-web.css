@@ -173,7 +173,16 @@ color: #fff;}
 }
 
 .modal-backdrop{
+  background-color: transparent !important;
   opacity: 1 !important;
+}
+
+.modal-backdrop-bg{
+  background-color: transparent !important;
+}
+
+.modal {
+  margin-left: 0px !important;
 }
 
 .popover {
@@ -182,4 +191,22 @@ color: #fff;}
 
 [nav-view-transition="ios"][nav-view-direction="forward"], [nav-view-transition="ios"][nav-view-direction="back"] {
   background-color: white;
+}
+
+.md-select-value :first-child {
+  flex: 1 0 0 !important;
+  -webkit-flex: 1 0 0 !important;
+  -ms-flex: 1 0 0 !important;
+}
+
+md-toast.md-success-toast-theme .md-toast-content {
+  background-color: green;
+}
+md-toast.md-error-toast-theme .md-toast-content {
+  background-color: red;
+}
+
+.background {
+    background: rgba(31,183,229,1);
+ background: linear-gradient(135deg, rgba(31,183,229,1) 0%, rgba(31,183,229,1) 33%, rgba(1,165,230,1) 33%, rgba(1,165,230,1) 67%, rgba(31,183,229,1) 67%, rgba(31,183,229,1) 100%);
 }

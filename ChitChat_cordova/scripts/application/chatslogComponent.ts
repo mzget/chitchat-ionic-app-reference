@@ -39,6 +39,9 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
             this.addNewRoomAccessEvent(dataEvent);
         }
     }
+    onUpdateMemberInfoInProjectBase(dataEvent){
+        console.warn("ChatsLogComponent.onUpdateMemberInfoInProjectBase", JSON.stringify(dataEvent));
+    }
 
     onEditedGroupMember(dataEvent) {
         console.warn("ChatsLogComponent.onEditedGroupMember", JSON.stringify(dataEvent));

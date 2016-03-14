@@ -25,6 +25,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
     public isOrgMembersReady: boolean = false;
     public companyInfo: CompanyInfo;
 
+    public onCompanyInfoReady: () => void;
     public onMyProfileReady: (dataManager: DataManager) => void;
     public onOrgGroupDataReady: () => void;
     public onProjectBaseGroupsDataReady: () => void;
@@ -50,7 +51,11 @@ class DataManager implements absSpartan.IFrontendServerListener {
         }
     }
     public setRoomAccessForUser(data) {
-        this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
+        if(!!data.roomAccess) {
+            this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
+            
+            console.info('set user roomAccess info.');
+        }
     }
     public updateRoomAccessForUser(data) {
         var arr: Array<RoomAccessData> = JSON.parse(JSON.stringify(data.roomAccess));
@@ -66,8 +71,15 @@ class DataManager implements absSpartan.IFrontendServerListener {
         return this.myProfile.roomAccess;
     }
 
+    public getCompanyInfo() {
+        return this.companyInfo;
+    }
     public setCompanyInfo(data: any) {
-          this.companyInfo = JSON.parse(JSON.stringify(data));
+        this.companyInfo = JSON.parse(JSON.stringify(data));
+        
+        if(!!this.onCompanyInfoReady) {
+            this.onCompanyInfoReady();
+        }
     }
 
     //<!---------- Group ------------------------------------

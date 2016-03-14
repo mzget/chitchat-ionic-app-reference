@@ -16,35 +16,143 @@ angular.module('spartan.controllers')
 	
 })
 
-.controller('HeaderChatCtrl', function($scope, $rootScope){
-    
+.controller('HeaderChatCtrl', function($state, $scope, $rootScope, $ionicLoading, Favorite, blockNotifications, roomSelected, networkService){ 
+    $scope.warnMessage = '';
+    $scope.reload = reload;
+    $scope.isFavorite = function(id){
+        return Favorite.isFavorite(id);
+    }
+    $scope.isBlockNoti = function(id){
+        return blockNotifications.isBlockNoti(id);
+    }
     $scope.$on('roomName', function(event, args) {
         $scope.roomName = args;
+        $scope.currentRoom = roomSelected.getRoomOrLastRoom();
+        if($scope.currentRoom.type === RoomType.privateChat){
+            $.each($scope.currentRoom.members, function(index, value){
+                if(value.id != main.getDataManager().myProfile._id) { 
+                    $scope.otherId = value.id; 
+                }
+            });
+        }
         setTimeout(function () {
             document.getElementById('chatMessage').style.display = "flex";
             resizeUI();
         }, 1000);
     });
+    $scope.$on('onSocketDisconnected', function (event, args) {
+        //@ Changed toolbar for tell user what happened.
+        document.getElementById('chatToolbar').className = 'md-warn';
+        $scope.warnMessage = 'Server connection problems. App still working offline.';
+    });
+
     window.onresize = function(event) {
-        document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
-        document.getElementById('chatMessage').style.left = jQuery('#chat-list').offset().left + jQuery('#chat-list').width() + "px";
-        document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
+        resizeUI();
     };
-    document.getElementById('chatHeader').style.width = window.innerWidth - 284 + "px";
 
     var viewInfo = true;
     $scope.toggleInfo = function() {
         viewInfo = !viewInfo;
         $rootScope.$broadcast('toggleInfo',viewInfo);
+        setTimeout(function () {
+            resizeUI();
+        }, 100);
     }
+
     function resizeUI(){
-        document.getElementById('chatMessage').style.left = jQuery('#chat-list').offset().left + jQuery('#chat-list').width() + "px";
+        document.getElementById('chatMessage').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
         document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
+        document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
+        document.getElementById('infoLayout').style.height = window.innerHeight - 66 + "px";
+        if(document.getElementById('chatMenuContain') != null){
+            document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
+        if(document.getElementById('stickerContain') != null) {
+            document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
+        if(document.getElementById('recorderContain') != null) {
+            document.getElementById('recorderContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('recorderContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
+        if(document.getElementById('mapContain') != null) {
+            document.getElementById('mapContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('mapContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
+     
+    }
+
+    function reload() {
+        location.href = '';
+    }
+
+    $scope.editFavorite = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==RoomType.privateChat){
+            server.updateFavoriteMember(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    Favorite.updateFavorite(editType,id,type);
+                    $ionicLoading.hide();
+                    $rootScope.$broadcast('editFavorite','editFavorite');
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }else{
+            server.updateFavoriteGroups(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    Favorite.updateFavorite(editType,id,type);
+                    $ionicLoading.hide();
+                    $rootScope.$broadcast('editFavorite','editFavorite');
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }
+    }
+
+    $scope.editBlockNoti = function(editType,id,type){
+        $ionicLoading.show({
+              template: 'Loading..'
+        });
+        if(type==RoomType.privateChat){
+            server.updateClosedNoticeMemberList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }else{
+            server.updateClosedNoticeGroupsList(editType,id,function (err, res) {
+                if (!err && res.code==200) {
+                    console.log(JSON.stringify(res));
+                    blockNotifications.updateBlockNoti(editType,id,type);
+                    $ionicLoading.hide();
+                }
+                else {
+                    console.warn(err, res);
+                    $ionicLoading.hide();
+                }
+            });
+        }
     }
 })
 
-.controller('AccountCtrl', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
-    if (ionic.Platform.platform() === "ios") {
+.controller('optionsController', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
         $scope.settings = {
             logOut: true,
         };
@@ -104,40 +212,9 @@ angular.module('spartan.controllers')
             //$state.go('tab.login');
             location.href = '';
         }
-    }else{
-        $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
-            scope: $scope,
-        }).then(function(popover) {
-            $scope.popover = popover;
-        });
-
-        $ionicModal.fromTemplateUrl('templates_web/modal-myprofile.html', {
-            scope: $scope,
-            animation: 'slide-in-up'
-        }).then(function (modal) {
-            $scope.myProfileModal = modal;
-        });
-
-        $scope.openProfileModal = function () {
-            $scope.myProfileModal.show();
-        };
-
-        $scope.myProfile = main.getDataManager().myProfile;
-
-        $scope.logOut = function () {
-            console.warn("logOut...");
-            server.logout();
-            server.dispose();
-
-            dbAccessService.clearMessageDAL();
-            localStorage.clear();
-            //$state.go('tab.login');
-            location.href = '';
-        }
-    }
 })
 
-.controller('AccountCreate',function($scope,$rootScope,$state,$ionicHistory,$ionicLoading,$cordovaProgress,CreateGroup,FileService) {
+.controller('AccountCreate', function ($scope, $rootScope, $state, $ionicHistory, $ionicLoading, $cordovaProgress, CreateGroup, FileService) {
     console.log('AccountCreate',CreateGroup.createType);
     var myProfile = main.getDataManager().myProfile;
     $rootScope.members = CreateGroup.getSelectedMember();
@@ -328,6 +405,7 @@ angular.module('spartan.controllers')
     return filtered;
   };
 })
+
 .filter('orderByDate', function () {
   return function(items, field, reverse) {
     var filtered = [];
@@ -348,6 +426,7 @@ angular.module('spartan.controllers')
     return filtered;
   };
 });
+
 // .directive('hideTabBar', function($timeout) {
 //   var style = angular.element('<style>').html(
 //     '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
@@ -386,6 +465,355 @@ angular.module('spartan.controllers')
 //     }
 //   };
 // }); // <-- LAST CONTROLLER
+
+function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBase, mdToast) {
+    $scope.createType = $rootScope.createType;
+    CreateGroup.createType = $scope.createType;
+    $scope.myProfile = main.getDataManager().myProfile;
+    $scope.allmembers = CreateGroup.getAllMember();
+    $scope.webServer = $rootScope.webServer;
+    $scope.model = { groupname: "" };
+    var roomId = "";
+    $scope.checked = function(id,selected){
+        CreateGroup.setMemberSelected(id,selected);
+    }
+    $scope.create = function(){
+        if($scope.createType=='PrivateGroup')
+        {
+            server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    roomId = res.data._id;
+                    uploadImageGroup();
+                }
+                else {
+                    console.warn(err, res);
+                    mdToast.showToast('error','Cannot Create');
+                }
+            });
+        }else{
+            server.requestCreateProjectBaseGroup($scope.model.groupname,CreateGroup.getSelectedMemberProjectBaseWithMe(), function(err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    roomId = res.data._id;
+                    uploadImageGroup();
+                }
+                else {
+                    console.warn(err, res);
+                    mdToast.showToast('error','Cannot Create');
+                }
+            });
+        }
+    }
+    $scope.image = function(){
+        $('#avatarToUpload').trigger('click');
+    }
+    $scope.isCreate = function(){
+        if($scope.model.groupname.length > 0 && CreateGroup.getSelectedMember().length >2) return true;
+        else return false;
+    }
+    $scope.$on('avatarUrl', function(event, args) {
+        server.UpdatedGroupImage(roomId,args, function(err, res){
+            if(!err){
+                console.log(JSON.stringify(res));
+                $mdDialog.hide();
+                mdToast.showToast('success','Create Complete');
+            }else{
+                console.warn(err, res);
+                mdToast.showToast('error','Cannot Create');
+            }
+        });
+    });
+    function uploadImageGroup(){
+        var file    = document.querySelector('#avatarToUpload').files[0];
+        if(file === undefined) {
+            $mdDialog.hide();
+            mdToast.showToast('success','Create Complete');
+        }else{
+            $rootScope.$broadcast('uploadImg','uploadImg');
+        }
+    }
+
+    if($scope.createType == "ProjectBase"){
+        $scope.jobPosition=[];
+        $scope.rolePosition = [
+            {"role": MemberRole[MemberRole.member]},
+            {"role": MemberRole[MemberRole.admin]}];
+        for(x=0; x<main.getDataManager().companyInfo.jobPosition.length; x++){
+            $scope.jobPosition.push({"job":main.getDataManager().companyInfo.jobPosition[x]});
+        }
+    }
+    $scope.setRole = function(id,role){
+        ProjectBase.setRole(id,role);
+    }
+    $scope.setPosition = function(id,position){
+        ProjectBase.setPosition(id,position);
+    }
+}
+function InviteController($scope,$rootScope,$mdDialog,CreateGroup,mdToast,roomSelected){
+    $scope.myProfile = main.getDataManager().myProfile;
+    $scope.webServer = $rootScope.webServer;
+    $scope.currentRoom = roomSelected.getRoomOrLastRoom();
+    $scope.allmembers = [];
+    var membersOrg = CreateGroup.getAllMember();
+    var members = [];
+    
+    for (var x = 0; x < membersOrg.length; x++) {
+        var isHas = false;
+        for (var i = 0; i < $scope.currentRoom.members.length; i++) {
+            if(membersOrg[x]._id == $scope.currentRoom.members[i].id)
+            {
+                isHas = true;
+            }
+        }
+        if(!isHas)
+            members.push(membersOrg[x]._id);
+    }
+    for(var y =0; y < members.length; y++){
+        var member = dataManager.getContactProfile(members[y]);
+        member.checked = false;
+        $scope.allmembers.push(member);
+    }
+
+    $scope.invite = function(){
+        server.editGroupMembers("add", $scope.currentRoom._id, RoomType[$scope.currentRoom.type], CreateGroup.getSelectedId(), function (err, res) {
+            if (res.code === HttpStatusCode.success) {
+                mdToast.showToast('success','Invite Complete');
+                console.log(JSON.stringify(res));
+                $rootScope.$broadcast('inviteGroup',CreateGroup.getSelectedId());
+                $mdDialog.hide();
+            }
+            else {
+                console.warn(err, res);
+                mdToast.showToast('error','Cannot Invite');
+            }
+        });
+    }
+    $scope.isInvite = function(){
+        if(CreateGroup.getSelectedMember().length >2) return true;
+        else return false;
+    }
+    $scope.checked = function(id,selected){
+        CreateGroup.setMemberSelected(id,selected);
+    }
+}
+function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, mdToast, roomSelected, ProjectBase) {
+    var members = main.getDataManager().orgMembers;
+    $scope.currentRoom = roomSelected.getRoomOrLastRoom();
+    $scope.webServer = $rootScope.webServer;
+    $scope.allmembers = getMembersInRoom();
+    $scope.model = { groupname: $scope.currentRoom.name };
+    if($scope.currentRoom.type == RoomType.projectBaseGroup){
+        $scope.jobPosition=[];
+        $scope.rolePosition = [
+            {"role": MemberRole[MemberRole.member]},
+            {"role": MemberRole[MemberRole.admin]}];
+        for(x=0; x<main.getDataManager().companyInfo.jobPosition.length; x++){
+            $scope.jobPosition.push({"job":main.getDataManager().companyInfo.jobPosition[x]});
+        }
+    }
+    
+    function getMembersInRoom(){
+        var allmembers = [];
+        $.each($scope.currentRoom.members, function (index, result) {
+            if($scope.currentRoom.type == RoomType.projectBaseGroup){
+                if(members[result.id] !== undefined){
+                    allmembers.push({ "_id": members[result.id]._id, "displayname": members[result.id].displayname, "image": members[result.id].image, "isAdmin": isAdminInProjectBase($scope.currentRoom,result.id) });
+                    ProjectBase.setRolePosition(result.id,result.role,result.jobPosition);
+                }
+            }else{
+                if(members[result.id] !== undefined)
+                    allmembers.push({ "_id": members[result.id]._id, "displayname": members[result.id].displayname, "image": members[result.id].image });
+            }
+        });
+        return allmembers;
+    }
+    $scope.changeRole = function(id,role){
+        ProjectBase.setRole(id,role);
+        saveRolePosition(id);
+    }
+    $scope.changePosition = function(id,position){
+        ProjectBase.setPosition(id,position);
+        saveRolePosition(id);
+    }
+    function saveRolePosition(id){
+        var member = new function(){
+            this.id = id;
+            this.role = MemberRole[ ProjectBase.getRolePositionIndex(id)[0] ];
+            this.jobPosition = ProjectBase.getRolePosition(id)[1];
+        }
+        server.editMemberInfoInProjectBase($scope.currentRoom._id,RoomType[$scope.currentRoom.type],member, function(err, res) {
+            if (!err) {
+                console.log(JSON.stringify(res));
+                $.each($scope.currentRoom.members, function(index, result) {
+                    if(result._id == id){
+                        result.role = member.role;
+                        result.jobPosition = member.jobPosition;
+                    }
+                });
+                mdToast.showToast('success','Change Complete');
+                $rootScope.$broadcast('editGroup',[]);
+                //saveSuccess();
+            }
+            else {
+                console.warn(err, res);
+                mdToast.showToast('error','Cannot Change');
+            }
+        });
+    }
+    $scope.isEdit = function(){
+        if($scope.model.groupname != $scope.currentRoom.name || isImageSource()) return true;
+        else return false;
+    }
+    $scope.image = function(){
+        $('#avatarToUpload').trigger('click');
+    }
+    $scope.save = function(){
+        saveImg();
+    }
+    $scope.removeMember = function (id) {
+        var idMember = [];
+        console.warn('remove_member_id', id);
+        idMember.push(id);
+        server.editGroupMembers("remove", $scope.currentRoom._id, RoomType[$scope.currentRoom.type], idMember, function (err, res) {
+            if (res.code === HttpStatusCode.success) {
+                //@ if user remove your self.
+                if (id == main.getDataManager().myProfile._id) {
+                    $mdDialog.hide();
+                    var group = main.getDataManager().getGroup($rootScope.teamInfo.root);
+                    $rootScope.$broadcast('changeChat', group);
+                }
+                var indexMember;
+                async.mapSeries($scope.currentRoom.members, function iterator(item, cb) {
+                    if (!!item && item.id === id) {
+                        indexMember = $scope.currentRoom.members.indexOf(item);
+                        $scope.currentRoom.members.splice(indexMember, 1);
+                        cb();
+                    }
+                    else {
+                        cb();
+                    }
+                }, function done(err) {
+                    mdToast.showToast('success','Remove Complete');
+                    $scope.allmembers = getMembersInRoom();
+                    $rootScope.$broadcast('editGroup',[]);
+                });
+            }
+            else {
+                console.warn(err, res);
+                mdToast.showToast('error','Cannot Remove or Leave');
+            }
+        });
+    }
+    function isImageSource(){
+        var file    = document.querySelector('#avatarToUpload').files[0];
+        if(file === undefined)
+            return false;
+        else
+            return true;
+    }
+    function saveImg(){
+        if(isImageSource()){
+            $rootScope.$broadcast('uploadImg','uploadImg');
+        }
+        else
+            changeNameGroup();
+    }
+    function changeNameGroup() {
+        if ($scope.model.groupname != $scope.currentRoom.name) {
+            server.editGroupName($scope.currentRoom._id, RoomType[$scope.currentRoom.type], $scope.model.groupname, function (err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    $scope.currentRoom.name = $scope.model.groupname;
+                    $rootScope.$broadcast('roomName', $scope.currentRoom.name);
+                    mdToast.showToast('success','Change Complete');
+                } else {
+                    console.warn(err, res);
+                }
+            });
+        } else {
+            //saveSuccess();
+            mdToast.showToast('success','Change Complete');
+        }
+    }
+
+    $scope.getRole = function(id){
+        var role = ProjectBase.getRolePosition(id);
+        return role[0];
+    }
+    $scope.getPosition = function(id){
+        var position = ProjectBase.getRolePosition(id);
+        return position[1];
+    }
+
+    $scope.$on('avatarUrl', function(event, args) {
+        server.UpdatedGroupImage($scope.currentRoom._id, args, function (err, res) {
+            if (!err) {
+                console.log(JSON.stringify(res));
+                document.getElementById("UploadAvatar").reset();
+                $rootScope.$broadcast('editGroup',args);
+                changeNameGroup();
+                $scope.$apply();
+            } else {
+                console.warn(err, res);
+            }
+        });
+    });
+}
+function ProfileController($scope, $rootScope, mdToast ) {
+    $scope.myProfile = main.getDataManager().myProfile;
+    $scope.webServer = $rootScope.webServer;
+    $scope.model = {
+        displayname: $scope.myProfile.displayname,
+        status: $scope.myProfile.status
+    };
+
+    $scope.image = function(){
+        $('#avatarToUpload').trigger('click');
+    }
+
+    $scope.save = function(){
+        saveImg();
+    }
+
+    $scope.imageSource = function(){
+        var file    = document.querySelector('#avatarToUpload').files[0];
+        if(file === undefined)
+            return false;
+        else
+            return true;
+    }
+
+    function saveImg(){
+        if($scope.imageSource()){
+            $rootScope.$broadcast('uploadImg','uploadImg');
+        }
+        else
+            saveInfo();
+    }
+
+    function saveInfo() {
+        if (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status) {
+            server.UpdateUserProfile(main.getDataManager().myProfile._id, $scope.model, function (err, res) {
+                main.getDataManager().myProfile.displayname = $scope.model.displayname;
+                main.getDataManager().myProfile.status = $scope.model.status;
+                $scope.$apply();
+                mdToast.showToast('success','Change Complete');
+            });
+        }else{
+            mdToast.showToast('success','Change Complete');
+        }
+    }
+
+    $scope.$on('avatarUrl', function(event, args) {
+        server.ProfileImageChanged(main.getDataManager().myProfile._id, args, function (err, res) {
+            main.getDataManager().myProfile.image = args;
+            $scope.$apply();
+            document.getElementById("UploadAvatar").reset();
+            saveInfo();
+        });
+    });
+}
 
 function isAdminInProjectBase(room,memberId){
     var admin = false;

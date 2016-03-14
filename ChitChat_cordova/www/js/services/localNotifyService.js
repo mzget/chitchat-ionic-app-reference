@@ -5,7 +5,7 @@
         .module('spartan.notify', [])
         .factory('localNotifyService', localNotifyService);
 
-    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, $ionicPopup, $timeout, blockNotifications) {
+    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, $ionicPopup, $timeout, $mdToast, $rootScope, blockNotifications) {
         var service = {
             getData: getData,
             scheduleSingleNotification: scheduleSingleNotification,
@@ -35,7 +35,7 @@
         }
         
         function makeToast(message) {
-            if (ionic.Platform.platform() === "ios") {
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
                 $cordovaToast.showLongCenter(message).then(function (success) {
                     // success
                 }, function (error) {
@@ -44,22 +44,18 @@
                 });
             }
             else {
-                var myPopup = $ionicPopup.show({
-                    title: message
-                });
-
-                myPopup.then(function (res) {
-                });
-
-                $timeout(function () {
-                    myPopup.close(); //close the popup after 2 seconds for some reason
-                }, 2000);
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent(message)
+                        .hideDelay(3000)
+                        .position('top right')
+                );
             }
         }
         
         function makeToastOnCenter(contactId,message) {
             if (!blockNotifications.isBlockNoti(contactId)) {
-                if (ionic.Platform.platform() === "ios") {
+                if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
                     $cordovaToast.showLongCenter(message).then(function (success) {
                         // success
                         navigator.notification.beep(1);
@@ -69,18 +65,15 @@
                     });
                 }
                 else {
-                    var myPopup = $ionicPopup.show({
-                        title: 'New message!',
-                        subTitle: message
-                    });
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .textContent(message)
+                            .hideDelay(3000)
+                        .position('top right')
+                    );
 
-                    myPopup.then(function(res) {
-                        console.log('Tapped!', res);
-                    });
-
-                    $timeout(function() {
-                        myPopup.close(); //close the popup after 2 seconds for some reason
-                    }, 2000);
+                    var data = { body: message };
+                    $rootScope.$broadcast('onNotify', data);
                 }
             }
         }

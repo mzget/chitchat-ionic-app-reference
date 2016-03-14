@@ -35,6 +35,8 @@
     }
 
     onAccessRoom(dataEvent) {
+        console.info('onRoomAccess: ', dataEvent);
+        
         this.dataManager.setRoomAccessForUser(dataEvent);
 
         if (!!this.roomAccessListenerImps) {
@@ -103,6 +105,11 @@
     onUpdateMemberInfoInProjectBase(dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupMemberDetail(jsonObj);
+        if (!!this.roomAccessListenerImps) {
+            this.roomAccessListenerImps.map(value => {
+                value.onUpdateMemberInfoInProjectBase(dataEvent);
+            });
+        }
     }
 
 

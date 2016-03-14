@@ -8,8 +8,6 @@
     sharedObjectService.$inject = ['$http', 'localNotifyService'];
 
     function sharedObjectService($http, localNotifyService) {
-        var notifyManager = null;
-
         var service = {
             getDataListener: getDataListener,
             regisNotifyNewMessageEvent: regisNotifyNewMessageEvent,
@@ -17,19 +15,30 @@
             createNotifyManager: createNotifyManager,
             getNotifyManager: getNotifyManager,
             getWebServer: getWebServer,
+            getRestServer: getRestServer,
             getAppVersion: getAppVersion,
-            getThemename: getThemename
+            getThemename: getThemename,
+            loadLocalizationFile: loadLocalizationFile,
+            getStringValue: getStringValue
         };
         var webServer = null;
         var appVersion = null;
         var themename = null;
-
+        var restServer = null;
+        var notifyManager = null;
+        var stringValue = null;
         return service;
 
         function getWebServer() {
             webServer = server.appConfig.webserver;
 
             return webServer;
+        }
+
+        function getRestServer() {
+            restServer = server.appConfig.restServer;
+
+            return restServer;
         }
         
         function getAppVersion() {
@@ -85,5 +94,28 @@
                 notifyManager.notify(chatMessageImp, appBackground, localNotifyService);
             }
         };
+        
+        function getStringValue() {
+            return stringValue;
+        }
+        
+        function loadLocalizationFile() {
+            loadStringJSON(function result(data) {
+                stringValue = JSON.parse(data);
+            });
+        }
+        
+        function loadStringJSON(callback) {   
+            var xobj = new XMLHttpRequest();
+                xobj.overrideMimeType("application/json");
+            xobj.open('GET', '../../configs/localization.json', true); // Replace 'my_data' with the path to your file
+            xobj.onreadystatechange = function () {
+                if (xobj.readyState == 4 && xobj.status == "200") {
+                    // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+                    callback(xobj.responseText);
+                }
+            };
+            xobj.send(null);  
+        }
     }
 })();

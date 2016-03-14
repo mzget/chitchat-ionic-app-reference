@@ -145,6 +145,7 @@ angular.module('spartan.services', [])
   var members = main.getDataManager().orgMembers;
   
   function getAllMember(){
+    members = main.getDataManager().orgMembers;
     allmembers = [];
     for(var i in members){
       if(this.createType=="ProjectBase") {
@@ -211,9 +212,15 @@ angular.module('spartan.services', [])
   }
 
   function getSelectedIdWithMe(){ 
-    var id = id_checked;
-    id[id.length] = main.getDataManager().myProfile._id;
+    var id = [];
+    id = id_checked;
+    if(!getChecked(main.getDataManager().myProfile._id)){
+      id[id.length] = main.getDataManager().myProfile._id;
+    }
     return id; 
+  }
+  function getSelectedId(){ 
+    return id_checked; 
   }
 
   function getChecked(id){
@@ -249,6 +256,7 @@ angular.module('spartan.services', [])
     getSelectedMember: getSelectedMember,
     getSelectedMemberProjectBaseWithMe: getSelectedMemberProjectBaseWithMe,
     getSelectedIdWithMe: getSelectedIdWithMe,
+    getSelectedId: getSelectedId,
     setMemberSelected: setMemberSelected,
     clear: clear
   }
@@ -268,6 +276,33 @@ angular.module('spartan.services', [])
       editPositionMember.push( { "_id":id,"role":role,"position":position } );
     }
   }
+
+
+  function setRole(id,role){
+    if(containID(id)){
+      for(var i=0; i<editPositionMember.length; i++){
+        if(editPositionMember[i]._id==id){
+          editPositionMember[i].role = role;
+        }
+      }
+    }else{
+      editPositionMember.push( { "_id":id,"role":role,"position":main.getDataManager().companyInfo.jobPosition[0] } );
+    }
+  }
+  function setPosition(id,position){
+    if(containID(id)){
+      for(var i=0; i<editPositionMember.length; i++){
+        if(editPositionMember[i]._id==id){
+          editPositionMember[i].position = position;
+        }
+      }
+    }else{
+      editPositionMember.push( { "_id":id,"role": MemberRole[MemberRole.member],"position":position } );
+    }
+  }
+
+
+
   function getRolePosition(id){
     var positionRole = [];
     if(containID(id)){
@@ -328,6 +363,8 @@ angular.module('spartan.services', [])
   
   return{
     setRolePosition: setRolePosition,
+    setRole: setRole,
+    setPosition: setPosition,
     getRolePosition: getRolePosition,
     getRolePositionIndex: getRolePositionIndex,
     clear: clear
@@ -545,6 +582,21 @@ angular.module('spartan.services', [])
   return{
     getTime: getTime,
     getTimeChatlog: getTimeChatlog
+  }
+})
+
+.factory('mdToast',function($mdToast) {
+  function showToast(type,msg) {
+    $mdToast.show(
+        $mdToast.simple()
+            .textContent(msg)
+            .hideDelay(3000)
+            .position('top right')
+            .theme(type + '-toast')
+    );
+  }
+  return{
+    showToast: showToast
   }
 })
 
