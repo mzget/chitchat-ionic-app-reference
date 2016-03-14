@@ -41,7 +41,7 @@
                 <img ng-src="http://203.113.25.44/timthumb.php?src={{member.image}}&h=40&w=40" />
                 <h2>{{member.displayname}}</h2>
                 <p style="float:right; position:absolute; right:5px;" ng-show="member.role!=0 && member.role!=1">{{member.role}}</p>
-                <p style="float:right;" ng-show="member.role==0 || member.role==1">{{member.textRole}}</p>
+                <p style="float:right; position:absolute; right:5px;" ng-show="member.role==0 || member.role==1">{{member.textRole}}</p>
                 <p>{{member.jobPosition}}</p>
             </ion-item>
         </div>

@@ -64,6 +64,23 @@ angular.module('spartan.controllers')
         document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
         document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
         document.getElementById('infoLayout').style.height = window.innerHeight - 66 + "px";
+        if(document.getElementById('chatMenuContain') != null){
+            document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
+        if(document.getElementById('stickerContain') != null) {
+            document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
+        if(document.getElementById('recorderContain') != null) {
+            document.getElementById('recorderContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('recorderContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
+        if(document.getElementById('mapContain') != null) {
+            document.getElementById('mapContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('mapContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
+     
     }
 
     function reload() {

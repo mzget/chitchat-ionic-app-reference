@@ -234,6 +234,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	function openMap() {
 		$scope.chatMenuModal.hide();
 		$scope.openMapModal();
+		document.getElementById('mapContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+        document.getElementById('mapContain').style.width = jQuery('#webchatdetail').width() + "px";
 	}
 	function openMapModal() {
 		callGeolocation($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, function (locationObj) {
@@ -253,7 +255,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	};	
 	function setupModals() {
 	    // Reload Modal - Chat menu
-	    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+	    $ionicModal.fromTemplateUrl('templates_web/modal-chatmenu.html', {
 	        scope: $scope,
 	        animation: 'slide-in-up'
 	    }).then(function (modal) {
@@ -261,14 +263,14 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    })
 
 	    // Reload Modal - Sticker
-	    $ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
+	    $ionicModal.fromTemplateUrl('templates_web/modal-sticker.html', {
 	        scope: $scope,
 	        animation: 'slide-in-up'
 	    }).then(function (modal) {
 	        $scope.modalSticker = modal;
 	    })
 
-	    $ionicModal.fromTemplateUrl('templates/modal-audio-recorder.html', {
+	    $ionicModal.fromTemplateUrl('templates_web/modal-audio-recorder.html', {
 	        scope: $scope,
 	        animation: 'slide-in-up'
 	    }).then(function (modal) {
@@ -292,7 +294,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    });
 
 	    // Map modal view modal.
-	    $ionicModal.fromTemplateUrl('templates/map.html', {
+	    $ionicModal.fromTemplateUrl('templates_web/map.html', {
 	        scope: $scope,
 	        animation: 'slide-in-up'
 	    }).then(function (modal) {
@@ -396,11 +398,15 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		$scope.chatMenuModal.show();
 		$('#chatMessage').animate({'bottom':'272px'}, 350);
 		$('#chatDetail').animate({'top':'-272px'}, 350);
+		document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+        document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
 	};	
 	// Modal - Sticker
 	function openModalSticker() {
 		modalcount++;
 		$scope.modalSticker.show();
+		document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+        document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
 	};
 	function sendSticker(sticker) {
 		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
@@ -412,6 +418,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	function openModalRecorder(){
 		modalcount++;
 		$scope.modalAudio.show();
+		document.getElementById('recorderContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+        document.getElementById('recorderContain').style.width = jQuery('#webchatdetail').width() + "px";
 	}	
 	// Modal - Webview 
 	function openModalWebview() {
@@ -523,8 +531,22 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    modalcount--;
 
 	    if (modalcount == 1) {
-	        $scope.chatMenuModal.hide();
+        	$scope.chatMenuModal.hide();
+    	}
+
+	    $('#chatMessage').animate({ 'bottom': '0' }, 350);
+	    $('#chatDetail').animate({ 'top': '0' }, 350);
+
+	    if ($('.audio-recorder').is(".recording")) {
+	        $('.audio-recorder').removeClass("recording");
+	        $('.audio-recorder').addClass("unrecording");
+	        $scope.$broadcast('cancelRecord', 'cancelRecord');
 	    }
+	});
+	$scope.$on('menuChat.hidden', function () {
+	    modalcount--;
+        $scope.chatMenuModal.hide();
+        $scope.modalAudio.hide();
 	    $('#chatMessage').animate({ 'bottom': '0' }, 350);
 	    $('#chatDetail').animate({ 'top': '0' }, 350);
 

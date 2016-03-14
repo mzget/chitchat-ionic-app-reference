@@ -1,6 +1,6 @@
 angular.module('spartan.media', [])
 
-.controller('FileController', function($scope, sharedObjectService, roomSelected) {
+.controller('FileController', function($rootScope, $scope, sharedObjectService, roomSelected) {
 	$scope.onGetFileSelect = function(){
 		var file    = document.querySelector('input[type=file]').files[0];
 	    var reader  = new FileReader();
@@ -27,6 +27,7 @@ angular.module('spartan.media', [])
 				        break;
 		    	}
 		    }
+		    $rootScope.$broadcast('menuChat.hidden', []);
 	    } 
 		reader.readAsDataURL(file);
 	}
@@ -608,7 +609,7 @@ angular.module('spartan.media', [])
 
 })
 
-.controller('VoiceController', function ($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile,
+.controller('VoiceController', function ($rootScope, $scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile,
     GenerateID, roomSelected, checkFileSize, sharedObjectService) {
 
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); console.log("startRecord"); });
@@ -668,6 +669,7 @@ angular.module('spartan.media', [])
 	}
 	function onFinnishRecord(url){
 		console.log(url);
+		$rootScope.$broadcast('menuChat.hidden', []);
 		$scope.$emit('fileUri',[url,ContentType[ContentType.Voice]]);
 		//$scope.uploadVoice(url);
 	}
