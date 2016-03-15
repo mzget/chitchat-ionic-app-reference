@@ -42,13 +42,21 @@
 		</div>
     </ion-nav-buttons>
 
-	<ion-content delegate-handle="mainScroll" style="bottom:44px; margin-bottom:10px;">    
+	<ion-content delegate-handle="mainScroll">    
         <div ng-controller="ImageController">
         	<div ng-controller="VoiceController">
         		<div ng-controller="VideoController">
-
+                    
+        <div ng-show="showLoadMessage" align="center">
+            <button class="button button-clear button-positive" style="height:32px;" ng-click="loadOlderMessage()">Show more message!</button>
+        </div>  
+        <div ng-show="isLoadingMessage" align="center">
+            <ion-spinner icon="bubbles" class="spinner-positive"></ion-spinner>
+            <span style="padding:10px;"></span>
+            <span class="positive">Loading messages</span>
+        </div>
+        
 		<ion-list class="message-list" ng-repeat="message in chat track by $index">
-
 			<ion-item ng-if="message.firstMsg != undefined" class="lasttime" style="text-align:center;">
 				<div style="font-size:12px;"> {{message.firstMsg}} </div>
 			</ion-item>
