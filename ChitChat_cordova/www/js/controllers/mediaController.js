@@ -64,7 +64,7 @@ angular.module('spartan.media', [])
 })
 
 .controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, $ionicModal,
-    $mdDialog, ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
+    ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();

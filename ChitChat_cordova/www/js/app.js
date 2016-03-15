@@ -8,7 +8,7 @@
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
 	  'spartan.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter', 'jrCrop', 'ngMaterial'])
+      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter', 'jrCrop'])
 
 
 .run(function($ionicPlatform) {
@@ -42,7 +42,8 @@ angular.module('starter',
 	// Set up the various states which the app can be in.
 	// Each state's controller can be found in controllers.js
 
-	$ionicConfigProvider.views.swipeBackEnabled(false);
+    $ionicConfigProvider.views.swipeBackEnabled(false);
+    $ionicConfigProvider.views.maxCache(0)
 	
 	$stateProvider
 	// setup an abstract state for the tabs directive
@@ -210,7 +211,7 @@ angular.module('starter',
 		views: {
 			'tab-account': {
 				templateUrl: 'templates/tab-account-create.html',
-				controller: 'AccountCreate'
+				controller: 'createGroup'
 			}
 		}
 	})

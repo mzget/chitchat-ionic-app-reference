@@ -7,13 +7,15 @@
 
 	//homeController.$inject = ['$location'];
 
-	function homeController($location, $state, $scope, $rootScope, $timeout, $ionicModal, $ionicLoading, $ionicPlatform, $cordovaSpinnerDialog,
-    $ionicTabsDelegate,
-		roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
+	function homeController($location, $state, $scope, $rootScope, $timeout, $ionicModal, $ionicLoading, $cordovaSpinnerDialog,
+    $ionicTabsDelegate, roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
         $ionicTabsDelegate.showBar(true);
+
+        $scope.openProfileModal = openProfileModal;
+        $scope.closeProfileModal = closeProfileModal;
 
 		function activate() {
 		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
@@ -84,7 +86,6 @@
 		    tryGetFavorite();
 		}
         
-
 		function getChatWeb(){
 			var chatheight = $(window).height() - 43;
 			$('ion-content').find('#webgroup').css({'height':chatheight+'px'});
@@ -180,8 +181,10 @@
 			return Favorite.isFavorite(id);
 		}
         
-		activate();
-		setupScope();
+		if (ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
+		    activate();
+		    setupScope();
+		}
 
 			//<!-- My profile.
 			$ionicModal.fromTemplateUrl('templates/modal-myprofile.html', {
@@ -253,17 +256,18 @@
 		};
 	
 		//<!-- My profile modal. -->
-		$scope.openProfileModal = function (groupId) {
+		function openProfileModal(groupId) {
 			if(ionic.Platform.platform() == "ios") {
 	            modalFactory.initMyProfileModal($scope, function done(){
 				    $scope.myProfileModal.show();
 				});
         	}
 		};
-		$scope.closeProfileModal = function () {
+		function closeProfileModal() {
 			$scope.myProfileModal.hide();
 		};
-		//<!-- Org group modal ////////////////////////////////////////
+
+		//<!-- Org group modal -->
 		$scope.openOrgModal = function (groupId) {
 			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 				initOrgModal($state, $scope, groupId, roomSelected, function () {
@@ -332,7 +336,10 @@
 		}
         
 		$scope.$on('$ionicView.enter', function() { 
-			console.log("$ionicView.enter: ", vm.title);
+		    console.log("$ionicView.enter: ", vm.title);
+
+		    activate();
+		    setupScope();
         });
 		$scope.$on('$ionicView.beforeLeave', function () {
 			console.log("beforeLeave: homeController");

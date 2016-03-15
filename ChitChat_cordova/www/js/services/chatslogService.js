@@ -104,7 +104,7 @@
                     unreadLogs.map(function element(unread) {
                         unreadMessageMap[unread.rid] = unread;
 
-                        console.log("unread:", JSON.stringify(unread));
+                      //  console.log("unread:", JSON.stringify(unread));
                     });
 
                     calculateUnreadCount();

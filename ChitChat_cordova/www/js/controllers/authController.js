@@ -6,8 +6,8 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
-        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork, $mdDialog, $http, networkService, chatslogService, dbAccessService, sharedObjectService) {
+    function authController($location, $ionicPlatform, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
+        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork, $http, networkService, chatslogService, dbAccessService, sharedObjectService) {
 
         /* jshint validthis:true */
         var vm = this;
@@ -19,7 +19,7 @@
             password: ""
         }
 
-        ionic.Platform.ready(function () {
+        $ionicPlatform.ready(function () {
             console.log(vm.title + " : ionic ready.");
 
             if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
@@ -376,15 +376,19 @@
 
         function onAuthenFail(errMessage) {
             // Hide spinner dialog
-            if (ionic.Platform.platform() === "ios") {
-                $cordovaSpinnerDialog.hide();
+            if ($ionicPlatform.platform() === "ios" || $ionicPlatform.platform() == 'android') {
+                try {
+                    $cordovaSpinnerDialog.hide();
 
-                $cordovaDialogs.alert(errMessage, 'Authentication Fail!', 'OK')
-                .then(function () {
-                    // callback success
-                    localStorage.clear();
-                    location.href = '';
-                });
+                    $cordovaDialogs.alert(errMessage, 'Authentication Fail!', 'OK')
+                    .then(function () {
+                        // callback success
+                        localStorage.clear();
+                        location.href = '';
+                    });
+                } catch (ex) {
+                    console.warn(ex);
+                }
             }
             else {
                 $ionicLoading.hide();

@@ -5,8 +5,6 @@
         .module('spartan.controllers')
         .controller('viewProfileController', viewProfileController);
 
-//    viewProfileController.$inject = ['$location']; 
-
     function viewProfileController($location, $scope, $jrCrop, $stateParams, $rootScope, $state, $ionicHistory, $cordovaProgress,$ionicLoading,$ionicTabsDelegate,
      roomSelected, FileService, sharedObjectService)
     {
@@ -14,10 +12,10 @@
         var vm = this;
         vm.title = 'viewProfileController';
         $ionicTabsDelegate.showBar(false);
-
+        
         // ON ENTER 
         $scope.$on('$ionicView.enter', function () {
-            console.log("view enter: ", vm.title);
+            console.log("view enter: ", vm.title, $stateParams.chatId);
         });
 
         var room = roomSelected.getRoom();
@@ -128,6 +126,7 @@
                 saveSuccess();
             }
         }
+
         function saveSuccess() {
             $ionicLoading.hide();
             $cordovaProgress.showSuccess(false, "Success!");
@@ -135,14 +134,13 @@
         }
 
         $rootScope.$ionicGoBack = function () {
-            if(typeof($ionicHistory.backView().stateParams) != 'undefined')
-            {
-                roomSelected.setRoom(room);
-                $ionicHistory.goBack(-1); 
-            }else{
-                $ionicHistory.goBack(-1);
-            }
-        
+            console.debug($ionicHistory.currentView());
+            // if (typeof ($ionicHistory.backView().stateParams) != 'undefined') {
+            //     roomSelected.setRoom(room);
+            //     $ionicHistory.goBack(-1);
+            // } else {
+                $ionicHistory.goBack();
+            // }
         };
     }
 })();
