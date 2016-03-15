@@ -388,7 +388,7 @@ angular.module('spartan.media', [])
 
 })
 
-.controller('VideoController', function ($scope, $q, $sce, $cordovaFileTransfer, $timeout, $mdDialog, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
+.controller('VideoController', function ($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
     checkFileSize, GenerateID, VideoService, roomSelected, sharedObjectService) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });

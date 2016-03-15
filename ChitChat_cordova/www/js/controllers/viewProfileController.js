@@ -134,7 +134,7 @@
         }
 
         $rootScope.$ionicGoBack = function () {
-            console.debug($ionicHistory.currentView());
+            console.debug($ionicHistory.viewHistory());
             // if (typeof ($ionicHistory.backView().stateParams) != 'undefined') {
             //     roomSelected.setRoom(room);
             //     $ionicHistory.goBack(-1);

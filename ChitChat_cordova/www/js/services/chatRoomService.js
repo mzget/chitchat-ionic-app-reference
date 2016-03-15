@@ -290,10 +290,16 @@
                 for (var i = 0; i < curRoom.members.length; i++) {
                     if (curRoom.members[i].id != dataManager.myProfile._id) {
                         chatRoomComponent.getMemberProfile(curRoom.members[i], function done(err, res) {
-                            console.warn("getMemberProfile", err, res);
+                            console.debug("getMemberProfile", err, res);
                             if (res.code === HttpStatusCode.fail) {
                                 callback(true);
                                 return;
+                            }
+                            else {
+                                if (res.data.length == 0) {
+                                    callback(true);
+                                    return;
+                                }
                             }
                         });
                     }
