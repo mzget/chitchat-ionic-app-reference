@@ -396,10 +396,14 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	function openModal() {
 		modalcount++;
 		$scope.chatMenuModal.show();
-		$('#chatMessage').animate({'bottom':'272px'}, 350);
-		$('#chatDetail').animate({'top':'-272px'}, 350);
-		document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-        document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
+        
+         $('#chatMessage').animate({'bottom':'272px'}, 350);
+         $('#chatDetail').animate({'top':'-272px'}, 350);
+        
+        if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {           
+            document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
 	};	
 	// Modal - Sticker
 	function openModalSticker() {

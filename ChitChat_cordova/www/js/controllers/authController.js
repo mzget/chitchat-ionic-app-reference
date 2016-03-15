@@ -376,7 +376,7 @@
 
         function onAuthenFail(errMessage) {
             // Hide spinner dialog
-            if ($ionicPlatform.platform() === "ios" || $ionicPlatform.platform() == 'android') {
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
                 try {
                     $cordovaSpinnerDialog.hide();
 
