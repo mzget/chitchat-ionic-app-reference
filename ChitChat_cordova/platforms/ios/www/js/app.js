@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
-	  'starter.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
+	  'spartan.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
       'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'angular-toArrayFilter', 'jrCrop'])
 
 
@@ -42,7 +42,8 @@ angular.module('starter',
 	// Set up the various states which the app can be in.
 	// Each state's controller can be found in controllers.js
 
-	$ionicConfigProvider.views.swipeBackEnabled(false);
+    $ionicConfigProvider.views.swipeBackEnabled(false);
+    // $ionicConfigProvider.views.maxCache(0)
 	
 	$stateProvider
 	// setup an abstract state for the tabs directive
@@ -120,6 +121,7 @@ angular.module('starter',
 	})
 	.state(NGStateUtil.tab_group_chat, {
 		url: '/group/chat',
+        cache: false, //@ No caching DOM for this page.
 		views: {
 			'tab-group': {
 				templateUrl: 'templates/chat-detail.html',
@@ -149,6 +151,7 @@ angular.module('starter',
 	})	
 	.state(NGStateUtil.tab_chats_chat, {
 		url: '/chats/chat',
+        cache: false, //@ No caching DOM for this page.
 		views: {
 		    'tab-chats': {
 				templateUrl: 'templates/chat-detail.html',
@@ -201,7 +204,7 @@ angular.module('starter',
 		views: {
 			'tab-account': {
 				templateUrl: 'templates/tab-account.html',
-				controller: 'AccountCtrl'
+				controller: 'optionsController'
 			}
 		}
 	})
@@ -210,7 +213,7 @@ angular.module('starter',
 		views: {
 			'tab-account': {
 				templateUrl: 'templates/tab-account-create.html',
-				controller: 'AccountCreate'
+				controller: 'createGroup'
 			}
 		}
 	})

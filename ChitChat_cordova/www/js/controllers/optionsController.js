@@ -9,13 +9,14 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'optionsController';
-        $ionicTabsDelegate.showBar(true);
 
         $scope.$on('$ionicView.loaded', function () {
             console.log("$ionicView.loaded: ", vm.title);
         });
         $scope.$on('$ionicView.enter', function () {
             console.log("$ionicView.enter: ", vm.title);
+            
+            $ionicTabsDelegate.showBar(true);
         });
         $scope.$on('$ionicView.beforeLeave', function () {
             console.log("$ionicView.beforeLeave: ", vm.title);

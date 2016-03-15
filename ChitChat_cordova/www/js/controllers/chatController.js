@@ -643,8 +643,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		$('#webchatdetail').find('.message-list').empty();
 	});
 
-    // ON ENTER 
 	$scope.$on('$ionicView.enter', function () {
+        console.debug('$ionicView.enter', self.title);
+        
 	    $ionicLoading.show({
 	        template: 'Loading...'
 	    });
@@ -653,13 +654,23 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    setupMenuItem();
 	    setupModals();
 	});
-
-    // ON LEAVE
 	$scope.$on('$ionicView.beforeLeave', function () { //This just one when leaving, which happens when I logout
-	    console.log(self.title + " beforeLeave.");
+	    console.debug('$ionicView.beforeLeave', self.title);
 
 	    chatRoomService.leaveRoom();
-	});
+	});  
+    $scope.$on('$ionicView.loaded', function () {
+        console.debug("$ionicView.loaded: ", self.title);
+    });
+    $scope.$on('$ionicView.beforeLeave', function () {
+        console.debug("$ionicView.beforeLeave: ", self.title);
+    });
+    $scope.$on('$ionicView.leave', function () {
+        console.debug("$ionicView.leave:", self.title);
+    });
+    $scope.$on('$ionicView.unloaded', function () {
+        console.debug("$ionicView.unloaded:", self.title);
+    });
 });
 
 var viewLocation = function ($scope, message, $ionicLoading) {

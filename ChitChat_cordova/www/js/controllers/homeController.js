@@ -116,10 +116,6 @@
             }
 		}
 
-		function onLeave() {
-		
-		}
-
 		$scope.pullRefresh = function() {
 			$scope.$broadcast('scroll.refreshComplete');
 		}
@@ -257,7 +253,7 @@
 	
 		//<!-- My profile modal. -->
 		function openProfileModal(groupId) {
-			if(ionic.Platform.platform() == "ios") {
+			if(ionic.Platform.platform() == "ios" || ionic.Platform.platform() == 'android') {
 	            modalFactory.initMyProfileModal($scope, function done(){
 				    $scope.myProfileModal.show();
 				});
@@ -351,7 +347,6 @@
 			console.log("$ionicView.unloaded:", vm.title);
 
 			clearInterval($scope.interval);
-			onLeave();
 		});
 	}
 

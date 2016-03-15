@@ -35,6 +35,8 @@
 	<script src="js/controllers/mediaController.js"></script>
     <script src="js/controllers/groupDetailController.js"></script>
     <script src="js/controllers/viewProfileController.js"></script>
+    <script src="js/controllers/createGroup.js"></script>
+    <script src="js/controllers/optionsController.js"></script>
  
 	<script src="js/services/services.js"></script>
     <script src="js/services/modalFactory.js"></script>
@@ -46,14 +48,14 @@
     <script src="js/services/dbAccessService.js"></script>
     <script src="js/services/webRTCFactory.js"></script>
     
-    <script src="js/template.js"></script>
+    <script src="js/directives/mapDirectives.js"></script>
+    
     <script src="js/jquery.min.js"></script>
     <script src="lib/async/dist/async.js"></script>
     <script src="lib/angular-toArrayFilter/toArrayFilter.js"></script>
     <script src="lib/localforage/dist/localforage.js"></script>
-    <script src="https://www.promisejs.org/polyfills/promise-done-7.0.4.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHES_5dswUs4LmAJ8FKOaZcDPiuNWdEg&libraries=places"></script>
-    <script src="js/directives.js"></script>
+
 	<script src="js/require.js" data-main="scripts/appBundle"></script>
 	<script src="scripts/appBundle.js"></script>
 	
@@ -74,10 +76,14 @@
 	<script>
         console.log("index....");
 		var socket = io;
-		var main = Main.getInstance();
+		var main = Main.prototype;
 		var server = ChatServer.ServerImplemented.prototype;
 		var serverEvents = ChatServer.ServerEventListener.prototype;
 		var dataManager = DataManager.prototype;
+
+		main.setDataManager(dataManager);
+		main.setServerListener(serverEvents);
+		main.setServerImp(server);
 
 		var messageStore = localforage.createInstance({
 		    name: "message"

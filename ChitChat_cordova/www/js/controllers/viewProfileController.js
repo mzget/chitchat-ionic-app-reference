@@ -13,14 +13,25 @@
         vm.title = 'viewProfileController';
         $ionicTabsDelegate.showBar(false);
         
-        // ON ENTER 
+        $scope.$on('$ionicView.loaded', function () {
+            console.log("$ionicView.loaded: ", vm.title, $stateParams.chatId);
+        });
         $scope.$on('$ionicView.enter', function () {
-            console.log("view enter: ", vm.title, $stateParams.chatId);
+            console.log("$ionicView.enter: ", vm.title, $stateParams.chatId);
+        });
+        $scope.$on('$ionicView.beforeLeave', function () {
+            console.log("$ionicView.beforeLeave: ", vm.title);
+        });
+        $scope.$on('$ionicView.leave', function () {
+            console.log("$ionicView.leave:", vm.title);
+        });
+        $scope.$on('$ionicView.unloaded', function () {
+            console.log("$ionicView.unloaded:", vm.title);
         });
 
         var room = roomSelected.getRoom();
 
-        if ($stateParams.chatId == main.getDataManager().myProfile._id) {
+        if (main.getDataManager().isMySelf($stateParams.chatId)) {
             $scope.chat = main.getDataManager().myProfile;
             $scope.model = {
                 displayname: $scope.chat.displayname,
@@ -134,7 +145,6 @@
         }
 
         $rootScope.$ionicGoBack = function () {
-            console.debug($ionicHistory.viewHistory());
             // if (typeof ($ionicHistory.backView().stateParams) != 'undefined') {
             //     roomSelected.setRoom(room);
             //     $ionicHistory.goBack(-1);

@@ -51,7 +51,7 @@
                         unread.message = newMsg;
                         unread.rid = newMsg.rid;
                         console.warn("room to add: ", JSON.stringify(unreadMessageMap[newMsg.rid]));
-                        var count = Number(unreadMessageMap[newMsg.rid].count);
+                        var count = (!!unreadMessageMap[newMsg.rid]) ? Number(unreadMessageMap[newMsg.rid].count): 0;
                         count++;
                         unread.count = count;
                         unreadMessageMap[unread.rid] = unread;
@@ -88,6 +88,7 @@
 
                 chatsLogComponent.onEditedGroupMember = function (newgroup) {
                     console.log('onEditedGroupMember: ', JSON.stringify(newgroup));
+                    $rootScope.$broadcast('onEditedGroupMember',[]);
                 }
 
                 server.getLastAccessRoomsInfo(function (err, res) {
@@ -103,7 +104,7 @@
                     unreadLogs.map(function element(unread) {
                         unreadMessageMap[unread.rid] = unread;
 
-                        console.log("unread:", JSON.stringify(unread));
+                      //  console.log("unread:", JSON.stringify(unread));
                     });
 
                     calculateUnreadCount();
@@ -291,8 +292,8 @@
         }
 
         function onUnreadMessageMapChanged(unread) {
-            console.debug('before get roomInfo', JSON.stringify(unread));
             var roomInfo = dataManager.getGroup(unread.rid);
+            console.debug('UnreadMessageMapChanged %s \n room is %s', JSON.stringify(unread), roomInfo.name);
             organizeChatLogMap(unread, roomInfo, function () { });
         }
 
