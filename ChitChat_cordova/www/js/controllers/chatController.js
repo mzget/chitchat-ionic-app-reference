@@ -109,6 +109,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		                    blockUI(boo);
 		                });
 		            }
+                    
+                    chatRoomService.updateReadMessages();
 		        }
 		    });
 		});

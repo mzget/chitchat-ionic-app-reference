@@ -15,6 +15,7 @@
             getOlderMessageChunk: getOlderMessageChunk,
             isPrivateChatRoom: isPrivateChatRoom,
             roomContactIsEmpty: roomContactIsEmpty,
+            updateReadMessages: updateReadMessages,
             all: all,
             remove:remove,
             get:get ,
@@ -160,6 +161,10 @@
                     $rootScope.$broadcast('onOlderMessageReady', false); 
                 }, 1000);
             });
+        }
+        
+        function updateReadMessages() {
+            chatRoomComponent.updateReadMessages();
         }
 
         function clear() {

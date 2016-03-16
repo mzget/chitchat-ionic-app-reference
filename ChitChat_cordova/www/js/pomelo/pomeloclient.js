@@ -424,7 +424,7 @@ define(['jquery'], function (jq) {
 	  
 	  delete callbacks[msg.id];
 	  if(typeof cb !== 'function') {
-		console.log('[pomeloclient.processMessage] cb is not a function for request ' + msg.id);
+//		console.log('[pomeloclient.processMessage] cb is not a function for request ' + msg.id);
 		return;
 	  }
 

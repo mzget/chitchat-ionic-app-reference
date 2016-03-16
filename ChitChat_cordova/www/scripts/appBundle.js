@@ -442,6 +442,16 @@ var ChatRoomComponent = (function () {
             console.warn("promiss.onRejected", reason);
         });
     };
+    ChatRoomComponent.prototype.updateReadMessages = function () {
+        var self = this;
+        async.map(self.chatMessages, function itorator(message, resultCb) {
+            if (!self.dataManager.isMySelf(message.sender)) {
+                self.chatRoomApi.updateMessageReader(message._id, message.rid);
+            }
+            resultCb(null, null);
+        }, function done(err) {
+        });
+    };
     ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
         var self = this;
         if (self.serverImp._isConnected) {

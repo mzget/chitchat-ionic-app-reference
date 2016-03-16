@@ -477,6 +477,20 @@
             console.warn("promiss.onRejected", reason);
         });
     }
+    
+    public updateReadMessages() {
+        let self = this;
+        
+        async.map(self.chatMessages, function  itorator(message, resultCb) {
+            if(!self.dataManager.isMySelf(message.sender)) {
+                self.chatRoomApi.updateMessageReader(message._id, message.rid);
+            }
+            
+            resultCb(null, null);
+        }, function  done(err) {
+            //@ done.
+        })
+    }
 
     public leaveRoom(room_id, callback: (err, res) => void) {
         var self = this;
