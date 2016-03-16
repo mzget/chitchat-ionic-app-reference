@@ -58,6 +58,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 		$scope.$on('onNewMessage', function (event, data) {
             $scope.chat = chatRoomService.all();
+            $scope.$apply(); //@ Call for changed scope.
             
 		    setTimeout(function () {
 		    	if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
