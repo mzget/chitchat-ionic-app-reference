@@ -23,7 +23,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.viewProfile = viewProfile;
 	$scope.groupDetail = groupDetail;
 	$scope.openPopover = openPopover;
-	$scope.openModal = openModal;
+	$scope.openModal = openChatMenusModal;
 	$scope.openModalSticker = openModalSticker;
 	$scope.sendSticker = sendSticker;
 	$scope.openModalRecorder = openModalRecorder;
@@ -313,6 +313,23 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    // Execute action on hide modal
 	    $scope.$on('modal.hidden', function () {
 	        // Execute action
+
+	        if (modalcount > 0) {
+	            modalcount--;
+	        }
+
+	        if (modalcount == 1) {
+	            $scope.chatMenuModal.hide();
+	        }
+
+	        $('#chatMessage').animate({ 'bottom': '0' }, 350);
+	        $('#chatDetail').animate({ 'top': '0' }, 350);
+
+	        if ($('.audio-recorder').is(".recording")) {
+	            $('.audio-recorder').removeClass("recording");
+	            $('.audio-recorder').addClass("unrecording");
+	            $scope.$broadcast('cancelRecord', 'cancelRecord');
+	        }
 	    });
 	    // Execute action on remove modal
 	    $scope.$on('modal.removed', function () {
@@ -393,7 +410,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	modalcount = 0;	
 	// Modal - Chat menu 
-	function openModal() {
+	function openChatMenusModal() {
 		modalcount++;
 		$scope.chatMenuModal.show();
         
@@ -409,8 +426,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	function openModalSticker() {
 		modalcount++;
 		$scope.modalSticker.show();
-		document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-        document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
+        
+        if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
+            document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
 	};
 	function sendSticker(sticker) {
 		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
@@ -530,23 +550,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    }
 	});
 
-    // Modal Hidden		 
-	$scope.$on('modal.hidden', function () {
-	    modalcount--;
-
-	    if (modalcount == 1) {
-        	$scope.chatMenuModal.hide();
-    	}
-
-	    $('#chatMessage').animate({ 'bottom': '0' }, 350);
-	    $('#chatDetail').animate({ 'top': '0' }, 350);
-
-	    if ($('.audio-recorder').is(".recording")) {
-	        $('.audio-recorder').removeClass("recording");
-	        $('.audio-recorder').addClass("unrecording");
-	        $scope.$broadcast('cancelRecord', 'cancelRecord');
-	    }
-	});
 	$scope.$on('menuChat.hidden', function () {
 	    modalcount--;
         $scope.chatMenuModal.hide();
@@ -662,15 +665,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    console.debug('$ionicView.beforeLeave', self.title);
 
 	    chatRoomService.leaveRoom();
-	});  
+	});
+	$scope.$on('$ionicView.leave', function () {
+	    console.debug("$ionicView.leave:", self.title);
+	});
     $scope.$on('$ionicView.loaded', function () {
         console.debug("$ionicView.loaded: ", self.title);
-    });
-    $scope.$on('$ionicView.beforeLeave', function () {
-        console.debug("$ionicView.beforeLeave: ", self.title);
-    });
-    $scope.$on('$ionicView.leave', function () {
-        console.debug("$ionicView.leave:", self.title);
     });
     $scope.$on('$ionicView.unloaded', function () {
         console.debug("$ionicView.unloaded:", self.title);
