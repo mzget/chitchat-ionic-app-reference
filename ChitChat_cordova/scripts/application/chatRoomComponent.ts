@@ -106,7 +106,7 @@
     }
 
     onGetMessagesReaders(dataEvent) {
-
+        console.log('onGetMessagesReaders', dataEvent);
     }
 
     public getPersistentMessage(rid: string, done: (err, messages) => void) {
@@ -341,7 +341,7 @@
         }
         // a must be equal to b
         return 0;
-}
+    }
 
     public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
         var self = this;
@@ -490,6 +490,12 @@
         }, function  done(err) {
             //@ done.
         })
+    }
+    
+    public updateWhoReadMyMessages() {
+        let self = this;
+        
+        self.chatRoomApi.getMessagesReaders();
     }
 
     public leaveRoom(room_id, callback: (err, res) => void) {

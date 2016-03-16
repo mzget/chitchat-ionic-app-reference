@@ -16,6 +16,7 @@
             isPrivateChatRoom: isPrivateChatRoom,
             roomContactIsEmpty: roomContactIsEmpty,
             updateReadMessages: updateReadMessages,
+            updateWhoReadMyMessages: updateWhoReadMyMessages,
             all: all,
             remove:remove,
             get:get ,
@@ -165,6 +166,10 @@
         
         function updateReadMessages() {
             chatRoomComponent.updateReadMessages();
+        }
+        
+        function updateWhoReadMyMessages() {
+            chatRoomComponent.updateWhoReadMyMessages();
         }
 
         function clear() {

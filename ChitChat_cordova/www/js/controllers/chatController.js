@@ -111,6 +111,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		            }
                     
                     chatRoomService.updateReadMessages();
+                    chatRoomService.updateWhoReadMyMessages();
 		        }
 		    });
 		});

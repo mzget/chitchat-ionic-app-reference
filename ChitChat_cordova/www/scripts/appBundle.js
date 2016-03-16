@@ -122,6 +122,7 @@ var ChatRoomComponent = (function () {
         });
     };
     ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
+        console.log('onGetMessagesReaders', dataEvent);
     };
     ChatRoomComponent.prototype.getPersistentMessage = function (rid, done) {
         var self = this;
@@ -451,6 +452,10 @@ var ChatRoomComponent = (function () {
             resultCb(null, null);
         }, function done(err) {
         });
+    };
+    ChatRoomComponent.prototype.updateWhoReadMyMessages = function () {
+        var self = this;
+        self.chatRoomApi.getMessagesReaders();
     };
     ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
         var self = this;
@@ -2142,7 +2147,6 @@ var ChatServer;
     ChatServer.ServerImplemented = ServerImplemented;
     var ChatRoomApiProvider = (function () {
         function ChatRoomApiProvider() {
-            this.serverImp = ServerImplemented.getInstance();
         }
         ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, callback) {
             var message = {};
@@ -2181,7 +2185,6 @@ var ChatServer;
         };
         ChatRoomApiProvider.prototype.getSyncDateTime = function (callback) {
             var message = {};
-            message["token"] = this.serverImp.authenData.token;
             pomelo.request("chat.chatHandler.getSyncDateTime", message, function (result) {
                 if (callback != null) {
                     callback(null, result);
@@ -2219,7 +2222,6 @@ var ChatServer;
         };
         ChatRoomApiProvider.prototype.getMessagesReaders = function () {
             var message = {};
-            message["token"] = this.serverImp.authenData.token;
             pomelo.notify("chat.chatHandler.getMessagesReaders", message);
         };
         ChatRoomApiProvider.prototype.getMessageContent = function (messageId, callback) {
