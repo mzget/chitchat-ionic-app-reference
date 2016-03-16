@@ -233,18 +233,27 @@
                         self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
                            //self.getNewerMessageRecord();
                         });
+
+                        if (callback !== null) {
+                            callback(null, result.code);
+                        }
                     });
                 }
                 else {
                     console.log("Have no newer message.");
+                    
+
+                    if (callback !== null) {
+                        callback(null, result.code);
+                    }
                 }
             }
             else {
                 console.warn("WTF god only know.", result.message);
-            }
 
-            if (callback !== null) {
-                callback(null, result.code);
+                if (callback !== null) {
+                    callback(null, result.code);
+                }
             }
         });
     }

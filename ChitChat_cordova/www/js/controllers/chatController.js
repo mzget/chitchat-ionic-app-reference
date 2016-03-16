@@ -84,6 +84,19 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    	}
 		});
 		$scope.$on('onJoinRoomReady', function (event, data) {
+		    $scope.chat = chatRoomService.all(); 
+            $scope.$apply();
+            
+            setTimeout(function () {
+                $ionicLoading.hide();
+                if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+                    $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
+                }
+                else {
+                    $("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 500);
+                }
+            }, 100);
+            
 		    chatRoomService.getChatRoomComponent().joinRoom(function cb(err, result) {
 		        if (result.code !== HttpStatusCode.success) {
 		            //<!-- Block user interface for this chat room.
