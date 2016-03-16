@@ -150,11 +150,15 @@
 
                         var logCount = chatslogService.getChatsLogCount();
                         cordova.plugins.notification.badge.set(logCount);
+                        
+                        $rootScope.$broadcast('onactivateBgMode');
                     };
 
                     // Get informed when the background mode has been deactivated
                     cordova.plugins.backgroundMode.ondeactivate = function () {
                         console.warn("backgroundMode.ondeactivate");
+                        
+                        $rootScope.$broadcast('ondeactivateBgMode');
                     };
                 }
                 catch (ex) {

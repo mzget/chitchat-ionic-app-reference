@@ -21,14 +21,14 @@
     }
 
     onChat(chatMessageImp: Message) {
-        var self = this;
+        let self = this;
 
         console.log('chatRoomComponent.onChat');
 
         if(this.roomId === chatMessageImp.rid) {
             console.log("Implement chat msg hear..", chatMessageImp);
             
-            var secure = new SecureService();
+            let secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
                 if (self.serverImp.appConfig.encryption == true) {
                     secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
