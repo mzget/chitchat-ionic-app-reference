@@ -25,17 +25,16 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.openPopover = openPopover;
 	$scope.openModal = openChatMenusModal;
 	$scope.openModalSticker = openModalSticker;
-	$scope.sendSticker = sendSticker;
 	$scope.openModalRecorder = openModalRecorder;
 	$scope.openModalWebview = openModalWebview;
 	$scope.closeModalWebview = closeModalWebview;
-    $scope.openReaderModal = openReaderModal;
     $scope.closeReaderModal = closeReaderModal;
     $scope.webview = webview;
     $scope.image = image;
     $scope.video = video;
     $scope.voice = voice;
     $scope.viewReader = viewReader;
+    $scope.openReaderModal = openReaderModal;
     $scope.parseJSON= parseJSON;
     $scope.viewLocation = viewLocation;
     $scope.openMap = openMap;
@@ -48,6 +47,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     $scope.isBlockNoti = isBlockNoti;
     $scope.loadOlderMessage = loadOlderMessage;
     $scope.sendMsg = sendMessage;
+	$scope.sendSticker = sendSticker;
     $scope.isLoadingMessage = false;
     $scope.showLoadMessage = false;
     $scope.chat = [];
@@ -65,7 +65,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    	if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 		    		$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 		    	}
-                else{
+                else {
 		    		$("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 200);
 		    	}
 		    }, 100);
@@ -220,16 +220,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	}
 	function openPopover($event) {
 	    $scope.popover.show($event);
-	};	
-	function sendMessageResponse(err, res) {
-		if (!!err) {
-			console.warn("send message fail.", err);
-		}
-		else if(res.code !== HttpStatusCode.success) {
-			console.warn("send message fail:", JSON.stringify(res));
-			blockUI(true);
-		}
-	}
+	}	
 	function viewReader(readers) {
 		var members = [];
 		async.eachSeries(readers, function iterator(item, cb) {
@@ -257,8 +248,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	function openMap() {
 		$scope.chatMenuModal.hide();
 		$scope.openMapModal();
-		document.getElementById('mapContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-        document.getElementById('mapContain').style.width = jQuery('#webchatdetail').width() + "px";
+        
+        if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
+            document.getElementById('mapContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('mapContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
 	}
 	function openMapModal() {
 		callGeolocation($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, function (locationObj) {
@@ -309,7 +303,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    })
 
 	    // Reader view modal.
-	    $ionicModal.fromTemplateUrl('templates/reader-view.html', {
+	    $ionicModal.fromTemplateUrl('templates/modal-reader-view.html', {
 	        scope: $scope,
 	        animation: 'slide-in-up'
 	    }).then(function (modal) {
@@ -465,8 +459,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	function openModalRecorder(){
 		modalcount++;
 		$scope.modalAudio.show();
-		document.getElementById('recorderContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-        document.getElementById('recorderContain').style.width = jQuery('#webchatdetail').width() + "px";
+        
+        if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
+            document.getElementById('recorderContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('recorderContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
 	}	
 	// Modal - Webview 
 	function openModalWebview() {
@@ -475,7 +472,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	};
 	function closeModalWebview() {
 		$scope.modalWebview.hide();
-	};	
+	};
 	function openReaderModal() {
 		$scope.readerViewModal.show();
 	};
@@ -511,15 +508,22 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
 	}
 	function image(){
-		if (ionic.Platform.platform() === "ios") {
-			$scope.$broadcast('addImg', 'addImg');
-		}else{
+	    if (ionic.Platform.platform() === "ios") {
+            //@ Emit to mediaController. 
+	        $scope.$broadcast('addImg', 'addImg');
+            
+            $scope.chatMenuModal.hide();
+		}
+		else {
 			$('#fileToUpload').trigger('click');
 		}
 	}
 	function video(){
 		if (ionic.Platform.platform() === "ios") {
+            //@ Emit to mediaController. 
 			$scope.$broadcast('captureVideo', 'captureVideo');
+            
+            $scope.chatMenuModal.hide();
 		}else{
 			$('#fileToUpload').trigger('click');
 		}
@@ -578,7 +582,41 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        $('#send_message').val('')
         }
     }
-
+    
+	function sendMessageResponse(err, res) {
+		if (!!err) {
+			console.warn("send message fail.", err);
+		}
+		else if(res.code !== HttpStatusCode.success) {
+			console.warn("send message fail:", JSON.stringify(res));
+			blockUI(true);
+		}
+	}
+    
+    $scope.$on('sendFile', function(event, args) {
+        var mediaName = args.mediaName;
+        var url = args.url;
+        var type = args.type;
+		 chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, url, type, function(err, res) {
+			if (err || res === null) {
+				console.warn("send message fail.");
+			}
+			else {
+				console.log("send File Success:", JSON.stringify(res));
+                
+                $rootScope.$broadcast('onSendFileSuccess', {messageId: res.messageId});
+	    		deleteTemp([mediaName]);
+			}
+		});
+    });
+    function deleteTemp(args) {
+        $.each($scope.chat, function(index, value){
+			if(value._id == args[0]) { 
+				$scope.chat[index] = new Object; 
+			}
+		});
+    }
+    
 	$scope.$on('menuChat.hidden', function () {
 	    modalcount--;
         $scope.chatMenuModal.hide();
@@ -592,7 +630,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        $scope.$broadcast('cancelRecord', 'cancelRecord');
 	    }
 	});
-
 	// Recivce ImageUri from Gallery then send to other people
 	$scope.$on('fileUri', function(event, args) {
 		if (ionic.Platform.platform() === "ios") {
@@ -619,7 +656,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			}
 		}
 	});
-
 	// Send Image and remove temp Image
 	$scope.$on('fileUrl', function(event,args){
 		if(args[2]==ContentType[ContentType.Image]){
@@ -641,15 +677,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			}
 		});
 	});
-
-	$scope.$on('delectTemp', function(event,args){
-		$.each($scope.chat, function(index, value){
-			if(value._id == args[0]) { 
-				$scope.chat[index] = new Object; 
-			}
-		});
+	$scope.$on('delectTemp', function(event, args) {
+		deleteTemp(args);
 	});
-
 	$scope.$on('enterChat', function(event, args) { 
 		console.log("App view (menu) entered.");
         
@@ -678,7 +708,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 		$('#webchatdetail').find('.message-list').empty();
 	});
-
 	$scope.$on('$ionicView.enter', function () {
         console.debug('$ionicView.enter', self.title);
         

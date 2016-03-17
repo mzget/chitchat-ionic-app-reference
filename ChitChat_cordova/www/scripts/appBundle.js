@@ -55,9 +55,8 @@ var ChatRoomComponent = (function () {
     ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
         var _this = this;
         var self = this;
-        console.log('chatRoomComponent.onChat');
+        console.log('chatRoomComponent.onChat', JSON.stringify(chatMessageImp));
         if (this.roomId === chatMessageImp.rid) {
-            console.log("Implement chat msg hear..", chatMessageImp);
             var secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
                 if (self.serverImp.appConfig.encryption == true) {
