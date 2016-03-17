@@ -28,10 +28,6 @@
             console.log("$ionicView.unloaded:", vm.title);
         });
 
-        activate();
-
-        function activate() { }
-
         $scope.settings = {
             logOut: true,
         };
@@ -85,10 +81,11 @@
             server.logout();
             server.dispose();
 
-            dbAccessService.clearMessageDAL();
             localStorage.clear();
-            //$state.go('tab.login');
-            location.href = '';
+            dbAccessService.clearMessageDAL(function done() {
+                //$state.go('tab.login');
+                location.href = '';
+            });
         }
     }
 })();

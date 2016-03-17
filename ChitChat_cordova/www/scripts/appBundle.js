@@ -1387,12 +1387,14 @@ var MessageDAL = (function () {
             console.warn(err);
         });
     };
-    MessageDAL.prototype.clearData = function () {
+    MessageDAL.prototype.clearData = function (next) {
+        console.warn('MessageDAL.clearData');
         this.store.clear(function (err) {
             if (err != null) {
                 console.warn("Clear database fail", err);
             }
-            console.log("message db now empty.");
+            console.warn("message db now empty.");
+            next(err);
         });
     };
     return MessageDAL;

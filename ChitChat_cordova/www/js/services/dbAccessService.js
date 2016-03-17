@@ -15,9 +15,9 @@
             clearMessageDAL: clearMessageDAL
         };
 
-        return service;
-
         var messagedal = null;
+
+        return service;
 
         function getData() { }
 
@@ -29,8 +29,8 @@
             return messagedal;
         }
 
-        function clearMessageDAL() {
-            messagedal.clearData();
+        function clearMessageDAL(next) {
+            messagedal.clearData(next);
         }
     }
 })();
