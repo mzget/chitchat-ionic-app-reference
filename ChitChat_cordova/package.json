@@ -1,7 +1,7 @@
 {
   "name": "chitchat_cordova",
   "version": "1.0.0",
-  "dependencies": { },
+  "dependencies": {},
   "cordovaPlugins": [
     "cordova-plugin-device",
     "cordova-plugin-console",

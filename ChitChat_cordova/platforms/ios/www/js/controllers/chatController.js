@@ -23,7 +23,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.viewProfile = viewProfile;
 	$scope.groupDetail = groupDetail;
 	$scope.openPopover = openPopover;
-	$scope.openModal = openModal;
+	$scope.openModal = openChatMenusModal;
 	$scope.openModalSticker = openModalSticker;
 	$scope.sendSticker = sendSticker;
 	$scope.openModalRecorder = openModalRecorder;
@@ -47,6 +47,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     $scope.isFavorite = isFavorite;
     $scope.isBlockNoti = isBlockNoti;
     $scope.loadOlderMessage = loadOlderMessage;
+    $scope.sendMsg = sendMessage;
     $scope.isLoadingMessage = false;
     $scope.showLoadMessage = false;
     $scope.chat = [];
@@ -58,6 +59,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 		$scope.$on('onNewMessage', function (event, data) {
             $scope.chat = chatRoomService.all();
+            $scope.$apply(); //@ Call for changed scope.
             
 		    setTimeout(function () {
 		    	if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
@@ -83,6 +85,19 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    	}
 		});
 		$scope.$on('onJoinRoomReady', function (event, data) {
+		    $scope.chat = chatRoomService.all(); 
+            $scope.$apply();
+            
+            setTimeout(function () {
+                $ionicLoading.hide();
+                if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+                    $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
+                }
+                else {
+                    $("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 500);
+                }
+            }, 100);
+            
 		    chatRoomService.getChatRoomComponent().joinRoom(function cb(err, result) {
 		        if (result.code !== HttpStatusCode.success) {
 		            //<!-- Block user interface for this chat room.
@@ -95,6 +110,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		                    blockUI(boo);
 		                });
 		            }
+                    
+                    chatRoomService.updateReadMessages();
+                    chatRoomService.updateWhoReadMyMessages();
 		        }
 		    });
 		});
@@ -108,6 +126,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
             $scope.chat = chatRoomService.all();
             $scope.isLoadingMessage = false;
             console.debug('chats.all: ', chatRoomService.all().length, $scope.chat.length);
+		});
+        $scope.$on('ondeactivateBgMode', function (event, data) {
+            console.log('Need to update message read here.');
+            
+            chatRoomService.updateReadMessages();
 		});
 	}
 	function setScopeData() {
@@ -313,6 +336,23 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    // Execute action on hide modal
 	    $scope.$on('modal.hidden', function () {
 	        // Execute action
+
+	        if (modalcount > 0) {
+	            modalcount--;
+	        }
+
+	        if (modalcount == 1) {
+	            $scope.chatMenuModal.hide();
+	        }
+
+	        $('#chatMessage').animate({ 'bottom': '0' }, 350);
+	        $('#chatDetail').animate({ 'top': '0' }, 350);
+
+	        if ($('.audio-recorder').is(".recording")) {
+	            $('.audio-recorder').removeClass("recording");
+	            $('.audio-recorder').addClass("unrecording");
+	            $scope.$broadcast('cancelRecord', 'cancelRecord');
+	        }
 	    });
 	    // Execute action on remove modal
 	    $scope.$on('modal.removed', function () {
@@ -393,20 +433,27 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	modalcount = 0;	
 	// Modal - Chat menu 
-	function openModal() {
+	function openChatMenusModal() {
 		modalcount++;
 		$scope.chatMenuModal.show();
-		$('#chatMessage').animate({'bottom':'272px'}, 350);
-		$('#chatDetail').animate({'top':'-272px'}, 350);
-		document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-        document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
+        
+         $('#chatMessage').animate({'bottom':'272px'}, 350);
+         $('#chatDetail').animate({'top':'-272px'}, 350);
+        
+        if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {           
+            document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
 	};	
 	// Modal - Sticker
 	function openModalSticker() {
 		modalcount++;
 		$scope.modalSticker.show();
-		document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-        document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
+        
+        if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
+            document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
+        }
 	};
 	function sendSticker(sticker) {
 		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
@@ -499,14 +546,16 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    alert($(this).contentDocument.title);
 	});
 	$("#send_message").on("keyup", function (event) {
+        //@ detect return button.
 	    if (event.keyCode == 13) {
-	        $("#sendMsg").get(0).click();
+            sendMessage();
 	    }
 	});
     // Send Message btn
-	$('#sendMsg').click(function () {
-	    var content = $('#send_message').val();
-	    if (content != '') {
+    function sendMessage() {
+        var value = $('#send_message').val();
+        var content = value.trim();
+	    if (content != "" && content != '' && content != '\n') {
 	        // Clear Message
 	        $('#send_message').val('')
 
@@ -524,25 +573,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	            chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, content, ContentType[ContentType.Text], sendMessageResponse);
 	        }
 	    }
-	});
+        else {
+	        // Clear Message
+	        $('#send_message').val('')
+        }
+    }
 
-    // Modal Hidden		 
-	$scope.$on('modal.hidden', function () {
-	    modalcount--;
-
-	    if (modalcount == 1) {
-        	$scope.chatMenuModal.hide();
-    	}
-
-	    $('#chatMessage').animate({ 'bottom': '0' }, 350);
-	    $('#chatDetail').animate({ 'top': '0' }, 350);
-
-	    if ($('.audio-recorder').is(".recording")) {
-	        $('.audio-recorder').removeClass("recording");
-	        $('.audio-recorder').addClass("unrecording");
-	        $scope.$broadcast('cancelRecord', 'cancelRecord');
-	    }
-	});
 	$scope.$on('menuChat.hidden', function () {
 	    modalcount--;
         $scope.chatMenuModal.hide();
@@ -658,15 +694,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    console.debug('$ionicView.beforeLeave', self.title);
 
 	    chatRoomService.leaveRoom();
-	});  
+	});
+	$scope.$on('$ionicView.leave', function () {
+	    console.debug("$ionicView.leave:", self.title);
+	});
     $scope.$on('$ionicView.loaded', function () {
         console.debug("$ionicView.loaded: ", self.title);
-    });
-    $scope.$on('$ionicView.beforeLeave', function () {
-        console.debug("$ionicView.beforeLeave: ", self.title);
-    });
-    $scope.$on('$ionicView.leave', function () {
-        console.debug("$ionicView.leave:", self.title);
     });
     $scope.$on('$ionicView.unloaded', function () {
         console.debug("$ionicView.unloaded:", self.title);

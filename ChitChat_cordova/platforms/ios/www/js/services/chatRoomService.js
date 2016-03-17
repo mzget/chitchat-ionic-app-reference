@@ -15,6 +15,8 @@
             getOlderMessageChunk: getOlderMessageChunk,
             isPrivateChatRoom: isPrivateChatRoom,
             roomContactIsEmpty: roomContactIsEmpty,
+            updateReadMessages: updateReadMessages,
+            updateWhoReadMyMessages: updateWhoReadMyMessages,
             all: all,
             remove:remove,
             get:get ,
@@ -50,7 +52,7 @@
                     // - This will work when message_sender is not me. 
                     // - Message displaying in chat room.
                     // - Chatroom is not run in background.
-                    if (newMsg.sender !== main.getDataManager().myProfile._id) {
+                    if (!main.getDataManager().isMySelf(newMsg.sender)) {
                         //@ Check app not run in background.
                         if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
                             try {
@@ -115,7 +117,7 @@
             chatRoomComponent.getPersistentMessage(curRoom._id, function (err, messages) {
                 console.log("getPersistendMessage of room %s: completed.", curRoom.name, chatRoomComponent.chatMessages.length);
 
-				service.set(chatRoomComponent.chatMessages);
+				set(chatRoomComponent.chatMessages);
 
                 $rootScope.$broadcast('onMessagesReady', { data: null });
 
@@ -126,6 +128,8 @@
 
         function getNewerMessageFromNet() {
             chatRoomComponent.getNewerMessageRecord(function done(err, result) {
+				set(chatRoomComponent.chatMessages);
+                
                 $rootScope.$broadcast('onJoinRoomReady', { data: null });
             });
         }
@@ -158,6 +162,14 @@
                     $rootScope.$broadcast('onOlderMessageReady', false); 
                 }, 1000);
             });
+        }
+        
+        function updateReadMessages() {
+            chatRoomComponent.updateReadMessages();
+        }
+        
+        function updateWhoReadMyMessages() {
+            chatRoomComponent.updateWhoReadMyMessages();
         }
 
         function clear() {

@@ -91,6 +91,10 @@
                         {
                             "xml": "<feature name=\"PushNotification\"><param name=\"ios-package\" value=\"PushPlugin\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"IonicKeyboard\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -176,6 +180,9 @@
             "PACKAGE_NAME": "com.rfl.stalk"
         },
         "phonegap-plugin-push": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
@@ -646,6 +653,15 @@
             "clobbers": [
                 "PushNotification"
             ]
+        },
+        {
+            "file": "plugins/ionic-plugin-keyboard/www/ios/keyboard.js",
+            "id": "ionic-plugin-keyboard.keyboard",
+            "pluginId": "ionic-plugin-keyboard",
+            "clobbers": [
+                "cordova.plugins.Keyboard"
+            ],
+            "runs": true
         }
     ]
 }
