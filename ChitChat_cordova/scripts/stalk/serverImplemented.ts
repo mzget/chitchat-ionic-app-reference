@@ -944,7 +944,7 @@ module ChatServer {
             });
 
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, (data) => {
-                console.log(ServerEventListener.ON_MESSAGE_READ, JSON.stringify(data));
+                // console.log(ServerEventListener.ON_MESSAGE_READ, JSON.stringify(data));
 
                 self.chatServerListener.onMessageRead(data);
             });

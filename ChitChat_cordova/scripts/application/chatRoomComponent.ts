@@ -84,11 +84,12 @@
     }
 
     onMessageRead(dataEvent) {
-        console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
-        var self = this;
-        var newMsg: Message = JSON.parse(JSON.stringify(dataEvent));
+        console.log("onMessageRead", JSON.stringify(dataEvent));
+        
+        let self = this;
+        let newMsg: Message = JSON.parse(JSON.stringify(dataEvent));
 
-        var promise = new Promise(function (resolve, reject) {
+        let promise = new Promise(function (resolve, reject) {
             self.chatMessages.some(function callback(value) {
                 if (value._id === newMsg._id) {
                     value.readers = newMsg.readers;
@@ -107,6 +108,26 @@
 
     onGetMessagesReaders(dataEvent) {
         console.log('onGetMessagesReaders', dataEvent);
+        
+        let self = this;
+        interface Ireaders {
+            _id : string;
+            readers: Array<string>;
+        }
+        let myMessagesArr : Array<Ireaders> = JSON.parse(JSON.stringify(dataEvent.data));
+        
+        self.chatMessages.forEach((originalMsg, id, arr) => {
+            if(self.dataManager.isMySelf(originalMsg.sender)) {
+                myMessagesArr.some((myMsg, index, array) => {
+                    if(originalMsg._id === myMsg._id) {
+                        originalMsg.readers = myMsg.readers;
+                        return true;
+                    }
+                });     
+            }
+        });
+        
+        self.messageDAL.saveData(self.roomId, self.chatMessages);
     }
 
     public getPersistentMessage(rid: string, done: (err, messages) => void) {

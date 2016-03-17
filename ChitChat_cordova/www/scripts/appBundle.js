@@ -104,7 +104,7 @@ var ChatRoomComponent = (function () {
     ChatRoomComponent.prototype.onRoomJoin = function (data) {
     };
     ChatRoomComponent.prototype.onMessageRead = function (dataEvent) {
-        console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
+        console.log("onMessageRead", JSON.stringify(dataEvent));
         var self = this;
         var newMsg = JSON.parse(JSON.stringify(dataEvent));
         var promise = new Promise(function (resolve, reject) {
@@ -123,6 +123,19 @@ var ChatRoomComponent = (function () {
     };
     ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
         console.log('onGetMessagesReaders', dataEvent);
+        var self = this;
+        var myMessagesArr = JSON.parse(JSON.stringify(dataEvent.data));
+        self.chatMessages.forEach(function (originalMsg, id, arr) {
+            if (self.dataManager.isMySelf(originalMsg.sender)) {
+                myMessagesArr.some(function (myMsg, index, array) {
+                    if (originalMsg._id === myMsg._id) {
+                        originalMsg.readers = myMsg.readers;
+                        return true;
+                    }
+                });
+            }
+        });
+        self.messageDAL.saveData(self.roomId, self.chatMessages);
     };
     ChatRoomComponent.prototype.getPersistentMessage = function (rid, done) {
         var self = this;
@@ -2308,7 +2321,6 @@ var ChatServer;
                 self.chatServerListener.onLeaveRoom(data);
             });
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, function (data) {
-                console.log(ServerEventListener.ON_MESSAGE_READ, JSON.stringify(data));
                 self.chatServerListener.onMessageRead(data);
             });
             pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, function (data) {
