@@ -47,6 +47,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     $scope.isFavorite = isFavorite;
     $scope.isBlockNoti = isBlockNoti;
     $scope.loadOlderMessage = loadOlderMessage;
+    $scope.sendMsg = sendMessage;
     $scope.isLoadingMessage = false;
     $scope.showLoadMessage = false;
     $scope.chat = [];
@@ -545,14 +546,16 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    alert($(this).contentDocument.title);
 	});
 	$("#send_message").on("keyup", function (event) {
+        //@ detect return button.
 	    if (event.keyCode == 13) {
-	        $("#sendMsg").get(0).click();
+            sendMessage();
 	    }
 	});
     // Send Message btn
-	$('#sendMsg').click(function () {
-	    var content = $('#send_message').val();
-	    if (content != '') {
+    function sendMessage() {
+        var value = $('#send_message').val();
+        var content = value.trim();
+	    if (content != "" && content != '' && content != '\n') {
 	        // Clear Message
 	        $('#send_message').val('')
 
@@ -570,7 +573,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	            chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, content, ContentType[ContentType.Text], sendMessageResponse);
 	        }
 	    }
-	});
+        else {
+	        // Clear Message
+	        $('#send_message').val('')
+        }
+    }
 
 	$scope.$on('menuChat.hidden', function () {
 	    modalcount--;

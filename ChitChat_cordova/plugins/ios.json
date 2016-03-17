@@ -66,6 +66,9 @@
         },
         "phonegap-plugin-push": {
             "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
     "dependent_plugins": {}

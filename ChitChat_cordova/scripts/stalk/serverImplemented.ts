@@ -944,13 +944,13 @@ module ChatServer {
             });
 
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, (data) => {
-                // console.log(ServerEventListener.ON_MESSAGE_READ, JSON.stringify(data));
+                console.log(ServerEventListener.ON_MESSAGE_READ);
 
                 self.chatServerListener.onMessageRead(data);
             });
 
             pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, (data) => {
-                console.log(ServerEventListener.ON_GET_MESSAGES_READERS, JSON.stringify(data));
+                console.log(ServerEventListener.ON_GET_MESSAGES_READERS);
 
                 self.chatServerListener.onGetMessagesReaders(data);
             });
