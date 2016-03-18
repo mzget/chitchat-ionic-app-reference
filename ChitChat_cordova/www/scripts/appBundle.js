@@ -2322,11 +2322,9 @@ var ChatServer;
                 self.chatServerListener.onLeaveRoom(data);
             });
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, function (data) {
-                console.log(ServerEventListener.ON_MESSAGE_READ);
                 self.chatServerListener.onMessageRead(data);
             });
             pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, function (data) {
-                console.log(ServerEventListener.ON_GET_MESSAGES_READERS);
                 self.chatServerListener.onGetMessagesReaders(data);
             });
         };

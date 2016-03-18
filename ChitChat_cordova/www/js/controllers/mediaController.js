@@ -93,7 +93,8 @@ angular.module('spartan.media', [])
 		        $scope.addImage(index);
 		      }
 		    });
-		}else{
+		}
+        else{
 			var file    = document.querySelector("[id='fileToUpload']").files[0];
 	        var reader  = new FileReader();
 	        reader.onloadend = function () {
@@ -257,7 +258,6 @@ angular.module('spartan.media', [])
 	    animation: 'slide-in-up'
   	});
 	
-
 	$scope.viewImage = function (type, src) {
 		$scope.modalImage.type = type;
 		$scope.modalImage.src = sharedObjectService.getWebServer() + src;
@@ -284,7 +284,7 @@ angular.module('spartan.media', [])
 			if(FileService.getImages().length!=0) { 
 				checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
 					if(canUpload){
-					    var img = new UploadMedia($rootScope, sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function (id, messageId) {
+					    var img = new UploadMedia($rootScope, $scope, sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function (id, messageId) {
 							$scope.$emit('delectTemp', [id]); 
 						});
 					mediaUpload[id] = img;
@@ -385,7 +385,6 @@ angular.module('spartan.media', [])
 			});
  		})
  	}
-
 })
 
 .controller('VideoController', function ($rootScope, $scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
@@ -471,7 +470,7 @@ angular.module('spartan.media', [])
 			if(videoName != null || videoName != undefined) { 
 				checkFileSize.checkFile(videoURI).then(function(canUpload) {
 					if(canUpload){
-					    var video = new UploadMedia($rootScope, sharedObjectService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function (id, messageId) {
+					    var video = new UploadMedia($rootScope, $scope, sharedObjectService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function (id, messageId) {
 							$scope.$emit('delectTemp', [id]); 
 						});
 						mediaUpload[id] = video;
@@ -789,7 +788,7 @@ angular.module('spartan.media', [])
 			if(fileName != null || fileName != undefined) { 
 				checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
 					if(canUpload){
-					    var voice = new UploadMedia($rootScope, sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
+					    var voice = new UploadMedia($rootScope, $scope, sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
 							$scope.$emit('delectTemp', [id]); 
 					});
 					mediaUpload[id] = voice;
@@ -916,7 +915,7 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 	}
 }
 
-function UploadMedia($rootScope, sharedObjectService, rid, uri, type, callback) {
+function UploadMedia($rootScope, $scope, sharedObjectService, rid, uri, type, callback) {
 	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
 	var uriFile = uri;
 	var mediaName = uri.substr(uri.lastIndexOf('/') + 1);
@@ -943,8 +942,7 @@ function UploadMedia($rootScope, sharedObjectService, rid, uri, type, callback) 
 
 		    }
 		};
-		ft.upload(uriFile, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
-        options);
+		ft.upload(uriFile, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail, options);
 	}
 	this.cancel = function(){
 		ft.abort();
@@ -964,10 +962,10 @@ function UploadMedia($rootScope, sharedObjectService, rid, uri, type, callback) 
 	}
 
 	function win(r) {
-		console.log(JSON.stringify(r));
-		console.log("Code = " + r.responseCode);
-	    console.log("Response = " + r.response);
-	    console.log("Sent = " + r.bytesSent);
+	    console.log('UploadMedia', JSON.stringify(r));
+		console.log("responseCode = " + r.responseCode);
+		console.log("response = " + r.response);
+	    console.log("bytesSent = " + r.bytesSent);
 	    
         send($rootScope, r.response);
 	}
@@ -980,7 +978,7 @@ function UploadMedia($rootScope, sharedObjectService, rid, uri, type, callback) 
 	}
 
 	function send($rootScope, url) {
-        $rootScope.$broadcast('sendFile', { url: url , type: type, mediaName: mediaName });
+	    $rootScope.$broadcast('sendFile', { url: url, type: type, mediaName: mediaName });
         $scope.$on('onSendFileSuccess', function(event, args) {
             jQuery.extend(mediaUpload[mediaName], { 'url' : url, 'messageId' : args.messageId });
         });
