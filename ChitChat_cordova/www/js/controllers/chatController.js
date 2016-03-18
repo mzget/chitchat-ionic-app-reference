@@ -479,6 +479,15 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	function closeReaderModal() {
 		$scope.readerViewModal.hide();
 	};	
+    function hideAllModal() {
+        $scope.chatMenuModal.hide();
+        $scope.modalSticker.hide();
+        $scope.modalAudio.hide();
+        $scope.modalWebview.hide();
+        $scope.readerViewModal.hide();
+        $scope.mapViewModal.hide();
+    }
+    
 	// WebView
 	function webview(uri) {
 	    if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
@@ -593,11 +602,14 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		}
 	}
     
+    //@ Broadcast from mediaController.
     $scope.$on('sendFile', function(event, args) {
         var mediaName = args.mediaName;
         var url = args.url;
         var type = args.type;
 		 chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, url, type, function(err, res) {
+             hideAllModal();
+             
 			if (err || res === null) {
 				console.warn("send message fail.");
 			}
