@@ -794,7 +794,9 @@ module ChatServer {
         
         public getMessagesReaders() {
             var message: IDictionary = {};
-            pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+            pomelo.request("chat.chatHandler.getMessagesReaders", message, (result) => {
+                console.info('getMessagesReaders respones: ', result);
+            });
         }
 
         public getMessageContent(messageId: string, callback: (err: Error, res: any) => void) {

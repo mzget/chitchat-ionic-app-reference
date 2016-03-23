@@ -2236,7 +2236,9 @@ var ChatServer;
         };
         ChatRoomApiProvider.prototype.getMessagesReaders = function () {
             var message = {};
-            pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+            pomelo.request("chat.chatHandler.getMessagesReaders", message, function (result) {
+                console.info('getMessagesReaders respones: ', result);
+            });
         };
         ChatRoomApiProvider.prototype.getMessageContent = function (messageId, callback) {
             var message = {};
