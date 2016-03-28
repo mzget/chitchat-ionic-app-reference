@@ -514,7 +514,9 @@
     public updateWhoReadMyMessages() {
         let self = this;
         
-        self.chatRoomApi.getMessagesReaders();
+        self.getTopEdgeMessageTime((err, res) => {
+            self.chatRoomApi.getMessagesReaders(res);
+        });
     }
 
     public leaveRoom(room_id, callback: (err, res) => void) {

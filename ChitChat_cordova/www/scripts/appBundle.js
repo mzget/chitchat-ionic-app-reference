@@ -467,7 +467,9 @@ var ChatRoomComponent = (function () {
     };
     ChatRoomComponent.prototype.updateWhoReadMyMessages = function () {
         var self = this;
-        self.chatRoomApi.getMessagesReaders();
+        self.getTopEdgeMessageTime(function (err, res) {
+            self.chatRoomApi.getMessagesReaders(res);
+        });
     };
     ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
         var self = this;
@@ -2234,8 +2236,9 @@ var ChatServer;
                     callback(null, result);
             });
         };
-        ChatRoomApiProvider.prototype.getMessagesReaders = function () {
+        ChatRoomApiProvider.prototype.getMessagesReaders = function (topEdgeMessageTime) {
             var message = {};
+            message["topEdgeMessageTime"] = topEdgeMessageTime;
             pomelo.request("chat.chatHandler.getMessagesReaders", message, function (result) {
                 console.info('getMessagesReaders respones: ', result);
             });
