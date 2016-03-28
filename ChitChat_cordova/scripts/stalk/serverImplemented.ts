@@ -792,8 +792,9 @@ module ChatServer {
             });
         }
         
-        public getMessagesReaders() {
+        public getMessagesReaders(topEdgeMessageTime: string) {
             var message: IDictionary = {};
+            message["topEdgeMessageTime"] = topEdgeMessageTime;
             pomelo.request("chat.chatHandler.getMessagesReaders", message, (result) => {
                 console.info('getMessagesReaders respones: ', result);
             });
