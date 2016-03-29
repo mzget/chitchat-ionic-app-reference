@@ -3,7 +3,7 @@ angular.module('spartan.chat', [])
 .controller('chatController', 
 function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate,
     $ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
-	$sce, $cordovaGeolocation, $cordovaDialogs, chatRoomService, roomSelected,
+	$sce, $cordovaGeolocation, $cordovaDialogs, $cordovaInAppBrowser, chatRoomService, roomSelected,
     Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
 {    		
 	// Hide nav-tab # in chat detail
@@ -495,14 +495,40 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
 	            http = 'http://';
 	        http += uri;
-	        //window.open(http, '_blank');
+            
+            var options = {
+                location: 'no',
+                clearcache: 'yes',
+                toolbar: "yes",
+                toolbarposition: "top"
+                // presentationstyle: 'pagesheet'
+            };
+            
+            $cordovaInAppBrowser.open(http, '_system', options)
+            .then(function(event) {
+                // success     
+                console.log('success open cordovaInAppBrowser')
+            })
+            .catch(function(event) {
+                // error
+                console.log('fail open cordovaInAppBrowser')
+            });
+            
+            $rootScope.$on('$cordovaInAppBrowser:loadstart', function(e, event){
+                console.log('loadstart');
+            });
 
-	        //window.open(encodeURI(http), '_blank', 'location=yes');
+            $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event){
+                console.log('loadstop');
+            });
 
-	        //$scope.webviewUrl = 'http://www.google.com';
-	        $scope.webviewUrl = $sce.trustAsResourceUrl(http);
-	        $scope.webviewTitle = uri;
-	        $scope.openModalWebview();
+            $rootScope.$on('$cordovaInAppBrowser:loaderror', function(e, event){
+
+            });
+
+            $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event){
+
+            });
 	    }
 	    else {
 	        http = '';

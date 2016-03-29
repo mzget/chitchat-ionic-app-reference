@@ -90,7 +90,7 @@
     "phonegap-plugin-push": {
         "source": {
             "type": "registry",
-            "id": "phonegap-plugin-push"
+            "id": "phonegap-plugin-push@1.5.3"
         },
         "is_top_level": true,
         "variables": {}
@@ -166,6 +166,14 @@
         "source": {
             "type": "registry",
             "id": "ionic-plugin-keyboard"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-inappbrowser": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-inappbrowser"
         },
         "is_top_level": true,
         "variables": {}
