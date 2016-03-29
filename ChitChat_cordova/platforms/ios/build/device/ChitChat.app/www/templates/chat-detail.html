@@ -105,7 +105,9 @@
 					</div>
 				</div>
 				
-				<label>{{message.time}}</label>
+				<div style="width:100%; margin-top:5px; margin-bottom:5px;">
+                    <label style="float:right; display:inline-block;"> {{message.time}}</label>
+                </div>
 			</ion-item>
 
 			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">

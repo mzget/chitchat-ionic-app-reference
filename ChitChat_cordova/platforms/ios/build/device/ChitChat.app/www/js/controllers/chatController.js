@@ -495,16 +495,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        if (uri.substr(0, 3) == 'www' || uri.substr(0, 3) == 'ftp')
 	            http = 'http://';
 	        http += uri;
-	        //window.open(http, '_blank');
-
-	        //window.open(encodeURI(http), '_blank', 'location=yes');
-
-	        //$scope.webviewUrl = 'http://www.google.com';
-	        // $scope.webviewUrl = $sce.trustAsResourceUrl(http);
-	        // $scope.webviewTitle = uri;
-	        // $scope.openModalWebview();
             
-            console.warn('webview ', http);
             var options = {
                 location: 'no',
                 clearcache: 'yes',

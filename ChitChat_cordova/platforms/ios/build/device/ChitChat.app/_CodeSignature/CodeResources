@@ -128,6 +128,34 @@
 		<data>
 		/kSUVvLLJcbtfXnxFEolil3/NRk=
 		</data>
+		<key>Chitchat.storyboardc/Info.plist</key>
+		<data>
+		8VvKOuQSMMfvDCEGoX1BRCuLv4A=
+		</data>
+		<key>Chitchat.storyboardc/g0b-jh-QOU-view-ram-AK-ZP2.nib</key>
+		<data>
+		QzVv0YkEUilXdwEQrJ09AtOJ6Zw=
+		</data>
+		<key>Chitchat.storyboardc/lMf-y2-ued-view-8tO-N4-Kz7.nib</key>
+		<data>
+		4qbbpjR8h+DlTEYBCDMa9BSo9Sk=
+		</data>
+		<key>Chitchat.storyboardc/receiveCallView.nib</key>
+		<data>
+		/a+K+vjgQj7HvgibqU2aYAM5IFI=
+		</data>
+		<key>Chitchat.storyboardc/videoCallView.nib</key>
+		<data>
+		ZZpN/xTP0zqQXz1o/Ias9p3XssY=
+		</data>
+		<key>Chitchat.storyboardc/voiceCallView.nib</key>
+		<data>
+		yZQ369P/rECMVbnbc+odbomn6XE=
+		</data>
+		<key>Chitchat.storyboardc/ymr-Ou-jPe-view-aN0-L6-f9o.nib</key>
+		<data>
+		tQWra/jkYLMudOCrL0lUoTLLCss=
+		</data>
 		<key>Default-568h@2x~iphone.png</key>
 		<data>
 		eTWmrlZ1sBLlTL9KsuAHo7UxID0=
@@ -168,9 +196,17 @@
 		<data>
 		dqWOoCxf/fB0CdFrsg61MM+hMhY=
 		</data>
+		<key>Info-iOS.plist</key>
+		<data>
+		CZhOMydGbB2a1C0StLDCMFmnhNA=
+		</data>
+		<key>Info-tvOS.plist</key>
+		<data>
+		CZhOMydGbB2a1C0StLDCMFmnhNA=
+		</data>
 		<key>Info.plist</key>
 		<data>
-		jHeuPkFtAEEutSxWnd1xMOvXBJg=
+		E4IeNRiHAyeB7ErdNd1f80t+wPw=
 		</data>
 		<key>MainViewController.nib</key>
 		<data>
@@ -190,7 +226,7 @@
 		</data>
 		<key>config.xml</key>
 		<data>
-		7OsWDKI2U3fXFZX5NCvSGvU3X48=
+		45RzaOrh/mHk7SagbipnY1oJfjQ=
 		</data>
 		<key>embedded.mobileprovision</key>
 		<data>
@@ -255,6 +291,10 @@
 		<key>icon@2x.png</key>
 		<data>
 		chgxrZmFyQ0u6giYOEWTRn59kWI=
+		</data>
+		<key>iphone.mp3</key>
+		<data>
+		sShlEtO7H50EIeUIjW3UIa3Fkx8=
 		</data>
 		<key>www/configs/appconfig.json</key>
 		<data>
@@ -410,7 +450,7 @@
 		</data>
 		<key>www/js/controllers/chatController.js</key>
 		<data>
-		G9QrQs2oqpNP6dWwKKEqkOB69UQ=
+		MgnWq7z66HXbKv98BjZ9P9J6f4c=
 		</data>
 		<key>www/js/controllers/chatslogController.js</key>
 		<data>
@@ -3788,6 +3828,10 @@
 		<data>
 		uHsXYuiPGUyR2FNskN/fxKS1ezQ=
 		</data>
+		<key>www/plugins/chitchat-ChitchatRTC/www/chitchatrtc.js</key>
+		<data>
+		o7EBBRR7+Jf62N/ScSQQQLEfq38=
+		</data>
 		<key>www/plugins/chitchat-plugin-cameraroll/www/CameraRoll.js</key>
 		<data>
 		rJtmvtAmsE28y/nwyiKMIt2+KVo=
@@ -4210,7 +4254,7 @@
 		</data>
 		<key>www/templates/chat-detail.html</key>
 		<data>
-		3jh4tQkTMf+0NpcoUi9vF4pFhW8=
+		QhACY4r0PdzFlOG5kY3LQeBeOzU=
 		</data>
 		<key>www/templates/map.html</key>
 		<data>
@@ -4801,6 +4845,83 @@
 			KfYd4hFlyPwinBGKi4ruYae1MyeQ2TKrPJvIngKdC38=
 			</data>
 		</dict>
+		<key>Chitchat.storyboardc/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			8VvKOuQSMMfvDCEGoX1BRCuLv4A=
+			</data>
+			<key>hash2</key>
+			<data>
+			6gOw/DQlGljUDPzSGaGdroq2GFA3t4Cj2jeXKenxNGM=
+			</data>
+		</dict>
+		<key>Chitchat.storyboardc/g0b-jh-QOU-view-ram-AK-ZP2.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			QzVv0YkEUilXdwEQrJ09AtOJ6Zw=
+			</data>
+			<key>hash2</key>
+			<data>
+			gixNjyZDuqCTMBN9VGfjoc2fMtqA54L5P9qtyzyZV8g=
+			</data>
+		</dict>
+		<key>Chitchat.storyboardc/lMf-y2-ued-view-8tO-N4-Kz7.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			4qbbpjR8h+DlTEYBCDMa9BSo9Sk=
+			</data>
+			<key>hash2</key>
+			<data>
+			B5Z3So/AoNDhkPINFUDBMbOqyNYJ72jnlIx+n3Dfvmc=
+			</data>
+		</dict>
+		<key>Chitchat.storyboardc/receiveCallView.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			/a+K+vjgQj7HvgibqU2aYAM5IFI=
+			</data>
+			<key>hash2</key>
+			<data>
+			aI+9YA3tKvEb3XoHGoo5EOzrYs7bhAoW67ya2DorWyw=
+			</data>
+		</dict>
+		<key>Chitchat.storyboardc/videoCallView.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			ZZpN/xTP0zqQXz1o/Ias9p3XssY=
+			</data>
+			<key>hash2</key>
+			<data>
+			pC0T+HWeAAnJzlP2TJxkF6WSZpqVeQKNUhrfBt/iNMA=
+			</data>
+		</dict>
+		<key>Chitchat.storyboardc/voiceCallView.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			yZQ369P/rECMVbnbc+odbomn6XE=
+			</data>
+			<key>hash2</key>
+			<data>
+			U/84zzPjP2JBDz+/siDDxcOpOWWhOVmXtxJIpWjtPtU=
+			</data>
+		</dict>
+		<key>Chitchat.storyboardc/ymr-Ou-jPe-view-aN0-L6-f9o.nib</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			tQWra/jkYLMudOCrL0lUoTLLCss=
+			</data>
+			<key>hash2</key>
+			<data>
+			Y3O7tG0DbVZifGWZOuCt9AaE0DNk9aB+qojgfWtUx7w=
+			</data>
+		</dict>
 		<key>Default-568h@2x~iphone.png</key>
 		<dict>
 			<key>hash</key>
@@ -4911,6 +5032,28 @@
 			lm0FMSA0puJkpOhKdkymRlH2crg4A9SiPkgq8lguXHg=
 			</data>
 		</dict>
+		<key>Info-iOS.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			CZhOMydGbB2a1C0StLDCMFmnhNA=
+			</data>
+			<key>hash2</key>
+			<data>
+			TnPHnrhmxPleE/xgxZJXa5cTujQjg8Id0KodClS3kUQ=
+			</data>
+		</dict>
+		<key>Info-tvOS.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			CZhOMydGbB2a1C0StLDCMFmnhNA=
+			</data>
+			<key>hash2</key>
+			<data>
+			TnPHnrhmxPleE/xgxZJXa5cTujQjg8Id0KodClS3kUQ=
+			</data>
+		</dict>
 		<key>MainViewController.nib</key>
 		<dict>
 			<key>hash</key>
@@ -4948,11 +5091,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			7OsWDKI2U3fXFZX5NCvSGvU3X48=
+			45RzaOrh/mHk7SagbipnY1oJfjQ=
 			</data>
 			<key>hash2</key>
 			<data>
-			8a8xCC/fQu7xqlu7IsLgovkE9/TAQbD8iFlJSK8rv4E=
+			QhMI8+rOqpFlTaqqNlFqVQ5D889VtGvhJRDr1RaD3bw=
 			</data>
 		</dict>
 		<key>embedded.mobileprovision</key>
@@ -5129,6 +5272,17 @@
 			<key>hash2</key>
 			<data>
 			Bw7V9paCixz2i9juQVHH74MDCz1n6QinMn3xeEZQ87k=
+			</data>
+		</dict>
+		<key>iphone.mp3</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			sShlEtO7H50EIeUIjW3UIa3Fkx8=
+			</data>
+			<key>hash2</key>
+			<data>
+			LwmgSu/Zew5yLo1Q+77jnPBVsLnWgpAwVKStPjbX5P0=
 			</data>
 		</dict>
 		<key>www/configs/appconfig.json</key>
@@ -5553,11 +5707,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			G9QrQs2oqpNP6dWwKKEqkOB69UQ=
+			MgnWq7z66HXbKv98BjZ9P9J6f4c=
 			</data>
 			<key>hash2</key>
 			<data>
-			5q/LhkRT30HbG43TG+OdbeHS6EVD9J5XyY+A8o7YPPU=
+			fIpg34RpTWbzDUUvQtUsoxDJbpr5BskBIrh/WaWe/oQ=
 			</data>
 		</dict>
 		<key>www/js/controllers/chatslogController.js</key>
@@ -14833,6 +14987,17 @@
 			Vz00lc4jKwcfs33T3gwVdPpTsS6R7Aqqf2u+ejs9Db4=
 			</data>
 		</dict>
+		<key>www/plugins/chitchat-ChitchatRTC/www/chitchatrtc.js</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			o7EBBRR7+Jf62N/ScSQQQLEfq38=
+			</data>
+			<key>hash2</key>
+			<data>
+			pn5TFNnEX4BmswNYZIQ4Qv5BkSR6sQnuqmgH5a5P2S8=
+			</data>
+		</dict>
 		<key>www/plugins/chitchat-plugin-cameraroll/www/CameraRoll.js</key>
 		<dict>
 			<key>hash</key>
@@ -15992,11 +16157,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			3jh4tQkTMf+0NpcoUi9vF4pFhW8=
+			QhACY4r0PdzFlOG5kY3LQeBeOzU=
 			</data>
 			<key>hash2</key>
 			<data>
-			9cdi/ONCp0OYMRW5YPNbkFDvxClKBVpOb+NnTf5konE=
+			lAHiU5JvBcEn+OBLnoNe8ZxSuvoIgaoRSONMu5Q5T74=
 			</data>
 		</dict>
 		<key>www/templates/map.html</key>
