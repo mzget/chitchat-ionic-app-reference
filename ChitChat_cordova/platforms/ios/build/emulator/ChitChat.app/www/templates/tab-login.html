@@ -1,0 +1,15 @@
+<ion-view cache-view="false" hide-nav-bar="true" hide-tab-bar>
+	<ion-content>
+	<div id="login">
+			<div class="container">
+				<img class="login-logo" ng-src="img/logo-{{themename}}.png" width="80%" /><br />
+				<form>
+					<label class="message">username or password is not valid.</label>
+					<input name="email" class="form-control" type="email" placeholder="Email" ng-model="user.email" />
+					<input name="password" class="form-control" type="password" placeholder="Password" ng-model="user.password" />
+					<button ng-click="signin()">Login</button>
+				</form>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>

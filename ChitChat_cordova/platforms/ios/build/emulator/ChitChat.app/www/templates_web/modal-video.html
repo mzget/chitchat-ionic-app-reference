@@ -1,0 +1,57 @@
+<!-- <ion-modal-view>
+    <ion-header-bar style="background-color: #263147; border: none; background-image: none !important;">
+      <button class="button button-clear icon ion-android-close" ng-click="closeVideo()"></button>
+      <h1 class="title" style="color:white !important;">Video</h1>
+      
+    </ion-header-bar>
+
+    <ion-content scroll="false" style="background-color: black;">
+        
+
+            <video id="video-player" style="margin-top:0vh; width: 100% !important; height: 100% !important;" controls="controls" preload="metadata">
+              <source ng-src="{{modalVideo.url}}" />
+            </video>
+
+            
+    </ion-content>
+
+    <div class="bar bar-footer" style="background-color: #263147; border: none; background-image: none !important;">
+      <div class="title"></div>
+      <button class="button button-balanced" ng-click="saveFile(modalVideo.type,modalVideo.src)"> Save </button>
+    </div>
+
+</ion-modal-view> -->
+
+
+<md-dialog aria-label="Video" ng-cloak>
+  <form>
+    <!-- <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Invite</h2>
+        <span flex></span>
+        <md-button ng-if="isInvite()==true" ng-click="invite()">Invite</md-button>
+      </div>
+    </md-toolbar> -->
+    <md-dialog-content style="overflow-x: hidden; overflow-y: hidden; ">
+      <div class="md-dialog-content" style="width:500px;">
+        
+
+
+        <video id="video-player" style="margin-top:0vh; width: 100% !important; height: 100% !important;" controls="controls" preload="metadata">
+              <source ng-src="{{videoSrc}}" />
+        </video>
+
+        <!-- <div style="overflow-y: scroll; overflow-x: hidden; height:410px;" >
+          <ion-item id="{{member._id}}" class="item item-checkbox item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false" ng-if="myProfile._id!=member._id ">
+              <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
+              <img ng-if="member.image == null" src="img/img.jpg" style="border-radius:50%;width:50px;height:50px;"/>
+              <div class="member-name" style="display:inline;"> {{member.displayname}} </div> 
+              <md-checkbox type="checkbox" style="position:absolute; width:100%; height:100%; left:0px; top:0px; margin-left:20px;"
+              ng-model="member.checked" ng-click="checked(member._id,!member.checked)"/>
+          </ion-item>
+        </div> -->
+
+    </md-dialog-content>
+  </form>
+
+</md-dialog>

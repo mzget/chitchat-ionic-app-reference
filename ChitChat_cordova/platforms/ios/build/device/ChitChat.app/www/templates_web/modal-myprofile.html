@@ -1,0 +1,55 @@
+
+
+<md-dialog aria-label="My Profile" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>My Profile</h2>
+        <span flex></span>
+        <md-button ng-click="save()" ng-if="imageSource()==true || myProfile.displayname != model.displayname || myProfile.status != model.status">Save</md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="overflow-x: hidden; overflow-y: hidden; ">
+      <div class="md-dialog-content" style="width:500px;">
+        
+
+        <div style="height:150px; text-align:center; margin-bottom:10px;" >
+            <img id="avatar" class="avatar-modal" ng-src="{{webServer}}/timthumb.php?src={{myProfile.image}}&h=150&w=150"  style="border-radius:50%;width:150px;height:150px;" ng-click="image()"/>
+        </div>
+
+      <form name="MyProfile">
+        <md-input-container class="md-block">
+          <label>Display</label>
+          <input ng-model="model.displayname">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Status</label>
+          <input ng-model="model.status">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Name</label>
+          <input value="{{myProfile.firstname}} {{myProfile.lastname}}" disabled>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>User Level</label>
+          <input value="{{myProfile.role}}" disabled>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Tel.</label>
+          <input value="{{myProfile.tel}}" disabled>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Email</label>
+          <input value="{{myProfile.mail}}" disabled>
+        </md-input-container>
+      </form>
+
+    </md-dialog-content>
+  </form>
+
+</md-dialog>

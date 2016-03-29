@@ -1,0 +1,70 @@
+<md-dialog aria-label="Create Group" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Edit Group</h2>
+        <span flex></span>
+        <md-button ng-if="isEdit()==true" ng-click="save()">Save</md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="overflow-x: hidden; overflow-y: hidden; ">
+      <div class="md-dialog-content" style="width:500px; height:600px;">
+        
+        <div layout-gt-sm="row">
+          <img id="avatar" class="avatar-modal" ng-if="currentRoom.image==null" src="img/img.jpg"  style="border-radius:50%;width:100px;height:100px;" ng-click="image()"/>
+          <img id="avatar" class="avatar-modal" ng-if="currentRoom.image!=null" ng-src="{{webServer}}/timthumb.php?src={{currentRoom.image}}"  style="border-radius:50%;width:100px;height:100px;" ng-click="image()"/>
+            <md-input-container class="md-block" style="width:100%; margin-left:20px; margin-top:40px;">
+              <label>Group Name</label>
+              <input ng-model="model.groupname" >
+            </md-input-container>
+        </div>
+
+
+        <div style="overflow-y: scroll; overflow-x: hidden; height:450px; position: absolute; width: 95%" ng-show="currentRoom.type == 2">
+          <ion-item id="{{member._id}}" class="item item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false">
+              <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
+              <img ng-if="member.image == null" src="img/img.jpg" style="border-radius:50%;width:50px;height:50px;"/>
+              <div class="member-name" style="display:inline; margin-left:20px;"> {{member.displayname}} </div> 
+              
+              
+              <md-button class="md-icon-button" style="position:absolute; right:0px; margin-top:3px;" ng-click="removeMember(member._id)">
+                  <i class="material-icons">close</i>
+              </md-button>
+          </ion-item>
+        </div>
+
+        <div style="overflow-y: scroll; overflow-x: hidden; height:450px; position: absolute; width: 95%" ng-show="currentRoom.type == 1">
+          <ion-item id="{{member._id}}" class="item item-button-right" ng-repeat="member in allmembers|orderObjectBy:'displayname':false">
+
+              <div layout="row">
+              <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}" style="border-radius:50%;width:50px;height:50px;"/> 
+              <img ng-if="member.image == null" src="img/img.jpg" style="border-radius:50%;width:50px;height:50px;"/>
+              <div class="member-name" style="display:inline; margin-left:20px;"> {{member.displayname}} </div> 
+           
+
+            <div style="position:absolute; left:240px; width:150px; margin-top:-5px;">
+              <md-input-container style="display:block; margin-top:-10px;">
+                <md-select ng-model="role" ng-init="role = getRole(member._id)" ng-change="changeRole(member._id,role)" ng-disabled="member.isAdmin==true">
+                    <md-option ng-value="role.role" ng-repeat="role in rolePosition">{{role.role}}</md-option>
+                </md-select>
+              </md-input-container>
+
+
+              <md-input-container style="display:block; margin-top:-10px;">
+                <md-select ng-model="job" ng-init="job = getPosition(member._id)" ng-change="changePosition(member._id,job)">
+                    <md-option ng-value="job.job" ng-repeat="job in jobPosition">{{job.job}}</md-option>
+                </md-select>
+              </md-input-container>
+            </div>
+
+            <md-button class="md-icon-button" style="position:absolute; right:0px; margin-top:3px;" ng-click="removeMember(member._id)" ng-show="member.isAdmin!=true">
+                <i class="material-icons">close</i>
+            </md-button>
+
+          </ion-item>
+        <div>
+
+    </md-dialog-content>
+  </form>
+
+</md-dialog>
