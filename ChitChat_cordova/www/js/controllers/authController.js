@@ -6,8 +6,9 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPlatform, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
-        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork, $http, networkService, chatslogService, dbAccessService, sharedObjectService) {
+    function authController($location, $ionicPlatform, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal,
+        $ionicTabsDelegate, $scope, $rootScope, $cordovaSpinnerDialog, $cordovaDialogs,
+        $cordovaNetwork, $http, $mdDialog, networkService, chatslogService, dbAccessService, sharedObjectService) {
 
         /* jshint validthis:true */
         var vm = this;

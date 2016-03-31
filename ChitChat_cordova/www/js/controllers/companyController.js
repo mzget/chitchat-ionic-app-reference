@@ -11,8 +11,13 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'companyController';
+
+        $scope.teamInfo = {};
+        $scope.myProfile = {};
         $scope.logOut = logOut;
         $scope.showMyProfile = showMyProfile;
+        $scope.openProfileModal = openProfileModal;
+        $scope.createGroup = createGroup;
 
         activate();
 
@@ -22,7 +27,9 @@
                 //$scope.$apply();
             }
             $scope.teamInfo = main.getDataManager().getCompanyInfo();
-            $scope.mySelf = main.getDataManager().getMyProfile();
+            $scope.myProfile = main.getDataManager().getMyProfile();
+
+            console.info($scope.myProfile);
         }
 
         $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
@@ -38,11 +45,9 @@
             $scope.myProfileModal = modal;
         });
 
-        $scope.openProfileModal = function () {
+        function openProfileModal() {
             $scope.myProfileModal.show();
         };
-
-        $scope.myProfile = main.getDataManager().myProfile;
 
         function logOut() {
             console.warn("logOut...");
@@ -65,10 +70,12 @@
               onRemoving: closeDialogProfile
             });
         };
-        function closeDialogProfile(){
+
+        function closeDialogProfile() {
             document.getElementById("UploadAvatar").reset();
         }
-        $scope.createGroup = function(ev,type) {
+
+        function createGroup(ev,type) {
             $rootScope.createType = type;
             $mdDialog.show({
               controller: CreateController,
@@ -79,6 +86,7 @@
               onRemoving: closeDialogCreateGroup
             });
         }
+
         function closeDialogCreateGroup(){
             CreateGroup.clear();
             document.getElementById("UploadAvatar").reset();
