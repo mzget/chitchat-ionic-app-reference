@@ -27,8 +27,10 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
-#import <Parse/Parse.h>
+
 #import <Cordova/CDVPlugin.h>
+
+#import <Parse/Parse.h>
 
 @implementation AppDelegate
 
@@ -87,7 +89,7 @@
 
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-
+    
     //<!-- Parse.
     [Parse setApplicationId:@"lPwt6trVsZbEji9cc3GEo4yxCogdg2XyR0aJ8hu5"
                   clientKey:@"PgU6EwhWinmbDEwaooM9Xf89gSanp3sM67TafqnO"];
@@ -99,7 +101,7 @@
                                                                              categories:nil];
     [application registerUserNotificationSettings:settings];
     [application registerForRemoteNotifications];
-    
+
     return YES;
 }
 

@@ -1,0 +1,23 @@
+<ion-modal-view id="mapContain">
+    <ion-header-bar class="bar-stable">
+        <a class="button button-icon icon ion-ios-close-empty" ng-click="closeMapModal()"></a>
+        <h1 ng-if="viewOnly == true" class="title">Map Viewer</h1>
+        <h1 ng-if="viewOnly == false" class="title">Share Location</h1>
+        <a ng-if="viewOnly == false" ng-click="share()" class="button button-icon icon ion-share"></a>
+    </ion-header-bar>
+    <ion-content scroll="false">
+        <map data-tap-disabled="true" lat="43.07493" lng="-89.381388" zoom="16" selected-place="selectedPlace(data)"></map>
+    </ion-content>
+
+    <ion-footer-bar class="bar-stable">
+        <h5>Location:  {{place}}</h5>
+    </ion-footer-bar>
+</ion-modal-view>
+
+
+  <!--<body ng-app="starter" ng-mapcontroller="MapCtrl">
+
+        <div id="map" lat="43.07493" lng="-89.381388" zoom="8" on-create="mapCreated(map)" map>
+        </div>
+              center: new google.maps.LatLng(43.07493, -89.381388),
+  </body>-->

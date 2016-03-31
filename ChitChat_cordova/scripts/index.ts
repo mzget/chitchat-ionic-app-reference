@@ -16,7 +16,7 @@ module BlankCordovaApp1 {
             document.addEventListener('resume', onResume, false);
 
             // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
-            
+        
             console.warn("onDeviceReady");
         }
 
@@ -29,7 +29,6 @@ module BlankCordovaApp1 {
             // TODO: This application has been reactivated. Restore application state here.
             console.warn('onResume');
         }
-
     }
 
     window.onload = function () {

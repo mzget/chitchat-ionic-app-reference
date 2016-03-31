@@ -1,30 +1,50 @@
 angular.module('spartan.media', [])
 
-.controller('FileController', function($scope, sharedObjectService, roomSelected) {
+.controller('FileController', function($rootScope, $scope, sharedObjectService, roomSelected) {
 	$scope.onGetFileSelect = function(){
 		var file    = document.querySelector('input[type=file]').files[0];
 	    var reader  = new FileReader();
 	    reader.onloadend = function () {
-	    	var fileType = file.type.split("/");
-	    	switch(fileType[0]){
-	    		case 'image':
-			        $scope.$broadcast('addImg', 'addImg');
-			        break;
-			    case 'video':
-			        $scope.$broadcast('captureVideo', 'captureVideo');
-			        break;
-			    default:
-			        reader.onloadend = function () {
-			            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.File]]);
-			        } 
-			        reader.readAsDataURL(file);
-			        break;
-	    	}
-	    	//$scope.$emit('fileUri',[reader.result,ContentType[ContentType.Image]]);
-	        //console.log(reader.result);
+	    	if( file.name.substring(file.name.lastIndexOf(".") + 1) == 'psd' ){
+	    		reader.onloadend = function () {
+		            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.File]]);
+		        } 
+		        reader.readAsDataURL(file);
+	    	}else{
+		    	var fileType = file.type.split("/");
+		    	switch(fileType[0]){
+		    		case 'image':
+				        $scope.$broadcast('addImg', 'addImg');
+				        break;
+				    case 'video':
+				        $scope.$broadcast('captureVideo', 'captureVideo');
+				        break;
+				    default:
+				        reader.onloadend = function () {
+				            $scope.$emit('fileUri',[reader.result,ContentType[ContentType.File]]);
+				        } 
+				        reader.readAsDataURL(file);
+				        break;
+		    	}
+		    }
+		    $rootScope.$broadcast('menuChat.hidden', []);
 	    } 
 		reader.readAsDataURL(file);
 	}
+
+	$scope.onGetAvatarSelect = function(){
+		var file    = document.querySelector('#avatarToUpload').files[0];
+		var reader  = new FileReader();
+		var image = document.getElementById('avatar');
+		//var image = new Image;
+		reader.onloadend = function () {
+			image.src = reader.result;
+            console.log(reader.result);
+            $scope.$apply();
+        } 
+        reader.readAsDataURL(file);
+	}
+
 	$scope.uploadFile = function(id){
 		var file    = document.querySelector('input[type=file]').files[0];
 			if(file !== undefined){
@@ -73,7 +93,8 @@ angular.module('spartan.media', [])
 		        $scope.addImage(index);
 		      }
 		    });
-		}else{
+		}
+        else{
 			var file    = document.querySelector("[id='fileToUpload']").files[0];
 	        var reader  = new FileReader();
 	        reader.onloadend = function () {
@@ -154,29 +175,63 @@ angular.module('spartan.media', [])
   	}
 
   	$scope.uploadImg = function() {
-  		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
-	    var imageURI = cordova.file.documentsDirectory + FileService.getImages();
-	    var options = new FileUploadOptions();
-	    options.fileKey = "fileToUpload";
-	    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-	    options.mimeType = "image/jpeg";
-	    var params = new Object();
-	    options.params = params;
-	    options.chunkedMode = false;
-	    var ft = new FileTransfer();
+  		if (ionic.Platform.platform() === "ios") {
+	  		if(FileService.getImages().length==0) { $scope.$emit('fileUrl',null,"Image"); return; }
+		    var imageURI = cordova.file.documentsDirectory + FileService.getImages();
+		    var options = new FileUploadOptions();
+		    options.fileKey = "fileToUpload";
+		    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+		    options.mimeType = "image/jpeg";
+		    var params = new Object();
+		    options.params = params;
+		    options.chunkedMode = false;
+		    var ft = new FileTransfer();
 
-	    ft.onprogress = function(progressEvent){
-	    	if (progressEvent.lengthComputable) {
-	    			$ionicLoading.show({
-				      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
-				  });
-		    } else {
-		      //loadingStatus.increment();
-		    }
-	    };
-	    ft.upload(imageURI, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
-	        options);
-
+		    ft.onprogress = function(progressEvent){
+		    	if (progressEvent.lengthComputable) {
+		    			$ionicLoading.show({
+					      template: 'Uploading ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)).toFixed(0) + '%'
+					  });
+			    } else {
+			      //loadingStatus.increment();
+			    }
+		    };
+		    ft.upload(imageURI, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
+		        options);
+		}else{
+	  		var formData = new FormData($('#UploadAvatar')[0]); 
+			$.ajax({
+			       	url : sharedObjectService.getWebServer() + "/?r=api/upload",
+			       	type : 'POST',
+			       	data : formData,
+			       	processData: false,
+				   	contentType: false,
+			       	success : function(data) {
+			       		console.log('success');
+			        	console.log(data);
+			        	$rootScope.$broadcast('avatarUrl', data);
+			        	document.getElementById("UploadAvatar").reset();
+			       	},
+			       	error : function(data){
+			       		console.log('error');
+			       		alert("Fail");
+						console.log(data);
+			       	},
+			       	xhr: function()
+					{
+					    var xhr = new window.XMLHttpRequest();
+					    //Upload progress
+					    xhr.upload.addEventListener("progress", function(evt){
+					      if (evt.lengthComputable) {
+					        var percentComplete = evt.loaded / evt.total;
+					        //Do something with upload progress
+					        console.log(percentComplete);
+					      }
+					    }, false);
+					    return xhr;
+				  	},
+			});
+		}
 	}
 
 	function win(r) {
@@ -203,22 +258,33 @@ angular.module('spartan.media', [])
 	    animation: 'slide-in-up'
   	});
 	
-
 	$scope.viewImage = function (type, src) {
 		$scope.modalImage.type = type;
-		$scope.modalImage.src = src;
+		$scope.modalImage.src = sharedObjectService.getWebServer() + src;
 		$scope.modalImage.show();
 	}
 	$scope.closeImage = function () {
 	    $scope.modalImage.hide();
 	}
+	$scope.viewImageWeb = function(ev,type,src) {
+        $mdDialog.show({
+          controller: function($scope){
+          	$scope.imageType = type;
+			$scope.imageSrc = src;
+          },
+          templateUrl: 'templates_web/modal-image.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true
+        });
+    }
 
 	$scope.uploadImage = function(id) {
 		if (ionic.Platform.platform() === "ios") {
 			if(FileService.getImages().length!=0) { 
 				checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
 					if(canUpload){
-					    var img = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function (id, messageId) {
+					    var img = new UploadMedia($rootScope, $scope, sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function (id, messageId) {
 							$scope.$emit('delectTemp', [id]); 
 						});
 					mediaUpload[id] = img;
@@ -319,10 +385,9 @@ angular.module('spartan.media', [])
 			});
  		})
  	}
-
 })
 
-.controller('VideoController', function ($scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
+.controller('VideoController', function ($rootScope, $scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
     checkFileSize, GenerateID, VideoService, roomSelected, sharedObjectService) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
@@ -405,7 +470,7 @@ angular.module('spartan.media', [])
 			if(videoName != null || videoName != undefined) { 
 				checkFileSize.checkFile(videoURI).then(function(canUpload) {
 					if(canUpload){
-					    var video = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function (id, messageId) {
+					    var video = new UploadMedia($rootScope, $scope, sharedObjectService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function (id, messageId) {
 							$scope.$emit('delectTemp', [id]); 
 						});
 						mediaUpload[id] = video;
@@ -470,6 +535,18 @@ angular.module('spartan.media', [])
 		angular.element(document.getElementById("video-player").pause());
     	$scope.modalVideo.remove();
   	};
+
+  	$scope.openVideoWeb = function(ev,type,src) {
+        $mdDialog.show({
+          controller: function($scope){
+          	$scope.videoSrc = $sce.trustAsResourceUrl(sharedObjectService.getWebServer() + src);
+          },
+          templateUrl: 'templates_web/modal-video.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true
+        });
+    }
 	
  	$scope.saveFile = function(type,url){
  	    $scope.mediaDownload(sharedObjectService.getWebServer() + url).then(function (path) {
@@ -531,75 +608,155 @@ angular.module('spartan.media', [])
 
 })
 
-.controller('VoiceController', function ($scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile,
+.controller('VoiceController', function ($rootScope, $scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile,
     GenerateID, roomSelected, checkFileSize, sharedObjectService) {
 
-	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); });
-	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); });
-	$scope.$on('cancelRecord', function(event, args) { $scope.cancelRecord(); });
+	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); console.log("startRecord"); });
+	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); console.log("stopRecord"); });
+	$scope.$on('cancelRecord', function(event, args) { cancelRecord(); });
 
-    var fileName;
-	var src;
-	var mediaRec;
+	if (ionic.Platform.platform() === "ios") {
+	    var fileName;
+		var src;
+		var mediaRec;
+	}else{
+        try {
+		var audioContext;
+  		var audioRecorder;
+  		var _realAudioInput;
+  		window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext;
+	    navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+	    window.URL = window.URL || window.webkitURL;
+	    audioContext = new AudioContext;
+	    console.log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
+	    navigator.getUserMedia({vide:false, audio: true}, handlerStartUserMedia, handlerErrorUserMedia);
+        }
+        catch (ex) {
+            console.warn(ex);
+        } 
+	}
 
 	$scope.startRecord = function() {
-        fileName = GenerateID.makeid() + ".wav";
-		src = "documents://"+ fileName;
-	    mediaRec = new Media(src,
-	        function() { console.log("recordAudio():Audio Success"); },
-	        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
-	    });
-	    mediaRec.startRecord();
+		if (ionic.Platform.platform() === "ios") {
+	        fileName = GenerateID.makeid() + ".wav";
+			src = "documents://"+ fileName;
+		    mediaRec = new Media(src,
+		        function() { console.log("recordAudio():Audio Success"); },
+		        function(err) { console.log("recordAudio():Audio Error: "+ err.code); 
+		    });
+		    mediaRec.startRecord();
+		}else{
+			if(!audioRecorder)
+	      	return;
+
+	    	audioRecorder && audioRecorder.record();
+		}
 	}
 
 	$scope.stopRecord = function(){
-		mediaRec.stopRecord();
-		$scope.$emit('fileUri',[fileName,ContentType[ContentType.Voice]]);
-		//$scope.uploadVoice();
+		if (ionic.Platform.platform() === "ios") {
+			mediaRec.stopRecord();
+			$scope.$emit('fileUri',[fileName,ContentType[ContentType.Voice]]);
+		}else{
+			if(!audioRecorder)
+		      return;
+		    audioRecorder && audioRecorder.stop();
+		    audioRecorder.registerCB(onFinnishRecord);
+		}
+
+		
+	}
+	function onFinnishRecord(url){
+		console.log(url);
+		$rootScope.$broadcast('menuChat.hidden', []);
+		$scope.$emit('fileUri',[url,ContentType[ContentType.Voice]]);
+		//$scope.uploadVoice(url);
+	}
+	function cancelRecord(){
+		if (ionic.Platform.platform() === "ios") {
+			mediaRec.stopRecord();
+		}else{
+			if(!audioRecorder)
+		      return;
+		    audioRecorder && audioRecorder.stop();
+		}
 	}
 
-	function cancelRecord(){
-		mediaRec.stopRecord();
+	function handlerStartUserMedia(stream) {
+	    console.log('handlerStartUserMedia');
+	    console.log('sampleRate:'+ audioContext.sampleRate);
+	    // MEDIA STREAM SOURCE -> ZERO GAIN >
+	    _realAudioInput = audioContext.createMediaStreamSource(stream);
+	    audioRecorder = new Recorder(_realAudioInput);
+	}
+	function handlerErrorUserMedia(e) {
+			console.log('No live audio input: ' + e)
+	      //logHTML('No live audio input: ' + e);
 	}
 
 	var audio;
 	$scope.play = function (id, url) {
-	    console.log("play url: ", url);
-		var fileName = url.substr(url.lastIndexOf('/') + 1);
+		if (ionic.Platform.platform() === "ios") {
+		    console.log("play url: ", url);
+			var fileName = url.substr(url.lastIndexOf('/') + 1);
 
-		console.log("filename:", fileName);
+			console.log("filename:", fileName);
 
-		$('.ion-pause').css({ 'display': 'none' });
-		$('.ion-play').css({ 'display': 'inline' });
+			$('.ion-pause').css({ 'display': 'none' });
+			$('.ion-play').css({ 'display': 'inline' });
 
-		$cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
-	      .then(function (success) {
-	          var fileMedia = success.nativeURL.replace('file://', '');
-	          console.log("filemedia:", fileMedia);
+			$cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
+		      .then(function (success) {
+		          var fileMedia = success.nativeURL.replace('file://', '');
+		          console.log("filemedia:", fileMedia);
 
-	          console.log("check file success.", JSON.stringify(success));
-	          $('#' + id + '-voice-play').css({ 'display': 'none' });
-	          $('#' + id + '-voice-pause').css({ 'display': 'inline' });
-	          //audio.stop();
-	          audio = new Media(fileMedia, function () {
-	              $('#' + id + '-voice-play').css({ 'display': 'inline' });
-	              $('#' + id + '-voice-pause').css({ 'display': 'none' });
-	          },
-                  function (err) {
-                      console.log("playAudio(): Error: " + JSON.stringify(err));
-                  }
-                           );
+		          console.log("check file success.", JSON.stringify(success));
+		          $('#' + id + '-voice-play').css({ 'display': 'none' });
+		          $('#' + id + '-voice-pause').css({ 'display': 'inline' });
+		          //audio.stop();
+		          audio = new Media(fileMedia, function () {
+		              $('#' + id + '-voice-play').css({ 'display': 'inline' });
+		              $('#' + id + '-voice-pause').css({ 'display': 'none' });
+		          },
+	                  function (err) {
+	                      console.log("playAudio(): Error: " + JSON.stringify(err));
+	                  }
+	                           );
 
-	          audio.play();
-	      }, function (error) {
-	          console.error("get file media fail.", JSON.stringify(error));
-	          downloadMedia(id, sharedObjectService.getWebServer() + url);
-	      });
+		          audio.play();
+		    }, function (error) {
+		          console.error("get file media fail.", JSON.stringify(error));
+		          downloadMedia(id, sharedObjectService.getWebServer() + url);
+		    });
+	  	}else{
+	  		$('.ion-pause').css({ 'display': 'none' });
+			$('.ion-play').css({ 'display': 'inline' });
+	  		$('#' + id + '-voice-play').css({ 'display': 'none' });
+		    $('#' + id + '-voice-pause').css({ 'display': 'inline' });
+		    //voiceAudio.src = 'audio/mp3/' + sharedObjectService.getWebServer() + url;
+		    var voiceAudio = document.getElementById('audio'); 
+		    voiceAudio.src = url; 
+		    voiceAudio.load();
+			voiceAudio.play();
+			console.log(voiceAudio);
+		}
+	  		
 	}
+
+	$("#audio").bind('ended', function(){
+	   	$('.ion-pause').css({ 'display': 'none' });
+		$('.ion-play').css({ 'display': 'inline' });
+	});
+
 	$scope.pause = function(id){
 		$('#' + id + '-voice-play').css({ 'display': 'inline' });
 		$('#' + id + '-voice-pause').css({ 'display': 'none' });
-		audio.stop();
+		if (ionic.Platform.platform() === "ios") 
+			audio.stop();
+		else{
+			var voiceAudio = document.getElementById('audio');
+			voiceAudio.pause();
+		}
 	}
 
 	function downloadMedia(id,media){
@@ -627,29 +784,38 @@ angular.module('spartan.media', [])
 	}
 
 	$scope.uploadVoice = function(id) {
-		if(fileName != null || fileName != undefined) { 
-			checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
-				if(canUpload){
-				    var voice = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
-						$scope.$emit('delectTemp', [id]); 
+		if (ionic.Platform.platform() === "ios") {
+			if(fileName != null || fileName != undefined) { 
+				checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
+					if(canUpload){
+					    var voice = new UploadMedia($rootScope, $scope, sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
+							$scope.$emit('delectTemp', [id]); 
+					});
+					mediaUpload[id] = voice;
+					mediaUpload[id].upload();
+					}else{
+						navigator.notification.alert(
+						    'This file size is over', 
+						     null,          
+						    'Fail to Upload',          
+						    'OK'   
+						);
+					}
 				});
-				mediaUpload[id] = voice;
-				mediaUpload[id].upload();
-				}else{
-					navigator.notification.alert(
-					    'This file size is over', 
-					     null,          
-					    'Fail to Upload',          
-					    'OK'   
-					);
-				}
-			});
-		}else{
-			if(mediaUpload[id].hasOwnProperty('url')){
-				$scope.$emit('delectTemp', [id]); 
 			}else{
-				document.getElementById( id + '-resend').classList.remove("hide");
+				if(mediaUpload[id].hasOwnProperty('url')){
+					$scope.$emit('delectTemp', [id]); 
+				}else{
+					document.getElementById( id + '-resend').classList.remove("hide");
+				}
 			}
+		}
+		else{
+	            var voice = new UploadMediaWeb(sharedObjectService, roomSelected.getRoom()._id, id, ContentType[ContentType.Voice], function(id,messageId){
+	            	$scope.$emit('delectTemp', [id]); 
+	            });
+	            mediaUpload[id] = voice;
+	            mediaUpload[id].upload();
 		}
 	}
 
@@ -666,38 +832,45 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 	var downloadProgress;
 
 	this.upload = function(){
-		var formData = new FormData($('#UploadForm')[0]); 
 		
-		$.ajax({
-		       	url : sharedObjectService.getWebServer() + "/?r=api/upload",
-		       	type : 'POST',
-		       	data : formData,
-		       	processData: false,
-			   	contentType: false,
-		       	success : function(data) {
-		       		console.log('success');
-		        	console.log(data);
-		        	send(data);
-		       	},
-		       	error : function(data){
-		       		console.log('error');
-		       		alert("Fail");
-					console.log(data);
-		       	},
-		       	xhr: function()
-				{
-				    var xhr = new window.XMLHttpRequest();
-				    //Upload progress
-				    xhr.upload.addEventListener("progress", function(evt){
-				      if (evt.lengthComputable) {
-				        var percentComplete = evt.loaded / evt.total;
-				        //Do something with upload progress
-				        console.log(percentComplete);
-				      }
-				    }, false);
-				    return xhr;
-			  	},
-		});
+			if($('#fileToUpload')[0].files.length != 0){
+				var formData = new FormData($('#UploadForm')[0]); 
+			}
+			else{
+				var formData = new FormData();
+				formData.append('fileToUpload', uri);
+			}
+
+			$.ajax({
+			       	url : sharedObjectService.getWebServer() + "/?r=api/upload",
+			       	type : 'POST',
+			       	data : formData,
+			       	processData: false,
+				   	contentType: false,
+			       	success : function(data) {
+			       		console.log('success');
+			        	console.log(data);
+			        	send(data);
+			       	},
+			       	error : function(data){
+			       		console.log('error');
+			       		alert("Fail");
+						console.log(data);
+			       	},
+			       	xhr: function()
+					{
+					    var xhr = new window.XMLHttpRequest();
+					    //Upload progress
+					    xhr.upload.addEventListener("progress", function(evt){
+					      if (evt.lengthComputable) {
+					        var percentComplete = evt.loaded / evt.total;
+					        //Do something with upload progress
+					        console.log(percentComplete);
+					      }
+					    }, false);
+					    return xhr;
+				  	},
+			});
 	}
 
 	function openProgress(){
@@ -725,7 +898,8 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 				}
 			});
 
-		}else{
+		}
+        else{
 			main.getChatRoomApi().chat(rid, "*", main.getDataManager().myProfile._id, url, type, function(err, res) {
 			if (err || res === null) {
 				console.warn("send message fail.");
@@ -733,7 +907,7 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 			else {
 				console.log("send message:", JSON.stringify(res));
 				jQuery.extend(mediaUpload[mediaName], { 'url' : url, 'messageId' : res.messageId });
-	    		callback.apply(this , [mediaName,res.messageId]);
+	    		callback.apply(this , [mediaName, res.messageId]);
 			}
 		});
 		}
@@ -741,13 +915,14 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 	}
 }
 
-function UploadMedia(sharedObjectService, rid, uri, type, callback) {
+function UploadMedia($rootScope, $scope, sharedObjectService, rid, uri, type, callback) {
 	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
 	var uriFile = uri;
 	var mediaName = uri.substr(uri.lastIndexOf('/') + 1);
 	var ft = new FileTransfer();
 	var downloadContain;
 	var downloadProgress;
+    
 	this.upload = function(){
 		openProgress();
 		var options = new FileUploadOptions();
@@ -767,8 +942,7 @@ function UploadMedia(sharedObjectService, rid, uri, type, callback) {
 
 		    }
 		};
-		ft.upload(uriFile, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
-        options);
+		ft.upload(uriFile, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail, options);
 	}
 	this.cancel = function(){
 		ft.abort();
@@ -782,36 +956,32 @@ function UploadMedia(sharedObjectService, rid, uri, type, callback) {
 	    document.getElementById( mediaName + '-resend').classList.add("hide");
 	}
 
-	function uploadFail(){
+	function uploadFail() {
 		document.getElementById( mediaName + '-downloaded').classList.add("hide");
 		document.getElementById( mediaName + '-resend').classList.remove("hide");
 	}
 
-	function win(r){
-		console.log(JSON.stringify(r));
-		console.log("Code = " + r.responseCode);
-	    console.log("Response = " + r.response);
-	    console.log("Sent = " + r.bytesSent);
-	    send(r.response);
+	function win(r) {
+	    console.log('UploadMedia', JSON.stringify(r));
+		console.log("responseCode = " + r.responseCode);
+		console.log("response = " + r.response);
+	    console.log("bytesSent = " + r.bytesSent);
+	    
+        send($rootScope, r.response);
 	}
 
-	function fail(error){
+	function fail(error) {
 	    console.log("upload error source " + error.source);
 	    console.log("upload error target " + error.target);
-	    uploadFail();
+	    
+        uploadFail();
 	}
 
-	function send(url){
-		 main.getChatRoomApi().chat(rid, "*", main.getDataManager().myProfile._id, url, type, function(err, res) {
-			if (err || res === null) {
-				console.warn("send message fail.");
-			}
-			else {
-				console.log("send message:", JSON.stringify(res));
-				jQuery.extend(mediaUpload[mediaName], { 'url' : url, 'messageId' : res.messageId });
-	    		callback.apply(this , [mediaName,res.messageId]);
-			}
-		});
+	function send($rootScope, url) {
+	    $rootScope.$broadcast('sendFile', { url: url, type: type, mediaName: mediaName });
+        $scope.$on('onSendFileSuccess', function(event, args) {
+            jQuery.extend(mediaUpload[mediaName], { 'url' : url, 'messageId' : args.messageId });
+        });
 	}
 }
 
