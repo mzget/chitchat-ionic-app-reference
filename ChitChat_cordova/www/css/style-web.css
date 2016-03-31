@@ -210,3 +210,10 @@ md-toast.md-error-toast-theme .md-toast-content {
     background: rgba(31,183,229,1);
  background: linear-gradient(135deg, rgba(31,183,229,1) 0%, rgba(31,183,229,1) 33%, rgba(1,165,230,1) 33%, rgba(1,165,230,1) 67%, rgba(31,183,229,1) 67%, rgba(31,183,229,1) 100%);
 }
+
+input[type="password"] {
+  padding: 6px 12px !important;
+  border: 1px solid #ccc !important;
+}
+
+

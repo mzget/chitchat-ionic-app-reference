@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
-	  'spartan.directives', 'spartan.chat', 'spartan.media', 'spartan.group',
-      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'ngMaterial', 'ngMessages', 'angular-toArrayFilter', 'angular-web-notification', 'ui.router'])
+	  'spartan.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'spartan.backend', 'ui.select2',
+      'spartan.services', 'spartan.notify', 'spartan.db', 'ngCordova', 'ngStorage', 'ngMaterial', 'ngMessages', 'datatables','angular-toArrayFilter', 'angular-web-notification', 'ui.router'])
 
 
 .run(function($ionicPlatform) {
@@ -26,7 +26,6 @@ angular.module('starter',
             //StatusBar.styleLightContent();
 		    StatusBar.styleDefault();            
 		}
-		
 		console.log("$ionicPlatform.ready");
 	});
 
@@ -41,7 +40,7 @@ angular.module('starter',
 	// Learn more here: https://github.com/angular-ui/ui-router
 	// Set up the various states which the app can be in.
 	// Each state's controller can be found in controllers.js
-
+	$ionicConfigProvider.views.transition('none');
 	$ionicConfigProvider.views.swipeBackEnabled(false);
 
 	console.info('state config...');
@@ -83,6 +82,60 @@ angular.module('starter',
 	    }
 	})
 
+	.state('members', {
+	    url: '/backend/members',
+	    templateUrl: 'backend/templates/members.html',
+	    controller: "backendMembersController"
+	})
+	.state('member-info', {
+	    url: '/backend/members/:memberId',
+	    templateUrl: 'backend/templates/member-info.html',
+	    controller: "backendMembersController"
+	})
+	.state('members-new', {
+	    url: '/backend/members/newmember',
+	    templateUrl: 'backend/templates/member-newmember.html',
+	    controller: "backendMembersController"
+	})
+	.state('organization', {
+	    url: '/backend/organization',
+	    templateUrl: 'backend/templates/org.html',
+	    controller: "backendOrgController"
+	})
+	.state('organization-create', {
+	    url: '/backend/organization/create',
+	    templateUrl: 'backend/templates/org-create.html',
+	    controller: "backendOrgController"
+	})
+	.state('organization-member', {
+	    url: '/backend/organization/:groupId',
+	    templateUrl: 'backend/templates/org-members.html',
+	    controller: "backendOrgController"
+	})
+	.state('projectbase', {
+	    url: '/backend/projectbase',
+	    templateUrl: 'backend/templates/pjb.html',
+	    controller: "backendPjbController"
+	})
+	.state('projectbase-create', {
+	    url: '/backend/projectbase/create',
+	    templateUrl: 'backend/templates/pjb-create.html',
+	    controller: "backendPjbController"
+	})
+	.state('projectbase-member', {
+	    url: '/backend/projectbase/:groupId',
+	    templateUrl: 'backend/templates/pjb-members.html',
+	    controller: "backendPjbController"
+	})
+
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/login');
+})
+.directive('menu', function () {
+	    return {
+	        restrict: 'A', //This menas that it will be used as an attribute and NOT as an element. I don't like creating custom HTML elements
+	        replace: true,
+	        templateUrl: "backend/templates/menu.html",
+	        controller: "backendMenuController"
+	    }
 });

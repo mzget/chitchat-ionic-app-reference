@@ -1,0 +1,71 @@
+<div>
+    <div menu></div>
+    <div class="content-wrapper" style="overflow-y:scroll;">
+            <!-- Content Header (Page header) -->
+            <div>
+                <section class="content-header">
+                  <h1>
+                    Projectbase Group
+                  </h1>
+                  </br>
+                  <button class="btn btn-info" onclick="location.href='#/backend/projectbase/create';"> <i class="ion-plus-round"></i> Create New Projectbase Group</button>
+                  <ol class="breadcrumb">
+                    <li class="active"><a href="#"><i class="fa fa-sticky-note"></i>Projectbase Group</a></li>
+                  </ol>
+                </section>
+
+                <section class="content">
+
+                	<!-- <div class="row">
+                    	<div class="col-lg-3 col-xs-6" ng-repeat="orgGroup in pjbGroups">
+                      		<div class="small-box bg-aqua">
+                        		<div class="inner">
+                          			<h2>{{orgGroup.name}}</h2>
+                          			<p>{{orgGroup.members.length}} Members</p>
+                        		</div>
+        		                <div class="icon">
+        		                  	<img ng-if="orgGroup.image!=null" ng-src="{{webServer}}/timthumb.php?src={{orgGroup.image}}&h=80&w=80" style="border-radius:50%; margin-top:-30px;"/> 
+        		                    <img ng-if="orgGroup.image==null" src="img/img.jpg" height="80" width="80" style="border-radius:50%; margin-top:-30px;"/> 
+        		                </div>
+                        		<a class="small-box-footer more-info-pjb" data-id={{orgGroup._id}}>
+                          			More info <i class="fa fa-arrow-circle-right"></i>
+                        		</a>
+                      		</div>
+                    	</div>
+                	</div> -->
+                  <div class="row">
+                      <div class="col-xs-12">
+                      <div class="box">
+                          <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" dt-instance="showCase.dtInstance" class="row-border hover">
+                          <thead>
+                              <tr>
+                                  <th>Group</th>
+                                  <th>Member</th>
+                                  <th>Action</th>
+                              </tr>
+                          </thead>
+
+                          <tbody>
+                              <tr ng-repeat="group in pjbGroups">
+                                  <td> 
+                                      <img ng-if="group.image!=null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=40&w=40" style="border-radius:50%; margin-right:20px;"/> 
+                                      <img ng-if="group.image==null" src="img/img.jpg" height="40" width="40" style="border-radius:50%; margin-right:20px;"/> 
+                                      {{ group.name }}
+                                  </td>
+                                  <td>{{ group.members.length }}</td>
+                                  <td class="center">
+                                      <a class="btn btn-success more-info-pjb" data-id={{group._id}}>
+                                          <i class="ion-search"></i>  
+                                      </a>
+                                  </td>
+                              </tr>
+                          </tbody>
+                          </table>
+                      </div>
+                      </div>
+                  </div>
+
+                </section>
+            </div>
+    </div>
+</div>

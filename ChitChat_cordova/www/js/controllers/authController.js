@@ -77,7 +77,7 @@
                         $state.go('tab.group');
                     }
                     else {
-                        $location.path('/chats');
+                        $location.path('/backend/members');
                     }
                 };
 

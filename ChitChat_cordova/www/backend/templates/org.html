@@ -1,0 +1,63 @@
+<div>
+    <div menu></div>
+    <div class="content-wrapper" style="overflow-y:scroll;">
+            <!-- Content Header (Page header) -->
+            <div>
+                <section class="content-header">
+                  <h1>
+                    Organization Group
+                  </h1>
+                  </br>
+                  <button class="btn btn-info" onclick="location.href='#/backend/organization/create';"> <i class="ion-plus-round"></i> Create New Organization Group</button>
+                  <ol class="breadcrumb">
+                    <li class="active"><a href="#"><i class="fa fa-sitemap"></i>Organization Group</a></li>
+                  </ol>
+                </section>
+
+                <section class="content">
+                    <div class="row">
+                        <div class="col-xs-12">
+                        <div class="box">
+                            <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" dt-instance="showCase.dtInstance" class="row-border hover">
+                            <thead>
+                                <tr>
+                                    <th>Group</th>
+                                    <th>Node ID</th>
+                                    <th>Member</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="group in orgGroups" ng-if="group.status!=2">
+                                    <td> 
+                                        <img ng-if="group.image!=null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=40&w=40" style="border-radius:50%; margin-right:20px;"/> 
+                                        <img ng-if="group.image==null" src="img/img.jpg" height="40" width="40" style="border-radius:50%; margin-right:20px;"/> 
+                                        {{ group.name }}
+                                    </td>
+                                    <td> {{ group.nodeId }}</td>
+                                    <td>{{ group.members.length }}</td>
+                                    <td>
+                                        <div class="label label-success" ng-if="group.status==0">Active</div>
+                                        <div class="label" style="background-color:#999;" ng-if="group.status==1">Disable</div>
+                                    </td>
+                                    <td class="center">
+                                        <a class="btn btn-success more-info-org" data-id={{group._id}}>
+                                            <i class="ion-search"></i>  
+                                        </a>
+                                        <!-- <a class="btn btn-info" href="#">
+                                            <i class="ion-compose"></i>  
+                                        </a> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+    </div>
+</div>
