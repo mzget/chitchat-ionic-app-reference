@@ -1,0 +1,38 @@
+<div ng-cloak>
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+            <md-tab label="Contacts">
+                <md-tab-label>
+                    <md-icon class="material-icons">contacts</md-icon>
+                </md-tab-label>
+                <md-tab-body>
+                        <div  ng-include src="'templates_web/tab-group-web.html'" ng-controller="homeController"> </div>
+                </md-tab-body>
+            </md-tab>
+
+            <md-tab label="Chats">
+                <md-tab-label>
+                    <md-icon class="material-icons">chat_bubble</md-icon> 
+                    <i style="display:inline; margin-top:8px;" class="icon" ng-controller="bobo">
+                        <small  ng-if="foo > 0" style="height:20px; line-height:20px; padding:0 5px; border-radius:10px;
+                        font-weight:bold; font-size:14px; color:#fff; background-color:#f00;">
+                        <i class="fa fa-clock-o"></i>{{foo}}
+                        </small>
+                    </i>
+                </md-tab-label>
+                <md-tab-body>
+                    <div ng-include src="'templates_web/tab-chats-web.html'" ng-controller="chatslogController"></div>
+                </md-tab-body>
+            </md-tab>
+<!-- 
+            <md-tab label="Options">
+                <md-tab-label>
+                    <md-icon class="material-icons">settings</md-icon>
+                </md-tab-label>
+                <md-tab-body>
+                    <div ng-include src="'templates_web/tab-options-web.html'" ng-controller="optionsController"></div>
+                </md-tab-body>
+            </md-tab> -->
+        </md-tabs>
+    </md-content>
+</div>

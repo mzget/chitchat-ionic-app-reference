@@ -1,0 +1,83 @@
+/* main*/
+[nav-bar-transition="ios"] [nav-bar="active"] .bar, [nav-bar-transition="ios"] [nav-bar="entering"] .bar {
+    background: transparent none repeat scroll 0% 0%;
+    /* Header */
+    background-color: #3168C7;
+}
+/* Header Modal */
+ion-header-bar.bar.bar-header.bar-stable , #header-modal{
+    background-color: #3168C7;
+}
+/* Font Color Modal*/
+ion-header-bar.bar.bar-header.bar-stable > * , #header-modal h1{
+    color: #FFFFFF;
+}
+
+/* BG Search Field */
+.bar-header {
+    top: 0px;
+    border: none;
+    background-color: #FFFFFF;
+}
+/* Button Modal */
+.button.button-block {
+    background-color: #539BD1;
+    color: #fff;
+    border: none;
+}
+
+/* Expandable */
+.btn-nav {
+    color: #FFFFFF;
+    background-color: #80C0F5;
+    border: none;
+}
+
+/* main*/
+.tabs {
+    display: flex;
+    justify-content: center;
+    transform: translate3d(0px, 0px, 0px);
+    border: none;
+    background-color: #80C0F5;
+    background-image: linear-gradient(0deg, #B2B2B2, #B2B2B2 50%, transparent 50%);
+    color: #444;
+    position: absolute;
+    bottom: 0px;
+    z-index: 5;
+    width: 100%;
+    height: 49px;
+    background-size: 0px auto;
+    line-height: 49px;
+}
+
+/* Modal Contact */
+.group-detail {
+    text-align: center;
+    background-color: #FFFFFF;
+}
+
+/* IONIC TAB / BOTTOM TAB (WHEN ACTIVE) */
+ion-tabs.tabs-color-active-positive .tab-item {
+    /*background-color: #44A7EA;*/
+    border: none;
+    color: #FFFFFF;
+}
+
+/* Input Chat */
+#chatMessage {
+    background-color: #3168C7;
+}
+/* Background Chat Menu */
+#chatmenu , #chatmenu .row.modal-chatmenu , #audio-rec .unrecording {
+    background-color: #80C0F5;
+}
+/* FONT In Input Chat & Chat Menu */
+#chatmenu .row.modal-chatmenu div , #chatmenu .row.modal-chatmenu div i , #chatMessage div button i {
+    color: #FFFFFF;
+}
+
+.card .item:first-child {
+    border-top: 0px none;
+    background-color: #80C0F5;
+}

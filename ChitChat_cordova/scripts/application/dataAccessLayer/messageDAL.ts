@@ -36,13 +36,16 @@
         
      }
 
-    clearData() {
+    clearData(next:(err?: Error) => void) {
+        console.warn('MessageDAL.clearData');
         this.store.clear((err) => {
             if (err != null) {
                 console.warn("Clear database fail", err);
             }
 
-            console.log("message db now empty.");
+            console.warn("message db now empty.");
+            
+            next(err);
         });
     }
 }

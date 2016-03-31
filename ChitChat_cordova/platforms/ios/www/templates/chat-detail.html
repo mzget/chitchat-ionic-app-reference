@@ -1,4 +1,4 @@
-<ion-view id="chatDetail" view-title="{{currentRoom.name}}" cache-view="false" hide-tab-bar>
+<ion-view id="chatDetail" view-title="{{currentRoom.name}}">
 	<ion-nav-buttons side="right">
 		<div ng-show="currentRoom.type!=3">
 	        <div ng-if="isFavorite(currentRoom._id)" style="display:inline-block; font-size:25px; line-height:40px; padding:0 10px;" ng-click="editFavorite('remove',currentRoom._id,currentRoom.type)">
@@ -42,13 +42,21 @@
 		</div>
     </ion-nav-buttons>
 
-	<ion-content delegate-handle="mainScroll" style="bottom:44px; margin-bottom:10px;">    
+	<ion-content delegate-handle="mainScroll">    
         <div ng-controller="ImageController">
         	<div ng-controller="VoiceController">
         		<div ng-controller="VideoController">
-
+                    
+        <div ng-show="showLoadMessage" align="center">
+            <button class="button button-clear button-positive" style="height:32px;" ng-click="loadOlderMessage()">Show more message!</button>
+        </div>  
+        <div ng-show="isLoadingMessage" align="center">
+            <ion-spinner icon="bubbles" class="spinner-positive"></ion-spinner>
+            <span style="padding:10px;"></span>
+            <span class="positive">Loading messages</span>
+        </div>
+        
 		<ion-list class="message-list" ng-repeat="message in chat track by $index">
-
 			<ion-item ng-if="message.firstMsg != undefined" class="lasttime" style="text-align:center;">
 				<div style="font-size:12px;"> {{message.firstMsg}} </div>
 			</ion-item>
@@ -97,7 +105,9 @@
 					</div>
 				</div>
 				
-				<label>{{message.time}}</label>
+				<div style="margin-top:5px; margin-bottom:5px;">
+                    <label style="display:inline-block;"> {{message.time}}</label>
+                </div>
 			</ion-item>
 
 			<ion-item ng-if="message.sender == myprofile._id" class="owner item-remove-animate item-icon-right" type="item-text-wrap">
@@ -152,7 +162,7 @@
 					</div>
 				</div>
 				
-				<div style="width:100%;">
+				<div style="width:100%; margin-top:5px; margin-bottom:5px;">
 					<label style="float:left; display:inline-block; cursor:pointer;" ng-show="message.readers != null && message.readers.length != 0" ng-click="viewReader(message.readers)">read {{message.readers.length}}</label> 
 					<label style="float:right; display:inline-block;" ng-if="message.temp != 'true' "> {{message.time}}</label>
 				</div>
@@ -167,16 +177,21 @@
 
 <ion-footer-bar id="chatMessage" align-title="left" class="bar-light" style="z-index:100;">
     <div class="buttons" style="width:15%;">
-        <button ng-disabled="inactive" id="chatMenu" ng-click="openModal()" class="button button-clear" style="width:100%; font-size:20px; padding:0 0;"><i class="ion-ios-plus-outline"></i></button>
+        <button ng-disabled="inactive" id="chatMenu" ng-click="openModal()" class="button button-clear" style="width:100%; font-size:20px; padding:0 0;">
+            <i class="ion-ios-plus-outline"></i>
+        </button>
     </div>
-    <textarea ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="send_message" style="width:70%; height:33px; line-height:20px; padding:8px 10px 0; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset; overflow:hidden;"></textarea>
-    <input ng-disabled="inactive" ng-show="inactive==true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" value="This is Empty Room" />
-    <div class="buttons" style="width:15%;">
-        <button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:100%; font-size:20px; padding:0 0; background-color:#2dc1f3;">
+    
+    <textarea ng-disabled="inactive" ng-show="inactive!=true" 
+    id="send_message" type="text" name="send_message" style="width:70%; height:33px; line-height:20px; padding:8px 10px 0; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset; overflow:hidden;">
+    </textarea>
+    <input ng-disabled="inactive" ng-show="inactive==true" 
+    id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" value="This is Empty Room" />
+    
+    <!--This will hide keyboard when user tap a button.-->
+    <div class="buttons hide-on-keyboard-open" style="width:15%;">
+        <button ng-disabled="inactive" ng-click="sendMsg()" class="button button-clear" style="width:100%; font-size:20px; padding:0 0; background-color:#2dc1f3;">
 			<i class="ion-share" data-pack="default" data-tags="outbound"></i>
 		</button>
     </div>
 </ion-footer-bar>
-
-
-

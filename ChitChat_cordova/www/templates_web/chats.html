@@ -11,27 +11,43 @@
                         <md-icon class="material-icons">menu</md-icon>
                     </md-button>
 
-                    <md-menu-content width="4">
+                    <md-menu-content width="5">
                         <md-menu-item>
                             <md-button ng-click="createGroup($event,'PrivateGroup')"> 
                                 <i class="ion-android-person-add" style="margin-right:10px;"></i> Create Group 
                             </md-button>
                         </md-menu-item>
+
                         <md-menu-item ng-show="myProfile.role=='4'">
                             <md-button ng-click="createGroup($event,'ProjectBase')"> 
-                                <i class="ion-android-person-add" style="margin-right:10px;"></i> Create ProjectBase 
+                                <i class="ion-android-person-add" style="margin-right:10px;"></i> Create ProjectBase Group
                             </md-button>
                         </md-menu-item>
+
+                        <!-- Admin panel -->
+                        <md-menu-item>
+                            <md-button ng-click="adminPanel()"  ng-disabled="myProfile.role != '4'">
+                                <i class="ion-ios-gear" style="margin-right:10px;"></i> Team Settings
+                            </md-button>
+                        </md-menu-item>
+
+                        <!-- Logout button -->
                         <md-menu-item>
                             <md-button ng-click="logOut();"> 
                                 <i class="icon ion-log-out" style="margin-right:10px;"></i> Log Out 
                             </md-button>
                         </md-menu-item>
+
+                        <md-menu-divider></md-menu-divider>
+                        <!-- Application tag.. -->
                         <md-menu-item>
-                            <md-button onclick="location.href='';"> 
-                                <i class="icon ion-log-in" style="margin-right:10px;"></i> Refresh 
+                            <md-button class="md-primary" ng-click="downloadApp()">
+                                <i class="ion-information-circled" style="margin-right:10px;"></i> Download ChitChat app...
                             </md-button>
                         </md-menu-item>
+                        
+                        <md-menu-divider></md-menu-divider>
+                        <!-- Version displaying -->
                         <md-menu-item>
                             <md-button ng-disabled="true"> 
                                 <i class="ion-information-circled" style="margin-right:10px;"></i> Version: {{appVersion}} 
@@ -40,11 +56,11 @@
                     </md-menu-content>
                 </md-menu>
 
-
+                <!-- Displaying account and company name. -->
                 <div>
                     <span class="md-body-2">{{teamInfo.name}}</span>
                     <br />
-                    <span class="md-caption">{{mySelf.displayname}}</span>
+                    <span class="md-caption">{{myProfile.displayname}}</span>
                 </div>
             </div>
         </md-toolbar>

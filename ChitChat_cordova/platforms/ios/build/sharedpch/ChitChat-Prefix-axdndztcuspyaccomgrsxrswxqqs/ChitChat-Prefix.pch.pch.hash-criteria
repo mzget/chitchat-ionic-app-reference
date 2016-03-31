@@ -1,0 +1,26 @@
+-x
+objective-c
+-arch
+armv7
+-std=c99
+-fobjc-arc
+-gmodules
+-fpascal-strings
+-O0
+-isysroot
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.2.sdk
+-miphoneos-version-min=8.0
+-g
+-fvisibility=hidden
+-iquote
+-iquote
+-I/Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/build/device/include
+-I/Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/build/device/usr/local/lib/include
+-I/Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/build/UninstalledProducts/include
+-I/Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/build/device
+-F/Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/build/device
+-F/Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios
+arm-apple-darwin15.4.0
+"4.2.1 Compatible Apple LLVM 7.0.2 (clang-700.1.81)"
+SDK_PRODUCT_BUILD_VERSION=13C75
+13C75

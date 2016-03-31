@@ -66,6 +66,12 @@
         },
         "phonegap-plugin-push": {
             "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
     "dependent_plugins": {}

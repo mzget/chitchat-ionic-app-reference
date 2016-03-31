@@ -695,7 +695,6 @@ module ChatServer {
     }
 
     export class ChatRoomApiProvider {
-        serverImp: ServerImplemented = ServerImplemented.getInstance();
         
         public chat(room_id: string, target: string, sender_id: string, content: string, contentType: string, callback: (err, res) => void) {
             var message: IDictionary = {};
@@ -739,7 +738,6 @@ module ChatServer {
 
         public getSyncDateTime(callback: (err, res) => void) {
             var message: IDictionary = {};
-            message["token"] = this.serverImp.authenData.token;
             pomelo.request("chat.chatHandler.getSyncDateTime", message, (result) => {
                 if (callback != null) {
                     callback(null, result);
@@ -794,10 +792,12 @@ module ChatServer {
             });
         }
         
-        public getMessagesReaders() {
+        public getMessagesReaders(topEdgeMessageTime: string) {
             var message: IDictionary = {};
-            message["token"] = this.serverImp.authenData.token;
-            pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+            message["topEdgeMessageTime"] = topEdgeMessageTime;
+            pomelo.request("chat.chatHandler.getMessagesReaders", message, (result) => {
+                console.info('getMessagesReaders respones: ', result);
+            });
         }
 
         public getMessageContent(messageId: string, callback: (err: Error, res: any) => void) {
@@ -947,13 +947,13 @@ module ChatServer {
             });
 
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, (data) => {
-                console.log(ServerEventListener.ON_MESSAGE_READ, JSON.stringify(data));
+                // console.log(ServerEventListener.ON_MESSAGE_READ);
 
                 self.chatServerListener.onMessageRead(data);
             });
 
             pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, (data) => {
-                console.log(ServerEventListener.ON_GET_MESSAGES_READERS, JSON.stringify(data));
+                // console.log(ServerEventListener.ON_GET_MESSAGES_READERS);
 
                 self.chatServerListener.onGetMessagesReaders(data);
             });

@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{262852C6-CD72-467D-83FE-5EEB1973A190}") = "chitchat.cordova", "chitchat.cordova.jsproj", "{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Android = Debug|Android
+		Debug|Any CPU = Debug|Any CPU
 		Debug|iOS = Debug|iOS
 		Debug|Windows Phone (Universal) = Debug|Windows Phone (Universal)
 		Debug|Windows Phone 8 = Debug|Windows Phone 8
@@ -16,6 +17,7 @@ Global
 		Debug|Windows-x64 = Debug|Windows-x64
 		Debug|Windows-x86 = Debug|Windows-x86
 		Release|Android = Release|Android
+		Release|Any CPU = Release|Any CPU
 		Release|iOS = Release|iOS
 		Release|Windows Phone (Universal) = Release|Windows Phone (Universal)
 		Release|Windows Phone 8 = Release|Windows Phone 8
@@ -28,6 +30,7 @@ Global
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Debug|Android.ActiveCfg = Debug|Android
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Debug|Android.Build.0 = Debug|Android
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Debug|Android.Deploy.0 = Debug|Android
+		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Debug|Any CPU.ActiveCfg = Debug|Android
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Debug|iOS.ActiveCfg = Debug|iOS
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Debug|iOS.Build.0 = Debug|iOS
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Debug|iOS.Deploy.0 = Debug|iOS
@@ -52,6 +55,7 @@ Global
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Release|Android.ActiveCfg = Release|Android
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Release|Android.Build.0 = Release|Android
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Release|Android.Deploy.0 = Release|Android
+		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Release|Any CPU.ActiveCfg = Release|Android
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Release|iOS.ActiveCfg = Release|iOS
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Release|iOS.Build.0 = Release|iOS
 		{FCFD7EDE-B9A9-437E-B768-901AFAF27BED}.Release|iOS.Deploy.0 = Release|iOS

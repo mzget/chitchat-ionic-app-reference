@@ -6,8 +6,9 @@
         .controller('authController', authController)
         .controller('noConnection', noConnection);
 
-    function authController($location, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal, $ionicTabsDelegate, $scope, $rootScope,
-        $cordovaSpinnerDialog, $cordovaDialogs, $cordovaNetwork, $mdDialog, $http, networkService, chatslogService, dbAccessService, sharedObjectService) {
+    function authController($location, $ionicPlatform, $ionicPopup, $ionicLoading, $state, $localStorage, $ionicModal,
+        $ionicTabsDelegate, $scope, $rootScope, $cordovaSpinnerDialog, $cordovaDialogs,
+        $cordovaNetwork, $http, $mdDialog, networkService, chatslogService, dbAccessService, sharedObjectService) {
 
         /* jshint validthis:true */
         var vm = this;
@@ -17,9 +18,10 @@
         $scope.user = {
             email: "",
             password: ""
-        }
+        };
+        $rootScope.teamInfo = {};
 
-        ionic.Platform.ready(function () {
+        $ionicPlatform.ready(function () {
             console.log(vm.title + " : ionic ready.");
 
             if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
@@ -150,11 +152,15 @@
 
                         var logCount = chatslogService.getChatsLogCount();
                         cordova.plugins.notification.badge.set(logCount);
+                        
+                        $rootScope.$broadcast('onactivateBgMode');
                     };
 
                     // Get informed when the background mode has been deactivated
                     cordova.plugins.backgroundMode.ondeactivate = function () {
                         console.warn("backgroundMode.ondeactivate");
+                        
+                        $rootScope.$broadcast('ondeactivateBgMode');
                     };
                 }
                 catch (ex) {
@@ -184,7 +190,11 @@
                 $rootScope.restServer = sharedObjectService.getRestServer();
                 $http.post($rootScope.restServer + '/api/teamInfo', { id: '55794a33615e3952009e77c6' }).then(function success(res) {
                     console.info('getTeamInfo;', res.data);
+
                     $rootScope.teamInfo = res.data.result;
+                    if (!$rootScope.teamInfo.root) {
+                        console.error('defualt room is missing.');
+                    };
                 }, function errorCallback(err) {
                     console.error('Fail to getTeamInfo;', err.status);
                 });
@@ -376,15 +386,19 @@
 
         function onAuthenFail(errMessage) {
             // Hide spinner dialog
-            if (ionic.Platform.platform() === "ios") {
-                $cordovaSpinnerDialog.hide();
+            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
+                try {
+                    $cordovaSpinnerDialog.hide();
 
-                $cordovaDialogs.alert(errMessage, 'Authentication Fail!', 'OK')
-                .then(function () {
-                    // callback success
-                    localStorage.clear();
-                    location.href = '';
-                });
+                    $cordovaDialogs.alert(errMessage, 'Authentication Fail!', 'OK')
+                    .then(function () {
+                        // callback success
+                        localStorage.clear();
+                        location.href = '';
+                    });
+                } catch (ex) {
+                    console.warn(ex);
+                }
             }
             else {
                 $ionicLoading.hide();

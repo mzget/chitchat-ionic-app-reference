@@ -465,31 +465,28 @@ module.exports = [
         "clobbers": [
             "PushNotification"
         ]
+    },
+    {
+        "file": "plugins/ionic-plugin-keyboard/www/ios/keyboard.js",
+        "id": "ionic-plugin-keyboard.keyboard",
+        "pluginId": "ionic-plugin-keyboard",
+        "clobbers": [
+            "cordova.plugins.Keyboard"
+        ],
+        "runs": true
+    },
+    {
+        "file": "plugins/cordova-plugin-inappbrowser/www/inappbrowser.js",
+        "id": "cordova-plugin-inappbrowser.inappbrowser",
+        "pluginId": "cordova-plugin-inappbrowser",
+        "clobbers": [
+            "cordova.InAppBrowser.open",
+            "window.open"
+        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
-{
-    "chitchat-plugin-cameraroll": "1.0.0",
-    "cordova-plugin-camera": "1.2.0",
-    "cordova-plugin-console": "1.0.2",
-    "cordova-plugin-device": "1.0.1",
-    "cordova-plugin-dialogs": "1.2.0",
-    "cordova-plugin-file": "3.0.0",
-    "cordova-plugin-file-transfer": "1.3.0",
-    "cordova-plugin-geolocation": "1.0.1",
-    "cordova-plugin-media": "1.0.1",
-    "cordova-plugin-media-capture": "1.0.1",
-    "cordova-plugin-network-information": "1.2.0",
-    "cordova-plugin-splashscreen": "2.1.0",
-    "cordova-plugin-x-toast": "2.2.1",
-    "de.appplant.cordova.common.registerusernotificationsettings": "1.0.1",
-    "de.appplant.cordova.plugin.background-mode": "0.6.3",
-    "de.appplant.cordova.plugin.badge": "0.7.1",
-    "de.appplant.cordova.plugin.local-notification": "0.8.2-dev",
-    "hu.dpal.phonegap.plugins.SpinnerDialog": "1.3.1",
-    "org.pbernasconi.progressindicator": "1.1.0",
-    "phonegap-plugin-push": "1.5.3"
-}
+{}
 // BOTTOM OF METADATA
 });

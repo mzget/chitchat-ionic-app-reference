@@ -147,8 +147,8 @@ class Main {
                             console.log("Company Members: ", JSON.stringify(res));
                         }
                     });
-                    }).catch(function onRejected(err) {
-                        console.error(err);
+                }).catch(function onRejected(err) {
+                    console.error(err);
                 });
             }
             else {
