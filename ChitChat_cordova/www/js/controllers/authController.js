@@ -17,7 +17,8 @@
         $scope.user = {
             email: "",
             password: ""
-        }
+        };
+        $rootScope.teamInfo = {};
 
         $ionicPlatform.ready(function () {
             console.log(vm.title + " : ionic ready.");
@@ -188,7 +189,11 @@
                 $rootScope.restServer = sharedObjectService.getRestServer();
                 $http.post($rootScope.restServer + '/api/teamInfo', { id: '55794a33615e3952009e77c6' }).then(function success(res) {
                     console.info('getTeamInfo;', res.data);
+
                     $rootScope.teamInfo = res.data.result;
+                    if (!$rootScope.teamInfo.root) {
+                        console.error('defualt room is missing.');
+                    };
                 }, function errorCallback(err) {
                     console.error('Fail to getTeamInfo;', err.status);
                 });
