@@ -7,7 +7,8 @@
 
 //    companyController.$inject = ['$location']; 
 
-    function companyController($location, $scope, $state, $ionicModal, $timeout, CreateGroup, $localStorage, $rootScope, $ionicPopover, $mdDialog, dbAccessService) {
+    function companyController($location, $scope, $state, $ionicModal, $timeout, CreateGroup, $localStorage, $rootScope,
+        $ionicPopover, $mdDialog, dbAccessService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'companyController';
@@ -18,6 +19,8 @@
         $scope.showMyProfile = showMyProfile;
         $scope.openProfileModal = openProfileModal;
         $scope.createGroup = createGroup;
+        $scope.adminPanel = adminPanel;
+        $scope.downloadApp = downloadApp;
 
         activate();
 
@@ -28,8 +31,6 @@
             }
             $scope.teamInfo = main.getDataManager().getCompanyInfo();
             $scope.myProfile = main.getDataManager().getMyProfile();
-
-            console.info($scope.myProfile);
         }
 
         $ionicPopover.fromTemplateUrl('templates_web/popover-account.html', {
@@ -90,6 +91,14 @@
         function closeDialogCreateGroup(){
             CreateGroup.clear();
             document.getElementById("UploadAvatar").reset();
+        }
+
+        function adminPanel() {
+
+        }
+
+        function downloadApp() {
+
         }
     }
 })();
