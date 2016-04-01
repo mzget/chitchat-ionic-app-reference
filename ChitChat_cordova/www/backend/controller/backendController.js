@@ -8,11 +8,14 @@
 		.controller('backendOrgController', backendOrgController)
 		.controller('backendPjbController', backendPjbController)
 
-	function backendMenuController($scope){
+	function backendMenuController($scope,$state){
 		$("body").on("click",".menu-item",function(){
 			$(".menu-item").removeClass( "active" );
 			$(this).addClass("active");
 		});
+		$scope.menuMember = function(){ $state.go('members'); }
+		$scope.menuOrg = function(){ $state.go('organization'); }
+		$scope.menuPjb = function(){ $state.go('projectbase'); }
 	}
 	function backendMembersController($scope, $rootScope, $state, $stateParams, $http){
 		$scope.webServer = $rootScope.webServer;
@@ -31,21 +34,23 @@
         });
 
 	}
-	function backendOrgController($scope, $rootScope, $state, $stateParams, $http, sharedObjectService){
-		$http.get($rootScope.restServer + '/groupApi/getOrg').then(function success(res) {
-			$scope.orgGroups = res.data.result;
-			groupInfo();
-        }, function errorCallback(err) {
-            console.error('err.status');
+	function backendOrgController($scope, $rootScope, $state, $stateParams, $http, $mdDialog, sharedObjectService){
+		
+
+		$scope.$on('$ionicView.enter', function() { 
+			getDataGroup();
         });
+
+
+		$scope.webServer = $rootScope.webServer;
 		$scope.$on('avatarUrl', function(event, args) { 
 			if($stateParams.groupId !== undefined) editOrgGroup(args);
 			else createOrgGroup(args);
 		});
-		$scope.webServer = $rootScope.webServer;
         $("body").on("click",".more-info-org",function(){
 			$state.go('organization-member', { groupId: $(this).data("id") })
 		});
+		
         $scope.select2options = {
 		    allowClear: true,
 		    formatResult: function(item, container) {
@@ -80,12 +85,32 @@
         	for (var x in selectedMember) {
 				members.push({ "id":selectedMember[x] });
 			}
-			console.log(members);
         	$http.post($rootScope.restServer + '/groupApi/inviteOrg', {
 				"_id": $scope.orgGroup._id,
 			    "members": members
 			}).then(function success(res) {
 				console.log(res);
+				getDataGroup();
+	        }, function errorCallback(err) {
+	            console.error('err.status');
+	        });
+        }
+        $scope.delectMemberInOrg = function(memberId){
+        	$http.post($rootScope.restServer + '/groupApi/deleteMemberOrg', {
+				"_id": $scope.orgGroup._id,
+			    "members": {id: memberId}
+			}).then(function success(res) {
+				console.log(res);
+				getDataGroup();
+	        }, function errorCallback(err) {
+	            console.error('err.status');
+	        });
+        }
+        function getDataGroup(){
+        	$http.get($rootScope.restServer + '/groupApi/getOrg').then(function success(res) {
+			    $scope.orgGroups = res.data.result;
+				console.log(res.data.result);
+				groupInfo();
 	        }, function errorCallback(err) {
 	            console.error('err.status');
 	        });
@@ -128,6 +153,7 @@
 				"image": img
 			}).then(function success(res) {
 				console.log(res);
+				getDataGroup();
 	        }, function errorCallback(err) {
 	            console.error('err.status');
 	        });
@@ -149,13 +175,40 @@
 			    "members": members
 			}).then(function success(res) {
 				console.log(res);
+				getDataGroup();
+				$state.go('organization');
 	        }, function errorCallback(err) {
 	            console.error('err.status');
 	        });
 		}
+		function delectGroupOrg(groupId){
+        	$http.post($rootScope.restServer + '/groupApi/deleteGroupOrg', {
+				"_id": groupId
+			}).then(function success(res) {
+				console.log(res);
+				getDataGroup();
+	        }, function errorCallback(err) {
+	            console.error('err.status');
+	        });
+        }
+		$scope.showConfirm = function(ev,group) {
+		    var confirm = $mdDialog.confirm()
+		          .title('Would you like to delete ' + group.name +' Group ?')
+		          .textContent('This group is will be delete')
+		          .ok('YES')
+		          .cancel('NO');
+		    $mdDialog.show(confirm).then(function() {
+				delectGroupOrg(group._id);
+		    }, function() {
+
+		    });
+		};
 		
 	}
 	function backendPjbController($scope, $rootScope, $state, $stateParams, ProjectBase){
+		$scope.$on('$destroy', function iVeBeenDismissed() {
+		  console.log("Exit PJB");
+		})
 		$scope.webServer = $rootScope.webServer;
 		$scope.pjbGroups = main.getDataManager().projectBaseGroups
 		$scope.editingData = {};
