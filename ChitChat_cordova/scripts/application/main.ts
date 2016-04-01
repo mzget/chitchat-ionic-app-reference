@@ -18,8 +18,7 @@ class Main {
         }
         return this.instance;
     }
-
-
+    
     private serverImp: ChatServer.ServerImplemented;
     private serverListener: ChatServer.ServerEventListener;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;

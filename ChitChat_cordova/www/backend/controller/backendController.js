@@ -4,7 +4,6 @@
 	angular
 		.module('spartan.backend', [])
 		.controller('backendMenuController', backendMenuController)
-		.controller('backendMembersController', backendMembersController)
 		.controller('backendOrgController', backendOrgController)
 		.controller('backendPjbController', backendPjbController)
 
@@ -17,6 +16,7 @@
 		$scope.menuOrg = function(){ $state.go('organization'); }
 		$scope.menuPjb = function(){ $state.go('projectbase'); }
 	}
+
 	function backendMembersController($scope, $rootScope, $state, $stateParams, $http){
 		$scope.webServer = $rootScope.webServer;
 		$("body").on("click",".more-info-member",function(){
@@ -32,16 +32,11 @@
         }, function errorCallback(err) {
             console.error('err.status');
         });
-
 	}
 	function backendOrgController($scope, $rootScope, $state, $stateParams, $http, $mdDialog, sharedObjectService){
-		
-
 		$scope.$on('$ionicView.enter', function() { 
 			getDataGroup();
         });
-
-
 		$scope.webServer = $rootScope.webServer;
 		$scope.$on('avatarUrl', function(event, args) { 
 			if($stateParams.groupId !== undefined) editOrgGroup(args);

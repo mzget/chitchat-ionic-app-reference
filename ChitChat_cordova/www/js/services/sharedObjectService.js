@@ -10,6 +10,7 @@
     function sharedObjectService($http, localNotifyService) {
         var service = {
             getDataListener: getDataListener,
+            getDataManager: getDataManager,
             regisNotifyNewMessageEvent: regisNotifyNewMessageEvent,
             unsubscribeGlobalNotifyMessageEvent: unsubscribeGlobalNotifyMessageEvent,
             createNotifyManager: createNotifyManager,
@@ -27,6 +28,7 @@
         var restServer = null;
         var notifyManager = null;
         var stringValue = null;
+
         return service;
 
         function getWebServer() {
@@ -53,6 +55,9 @@
             return themename;
         }
 
+        function getDataManager() {
+            return main.getDataManager();
+        }
         function getDataListener() {
             var dataListener = main.getDataListener();
             return dataListener;
