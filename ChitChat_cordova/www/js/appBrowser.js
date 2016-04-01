@@ -81,21 +81,20 @@ angular.module('starter',
 	        },
 	    }
 	})
-
 	.state('members', {
 	    url: '/backend/members',
 	    templateUrl: 'backend/templates/members.html',
-	    controller: "backendMembersController"
+	    controller: "backendMembers"
 	})
 	.state('member-info', {
 	    url: '/backend/members/:memberId',
 	    templateUrl: 'backend/templates/member-info.html',
-	    controller: "backendMembersController"
+	    controller: "backendMemberInfo"
 	})
 	.state('members-new', {
 	    url: '/backend/members/newmember',
 	    templateUrl: 'backend/templates/member-newmember.html',
-	    controller: "backendMembersController"
+	    controller: "backendMembers"
 	})
 	.state('organization', {
 	    url: '/backend/organization',

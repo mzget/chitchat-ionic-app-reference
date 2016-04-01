@@ -2,17 +2,20 @@
     <div menu></div>
 
 <div class="content-wrapper" style="overflow-y:scroll;">
-
         <div>
             <section class="content-header">
               <h1>
                 Members
               </h1>
-              <ol class="breadcrumb">
-                <li class="active"><a href="#"><i class="fa fa-users"></i>Members</a></li>
-              </ol>
+              <!--<ol class="breadcrumb">
+                <li class="active">
+                    <i class="fa fa-users"></i>Members
+                </li>
+              </ol>-->
               </br>
-              <button class="btn btn-info" onclick="location.href='#/backend/members/newmember';"> <i class="ion-plus-round"></i> Create New Member</button>
+              <button class="btn btn-info" onclick="location.href='#/backend/members/newmember';"> 
+                <i class="ion-plus-round"></i> Create New Member
+              </button>
             </section>
 
             <!-- Main content -->
@@ -26,7 +29,6 @@
                                 <th>Displayname</th>
                                 <th>E-mail</th>
                                 <th>Role</th>
-                                <th>Tel</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -35,15 +37,16 @@
                             <tr ng-repeat="member in members">
                                 <td> 
                                     <img ng-if="member.image!=null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}&h=40&w=40" style="border-radius:50%; margin-right:20px;"/> 
-                                    <img ng-if="member.image==null" src="img/img.jpg" height="40" width="40" style="border-radius:50%; margin-right:20px;"/> 
-                                    {{ member.displayname }}
+                                    <img ng-if="member.image==null" src="img/img.jpg" height="40" width="40" style="border-radius:50%; margin-right:20px;"/> {{ member.displayname }}
                                 </td>
                                 <td>{{ member.mail }}</td>
                                 <td>{{ member.role }}</td>
-                                <td>{{ member.tel }}</td>
                                 <td class="center">
-                                    <a class="btn btn-success more-info-member" data-id={{member._id}}>
-                                        <i class="ion-search"></i>  
+                                    <!--<a class="btn btn-success more-info-member" data-id={{member._id}}>
+                                        <i class="material-icons">more_horiz</i>
+                                    </a>-->
+                                    <a class="md-fab md-mini md-primary" ng-click="moreInfo(member._id)">
+                                        <i class="material-icons">more_horiz</i>
                                     </a>
                                 </td>
                             </tr>

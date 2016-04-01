@@ -94,11 +94,10 @@
         }
 
         function adminPanel() {
-
+            $state.go('members');
         }
 
         function downloadApp() {
-
         }
     }
 })();
