@@ -94,7 +94,7 @@
         }
 
         function adminPanel() {
-            $state.go('members');
+            $state.go('backend.members');
         }
 
         function downloadApp() {

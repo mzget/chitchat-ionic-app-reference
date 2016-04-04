@@ -29,10 +29,13 @@
             <md-toolbar class="md-theme-indigo">
                 <h1 class="md-toolbar-tools">{{title}}</h1>
             </md-toolbar>
-            <div layout="column" layout-fill="" layout-align="top center">
-          
+            <div id="test-u-view" layout="column" layout-fill="" layout-align="top center">
+                <div ng-show="stateName == 'backend.members'" ng-include src="'backend/templates/members.html'" ng-controller="backendMembers"></div>
+
+                <div ng-show="stateName == 'backend.organization'" ng-include src="'backend/templates/org.html'" ng-controller="backendOrgController"></div>
+
+                <div ng-show="stateName == 'backend.projectbase'" ng-include src="'backend/templates/pjb.html'" ng-controller="backendPjbController"></div>
             </div>
-            <div flex=""></div>
         </md-content>
     </section>
 </div>
