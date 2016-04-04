@@ -14,7 +14,14 @@
                 </div>
             </md-toolbar>
             <md-content layout-padding="">
-               
+                <!-- Sidebar Menu -->
+                <ul class="sidebar-menu">
+                    <li class="header">MENU</li>
+                    <!-- Optionally, you can add icons to the links -->
+                    <li class="menu-item active" ng-click="menuMember()"><a><i class="fa fa-users"></i> <span>Members</span></a></li>
+                    <li class="menu-item" ng-click="menuOrg()"><a><i class="fa fa-sitemap"></i> <span>Organization Groups</span></a></li>
+                    <li class="menu-item" ng-click="menuPjb()"><a><i class="fa fa-sticky-note"></i> <span>Projectbase Groups</span></a></li>
+                </ul><!-- /.sidebar-menu -->
             </md-content>
         </md-sidenav>
 

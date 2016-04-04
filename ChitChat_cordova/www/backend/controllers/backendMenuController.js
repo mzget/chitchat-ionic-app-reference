@@ -7,10 +7,14 @@
 
 //    backendMenuController.$inject = ['$location']; 
 
-    function backendMenuController($location, $scope, $rootScope) {
+    function backendMenuController($location, $scope, $rootScope, $state) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'backendMenuController';
+
+		$scope.menuMember = function(){ $state.go('members'); }
+		$scope.menuOrg = function(){ $state.go('organization'); }
+		$scope.menuPjb = function(){ $state.go('projectbase'); }
 
         activate();
 
@@ -20,8 +24,5 @@
 			$(".menu-item").removeClass( "active" );
 			$(this).addClass("active");
 		});
-		$scope.menuMember = function(){ $state.go('members'); }
-		$scope.menuOrg = function(){ $state.go('organization'); }
-		$scope.menuPjb = function(){ $state.go('projectbase'); }
     }
 })();
