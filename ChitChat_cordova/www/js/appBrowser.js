@@ -18,7 +18,6 @@ angular.module('starter',
 		if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
 			cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 			cordova.plugins.Keyboard.disableScroll(true);
-
 		}
 		if (window.StatusBar) {
 			// org.apache.cordova.statusbar required
@@ -52,11 +51,11 @@ angular.module('starter',
 	    templateUrl: 'templates_web/tab-login.html',
 	    controller: 'authController'
 	})
-        .state('signup', {
-            url: "signup",
-            templateUrl: "templates_web/signup-web.html",
-            controller: 'signupController'
-        })
+    .state('signup', {
+        url: "signup",
+        templateUrl: "templates_web/signup-web.html",
+        controller: 'signupController'
+    })
 	.state('chats', {
 	    url: "/chats",
 	    views: {
@@ -81,6 +80,10 @@ angular.module('starter',
 	        },
 	    }
 	})
+
+        /*
+        * Backend-sections...
+        */
 	.state('members', {
 	    url: '/backend/members',
 	    templateUrl: 'backend/templates/members.html',
@@ -130,11 +133,12 @@ angular.module('starter',
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('/login');
 })
+
 .directive('menu', function () {
-	    return {
-	        restrict: 'A', //This menas that it will be used as an attribute and NOT as an element. I don't like creating custom HTML elements
-	        replace: true,
-	        templateUrl: "backend/templates/menu.html",
-	        controller: "backendMenuController"
-	    }
+	return {
+	    restrict: 'A', //This menas that it will be used as an attribute and NOT as an element. I don't like creating custom HTML elements
+	    replace: true,
+	    templateUrl: "backend/templates/menu-3.html",
+	    controller: "backendMenuController"
+	}
 });

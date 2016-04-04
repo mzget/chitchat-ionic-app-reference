@@ -3,16 +3,9 @@
 
 	angular
 		.module('spartan.backend', [])
-		.controller('backendMenuController', backendMenuController)
 		.controller('backendOrgController', backendOrgController)
 		.controller('backendPjbController', backendPjbController)
 
-	function backendMenuController($scope){
-		$("body").on("click",".menu-item",function(){
-			$(".menu-item").removeClass( "active" );
-			$(this).addClass("active");
-		});
-	}
 	function backendOrgController($scope, $rootScope, $state, $stateParams, $http, sharedObjectService){
 		$http.get($rootScope.restServer + '/groupApi/getOrg').then(function success(res) {
 			$scope.orgGroups = res.data.result;

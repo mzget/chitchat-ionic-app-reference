@@ -6,8 +6,12 @@
                         {{profile.displayname}}'s Profile
                       </h1>
                       <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-users"></i>Members</a></li>
-                        <li class="active"><a> {{profile.displayname}}'s Profile </a></li>
+                        <li ng-click="goto('members')">
+                          <i class="fa fa-users"></i>
+                            <span style="margin-right:5px;"></span>
+                          Members
+                        </li>
+                        <li class="active">{{profile.displayname}}'s Profile</li>
                       </ol>
         </section>
 

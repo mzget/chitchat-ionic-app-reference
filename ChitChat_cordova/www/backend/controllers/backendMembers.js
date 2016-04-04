@@ -19,7 +19,7 @@
         activate();
 
         function activate() {
-
+            $rootScope.title = 'Members';
         }
 
 		$http.get($rootScope.restServer + '/users/getOrgMembers').then(function success(res) {
@@ -46,6 +46,7 @@
    
         var userId = $stateParams.memberId;
         $scope.profile = {};
+        $scope.goto = goto;
 
         activate();
         getMemberProfile();
@@ -55,6 +56,10 @@
         
         function getMemberProfile() {
             $scope.profile = sharedObjectService.getDataManager().getContactProfile(userId);
+        }
+
+        function goto(stateName) {
+            $state.go(stateName);
         }
     }
 })();
