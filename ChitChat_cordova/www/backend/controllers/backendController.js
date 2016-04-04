@@ -3,37 +3,10 @@
 
 	angular
 		.module('spartan.backend', [])
-		.controller('backendMenuController', backendMenuController)
 		.controller('backendOrgController', backendOrgController)
-		.controller('backendPjbController', backendPjbController)
+		.controller('backendPjbController', backendPjbController);
 
-	function backendMenuController($scope,$state){
-		$("body").on("click",".menu-item",function(){
-			$(".menu-item").removeClass( "active" );
-			$(this).addClass("active");
-		});
-		$scope.menuMember = function(){ $state.go('members'); }
-		$scope.menuOrg = function(){ $state.go('organization'); }
-		$scope.menuPjb = function(){ $state.go('projectbase'); }
-	}
-
-	function backendMembersController($scope, $rootScope, $state, $stateParams, $http){
-		$scope.webServer = $rootScope.webServer;
-		$("body").on("click",".more-info-member",function(){
-			$state.go('member-info', { memberId: $(this).data("id") })
-		});
-
-		$http.get($rootScope.restServer + '/users/getOrgMembers').then(function success(res) {
-			var members = {}
-			$.each(res.data.result, function(index,result){
-				members[result._id] = result;
-			});
-			$rootScope.members = members;
-        }, function errorCallback(err) {
-            console.error('err.status');
-        });
-	}
-	function backendOrgController($scope, $rootScope, $state, $stateParams, $http, $mdDialog, sharedObjectService){
+	function backendOrgController($scope, $rootScope, $state, $stateParams, $http, $mdDialog, sharedObjectService) {
 		$scope.$on('$ionicView.enter', function() { 
 			getDataGroup();
         });
@@ -197,9 +170,9 @@
 		    }, function() {
 
 		    });
-		};
-		
+		};		
 	}
+
 	function backendPjbController($scope, $rootScope, $state, $stateParams, ProjectBase){
 		$scope.$on('$destroy', function iVeBeenDismissed() {
 		  console.log("Exit PJB");
@@ -283,5 +256,4 @@
 		    }
 		}
 	}
-
 })();
