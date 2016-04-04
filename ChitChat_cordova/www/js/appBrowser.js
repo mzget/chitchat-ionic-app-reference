@@ -45,8 +45,7 @@ angular.module('starter',
 	console.info('state config...');
 	
 	$stateProvider
-
-	.state('login', {
+    .state('login', {
 	    url: '/login',
 	    templateUrl: 'templates_web/tab-login.html',
 	    controller: 'authController'
@@ -59,35 +58,37 @@ angular.module('starter',
 	.state('chats', {
 	    url: "/chats",
 	    views: {
-	        '': {
+	        '': { //@ Header and company info.
 	            templateUrl: 'templates_web/chats.html',
 	            controller: "InfoCtrl"
 	        },
-	        //"chats-account@chats": {
-	        //    templateUrl: "templates_web/teamInfo-web.html",
-	        //    controller: "companyController"
-	        //},
-	        "chats-list@chats": {
+	        "chats-list@chats": { //@ tabs-groups, tabs-chats,
 	            abstract: true,
 	            templateUrl: 'templates_web/tabs-web.html',
 	        },
-	        "chats-detail@chats": {
+	        "chats-detail@chats": { //@Chat activity.
 	            templateUrl: "templates_web/chat-detail.html",
 	            controller: "chatController"
 	        },
-	        "chats-info@chats": {
+	        "chats-info@chats": { //@Chat room informations.
 	            templateUrl: "templates_web/chat-info.html"
 	        },
 	    }
 	})
-
         /*
         * Backend-sections...
         */
-	.state('members', {
-	    url: '/backend/members',
-	    templateUrl: 'backend/templates/members.html',
-	    controller: "backendMembers"
+    .state('backend',{
+        url: '/backend',
+        abstract: true,
+	    templateUrl: 'backend/templates/menu.html',
+	    controller: "backendMenuController"
+    })
+    /**
+     * Members manager...
+     */
+	.state('backend.members', {
+	    url: '/members'
 	})
 	.state('member-info', {
 	    url: '/backend/members/:memberId',
@@ -99,10 +100,11 @@ angular.module('starter',
 	    templateUrl: 'backend/templates/member-newmember.html',
 	    controller: "backendMembers"
 	})
-	.state('organization', {
-	    url: '/backend/organization',
-	    templateUrl: 'backend/templates/org.html',
-	    controller: "backendOrgController"
+    /**
+     * Groups-manager...
+     */
+	.state('backend.organization', {
+	    url: '/organization'
 	})
 	.state('organization-create', {
 	    url: '/backend/organization/create',
@@ -114,10 +116,8 @@ angular.module('starter',
 	    templateUrl: 'backend/templates/org-members.html',
 	    controller: "backendOrgController"
 	})
-	.state('projectbase', {
-	    url: '/backend/projectbase',
-	    templateUrl: 'backend/templates/pjb.html',
-	    controller: "backendPjbController"
+	.state('backend.projectbase', {
+	    url: '/projectbase'
 	})
 	.state('projectbase-create', {
 	    url: '/backend/projectbase/create',
@@ -134,6 +134,7 @@ angular.module('starter',
 	$urlRouterProvider.otherwise('/login');
 })
 
+    /*
 .directive('menu', function () {
 	return {
 	    restrict: 'A', //This menas that it will be used as an attribute and NOT as an element. I don't like creating custom HTML elements
@@ -142,3 +143,4 @@ angular.module('starter',
 	    controller: "backendMenuController"
 	}
 });
+*/
