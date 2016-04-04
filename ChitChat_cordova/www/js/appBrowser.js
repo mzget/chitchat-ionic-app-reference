@@ -90,10 +90,8 @@ angular.module('starter',
 	.state('backend.members', {
 	    url: '/members'
 	})
-	.state('member-info', {
-	    url: '/backend/members/:memberId',
-	    templateUrl: 'backend/templates/member-info.html',
-	    controller: "backendMemberInfo"
+	.state('backend.member-info', {
+	    url: '/members/:memberId'
 	})
 	.state('members-new', {
 	    url: '/backend/members/newmember',

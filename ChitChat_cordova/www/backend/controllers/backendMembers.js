@@ -34,24 +34,31 @@
         });
 
         function moreInfo(userId) {
-			$state.go('member-info', { memberId: userId });
+			$state.go('backend.member-info', { memberId: userId });
         }
     }
 
-    function backendMemberInfo($location, $http, $scope, $state, $stateParams, $rootScope, $mdDialog, $ionicLoading,
+    function backendMemberInfo($location, $http, $scope, $state, $rootScope, $mdDialog, $ionicLoading,
     sharedObjectService) {
           /* jshint validthis:true */
         var vm = this;
         vm.title = 'backendMemberInfo';
-   
-        var userId = $stateParams.memberId;
+        var userId = '';
+
         $scope.profile = {};
         $scope.goto = goto;
 
-        activate();
-        getMemberProfile();
+        $scope.$on('stateChanged', function(events, params) {
+            if(params.toState.name === 'backend.member-info') {     
+            
+                userId = params.toParams.memberId;
+
+                activate();
+            }
+        });
+
         function activate() {
-          
+            getMemberProfile();
         }
         
         function getMemberProfile() {

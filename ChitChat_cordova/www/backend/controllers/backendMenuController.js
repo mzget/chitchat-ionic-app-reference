@@ -34,7 +34,7 @@
             $scope.stateName = $state.current.name;
         });
 
-		$("body").on("click",".menu-item",function(){
+		$("body").on("click",".menu-item",function() {
 			$(".menu-item").removeClass( "active" );
 			$(this).addClass("active");
 		});
@@ -44,6 +44,7 @@
                 console.debug('$state info: ', JSON.stringify(toState));
                 
                 $scope.stateName = toState.name;
+                $rootScope.$broadcast('stateChanged', {toState: toState, toParams: toParams, fromState: fromState, fromParams: fromParams});
             })
         }
 })();
