@@ -15,24 +15,6 @@
                 </section>
 
                 <section class="content">
-
-                	<!-- <div class="row">
-                    	<div class="col-lg-3 col-xs-6" ng-repeat="orgGroup in pjbGroups">
-                      		<div class="small-box bg-aqua">
-                        		<div class="inner">
-                          			<h2>{{orgGroup.name}}</h2>
-                          			<p>{{orgGroup.members.length}} Members</p>
-                        		</div>
-        		                <div class="icon">
-        		                  	<img ng-if="orgGroup.image!=null" ng-src="{{webServer}}/timthumb.php?src={{orgGroup.image}}&h=80&w=80" style="border-radius:50%; margin-top:-30px;"/> 
-        		                    <img ng-if="orgGroup.image==null" src="img/img.jpg" height="80" width="80" style="border-radius:50%; margin-top:-30px;"/> 
-        		                </div>
-                        		<a class="small-box-footer more-info-pjb" data-id={{orgGroup._id}}>
-                          			More info <i class="fa fa-arrow-circle-right"></i>
-                        		</a>
-                      		</div>
-                    	</div>
-                	</div> -->
                   <div class="row">
                       <div class="col-xs-12">
                       <div class="box">
@@ -40,26 +22,40 @@
                           <thead>
                               <tr>
                                   <th>Group</th>
+                                  <th>Node ID</th>
                                   <th>Member</th>
+                                  <th>Status</th>
                                   <th>Action</th>
                               </tr>
                           </thead>
 
-                          <tbody>
-                              <tr ng-repeat="group in pjbGroups">
-                                  <td> 
-                                      <img ng-if="group.image!=null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=40&w=40" style="border-radius:50%; margin-right:20px;"/> 
-                                      <img ng-if="group.image==null" src="img/img.jpg" height="40" width="40" style="border-radius:50%; margin-right:20px;"/> 
-                                      {{ group.name }}
-                                  </td>
-                                  <td>{{ group.members.length }}</td>
-                                  <td class="center">
-                                      <a class="btn btn-success more-info-pjb" data-id={{group._id}}>
-                                          <i class="ion-search"></i>  
-                                      </a>
-                                  </td>
-                              </tr>
-                          </tbody>
+                        <tbody>
+                          <tr ng-repeat="group in pjbGroups" ng-if="group.status!=2">
+                              <td> 
+                                  <img ng-if="group.image!=null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=40&w=40" style="border-radius:50%; margin-right:20px;"/> 
+                                  <img ng-if="group.image==null" src="img/img.jpg" height="40" width="40" style="border-radius:50%; margin-right:20px;"/> 
+                                  {{ group.name }}
+                              </td>
+                              <td> {{ group.nodeId }}</td>
+                              <td>{{ group.members.length }}</td>
+                              <td>
+                                  <div class="label label-success" ng-if="group.status==0">Active</div>
+                                  <div class="label" style="background-color:#999;" ng-if="group.status==1">Disable</div>
+                              </td>
+                              <td class="center">
+                                  <a class="btn btn-success more-info-pjb" data-id={{group._id}}>
+                                      <i class="ion-search"></i>  
+                                  </a>
+                                   <a class="btn btn-danger" ng-click="showConfirm($event,group)">
+                                      <i class="ion-trash-b"></i> 
+                                  </a>
+                                  <!-- <a class="btn btn-info" href="#">
+                                      <i class="ion-compose"></i>  
+                                  </a> -->
+                              </td>
+                          </tr>
+                        </tbody>
+                                  
                           </table>
                       </div>
                       </div>

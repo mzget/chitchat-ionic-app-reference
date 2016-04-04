@@ -7,7 +7,7 @@
 
 //    backendMenuController.$inject = ['$location']; 
 
-    function backendMenuController($location, $scope, $rootScope) {
+    function backendMenuController($state, $scope) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'backendMenuController';
