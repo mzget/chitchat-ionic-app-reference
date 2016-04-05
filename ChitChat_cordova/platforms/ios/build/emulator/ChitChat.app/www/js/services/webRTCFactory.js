@@ -37,7 +37,7 @@
                         console.warn("Fail to call. Need to hangup.");
                     }
                 });
-            }, function fail() { }, "CallCordovaPlugin", "freeCall",
+            }, function fail() { }, "ChitchatRTC", "freeCall",
             ["", dataManager.getContactProfile(contactId)]);
         }
         
@@ -48,7 +48,7 @@
                 console.warn(callId);
             }, function fail() {
 
-            }, "CallCordovaPlugin", "freeCall", [callerId, dataManager.getContactProfile(contactId)]);
+            }, "ChitchatRTC", "freeCall", [callerId, dataManager.getContactProfile(contactId)]);
         }
          
         function videoCallHandler(contactId, callerId) {
@@ -60,13 +60,13 @@
         }
 
         function hangUpCallHandler() {
-            cordova.exec(null, null, "CallCordovaPlugin", "endCall", []);
+            cordova.exec(null, null, "ChitchatRTC", "endCall", []);
             
             webRtcComponent.setCallState(CallState.idle);
         }
 
         function contactLineBusyHandler() {
-            cordova.exec(null, null, "CallCordovaPlugin", "endCall", []);
+            cordova.exec(null, null, "ChitchatRTC", "endCall", []);
 
             webRtcComponent.setCallState(CallState.idle);
         }
