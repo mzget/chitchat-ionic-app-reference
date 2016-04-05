@@ -99,6 +99,10 @@
                         {
                             "xml": "<feature name=\"InAppBrowser\"><param name=\"ios-package\" value=\"CDVInAppBrowser\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"ChitchatRTC\"><param name=\"ios-package\" value=\"ChitchatRTC\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -190,6 +194,9 @@
             "PACKAGE_NAME": "com.rfl.stalk"
         },
         "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "chitchat-ChitchatRTC": {
             "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
@@ -678,6 +685,17 @@
                 "cordova.InAppBrowser.open",
                 "window.open"
             ]
+        },
+        {
+            "file": "plugins/chitchat-ChitchatRTC/www/chitchatrtc.js",
+            "id": "chitchat-ChitchatRTC.ChitchatRTC",
+            "pluginId": "chitchat-ChitchatRTC",
+            "clobbers": [
+                "cordova.plugins.ChitchatRTC"
+            ]
         }
-    ]
+    ],
+    "plugin_metadata": {
+        "chitchat-ChitchatRTC": "0.0.2"
+    }
 }

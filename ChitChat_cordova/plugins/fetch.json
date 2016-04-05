@@ -177,5 +177,13 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "chitchat-ChitchatRTC": {
+        "source": {
+            "type": "local",
+            "path": "/Users/prathan/WorkSpace/ChitchatRTCPlugin"
+        },
+        "is_top_level": true,
+        "variables": {}
     }
 }
