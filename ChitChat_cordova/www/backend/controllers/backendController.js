@@ -16,7 +16,7 @@
 			else createGroup(args);
 		});
         $("body").on("click",".more-info-org",function(){
-			$state.go('organization-member', { groupId: $(this).data("id") })
+			$state.go('backend.organization-member', { groupId: $(this).data("id") })
 		});
 		
         $scope.select2options = {
@@ -145,7 +145,7 @@
 			}).then(function success(res) {
 				console.log(res);
 				getDataGroup();
-				$state.go('organization');
+				$state.go('backend.organization');
 	        }, function errorCallback(err) {
 	            console.error('err.status');
 	        });
@@ -190,7 +190,7 @@
 			$scope.jobPosition.push({"job":main.getDataManager().companyInfo.jobPosition[x]});
 		}
         $("body").on("click",".more-info-pjb",function(){
-			$state.go('projectbase-member', { groupId: $(this).data("id") })
+			$state.go('backend.projectbase-member', { groupId: $(this).data("id") })
 		});
 
 		function getDataGroup(){
@@ -252,7 +252,7 @@
 			}).then(function success(res) {
 				console.log(res);
 				getDataGroup();
-				$state.go('projectbase');
+				$state.go('backend.projectbase');
 	        }, function errorCallback(err) {
 	            console.error('err.status');
 	        });

@@ -93,10 +93,8 @@ angular.module('starter',
 	.state('backend.member-info', {
 	    url: '/members/:memberId'
 	})
-	.state('members-new', {
-	    url: '/backend/members/newmember',
-	    templateUrl: 'backend/templates/member-newmember.html',
-	    controller: "backendMembers"
+	.state('backend.members-new', {
+	    url: '/members/newmember'
 	})
     /**
      * Groups-manager...
@@ -104,28 +102,20 @@ angular.module('starter',
 	.state('backend.organization', {
 	    url: '/organization'
 	})
-	.state('organization-create', {
-	    url: '/backend/organization/create',
-	    templateUrl: 'backend/templates/org-create.html',
-	    controller: "backendOrgController"
+	.state('backend.organization-create', {
+	    url: '/organization/create'
 	})
-	.state('organization-member', {
-	    url: '/backend/organization/:groupId',
-	    templateUrl: 'backend/templates/org-members.html',
-	    controller: "backendOrgController"
+	.state('backend.organization-member', {
+	    url: '/backend/organization/:groupId'
 	})
 	.state('backend.projectbase', {
 	    url: '/projectbase'
 	})
-	.state('projectbase-create', {
-	    url: '/backend/projectbase/create',
-	    templateUrl: 'backend/templates/pjb-create.html',
-	    controller: "backendPjbController"
+	.state('backend.projectbase-create', {
+	    url: '/backend/projectbase/create'
 	})
-	.state('projectbase-member', {
-	    url: '/backend/projectbase/:groupId',
-	    templateUrl: 'backend/templates/pjb-members.html',
-	    controller: "backendPjbController"
+	.state('backend.projectbase-member', {
+	    url: '/backend/projectbase/:groupId'
 	})
 
 	// if none of the above states are matched, use this as the fallback

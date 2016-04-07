@@ -30,12 +30,19 @@
                 <h1 class="md-toolbar-tools">{{title}}</h1>
             </md-toolbar>
             <div id="test-u-view" layout="column" layout-fill="" layout-align="top center">
-                <div ng-show="stateName == 'backend.members'" ng-include src="'backend/templates/members.html'" ng-controller="backendMembers" style="width:100%;"></div>
-                <div ng-show="stateName == 'backend.member-info'" ng-include src="'backend/templates/member-info.html'" ng-controller="backendMemberInfo" style="width:100%;"></div>
+                <div ng-show="stateName == 'backend.members'" ng-include src="'backend/templates/members.html'" ng-controller="backendMembers" class="content-main"></div>
+                <div ng-show="stateName == 'backend.members-new'" ng-include src="'backend/templates/member-newmember.html'" ng-controller="backendMembers" class="content-main"></div>
+                <div ng-show="stateName == 'backend.member-info'" ng-include src="'backend/templates/member-info.html'" ng-controller="backendMemberInfo" class="fix-contain content-main"></div>
 
-                <div ng-show="stateName == 'backend.organization'" ng-include src="'backend/templates/org.html'" ng-controller="backendOrgController" style="width:100%;"></div>
+                <div ng-show="stateName == 'backend.organization'" ng-include src="'backend/templates/org.html'" ng-controller="backendOrgController" class="content-main"></div>
+                <div ng-show="stateName == 'backend.organization-create'" ng-include src="'backend/templates/org-create.html'" ng-controller="backendOrgController" class="content-main"></div>
+                <div ng-show="stateName == 'backend.organization-member'" ng-include src="'backend/templates/org-members.html'" ng-controller="backendOrgController" class="content-main"></div>
 
-                <div ng-show="stateName == 'backend.projectbase'" ng-include src="'backend/templates/pjb.html'" ng-controller="backendPjbController" style="width:100%;"></div>
+
+                <div ng-show="stateName == 'backend.projectbase'" ng-include src="'backend/templates/pjb.html'" ng-controller="backendPjbController" class="content-main"></div>
+                <div ng-show="stateName == 'backend.projectbase-create'" ng-include src="'backend/templates/pjb-create.html'" ng-controller="backendPjbController" class="content-main"></div>
+                <div ng-show="stateName == 'backend.projectbase-member'" ng-include src="'backend/templates/pjb-members.html'" ng-controller="backendPjbController" class="content-main"></div>
+
             </div>
         </md-content>
     </section>

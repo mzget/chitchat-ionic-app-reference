@@ -206,6 +206,12 @@ md-toast.md-error-toast-theme .md-toast-content {
   background-color: red;
 }
 
+.content-main{
+  background-color: #ecf0f5;
+  width: 100%;
+  height: 100%;
+}
+
 .background {
     background: rgba(31,183,229,1);
  background: linear-gradient(135deg, rgba(31,183,229,1) 0%, rgba(31,183,229,1) 33%, rgba(1,165,230,1) 33%, rgba(1,165,230,1) 67%, rgba(31,183,229,1) 67%, rgba(31,183,229,1) 100%);
