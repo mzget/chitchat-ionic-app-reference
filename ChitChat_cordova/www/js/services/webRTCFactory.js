@@ -23,6 +23,8 @@
             webRtcComponent.lineBusyEvent = lineBusyHandler;
             webRtcComponent.hangUpCallEvent = hangUpCallHandler;
             webRtcComponent.contactLineBusyEvent = contactLineBusyHandler;
+            
+            main.getServerListener().addRTCListener(webRtcComponent);
         }
 
         function call(contactId) {
@@ -48,6 +50,8 @@
         }
         
         function voiceCallHandler(contactId, callerId) {
+            console.log("voiceCallHandler", contactId, callerId);
+            
             webRtcComponent.setCallState(CallState.signalingCall);
             
             cordova.exec(function success(callId) {

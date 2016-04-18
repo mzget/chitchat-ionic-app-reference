@@ -10,6 +10,7 @@ class WebRtcComponent implements absSpartan.IRTCListener {
         console.log("starting.. webRtcComponent.");
         
         this.webRtcCallState = new WebRtcCallState();
+        this.webRtcCallState.callState = CallState.idle;
     }
 
     public setCallState(state: CallState) {
@@ -35,7 +36,7 @@ class WebRtcComponent implements absSpartan.IRTCListener {
     }
 
     public onVoiceCall(dataEvent: any): void {
-        let body = dataEvent.body;
+        let body = JSON.parse(JSON.stringify(dataEvent));
         let contactId = body.from;
         let peerId = body.peerId;
 

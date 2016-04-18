@@ -52,6 +52,10 @@ class Main {
 
         return this.chatRoomApi;
     }
+    
+    public getServerListener() : ChatServer.ServerEventListener {
+        return this.serverListener;
+    }
     public setServerListener(server: ChatServer.ServerEventListener) {
         this.serverListener = server;
     }

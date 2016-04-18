@@ -874,6 +874,7 @@ module ChatServer {
         }
         public addRTCListener(obj: absSpartan.IRTCListener): void {
             this.rtcCallListener = obj;
+            this.callRTCEvents();
         }
 
         constructor() {
@@ -883,7 +884,6 @@ module ChatServer {
         public addListenner(resolve, rejected) {
             this.callFrontendServer();
             this.callChatServer();
-            this.callRTCEvents();
             this.callServerEvents();
 
             resolve();
@@ -961,6 +961,7 @@ module ChatServer {
 
         private callRTCEvents() {
             var self = this;
+            console.log("Register RTCEvents");
 
             pomelo.on(ServerEventListener.ON_VIDEO_CALL, (data) => {
                 console.log(ServerEventListener.ON_VIDEO_CALL, JSON.stringify(data));
@@ -969,7 +970,7 @@ module ChatServer {
             });
             pomelo.on(ServerEventListener.ON_VOICE_CALL, (data) => {
                 console.log(ServerEventListener.ON_VOICE_CALL, JSON.stringify(data));
-
+                    
                 self.rtcCallListener.onVoiceCall(data);
             });
             pomelo.on(ServerEventListener.ON_HANGUP_CALL, (data) => {

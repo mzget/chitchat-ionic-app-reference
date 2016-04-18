@@ -1106,6 +1106,9 @@ var Main = (function () {
         }
         return this.chatRoomApi;
     };
+    Main.prototype.getServerListener = function () {
+        return this.serverListener;
+    };
     Main.prototype.setServerListener = function (server) {
         this.serverListener = server;
     };
@@ -1334,6 +1337,7 @@ var WebRtcComponent = (function () {
         var body = dataEvent.body;
         var contactId = body.from;
         var peerId = body.peerId;
+        console.warn("onVoiceCall", body);
         if (this.webRtcCallState.callState === CallState.idle) {
             if (this.voiceCallEvent != null) {
                 this.voiceCallEvent(contactId, peerId);
@@ -2281,11 +2285,11 @@ var ChatServer;
         };
         ServerEventListener.prototype.addRTCListener = function (obj) {
             this.rtcCallListener = obj;
+            this.callRTCEvents();
         };
         ServerEventListener.prototype.addListenner = function (resolve, rejected) {
             this.callFrontendServer();
             this.callChatServer();
-            this.callRTCEvents();
             this.callServerEvents();
             resolve();
         };
@@ -2335,12 +2339,14 @@ var ChatServer;
         };
         ServerEventListener.prototype.callRTCEvents = function () {
             var self = this;
+            console.log("Register RTCEvents");
             pomelo.on(ServerEventListener.ON_VIDEO_CALL, function (data) {
                 console.log(ServerEventListener.ON_VIDEO_CALL, JSON.stringify(data));
                 self.rtcCallListener.onVideoCall(data);
             });
             pomelo.on(ServerEventListener.ON_VOICE_CALL, function (data) {
                 console.log(ServerEventListener.ON_VOICE_CALL, JSON.stringify(data));
+                console.warn("ON_VOICE_CALL", self.rtcCallListener);
                 self.rtcCallListener.onVoiceCall(data);
             });
             pomelo.on(ServerEventListener.ON_HANGUP_CALL, function (data) {
