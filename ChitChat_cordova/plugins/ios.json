@@ -72,6 +72,9 @@
         },
         "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "chitchat-ChitchatRTC": {
+            "PACKAGE_NAME": "com.rfl.stalk"
         }
     },
     "dependent_plugins": {}

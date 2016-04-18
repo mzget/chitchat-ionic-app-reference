@@ -483,10 +483,20 @@ module.exports = [
             "cordova.InAppBrowser.open",
             "window.open"
         ]
+    },
+    {
+        "file": "plugins/chitchat-ChitchatRTC/www/chitchatrtc.js",
+        "id": "chitchat-ChitchatRTC.ChitchatRTC",
+        "pluginId": "chitchat-ChitchatRTC",
+        "clobbers": [
+            "cordova.plugins.ChitchatRTC"
+        ]
     }
 ];
 module.exports.metadata = 
 // TOP OF METADATA
-{}
+{
+    "chitchat-ChitchatRTC": "0.0.2"
+}
 // BOTTOM OF METADATA
 });
