@@ -180,9 +180,8 @@
     },
     "chitchat-ChitchatRTC": {
         "source": {
-            "type": "git",
-            "url": "https://github.com/thanzero/ChitchatRTCPlugin.git",
-            "subdir": "."
+            "type": "local",
+            "path": "/Users/nattapon.r/Desktop/chitchat-ChitchatRTC"
         },
         "is_top_level": true,
         "variables": {}

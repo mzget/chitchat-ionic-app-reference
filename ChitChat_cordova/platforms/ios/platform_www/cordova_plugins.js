@@ -495,8 +495,6 @@ module.exports = [
 ];
 module.exports.metadata = 
 // TOP OF METADATA
-{
-    "chitchat-ChitchatRTC": "0.0.2"
-}
+{}
 // BOTTOM OF METADATA
 });

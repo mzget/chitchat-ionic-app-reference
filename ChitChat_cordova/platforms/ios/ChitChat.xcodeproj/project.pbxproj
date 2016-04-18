@@ -5,22 +5,30 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00277BDD1C96C671002B0D85 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00277BDC1C96C671002B0D85 /* Bolts.framework */; };
 		00277BDF1C96C689002B0D85 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00277BDE1C96C689002B0D85 /* Parse.framework */; };
+		00B66CA159754E589B5D1805 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4F293034BF423880A819DA /* Cache.swift */; };
+		013A6E4D9AFA4306A4C86920 /* ChitchatRTC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B08C1D56D3C45B5A32B50EE /* ChitchatRTC.swift */; };
 		046C501208284803A9DB7F71 /* libGTM_NSStringXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7787EC44FF5945DFBA7F17A3 /* libGTM_NSStringXML.a */; };
 		04DFD1CDB2E548F5AE144603 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D91F9164158424E9F4BF591 /* libz.tbd */; };
+		0558B6FE05B940B2942C4623 /* SocketIOClientStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4A3292BCB1495EABE3E3CB /* SocketIOClientStatus.swift */; };
 		07D82D0CF8F84F1492B3F7A7 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = C8627D02422E48F18953B157 /* CDVInAppBrowser.m */; };
 		080D8DF3277F4142B11A9DF1 /* CDVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BFA88B833DD4A5D8AD67AE2 /* CDVReachability.m */; };
 		0ED063C8A9DB48F2AD256BF3 /* APPBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0EE87F6E8B431EBF7055BD /* APPBadge.m */; };
+		108F03D56AA94D699EAE8439 /* SocketAckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F1E32E919844219A8AB9FD /* SocketAckManager.swift */; };
 		11B4B99A61A34C7294F3F091 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A3794A8D6192472BB187D7FA /* libsqlite3.dylib */; };
 		12553E5264914005A65D97DB /* CDVAssetLibraryFilesystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA6F84B4C1448CEBD9D9C15 /* CDVAssetLibraryFilesystem.m */; };
+		13056A8A323A43169F733EEE /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5864E91E16AF4687AE21B998 /* Data.swift */; };
 		13F117957FAC4C38A395E3DB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 24625CC15F9041C88C1A6313 /* libc++.tbd */; };
+		16EF496C52094092BE40F77A /* SocketEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6393449C156142788EB78E4C /* SocketEngineSpec.swift */; };
 		188F15CED9E44CF6B3ADA86A /* libGTM_KVO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE452EB18A489B94C3B811 /* libGTM_KVO.a */; };
 		1CB9696D0BE846F99F6673F7 /* AppDelegate+APPRegisterUserNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 5221B4A8B9C84836A2EA8DC1 /* AppDelegate+APPRegisterUserNotificationSettings.m */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1E7739B3B5FF4FADB31CABA3 /* libGTM_RoundedRectPath.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A0A9304283E0440481DA0E59 /* libGTM_RoundedRectPath.a */; };
+		1FC3E72594F84D2F9C168031 /* VoiceCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E340010177F4996A3E0DC13 /* VoiceCallViewController.swift */; };
 		287347C38A5B4006911C0636 /* UIApplication+APPLocalNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = E269C098BF9540878755F2CA /* UIApplication+APPLocalNotification.m */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28F2F3CD2A154DB4BF1FD481 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2D52BAE0C8DB4A65A7D6D09A /* CDVNotification.bundle */; };
@@ -47,22 +55,34 @@
 		30C1856619D5FC0A00212699 /* icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30C1856519D5FC0A00212699 /* icon-60@3x.png */; };
 		30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FC414816E50CA1004E6F35 /* icon-72@2x.png */; };
 		3112323C92CE4CE7A701FEC4 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C177A9FC3B94B1EA4DFE16F /* ImageIO.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		31F5D53133BF4C849404223D /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B0F65F880B49F1ABBC4EEC /* Config.swift */; };
 		33C3314C423C40C8B508061C /* ProgressIndicator.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F3215E8C6C5E4E2293AA85E1 /* ProgressIndicator.bundle */; };
+		33EC644E2CBC4712834D7B53 /* UIImage+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFBEC1F76E94242A4214F1F /* UIImage+Haneke.swift */; };
 		34BD264EA0294BDDB0A0F31B /* libGTM_NSData+zlib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCC9669C2931419F9EB67D28 /* libGTM_NSData+zlib.a */; };
+		3687E002AFB44C9BA9765295 /* CGSize+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA948236A281488896F9365B /* CGSize+Swift.swift */; };
 		3A565BB4FAD04B428B9E4164 /* libGIP_Reachability.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 821C4CDA7A614CF58873C67E /* libGIP_Reachability.a */; };
+		3CA0648A13494D67939E61BB /* VideoCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DE390802E84269B0BA6304 /* VideoCallViewController.swift */; };
+		4186201084A64754AD3ACC07 /* SocketParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06EC3FA13AF0463EBE8483F5 /* SocketParsable.swift */; };
 		42A0C01E984446ECAA7D41CA /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = AD88C10D0ADE4393A5AD27FE /* CDVSplashScreen.m */; };
 		43536015DFED4959BD273E38 /* libGTM_DebugUtils.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB4BBA7F71904073B9E35CB5 /* libGTM_DebugUtils.a */; };
+		4820C5BFABAC49A6B71F8180 /* SocketEngineClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591A15047EF7499EB71F83D9 /* SocketEngineClient.swift */; };
 		49B5B8807F9A453EBE592427 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF5235B2B51E4267AE349730 /* QuartzCore.framework */; };
+		4B12013C356C47CBBE7D3FD5 /* CryptoSwiftMD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0187AA7DEB86487DB47ED026 /* CryptoSwiftMD5.swift */; };
+		4B97D33CEA194DE89A238C2E /* SocketIOClientOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE9A913627849BEA55E22F4 /* SocketIOClientOption.swift */; };
+		50982355ABD94A7E9FB56B08 /* Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C285DE29FB4DBFA51B349D /* Fetch.swift */; };
 		533893123EAA4EA6AF632494 /* libGTM_NSScannerJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77EAA2A258634C92A53D5AC3 /* libGTM_NSScannerJSON.a */; };
 		53C6D4FBD8BA400BBF116E0F /* APPLocalNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA8D65DD1F9424A9E232DCA /* APPLocalNotification.m */; };
 		5726F87D75A2493BBB108DFA /* libGTM_UIFont+LineHeight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BE7C18E44D2418E8E19C084 /* libGTM_UIFont+LineHeight.a */; };
 		5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */; };
+		5BECC368908A470CBFCD1704 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE92BCBCC80E4BCA8C2FA91A /* Session.swift */; };
 		5E23E5FAF0434B91B809FA92 /* APPBackgroundMode.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6C94C1F9C84129A9485B79 /* APPBackgroundMode.m */; };
 		5E9E33F552BB47DB97FA7D41 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D67E2DFD9B3A4EEFBFB951A5 /* libsqlite3.tbd */; };
 		5EB1ECA1336F4A8484CE6B0E /* Toast.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCABF39DDFC402088B21713 /* Toast.m */; };
 		680E3E6C8E464BEC9BACB37E /* CDVCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 129DD35C39B84B1CB3551300 /* CDVCamera.m */; };
+		69B88E3D45FE48BCB4E95456 /* PCObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F09A0CB4F54900894B1737 /* PCObserver.swift */; };
 		69C5F1A761654E2D9B7A65C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CC4FECABA4B40F786F7C93A /* libsqlite3.0.dylib */; };
 		6BDA8A0D3DB24FF0AD0B3010 /* CDVCapture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E6BA07B254614AE6BAD5DF94 /* CDVCapture.bundle */; };
+		709663A6D6774C1DAB66AE4A /* NSURLResponse+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B06B01D9754C96BBDEAF64 /* NSURLResponse+Haneke.swift */; };
 		74A52D15E51A48F792052CB3 /* libGGLCloudMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E56DFF86982F4C66AA0E918E /* libGGLCloudMessaging.a */; };
 		75EF5F4FF08842DB967ACA2A /* UIImage+CropScaleOrientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B6DEDB53124484684C54DE5 /* UIImage+CropScaleOrientation.m */; };
 		775E372BD321463D8B33056A /* IonicKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 92ADBDEE498F4A85B7B766BF /* IonicKeyboard.m */; };
@@ -80,10 +100,16 @@
 		7E7966E61810823500FA85AD /* icon-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DC1810823500FA85AD /* icon-small.png */; };
 		7E7966E71810823500FA85AD /* icon-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DD1810823500FA85AD /* icon-small@2x.png */; };
 		7ED9229849FA44BCAF3AEB40 /* libGTM_AddressBook.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B4B93F43F6B4980952615A0 /* libGTM_AddressBook.a */; };
+		7F7EC63FC9C54D8C93B88E6E /* DiskCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A8495090B54CA681119830 /* DiskCache.swift */; };
 		81E0FBD097E94365BBC6DB6D /* libProtocolBuffers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E40DF2A432564D628A3F3A4B /* libProtocolBuffers.a */; };
+		81F3E697977649C5A4D7E830 /* SwiftRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = E05DD64525F4496280C2073E /* SwiftRegex.swift */; };
 		86D3881DFCB4468BABECEFA0 /* libGTM_SystemVersion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 789C371302B74007A436CEC2 /* libGTM_SystemVersion.a */; };
+		8DCF0F21A7E04E13BE0F8E5E /* String+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0960ACD5D974561A24BDC2C /* String+Haneke.swift */; };
+		906AFF4DA5F44E20ABE2D64B /* UIView+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D72098D2BA44AB8305B50C /* UIView+Haneke.swift */; };
+		9268099F06AB4186A8E7DEDB /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4C58F65B0C48958A093EC9 /* Format.swift */; };
 		942DC6F9E84B4C2490C8CDDF /* libGcmLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8FE527B6FB4966B2C1E953 /* libGcmLib.a */; };
 		95040522CAFB4CD18A4F9B50 /* UIApplication+APPBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = DA49D9E334E947C0801A19A6 /* UIApplication+APPBadge.m */; };
+		952052FE65B7441D826BAB86 /* DiskFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46C84435FFB44448EB85A6F /* DiskFetcher.swift */; };
 		970F33271CB372D600E3C03C /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 970F33261CB372D600E3C03C /* AVKit.framework */; };
 		970F332A1CB374E700E3C03C /* (null) in Sources */ = {isa = PBXBuildFile; };
 		970F332B1CB374F300E3C03C /* Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 960FC31627E844279FFA4D52 /* Bridging-Header.h */; };
@@ -91,27 +117,42 @@
 		970F332F1CB3773900E3C03C /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 970F332E1CB3773900E3C03C /* VideoToolbox.framework */; };
 		970F33311CB378E700E3C03C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 970F33301CB378E700E3C03C /* Images.xcassets */; };
 		9A1DA960BA044F8E9A70E38A /* CDVConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = A45B7C9CD0224DF4B32A83EB /* CDVConnection.m */; };
+		9A94F74D053B46B59C3B7562 /* ReceiveCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049310E0D2B84D44BE630360 /* ReceiveCallController.swift */; };
 		9AAC52C68B7B4D0591F8004A /* CDVViewController+SplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 7526D57AFAFE461392498941 /* CDVViewController+SplashScreen.m */; };
 		9EA95C8E4530415BB706B790 /* libGTM_GTMURLBuilder.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8ACE5B0E3FED46FA8E3BE731 /* libGTM_GTMURLBuilder.a */; };
+		9EF64499C68047D3903F2391 /* iphone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9AFE4FF4E0A3444EBEC5C617 /* iphone.mp3 */; };
 		9F3FA08B3A3C4C00A87E086E /* libGTM_StringEncoding.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0FDC38BA2B4C8D8D8D1EB5 /* libGTM_StringEncoding.a */; };
 		A13EDD7FFBCC4677A70CB752 /* libGGLCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68601171109A455CAB4239E6 /* libGGLCore.a */; };
 		A1584B3B4219405688F8DCBE /* CDVCapture.m in Sources */ = {isa = PBXBuildFile; fileRef = F478EB720EAD4A8980A8A2B5 /* CDVCapture.m */; };
 		A216F09138F24A84AE7C9927 /* libGGLInstanceIDLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 255A830DC7AE4FB09F60B6F4 /* libGGLInstanceIDLib.a */; };
 		A50AC1B26DB3436EB115DBB1 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90ABA7415D904AB2A54A0962 /* CoreLocation.framework */; };
+		A59002F7129D4C56836A717A /* SocketAnyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC048F5F414010AE49A841 /* SocketAnyEvent.swift */; };
 		A7145C0EEFA64814B9CA4992 /* libGSDK_Overload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 357BFC81576A43BFB0515E7F /* libGSDK_Overload.a */; };
 		A9428903958B4D4D9CB06C43 /* libGTM_iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DDB468231B9416E9FAE542B /* libGTM_iPhone.a */; };
+		ACFD1ABC335345E4ADA354F7 /* SocketClientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4A37AAF47143018D45918C /* SocketClientSpec.swift */; };
 		AE2F21FAC0234699AC61729C /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9F36C52DD3410FBCAEDC03 /* MBProgressHUD.m */; };
+		AEB03A07C57B46808DC1B5C0 /* UIImageView+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = B074136757F942188DB7A098 /* UIImageView+Haneke.swift */; };
 		AEEC688514404CD0AB0ABB3A /* CDVJpegHeaderWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A72FEE7E754A73A01A4266 /* CDVJpegHeaderWriter.m */; };
+		AF09B1E36DE44404AD1131BB /* SocketIOClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC71504AB7D248E483275B94 /* SocketIOClient.swift */; };
+		B002762220CE4E1BB5C86E73 /* Chitchat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACF911B4813C4E43BF5CFFB0 /* Chitchat.storyboard */; };
 		B076F81557D74968A0E261D6 /* libGTM_Regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 513207D674954633BCB61A5C /* libGTM_Regex.a */; };
+		B13B9A3A428A4F43A458758D /* NSHTTPURLResponse+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44E52A3763D8476387DB5BAF /* NSHTTPURLResponse+Haneke.swift */; };
 		B42545B206ED471E83CE5EE4 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C4050B2652F4473B1AC5C71 /* OpenGLES.framework */; };
 		B47E39B92742451F92BFD95C /* ProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BB569FB5365466C9192A663 /* ProgressIndicator.m */; };
 		B4D89AB2DEC14DDBA0A48284 /* APPLocalNotificationOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EB6CE358574797A68F0477 /* APPLocalNotificationOptions.m */; };
 		B700A9B61B9F49E991A8B7CB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D161C5A288149579BDA5007 /* CoreMedia.framework */; };
+		BA45B7B6FDCC4C57A63AE0DE /* SocketAckEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51CE37E920E749B190F453B3 /* SocketAckEmitter.swift */; };
+		BFBB9B4B8E094E42B5B9D466 /* SocketLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D171CDCB934C51BC3E1546 /* SocketLogger.swift */; };
 		C0F00F2F5DFA4BD3887C82AA /* CDVLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D08B1B330C7419D8947AAB0 /* CDVLogger.m */; };
+		C1059ADE5C01420091116C90 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 727B1685B49641B6B1ED5F70 /* Log.swift */; };
 		C19D298523F2469583D70F3A /* CDVFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E6963A1FCAF4E06A642D13A /* CDVFileTransfer.m */; };
 		C2D29B0889EE4883BD31FA6F /* libGTM_NSStringHTML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9441B2E6DF5042E3A8A83253 /* libGTM_NSStringHTML.a */; };
+		C8D20A65B5DC436A85952D8D /* SocketStringReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EEB7F4A25C430E8726FC85 /* SocketStringReader.swift */; };
+		CA8ED0C4159A42C080175212 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8987642C409F443E8D900E65 /* WebSocket.swift */; };
 		CABB8520DA4C4808BFB3FB8C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A7964836E7545C1A3098AFE /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		CB61CF36E0E840C2B022E24C /* SocketEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479053C430234D27A5688BD2 /* SocketEngine.swift */; };
 		CC5F1CC5880E4D5A8A89D618 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD30D3B3E0B8462D842AF79A /* CoreTelephony.framework */; };
+		CD306E37880F4FB88CB602B1 /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30EC1879632C4296A2B601FF /* libWebRTC.a */; };
 		CE9BAAE9BFB8446B869673B3 /* libGTM_NSDictionary+URLArguments.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D691CA822249E681AB64E0 /* libGTM_NSDictionary+URLArguments.a */; };
 		CF0F03F118C447C79C1D3871 /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 7426864F963449E7AFFE69B8 /* CDVNotification.m */; };
 		D2F6D7A23A7241A390070F11 /* CDVFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 735CB891382A40F78BDF434C /* CDVFile.m */; };
@@ -121,68 +162,28 @@
 		D640B03B4B64447B84E13939 /* appbeep.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6849F4FAD8794D4CB19D3B4A /* appbeep.wav */; };
 		DE339B18DDAF476698072478 /* CDVDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B8CB664A96486FB584C480 /* CDVDevice.m */; };
 		E0151886D8634DECB11F1AA8 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10827B2F297E4426B8BB539D /* AddressBook.framework */; };
+		E266D61FBA7C4ABCB5302ACB /* SocketEnginePollable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3011A8D812104B0E857477B9 /* SocketEnginePollable.swift */; };
+		E2C4DCE6BF11424380CF01C3 /* SocketEnginePacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425394A95FF44AB0B4DA92BD /* SocketEnginePacketType.swift */; };
+		E54E9A94CC964229A9DE677D /* SocketTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B3FAE124C44002B2998A4B /* SocketTypes.swift */; };
+		E6180E2DA39C433ABBF518F1 /* SocketEngineWebsocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = B700A741D4EA4D5E94D0B12F /* SocketEngineWebsocket.swift */; };
+		E6E217D74405490FB9FB7262 /* NSFileManager+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AFF8B8D3940FE954A651E /* NSFileManager+Haneke.swift */; };
 		E79DE5D807314C01B514904B /* PushPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = A1336C1741B54DE8BCE57A19 /* PushPlugin.m */; };
+		EBAA734BB5F5466198E9C3DA /* SocketEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A7C7536DD34D8FAC7E3B83 /* SocketEventHandler.swift */; };
+		EC850DBEEBD647B58F4E92E6 /* SocketPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BBF41CE4D243F6BA416430 /* SocketPacket.swift */; };
 		ECA6813E26954156A0DF9CAD /* libGTM_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78CC86946D8C45FF95A590BF /* libGTM_core.a */; };
+		ED888464C0644878AB6A7264 /* UIButton+Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADD277161AC34F7BA629EDAA /* UIButton+Haneke.swift */; };
 		EEC3DA817DAC45AF8D44D014 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25B044B506F346C2A08D5C87 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		EF68563B91A14C5DBA5AB338 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C563007EC48E4A18A707151D /* CoreVideo.framework */; };
+		EF83F5ADAB23407E88D5A0B7 /* NetworkFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA43597855EC4899AE8FEDAA /* NetworkFetcher.swift */; };
 		F06F7050776349269EB1050B /* AppDelegate+notification.m in Sources */ = {isa = PBXBuildFile; fileRef = B6EBC3E0060F4457940FBF24 /* AppDelegate+notification.m */; };
 		F32AF68BED4842AE9CF22BF3 /* IonicCameraRoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 5916C6BA7E304FA3BC2BC828 /* IonicCameraRoll.m */; };
 		F3F5A5793E0D47F1BCE5B580 /* CDVLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = BA56260288654FE7921620B3 /* CDVLocation.m */; };
 		F548705ECF41489AA44C7B75 /* CDVLocalFilesystem.m in Sources */ = {isa = PBXBuildFile; fileRef = C35134428E314467810CAD58 /* CDVLocalFilesystem.m */; };
+		F6E39F145C374A1C8486E24A /* SessionDescriptionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE4C10D9E4542A9BEE34939 /* SessionDescriptionDelegate.swift */; };
 		F98B1C645F8342B1BAAF60B1 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54F8369875254EF7AE1AFCB4 /* Toast+UIView.m */; };
+		F9EC53425FAA4C1E9DFE30C4 /* Haneke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEF957EC7544734A30CA3F8 /* Haneke.swift */; };
 		FB5530B033024253948264CA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACD86E7E61E4DD19015E824 /* AVFoundation.framework */; };
-		CD7A0BD2AB4C48E5BB6791F9 /* ChitchatRTC.swift in Resources */ = {isa = PBXBuildFile; fileRef = 982EEBC9DB66454EAB47E924 /* ChitchatRTC.swift */; };
-		FD0550A678334732931D6F5E /* ReceiveCallController.swift in Resources */ = {isa = PBXBuildFile; fileRef = 868E7CD66C9E4D02B542934A /* ReceiveCallController.swift */; };
-		7051337879EC4532B95B4D57 /* VoiceCallViewController.swift in Resources */ = {isa = PBXBuildFile; fileRef = 91FBD76C179B4EBDA956DB43 /* VoiceCallViewController.swift */; };
-		5812CD0003B7463FBDF64765 /* VideoCallViewController.swift in Resources */ = {isa = PBXBuildFile; fileRef = 6377C83B294E41A8A1E17414 /* VideoCallViewController.swift */; };
-		4C1368A65455410E81AD48F3 /* PCObserver.swift in Resources */ = {isa = PBXBuildFile; fileRef = BD3F64BCA489485E965E9F88 /* PCObserver.swift */; };
-		51DCA22A6E0C4C5492E7E676 /* Session.swift in Resources */ = {isa = PBXBuildFile; fileRef = 4A06EE5304C4407799B1880D /* Session.swift */; };
-		6710CF327F1848859A25538A /* Config.swift in Resources */ = {isa = PBXBuildFile; fileRef = 9000D894687C4F09A784C687 /* Config.swift */; };
-		4B206C8002394230B90B6481 /* SessionDescriptionDelegate.swift in Resources */ = {isa = PBXBuildFile; fileRef = AC3985AA473B488787659C3B /* SessionDescriptionDelegate.swift */; };
-		FDAD23335D5649DA8D66280A /* SocketAckEmitter.swift in Resources */ = {isa = PBXBuildFile; fileRef = DEAD288E73F44416AA139A8F /* SocketAckEmitter.swift */; };
-		22CAE87485A643E7BC749CC3 /* SocketAckManager.swift in Resources */ = {isa = PBXBuildFile; fileRef = 62943C8786C440C49BB4296F /* SocketAckManager.swift */; };
-		2819570E7C154FB3BA0BF3C3 /* SocketAnyEvent.swift in Resources */ = {isa = PBXBuildFile; fileRef = 150A24AC2D1B4795BC17EC35 /* SocketAnyEvent.swift */; };
-		3D7A4E18946046DBA328DC04 /* SocketClientSpec.swift in Resources */ = {isa = PBXBuildFile; fileRef = 12EB943883E74CDDB573BF24 /* SocketClientSpec.swift */; };
-		210056AEB0004D59B44BE889 /* SocketEngine.swift in Resources */ = {isa = PBXBuildFile; fileRef = EB92E5F7AE334F03A83F629C /* SocketEngine.swift */; };
-		5AFBAD67DA8B40C1BB00D2DA /* SocketEngineClient.swift in Resources */ = {isa = PBXBuildFile; fileRef = 01B707F1A9BD4F7487F4F35A /* SocketEngineClient.swift */; };
-		C0674DE4679B4B04BDEFCB0F /* SocketEnginePacketType.swift in Resources */ = {isa = PBXBuildFile; fileRef = 5CA13609B6EF4F44914E8960 /* SocketEnginePacketType.swift */; };
-		BA9F12DE2D1D4FF3A8E533B7 /* SocketEnginePollable.swift in Resources */ = {isa = PBXBuildFile; fileRef = 98200D6E858D41BEB53EDD00 /* SocketEnginePollable.swift */; };
-		7E1D9B9CE23A46B299ACE43E /* SocketEngineSpec.swift in Resources */ = {isa = PBXBuildFile; fileRef = 1AE25539EED048ADB8F7DFDB /* SocketEngineSpec.swift */; };
-		62C4E38E70A64937914FF643 /* SocketEngineWebsocket.swift in Resources */ = {isa = PBXBuildFile; fileRef = F855B188FC3B4BCD87131A18 /* SocketEngineWebsocket.swift */; };
-		642FAFB86DDA42FABB4264B9 /* SocketEventHandler.swift in Resources */ = {isa = PBXBuildFile; fileRef = 53EB4DEECFF24A46A2EECD5F /* SocketEventHandler.swift */; };
-		580E46BFBF5B4E5485C804C9 /* SocketIOClient.swift in Resources */ = {isa = PBXBuildFile; fileRef = BB446A9B1EB945CF866BEA38 /* SocketIOClient.swift */; };
-		68F8A393BFA94B3593046256 /* SocketIOClientOption.swift in Resources */ = {isa = PBXBuildFile; fileRef = B3E440E5BD7E4AC0812ADDD4 /* SocketIOClientOption.swift */; };
-		EAD32249865F4836B2FBD785 /* SocketIOClientStatus.swift in Resources */ = {isa = PBXBuildFile; fileRef = AABFF33DB97E40E683536778 /* SocketIOClientStatus.swift */; };
-		9156A8A18ADA48C29106507B /* SocketLogger.swift in Resources */ = {isa = PBXBuildFile; fileRef = 8C0FA3367E704F309A7B4B14 /* SocketLogger.swift */; };
-		775E51C5A6454169A41007F4 /* SocketPacket.swift in Resources */ = {isa = PBXBuildFile; fileRef = 981132AEA9F64231A23F7CFD /* SocketPacket.swift */; };
-		AB847F079D884016B665523C /* SocketParsable.swift in Resources */ = {isa = PBXBuildFile; fileRef = BC3660459DD441468B921349 /* SocketParsable.swift */; };
-		38CA85EFF00D4F18A34410D0 /* SocketStringReader.swift in Resources */ = {isa = PBXBuildFile; fileRef = A9B868F311724AF2A50D38ED /* SocketStringReader.swift */; };
-		9E89285F578347AD8297872E /* SocketTypes.swift in Resources */ = {isa = PBXBuildFile; fileRef = EA3E3B1551E840C9911D1B4F /* SocketTypes.swift */; };
-		0D05233F5CAE4501B910B525 /* SwiftRegex.swift in Resources */ = {isa = PBXBuildFile; fileRef = 5810D131E7FC4F98BC8D3F63 /* SwiftRegex.swift */; };
-		5D2FB5BA687D46239336AD43 /* WebSocket.swift in Resources */ = {isa = PBXBuildFile; fileRef = D6CD993751AA457591C4DAE9 /* WebSocket.swift */; };
-		9E459BAE664A42C18CD3C45C /* Cache.swift in Resources */ = {isa = PBXBuildFile; fileRef = EF8C9F6FC86C45378FAB4BE3 /* Cache.swift */; };
-		FC9F4B0C01074D148DA8C20A /* CGSize+Swift.swift in Resources */ = {isa = PBXBuildFile; fileRef = FE9E30F19DEC4EF7A4DE2B7C /* CGSize+Swift.swift */; };
-		5ADEE74204864E879F7AE4B6 /* CryptoSwiftMD5.swift in Resources */ = {isa = PBXBuildFile; fileRef = DCD9EE6FC35442399F3CEDFA /* CryptoSwiftMD5.swift */; };
-		07D5FA7B25844BB29C4BA26A /* Data.swift in Resources */ = {isa = PBXBuildFile; fileRef = 16BFC6AEDF7C479088DD939D /* Data.swift */; };
-		EB16D8C6901949B99C42CC21 /* DiskCache.swift in Resources */ = {isa = PBXBuildFile; fileRef = 48238924D9774D59AAF6A820 /* DiskCache.swift */; };
-		E8AC964128C94CB2AD75069F /* DiskFetcher.swift in Resources */ = {isa = PBXBuildFile; fileRef = 11F255CCF55E44E88D7754BC /* DiskFetcher.swift */; };
-		A3394A1704054EB39A5FA8DF /* Fetch.swift in Resources */ = {isa = PBXBuildFile; fileRef = E64F3B737FF448ABAAB5C3FC /* Fetch.swift */; };
-		C8DAB993FA0849D9A5E8C724 /* Fetcher.swift in Resources */ = {isa = PBXBuildFile; fileRef = 31E7D464C774408D99FA86FA /* Fetcher.swift */; };
-		6F9C7FBCD27F470AB25ACA3F /* Format.swift in Resources */ = {isa = PBXBuildFile; fileRef = A4D432C4304047B587AD45A5 /* Format.swift */; };
-		43773F4DC62045EE84A75CB7 /* Haneke.swift in Resources */ = {isa = PBXBuildFile; fileRef = EE2CF6EE943242729E1C8F40 /* Haneke.swift */; };
-		7F93312D687F4B43B5EFB626 /* Log.swift in Resources */ = {isa = PBXBuildFile; fileRef = 44AEE451153F4526B493431D /* Log.swift */; };
-		3E9247F84EFE4AD5B6886406 /* NetworkFetcher.swift in Resources */ = {isa = PBXBuildFile; fileRef = 67C54487148C4D9EACAB4664 /* NetworkFetcher.swift */; };
-		9DB802AB561349558A0BFD59 /* NSFileManager+Haneke.swift in Resources */ = {isa = PBXBuildFile; fileRef = 4CDD16B30DCD41CAB36721B7 /* NSFileManager+Haneke.swift */; };
-		37E4495373FF4B65AE094A55 /* NSHTTPURLResponse+Haneke.swift in Resources */ = {isa = PBXBuildFile; fileRef = 2FBD3EF5718B4A92A3C6674D /* NSHTTPURLResponse+Haneke.swift */; };
-		5032D07CD08C489781731368 /* NSURLResponse+Haneke.swift in Resources */ = {isa = PBXBuildFile; fileRef = 0C8F733AA8B04B34B29232A3 /* NSURLResponse+Haneke.swift */; };
-		5F2C0C11755F452B94CE8CF8 /* String+Haneke.swift in Resources */ = {isa = PBXBuildFile; fileRef = 00F067A8FF7345B18D5D0BBE /* String+Haneke.swift */; };
-		7C27E097D98A40509F373061 /* UIButton+Haneke.swift in Resources */ = {isa = PBXBuildFile; fileRef = 24EB2316C53F49C4A16F4884 /* UIButton+Haneke.swift */; };
-		600711EAF42A498FB16C7399 /* UIImage+Haneke.swift in Resources */ = {isa = PBXBuildFile; fileRef = 21607E835C7B45079FE3815D /* UIImage+Haneke.swift */; };
-		0BC86BD409714A8DA3FB5740 /* UIImageView+Haneke.swift in Resources */ = {isa = PBXBuildFile; fileRef = CD22C76DB7E64084922067CB /* UIImageView+Haneke.swift */; };
-		5E34C02C16424551A88E65EC /* UIView+Haneke.swift in Resources */ = {isa = PBXBuildFile; fileRef = 639494DC6B1647A7B60B3A9A /* UIView+Haneke.swift */; };
-		6713110A6BCB4A17BBF20C0F /* libWebRTC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C0932541E96D4FC3955EA28A /* libWebRTC.a */; };
-		31D0BCE47A304248BD4036A2 /* Chitchat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A236490E0CD439EB52C7C40 /* Chitchat.storyboard */; };
-		EBDBC3DD3C464BE4A67CF917 /* iphone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E5D03ABF38184348B1A53F9F /* iphone.mp3 */; };
+		FCD13EFF950C4983A4DC83E0 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFF0BD5230E74C71BE828269 /* Fetcher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,7 +206,13 @@
 /* Begin PBXFileReference section */
 		00277BDC1C96C671002B0D85 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		00277BDE1C96C689002B0D85 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		0187AA7DEB86487DB47ED026 /* CryptoSwiftMD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = CryptoSwiftMD5.swift; path = "chitchat-ChitchatRTC/Haneke/CryptoSwiftMD5.swift"; sourceTree = "<group>"; };
 		03D1B49648374A63B6F0328B /* CDVConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVConnection.h; path = "cordova-plugin-network-information/CDVConnection.h"; sourceTree = "<group>"; };
+		03EEB7F4A25C430E8726FC85 /* SocketStringReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketStringReader.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketStringReader.swift"; sourceTree = "<group>"; };
+		049310E0D2B84D44BE630360 /* ReceiveCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = ReceiveCallController.swift; path = "chitchat-ChitchatRTC/ReceiveCallController.swift"; sourceTree = "<group>"; };
+		0681C13A0A294B488E3121B2 /* RTCMediaSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaSource.h; path = "chitchat-ChitchatRTC/RTCMediaSource.h"; sourceTree = "<group>"; };
+		06EC3FA13AF0463EBE8483F5 /* SocketParsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketParsable.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketParsable.swift"; sourceTree = "<group>"; };
+		08F09A0CB4F54900894B1737 /* PCObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = PCObserver.swift; path = "chitchat-ChitchatRTC/PCObserver.swift"; sourceTree = "<group>"; };
 		0B7B3757933141CEBF2AA02C /* GGLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GGLContext.h; path = "phonegap-plugin-push/GCM/Headers/GGLContext.h"; sourceTree = "<group>"; };
 		0C4050B2652F4473B1AC5C71 /* OpenGLES.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		0CA6F84B4C1448CEBD9D9C15 /* CDVAssetLibraryFilesystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVAssetLibraryFilesystem.m; path = "cordova-plugin-file/CDVAssetLibraryFilesystem.m"; sourceTree = "<group>"; };
@@ -215,29 +222,36 @@
 		129DD35C39B84B1CB3551300 /* CDVCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVCamera.m; path = "cordova-plugin-camera/CDVCamera.m"; sourceTree = "<group>"; };
 		13B802E4C82245939DE098D2 /* GGLInstanceID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GGLInstanceID.h; path = "phonegap-plugin-push/GCM/Headers/GGLInstanceID.h"; sourceTree = "<group>"; };
 		13D4D48D2D53471E9F64FA11 /* CDVFileTransfer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVFileTransfer.h; path = "cordova-plugin-file-transfer/CDVFileTransfer.h"; sourceTree = "<group>"; };
+		14B06B01D9754C96BBDEAF64 /* NSURLResponse+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = "NSURLResponse+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/NSURLResponse+Haneke.swift"; sourceTree = "<group>"; };
 		17094DFEBA36485AA4D7BD54 /* CDVLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVLocation.h; path = "cordova-plugin-geolocation/CDVLocation.h"; sourceTree = "<group>"; };
 		173F2DC277944E8F9EFA5A61 /* APPBackgroundMode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPBackgroundMode.h; path = "de.appplant.cordova.plugin.background-mode/APPBackgroundMode.h"; sourceTree = "<group>"; };
 		1A0B7870AE2D40F4973C8B66 /* CDVJpegHeaderWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVJpegHeaderWriter.h; path = "cordova-plugin-camera/CDVJpegHeaderWriter.h"; sourceTree = "<group>"; };
 		1A231BBF775E42658AE5DF2D /* UIImage+CropScaleOrientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+CropScaleOrientation.h"; path = "cordova-plugin-camera/UIImage+CropScaleOrientation.h"; sourceTree = "<group>"; };
+		1A4A37AAF47143018D45918C /* SocketClientSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketClientSpec.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketClientSpec.swift"; sourceTree = "<group>"; };
 		1B51C0908EA047E09ACF157B /* APPLocalNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPLocalNotification.h; path = "de.appplant.cordova.plugin.local-notification/APPLocalNotification.h"; sourceTree = "<group>"; };
 		1B5CBCD67DD94E738CDC203A /* GCMPubSub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCMPubSub.h; path = "phonegap-plugin-push/GCM/Headers/GCMPubSub.h"; sourceTree = "<group>"; };
 		1C177A9FC3B94B1EA4DFE16F /* ImageIO.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		1C4A3292BCB1495EABE3E3CB /* SocketIOClientStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketIOClientStatus.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketIOClientStatus.swift"; sourceTree = "<group>"; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* ChitChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChitChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E340010177F4996A3E0DC13 /* VoiceCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = VoiceCallViewController.swift; path = "chitchat-ChitchatRTC/VoiceCallViewController.swift"; sourceTree = "<group>"; };
 		1E8FE527B6FB4966B2C1E953 /* libGcmLib.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGcmLib.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGcmLib.a"; sourceTree = "<group>"; };
 		23CE452EB18A489B94C3B811 /* libGTM_KVO.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_KVO.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_KVO.a"; sourceTree = "<group>"; };
 		24625CC15F9041C88C1A6313 /* libc++.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; path = "libc++.tbd"; sourceTree = "<group>"; };
 		255A830DC7AE4FB09F60B6F4 /* libGGLInstanceIDLib.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGGLInstanceIDLib.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGGLInstanceIDLib.a"; sourceTree = "<group>"; };
 		25B044B506F346C2A08D5C87 /* SystemConfiguration.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		28B0F65F880B49F1ABBC4EEC /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = Config.swift; path = "chitchat-ChitchatRTC/Config.swift"; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29DE55CB2B30422D9E955268 /* CDVLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVLogger.h; path = "cordova-plugin-console/CDVLogger.h"; sourceTree = "<group>"; };
 		2A7AB5AC12B943FFA35A3106 /* ProgressIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgressIndicator.h; path = org.pbernasconi.progressindicator/ProgressIndicator.h; sourceTree = "<group>"; };
+		2AFBEC1F76E94242A4214F1F /* UIImage+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = "UIImage+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/UIImage+Haneke.swift"; sourceTree = "<group>"; };
 		2BA8D65DD1F9424A9E232DCA /* APPLocalNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPLocalNotification.m; path = "de.appplant.cordova.plugin.local-notification/APPLocalNotification.m"; sourceTree = "<group>"; };
 		2D161C5A288149579BDA5007 /* CoreMedia.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		2D52BAE0C8DB4A65A7D6D09A /* CDVNotification.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CDVNotification.bundle; sourceTree = "<group>"; };
 		2EDA5DEE04164C76A84542D2 /* UIApplication+APPBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIApplication+APPBadge.h"; path = "de.appplant.cordova.plugin.badge/UIApplication+APPBadge.h"; sourceTree = "<group>"; };
+		3011A8D812104B0E857477B9 /* SocketEnginePollable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketEnginePollable.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketEnginePollable.swift"; sourceTree = "<group>"; };
 		301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
 		301BF56E109A69640062928A /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = SOURCE_ROOT; };
 		302D95EE14D2391D003F00A1 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -257,42 +271,65 @@
 		30B4F2FE19D5E07200D9F7D8 /* Default-736h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h.png"; sourceTree = "<group>"; };
 		30B4F2FF19D5E07200D9F7D8 /* Default-Landscape-736h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape-736h.png"; sourceTree = "<group>"; };
 		30C1856519D5FC0A00212699 /* icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-60@3x.png"; sourceTree = "<group>"; };
+		30EC1879632C4296A2B601FF /* libWebRTC.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libWebRTC.a; path = "ChitChat/Plugins/chitchat-ChitchatRTC/libWebRTC.a"; sourceTree = "<group>"; };
 		30FC414816E50CA1004E6F35 /* icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-72@2x.png"; sourceTree = "<group>"; };
 		31C0EB553A8A4587A4DB2523 /* Toast+UIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Toast+UIView.h"; path = "cordova-plugin-x-toast/Toast+UIView.h"; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* ChitChat-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ChitChat-Prefix.pch"; sourceTree = "<group>"; };
+		32DE390802E84269B0BA6304 /* VideoCallViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = VideoCallViewController.swift; path = "chitchat-ChitchatRTC/VideoCallViewController.swift"; sourceTree = "<group>"; };
+		33B3FAE124C44002B2998A4B /* SocketTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketTypes.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketTypes.swift"; sourceTree = "<group>"; };
+		3455AD8DD8924CD7A410EB84 /* RTCICEServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCICEServer.h; path = "chitchat-ChitchatRTC/RTCICEServer.h"; sourceTree = "<group>"; };
 		357BFC81576A43BFB0515E7F /* libGSDK_Overload.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGSDK_Overload.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGSDK_Overload.a"; sourceTree = "<group>"; };
+		37831A865EA24DF992D7A4FB /* RTCMediaStreamTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaStreamTrack.h; path = "chitchat-ChitchatRTC/RTCMediaStreamTrack.h"; sourceTree = "<group>"; };
+		38AE6CEC109B439692D1E401 /* RTCAudioSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCAudioSource.h; path = "chitchat-ChitchatRTC/RTCAudioSource.h"; sourceTree = "<group>"; };
 		38D691CA822249E681AB64E0 /* libGTM_NSDictionary+URLArguments.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = "libGTM_NSDictionary+URLArguments.a"; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_NSDictionary+URLArguments.a"; sourceTree = "<group>"; };
+		3AAE1964EB0C43D2BC491701 /* RTCVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoRenderer.h; path = "chitchat-ChitchatRTC/RTCVideoRenderer.h"; sourceTree = "<group>"; };
 		3ABF2DBE26D743038D3A35B6 /* APPBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPBadge.h; path = de.appplant.cordova.plugin.badge/APPBadge.h; sourceTree = "<group>"; };
 		3BE7C18E44D2418E8E19C084 /* libGTM_UIFont+LineHeight.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = "libGTM_UIFont+LineHeight.a"; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_UIFont+LineHeight.a"; sourceTree = "<group>"; };
 		3F448B20E0CC498BA11CC8EA /* Toast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Toast.h; path = "cordova-plugin-x-toast/Toast.h"; sourceTree = "<group>"; };
 		3F8895CB1B664787B9314740 /* CDVSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVSound.m; path = "cordova-plugin-media/CDVSound.m"; sourceTree = "<group>"; };
+		425394A95FF44AB0B4DA92BD /* SocketEnginePacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketEnginePacketType.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketEnginePacketType.swift"; sourceTree = "<group>"; };
 		425C929DBA2D474EA3349C52 /* GGLInstanceIDDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GGLInstanceIDDelegate.h; path = "phonegap-plugin-push/GCM/Headers/GGLInstanceIDDelegate.h"; sourceTree = "<group>"; };
 		42663EB4009446FE91089356 /* UIWebViewExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIWebViewExtension.h; path = "ionic-plugin-keyboard/UIWebViewExtension.h"; sourceTree = "<group>"; };
+		42D171CDCB934C51BC3E1546 /* SocketLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketLogger.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketLogger.swift"; sourceTree = "<group>"; };
 		43A4E6D392AA48A2A55D63FD /* CoreAudio.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		4462547C87A64518932165D7 /* CDVExif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVExif.h; path = "cordova-plugin-camera/CDVExif.h"; sourceTree = "<group>"; };
+		44E52A3763D8476387DB5BAF /* NSHTTPURLResponse+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = "NSHTTPURLResponse+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/NSHTTPURLResponse+Haneke.swift"; sourceTree = "<group>"; };
+		463D86CE00F34202BEA19776 /* RTCSessionDescriptionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCSessionDescriptionDelegate.h; path = "chitchat-ChitchatRTC/RTCSessionDescriptionDelegate.h"; sourceTree = "<group>"; };
+		479053C430234D27A5688BD2 /* SocketEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketEngine.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketEngine.swift"; sourceTree = "<group>"; };
 		4822E87C3426445891729710 /* CloudMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CloudMessaging.h; path = "phonegap-plugin-push/GCM/Headers/CloudMessaging.h"; sourceTree = "<group>"; };
 		4BE99A8F214B4C00825FDE28 /* PushPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PushPlugin.h; path = "phonegap-plugin-push/PushPlugin.h"; sourceTree = "<group>"; };
 		4E6963A1FCAF4E06A642D13A /* CDVFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVFileTransfer.m; path = "cordova-plugin-file-transfer/CDVFileTransfer.m"; sourceTree = "<group>"; };
 		4EDAA68D7D184A15B706FDBC /* AppDelegate+APPRegisterUserNotificationSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AppDelegate+APPRegisterUserNotificationSettings.h"; path = "de.appplant.cordova.common.registerusernotificationsettings/AppDelegate+APPRegisterUserNotificationSettings.h"; sourceTree = "<group>"; };
+		4FEF957EC7544734A30CA3F8 /* Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = Haneke.swift; path = "chitchat-ChitchatRTC/Haneke/Haneke.swift"; sourceTree = "<group>"; };
 		513207D674954633BCB61A5C /* libGTM_Regex.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_Regex.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_Regex.a"; sourceTree = "<group>"; };
+		51CE37E920E749B190F453B3 /* SocketAckEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketAckEmitter.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketAckEmitter.swift"; sourceTree = "<group>"; };
 		5221B4A8B9C84836A2EA8DC1 /* AppDelegate+APPRegisterUserNotificationSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AppDelegate+APPRegisterUserNotificationSettings.m"; path = "de.appplant.cordova.common.registerusernotificationsettings/AppDelegate+APPRegisterUserNotificationSettings.m"; sourceTree = "<group>"; };
 		5283099ACADC4832BC935E59 /* libGTMSessionFetcher_core.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTMSessionFetcher_core.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTMSessionFetcher_core.a"; sourceTree = "<group>"; };
 		53CA4C4FCEFC4714A2027F70 /* libGTMSessionFetcher_full.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTMSessionFetcher_full.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTMSessionFetcher_full.a"; sourceTree = "<group>"; };
 		5436441041E344A998985E5A /* CDVSplashScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVSplashScreen.h; path = "cordova-plugin-splashscreen/CDVSplashScreen.h"; sourceTree = "<group>"; };
 		54F8369875254EF7AE1AFCB4 /* Toast+UIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Toast+UIView.m"; path = "cordova-plugin-x-toast/Toast+UIView.m"; sourceTree = "<group>"; };
+		56FB6646C89445B5B61B6F20 /* RTCI420Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCI420Frame.h; path = "chitchat-ChitchatRTC/RTCI420Frame.h"; sourceTree = "<group>"; };
+		5864E91E16AF4687AE21B998 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = Data.swift; path = "chitchat-ChitchatRTC/Haneke/Data.swift"; sourceTree = "<group>"; };
 		5916C6BA7E304FA3BC2BC828 /* IonicCameraRoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IonicCameraRoll.m; path = "chitchat-plugin-cameraroll/IonicCameraRoll.m"; sourceTree = "<group>"; };
+		591A15047EF7499EB71F83D9 /* SocketEngineClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketEngineClient.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketEngineClient.swift"; sourceTree = "<group>"; };
+		593E9795960C4EA6AD2B4480 /* RTCVideoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoSource.h; path = "chitchat-ChitchatRTC/RTCVideoSource.h"; sourceTree = "<group>"; };
 		5A1CFBDD2FBF4F2EAA5B9D12 /* CDVReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVReachability.h; path = "cordova-plugin-network-information/CDVReachability.h"; sourceTree = "<group>"; };
 		5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		5B4B93F43F6B4980952615A0 /* libGTM_AddressBook.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_AddressBook.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_AddressBook.a"; sourceTree = "<group>"; };
 		5BB569FB5365466C9192A663 /* ProgressIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProgressIndicator.m; path = org.pbernasconi.progressindicator/ProgressIndicator.m; sourceTree = "<group>"; };
+		5BE4C10D9E4542A9BEE34939 /* SessionDescriptionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SessionDescriptionDelegate.swift; path = "chitchat-ChitchatRTC/SessionDescriptionDelegate.swift"; sourceTree = "<group>"; };
 		5F0EE87F6E8B431EBF7055BD /* APPBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPBadge.m; path = de.appplant.cordova.plugin.badge/APPBadge.m; sourceTree = "<group>"; };
 		61A72FEE7E754A73A01A4266 /* CDVJpegHeaderWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVJpegHeaderWriter.m; path = "cordova-plugin-camera/CDVJpegHeaderWriter.m"; sourceTree = "<group>"; };
+		6393449C156142788EB78E4C /* SocketEngineSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketEngineSpec.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketEngineSpec.swift"; sourceTree = "<group>"; };
 		667EEBC343DB4FE5BA3BBC52 /* CDVDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVDevice.h; path = "cordova-plugin-device/CDVDevice.h"; sourceTree = "<group>"; };
 		6849F4FAD8794D4CB19D3B4A /* appbeep.wav */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; path = appbeep.wav; sourceTree = "<group>"; };
 		68601171109A455CAB4239E6 /* libGGLCore.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGGLCore.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGGLCore.a"; sourceTree = "<group>"; };
 		6BFA88B833DD4A5D8AD67AE2 /* CDVReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVReachability.m; path = "cordova-plugin-network-information/CDVReachability.m"; sourceTree = "<group>"; };
 		6F7F97B692FD41419291D280 /* CDVSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVSound.h; path = "cordova-plugin-media/CDVSound.h"; sourceTree = "<group>"; };
+		70DF5A2F5D7D4ECC908DDCCD /* RTCEAGLVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCEAGLVideoView.h; path = "chitchat-ChitchatRTC/RTCEAGLVideoView.h"; sourceTree = "<group>"; };
 		72283FE6FA2F4CEB8BCAB7D3 /* APPLocalNotificationOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APPLocalNotificationOptions.h; path = "de.appplant.cordova.plugin.local-notification/APPLocalNotificationOptions.h"; sourceTree = "<group>"; };
+		727B1685B49641B6B1ED5F70 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = Log.swift; path = "chitchat-ChitchatRTC/Haneke/Log.swift"; sourceTree = "<group>"; };
+		7311BA8992F44FED93DFC7D6 /* RTCVideoTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoTrack.h; path = "chitchat-ChitchatRTC/RTCVideoTrack.h"; sourceTree = "<group>"; };
 		7350BD694C434EDA981FB056 /* GoogleCloudMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GoogleCloudMessaging.h; path = "phonegap-plugin-push/GCM/Headers/GoogleCloudMessaging.h"; sourceTree = "<group>"; };
 		735CB891382A40F78BDF434C /* CDVFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVFile.m; path = "cordova-plugin-file/CDVFile.m"; sourceTree = "<group>"; };
 		73D8ED0179FA431F87B2C732 /* UIApplication+APPLocalNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIApplication+APPLocalNotification.h"; path = "de.appplant.cordova.plugin.local-notification/UIApplication+APPLocalNotification.h"; sourceTree = "<group>"; };
@@ -300,10 +337,12 @@
 		7526D57AFAFE461392498941 /* CDVViewController+SplashScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CDVViewController+SplashScreen.m"; path = "cordova-plugin-splashscreen/CDVViewController+SplashScreen.m"; sourceTree = "<group>"; };
 		7787EC44FF5945DFBA7F17A3 /* libGTM_NSStringXML.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_NSStringXML.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_NSStringXML.a"; sourceTree = "<group>"; };
 		77EAA2A258634C92A53D5AC3 /* libGTM_NSScannerJSON.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_NSScannerJSON.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_NSScannerJSON.a"; sourceTree = "<group>"; };
+		7896FDF59E134CD988F7A14F /* RTCDataChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCDataChannel.h; path = "chitchat-ChitchatRTC/RTCDataChannel.h"; sourceTree = "<group>"; };
 		789C371302B74007A436CEC2 /* libGTM_SystemVersion.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_SystemVersion.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_SystemVersion.a"; sourceTree = "<group>"; };
 		78CC86946D8C45FF95A590BF /* libGTM_core.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_core.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_core.a"; sourceTree = "<group>"; };
 		79CC818238D64A96A1A4A70A /* AppDelegate+notification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AppDelegate+notification.h"; path = "phonegap-plugin-push/AppDelegate+notification.h"; sourceTree = "<group>"; };
 		7ACD86E7E61E4DD19015E824 /* AVFoundation.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		7B08C1D56D3C45B5A32B50EE /* ChitchatRTC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = ChitchatRTC.swift; path = "chitchat-ChitchatRTC/ChitchatRTC.swift"; sourceTree = "<group>"; };
 		7B6DEDB53124484684C54DE5 /* UIImage+CropScaleOrientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+CropScaleOrientation.m"; path = "cordova-plugin-camera/UIImage+CropScaleOrientation.m"; sourceTree = "<group>"; };
 		7CC4FECABA4B40F786F7C93A /* libsqlite3.0.dylib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		7E7966D41810823500FA85AD /* icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-40.png"; sourceTree = "<group>"; };
@@ -318,15 +357,21 @@
 		7E7966DD1810823500FA85AD /* icon-small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-small@2x.png"; sourceTree = "<group>"; };
 		80A138E464424826BB2ED53E /* IonicKeyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IonicKeyboard.h; path = "ionic-plugin-keyboard/IonicKeyboard.h"; sourceTree = "<group>"; };
 		80DDB398F2584A8CB6C68B06 /* IonicCameraRoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IonicCameraRoll.h; path = "chitchat-plugin-cameraroll/IonicCameraRoll.h"; sourceTree = "<group>"; };
+		81FE5D2ECF5949CBB653A114 /* RTCICECandidate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCICECandidate.h; path = "chitchat-ChitchatRTC/RTCICECandidate.h"; sourceTree = "<group>"; };
 		821C4CDA7A614CF58873C67E /* libGIP_Reachability.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGIP_Reachability.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGIP_Reachability.a"; sourceTree = "<group>"; };
+		829DB6686DB94D8A9797B4AC /* RTCVideoCapturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCVideoCapturer.h; path = "chitchat-ChitchatRTC/RTCVideoCapturer.h"; sourceTree = "<group>"; };
+		83C285DE29FB4DBFA51B349D /* Fetch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = Fetch.swift; path = "chitchat-ChitchatRTC/Haneke/Fetch.swift"; sourceTree = "<group>"; };
 		862008FAD1AA4EAFAE8C48B8 /* CDVLocalFilesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVLocalFilesystem.h; path = "cordova-plugin-file/CDVLocalFilesystem.h"; sourceTree = "<group>"; };
 		86AF08FBD96A486DA1F69C6F /* CDVSpinnerDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVSpinnerDialog.m; path = hu.dpal.phonegap.plugins.SpinnerDialog/CDVSpinnerDialog.m; sourceTree = "<group>"; };
 		87E54D1309B74B02BDC3350E /* CDVSpinnerDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVSpinnerDialog.h; path = hu.dpal.phonegap.plugins.SpinnerDialog/CDVSpinnerDialog.h; sourceTree = "<group>"; };
+		893C3DE74D7C441784C5FD24 /* RTCMediaStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaStream.h; path = "chitchat-ChitchatRTC/RTCMediaStream.h"; sourceTree = "<group>"; };
+		8987642C409F443E8D900E65 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = WebSocket.swift; path = "chitchat-ChitchatRTC/SocketIO/WebSocket.swift"; sourceTree = "<group>"; };
 		8ACE5B0E3FED46FA8E3BE731 /* libGTM_GTMURLBuilder.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_GTMURLBuilder.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_GTMURLBuilder.a"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ChitChat-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ChitChat-Info.plist"; path = "../ChitChat-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		8D91F9164158424E9F4BF591 /* libz.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; path = libz.tbd; sourceTree = "<group>"; };
 		90ABA7415D904AB2A54A0962 /* CoreLocation.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		92ADBDEE498F4A85B7B766BF /* IonicKeyboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IonicKeyboard.m; path = "ionic-plugin-keyboard/IonicKeyboard.m"; sourceTree = "<group>"; };
+		9423B11B29594DD4B823ABBD /* RTCPeerConnectionFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPeerConnectionFactory.h; path = "chitchat-ChitchatRTC/RTCPeerConnectionFactory.h"; sourceTree = "<group>"; };
 		9441B2E6DF5042E3A8A83253 /* libGTM_NSStringHTML.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_NSStringHTML.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_NSStringHTML.a"; sourceTree = "<group>"; };
 		95D5482973DD4FDDB001C5F4 /* CDVAssetLibraryFilesystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVAssetLibraryFilesystem.h; path = "cordova-plugin-file/CDVAssetLibraryFilesystem.h"; sourceTree = "<group>"; };
 		960FC31627E844279FFA4D52 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
@@ -336,42 +381,67 @@
 		970F332E1CB3773900E3C03C /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		970F33301CB378E700E3C03C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9A7964836E7545C1A3098AFE /* AudioToolbox.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		9AFE4FF4E0A3444EBEC5C617 /* iphone.mp3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; path = iphone.mp3; sourceTree = "<group>"; };
+		9C4F293034BF423880A819DA /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = Cache.swift; path = "chitchat-ChitchatRTC/Haneke/Cache.swift"; sourceTree = "<group>"; };
 		9D08B1B330C7419D8947AAB0 /* CDVLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVLogger.m; path = "cordova-plugin-console/CDVLogger.m"; sourceTree = "<group>"; };
 		9E4781D09C9A475BB118D676 /* CDVCapture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVCapture.h; path = "cordova-plugin-media-capture/CDVCapture.h"; sourceTree = "<group>"; };
 		A0A9304283E0440481DA0E59 /* libGTM_RoundedRectPath.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_RoundedRectPath.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_RoundedRectPath.a"; sourceTree = "<group>"; };
+		A0D72098D2BA44AB8305B50C /* UIView+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = "UIView+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/UIView+Haneke.swift"; sourceTree = "<group>"; };
 		A1336C1741B54DE8BCE57A19 /* PushPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PushPlugin.m; path = "phonegap-plugin-push/PushPlugin.m"; sourceTree = "<group>"; };
 		A3794A8D6192472BB187D7FA /* libsqlite3.dylib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		A45B7C9CD0224DF4B32A83EB /* CDVConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVConnection.m; path = "cordova-plugin-network-information/CDVConnection.m"; sourceTree = "<group>"; };
+		A511481DF25E468AB2E0D416 /* RTCPair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPair.h; path = "chitchat-ChitchatRTC/RTCPair.h"; sourceTree = "<group>"; };
 		A5298AA474C54E218B927761 /* UILocalNotification+APPLocalNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UILocalNotification+APPLocalNotification.m"; path = "de.appplant.cordova.plugin.local-notification/UILocalNotification+APPLocalNotification.m"; sourceTree = "<group>"; };
 		A56C88C5E94D46D4BA93A499 /* GCMConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCMConfig.h; path = "phonegap-plugin-push/GCM/Headers/GCMConfig.h"; sourceTree = "<group>"; };
+		A5B4988168B64DDCBB6C4CFA /* RTCSessionDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCSessionDescription.h; path = "chitchat-ChitchatRTC/RTCSessionDescription.h"; sourceTree = "<group>"; };
+		A61F83E7D15940B1862CA59A /* RTCPeerConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPeerConnection.h; path = "chitchat-ChitchatRTC/RTCPeerConnection.h"; sourceTree = "<group>"; };
 		A9B8CB664A96486FB584C480 /* CDVDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVDevice.m; path = "cordova-plugin-device/CDVDevice.m"; sourceTree = "<group>"; };
 		AB5F9496B4314FA3B516C365 /* GGLErrorCode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GGLErrorCode.h; path = "phonegap-plugin-push/GCM/Headers/GGLErrorCode.h"; sourceTree = "<group>"; };
 		ACE5C2E2820B4CA7A0C22436 /* GGLInstanceIDConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GGLInstanceIDConfig.h; path = "phonegap-plugin-push/GCM/Headers/GGLInstanceIDConfig.h"; sourceTree = "<group>"; };
+		ACF911B4813C4E43BF5CFFB0 /* Chitchat.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; path = Chitchat.storyboard; sourceTree = "<group>"; };
 		AD88C10D0ADE4393A5AD27FE /* CDVSplashScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVSplashScreen.m; path = "cordova-plugin-splashscreen/CDVSplashScreen.m"; sourceTree = "<group>"; };
+		ADD277161AC34F7BA629EDAA /* UIButton+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = "UIButton+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/UIButton+Haneke.swift"; sourceTree = "<group>"; };
+		AE028558D6554982AEFE95BC /* RTCPeerConnectionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCPeerConnectionDelegate.h; path = "chitchat-ChitchatRTC/RTCPeerConnectionDelegate.h"; sourceTree = "<group>"; };
+		AFF0BD5230E74C71BE828269 /* Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = Fetcher.swift; path = "chitchat-ChitchatRTC/Haneke/Fetcher.swift"; sourceTree = "<group>"; };
+		B074136757F942188DB7A098 /* UIImageView+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = "UIImageView+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/UIImageView+Haneke.swift"; sourceTree = "<group>"; };
 		B12FE7A0C05D48E79FA82865 /* UILocalNotification+APPLocalNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UILocalNotification+APPLocalNotification.h"; path = "de.appplant.cordova.plugin.local-notification/UILocalNotification+APPLocalNotification.h"; sourceTree = "<group>"; };
+		B46C84435FFB44448EB85A6F /* DiskFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = DiskFetcher.swift; path = "chitchat-ChitchatRTC/Haneke/DiskFetcher.swift"; sourceTree = "<group>"; };
 		B4EB6CE358574797A68F0477 /* APPLocalNotificationOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPLocalNotificationOptions.m; path = "de.appplant.cordova.plugin.local-notification/APPLocalNotificationOptions.m"; sourceTree = "<group>"; };
 		B51EA9DEC4C4469FB4CAA2F5 /* libGTMStackTrace.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTMStackTrace.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTMStackTrace.a"; sourceTree = "<group>"; };
+		B57AFF8B8D3940FE954A651E /* NSFileManager+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = "NSFileManager+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/NSFileManager+Haneke.swift"; sourceTree = "<group>"; };
 		B64ECD06B1384BB99BEE63AC /* CDVViewController+SplashScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CDVViewController+SplashScreen.h"; path = "cordova-plugin-splashscreen/CDVViewController+SplashScreen.h"; sourceTree = "<group>"; };
 		B6EBC3E0060F4457940FBF24 /* AppDelegate+notification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AppDelegate+notification.m"; path = "phonegap-plugin-push/AppDelegate+notification.m"; sourceTree = "<group>"; };
+		B700A741D4EA4D5E94D0B12F /* SocketEngineWebsocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketEngineWebsocket.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketEngineWebsocket.swift"; sourceTree = "<group>"; };
+		B911879108EB452BB292CBFE /* cordova-plugin-ChitchatRTC-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "cordova-plugin-ChitchatRTC-Bridging-Header.h"; path = "chitchat-ChitchatRTC/cordova-plugin-ChitchatRTC-Bridging-Header.h"; sourceTree = "<group>"; };
 		BA56260288654FE7921620B3 /* CDVLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVLocation.m; path = "cordova-plugin-geolocation/CDVLocation.m"; sourceTree = "<group>"; };
 		BE3294B3445E48089E68BF21 /* GGLContext+CloudMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "GGLContext+CloudMessaging.h"; path = "phonegap-plugin-push/GCM/Headers/GGLContext+CloudMessaging.h"; sourceTree = "<group>"; };
+		BF4C58F65B0C48958A093EC9 /* Format.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = Format.swift; path = "chitchat-ChitchatRTC/Haneke/Format.swift"; sourceTree = "<group>"; };
 		BF5235B2B51E4267AE349730 /* QuartzCore.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BFF8FDCAB35D4034B82B8FB2 /* libstdc++.dylib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
+		C0AB6A08FC484A2D983863B1 /* RTCTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCTypes.h; path = "chitchat-ChitchatRTC/RTCTypes.h"; sourceTree = "<group>"; };
 		C35134428E314467810CAD58 /* CDVLocalFilesystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVLocalFilesystem.m; path = "cordova-plugin-file/CDVLocalFilesystem.m"; sourceTree = "<group>"; };
 		C563007EC48E4A18A707151D /* CoreVideo.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		C62EA9616B9B403087FD95DB /* CDVNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVNotification.h; path = "cordova-plugin-dialogs/CDVNotification.h"; sourceTree = "<group>"; };
 		C66CA14593C44D38A55D9C97 /* CDVFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVFile.h; path = "cordova-plugin-file/CDVFile.h"; sourceTree = "<group>"; };
 		C8513A8EAD8242FCB6625875 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVInAppBrowser.h; path = "cordova-plugin-inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; };
 		C8627D02422E48F18953B157 /* CDVInAppBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVInAppBrowser.m; path = "cordova-plugin-inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; };
+		CA948236A281488896F9365B /* CGSize+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = "CGSize+Swift.swift"; path = "chitchat-ChitchatRTC/Haneke/CGSize+Swift.swift"; sourceTree = "<group>"; };
 		CB6C94C1F9C84129A9485B79 /* APPBackgroundMode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APPBackgroundMode.m; path = "de.appplant.cordova.plugin.background-mode/APPBackgroundMode.m"; sourceTree = "<group>"; };
+		CC71504AB7D248E483275B94 /* SocketIOClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketIOClient.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketIOClient.swift"; sourceTree = "<group>"; };
 		CE3FD13276AF4ED0B55B9C7F /* GGLConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GGLConfiguration.h; path = "phonegap-plugin-push/GCM/Headers/GGLConfiguration.h"; sourceTree = "<group>"; };
+		CE92BCBCC80E4BCA8C2FA91A /* Session.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = Session.swift; path = "chitchat-ChitchatRTC/Session.swift"; sourceTree = "<group>"; };
 		D2CCACC1A2F942728898326B /* Core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Core.h; path = "phonegap-plugin-push/GCM/Headers/Core.h"; sourceTree = "<group>"; };
 		D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
+		D4F1E32E919844219A8AB9FD /* SocketAckManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketAckManager.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketAckManager.swift"; sourceTree = "<group>"; };
 		D67E2DFD9B3A4EEFBFB951A5 /* libsqlite3.tbd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; path = libsqlite3.tbd; sourceTree = "<group>"; };
 		DA49D9E334E947C0801A19A6 /* UIApplication+APPBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+APPBadge.m"; path = "de.appplant.cordova.plugin.badge/UIApplication+APPBadge.m"; sourceTree = "<group>"; };
 		DB4BBA7F71904073B9E35CB5 /* libGTM_DebugUtils.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_DebugUtils.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_DebugUtils.a"; sourceTree = "<group>"; };
+		DC81811632E64A32B8E5ED3A /* RTCAudioTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCAudioTrack.h; path = "chitchat-ChitchatRTC/RTCAudioTrack.h"; sourceTree = "<group>"; };
 		DE75780B14304DBCB66F725A /* GCMReceiverDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCMReceiverDelegate.h; path = "phonegap-plugin-push/GCM/Headers/GCMReceiverDelegate.h"; sourceTree = "<group>"; };
 		DFDA3042A8894B8A947FF023 /* UIWebViewExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIWebViewExtension.m; path = "ionic-plugin-keyboard/UIWebViewExtension.m"; sourceTree = "<group>"; };
+		E05DD64525F4496280C2073E /* SwiftRegex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SwiftRegex.swift; path = "chitchat-ChitchatRTC/SocketIO/SwiftRegex.swift"; sourceTree = "<group>"; };
+		E0960ACD5D974561A24BDC2C /* String+Haneke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = "String+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/String+Haneke.swift"; sourceTree = "<group>"; };
+		E0A7C7536DD34D8FAC7E3B83 /* SocketEventHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketEventHandler.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketEventHandler.swift"; sourceTree = "<group>"; };
 		E269C098BF9540878755F2CA /* UIApplication+APPLocalNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+APPLocalNotification.m"; path = "de.appplant.cordova.plugin.local-notification/UIApplication+APPLocalNotification.m"; sourceTree = "<group>"; };
 		E40DF2A432564D628A3F3A4B /* libProtocolBuffers.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libProtocolBuffers.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libProtocolBuffers.a"; sourceTree = "<group>"; };
 		E56DFF86982F4C66AA0E918E /* libGGLCloudMessaging.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGGLCloudMessaging.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGGLCloudMessaging.a"; sourceTree = "<group>"; };
@@ -381,96 +451,23 @@
 		EB87FDF21871DA7A0020F90C /* merges */ = {isa = PBXFileReference; lastKnownFileType = folder; name = merges; path = ../../merges; sourceTree = "<group>"; };
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
+		EEB9BCAFC13F4AFDAEA49D6B /* RTCMediaConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCMediaConstraints.h; path = "chitchat-ChitchatRTC/RTCMediaConstraints.h"; sourceTree = "<group>"; };
 		F3215E8C6C5E4E2293AA85E1 /* ProgressIndicator.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressIndicator.bundle; sourceTree = "<group>"; };
+		F3A8495090B54CA681119830 /* DiskCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = DiskCache.swift; path = "chitchat-ChitchatRTC/Haneke/DiskCache.swift"; sourceTree = "<group>"; };
 		F478EB720EAD4A8980A8A2B5 /* CDVCapture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVCapture.m; path = "cordova-plugin-media-capture/CDVCapture.m"; sourceTree = "<group>"; };
+		F5BBF41CE4D243F6BA416430 /* SocketPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketPacket.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketPacket.swift"; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ChitChat/config.xml; sourceTree = "<group>"; };
 		F91B7D2ECBFB44069FC7C1B1 /* GLKit.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		F9483C172CB84708ABF46E43 /* CDVCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVCamera.h; path = "cordova-plugin-camera/CDVCamera.h"; sourceTree = "<group>"; };
+		F9AC048F5F414010AE49A841 /* SocketAnyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketAnyEvent.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketAnyEvent.swift"; sourceTree = "<group>"; };
+		FA43597855EC4899AE8FEDAA /* NetworkFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = NetworkFetcher.swift; path = "chitchat-ChitchatRTC/Haneke/NetworkFetcher.swift"; sourceTree = "<group>"; };
 		FB9F36C52DD3410FBCAEDC03 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = org.pbernasconi.progressindicator/MBProgressHUD.m; sourceTree = "<group>"; };
+		FBE9A913627849BEA55E22F4 /* SocketIOClientOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = unknown; name = SocketIOClientOption.swift; path = "chitchat-ChitchatRTC/SocketIO/SocketIOClientOption.swift"; sourceTree = "<group>"; };
 		FCC9669C2931419F9EB67D28 /* libGTM_NSData+zlib.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = "libGTM_NSData+zlib.a"; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_NSData+zlib.a"; sourceTree = "<group>"; };
 		FD30D3B3E0B8462D842AF79A /* CoreTelephony.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		FF0FDC38BA2B4C8D8D8D1EB5 /* libGTM_StringEncoding.a */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = archive.ar; name = libGTM_StringEncoding.a; path = "ChitChat/Plugins/phonegap-plugin-push/GCM/Libraries/libGTM_StringEncoding.a"; sourceTree = "<group>"; };
+		FFA1FAD5A3AD4A9DAAB5A58F /* RTCAVFoundationVideoSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTCAVFoundationVideoSource.h; path = "chitchat-ChitchatRTC/RTCAVFoundationVideoSource.h"; sourceTree = "<group>"; };
 		FFCF49256B1F4526845EDEDB /* GGLInstanceIDHeaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GGLInstanceIDHeaders.h; path = "phonegap-plugin-push/GCM/Headers/GGLInstanceIDHeaders.h"; sourceTree = "<group>"; };
-		982EEBC9DB66454EAB47E924 /* ChitchatRTC.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "ChitchatRTC.swift"; path = "chitchat-ChitchatRTC/ChitchatRTC.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		868E7CD66C9E4D02B542934A /* ReceiveCallController.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "ReceiveCallController.swift"; path = "chitchat-ChitchatRTC/ReceiveCallController.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		91FBD76C179B4EBDA956DB43 /* VoiceCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "VoiceCallViewController.swift"; path = "chitchat-ChitchatRTC/VoiceCallViewController.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		6377C83B294E41A8A1E17414 /* VideoCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "VideoCallViewController.swift"; path = "chitchat-ChitchatRTC/VideoCallViewController.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		BD3F64BCA489485E965E9F88 /* PCObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "PCObserver.swift"; path = "chitchat-ChitchatRTC/PCObserver.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		4A06EE5304C4407799B1880D /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Session.swift"; path = "chitchat-ChitchatRTC/Session.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		9000D894687C4F09A784C687 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Config.swift"; path = "chitchat-ChitchatRTC/Config.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		AC3985AA473B488787659C3B /* SessionDescriptionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SessionDescriptionDelegate.swift"; path = "chitchat-ChitchatRTC/SessionDescriptionDelegate.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		DEAD288E73F44416AA139A8F /* SocketAckEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketAckEmitter.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketAckEmitter.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		62943C8786C440C49BB4296F /* SocketAckManager.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketAckManager.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketAckManager.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		150A24AC2D1B4795BC17EC35 /* SocketAnyEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketAnyEvent.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketAnyEvent.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		12EB943883E74CDDB573BF24 /* SocketClientSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketClientSpec.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketClientSpec.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		EB92E5F7AE334F03A83F629C /* SocketEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEngine.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketEngine.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		01B707F1A9BD4F7487F4F35A /* SocketEngineClient.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEngineClient.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketEngineClient.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		5CA13609B6EF4F44914E8960 /* SocketEnginePacketType.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEnginePacketType.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketEnginePacketType.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		98200D6E858D41BEB53EDD00 /* SocketEnginePollable.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEnginePollable.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketEnginePollable.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		1AE25539EED048ADB8F7DFDB /* SocketEngineSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEngineSpec.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketEngineSpec.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		F855B188FC3B4BCD87131A18 /* SocketEngineWebsocket.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEngineWebsocket.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketEngineWebsocket.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		53EB4DEECFF24A46A2EECD5F /* SocketEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketEventHandler.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketEventHandler.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		BB446A9B1EB945CF866BEA38 /* SocketIOClient.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketIOClient.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketIOClient.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		B3E440E5BD7E4AC0812ADDD4 /* SocketIOClientOption.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketIOClientOption.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketIOClientOption.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		AABFF33DB97E40E683536778 /* SocketIOClientStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketIOClientStatus.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketIOClientStatus.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		8C0FA3367E704F309A7B4B14 /* SocketLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketLogger.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketLogger.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		981132AEA9F64231A23F7CFD /* SocketPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketPacket.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketPacket.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		BC3660459DD441468B921349 /* SocketParsable.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketParsable.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketParsable.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		A9B868F311724AF2A50D38ED /* SocketStringReader.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketStringReader.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketStringReader.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		EA3E3B1551E840C9911D1B4F /* SocketTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SocketTypes.swift"; path = "chitchat-ChitchatRTC/SocketIO/SocketTypes.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		5810D131E7FC4F98BC8D3F63 /* SwiftRegex.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "SwiftRegex.swift"; path = "chitchat-ChitchatRTC/SocketIO/SwiftRegex.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		D6CD993751AA457591C4DAE9 /* WebSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "WebSocket.swift"; path = "chitchat-ChitchatRTC/SocketIO/WebSocket.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		EF8C9F6FC86C45378FAB4BE3 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Cache.swift"; path = "chitchat-ChitchatRTC/Haneke/Cache.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		FE9E30F19DEC4EF7A4DE2B7C /* CGSize+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "CGSize+Swift.swift"; path = "chitchat-ChitchatRTC/Haneke/CGSize+Swift.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		DCD9EE6FC35442399F3CEDFA /* CryptoSwiftMD5.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "CryptoSwiftMD5.swift"; path = "chitchat-ChitchatRTC/Haneke/CryptoSwiftMD5.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		16BFC6AEDF7C479088DD939D /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Data.swift"; path = "chitchat-ChitchatRTC/Haneke/Data.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		48238924D9774D59AAF6A820 /* DiskCache.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "DiskCache.swift"; path = "chitchat-ChitchatRTC/Haneke/DiskCache.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		11F255CCF55E44E88D7754BC /* DiskFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "DiskFetcher.swift"; path = "chitchat-ChitchatRTC/Haneke/DiskFetcher.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		E64F3B737FF448ABAAB5C3FC /* Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Fetch.swift"; path = "chitchat-ChitchatRTC/Haneke/Fetch.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		31E7D464C774408D99FA86FA /* Fetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Fetcher.swift"; path = "chitchat-ChitchatRTC/Haneke/Fetcher.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		A4D432C4304047B587AD45A5 /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Format.swift"; path = "chitchat-ChitchatRTC/Haneke/Format.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		EE2CF6EE943242729E1C8F40 /* Haneke.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/Haneke.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		44AEE451153F4526B493431D /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Log.swift"; path = "chitchat-ChitchatRTC/Haneke/Log.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		67C54487148C4D9EACAB4664 /* NetworkFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "NetworkFetcher.swift"; path = "chitchat-ChitchatRTC/Haneke/NetworkFetcher.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		4CDD16B30DCD41CAB36721B7 /* NSFileManager+Haneke.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "NSFileManager+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/NSFileManager+Haneke.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		2FBD3EF5718B4A92A3C6674D /* NSHTTPURLResponse+Haneke.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "NSHTTPURLResponse+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/NSHTTPURLResponse+Haneke.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		0C8F733AA8B04B34B29232A3 /* NSURLResponse+Haneke.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "NSURLResponse+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/NSURLResponse+Haneke.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		00F067A8FF7345B18D5D0BBE /* String+Haneke.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "String+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/String+Haneke.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		24EB2316C53F49C4A16F4884 /* UIButton+Haneke.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "UIButton+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/UIButton+Haneke.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		21607E835C7B45079FE3815D /* UIImage+Haneke.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "UIImage+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/UIImage+Haneke.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		CD22C76DB7E64084922067CB /* UIImageView+Haneke.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "UIImageView+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/UIImageView+Haneke.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		639494DC6B1647A7B60B3A9A /* UIView+Haneke.swift */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "UIView+Haneke.swift"; path = "chitchat-ChitchatRTC/Haneke/UIView+Haneke.swift"; sourceTree = "<group>"; fileEncoding = 4; };
-		C0932541E96D4FC3955EA28A /* libWebRTC.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libWebRTC.a"; path = "ChitChat/Plugins/chitchat-ChitchatRTC/libWebRTC.a"; sourceTree = "<group>"; fileEncoding = 4; };
-		9C62249FE4ED4C36950D55C6 /* cordova-plugin-ChitchatRTC-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "cordova-plugin-ChitchatRTC-Bridging-Header.h"; path = "chitchat-ChitchatRTC/cordova-plugin-ChitchatRTC-Bridging-Header.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		B7D8355719F04D969B444D96 /* RTCAudioSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCAudioSource.h"; path = "chitchat-ChitchatRTC/RTCAudioSource.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		0FE5003348C84E3F9C9279DE /* RTCAudioTrack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCAudioTrack.h"; path = "chitchat-ChitchatRTC/RTCAudioTrack.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		10BD543789B14CAFA6CB83BE /* RTCAVFoundationVideoSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCAVFoundationVideoSource.h"; path = "chitchat-ChitchatRTC/RTCAVFoundationVideoSource.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		B7017646753C4B77B993AC0B /* RTCDataChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCDataChannel.h"; path = "chitchat-ChitchatRTC/RTCDataChannel.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		E129361E675141A884A9C480 /* RTCEAGLVideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCEAGLVideoView.h"; path = "chitchat-ChitchatRTC/RTCEAGLVideoView.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		D5CF1650E33D4314B510A1D4 /* RTCI420Frame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCI420Frame.h"; path = "chitchat-ChitchatRTC/RTCI420Frame.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		8AEE748D9E5548838F7766FA /* RTCICECandidate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCICECandidate.h"; path = "chitchat-ChitchatRTC/RTCICECandidate.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		E334996F23254FF6848C3C21 /* RTCICEServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCICEServer.h"; path = "chitchat-ChitchatRTC/RTCICEServer.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		2454399D02E64F64A546EEC0 /* RTCMediaConstraints.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCMediaConstraints.h"; path = "chitchat-ChitchatRTC/RTCMediaConstraints.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		D64F59B941524B9096BC494A /* RTCMediaSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCMediaSource.h"; path = "chitchat-ChitchatRTC/RTCMediaSource.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		020588DDE90248A6BCE759C1 /* RTCMediaStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCMediaStream.h"; path = "chitchat-ChitchatRTC/RTCMediaStream.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		CF52275A5DA94D808FCCD359 /* RTCMediaStreamTrack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCMediaStreamTrack.h"; path = "chitchat-ChitchatRTC/RTCMediaStreamTrack.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		B015C6B24B754176BB96C067 /* RTCNSGLVideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCNSGLVideoView.h"; path = "chitchat-ChitchatRTC/RTCNSGLVideoView.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		A2549DEEE50B47DAA25FD462 /* RTCOpenGLVideoRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCOpenGLVideoRenderer.h"; path = "chitchat-ChitchatRTC/RTCOpenGLVideoRenderer.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		A642B869E46C42DF8C69A35F /* RTCPair.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCPair.h"; path = "chitchat-ChitchatRTC/RTCPair.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		9A7B731D33C64E618D71BF34 /* RTCPeerConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCPeerConnection.h"; path = "chitchat-ChitchatRTC/RTCPeerConnection.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		2898305903054A9385B13724 /* RTCPeerConnectionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCPeerConnectionDelegate.h"; path = "chitchat-ChitchatRTC/RTCPeerConnectionDelegate.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		B56A2843515A43B88E445298 /* RTCPeerConnectionFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCPeerConnectionFactory.h"; path = "chitchat-ChitchatRTC/RTCPeerConnectionFactory.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		A050B67F72934EB38FB91F02 /* RTCSessionDescription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCSessionDescription.h"; path = "chitchat-ChitchatRTC/RTCSessionDescription.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		3EE3CFF48D8B4901B8A4835D /* RTCSessionDescriptionDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCSessionDescriptionDelegate.h"; path = "chitchat-ChitchatRTC/RTCSessionDescriptionDelegate.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		B3CE07055FF248419DAA4612 /* RTCStatsDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCStatsDelegate.h"; path = "chitchat-ChitchatRTC/RTCStatsDelegate.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		C65BA5A349B64DFF9A84CE7E /* RTCStatsReport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCStatsReport.h"; path = "chitchat-ChitchatRTC/RTCStatsReport.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		5077F1F76ED24487AC8961D7 /* RTCTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCTypes.h"; path = "chitchat-ChitchatRTC/RTCTypes.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		C1518F5760D84A468AA93171 /* RTCVideoCapturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCVideoCapturer.h"; path = "chitchat-ChitchatRTC/RTCVideoCapturer.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		739D3C66D2034ABCB26849D2 /* RTCVideoRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCVideoRenderer.h"; path = "chitchat-ChitchatRTC/RTCVideoRenderer.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		2988F6A021974F50972D1990 /* RTCVideoSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCVideoSource.h"; path = "chitchat-ChitchatRTC/RTCVideoSource.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		4AF72B9BE3C048C697D32980 /* RTCVideoTrack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "RTCVideoTrack.h"; path = "chitchat-ChitchatRTC/RTCVideoTrack.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		9A236490E0CD439EB52C7C40 /* Chitchat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "Chitchat.storyboard"; path = "Chitchat.storyboard"; sourceTree = "<group>"; fileEncoding = 4; };
-		E5D03ABF38184348B1A53F9F /* iphone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = unknown; name = "iphone.mp3"; path = "iphone.mp3"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -531,7 +528,7 @@
 				2BDD66B804B54F1B8A83415E /* GLKit.framework in Frameworks */,
 				11B4B99A61A34C7294F3F091 /* libsqlite3.dylib in Frameworks */,
 				13F117957FAC4C38A395E3DB /* libc++.tbd in Frameworks */,
-				6713110A6BCB4A17BBF20C0F /* libWebRTC.a in Frameworks */,
+				CD306E37880F4FB88CB602B1 /* libWebRTC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -598,8 +595,8 @@
 				E6BA07B254614AE6BAD5DF94 /* CDVCapture.bundle */,
 				6849F4FAD8794D4CB19D3B4A /* appbeep.wav */,
 				F3215E8C6C5E4E2293AA85E1 /* ProgressIndicator.bundle */,
-				9A236490E0CD439EB52C7C40 /* Chitchat.storyboard */,
-				E5D03ABF38184348B1A53F9F /* iphone.mp3 */,
+				ACF911B4813C4E43BF5CFFB0 /* Chitchat.storyboard */,
+				9AFE4FF4E0A3444EBEC5C617 /* iphone.mp3 */,
 			);
 			name = Resources;
 			path = ChitChat/Resources;
@@ -662,7 +659,7 @@
 				F91B7D2ECBFB44069FC7C1B1 /* GLKit.framework */,
 				A3794A8D6192472BB187D7FA /* libsqlite3.dylib */,
 				24625CC15F9041C88C1A6313 /* libc++.tbd */,
-				C0932541E96D4FC3955EA28A /* libWebRTC.a */,
+				30EC1879632C4296A2B601FF /* libWebRTC.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -767,83 +764,79 @@
 				C8627D02422E48F18953B157 /* CDVInAppBrowser.m */,
 				C8513A8EAD8242FCB6625875 /* CDVInAppBrowser.h */,
 				960FC31627E844279FFA4D52 /* Bridging-Header.h */,
-				982EEBC9DB66454EAB47E924 /* ChitchatRTC.swift */,
-				868E7CD66C9E4D02B542934A /* ReceiveCallController.swift */,
-				91FBD76C179B4EBDA956DB43 /* VoiceCallViewController.swift */,
-				6377C83B294E41A8A1E17414 /* VideoCallViewController.swift */,
-				BD3F64BCA489485E965E9F88 /* PCObserver.swift */,
-				4A06EE5304C4407799B1880D /* Session.swift */,
-				9000D894687C4F09A784C687 /* Config.swift */,
-				AC3985AA473B488787659C3B /* SessionDescriptionDelegate.swift */,
-				DEAD288E73F44416AA139A8F /* SocketAckEmitter.swift */,
-				62943C8786C440C49BB4296F /* SocketAckManager.swift */,
-				150A24AC2D1B4795BC17EC35 /* SocketAnyEvent.swift */,
-				12EB943883E74CDDB573BF24 /* SocketClientSpec.swift */,
-				EB92E5F7AE334F03A83F629C /* SocketEngine.swift */,
-				01B707F1A9BD4F7487F4F35A /* SocketEngineClient.swift */,
-				5CA13609B6EF4F44914E8960 /* SocketEnginePacketType.swift */,
-				98200D6E858D41BEB53EDD00 /* SocketEnginePollable.swift */,
-				1AE25539EED048ADB8F7DFDB /* SocketEngineSpec.swift */,
-				F855B188FC3B4BCD87131A18 /* SocketEngineWebsocket.swift */,
-				53EB4DEECFF24A46A2EECD5F /* SocketEventHandler.swift */,
-				BB446A9B1EB945CF866BEA38 /* SocketIOClient.swift */,
-				B3E440E5BD7E4AC0812ADDD4 /* SocketIOClientOption.swift */,
-				AABFF33DB97E40E683536778 /* SocketIOClientStatus.swift */,
-				8C0FA3367E704F309A7B4B14 /* SocketLogger.swift */,
-				981132AEA9F64231A23F7CFD /* SocketPacket.swift */,
-				BC3660459DD441468B921349 /* SocketParsable.swift */,
-				A9B868F311724AF2A50D38ED /* SocketStringReader.swift */,
-				EA3E3B1551E840C9911D1B4F /* SocketTypes.swift */,
-				5810D131E7FC4F98BC8D3F63 /* SwiftRegex.swift */,
-				D6CD993751AA457591C4DAE9 /* WebSocket.swift */,
-				EF8C9F6FC86C45378FAB4BE3 /* Cache.swift */,
-				FE9E30F19DEC4EF7A4DE2B7C /* CGSize+Swift.swift */,
-				DCD9EE6FC35442399F3CEDFA /* CryptoSwiftMD5.swift */,
-				16BFC6AEDF7C479088DD939D /* Data.swift */,
-				48238924D9774D59AAF6A820 /* DiskCache.swift */,
-				11F255CCF55E44E88D7754BC /* DiskFetcher.swift */,
-				E64F3B737FF448ABAAB5C3FC /* Fetch.swift */,
-				31E7D464C774408D99FA86FA /* Fetcher.swift */,
-				A4D432C4304047B587AD45A5 /* Format.swift */,
-				EE2CF6EE943242729E1C8F40 /* Haneke.swift */,
-				44AEE451153F4526B493431D /* Log.swift */,
-				67C54487148C4D9EACAB4664 /* NetworkFetcher.swift */,
-				4CDD16B30DCD41CAB36721B7 /* NSFileManager+Haneke.swift */,
-				2FBD3EF5718B4A92A3C6674D /* NSHTTPURLResponse+Haneke.swift */,
-				0C8F733AA8B04B34B29232A3 /* NSURLResponse+Haneke.swift */,
-				00F067A8FF7345B18D5D0BBE /* String+Haneke.swift */,
-				24EB2316C53F49C4A16F4884 /* UIButton+Haneke.swift */,
-				21607E835C7B45079FE3815D /* UIImage+Haneke.swift */,
-				CD22C76DB7E64084922067CB /* UIImageView+Haneke.swift */,
-				639494DC6B1647A7B60B3A9A /* UIView+Haneke.swift */,
-				9C62249FE4ED4C36950D55C6 /* cordova-plugin-ChitchatRTC-Bridging-Header.h */,
-				B7D8355719F04D969B444D96 /* RTCAudioSource.h */,
-				0FE5003348C84E3F9C9279DE /* RTCAudioTrack.h */,
-				10BD543789B14CAFA6CB83BE /* RTCAVFoundationVideoSource.h */,
-				B7017646753C4B77B993AC0B /* RTCDataChannel.h */,
-				E129361E675141A884A9C480 /* RTCEAGLVideoView.h */,
-				D5CF1650E33D4314B510A1D4 /* RTCI420Frame.h */,
-				8AEE748D9E5548838F7766FA /* RTCICECandidate.h */,
-				E334996F23254FF6848C3C21 /* RTCICEServer.h */,
-				2454399D02E64F64A546EEC0 /* RTCMediaConstraints.h */,
-				D64F59B941524B9096BC494A /* RTCMediaSource.h */,
-				020588DDE90248A6BCE759C1 /* RTCMediaStream.h */,
-				CF52275A5DA94D808FCCD359 /* RTCMediaStreamTrack.h */,
-				B015C6B24B754176BB96C067 /* RTCNSGLVideoView.h */,
-				A2549DEEE50B47DAA25FD462 /* RTCOpenGLVideoRenderer.h */,
-				A642B869E46C42DF8C69A35F /* RTCPair.h */,
-				9A7B731D33C64E618D71BF34 /* RTCPeerConnection.h */,
-				2898305903054A9385B13724 /* RTCPeerConnectionDelegate.h */,
-				B56A2843515A43B88E445298 /* RTCPeerConnectionFactory.h */,
-				A050B67F72934EB38FB91F02 /* RTCSessionDescription.h */,
-				3EE3CFF48D8B4901B8A4835D /* RTCSessionDescriptionDelegate.h */,
-				B3CE07055FF248419DAA4612 /* RTCStatsDelegate.h */,
-				C65BA5A349B64DFF9A84CE7E /* RTCStatsReport.h */,
-				5077F1F76ED24487AC8961D7 /* RTCTypes.h */,
-				C1518F5760D84A468AA93171 /* RTCVideoCapturer.h */,
-				739D3C66D2034ABCB26849D2 /* RTCVideoRenderer.h */,
-				2988F6A021974F50972D1990 /* RTCVideoSource.h */,
-				4AF72B9BE3C048C697D32980 /* RTCVideoTrack.h */,
+				7B08C1D56D3C45B5A32B50EE /* ChitchatRTC.swift */,
+				049310E0D2B84D44BE630360 /* ReceiveCallController.swift */,
+				1E340010177F4996A3E0DC13 /* VoiceCallViewController.swift */,
+				32DE390802E84269B0BA6304 /* VideoCallViewController.swift */,
+				08F09A0CB4F54900894B1737 /* PCObserver.swift */,
+				CE92BCBCC80E4BCA8C2FA91A /* Session.swift */,
+				28B0F65F880B49F1ABBC4EEC /* Config.swift */,
+				5BE4C10D9E4542A9BEE34939 /* SessionDescriptionDelegate.swift */,
+				51CE37E920E749B190F453B3 /* SocketAckEmitter.swift */,
+				D4F1E32E919844219A8AB9FD /* SocketAckManager.swift */,
+				F9AC048F5F414010AE49A841 /* SocketAnyEvent.swift */,
+				1A4A37AAF47143018D45918C /* SocketClientSpec.swift */,
+				479053C430234D27A5688BD2 /* SocketEngine.swift */,
+				591A15047EF7499EB71F83D9 /* SocketEngineClient.swift */,
+				425394A95FF44AB0B4DA92BD /* SocketEnginePacketType.swift */,
+				3011A8D812104B0E857477B9 /* SocketEnginePollable.swift */,
+				6393449C156142788EB78E4C /* SocketEngineSpec.swift */,
+				B700A741D4EA4D5E94D0B12F /* SocketEngineWebsocket.swift */,
+				E0A7C7536DD34D8FAC7E3B83 /* SocketEventHandler.swift */,
+				CC71504AB7D248E483275B94 /* SocketIOClient.swift */,
+				FBE9A913627849BEA55E22F4 /* SocketIOClientOption.swift */,
+				1C4A3292BCB1495EABE3E3CB /* SocketIOClientStatus.swift */,
+				42D171CDCB934C51BC3E1546 /* SocketLogger.swift */,
+				F5BBF41CE4D243F6BA416430 /* SocketPacket.swift */,
+				06EC3FA13AF0463EBE8483F5 /* SocketParsable.swift */,
+				03EEB7F4A25C430E8726FC85 /* SocketStringReader.swift */,
+				33B3FAE124C44002B2998A4B /* SocketTypes.swift */,
+				E05DD64525F4496280C2073E /* SwiftRegex.swift */,
+				8987642C409F443E8D900E65 /* WebSocket.swift */,
+				9C4F293034BF423880A819DA /* Cache.swift */,
+				CA948236A281488896F9365B /* CGSize+Swift.swift */,
+				0187AA7DEB86487DB47ED026 /* CryptoSwiftMD5.swift */,
+				5864E91E16AF4687AE21B998 /* Data.swift */,
+				F3A8495090B54CA681119830 /* DiskCache.swift */,
+				B46C84435FFB44448EB85A6F /* DiskFetcher.swift */,
+				83C285DE29FB4DBFA51B349D /* Fetch.swift */,
+				AFF0BD5230E74C71BE828269 /* Fetcher.swift */,
+				BF4C58F65B0C48958A093EC9 /* Format.swift */,
+				4FEF957EC7544734A30CA3F8 /* Haneke.swift */,
+				727B1685B49641B6B1ED5F70 /* Log.swift */,
+				FA43597855EC4899AE8FEDAA /* NetworkFetcher.swift */,
+				B57AFF8B8D3940FE954A651E /* NSFileManager+Haneke.swift */,
+				44E52A3763D8476387DB5BAF /* NSHTTPURLResponse+Haneke.swift */,
+				14B06B01D9754C96BBDEAF64 /* NSURLResponse+Haneke.swift */,
+				E0960ACD5D974561A24BDC2C /* String+Haneke.swift */,
+				ADD277161AC34F7BA629EDAA /* UIButton+Haneke.swift */,
+				2AFBEC1F76E94242A4214F1F /* UIImage+Haneke.swift */,
+				B074136757F942188DB7A098 /* UIImageView+Haneke.swift */,
+				A0D72098D2BA44AB8305B50C /* UIView+Haneke.swift */,
+				B911879108EB452BB292CBFE /* cordova-plugin-ChitchatRTC-Bridging-Header.h */,
+				38AE6CEC109B439692D1E401 /* RTCAudioSource.h */,
+				DC81811632E64A32B8E5ED3A /* RTCAudioTrack.h */,
+				FFA1FAD5A3AD4A9DAAB5A58F /* RTCAVFoundationVideoSource.h */,
+				7896FDF59E134CD988F7A14F /* RTCDataChannel.h */,
+				70DF5A2F5D7D4ECC908DDCCD /* RTCEAGLVideoView.h */,
+				56FB6646C89445B5B61B6F20 /* RTCI420Frame.h */,
+				81FE5D2ECF5949CBB653A114 /* RTCICECandidate.h */,
+				3455AD8DD8924CD7A410EB84 /* RTCICEServer.h */,
+				EEB9BCAFC13F4AFDAEA49D6B /* RTCMediaConstraints.h */,
+				0681C13A0A294B488E3121B2 /* RTCMediaSource.h */,
+				893C3DE74D7C441784C5FD24 /* RTCMediaStream.h */,
+				37831A865EA24DF992D7A4FB /* RTCMediaStreamTrack.h */,
+				A511481DF25E468AB2E0D416 /* RTCPair.h */,
+				A61F83E7D15940B1862CA59A /* RTCPeerConnection.h */,
+				AE028558D6554982AEFE95BC /* RTCPeerConnectionDelegate.h */,
+				9423B11B29594DD4B823ABBD /* RTCPeerConnectionFactory.h */,
+				A5B4988168B64DDCBB6C4CFA /* RTCSessionDescription.h */,
+				463D86CE00F34202BEA19776 /* RTCSessionDescriptionDelegate.h */,
+				C0AB6A08FC484A2D983863B1 /* RTCTypes.h */,
+				829DB6686DB94D8A9797B4AC /* RTCVideoCapturer.h */,
+				3AAE1964EB0C43D2BC491701 /* RTCVideoRenderer.h */,
+				593E9795960C4EA6AD2B4480 /* RTCVideoSource.h */,
+				7311BA8992F44FED93DFC7D6 /* RTCVideoTrack.h */,
 			);
 			name = Plugins;
 			path = ChitChat/Plugins;
@@ -1013,8 +1006,8 @@
 				6BDA8A0D3DB24FF0AD0B3010 /* CDVCapture.bundle in Resources */,
 				D640B03B4B64447B84E13939 /* appbeep.wav in Resources */,
 				33C3314C423C40C8B508061C /* ProgressIndicator.bundle in Resources */,
-				31D0BCE47A304248BD4036A2 /* Chitchat.storyboard in Resources */,
-				EBDBC3DD3C464BE4A67CF917 /* iphone.mp3 in Resources */,
+				B002762220CE4E1BB5C86E73 /* Chitchat.storyboard in Resources */,
+				9EF64499C68047D3903F2391 /* iphone.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1084,104 +1077,55 @@
 				775E372BD321463D8B33056A /* IonicKeyboard.m in Sources */,
 				2CC22FF81B2B4C35B6E91367 /* UIWebViewExtension.m in Sources */,
 				07D82D0CF8F84F1492B3F7A7 /* CDVInAppBrowser.m in Sources */,
-				AC958865A89F40F79E576626 /* ReceiveCallController.swift in Sources */,
-				5E3D946181304403BF1E5D3F /* SocketAckEmitter.swift in Sources */,
-				70EBDE1811134058BF4D982A /* SocketAckManager.swift in Sources */,
-				A82A2146A103409CB0A67576 /* SocketAnyEvent.swift in Sources */,
-				9BDE286F768D41119A4DC1D8 /* SocketClientSpec.swift in Sources */,
-				EFECE3392D8C4E2C98EA7EF4 /* SocketEngine.swift in Sources */,
-				8F9995181F7E483FB446A265 /* SocketEngineClient.swift in Sources */,
-				C886BD51877247E8AD3E7192 /* SocketEnginePacketType.swift in Sources */,
-				BF4EF033091A4DD8A3507AB4 /* SocketEnginePollable.swift in Sources */,
-				885EE9434666419AA922A786 /* SocketEngineSpec.swift in Sources */,
-				DF9027CB00E7410A828FBE1D /* SocketEngineWebsocket.swift in Sources */,
-				F6AD8B67BC354F9CB5C5547D /* SocketEventHandler.swift in Sources */,
-				86C5E494ADE2458189C8201A /* SocketIOClient.swift in Sources */,
-				8E94BEF2D34D4BAA9F95D67E /* SocketIOClientOption.swift in Sources */,
-				880CF4DC10444FD9999708E5 /* SocketIOClientStatus.swift in Sources */,
-				D38AD6AC07F744919C4FFA89 /* SocketLogger.swift in Sources */,
-				C155C0A9BF4A425FA54FA4C1 /* SocketPacket.swift in Sources */,
-				DF751BA1A0154D8384124814 /* SocketParsable.swift in Sources */,
-				9D193FA6068B40F3B3C43207 /* SocketStringReader.swift in Sources */,
-				803BA73E456A4BBABD1EEA8F /* SocketTypes.swift in Sources */,
-				4F6CD58255A14660990EE9C4 /* SwiftRegex.swift in Sources */,
-				F184133D633241CD8A16A2C5 /* WebSocket.swift in Sources */,
-				5097A8558B124B46B89E7E88 /* Cache.swift in Sources */,
-				8E1345C95C5242A091961E03 /* CGSize+Swift.swift in Sources */,
-				4A6684EB7DC24B38A4AA2C62 /* CryptoSwiftMD5.swift in Sources */,
-				6AC6780591E1430980EC49CC /* Data.swift in Sources */,
-				903C4D2FE9A74055AB66BAD3 /* DiskCache.swift in Sources */,
-				0B4E1CDE1DAC4C109B91793A /* DiskFetcher.swift in Sources */,
-				6130A71E05814EB6B083F644 /* Fetch.swift in Sources */,
-				7ECE2DF76258429B818923ED /* Fetcher.swift in Sources */,
-				33B234AF55CE4CA4B2A52A8E /* Format.swift in Sources */,
-				8F4FB737214A48BDBBFF750A /* Haneke.swift in Sources */,
-				3CB7A7BEC03547B7A2924C55 /* Log.swift in Sources */,
-				E40E27511E744F0B841D466A /* NetworkFetcher.swift in Sources */,
-				3DA282FFBA8A4A2F9F6727CB /* NSFileManager+Haneke.swift in Sources */,
-				0DF2972DED364E6CAC582BCE /* NSHTTPURLResponse+Haneke.swift in Sources */,
-				19D207E5DF414444A0F36896 /* NSURLResponse+Haneke.swift in Sources */,
-				B67FB42D46164726A9A3CDDC /* String+Haneke.swift in Sources */,
-				EBBA9F43F3B34522AF8FE6BA /* UIButton+Haneke.swift in Sources */,
-				BE30F7F5C4884B7B8F0006CD /* UIImage+Haneke.swift in Sources */,
-				4CBFAC1D733E4D378A516312 /* UIImageView+Haneke.swift in Sources */,
-				FA1A24ADA46B406B99231664 /* UIView+Haneke.swift in Sources */,
-				D803C2E949344DF8AD12B7E3 /* ChitchatRTC.swift in Sources */,
-				01D45FF130194E4FBAE991D9 /* VoiceCallViewController.swift in Sources */,
-				998981F529CB4F24858C52B4 /* VideoCallViewController.swift in Sources */,
-				694A524FAFFC4243AFD28149 /* PCObserver.swift in Sources */,
-				04A564B2EB1B4D96A9D28CF8 /* Session.swift in Sources */,
-				955D339FE3414A8E915058FF /* Config.swift in Sources */,
-				F208954A503B43318B741BA1 /* SessionDescriptionDelegate.swift in Sources */,
-				CD7A0BD2AB4C48E5BB6791F9 /* ChitchatRTC.swift in Resources */,
-				FD0550A678334732931D6F5E /* ReceiveCallController.swift in Resources */,
-				7051337879EC4532B95B4D57 /* VoiceCallViewController.swift in Resources */,
-				5812CD0003B7463FBDF64765 /* VideoCallViewController.swift in Resources */,
-				4C1368A65455410E81AD48F3 /* PCObserver.swift in Resources */,
-				51DCA22A6E0C4C5492E7E676 /* Session.swift in Resources */,
-				6710CF327F1848859A25538A /* Config.swift in Resources */,
-				4B206C8002394230B90B6481 /* SessionDescriptionDelegate.swift in Resources */,
-				FDAD23335D5649DA8D66280A /* SocketAckEmitter.swift in Resources */,
-				22CAE87485A643E7BC749CC3 /* SocketAckManager.swift in Resources */,
-				2819570E7C154FB3BA0BF3C3 /* SocketAnyEvent.swift in Resources */,
-				3D7A4E18946046DBA328DC04 /* SocketClientSpec.swift in Resources */,
-				210056AEB0004D59B44BE889 /* SocketEngine.swift in Resources */,
-				5AFBAD67DA8B40C1BB00D2DA /* SocketEngineClient.swift in Resources */,
-				C0674DE4679B4B04BDEFCB0F /* SocketEnginePacketType.swift in Resources */,
-				BA9F12DE2D1D4FF3A8E533B7 /* SocketEnginePollable.swift in Resources */,
-				7E1D9B9CE23A46B299ACE43E /* SocketEngineSpec.swift in Resources */,
-				62C4E38E70A64937914FF643 /* SocketEngineWebsocket.swift in Resources */,
-				642FAFB86DDA42FABB4264B9 /* SocketEventHandler.swift in Resources */,
-				580E46BFBF5B4E5485C804C9 /* SocketIOClient.swift in Resources */,
-				68F8A393BFA94B3593046256 /* SocketIOClientOption.swift in Resources */,
-				EAD32249865F4836B2FBD785 /* SocketIOClientStatus.swift in Resources */,
-				9156A8A18ADA48C29106507B /* SocketLogger.swift in Resources */,
-				775E51C5A6454169A41007F4 /* SocketPacket.swift in Resources */,
-				AB847F079D884016B665523C /* SocketParsable.swift in Resources */,
-				38CA85EFF00D4F18A34410D0 /* SocketStringReader.swift in Resources */,
-				9E89285F578347AD8297872E /* SocketTypes.swift in Resources */,
-				0D05233F5CAE4501B910B525 /* SwiftRegex.swift in Resources */,
-				5D2FB5BA687D46239336AD43 /* WebSocket.swift in Resources */,
-				9E459BAE664A42C18CD3C45C /* Cache.swift in Resources */,
-				FC9F4B0C01074D148DA8C20A /* CGSize+Swift.swift in Resources */,
-				5ADEE74204864E879F7AE4B6 /* CryptoSwiftMD5.swift in Resources */,
-				07D5FA7B25844BB29C4BA26A /* Data.swift in Resources */,
-				EB16D8C6901949B99C42CC21 /* DiskCache.swift in Resources */,
-				E8AC964128C94CB2AD75069F /* DiskFetcher.swift in Resources */,
-				A3394A1704054EB39A5FA8DF /* Fetch.swift in Resources */,
-				C8DAB993FA0849D9A5E8C724 /* Fetcher.swift in Resources */,
-				6F9C7FBCD27F470AB25ACA3F /* Format.swift in Resources */,
-				43773F4DC62045EE84A75CB7 /* Haneke.swift in Resources */,
-				7F93312D687F4B43B5EFB626 /* Log.swift in Resources */,
-				3E9247F84EFE4AD5B6886406 /* NetworkFetcher.swift in Resources */,
-				9DB802AB561349558A0BFD59 /* NSFileManager+Haneke.swift in Resources */,
-				37E4495373FF4B65AE094A55 /* NSHTTPURLResponse+Haneke.swift in Resources */,
-				5032D07CD08C489781731368 /* NSURLResponse+Haneke.swift in Resources */,
-				5F2C0C11755F452B94CE8CF8 /* String+Haneke.swift in Resources */,
-				7C27E097D98A40509F373061 /* UIButton+Haneke.swift in Resources */,
-				600711EAF42A498FB16C7399 /* UIImage+Haneke.swift in Resources */,
-				0BC86BD409714A8DA3FB5740 /* UIImageView+Haneke.swift in Resources */,
-				5E34C02C16424551A88E65EC /* UIView+Haneke.swift in Resources */,
+				013A6E4D9AFA4306A4C86920 /* ChitchatRTC.swift in Sources */,
+				9A94F74D053B46B59C3B7562 /* ReceiveCallController.swift in Sources */,
+				1FC3E72594F84D2F9C168031 /* VoiceCallViewController.swift in Sources */,
+				3CA0648A13494D67939E61BB /* VideoCallViewController.swift in Sources */,
+				69B88E3D45FE48BCB4E95456 /* PCObserver.swift in Sources */,
+				5BECC368908A470CBFCD1704 /* Session.swift in Sources */,
+				31F5D53133BF4C849404223D /* Config.swift in Sources */,
+				F6E39F145C374A1C8486E24A /* SessionDescriptionDelegate.swift in Sources */,
+				BA45B7B6FDCC4C57A63AE0DE /* SocketAckEmitter.swift in Sources */,
+				108F03D56AA94D699EAE8439 /* SocketAckManager.swift in Sources */,
+				A59002F7129D4C56836A717A /* SocketAnyEvent.swift in Sources */,
+				ACFD1ABC335345E4ADA354F7 /* SocketClientSpec.swift in Sources */,
+				CB61CF36E0E840C2B022E24C /* SocketEngine.swift in Sources */,
+				4820C5BFABAC49A6B71F8180 /* SocketEngineClient.swift in Sources */,
+				E2C4DCE6BF11424380CF01C3 /* SocketEnginePacketType.swift in Sources */,
+				E266D61FBA7C4ABCB5302ACB /* SocketEnginePollable.swift in Sources */,
+				16EF496C52094092BE40F77A /* SocketEngineSpec.swift in Sources */,
+				E6180E2DA39C433ABBF518F1 /* SocketEngineWebsocket.swift in Sources */,
+				EBAA734BB5F5466198E9C3DA /* SocketEventHandler.swift in Sources */,
+				AF09B1E36DE44404AD1131BB /* SocketIOClient.swift in Sources */,
+				4B97D33CEA194DE89A238C2E /* SocketIOClientOption.swift in Sources */,
+				0558B6FE05B940B2942C4623 /* SocketIOClientStatus.swift in Sources */,
+				BFBB9B4B8E094E42B5B9D466 /* SocketLogger.swift in Sources */,
+				EC850DBEEBD647B58F4E92E6 /* SocketPacket.swift in Sources */,
+				4186201084A64754AD3ACC07 /* SocketParsable.swift in Sources */,
+				C8D20A65B5DC436A85952D8D /* SocketStringReader.swift in Sources */,
+				E54E9A94CC964229A9DE677D /* SocketTypes.swift in Sources */,
+				81F3E697977649C5A4D7E830 /* SwiftRegex.swift in Sources */,
+				CA8ED0C4159A42C080175212 /* WebSocket.swift in Sources */,
+				00B66CA159754E589B5D1805 /* Cache.swift in Sources */,
+				3687E002AFB44C9BA9765295 /* CGSize+Swift.swift in Sources */,
+				4B12013C356C47CBBE7D3FD5 /* CryptoSwiftMD5.swift in Sources */,
+				13056A8A323A43169F733EEE /* Data.swift in Sources */,
+				7F7EC63FC9C54D8C93B88E6E /* DiskCache.swift in Sources */,
+				952052FE65B7441D826BAB86 /* DiskFetcher.swift in Sources */,
+				50982355ABD94A7E9FB56B08 /* Fetch.swift in Sources */,
+				FCD13EFF950C4983A4DC83E0 /* Fetcher.swift in Sources */,
+				9268099F06AB4186A8E7DEDB /* Format.swift in Sources */,
+				F9EC53425FAA4C1E9DFE30C4 /* Haneke.swift in Sources */,
+				C1059ADE5C01420091116C90 /* Log.swift in Sources */,
+				EF83F5ADAB23407E88D5A0B7 /* NetworkFetcher.swift in Sources */,
+				E6E217D74405490FB9FB7262 /* NSFileManager+Haneke.swift in Sources */,
+				B13B9A3A428A4F43A458758D /* NSHTTPURLResponse+Haneke.swift in Sources */,
+				709663A6D6774C1DAB66AE4A /* NSURLResponse+Haneke.swift in Sources */,
+				8DCF0F21A7E04E13BE0F8E5E /* String+Haneke.swift in Sources */,
+				ED888464C0644878AB6A7264 /* UIButton+Haneke.swift in Sources */,
+				33EC644E2CBC4712834D7B53 /* UIImage+Haneke.swift in Sources */,
+				AEB03A07C57B46808DC1B5C0 /* UIImageView+Haneke.swift in Sources */,
+				906AFF4DA5F44E20ABE2D64B /* UIView+Haneke.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1264,7 +1208,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rfl.stalk;
 				PRODUCT_NAME = ChitChat;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/ChitChat/Plugins/Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ChitChat/Plugins/Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1335,7 +1279,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.rfl.stalk;
 				PRODUCT_NAME = ChitChat;
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nattapon.r/Documents/chitchat-ios/ChitChat_cordova/platforms/ios/ChitChat/Plugins/Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ChitChat/Plugins/Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
