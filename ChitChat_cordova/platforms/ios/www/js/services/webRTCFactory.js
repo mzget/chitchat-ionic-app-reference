@@ -37,8 +37,14 @@
                         console.warn("Fail to call. Need to hangup.");
                     }
                 });
-            }, function fail() { }, "ChitchatRTC", "freeCall",
-            ["", dataManager.getContactProfile(contactId)]);
+            }, function fail() { }, "ChitchatRTC", "freeCall", ["", dataManager.getContactProfile(contactId)]);
+            
+            cordova.exec(function success(callId) {
+                console.warn(callId);
+                server.hangupCall(main.getDataManager().getMyProfile()._id, contactId);
+            }, function fail() {
+
+            }, "ChitchatRTC", "waitForEndCall", []);
         }
         
         function voiceCallHandler(contactId, callerId) {
