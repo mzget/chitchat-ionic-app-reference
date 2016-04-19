@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="chitchat-ChitchatRTC" version="0.0.2" xmlns="http://www.phonegap.com/ns/plugins/1.0" >
+    <name>ChitchatRTC</name>
+    <author>Prathan B.</author>
+
+    <engines>
+      <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <js-module name="ChitchatRTC" src="www/chitchatrtc.js">
+        <clobbers target="cordova.plugins.ChitchatRTC" />
+    </js-module>
+
+    <platform name="ios">
+      <hook type="after_plugin_install" src="hooks/add_swift_support.js" />
+
+      <source-file src="src/ios/ChitchatRTC.swift" />
+      <source-file src="src/ios/ReceiveCallController.swift" />
+      <source-file src="src/ios/VoiceCallViewController.swift" />
+      <source-file src="src/ios/VideoCallViewController.swift" />
+
+      <source-file src="src/ios/PCObserver.swift" />
+      <source-file src="src/ios/Session.swift" />
+      <source-file src="src/ios/Config.swift" />
+      <source-file src="src/ios/SessionDescriptionDelegate.swift" />
+
+      <resource-file src="src/ios/Chitchat.storyboard" />
+      <resource-file src="iphone.mp3" />
+
+      <header-file src="src/ios/cordova-plugin-ChitchatRTC-Bridging-Header.h" />
+
+      <source-file src="libs/ios/SocketIO/SocketAckEmitter.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketAckManager.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketAnyEvent.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketClientSpec.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketEngine.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketEngineClient.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketEnginePacketType.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketEnginePollable.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketEngineSpec.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketEngineWebsocket.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketEventHandler.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketIOClient.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketIOClientOption.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketIOClientStatus.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketLogger.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketPacket.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketParsable.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketStringReader.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SocketTypes.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/SwiftRegex.swift" target-dir="SocketIO" />
+      <source-file src="libs/ios/SocketIO/WebSocket.swift" target-dir="SocketIO" />
+
+      <source-file src="libs/ios/Haneke/Cache.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/CGSize+Swift.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/CryptoSwiftMD5.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/Data.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/DiskCache.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/DiskFetcher.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/Fetch.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/Fetcher.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/Format.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/Haneke.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/Log.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/NetworkFetcher.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/NSFileManager+Haneke.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/NSHTTPURLResponse+Haneke.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/NSURLResponse+Haneke.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/String+Haneke.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/UIButton+Haneke.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/UIImage+Haneke.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/UIImageView+Haneke.swift" target-dir="Haneke" />
+      <source-file src="libs/ios/Haneke/UIView+Haneke.swift" target-dir="Haneke" />
+
+
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCAudioSource.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCAudioTrack.h" /> 
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCAVFoundationVideoSource.h" /> 
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCDataChannel.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCEAGLVideoView.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCI420Frame.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCICECandidate.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCICEServer.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCMediaConstraints.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCMediaSource.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCMediaStream.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCMediaStreamTrack.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCPair.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCPeerConnection.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCPeerConnectionDelegate.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCPeerConnectionFactory.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCSessionDescription.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCSessionDescriptionDelegate.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCTypes.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCVideoCapturer.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCVideoRenderer.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCVideoSource.h" />
+      <header-file src="libs/ios/libjingle_peerconnection/Headers/RTCVideoTrack.h" />
+
+      <source-file src="libs/ios/libjingle_peerconnection/libWebRTC.a" framework="true" />
+
+      <framework src="libc++.tbd" />
+      <framework src="libsqlite3.0.dylib" />  
+      
+      <framework src="CoreVideo.framework" />
+      <framework src="CoreMedia.framework" />
+      <framework src="CoreAudio.framework" />
+      <framework src="OpenGLES.framework" />
+      <framework src="AVFoundation.framework" />
+      <framework src="QuartzCore.framework" />    
+      <framework src="AssetsLibrary.framework" />
+      <framework src="CoreGraphics.framework" />      
+      <framework src="MobileCoreServices.framework" />
+      <framework src="CoreLocation.framework" />
+      <framework src="AudioToolbox.framework" />
+      <framework src="VideoToolbox.framework" />
+      <framework src="GLKit.framework" />
+
+      <config-file target="config.xml" parent="/*">
+        <feature name="ChitchatRTC">
+          <param name="ios-package" value="ChitchatRTC" />
+          <param name="onload" value="true" />
+        </feature>
+      </config-file>
+
+    </platform>
+</plugin>

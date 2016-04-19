@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Receive Call View Controller-->
+        <scene sceneID="YqB-3L-stb">
+            <objects>
+                <viewController storyboardIdentifier="receiveCallView" id="ymr-Ou-jPe" customClass="ReceiveCallViewController" customModule="ChitChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="A1m-w8-Vof"/>
+                        <viewControllerLayoutGuide type="bottom" id="8wT-Hw-lXA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="aN0-L6-f9o">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="recive_call_bg" translatesAutoresizingMaskIntoConstraints="NO" id="hKJ-ZW-xeF">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4VV-DR-mBs">
+                                <rect key="frame" x="329" y="365" width="183" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="ZLT-EV-yBQ"/>
+                                    <constraint firstAttribute="width" constant="183" id="z9n-n2-BWX"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="recive_call_decline"/>
+                                <connections>
+                                    <action selector="doDecline:" destination="ymr-Ou-jPe" eventType="touchUpInside" id="Jvw-KA-zqw"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callee" translatesAutoresizingMaskIntoConstraints="NO" id="6tK-zA-8tv">
+                                <rect key="frame" x="200" y="47" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="UQI-e9-tpe"/>
+                                    <constraint firstAttribute="height" constant="200" id="knC-t5-5u4"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Janny D" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OfX-Ff-JKn">
+                                <rect key="frame" x="20" y="288" width="560" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incoming Call" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CW2-Ha-Cbc">
+                                <rect key="frame" x="251" y="315" width="98" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="98" id="YFA-Ti-SxT"/>
+                                    <constraint firstAttribute="height" constant="20" id="jXu-lo-6BT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6bZ-38-4vW">
+                                <rect key="frame" x="290" y="385" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="aut-cI-Q0H"/>
+                                    <constraint firstAttribute="height" constant="20" id="pUt-CR-r1b"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EXg-Oj-isQ">
+                                <rect key="frame" x="86" y="365" width="183" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="183" id="E88-5F-Gm0"/>
+                                    <constraint firstAttribute="height" constant="60" id="xH9-3X-acH"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="recive_call_answer"/>
+                                <connections>
+                                    <action selector="doAnswer:" destination="ymr-Ou-jPe" eventType="touchUpInside" id="Neg-Gw-TaZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="4VV-DR-mBs" firstAttribute="top" secondItem="CW2-Ha-Cbc" secondAttribute="bottom" constant="30" id="3L6-IP-DAE"/>
+                            <constraint firstItem="hKJ-ZW-xeF" firstAttribute="leading" secondItem="aN0-L6-f9o" secondAttribute="leadingMargin" constant="-20" id="7tv-LN-J0S"/>
+                            <constraint firstItem="OfX-Ff-JKn" firstAttribute="trailing" secondItem="aN0-L6-f9o" secondAttribute="trailingMargin" id="AUH-UK-Lqt"/>
+                            <constraint firstItem="6bZ-38-4vW" firstAttribute="centerX" secondItem="aN0-L6-f9o" secondAttribute="centerX" id="AdG-JA-Olq"/>
+                            <constraint firstItem="4VV-DR-mBs" firstAttribute="leading" secondItem="6bZ-38-4vW" secondAttribute="trailing" constant="19" id="B1K-ji-hNs"/>
+                            <constraint firstItem="6bZ-38-4vW" firstAttribute="leading" secondItem="EXg-Oj-isQ" secondAttribute="trailing" constant="21" id="J8O-jL-aoj"/>
+                            <constraint firstItem="hKJ-ZW-xeF" firstAttribute="top" secondItem="aN0-L6-f9o" secondAttribute="topMargin" id="Mn0-mr-9fQ"/>
+                            <constraint firstItem="OfX-Ff-JKn" firstAttribute="leading" secondItem="aN0-L6-f9o" secondAttribute="leadingMargin" id="Un0-2I-Ysg"/>
+                            <constraint firstItem="CW2-Ha-Cbc" firstAttribute="centerX" secondItem="aN0-L6-f9o" secondAttribute="centerX" id="cEj-fK-ufw"/>
+                            <constraint firstItem="OfX-Ff-JKn" firstAttribute="top" secondItem="6tK-zA-8tv" secondAttribute="bottom" constant="41" id="fQN-W2-OV9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hKJ-ZW-xeF" secondAttribute="trailing" constant="-20" id="mbe-DY-hQ9"/>
+                            <constraint firstItem="CW2-Ha-Cbc" firstAttribute="top" secondItem="OfX-Ff-JKn" secondAttribute="bottom" constant="3" id="pJO-si-VUK"/>
+                            <constraint firstItem="8wT-Hw-lXA" firstAttribute="top" secondItem="hKJ-ZW-xeF" secondAttribute="bottom" id="pPf-Wg-ye1"/>
+                            <constraint firstItem="OfX-Ff-JKn" firstAttribute="centerY" secondItem="aN0-L6-f9o" secondAttribute="centerY" id="rvl-Th-wNg"/>
+                            <constraint firstItem="6bZ-38-4vW" firstAttribute="top" secondItem="CW2-Ha-Cbc" secondAttribute="bottom" constant="50" id="sie-x0-KIl"/>
+                            <constraint firstItem="6tK-zA-8tv" firstAttribute="centerX" secondItem="aN0-L6-f9o" secondAttribute="centerX" id="v5f-Ah-M5Z"/>
+                            <constraint firstItem="EXg-Oj-isQ" firstAttribute="top" secondItem="CW2-Ha-Cbc" secondAttribute="bottom" constant="30" id="xAp-he-VJH"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="callStatus" destination="CW2-Ha-Cbc" id="ruu-8k-2oX"/>
+                        <outlet property="callerImage" destination="6tK-zA-8tv" id="l18-uk-ByV"/>
+                        <outlet property="callerName" destination="OfX-Ff-JKn" id="cEK-ui-Hrr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cgD-XC-NxO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="283" y="863"/>
+        </scene>
+        <!--Voice Call View Controller-->
+        <scene sceneID="fl4-Xn-jYK">
+            <objects>
+                <viewController storyboardIdentifier="voiceCallView" id="lMf-y2-ued" customClass="VoiceCallViewController" customModule="ChitChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ky2-Nc-sht"/>
+                        <viewControllerLayoutGuide type="bottom" id="5qF-Im-waw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8tO-N4-Kz7">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="freecall_bg" translatesAutoresizingMaskIntoConstraints="NO" id="xwf-pG-9Th">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D23-e6-frg">
+                                <rect key="frame" x="210" y="389" width="180" height="60"/>
+                                <color key="backgroundColor" red="0.6266025641025641" green="0.0" blue="0.0058661000276048793" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="tdd-UM-5Vc"/>
+                                    <constraint firstAttribute="width" constant="180" id="xdy-82-KXF"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="EndCall"/>
+                                <connections>
+                                    <action selector="hangUp:" destination="lMf-y2-ued" eventType="touchUpInside" id="Z4G-aQ-EzT"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="callee" translatesAutoresizingMaskIntoConstraints="NO" id="f84-qX-Mdo">
+                                <rect key="frame" x="210" y="35" width="180" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="180" id="5f6-pV-ZvX"/>
+                                    <constraint firstAttribute="height" constant="180" id="pro-Ej-dp0"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Janny D" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4FZ-cJ-nxL">
+                                <rect key="frame" x="100" y="223" width="400" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="SO1-K9-OEq"/>
+                                    <constraint firstAttribute="width" constant="400" id="vV9-sU-EsC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OLs-OV-yRA">
+                                <rect key="frame" x="278" y="315" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="YOq-pJ-N6z"/>
+                                    <constraint firstAttribute="width" constant="45" id="rTM-ic-wko"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="speaker" translatesAutoresizingMaskIntoConstraints="NO" id="sKt-dy-8bQ">
+                                <rect key="frame" x="233" y="315" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="hwb-JU-Z79"/>
+                                    <constraint firstAttribute="width" constant="45" id="pzv-ZE-TYL"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="speaker" translatesAutoresizingMaskIntoConstraints="NO" id="LWQ-W5-ZbZ">
+                                <rect key="frame" x="323" y="315" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="45" id="7Dp-D4-y2G"/>
+                                    <constraint firstAttribute="height" constant="45" id="bPX-dD-DxS"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calling ...." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="djc-hc-J1p">
+                                <rect key="frame" x="174" y="249" width="252" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="iWp-o9-VDy"/>
+                                    <constraint firstAttribute="width" constant="252" id="rIF-yY-IOj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="djc-hc-J1p" firstAttribute="centerX" secondItem="8tO-N4-Kz7" secondAttribute="centerX" id="76s-Ff-x9a"/>
+                            <constraint firstItem="LWQ-W5-ZbZ" firstAttribute="leading" secondItem="OLs-OV-yRA" secondAttribute="trailing" constant="18" id="BMj-YJ-iir"/>
+                            <constraint firstItem="xwf-pG-9Th" firstAttribute="top" secondItem="8tO-N4-Kz7" secondAttribute="topMargin" id="BvN-Nv-EXd"/>
+                            <constraint firstItem="xwf-pG-9Th" firstAttribute="leading" secondItem="8tO-N4-Kz7" secondAttribute="leadingMargin" constant="-20" id="GEp-Xr-a4d"/>
+                            <constraint firstItem="5qF-Im-waw" firstAttribute="top" secondItem="xwf-pG-9Th" secondAttribute="bottom" id="K05-E8-Bd2"/>
+                            <constraint firstItem="4FZ-cJ-nxL" firstAttribute="top" secondItem="f84-qX-Mdo" secondAttribute="bottom" constant="8" id="K8D-iK-HiS"/>
+                            <constraint firstItem="OLs-OV-yRA" firstAttribute="leading" secondItem="sKt-dy-8bQ" secondAttribute="trailing" constant="18" id="LDO-qX-dfj"/>
+                            <constraint firstItem="f84-qX-Mdo" firstAttribute="centerX" secondItem="8tO-N4-Kz7" secondAttribute="centerX" id="P8J-vd-k2h"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="xwf-pG-9Th" secondAttribute="trailing" constant="-20" id="UAe-bs-Zbx"/>
+                            <constraint firstItem="D23-e6-frg" firstAttribute="centerX" secondItem="8tO-N4-Kz7" secondAttribute="centerX" id="a4x-My-tJz"/>
+                            <constraint firstItem="OLs-OV-yRA" firstAttribute="centerX" secondItem="8tO-N4-Kz7" secondAttribute="centerX" id="cRh-mY-cna"/>
+                            <constraint firstItem="OLs-OV-yRA" firstAttribute="top" secondItem="4FZ-cJ-nxL" secondAttribute="bottom" constant="67" id="flD-Na-Bdn"/>
+                            <constraint firstItem="djc-hc-J1p" firstAttribute="top" secondItem="4FZ-cJ-nxL" secondAttribute="bottom" constant="1" id="if4-Ji-T4V"/>
+                            <constraint firstItem="D23-e6-frg" firstAttribute="top" secondItem="OLs-OV-yRA" secondAttribute="bottom" constant="29" id="k6S-gy-jue"/>
+                            <constraint firstItem="4FZ-cJ-nxL" firstAttribute="centerX" secondItem="8tO-N4-Kz7" secondAttribute="centerX" id="lvA-rG-CMG"/>
+                            <constraint firstItem="OLs-OV-yRA" firstAttribute="centerY" secondItem="8tO-N4-Kz7" secondAttribute="centerY" constant="37.5" id="o6f-Wj-KUi"/>
+                            <constraint firstItem="sKt-dy-8bQ" firstAttribute="centerY" secondItem="8tO-N4-Kz7" secondAttribute="centerY" constant="37.5" id="s6O-bO-yed"/>
+                            <constraint firstItem="LWQ-W5-ZbZ" firstAttribute="centerY" secondItem="8tO-N4-Kz7" secondAttribute="centerY" constant="37.5" id="wMk-jh-7rx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="callStatus" destination="djc-hc-J1p" id="BfH-9v-iK2"/>
+                        <outlet property="callerImage" destination="f84-qX-Mdo" id="aut-OQ-e2J"/>
+                        <outlet property="callerName" destination="4FZ-cJ-nxL" id="aQ2-kp-2eM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Fj-dA-CYc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1013" y="1023"/>
+        </scene>
+        <!--Video Call View Controller-->
+        <scene sceneID="1PW-Fv-AAa">
+            <objects>
+                <viewController storyboardIdentifier="videoCallView" id="g0b-jh-QOU" customClass="VideoCallViewController" customModule="ChitChat" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wuW-4d-ZwZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="ys4-d0-iuZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ram-AK-ZP2">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1J-T5-0J1" customClass="RTCEAGLVideoView">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qPN-1t-KfL" customClass="RTCEAGLVideoView">
+                                        <rect key="frame" x="420" y="300" width="150" height="150"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="0rh-LY-q2y"/>
+                                            <constraint firstAttribute="width" constant="150" id="JXC-OX-RLG"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="qPN-1t-KfL" secondAttribute="bottom" constant="150" id="Bo3-md-jFa"/>
+                                    <constraint firstAttribute="trailing" secondItem="qPN-1t-KfL" secondAttribute="trailing" constant="30" id="KDy-Zd-2zs"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="T1J-T5-0J1" firstAttribute="leading" secondItem="ram-AK-ZP2" secondAttribute="leadingMargin" constant="-20" id="X3N-I9-cQe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="T1J-T5-0J1" secondAttribute="trailing" constant="-20" id="c8s-u7-FDh"/>
+                            <constraint firstItem="ys4-d0-iuZ" firstAttribute="top" secondItem="T1J-T5-0J1" secondAttribute="bottom" id="y4W-jH-jf1"/>
+                            <constraint firstItem="T1J-T5-0J1" firstAttribute="top" secondItem="ram-AK-ZP2" secondAttribute="topMargin" id="y5t-BU-NkK"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="localView" destination="qPN-1t-KfL" id="eQw-qk-9MJ"/>
+                        <outlet property="remoteView" destination="T1J-T5-0J1" id="LCW-OF-dFF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tvk-dF-k9B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1626" y="1026"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="callee" width="140" height="140"/>
+        <image name="freecall_bg" width="640" height="1137"/>
+        <image name="recive_call_answer" width="183" height="60"/>
+        <image name="recive_call_bg" width="412" height="733"/>
+        <image name="recive_call_decline" width="183" height="60"/>
+        <image name="speaker" width="75" height="75"/>
+    </resources>
+</document>

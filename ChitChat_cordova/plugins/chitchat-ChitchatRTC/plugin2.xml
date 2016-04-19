@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="chitchat-ChitchatRTC" version="0.0.1" xmlns="http://www.phonegap.com/ns/plugins/1.0" >
+    <name>ChitchatRTC</name>
+    <author>Prathan B.</author>
+
+    <engines>
+      <engine name="cordova" version=">=3.0.0" />
+    </engines>
+
+    <js-module name="ChitchatRTC" src="www/chitchatrtc.js">
+        <clobbers target="cordova.plugins.ChitchatRTC" />
+    </js-module>
+
+    <platform name="ios">
+      <hook type="after_plugin_install" src="hooks/add_swift_support.js" />
+      
+      <source-file src="src/ios/ChitchatRTC.swift" />
+      <source-file src="src/ios/VoiceCallViewController.swift" />
+      <source-file src="src/ios/VideoCallViewController.swift" />
+      
+      <source-file src="src/ios/PCObserver.swift" />
+      <source-file src="src/ios/Session.swift" />
+      <source-file src="src/ios/Config.swift" />
+      <source-file src="src/ios/SessionDescriptionDelegate.swift" />
+
+      <resource-file src="src/ios/Chitchat.storyboard" />
+      <header-file src="src/ios/cordova-plugin-ChitchatRTC-Bridging-Header.h" />
+
+      <source-file src="src/ios/SocketIO/SocketAckEmitter.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketAckManager.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketAnyEvent.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketClientSpec.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketEngine.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketEngineClient.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketEnginePacketType.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketEnginePollable.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketEngineSpec.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketEngineWebsocket.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketEventHandler.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketFixUTF8.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketIOClient.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketIOClientOption.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketIOClientStatus.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketLogger.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketPacket.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketParsable.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketStringReader.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SocketTypes.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/SwiftRegex.swift" target-dir="SocketIO" />
+      <source-file src="src/ios/SocketIO/WebSocket.swift" target-dir="SocketIO" />
+
+      <framework src="libc++.dylib" />
+      <framework src="libstdc++.dylib" />
+      <framework src="libsqlite3.0.dylib" />  
+      <framework src="OpenGLES.framework" />
+      <framework src="CoreVideo.framework" />
+      <framework src="CoreMedia.framework" />
+      <framework src="CoreAudio.framework" />
+      <framework src="AVFoundation.framework" />
+      <framework src="QuartzCore.framework" />    
+      <framework src="AssetsLibrary.framework" />
+      <framework src="CoreGraphics.framework" />      
+      <framework src="MobileCoreServices.framework" />
+      <framework src="CoreLocation.framework" />
+      <framework src="AudioToolbox.framework" />
+      <framework src="GLKit.framework" />
+
+      
+
+      <config-file target="config.xml" parent="/*">
+        <feature name="ChitchatRTC">
+          <param name="ios-package" value="ChitchatRTC" />
+          <param name="onload" value="true" />
+        </feature>
+      </config-file>
+    </platform>
+</plugin>
