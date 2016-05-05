@@ -5,7 +5,7 @@
         .module('spartan.notify', [])
         .factory('localNotifyService', localNotifyService);
 
-    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, $ionicPopup, $timeout, $rootScope, blockNotifications) {
+    function localNotifyService($http, $cordovaLocalNotification, $cordovaToast, $ionicPopup, $timeout, $rootScope, $mdToast, blockNotifications) {
         var service = {
             getData: getData,
             scheduleSingleNotification: scheduleSingleNotification,

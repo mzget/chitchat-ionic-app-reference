@@ -63,7 +63,8 @@ angular.module('spartan.media', [])
 	}
 })
 
-.controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, $ionicModal,
+.controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet, 
+	$ionicLoading, $cordovaProgress, $ionicModal, $mdDialog,
     ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
  
   	$ionicPlatform.ready(function() {
@@ -266,18 +267,18 @@ angular.module('spartan.media', [])
 	$scope.closeImage = function () {
 	    $scope.modalImage.hide();
 	}
-	$scope.viewImageWeb = function(ev,type,src) {
-        $mdDialog.show({
-          controller: function($scope){
-          	$scope.imageType = type;
-			$scope.imageSrc = src;
-          },
-          templateUrl: 'templates_web/modal-image.html',
-          parent: angular.element(document.body),
-          targetEvent: ev,
-          clickOutsideToClose:true
-        });
-    }
+	$scope.viewImageWeb = function (ev, type, src) {
+	    $mdDialog.show({
+	        controller: function ($scope) {
+	            $scope.imageType = type;
+	            $scope.imageSrc = src;
+	        },
+	        templateUrl: 'templates_web/modal-image.html',
+	        parent: angular.element(document.body),
+	        targetEvent: ev,
+	        clickOutsideToClose: true
+	    });
+	}
 
 	$scope.uploadImage = function(id) {
 		if (ionic.Platform.platform() === "ios") {
@@ -387,7 +388,8 @@ angular.module('spartan.media', [])
  	}
 })
 
-.controller('VideoController', function ($rootScope, $scope, $q, $sce, $cordovaFileTransfer, $timeout, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
+.controller('VideoController', function ($rootScope, $scope, $q, $sce, $cordovaFileTransfer, $timeout,
+ $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile, $mdDialog,
     checkFileSize, GenerateID, VideoService, roomSelected, sharedObjectService) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
