@@ -22,6 +22,10 @@
             $state.go('backend.projectbase');
         }
 
+        if(!server._isConnected) {
+                location.href = '';
+            }
+
         activate();
 
         function activate() {
