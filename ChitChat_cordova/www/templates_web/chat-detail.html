@@ -28,8 +28,8 @@
 
 							<!-- @Incomings message. -->
 							<ion-item ng-if="message.sender != myprofile._id && !!message.sender"
-							class="other item-remove-animate item-avatar item-icon-right" 
-							type="item-text-wrap" style="white-space:normal !important;">
+							    class="other item-remove-animate item-avatar item-icon-right" 
+							    type="item-text-wrap" style="white-space:normal !important;">
 								<img ng-src="{{webServer}}/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 								<h2>{{allMembers[message.sender]['displayname']}}</h2>
 								</br>
@@ -46,9 +46,11 @@
 								<p id="{{message._id}}" ng-if="message.type=='File'"> 
 									<a href="{{message.url}}" target="_blank">{{message.name}}</a>
 								</p>
-								
-								<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="{{webServer}}{{message.body}}" 
-								ng-click="viewImageWeb($event,message.type,{{webServer}}+message.body)"/>
+
+								<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" 
+                                     ng-src="{{webServer}}{{message.body}}" 
+                                     ng-click="viewImageWeb($event,message.type,{{webServer}}{{message.body}})"/>
+                                {{webServer}}{{message.body}}
 								<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 								<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
 									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, {{webServer}} + message.body)"></i>
