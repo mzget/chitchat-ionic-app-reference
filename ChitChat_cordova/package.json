@@ -1,7 +1,9 @@
 {
   "name": "chitchat_cordova",
   "version": "1.0.0",
-  "dependencies": { },
+  "dependencies": {
+    "ionic-native": "*"
+  },
   "cordovaPlugins": [
     "cordova-plugin-device",
     "cordova-plugin-console",
