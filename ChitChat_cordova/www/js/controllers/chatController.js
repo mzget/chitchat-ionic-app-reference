@@ -242,7 +242,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		console.log(message);
 		console.log(JSON.parse(message.body));
 		
-		viewLocation($scope, JSON.parse(message.body));
+		viewMap($scope, JSON.parse(message.body));
 		$scope.mapViewModal.show();
 	}
 	function openMap() {
@@ -773,7 +773,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     });
 });
 
-var viewLocation = function ($scope, message, $ionicLoading) {
+var viewMap = function ($scope, message, $ionicLoading) {
 	$scope.viewOnly = true;
 	$scope.place = message.name;
 	$scope.$broadcast('onInitMap', { lat: message.latitude, long: message.longitude });
