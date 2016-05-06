@@ -43,8 +43,8 @@
 
 								<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" 
                                      ng-src="{{webServer}}{{message.body}}" 
-                                     ng-click="viewImageWeb($event,message.type,{{webServer}}{{message.body}})"/>
-                                {{webServer}}{{message.body}}
+                                     ng-click="viewImageWeb($event, message.type, message.body)"/>
+    
 								<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 								<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
 									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, {{webServer}} + message.body)"></i>

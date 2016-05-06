@@ -63,8 +63,8 @@ angular.module('spartan.media', [])
 	}
 })
 
-.controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet, 
-	$ionicLoading, $cordovaProgress, $ionicModal, $mdDialog,
+.controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet,
+    $ionicLoading, $cordovaProgress, $ionicModal, $mdDialog,
     ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
  
   	$ionicPlatform.ready(function() {
@@ -94,8 +94,7 @@ angular.module('spartan.media', [])
 		        $scope.addImage(index);
 		      }
 		    });
-		}
-        else{
+		}else{
 			var file    = document.querySelector("[id='fileToUpload']").files[0];
 	        var reader  = new FileReader();
 	        reader.onloadend = function () {
@@ -259,33 +258,35 @@ angular.module('spartan.media', [])
 	    animation: 'slide-in-up'
   	});
 	
+
 	$scope.viewImage = function (type, src) {
 		$scope.modalImage.type = type;
-		$scope.modalImage.src = sharedObjectService.getWebServer() + src;
+		$scope.modalImage.src = src;
 		$scope.modalImage.show();
 	}
 	$scope.closeImage = function () {
 	    $scope.modalImage.hide();
 	}
-	$scope.viewImageWeb = function (ev, type, src) {
-	    $mdDialog.show({
-	        controller: function ($scope) {
-	            $scope.imageType = type;
-	            $scope.imageSrc = src;
-	        },
-	        templateUrl: 'templates_web/modal-image.html',
-	        parent: angular.element(document.body),
-	        targetEvent: ev,
-	        clickOutsideToClose: true
-	    });
-	}
+	$scope.viewImageWeb = function(ev,type,src) {
+        var imgPath = $rootScope.webServer + src;
+        $mdDialog.show({
+          controller: function($scope){
+          	$scope.imageType = type;
+			$scope.imageSrc = imgPath;
+          },
+          templateUrl: 'templates_web/modal-image.html',
+          parent: angular.element(document.body),
+          targetEvent: ev,
+          clickOutsideToClose:true
+        });
+    }
 
 	$scope.uploadImage = function(id) {
 		if (ionic.Platform.platform() === "ios") {
 			if(FileService.getImages().length!=0) { 
 				checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
 					if(canUpload){
-					    var img = new UploadMedia($rootScope, $scope, sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function (id, messageId) {
+					    var img = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Image], function (id, messageId) {
 							$scope.$emit('delectTemp', [id]); 
 						});
 					mediaUpload[id] = img;
@@ -386,10 +387,10 @@ angular.module('spartan.media', [])
 			});
  		})
  	}
+
 })
 
-.controller('VideoController', function ($rootScope, $scope, $q, $sce, $cordovaFileTransfer, $timeout,
- $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile, $mdDialog,
+.controller('VideoController', function ($scope, $q, $sce, $cordovaFileTransfer, $timeout, $mdDialog, $cordovaCapture, $ionicLoading, $ionicActionSheet, $ionicModal, $cordovaProgress, $cordovaFile,
     checkFileSize, GenerateID, VideoService, roomSelected, sharedObjectService) {
 
 	$scope.$on('captureVideo', function(event, args) { $scope.addVideo(); });
@@ -472,7 +473,7 @@ angular.module('spartan.media', [])
 			if(videoName != null || videoName != undefined) { 
 				checkFileSize.checkFile(videoURI).then(function(canUpload) {
 					if(canUpload){
-					    var video = new UploadMedia($rootScope, $scope, sharedObjectService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function (id, messageId) {
+					    var video = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, videoURI, ContentType[ContentType.Video], function (id, messageId) {
 							$scope.$emit('delectTemp', [id]); 
 						});
 						mediaUpload[id] = video;
@@ -790,7 +791,7 @@ angular.module('spartan.media', [])
 			if(fileName != null || fileName != undefined) { 
 				checkFileSize.checkFile(cordova.file.documentsDirectory + id).then(function(canUpload) {
 					if(canUpload){
-					    var voice = new UploadMedia($rootScope, $scope, sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
+					    var voice = new UploadMedia(sharedObjectService, roomSelected.getRoom()._id, cordova.file.documentsDirectory + id, ContentType[ContentType.Voice], function (id, messageId) {
 							$scope.$emit('delectTemp', [id]); 
 					});
 					mediaUpload[id] = voice;
@@ -900,8 +901,7 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 				}
 			});
 
-		}
-        else{
+		}else{
 			main.getChatRoomApi().chat(rid, "*", main.getDataManager().myProfile._id, url, type, function(err, res) {
 			if (err || res === null) {
 				console.warn("send message fail.");
@@ -909,7 +909,7 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 			else {
 				console.log("send message:", JSON.stringify(res));
 				jQuery.extend(mediaUpload[mediaName], { 'url' : url, 'messageId' : res.messageId });
-	    		callback.apply(this , [mediaName, res.messageId]);
+	    		callback.apply(this , [mediaName,res.messageId]);
 			}
 		});
 		}
@@ -917,14 +917,13 @@ function UploadMediaWeb(sharedObjectService,rid,uri,type,callback){
 	}
 }
 
-function UploadMedia($rootScope, $scope, sharedObjectService, rid, uri, type, callback) {
+function UploadMedia(sharedObjectService, rid, uri, type, callback) {
 	var mimeType = { "Image":"image/jpg", "Video":"video/mov", "Voice":"audio/wav" }
 	var uriFile = uri;
 	var mediaName = uri.substr(uri.lastIndexOf('/') + 1);
 	var ft = new FileTransfer();
 	var downloadContain;
 	var downloadProgress;
-    
 	this.upload = function(){
 		openProgress();
 		var options = new FileUploadOptions();
@@ -944,7 +943,8 @@ function UploadMedia($rootScope, $scope, sharedObjectService, rid, uri, type, ca
 
 		    }
 		};
-		ft.upload(uriFile, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail, options);
+		ft.upload(uriFile, sharedObjectService.getWebServer() + "/?r=api/upload", win, fail,
+        options);
 	}
 	this.cancel = function(){
 		ft.abort();
@@ -958,32 +958,36 @@ function UploadMedia($rootScope, $scope, sharedObjectService, rid, uri, type, ca
 	    document.getElementById( mediaName + '-resend').classList.add("hide");
 	}
 
-	function uploadFail() {
+	function uploadFail(){
 		document.getElementById( mediaName + '-downloaded').classList.add("hide");
 		document.getElementById( mediaName + '-resend').classList.remove("hide");
 	}
 
-	function win(r) {
-	    console.log('UploadMedia', JSON.stringify(r));
-		console.log("responseCode = " + r.responseCode);
-		console.log("response = " + r.response);
-	    console.log("bytesSent = " + r.bytesSent);
-	    
-        send($rootScope, r.response);
+	function win(r){
+		console.log(JSON.stringify(r));
+		console.log("Code = " + r.responseCode);
+	    console.log("Response = " + r.response);
+	    console.log("Sent = " + r.bytesSent);
+	    send(r.response);
 	}
 
-	function fail(error) {
+	function fail(error){
 	    console.log("upload error source " + error.source);
 	    console.log("upload error target " + error.target);
-	    
-        uploadFail();
+	    uploadFail();
 	}
 
-	function send($rootScope, url) {
-	    $rootScope.$broadcast('sendFile', { url: url, type: type, mediaName: mediaName });
-        $scope.$on('onSendFileSuccess', function(event, args) {
-            jQuery.extend(mediaUpload[mediaName], { 'url' : url, 'messageId' : args.messageId });
-        });
+	function send(url){
+		 main.getChatRoomApi().chat(rid, "*", main.getDataManager().myProfile._id, url, type, function(err, res) {
+			if (err || res === null) {
+				console.warn("send message fail.");
+			}
+			else {
+				console.log("send message:", JSON.stringify(res));
+				jQuery.extend(mediaUpload[mediaName], { 'url' : url, 'messageId' : res.messageId });
+	    		callback.apply(this , [mediaName,res.messageId]);
+			}
+		});
 	}
 }
 
