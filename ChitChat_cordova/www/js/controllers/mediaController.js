@@ -63,8 +63,9 @@ angular.module('spartan.media', [])
 	}
 })
 
-.controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet, $ionicLoading, $cordovaProgress, $ionicModal,
-    $mdDialog, ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
+.controller('ImageController', function ($scope, $rootScope, $q, $ionicPlatform, $ionicActionSheet,
+    $ionicLoading, $cordovaProgress, $ionicModal, $mdDialog,
+    ImageService, FileService, roomSelected, checkFileSize, sharedObjectService) {
  
   	$ionicPlatform.ready(function() {
     	$scope.images = FileService.images();
@@ -267,10 +268,11 @@ angular.module('spartan.media', [])
 	    $scope.modalImage.hide();
 	}
 	$scope.viewImageWeb = function(ev,type,src) {
+        var imgPath = $rootScope.webServer + src;
         $mdDialog.show({
           controller: function($scope){
           	$scope.imageType = type;
-			$scope.imageSrc = src;
+			$scope.imageSrc = imgPath;
           },
           templateUrl: 'templates_web/modal-image.html',
           parent: angular.element(document.body),
