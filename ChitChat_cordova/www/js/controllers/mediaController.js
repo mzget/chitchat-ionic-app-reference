@@ -613,10 +613,11 @@ angular.module('spartan.media', [])
 
 .controller('VoiceController', function ($rootScope, $scope, $ionicLoading, $cordovaProgress, $timeout, $cordovaFileTransfer, $cordovaFile,
     GenerateID, roomSelected, checkFileSize, sharedObjectService) {
-
+	$scope.play = play;
 	$scope.$on('startRecord', function(event, args) { $scope.startRecord(); console.log("startRecord"); });
 	$scope.$on('stopRecord', function(event, args) { $scope.stopRecord(); console.log("stopRecord"); });
 	$scope.$on('cancelRecord', function(event, args) { cancelRecord(); });
+	var audio;
 
 	if (ionic.Platform.platform() === "ios") {
 	    var fileName;
@@ -697,10 +698,9 @@ angular.module('spartan.media', [])
 	      //logHTML('No live audio input: ' + e);
 	}
 
-	var audio;
-	$scope.play = function (id, url) {
-		if (ionic.Platform.platform() === "ios") {
-		    console.log("play url: ", url);
+	function play(id, url) { 
+		console.log("play voice url: ", url);
+		if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === "android") {		   
 			var fileName = url.substr(url.lastIndexOf('/') + 1);
 
 			console.log("filename:", fileName);
@@ -731,14 +731,17 @@ angular.module('spartan.media', [])
 		          console.error("get file media fail.", JSON.stringify(error));
 		          downloadMedia(id, sharedObjectService.getWebServer() + url);
 		    });
-	  	}else{
+	  	}
+		 else{
+			 var voicePath = $rootScope.webServer + url;
+			 
 	  		$('.ion-pause').css({ 'display': 'none' });
 			$('.ion-play').css({ 'display': 'inline' });
 	  		$('#' + id + '-voice-play').css({ 'display': 'none' });
 		    $('#' + id + '-voice-pause').css({ 'display': 'inline' });
 		    //voiceAudio.src = 'audio/mp3/' + sharedObjectService.getWebServer() + url;
 		    var voiceAudio = document.getElementById('audio'); 
-		    voiceAudio.src = url; 
+		    voiceAudio.src = voicePath; 
 		    voiceAudio.load();
 			voiceAudio.play();
 			console.log(voiceAudio);

@@ -34,31 +34,38 @@
 								<h2>{{allMembers[message.sender]['displayname']}}</h2>
 								</br>
 
+								<!-- Text type label. -->
 								<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
 									{{message.body}}
 								</p>
+								<!-- Text URL type label. -->
 								<p id="{{message._id}}" ng-if="message.type=='Text' && isValidURI(message.body)">
 									<u ng-click="webview(message.body)">
 										{{message.body}}
 									</u>
 								</p>
-
+								<!-- File type label. -->
 								<p id="{{message._id}}" ng-if="message.type=='File'"> 
 									<a href="{{message.url}}" target="_blank">{{message.name}}</a>
 								</p>
 
+								<!-- Image type label. -->
 								<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" 
                                      ng-src="{{webServer}}{{message.body}}" 
                                      ng-click="viewImageWeb($event, message.type, message.body)"/>
     
+								<!-- Sticker type label. -->
 								<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
+								
+								<!-- Voice type label. -->
 								<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
-									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, {{webServer}} + message.body)"></i>
+									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
 									<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 								</div>
-
+									
+								<!-- Video type label. -->
 								<div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideoWeb($event,message.type,message.body)" 
-								style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+									style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
 									<div style="margin-left:10px;">
 										<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
 									</div>
@@ -124,11 +131,11 @@
 								<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
 								<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
-									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
+									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
 									<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 								</div>
 								<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp==null">
-									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,{{webServer}}+message.body)"></i>
+									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
 									<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 								</div>
 

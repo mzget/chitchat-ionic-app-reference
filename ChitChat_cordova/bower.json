@@ -1,15 +1,15 @@
 {
   "name": "chitchat_cordova",
   "dependencies": {
-    "async": "*",
-    "angular-toArrayFilter": "1.0.1",
-    "angular-material": "*",
-    "crypto-js": "3.1.6",
-    "jr-crop": "^1.1.2",
-    "ngCordova": "*",
-    "angular-web-notification": "*",
-    "localforage": "*",
-      "ionic": "*"
+      "ionic": "*",
+      "angular-material": "*",
+      "async": "*",
+      "angular-toArrayFilter": "*",
+      "angular-web-notification": "*",
+      "crypto-js": "3.1.6",
+      "jr-crop": "^1.1.2",
+      "ngCordova": "*",
+      "localforage": "*"
   },
   "resolutions": {
     "angular": ">= 1.2.23"

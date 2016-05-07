@@ -1,8 +1,8 @@
-/*
- * ANGULAR-DATABLES CSS
- * ----------
+/*!
+ * angular-datatables - v0.5.4
+ * https://github.com/l-lin/angular-datatables
+ * License: MIT
  */
-
 /* ---------------------------------------- */
 /* DATATABLE */
 /* ---------------------------------------- */
@@ -23,7 +23,7 @@ table.dataTable.no-footer{
     margin: 0.2rem 0 0.8rem 1rem;
 }
 .dataTables_length select{
-    /*border: none;*/
+    border: none;
 }
 .dataTables_length select:focus{
     outline: none;
