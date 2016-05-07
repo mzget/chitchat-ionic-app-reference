@@ -185,7 +185,10 @@
 </div>
 
 <!-- @Chat Typings Bar -->
-<ion-footer-bar id="chatMessage" align-title="left" class="bar-light" style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none;">
+<ion-footer-bar id="chatMessage" 
+align-title="left" class="bar-light" 
+style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none;" layout="column">
+<div layout="row">
 	<div class="buttons">
 		<button ng-disabled="inactive" ng-click="openModal()" class="button button-clear" style="font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
 	</div>
@@ -196,6 +199,11 @@
 	<div class="buttons">
 		<button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
 	</div>
+</div>
+	<div>
+	<h1> TEST</h1>	
+	</div>
+	
 </ion-footer-bar>
 
 
