@@ -1,17 +1,30 @@
-<ion-modal-view id="chatMenuContain" >
+<div id="chatMenuContain" style="width:initial;">
 <!-- style="position:fixed; top:initial; box-shadow:0 2px 0 -1px rgba(0,0,0,0.1) -->
 <!-- inset; min-height:inherit; height:180px; bottom:0px; background-color:white;" -->
 
-	<ion-content id="chatmenu">
-		<div class="row modal-chatmenu" >
-			<div class="col col-33" ng-click="openModalSticker()"><i class="ion-happy-outline" data-pack="default" data-tags="good, like, fun, yes"></i><br />Sticker</div>
-			<div class="col col-33" ng-click="image()"><i class="ion-image" data-pack="default" data-tags="photo"></i><br />Send image</div>
-			<div class="col col-33" ng-click="image()"><i class="ion-ios-copy-outline" data-pack="ios" data-tags="duplicate, paper"></i><br />Send file</div>
+	<div id="chatmenu" layout="column">
+		<div layout="'row'">
+			<div class="col col-33" ng-click="openModalSticker()" style="text-align:center;">
+            <i class="ion-happy-outline" data-pack="default" data-tags="good, like, fun, yes"></i>
+            <br />Sticker</div>
+			<div class="col col-33" ng-click="image()" style="text-align:center;">
+            <i class="ion-image" data-pack="default" data-tags="photo"></i>
+            <br />Send image</div>
+			<div class="col col-33" ng-click="image()" style="text-align:center;">
+            <i class="ion-ios-copy-outline" data-pack="ios" data-tags="duplicate, paper"></i>
+            <br />Send file</div>
 		</div>
-		<div class="row modal-chatmenu">
-			<div class="col col-33" ng-click="openModalRecorder()"><i class="ion-android-microphone" data-pack="android" data-tags="recorder, speak, noise, music, sound"></i><br />Voice</div>
-			<div class="col col-33" ng-click="video()"><i class="ion-videocamera" data-pack="default" data-tags="movie, film, television"></i><br />Video</div>
-			<div class="col col-33" ng-click="openMap()"> <i class="ion-android-pin" data-pack="android" data-tags=""></i><br />Location</div>
+		<div layout="row" layout-align="center">
+			<div class="col col-33" ng-click="openModalRecorder()" style="text-align:center;">
+            <i class="ion-android-microphone" data-pack="android" 
+               data-tags="recorder, speak, noise, music, sound">
+            </i><br />Voice</div>
+			<div class="col col-33" ng-click="video()"  style="text-align:center;">
+            <i class="ion-videocamera" data-pack="default" data-tags="movie, film, television"></i>
+            <br />Video</div>
+			<div class="col col-33" ng-click="openMap()" style="text-align:center;">
+             <i class="ion-android-pin" data-pack="android" data-tags=""></i>
+            <br />Location</div>
 		</div>
-	</ion-content>
-</ion-modal-view>
+	</div>
+</div>

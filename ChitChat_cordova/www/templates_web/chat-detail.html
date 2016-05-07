@@ -187,23 +187,27 @@
 <!-- @Chat Typings Bar -->
 <ion-footer-bar id="chatMessage" 
 align-title="left" class="bar-light" 
-style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none;" layout="column">
-<div layout="row">
-	<div class="buttons">
-		<button ng-disabled="inactive" ng-click="openModal()" class="button button-clear" style="font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
-	</div>
+style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none; height:initial;" layout="column">
+    <div layout="row">
+	    <div class="buttons">
+		    <button ng-disabled="inactive" ng-click="openModal()" class="button button-clear" style="font-size:20px; padding:0 20px;">
+            <i class="ion-ios-plus-outline"></i>
+            </button>
+	    </div>
 
-	<input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
-	<input ng-disabled="inactive" ng-show="inactive==true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" value="This is Empty Room" />
+	    <input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
+	    <input ng-disabled="inactive" ng-show="inactive==true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" value="This is Empty Room" />
 
-	<div class="buttons">
-		<button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
-	</div>
-</div>
+	    <div class="buttons">
+		    <button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:initial; font-size:20px; padding:0 20px;">
+                <i class="ion-share" data-pack="default" data-tags="outbound"></i>
+            </button>
+	    </div>
+    </div>
+    <span></span>
 	<div>
-	<h1> TEST</h1>	
+        <div ng-include src="'templates_web/modal-chatmenu.html'"> </div>
 	</div>
-	
 </ion-footer-bar>
 
 

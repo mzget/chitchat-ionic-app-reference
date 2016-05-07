@@ -1,6 +1,8 @@
 <div layout="row" ng-cloak>
-    <div ng-controller="companyController" layout="column" style="width:30%" id="leftLayout">
-        <md-toolbar>
+    <!-- Company Info : App Header. Chats List.-->
+    <div ng-controller="companyController" layout="column" style="width:25%" id="leftLayout">
+      <!-- Company Info Toolbar. -->
+         <md-toolbar>
             <div class="md-toolbar-tools">
 
                 <md-menu style="margin:0 0;">
@@ -65,13 +67,16 @@
             </div>
         </md-toolbar>
 
+        <!-- Render Chats list -->
         <div style="overflow-y:scroll; overflow-x:hidden; height:100%;">
             <div ui-view="chats-list" style="border: 1px solid #E3E3E3;"></div>
         </div>
     </div>
 
-    <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" style="width:70%">
-        <md-toolbar id="chatToolbar">
+    <!-- Current ChatRoom Activity. -->
+    <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" style="width:75%">
+       <!-- Chat Room Toolber. -->
+         <md-toolbar id="chatToolbar">
             <div class="md-toolbar-tools">
                 <div> 
                     <span class="md-title">{{roomName}}</span>
@@ -123,7 +128,7 @@
             <div id="chatLayout" style="overflow-y:scroll; overflow-x:hidden; width:100%; min-width:330px;">
                 <div ui-view="chats-detail"></div>
             </div>
-            <div id="infoLayout" style="overflow-y:scroll; overflow-x:hidden; width:40%; min-width:380px;" ng-show="viewInfo==true">
+            <div id="infoLayout" style="overflow-y:scroll; overflow-x:hidden; width:25%; min-width:380px;" ng-show="viewInfo==true">
                 <div ui-view="chats-info">
                 </div>
             </div>
