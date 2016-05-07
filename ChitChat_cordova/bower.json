@@ -8,7 +8,8 @@
     "jr-crop": "^1.1.2",
     "ngCordova": "*",
     "angular-web-notification": "*",
-    "localforage": "*"
+    "localforage": "*",
+      "ionic": "*"
   },
   "resolutions": {
     "angular": ">= 1.2.23"
