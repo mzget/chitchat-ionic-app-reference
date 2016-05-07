@@ -6,7 +6,7 @@
     "angular-material": "1.0.6",
     "crypto-js": "3.1.6",
     "jr-crop": "^1.1.2",
-    "ngCordova": "~0.1.24-alpha",
+    "ngCordova": "^0.1.24",
     "angular-web-notification": "*",
     "localforage": "^1.4.0",
     "ionic": "*"
