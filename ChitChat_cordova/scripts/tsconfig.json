@@ -6,7 +6,8 @@
     "sourceMap": true,
     "out": "www/scripts/appBundle.js",
     "target": "es5",
-    "jsx": "react"
+    "jsx": "react",
+    "allowJs": true
   },
   "exclude": [
     "node_modules",

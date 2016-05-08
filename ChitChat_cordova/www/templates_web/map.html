@@ -1,23 +1,28 @@
-<ion-modal-view id="mapContain">
-    <ion-header-bar class="bar-stable">
-        <a class="button button-icon icon ion-ios-close-empty" ng-click="closeMapModal()"></a>
-        <h1 ng-if="viewOnly == true" class="title">Map Viewer</h1>
-        <h1 ng-if="viewOnly == false" class="title">Share Location</h1>
-        <a ng-if="viewOnly == false" ng-click="share()" class="button button-icon icon ion-share"></a>
-    </ion-header-bar>
-    <ion-content scroll="false">
-        <map data-tap-disabled="true" lat="43.07493" lng="-89.381388" zoom="16" selected-place="selectedPlace(data)"></map>
-    </ion-content>
-
-    <ion-footer-bar class="bar-stable">
-        <h5>Location:  {{place}}</h5>
-    </ion-footer-bar>
-</ion-modal-view>
-
-
-  <!--<body ng-app="starter" ng-mapcontroller="MapCtrl">
-
-        <div id="map" lat="43.07493" lng="-89.381388" zoom="8" on-create="mapCreated(map)" map>
+<md-dialog aria-label="Map" ng-controller="mapController">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h1 ng-if="viewOnly == true" class="title">Map Viewer</h1>
+            <h1 ng-if="viewOnly == false" class="title">Share Location</h1>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="closeMapModal()">
+                <i class="material-icons">close</i>
+            </md-button>
         </div>
-              center: new google.maps.LatLng(43.07493, -89.381388),
-  </body>-->
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content" style="height:600px;">
+            <map id="map" data-tap-disabled="true"
+                 lat="{{latitude}}" lng="{{longitude}}"
+                 zoom="16" selected-place="selectedPlace(data)"
+                 style="width:600px; height:100%;">
+            </map>
+          </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <h5 class="md-title">Location:  {{place}}</h5>
+        <span flex></span>
+        <md-button ng-if="viewOnly == false"  ng-click="share()" class="md-primary">
+            Share
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

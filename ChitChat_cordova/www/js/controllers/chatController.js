@@ -2,7 +2,7 @@ angular.module('spartan.chat', [])
 
 .controller('chatController', 
 function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate,
-    $ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal,
+    $ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal, $mdDialog,
 	$sce, $cordovaGeolocation, $cordovaDialogs, $cordovaInAppBrowser, chatRoomService, roomSelected,
     Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService)
 {    		
@@ -133,7 +133,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
             console.log('Need to update message read here.');
             
             chatRoomService.updateReadMessages();
-		});
+        });
+
+        $scope.$on('onShareLocation', function (event, data) {
+            sendLocation(data);
+        });
 	}
 	function setScopeData() {
 	    myprofile = main.getDataManager().myProfile;
@@ -238,29 +242,58 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		return JSON.parse(json);
 	}
 	function viewLocation(messageId) {
-		console.info('viewLocation');
 		var message = chatRoomService.get(messageId);
 		
-		console.log(message);
-		console.log(JSON.parse(message.body));
+		console.info('viewLocation');
 		
-		viewMap($scope, JSON.parse(message.body));
-		$scope.mapViewModal.show();
+		if (ionic.Platform.platform() == "ios" || ionic.Platform.platform() == "android") {
+		    viewMap($scope, JSON.parse(message.body));
+		    $scope.mapViewModal.show();
+		}
+		else {
+		    $mdDialog.show({
+		        templateUrl: 'templates_web/map.html',
+		        parent: angular.element(document.body),
+		        //targetEvent: ev,
+		        clickOutsideToClose: true
+		    });
+		    setTimeout(function () {
+		        web_viewMap($scope, $rootScope, JSON.parse(message.body));
+		    }, 500);
+		}
 	}
 	function openMap() {
-		$scope.chatMenuModal.hide();
-		$scope.openMapModal();
+        console.log('openMap');
         
-        if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
-            document.getElementById('mapContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-            document.getElementById('mapContain').style.width = jQuery('#webchatdetail').width() + "px";
+        if (ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
+            $scope.isOpenChatMenu = false;
+            // document.getElementById('mapContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            // document.getElementById('mapContain').style.width = jQuery('#webchatdetail').width() + "px";
+
+            $mdDialog.show({
+                  templateUrl: 'templates_web/map.html',
+                  parent: angular.element(document.body),
+                  //targetEvent: ev,
+                  clickOutsideToClose:true
+            });
+            
+		    openMapModal();
+        }
+        else {
+		    $scope.chatMenuModal.hide();
+		    $scope.mapViewModal.show();
+		    $scope.openMapModal();
         }
 	}
 	function openMapModal() {
-		callGeolocation($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, function (locationObj) {
-			sendLocation(locationObj);
-		});
-		$scope.mapViewModal.show();
+		if (ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
+			web_callGeolocation($scope, $rootScope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs);
+		}
+		else {
+			callGeolocation($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, function (locationObj) {
+				sendLocation(locationObj);
+			});
+		}
 	};
 	function closeMapModal() {
 		$scope.mapViewModal.hide();
@@ -273,9 +306,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		return false;
 	};	
 	function setupModals() {
-	    // Reload Modal - Chat menu
         if(ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
-	        $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+			// Reload Modal - Chat menu
+		    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
 	            scope: $scope,
 	            animation: 'slide-in-up'
 	        }).then(function (modal) {
@@ -283,6 +316,15 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        }).catch(function(err) {
 			    console.error(err);
 		    });
+			
+
+			// Map modal view modal.
+			$ionicModal.fromTemplateUrl('templates/map.html', {
+				scope: $scope,
+				animation: 'slide-in-up'
+			}).then(function (modal) {
+				$scope.mapViewModal = modal;
+			});
         }
 
 	    // Reload Modal - Sticker
@@ -314,14 +356,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        animation: 'slide-in-up'
 	    }).then(function (modal) {
 	        $scope.readerViewModal = modal;
-	    });
-
-	    // Map modal view modal.
-	    $ionicModal.fromTemplateUrl('templates_web/map.html', {
-	        scope: $scope,
-	        animation: 'slide-in-up'
-	    }).then(function (modal) {
-	        $scope.mapViewModal = modal;
 	    });
 
 	    //Cleanup the modal when we're done with it!
@@ -792,32 +826,74 @@ var viewMap = function ($scope, message, $ionicLoading) {
 	$scope.place = message.name;
 	$scope.$broadcast('onInitMap', { lat: message.latitude, long: message.longitude });
 }
+var web_viewMap = function ($scope, $rootScope, message) {
+    $scope.viewOnly = true;
+    $scope.place = message.name;
 
+    console.warn(message);
+    $rootScope.$broadcast('onInitMap', { lat: message.latitude, long: message.longitude });
+    var packData = {
+        lat: message.latitude,
+        lng: message.longitude,
+        viewType: $scope.viewOnly,
+        place: $scope.place
+    }
+    $rootScope.$broadcast('getPosReady', packData);
+}
 var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs, done) {
-	var locationObj = new MinLocation();
-	$scope.viewOnly = false;
-	$scope.place = "";
-	$scope.selectedPlace = function (place) {
-		console.debug('onSelectMarker', place)
-		$scope.place = place.name;
-		$scope.myLocation = place;
-	};
+    var locationObj = new MinLocation();
+    $scope.viewOnly = false;
+    $scope.place = "";
+    $scope.selectedPlace = function (place) {
+        console.debug('onSelectMarker', place)
+        $scope.place = place.name;
+        $scope.myLocation = place;
+    };
 
-	$scope.share = function () {
-		if (!$scope.place) {
-			$cordovaDialogs.alert('Missing place information', 'Share location', 'OK')
+    $scope.share = function () {
+        if (!$scope.place) {
+            $cordovaDialogs.alert('Missing place information', 'Share location', 'OK')
 			   .then(function () {
-				   // callback success
+			       // callback success
 			   });
 
-			return;
-		}
+            return;
+        }
 
-		locationObj.name = $scope.myLocation.name;
-		locationObj.address = $scope.myLocation.vicinity;
-		done(locationObj);
-		$scope.closeMapModal();
-	}
+        locationObj.name = $scope.myLocation.name;
+        locationObj.address = $scope.myLocation.vicinity;
+        done(locationObj);
+        $scope.closeMapModal();
+    }
+
+    $ionicLoading.show({
+        template: 'Getting current location...'
+    });
+
+    var posOptions = { timeout: 10000, enableHighAccuracy: false };
+    $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
+        locationObj.latitude = position.coords.latitude;
+        locationObj.longitude = position.coords.longitude;
+
+        $scope.$broadcast('onInitMap', { lat: position.coords.latitude, long: position.coords.longitude });
+
+        $ionicLoading.hide();
+    }, function (err) {
+        // error
+        console.warn(err);
+
+        $ionicLoading.hide();
+
+        $cordovaDialogs.alert(err.message, 'Location Fail.', 'OK')
+		.then(function () {
+		    $scope.closeMapModal();
+		    $ionicLoading.hide();
+		});
+    });
+}
+var web_callGeolocation = function ($scope, $rootScope, $cordovaGeolocation, $ionicLoading, $cordovaDialogs) {
+	$scope.viewOnly = false;
+	$scope.place = "";
 	
 	$ionicLoading.show({
 	  template: 'Getting current location...'
@@ -825,12 +901,18 @@ var callGeolocation = function ($scope, $cordovaGeolocation, $ionicLoading, $cor
 
 	var posOptions = { timeout: 10000, enableHighAccuracy: false };
 	$cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
-		locationObj.latitude = position.coords.latitude;
-		locationObj.longitude = position.coords.longitude;
-		
-		$scope.$broadcast('onInitMap', { lat: position.coords.latitude, long: position.coords.longitude });
-		
-		$ionicLoading.hide();
+	    $ionicLoading.hide();
+	    console.info(position);
+        
+		$rootScope.$broadcast('onInitMap', { lat: position.coords.latitude, long: position.coords.longitude });
+
+        var packData = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude ,
+            viewType : $scope.viewOnly,
+            place : $scope.place 
+        }
+        $rootScope.$broadcast('getPosReady', packData);
 	}, function (err) {
 		// error
 		console.warn(err);

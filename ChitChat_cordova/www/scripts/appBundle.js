@@ -40,7 +40,7 @@ var ChatLog = (function () {
         this.lastMessageTime = lastMessageTime;
     };
     return ChatLog;
-})();
+}());
 var ChatRoomComponent = (function () {
     function ChatRoomComponent(main, room_id, messageDAL) {
         this.chatMessages = [];
@@ -492,7 +492,7 @@ var ChatRoomComponent = (function () {
         this.serverImp.getMemberProfile(member.id, callback);
     };
     return ChatRoomComponent;
-})();
+}());
 var ChatsLogComponent = (function () {
     function ChatsLogComponent(main, server) {
         this.chatListeners = new Array();
@@ -591,7 +591,7 @@ var ChatsLogComponent = (function () {
         });
     };
     return ChatsLogComponent;
-})();
+}());
 var DataListener = (function () {
     function DataListener(dataManager) {
         this.notifyNewMessageEvents = new Array();
@@ -747,7 +747,7 @@ var DataListener = (function () {
     };
     ;
     return DataListener;
-})();
+}());
 var DataManager = (function () {
     function DataManager() {
         this.orgGroups = {};
@@ -1068,7 +1068,7 @@ var DataManager = (function () {
     };
     ;
     return DataManager;
-})();
+}());
 requirejs.config({
     paths: {
         jquery: '../js/jquery.min',
@@ -1199,7 +1199,7 @@ var Main = (function () {
         });
     };
     return Main;
-})();
+}());
 var NotifyManager = (function () {
     function NotifyManager(main) {
         console.log("NotifyManager.constructor");
@@ -1293,7 +1293,7 @@ var NotifyManager = (function () {
         }
     };
     return NotifyManager;
-})();
+}());
 var CallState;
 (function (CallState) {
     CallState[CallState["idle"] = 0] = "idle";
@@ -1305,7 +1305,7 @@ var WebRtcCallState = (function () {
     function WebRtcCallState() {
     }
     return WebRtcCallState;
-})();
+}());
 var WebRtcComponent = (function () {
     function WebRtcComponent() {
         console.log("starting.. webRtcComponent.");
@@ -1357,7 +1357,7 @@ var WebRtcComponent = (function () {
         }
     };
     return WebRtcComponent;
-})();
+}());
 var MessageDAL = (function () {
     function MessageDAL(_store) {
         this.store = _store;
@@ -1399,27 +1399,27 @@ var MessageDAL = (function () {
         });
     };
     return MessageDAL;
-})();
+}());
 var MessageMeta = (function () {
     function MessageMeta() {
     }
     return MessageMeta;
-})();
+}());
 var Message = (function () {
     function Message() {
     }
     return Message;
-})();
+}());
 var CompanyInfo = (function () {
     function CompanyInfo() {
     }
     return CompanyInfo;
-})();
+}());
 var ContactInfo = (function () {
     function ContactInfo() {
     }
     return ContactInfo;
-})();
+}());
 var ContentType;
 (function (ContentType) {
     ContentType[ContentType["Unload"] = 0] = "Unload";
@@ -1444,7 +1444,7 @@ var Member = (function () {
         this.role = MemberRole.member;
     }
     return Member;
-})();
+}());
 var MemberRole;
 (function (MemberRole) {
     MemberRole[MemberRole["member"] = 0] = "member";
@@ -1454,7 +1454,7 @@ var MinLocation = (function () {
     function MinLocation() {
     }
     return MinLocation;
-})();
+}());
 var RoomType;
 (function (RoomType) {
     RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
@@ -1492,23 +1492,23 @@ var Room = (function () {
         this.name = name;
     };
     return Room;
-})();
+}());
 var RoomAccessData = (function () {
     function RoomAccessData() {
     }
     return RoomAccessData;
-})();
+}());
 ;
 var TokenDecode = (function () {
     function TokenDecode() {
     }
     return TokenDecode;
-})();
+}());
 var User = (function () {
     function User() {
     }
     return User;
-})();
+}());
 var UserRole;
 (function (UserRole) {
     UserRole[UserRole["personnel"] = 0] = "personnel";
@@ -1574,7 +1574,7 @@ var SecureService = (function () {
         });
     };
     return SecureService;
-})();
+}());
 var Dummy = (function () {
     function Dummy() {
         this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
@@ -1600,7 +1600,7 @@ var Dummy = (function () {
         });
     };
     return Dummy;
-})();
+}());
 var ngControllerUtil = (function () {
     function ngControllerUtil(parameters) {
     }
@@ -1608,7 +1608,7 @@ var ngControllerUtil = (function () {
     ngControllerUtil.groupDetailCtrl = "groupDetailCtrl";
     ngControllerUtil.editMemberGroup = 'editMemberGroup';
     return ngControllerUtil;
-})();
+}());
 var NGStateUtil = (function () {
     function NGStateUtil() {
     }
@@ -1627,7 +1627,7 @@ var NGStateUtil = (function () {
     NGStateUtil.tab_chats_chat_members = 'tab.chats-chat-members';
     NGStateUtil.tab_chats_chat_members_invite = 'tab.chats-chat-members-invite';
     return NGStateUtil;
-})();
+}());
 var pomelo;
 var username = "";
 var password = "";
@@ -1637,7 +1637,7 @@ var ChatServer;
         function AuthenData() {
         }
         return AuthenData;
-    })();
+    }());
     var ServerImplemented = (function () {
         function ServerImplemented() {
             this._isConnected = false;
@@ -2159,7 +2159,7 @@ var ChatServer;
         };
         ServerImplemented.connectionProblemString = 'Server connection is unstable.';
         return ServerImplemented;
-    })();
+    }());
     ChatServer.ServerImplemented = ServerImplemented;
     var ChatRoomApiProvider = (function () {
         function ChatRoomApiProvider() {
@@ -2265,7 +2265,7 @@ var ChatServer;
             pomelo.notify("chat.chatHandler.updateWhoReadMessages", message);
         };
         return ChatRoomApiProvider;
-    })();
+    }());
     ChatServer.ChatRoomApiProvider = ChatRoomApiProvider;
     var ServerEventListener = (function () {
         function ServerEventListener() {
@@ -2431,7 +2431,7 @@ var ChatServer;
         ServerEventListener.ON_GET_ORGANIZE_GROUPS = "onGetOrganizeGroups";
         ServerEventListener.ON_GET_PROJECT_BASE_GROUPS = "onGetProjectBaseGroups";
         return ServerEventListener;
-    })();
+    }());
     ChatServer.ServerEventListener = ServerEventListener;
 })(ChatServer || (ChatServer = {}));
 var SocketComponent = (function () {
@@ -2446,7 +2446,7 @@ var SocketComponent = (function () {
         }
     };
     return SocketComponent;
-})();
+}());
 var HttpStatusCode = (function () {
     function HttpStatusCode() {
     }
@@ -2455,5 +2455,5 @@ var HttpStatusCode = (function () {
     HttpStatusCode.requestTimeout = 408;
     HttpStatusCode.duplicateLogin = 1004;
     return HttpStatusCode;
-})();
+}());
 //# sourceMappingURL=appBundle.js.map

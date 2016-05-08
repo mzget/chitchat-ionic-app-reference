@@ -12,12 +12,12 @@ angular.module('spartan.directives', [])
         var zValue = $scope.$eval($attr.zoom);
         var lat = $scope.$eval($attr.lat);
         var lng = $scope.$eval($attr.lng);
- //       var currPoint = new google.maps.LatLng(lat, lng);
         var currPoint = {lat: lat, lng: lng};
 
         
       function setup(data) {
         currPoint = { lat: data.lat, lng: data.long };
+
         var mapOptions = {
           center: currPoint,
           zoom: zValue,
@@ -63,7 +63,7 @@ angular.module('spartan.directives', [])
         });
       }
       
-      $scope.$on('onInitMap', function(event, data) {
+      $scope.$on('onInitMap', function (event, data) {
         setup(data);
       });
 
