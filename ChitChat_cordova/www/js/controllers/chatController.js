@@ -24,6 +24,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.groupDetail = groupDetail;
 	$scope.openPopover = openPopover;
 	$scope.openModal = openChatMenusModal;
+	$scope.closeChatMenu = closeChatMenu;
 	$scope.openModalSticker = openModalSticker;
 	$scope.openModalRecorder = openModalRecorder;
 	$scope.openModalWebview = openModalWebview;
@@ -50,6 +51,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.sendSticker = sendSticker;
     $scope.isLoadingMessage = false;
     $scope.showLoadMessage = false;
+    $scope.isOpenChatMenu = false;
     $scope.chat = [];
     
 	function activate() {
@@ -272,14 +274,16 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	};	
 	function setupModals() {
 	    // Reload Modal - Chat menu
-	    $ionicModal.fromTemplateUrl('templates_web/modal-chatmenu.html', {
-	        scope: $scope,
-	        animation: 'slide-in-up'
-	    }).then(function (modal) {
-	        $scope.chatMenuModal = modal;
-	    }).catch(function(err) {
-			console.error(err);
-		});
+        if(ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+	        $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+	            scope: $scope,
+	            animation: 'slide-in-up'
+	        }).then(function (modal) {
+	            $scope.chatMenuModal = modal;
+	        }).catch(function(err) {
+			    console.error(err);
+		    });
+        }
 
 	    // Reload Modal - Sticker
 	    $ionicModal.fromTemplateUrl('templates_web/modal-sticker.html', {
@@ -431,13 +435,22 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	// Modal - Chat menu 
 	function openChatMenusModal() {
 		modalcount++;
-		$scope.chatMenuModal.show();
-		
-		$('#chatMessage').animate({'bottom':'272px'}, 350);
-		$('#chatDetail').animate({'top':'-272px'}, 350);
-		document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-        document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
+		if (ionic.Platform.platform == "ios" || ionic.Platform.platform == "android") {
+		    $scope.chatMenuModal.show();
+		    $('#chatMessage').animate({ 'bottom': '272px' }, 350);
+		    $('#chatDetail').animate({ 'top': '-272px' }, 350);
+		}
+		    //document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+		    //document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
+
+		else {
+		    $scope.isOpenChatMenu = true;
+		}
 	};	
+	function closeChatMenu() {
+		$scope.isOpenChatMenu = false;
+	}
+	
 	// Modal - Sticker
 	function openModalSticker() {
 		modalcount++;
