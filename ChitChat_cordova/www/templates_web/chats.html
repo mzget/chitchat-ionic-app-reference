@@ -1,5 +1,5 @@
 <div layout="row" ng-cloak>
-    <div ng-controller="companyController" layout="column" style="width:30%" id="leftLayout">
+    <div ng-controller="companyController" layout="column" style="width:25%" id="leftLayout">
         <md-toolbar>
             <div class="md-toolbar-tools">
 
@@ -54,7 +54,7 @@
         </div>
     </div>
 
-    <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" style="width:70%">
+    <div ng-controller="HeaderChatCtrl" id="chatHeader" layout="column" flex>
         <md-toolbar id="chatToolbar">
             <div class="md-toolbar-tools">
                 <div> 
@@ -102,11 +102,12 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <div layout="row" style="height:100%">
-            <div id="chatLayout" style="overflow-y:scroll; overflow-x:hidden; width:100%; min-width:330px;">
+
+        <div layout="row" style="height:100%; width:100%;">
+            <div id="chatLayout" style="overflow-y:scroll; overflow-x:hidden; width:60%; min-width:300px;">
                 <div ui-view="chats-detail"></div>
             </div>
-            <div id="infoLayout" style="overflow-y:scroll; overflow-x:hidden; width:40%; min-width:380px;" ng-show="viewInfo==true">
+            <div id="infoLayout" style="overflow-y:scroll; overflow-x:hidden; width:40%; min-width:300px;" ng-show="viewInfo==true">
                 <div ui-view="chats-info">
                 </div>
             </div>

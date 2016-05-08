@@ -1,7 +1,7 @@
 <div>
     <div>
-        <img class="avatar-modal" ng-if="group.image != null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=60&w=60" style="border-radius:50%;"/>
-        <img class="avatar-modal" ng-if="group.image == null" src="img/img.jpg" height="60" width="60"  style="border-radius:50%;"/>
+        <img class="avatar-modal" ng-if="group.image != null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=60&w=60" style="border-radius:50%; padding:15px;"/>
+        <img class="avatar-modal" ng-if="group.image == null" src="img/img.jpg" height="60" width="60"  style="border-radius:50%; padding:15px;"/>
         <p style="display:inline; margin-left:10px;" ng-if="group.name != null"> {{group.name}} </p>
         <p style="display:inline; margin-left:10px;" ng-if="group.name == null"> {{group.displayname}} </p>
     </div>
@@ -11,13 +11,16 @@
     <ion-list class="members-list">
 
         <div ng-show=" roomType==0 || roomType==2 " style="margin-top:-25px;">
-            <p style="margin-top:-13px; display:inline; line-height:50px;"> Members </p>
-            <md-button class="md-icon-button" style="position:absolute; margin-left:215px; margin-top:5px;" ng-show="roomType==2" ng-click="invite($event)">
-                <i class="material-icons">add</i>
-            </md-button>
-            <md-button class="md-icon-button" style="position:absolute; margin-left:255px; margin-top:5px;" ng-show="roomType==2" ng-click="editGroup($event)">
-                <i class="material-icons">settings</i>
-            </md-button>
+                <h1 class="md-subhead" style="padding:15px; display:inline; line-height:50px;"> Members </h1>
+                <md-button class="md-icon-button" style="position:absolute; margin-top:5px;"
+                           ng-show="roomType==2" ng-click="invite($event)">
+                    <i class="material-icons">add</i>
+                </md-button>
+                <md-button class="md-icon-button" style="position:absolute; margin-top:5px; margin-left:50px;"
+                           ng-show="roomType==2" ng-click="editGroup($event)">
+                    <i class="material-icons">settings</i>
+                </md-button>
+
             <ion-item class="item-remove-animate item-avatar item-icon-right" 
             ng-repeat="member in members|orderObjectBy:'displayname':false|filter:search track by $index" type="item-text-wrap" ng-click="openContactModal(member._id)" style="border-style: solid none;">
                 <img ng-src="http://203.113.25.44/timthumb.php?src={{member.image}}&h=40&w=40" />
@@ -29,11 +32,13 @@
         </div>
 
         <div ng-show=" roomType==1 " style="margin-top:-25px;">
-            <p style="margin-top:-13px; display:inline; line-height:50px;"> Members </p>
-            <md-button class="md-icon-button" style="position:absolute; margin-left:215px; margin-top:5px;" ng-click="invite($event)" ng-if="meIsAdmin">
+            <h1 class="md-subhead" style="padding:15px; display:inline; line-height:50px;"> Members </h1>
+            <md-button class="md-icon-button" style="position:absolute; margin-top:5px;"
+                        ng-click="invite($event)" ng-if="meIsAdmin">
                 <i class="material-icons">add</i>
             </md-button>
-            <md-button class="md-icon-button" style="position:absolute; margin-left:255px; margin-top:5px;" ng-click="editGroup($event)" ng-if="meIsAdmin">
+            <md-button class="md-icon-button" style="position:absolute; margin-left:50px; margin-top:5px;" 
+                       ng-click="editGroup($event)" ng-if="meIsAdmin">
                 <i class="material-icons">settings</i>
             </md-button>
             <ion-item class="item-remove-animate item-avatar item-icon-right" 
