@@ -731,14 +731,16 @@ angular.module('spartan.media', [])
 		          console.error("get file media fail.", JSON.stringify(error));
 		          downloadMedia(id, sharedObjectService.getWebServer() + url);
 		    });
-	  	}else{
+		} else {
+		    var voicePath = $rootScope.webServer + url;
+
 	  		$('.ion-pause').css({ 'display': 'none' });
 			$('.ion-play').css({ 'display': 'inline' });
 	  		$('#' + id + '-voice-play').css({ 'display': 'none' });
 		    $('#' + id + '-voice-pause').css({ 'display': 'inline' });
 		    //voiceAudio.src = 'audio/mp3/' + sharedObjectService.getWebServer() + url;
 		    var voiceAudio = document.getElementById('audio'); 
-		    voiceAudio.src = url; 
+		    voiceAudio.src = voicePath; 
 		    voiceAudio.load();
 			voiceAudio.play();
 			console.log(voiceAudio);
