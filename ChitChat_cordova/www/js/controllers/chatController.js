@@ -326,7 +326,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	    //Cleanup the modal when we're done with it!
 	    $scope.$on('$destroy', function () {
-	        $scope.chatMenuModal.remove();
+            if(!!$scope.chatMenuModal) {
+	            $scope.chatMenuModal.remove();
+            }
 	        $scope.modalSticker.remove();
 	        $scope.modalAudio.remove();
 	        $scope.modalWebview.remove();
