@@ -267,8 +267,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
         
         if (ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
             $scope.isOpenChatMenu = false;
-            // document.getElementById('mapContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-            // document.getElementById('mapContain').style.width = jQuery('#webchatdetail').width() + "px";
 
             $mdDialog.show({
                   templateUrl: 'templates_web/map.html',
@@ -378,7 +376,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        }
 
 	        if (modalcount == 1) {
-	            $scope.chatMenuModal.hide();
+	            if ($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
+	                $scope.chatMenuModal.hide();
+	            }
+	            else {
+	                $scope.isOpenChatMenu = false;
+	            }
 	        }
 
 	        $('#chatMessage').animate({ 'bottom': '0' }, 350);
@@ -591,24 +594,26 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
 	}
 	function image(){
-	    if (ionic.Platform.platform() === "ios") {
+	    if ($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
             //@ Emit to mediaController. 
 	        $scope.$broadcast('addImg', 'addImg');
             
             $scope.chatMenuModal.hide();
 		}
 		else {
-			$('#fileToUpload').trigger('click');
+	        $('#fileToUpload').trigger('click');
+	        $scope.isOpenChatMenu = false;
 		}
 	}
 	function video(){
-		if (ionic.Platform.platform() === "ios") {
+	    if ($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
             //@ Emit to mediaController. 
 			$scope.$broadcast('captureVideo', 'captureVideo');
             
             $scope.chatMenuModal.hide();
 		}else{
-			$('#fileToUpload').trigger('click');
+	        $('#fileToUpload').trigger('click');
+	        $scope.isOpenChatMenu = false;
 		}
 	}
 	function voice() {
@@ -705,7 +710,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     
 	$scope.$on('menuChat.hidden', function () {
 	    modalcount--;
-        $scope.chatMenuModal.hide();
+	    if (ionic.Platform.platform == "ios" || ionic.Platform.platform == "android") {
+	        $scope.chatMenuModal.hide();
+	    }
+	    else {
+	        $scope.isOpenChatMenu = false;
+	    }
         $scope.modalAudio.hide();
 	    $('#chatMessage').animate({ 'bottom': '0' }, 350);
 	    $('#chatDetail').animate({ 'top': '0' }, 350);

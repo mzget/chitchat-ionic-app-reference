@@ -20,7 +20,8 @@
             password: ""
         };
         $rootScope.teamInfo = {};
-
+        $rootScope.currentPlatform = ionic.Platform.platform();
+        
         $ionicPlatform.ready(function () {
             console.log(vm.title + " : ionic ready.");
 
