@@ -8,7 +8,7 @@
 //    companyController.$inject = ['$location']; 
 
     function companyController($location, $scope, $state, $ionicModal, $timeout, CreateGroup, $localStorage, $rootScope,
-        $ionicPopover, $mdDialog, dbAccessService) {
+        $ionicPopover, $window, $mdDialog, dbAccessService, localNotifyService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'companyController';
@@ -94,10 +94,16 @@
         }
 
         function adminPanel() {
-            $state.go('backend.members');
+            var warnMsg = 'This time admin panel is not ready for you.';
+            console.warn(warnMsg);
+            
+            localNotifyService.makeToast(warnMsg);
+
+//            $state.go('backend.members');
         }
 
-        function downloadApp() {
+        function downloadApp() {           
+            $window.open('https://github.com/mzget/stalk-ionic-sample/wiki/Introducing_ChitChat-RFL', '_blank');
         }
     }
 })();

@@ -365,7 +365,9 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        $scope.modalAudio.remove();
 	        $scope.modalWebview.remove();
 	        $scope.readerViewModal.remove();
-	        $scope.mapViewModal.remove();
+            if(!!$scope.mapViewModal) {
+	            $scope.mapViewModal.remove();
+            }
 	    });
 	    // Execute action on hide modal
 	    $scope.$on('modal.hidden', function () {
