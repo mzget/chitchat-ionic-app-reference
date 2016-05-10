@@ -117,9 +117,10 @@
 									<a href="{{message.url}}" target="_blank">{{message.name}}</a>
 								</p>
 								
-								<img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" ng-click="viewImageWeb($event,message.type,message.body)"/>
+								<img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}"
+									ng-click="viewImageWeb($event,message.type, message.body)"/>
 								<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="{{webServer}}{{message.body}}"
-								ng-click="viewImageWeb($event,message.type,{{webServer}}+message.body)"/>
+									ng-click="viewImageWeb($event,message.type, message.body)"/>
 
 								<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
