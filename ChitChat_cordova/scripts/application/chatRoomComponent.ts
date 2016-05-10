@@ -189,12 +189,15 @@
                         lastMessageTime = val.accessTime;
                         return true;
                     }
+
+                    console.warn('what ??')
                 });
 
                 if (boo) {
                     resolve();
                 }
                 else {
+                    console.error('reject');
                     reject();
                 }
             }
@@ -203,7 +206,7 @@
         promise.then((value) => {
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
-        promise.catch(err => {
+        promise.catch(() => {
             console.warn("this room_id is not contain in roomAccess list.");
 
             self.getNewerMessageFromNet(lastMessageTime, callback);
