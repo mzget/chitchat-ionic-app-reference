@@ -16,9 +16,11 @@ angular.module('spartan.controllers')
 	
 })
 
-.controller('HeaderChatCtrl', function($state, $scope, $rootScope, $ionicLoading, Favorite, blockNotifications, roomSelected, networkService){ 
+.controller('HeaderChatCtrl', function($state, $scope, $rootScope, $ionicLoading,
+ Favorite, blockNotifications, roomSelected, networkService){ 
     $scope.warnMessage = '';
     $scope.reload = reload;
+    var viewInfo = true;
     $scope.isFavorite = function(id){
         return Favorite.isFavorite(id);
     }
@@ -50,13 +52,19 @@ angular.module('spartan.controllers')
         resizeUI();
     };
 
-    var viewInfo = true;
     $scope.toggleInfo = function() {
         viewInfo = !viewInfo;
         $rootScope.$broadcast('toggleInfo',viewInfo);
         setTimeout(function () {
             resizeUI();
         }, 100);
+        
+        if(viewInfo == true) {
+            document.getElementById('chatLayout').style.width = "60%";
+        }
+        else{
+            document.getElementById('chatLayout').style.width = "100%";
+        }
     }
 
     function resizeUI(){
