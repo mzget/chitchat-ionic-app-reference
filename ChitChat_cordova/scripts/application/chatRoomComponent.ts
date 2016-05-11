@@ -164,20 +164,21 @@
             }
             else {
                 var roomAccess = self.dataManager.getRoomAccess();
-                console.debug("roomAccess", roomAccess.length)
-                let boo = roomAccess.some((val, id, arr) => {
-                    if (val.roomId === self.roomId) {
-                        lastMessageTime = val.accessTime;
-                        return true;
+                async.some(roomAccess, (item, cb) => {
+                    if (item.roomId === self.roomId) {
+                        lastMessageTime = item.accessTime;
+                        cb(true);
+                    }
+                }, (result) => {
+                    console.log(result);
+
+                    if (result) {
+                        resolve();
+                    }
+                    else {
+                        reject();
                     }
                 });
-
-                if (boo) {
-                    resolve();
-                }
-                else {
-                    reject();
-                }
             }
         });
 
@@ -289,7 +290,7 @@
                     
                     callback(err, resultsArray);
                     
-                    self.messageDAL.removeData();
+                    // self.messageDAL.removeData();
                     self.messageDAL.saveData(self.roomId, self.chatMessages);
                 });
             }); 

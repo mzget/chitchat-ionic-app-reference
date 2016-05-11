@@ -1,0 +1,17 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "outFile": "www/scripts/appBundle.js",
+    "target": "es5",
+    "allowJs": false,
+    "rootDir": "scripts"
+  },
+  "exclude": [
+    "node_modules",
+    "www",
+    "platforms",
+    "plugins",
+    "vscode",
+    "scripts/typings"
+  ]
+}
