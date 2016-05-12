@@ -21,14 +21,12 @@
     }
 
     onChat(chatMessageImp: Message) {
-        var self = this;
+        let self = this;
 
-        console.log('chatRoomComponent.onChat');
+        console.log('chatRoomComponent.onChat', JSON.stringify(chatMessageImp));
 
         if(this.roomId === chatMessageImp.rid) {
-            console.log("Implement chat msg hear..", chatMessageImp);
-            
-            var secure = new SecureService();
+            let secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
                 if (self.serverImp.appConfig.encryption == true) {
                     secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
@@ -84,11 +82,12 @@
     }
 
     onMessageRead(dataEvent) {
-        console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
-        var self = this;
-        var newMsg: Message = JSON.parse(JSON.stringify(dataEvent));
+        console.log("onMessageRead", JSON.stringify(dataEvent));
+        
+        let self = this;
+        let newMsg: Message = JSON.parse(JSON.stringify(dataEvent));
 
-        var promise = new Promise(function (resolve, reject) {
+        let promise = new Promise(function (resolve, reject) {
             self.chatMessages.some(function callback(value) {
                 if (value._id === newMsg._id) {
                     value.readers = newMsg.readers;
@@ -106,7 +105,27 @@
     }
 
     onGetMessagesReaders(dataEvent) {
-
+        console.log('onGetMessagesReaders', dataEvent);
+        
+        let self = this;
+        interface Ireaders {
+            _id : string;
+            readers: Array<string>;
+        }
+        let myMessagesArr : Array<Ireaders> = JSON.parse(JSON.stringify(dataEvent.data));
+        
+        self.chatMessages.forEach((originalMsg, id, arr) => {
+            if(self.dataManager.isMySelf(originalMsg.sender)) {
+                myMessagesArr.some((myMsg, index, array) => {
+                    if(originalMsg._id === myMsg._id) {
+                        originalMsg.readers = myMsg.readers;
+                        return true;
+                    }
+                });     
+            }
+        });
+        
+        self.messageDAL.saveData(self.roomId, self.chatMessages);
     }
 
     public getPersistentMessage(rid: string, done: (err, messages) => void) {
@@ -185,7 +204,7 @@
         promise.then((value) => {
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
-        promise.catch(err => {
+        promise.catch(() => {
             console.warn("this room_id is not contain in roomAccess list.");
 
             self.getNewerMessageFromNet(lastMessageTime, callback);
@@ -234,18 +253,27 @@
                         self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
                            //self.getNewerMessageRecord();
                         });
+
+                        if (callback !== null) {
+                            callback(null, result.code);
+                        }
                     });
                 }
                 else {
                     console.log("Have no newer message.");
+                    
+
+                    if (callback !== null) {
+                        callback(null, result.code);
+                    }
                 }
             }
             else {
                 console.warn("WTF god only know.", result.message);
-            }
 
-            if (callback !== null) {
-                callback(null, result.code);
+                if (callback !== null) {
+                    callback(null, result.code);
+                }
             }
         });
     }
@@ -290,7 +318,6 @@
                     
                     callback(err, resultsArray);
                     
-                    // self.messageDAL.removeData();
                     self.messageDAL.saveData(self.roomId, self.chatMessages);
                 });
             }); 
@@ -334,7 +361,7 @@
         }
         // a must be equal to b
         return 0;
-}
+    }
 
     public getMessage(chatId, Chats, callback: (joinRoomRes: any) => void) {
         var self = this;
@@ -468,6 +495,28 @@
 
         }).catch(function onRejected(reason) {
             console.warn("promiss.onRejected", reason);
+        });
+    }
+    
+    public updateReadMessages() {
+        let self = this;
+        
+        async.map(self.chatMessages, function  itorator(message, resultCb) {
+            if(!self.dataManager.isMySelf(message.sender)) {
+                self.chatRoomApi.updateMessageReader(message._id, message.rid);
+            }
+            
+            resultCb(null, null);
+        }, function  done(err) {
+            //@ done.
+        })
+    }
+    
+    public updateWhoReadMyMessages() {
+        let self = this;
+        
+        self.getTopEdgeMessageTime((err, res) => {
+            self.chatRoomApi.getMessagesReaders(res);
         });
     }
 

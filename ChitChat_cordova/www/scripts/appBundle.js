@@ -63,9 +63,8 @@ var ChatRoomComponent = (function () {
     ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
         var _this = this;
         var self = this;
-        console.log('chatRoomComponent.onChat');
+        console.log('chatRoomComponent.onChat', JSON.stringify(chatMessageImp));
         if (this.roomId === chatMessageImp.rid) {
-            console.log("Implement chat msg hear..", chatMessageImp);
             var secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
                 if (self.serverImp.appConfig.encryption == true) {
@@ -112,7 +111,7 @@ var ChatRoomComponent = (function () {
     ChatRoomComponent.prototype.onRoomJoin = function (data) {
     };
     ChatRoomComponent.prototype.onMessageRead = function (dataEvent) {
-        console.log("Implement onMessageRead hear..", JSON.stringify(dataEvent));
+        console.log("onMessageRead", JSON.stringify(dataEvent));
         var self = this;
         var newMsg = JSON.parse(JSON.stringify(dataEvent));
         var promise = new Promise(function (resolve, reject) {
@@ -130,6 +129,20 @@ var ChatRoomComponent = (function () {
         });
     };
     ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
+        console.log('onGetMessagesReaders', dataEvent);
+        var self = this;
+        var myMessagesArr = JSON.parse(JSON.stringify(dataEvent.data));
+        self.chatMessages.forEach(function (originalMsg, id, arr) {
+            if (self.dataManager.isMySelf(originalMsg.sender)) {
+                myMessagesArr.some(function (myMsg, index, array) {
+                    if (originalMsg._id === myMsg._id) {
+                        originalMsg.readers = myMsg.readers;
+                        return true;
+                    }
+                });
+            }
+        });
+        self.messageDAL.saveData(self.roomId, self.chatMessages);
     };
     ChatRoomComponent.prototype.getPersistentMessage = function (rid, done) {
         var self = this;
@@ -200,7 +213,7 @@ var ChatRoomComponent = (function () {
         promise.then(function (value) {
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
-        promise.catch(function (err) {
+        promise.catch(function () {
             console.warn("this room_id is not contain in roomAccess list.");
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
@@ -243,17 +256,23 @@ var ChatRoomComponent = (function () {
                         self.messageDAL.saveData(self.roomId, self.chatMessages, function (err, result) {
                             //self.getNewerMessageRecord();
                         });
+                        if (callback !== null) {
+                            callback(null, result.code);
+                        }
                     });
                 }
                 else {
                     console.log("Have no newer message.");
+                    if (callback !== null) {
+                        callback(null, result.code);
+                    }
                 }
             }
             else {
                 console.warn("WTF god only know.", result.message);
-            }
-            if (callback !== null) {
-                callback(null, result.code);
+                if (callback !== null) {
+                    callback(null, result.code);
+                }
             }
         });
     };
@@ -292,7 +311,6 @@ var ChatRoomComponent = (function () {
                     resultsArray.sort(self.compareMessage);
                     self.chatMessages = resultsArray.slice(0);
                     callback(err, resultsArray);
-                    // self.messageDAL.removeData();
                     self.messageDAL.saveData(self.roomId, self.chatMessages);
                 });
             });
@@ -457,6 +475,23 @@ var ChatRoomComponent = (function () {
             });
         }).catch(function onRejected(reason) {
             console.warn("promiss.onRejected", reason);
+        });
+    };
+    ChatRoomComponent.prototype.updateReadMessages = function () {
+        var self = this;
+        async.map(self.chatMessages, function itorator(message, resultCb) {
+            if (!self.dataManager.isMySelf(message.sender)) {
+                self.chatRoomApi.updateMessageReader(message._id, message.rid);
+            }
+            resultCb(null, null);
+        }, function done(err) {
+            //@ done.
+        });
+    };
+    ChatRoomComponent.prototype.updateWhoReadMyMessages = function () {
+        var self = this;
+        self.getTopEdgeMessageTime(function (err, res) {
+            self.chatRoomApi.getMessagesReaders(res);
         });
     };
     ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
@@ -1395,12 +1430,14 @@ var MessageDAL = (function () {
             console.warn(err);
         });
     };
-    MessageDAL.prototype.clearData = function () {
+    MessageDAL.prototype.clearData = function (next) {
+        console.warn('MessageDAL.clearData');
         this.store.clear(function (err) {
             if (err != null) {
                 console.warn("Clear database fail", err);
             }
-            console.log("message db now empty.");
+            console.warn("message db now empty.");
+            next(err);
         });
     };
     return MessageDAL;
@@ -2253,7 +2290,6 @@ var ChatServer;
     ChatServer.ServerImplemented = ServerImplemented;
     var ChatRoomApiProvider = (function () {
         function ChatRoomApiProvider() {
-            this.serverImp = ServerImplemented.getInstance();
         }
         ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, callback) {
             var message = {};
@@ -2292,7 +2328,6 @@ var ChatServer;
         };
         ChatRoomApiProvider.prototype.getSyncDateTime = function (callback) {
             var message = {};
-            message["token"] = this.serverImp.authenData.token;
             pomelo.request("chat.chatHandler.getSyncDateTime", message, function (result) {
                 if (callback != null) {
                     callback(null, result);
@@ -2339,10 +2374,12 @@ var ChatServer;
                     callback(null, result);
             });
         };
-        ChatRoomApiProvider.prototype.getMessagesReaders = function () {
+        ChatRoomApiProvider.prototype.getMessagesReaders = function (topEdgeMessageTime) {
             var message = {};
-            message["token"] = this.serverImp.authenData.token;
-            pomelo.notify("chat.chatHandler.getMessagesReaders", message);
+            message["topEdgeMessageTime"] = topEdgeMessageTime;
+            pomelo.request("chat.chatHandler.getMessagesReaders", message, function (result) {
+                console.info('getMessagesReaders respones: ', result);
+            });
         };
         ChatRoomApiProvider.prototype.getMessageContent = function (messageId, callback) {
             var message = {};
@@ -2433,11 +2470,11 @@ var ChatServer;
                 self.chatServerListener.onLeaveRoom(data);
             });
             pomelo.on(ServerEventListener.ON_MESSAGE_READ, function (data) {
-                console.log(ServerEventListener.ON_MESSAGE_READ, JSON.stringify(data));
+                // console.log(ServerEventListener.ON_MESSAGE_READ);
                 self.chatServerListener.onMessageRead(data);
             });
             pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, function (data) {
-                console.log(ServerEventListener.ON_GET_MESSAGES_READERS, JSON.stringify(data));
+                // console.log(ServerEventListener.ON_GET_MESSAGES_READERS);
                 self.chatServerListener.onGetMessagesReaders(data);
             });
         };

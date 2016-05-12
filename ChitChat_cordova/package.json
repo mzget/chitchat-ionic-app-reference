@@ -1,6 +1,6 @@
 {
   "name": "chitchat_cordova",
-  "version": "0.1.2",
+  "version": "0.2.0-beta",
   "dependencies": {},
   "cordovaPlugins": [
     "cordova-plugin-device",
