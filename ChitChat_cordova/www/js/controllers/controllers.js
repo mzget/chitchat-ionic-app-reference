@@ -12,9 +12,15 @@ angular.module('spartan.controllers')
     }
 })
 
-.controller('HeaderChatCtrl', function($state, $scope, $rootScope, $ionicLoading, Favorite, blockNotifications, roomSelected, networkService){ 
+.controller('FreecallCtrl', function($scope, $stateParams) {
+	
+})
+
+.controller('HeaderChatCtrl', function($state, $scope, $rootScope, $ionicLoading,
+ Favorite, blockNotifications, roomSelected, networkService){ 
     $scope.warnMessage = '';
     $scope.reload = reload;
+    var viewInfo = true;
     $scope.isFavorite = function(id){
         return Favorite.isFavorite(id);
     }
@@ -46,26 +52,26 @@ angular.module('spartan.controllers')
         resizeUI();
     };
 
-    var viewInfo = true;
     $scope.toggleInfo = function() {
         viewInfo = !viewInfo;
         $rootScope.$broadcast('toggleInfo',viewInfo);
         setTimeout(function () {
             resizeUI();
         }, 100);
+        
+        if(viewInfo == true) {
+            document.getElementById('chatLayout').style.width = "60%";
+        }
+        else{
+            document.getElementById('chatLayout').style.width = "100%";
+        }
     }
 
     function resizeUI(){
-        if(document.getElementById('chatMessage') != null){
-            document.getElementById('chatMessage').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-            document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
-        }
-        if(document.getElementById('chatLayout') != null){
-            document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
-        }
-        if(document.getElementById('infoLayout') != null){
-            document.getElementById('infoLayout').style.height = window.innerHeight - 66 + "px";
-        }
+        document.getElementById('chatMessage').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+        document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
+        document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
+        document.getElementById('infoLayout').style.height = window.innerHeight - 66 + "px";
         if(document.getElementById('chatMenuContain') != null){
             document.getElementById('chatMenuContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
             document.getElementById('chatMenuContain').style.width = jQuery('#webchatdetail').width() + "px";
@@ -82,6 +88,7 @@ angular.module('spartan.controllers')
             document.getElementById('mapContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
             document.getElementById('mapContain').style.width = jQuery('#webchatdetail').width() + "px";
         }
+     
     }
 
     function reload() {
@@ -151,6 +158,140 @@ angular.module('spartan.controllers')
             });
         }
     }
+})
+
+.controller('optionsController', function($scope, $state, $ionicModal,$timeout,CreateGroup,$localStorage, $rootScope, $ionicPopover, dbAccessService) {
+        $scope.settings = {
+            logOut: true,
+        };
+
+        $scope.myProfile = main.getDataManager().myProfile;
+        $scope.admin = UserRole.admin;
+
+        $scope.createType = function(type){
+            CreateGroup.createType = type;
+            location.href = '#/tab/account/create'
+            console.log(CreateGroup.createType);
+        }
+        
+        $ionicModal.fromTemplateUrl('templates/modal-theme.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            $scope.thememodal = modal
+        })  
+
+        $scope.openThemeModal = function() {
+            $scope.thememodal.show()
+        }
+
+        $scope.closeThemeModal = function() {
+            $scope.thememodal.hide();
+        };
+
+        $scope.$on('$destroy', function () {
+            $scope.thememodal.remove();
+        });
+      
+     
+        $scope.data = {
+            'themedefault': 'css/themedefault.css',
+            'themeblue': 'css/themeblue.css',
+            'themebrown': 'css/themebrown.css',
+            'themegreen': 'css/themegreen.css',
+            'themered': 'css/themered.css',
+            'themeviole': 'css/themeviole.css',
+            'themeyellow': 'css/themeyellow.css'
+        }
+
+        $scope.save_settings = function( data ) {
+            $localStorage.themeData = data;
+            $rootScope.theme = $localStorage.themeData;
+            console.log($rootScope.themeblue)
+        }
+
+        $scope.logOut = function () {
+            console.warn("logOut...");
+            server.logout();
+            server.dispose();
+
+            dbAccessService.clearMessageDAL();
+            localStorage.clear();
+            //$state.go('tab.login');
+            location.href = '';
+        }
+})
+
+.controller('AccountCreate', function ($scope, $rootScope, $state, $ionicHistory, $ionicLoading, $cordovaProgress, CreateGroup, FileService) {
+    console.log('AccountCreate',CreateGroup.createType);
+    var myProfile = main.getDataManager().myProfile;
+    $rootScope.members = CreateGroup.getSelectedMember();
+    $scope.model = { groupname: "" };
+    var roomId = "";
+    $scope.submit = function(){
+        createGroup();
+    }
+    function createGroup(){
+        $ionicLoading.show({
+            template: 'Loading..'
+        });
+        if(CreateGroup.createType=="PrivateGroup"){
+            server.UserRequestCreateGroupChat($scope.model.groupname,CreateGroup.getSelectedIdWithMe(), function(err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    roomId = res.data._id;
+                    uploadImageGroup();
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }else{
+            server.requestCreateProjectBaseGroup($scope.model.groupname,CreateGroup.getSelectedMemberProjectBaseWithMe(), function(err, res) {
+                if (!err) {
+                    console.log(JSON.stringify(res));
+                    roomId = res.data._id;
+                    uploadImageGroup();
+                }
+                else {
+                    console.warn(err, res);
+                }
+            });
+        }
+    }
+    function createSuccess() {
+        $ionicLoading.hide();
+        $cordovaProgress.showSuccess(false, "Success!");
+        setTimeout(function () { $cordovaProgress.hide(); }, 1500);
+    }
+    function uploadImageGroup(){
+        if(FileService.getImages() != '') {
+            $scope.$broadcast('uploadImg','uploadImg');
+        }else{
+            //$state.go('tab.group');
+            createSuccess();
+            $rootScope.$ionicGoBack();
+        }
+    }
+    $scope.$on('fileUrl', function(event, args) {
+        server.UpdatedGroupImage(roomId,args[0], function(err, res){
+            if(!err){
+                console.log(JSON.stringify(res));
+                createSuccess();
+                //$state.go('tab.group');
+                $rootScope.$ionicGoBack();
+            }else{
+                console.warn(err, res);
+            }
+        });
+    });
+    $rootScope.$ionicGoBack = function() {
+        if($state.current.name=='tab.account-create'){
+            CreateGroup.clear();
+        }
+        $ionicHistory.goBack(-1);
+    };
+
 })
 
 .controller('AccountInvite',function($scope,$rootScope,CreateGroup) {
@@ -293,6 +434,45 @@ angular.module('spartan.controllers')
     return filtered;
   };
 });
+
+// .directive('hideTabBar', function($timeout) {
+//   var style = angular.element('<style>').html(
+//     '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
+//     '.no-tabs.has-tabs-top { top: 44px; }');
+//   document.body.appendChild(style[0]);
+//   return {
+//     restrict: 'A',
+//     compile: function(element, attr) {
+//       var tabBar = document.querySelector('.tab-nav');
+//       return function($scope, $element, $attr) {
+//         var scroll = $element[0].querySelector('.scroll-content');
+//         $scope.$on('$ionicView.beforeEnter', function() {
+//           tabBar.classList.add('slide-away');
+//           scroll.classList.add('no-tabs');
+//         });
+//       }
+//     }
+//   };
+// })
+// .directive('showTabBar', function($timeout) {
+//   var style = angular.element('<style>').html(
+//     '.has-tabs.no-tabs:not(.has-tabs-top) { bottom: 0; }\n' +
+//     '.no-tabs.has-tabs-top { top: 44px; }');
+//   document.body.appendChild(style[0]);
+//   return {
+//     restrict: 'A',
+//     compile: function(element, attr) {
+//       var tabBar = document.querySelector('.tab-nav');
+//       return function($scope, $element, $attr) {
+//         var scroll = $element[0].querySelector('.scroll-content');
+//         $scope.$on('$ionicView.beforeEnter', function() {
+//           tabBar.classList.remove('slide-away');
+//           scroll.classList.remove('no-tabs');
+//         });
+//       }
+//     }
+//   };
+// }); // <-- LAST CONTROLLER
 
 function CreateController($scope, $mdDialog, $rootScope, CreateGroup, ProjectBase, mdToast) {
     $scope.createType = $rootScope.createType;

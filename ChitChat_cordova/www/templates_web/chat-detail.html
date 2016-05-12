@@ -32,44 +32,39 @@
 							    type="item-text-wrap" style="white-space:normal !important;">
 								<img ng-src="{{webServer}}/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" />
 								<h2>{{allMembers[message.sender]['displayname']}}</h2>
-							</br>
+								</br>
 
-								<!-- Text type label. -->
 								<p id="{{message._id}}" ng-if="message.type=='Text' && !isValidURI(message.body)">
 									{{message.body}}
 								</p>
-								<!-- Text URL type label. -->
 								<p id="{{message._id}}" ng-if="message.type=='Text' && isValidURI(message.body)">
 									<u ng-click="webview(message.body)">
 										{{message.body}}
 									</u>
 								</p>
-								<!-- File type label. -->
+
 								<p id="{{message._id}}" ng-if="message.type=='File'"> 
 									<a href="{{message.url}}" target="_blank">{{message.name}}</a>
 								</p>
 
-								<!-- Image type label. -->
 								<img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" 
                                      ng-src="{{webServer}}{{message.body}}" 
                                      ng-click="viewImageWeb($event, message.type, message.body)"/>
     
-								<!-- Sticker type label. -->
 								<img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
-								
-								<!-- Voice type label. -->
 								<div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
-									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
+									<i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
 									<i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
 								</div>
-									
-								<!-- Video type label. -->
+
 								<div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideoWeb($event,message.type,message.body)" 
-									style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+								style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
 									<div style="margin-left:10px;">
 										<i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
 									</div>
 								</div>
+
+
 							
 								<div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
 									<div>
@@ -81,6 +76,7 @@
 									</div>
 								</div>
 								
+
 								<div id="{{message._id}}-downloaded" class="hide">
 									<div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
 								</div>
@@ -121,7 +117,7 @@
 									<a href="{{message.url}}" target="_blank">{{message.name}}</a>
 								</p>
 								
-								<img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}" 
+								<img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}"
 									ng-click="viewImageWeb($event,message.type, message.body)"/>
 								<img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="{{webServer}}{{message.body}}"
 									ng-click="viewImageWeb($event,message.type, message.body)"/>
@@ -183,40 +179,16 @@
 </div>
 
 <!-- @Chat Typings Bar -->
-<ion-footer-bar id="chatMessage" 
-	align-title="left" class="bar-light" 
-	style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none; height:initial;" layout="column">
-    <div layout="row">
-	    <div>
-		    <button ng-hide="isOpenChatMenu" ng-disabled="inactive" ng-click="openModal()" 
-                    class="button button-clear" style="padding:0 20px;">
-                <i class="ion-ios-arrow-up"></i>
-            </button>
-            <button ng-show="isOpenChatMenu" ng-disabled="inactive" ng-click="closeChatMenu()" 
-                    class="button button-dark" style="padding:0 20px;">
-                <i class="ion-ios-arrow-down"></i>
-            </button>
-	    </div>
-		
-		<span style="width:10px;"> </span>
-	    <input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" 
-			type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
-	    <input ng-disabled="inactive" ng-show="inactive==true" id="send_message" 
-			type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" 
-			value="This is Empty Room" />
+<ion-footer-bar id="chatMessage" align-title="left" class="bar-light" style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none;">
+	<div class="buttons">
+		<button ng-disabled="inactive" ng-click="openModal()" class="button button-clear" style="font-size:20px; padding:0 20px;"><i class="ion-ios-plus-outline"></i></button>
+	</div>
 
-	    <div class="buttons">
-		    <button ng-disabled="inactive" ng-click="sendMsg()" class="button button-clear" 
-				style="width:initial; font-size:20px; padding:0 20px;">
-                <i class="ion-share" data-pack="default" data-tags="outbound"></i>
-            </button>
-	    </div>
-    </div>
-	
-	<div ng-if="isOpenChatMenu">
-        <span style="height:5px;"></span>
-        <div ng-include src="'templates_web/modal-chatmenu.html'"> 
-		</div>
+	<input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
+	<input ng-disabled="inactive" ng-show="inactive==true" id="send_message" type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" value="This is Empty Room" />
+
+	<div class="buttons">
+		<button ng-disabled="inactive" id="sendMsg" class="button button-clear" style="width:76px; font-size:20px; padding:0 20px;"><i class="ion-share" data-pack="default" data-tags="outbound"></i></button>
 	</div>
 </ion-footer-bar>
 
