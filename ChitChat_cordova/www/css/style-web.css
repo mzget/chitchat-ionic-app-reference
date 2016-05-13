@@ -47,23 +47,30 @@
 #splash .container { float:none; display:table; width:100%; max-width:1000px; margin:10vh auto; text-align:center; }
 #splash .login-logo { max-width:250px; vertical-align:bottom; }
 
-.message-list .item { border:none; padding:0; margin:10px 0; }
+.message-list {
+  -webkit-touch-callout:unset; /* iOS Safari */
+  -webkit-user-select: text;   /* Chrome/Safari/Opera */
+  -moz-user-select: text;      /* Firefox */
+  -ms-user-select: text;       /* Internet Explorer/Edge */
+  user-select:text; 
+}
+.message-list .item { border:none; padding:0; margin:10px 0;}
 .message-list .item p { padding:10px; background-color:rgba(0,0,0,0.1); border-radius:10px; white-space:normal; }
 
 .message-list .other { text-align:left; }
 .message-list .other > * { display:inline-block; }
 .message-list .other .avatar { top:0; left:10px; position: absolute; border-radius: 50%; }
 .message-list .other h2 { margin-left:60px; }
-.message-list .other label { margin-left:60px; font-size:10px; line-height:10px; color:#aaa; }
-.message-list .other p { margin:0 0px 0 60px; text-align:left; border-top-left-radius:0; }
+.message-list .other label { font-size:10px; line-height:10px; color:#aaa; }
+.message-list .other p { padding:10px; text-align:left; border-top-left-radius:0; }
 .message-list .other p a { color:#666; }
 .message-list .other p u { cursor:pointer; }
-.message-list .other .type-img { width: 160px; height: 160px; margin:0 0px 0 60px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
-.message-list .other .type-voice { width: 60px; height: 60px; margin:0 0px 0 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
+.message-list .other .type-img { width: 160px; height: 160px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
+.message-list .other .type-voice { width: 60px; height: 60px; margin:0 0px 0 0px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .other .type-voice > * { line-height: 60px; }
-.message-list .other .type-video { width: 160px; height: 160px; margin:0 0px 0 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
+.message-list .other .type-video { width: 160px; height: 160px; margin:0 0px 0 0px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .other .type-video > * { width: 140px; height: 155px; }
-.message-list .other .type-location > * { width: 160px; height: 160px; margin:0 0px 0 60px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
+.message-list .other .type-location > * { width: 160px; height: 160px; margin:0 0px 0 0px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 
 .message-list .owner { text-align:right; }
 .message-list .owner > * { display:inline-block; }
@@ -71,7 +78,7 @@
 .message-list .owner p a { color:#666; }
 .message-list .owner p u { cursor:pointer; }
 .message-list .owner label { margin:0 5px 0 0; font-size:10px; line-height:10px; color:#aaa; }
-.message-list .owner .type-img { width: 160px; height: 160px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
+.message-list .owner .type-img { width: 160px; height: 160px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px;}
 .message-list .owner .type-voice { width: 60px; height: 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .owner .type-voice > * { line-height: 60px; }
 .message-list .owner .type-video { width: 160px; height: 160px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
