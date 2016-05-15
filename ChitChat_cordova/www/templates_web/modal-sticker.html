@@ -1,5 +1,6 @@
-<ion-modal-view id="stickerContain" style="position:fixed; top:initial; box-shadow:0 2px 0 -1px rgba(0,0,0,0.1) inset; min-height:inherit; height:272px; bottom:0px;">
-	<ion-head>
+<!--style="position:fixed; top:initial; box-shadow:0 2px 0 -1px rgba(0,0,0,0.1) inset; min-height:inherit; height:272px; bottom:0px;"-->
+<div id="stickerContain" style="background-color:gainsboro;">
+	<div>
 		<div class="stickerhead">
 			<div onclick="$('.stickerhead > *').css({'opacity':'0.2'}); $(this).css({'opacity':'1'}); $('.stickertab').css({'display':'none'}); $('.stickertab-0').css({'display':'inline-block'}); $('.scroll').css({'-webkit-transform':'translate3d(0px, 0px, 0px) scale(1)'});" style="background-image:url(stickers/sticker0.png); opacity:1;"></div>
 			<div onclick="$('.stickerhead > *').css({'opacity':'0.2'}); $(this).css({'opacity':'1'}); $('.stickertab').css({'display':'none'}); $('.stickertab-1').css({'display':'inline-block'}); $('.scroll').css({'-webkit-transform':'translate3d(0px, 0px, 0px) scale(1)'});" style="background-image:url(stickers/sticker9.png);"></div>
@@ -7,8 +8,8 @@
 			<div onclick="$('.stickerhead > *').css({'opacity':'0.2'}); $(this).css({'opacity':'1'}); $('.stickertab').css({'display':'none'}); $('.stickertab-3').css({'display':'inline-block'}); $('.scroll').css({'-webkit-transform':'translate3d(0px, 0px, 0px) scale(1)'});" style="background-image:url(stickers/sticker23.png);"></div>
 			<div onclick="$('.stickerhead > *').css({'opacity':'0.2'}); $(this).css({'opacity':'1'}); $('.stickertab').css({'display':'none'}); $('.stickertab-4').css({'display':'inline-block'}); $('.scroll').css({'-webkit-transform':'translate3d(0px, 0px, 0px) scale(1)'});" style="background-image:url(stickers/sticker33.png);"></div>
 		</div>	
-	</ion-head>
-	<ion-content>
+	</div>
+	<div>
 		<div class="stickertab stickertab-0" style="display:inline-block;">
 			<div style="background-image:url(stickers/sticker0.png);" ng-click="sendSticker(0)"></div>			
 			<div style="background-image:url(stickers/sticker1.png);" ng-click="sendSticker(1)"></div>				
@@ -62,5 +63,5 @@
 			<div style="background-image:url(stickers/sticker41.png);" ng-click="sendSticker(41)"></div>			
 			<div style="background-image:url(stickers/sticker42.png);" ng-click="sendSticker(42)"></div>			
 		</div>	
-	</ion-content>
-</ion-modal-view>
+	</div>
+</div>

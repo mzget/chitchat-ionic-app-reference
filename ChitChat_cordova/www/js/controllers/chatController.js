@@ -51,7 +51,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	$scope.sendSticker = sendSticker;
     $scope.isLoadingMessage = false;
     $scope.showLoadMessage = false;
-    $scope.isOpenChatMenu = false;
+    $scope.isOpenChatMenu = false; 
     $scope.chat = [];
     
 	function activate() {
@@ -388,7 +388,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			    console.error(err);
 		    });
 			
-
 			// Map modal view modal.
 			$ionicModal.fromTemplateUrl('templates/map.html', {
 				scope: $scope,
@@ -404,15 +403,15 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			}).then(function (modal) {
 			    $scope.readerViewModal = modal;
 			});
+            
+	        // Reload Modal - Sticker
+	        $ionicModal.fromTemplateUrl('templates/modal-sticker.html', {
+	            scope: $scope,
+	            animation: 'slide-in-up'
+	        }).then(function (modal) {
+	            $scope.modalSticker = modal;
+	        });
         }
-
-	    // Reload Modal - Sticker
-	    $ionicModal.fromTemplateUrl('templates_web/modal-sticker.html', {
-	        scope: $scope,
-	        animation: 'slide-in-up'
-	    }).then(function (modal) {
-	        $scope.modalSticker = modal;
-	    })
 
 	    $ionicModal.fromTemplateUrl('templates_web/modal-audio-recorder.html', {
 	        scope: $scope,
@@ -495,18 +494,31 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	// Modal - Sticker
 	function openModalSticker() {
 		modalcount++;
-		$scope.modalSticker.show();
+        if($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
+		    $scope.modalSticker.show();
+        }
         
         if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
-            document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-            document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
+            $scope.isOpenChatMenu = false;
+            //document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+            //document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
+            $mdDialog.show({
+                templateUrl: 'templates_web/modal-sticker.html',
+                controller: function($scope) {
+                    $scope.sendSticker = sendSticker
+                },
+                parent: angular.element(document.body),
+                clickOutsideToClose: true
+            });
         }
 	};
 	function sendSticker(sticker) {
 		chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
 		
-		$scope.modalSticker.hide();
-		$scope.chatMenuModal.hide();
+		if($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
+			$scope.modalSticker.hide();
+			$scope.chatMenuModal.hide();
+		}
 	}
 	// Modal - Audio Recorder
 	function openModalRecorder(){
