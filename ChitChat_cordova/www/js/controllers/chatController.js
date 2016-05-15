@@ -235,7 +235,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 			cb();
 		}, function done(err) {
 			$scope.readers = members;
-			$scope.openReaderModal();
+			openReaderModal();
 		});
 	}
 	function parseJSON(json){
@@ -303,103 +303,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		
 		return false;
 	};	
-	function setupModals() {
-        if(ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
-			// Reload Modal - Chat menu
-		    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
-	            scope: $scope,
-	            animation: 'slide-in-up'
-	        }).then(function (modal) {
-	            $scope.chatMenuModal = modal;
-	        }).catch(function(err) {
-			    console.error(err);
-		    });
-			
-
-			// Map modal view modal.
-			$ionicModal.fromTemplateUrl('templates/map.html', {
-				scope: $scope,
-				animation: 'slide-in-up'
-			}).then(function (modal) {
-				$scope.mapViewModal = modal;
-			});
-        }
-
-	    // Reload Modal - Sticker
-	    $ionicModal.fromTemplateUrl('templates_web/modal-sticker.html', {
-	        scope: $scope,
-	        animation: 'slide-in-up'
-	    }).then(function (modal) {
-	        $scope.modalSticker = modal;
-	    })
-
-	    $ionicModal.fromTemplateUrl('templates_web/modal-audio-recorder.html', {
-	        scope: $scope,
-	        animation: 'slide-in-up'
-	    }).then(function (modal) {
-	        $scope.modalAudio = modal;
-	    })
-
-	    // Reload Modal - WebView
-	    $ionicModal.fromTemplateUrl('templates/modal-webview.html', {
-	        scope: $scope,
-	        animation: 'slide-in-up'
-	    }).then(function (modal) {
-	        $scope.modalWebview = modal;
-	    })
-
-	    // Reader view modal.
-	    $ionicModal.fromTemplateUrl('templates/modal-reader-view.html', {
-	        scope: $scope,
-	        animation: 'slide-in-up'
-	    }).then(function (modal) {
-	        $scope.readerViewModal = modal;
-	    });
-
-	    //Cleanup the modal when we're done with it!
-	    $scope.$on('$destroy', function () {
-            if(!!$scope.chatMenuModal) {
-	            $scope.chatMenuModal.remove();
-            }
-	        $scope.modalSticker.remove();
-	        $scope.modalAudio.remove();
-	        $scope.modalWebview.remove();
-	        $scope.readerViewModal.remove();
-            if(!!$scope.mapViewModal) {
-	            $scope.mapViewModal.remove();
-            }
-	    });
-	    // Execute action on hide modal
-	    $scope.$on('modal.hidden', function () {
-	        // Execute action
-
-	        if (modalcount > 0) {
-	            modalcount--;
-	        }
-
-	        if (modalcount == 1) {
-	            if ($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
-	                $scope.chatMenuModal.hide();
-	            }
-	            else {
-	                $scope.isOpenChatMenu = false;
-	            }
-	        }
-
-	        $('#chatMessage').animate({ 'bottom': '0' }, 350);
-	        $('#chatDetail').animate({ 'top': '0' }, 350);
-
-	        if ($('.audio-recorder').is(".recording")) {
-	            $('.audio-recorder').removeClass("recording");
-	            $('.audio-recorder').addClass("unrecording");
-	            $scope.$broadcast('cancelRecord', 'cancelRecord');
-	        }
-	    });
-	    // Execute action on remove modal
-	    $scope.$on('modal.removed', function () {
-	        // Execute action
-	    });
-	}
 	function editFavorite(editType, id, type) {
 		$ionicLoading.show({
 			  template: 'Loading..'
@@ -472,7 +375,104 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
         $scope.showLoadMessage = false;
 	}
 
-	modalcount = 0;	
+	modalcount = 0;		
+    function setupModals() {
+        if(ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+			// Reload Modal - Chat menu
+		    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
+	            scope: $scope,
+	            animation: 'slide-in-up'
+	        }).then(function (modal) {
+	            $scope.chatMenuModal = modal;
+	        }).catch(function(err) {
+			    console.error(err);
+		    });
+			
+
+			// Map modal view modal.
+			$ionicModal.fromTemplateUrl('templates/map.html', {
+				scope: $scope,
+				animation: 'slide-in-up'
+			}).then(function (modal) {
+				$scope.mapViewModal = modal;
+			});
+
+            // Reader view modal.
+			$ionicModal.fromTemplateUrl('templates/modal-reader-view.html', {
+			    scope: $scope,
+			    animation: 'slide-in-up'
+			}).then(function (modal) {
+			    $scope.readerViewModal = modal;
+			});
+        }
+
+	    // Reload Modal - Sticker
+	    $ionicModal.fromTemplateUrl('templates_web/modal-sticker.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function (modal) {
+	        $scope.modalSticker = modal;
+	    })
+
+	    $ionicModal.fromTemplateUrl('templates_web/modal-audio-recorder.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function (modal) {
+	        $scope.modalAudio = modal;
+	    })
+
+	    // Reload Modal - WebView
+	    $ionicModal.fromTemplateUrl('templates/modal-webview.html', {
+	        scope: $scope,
+	        animation: 'slide-in-up'
+	    }).then(function (modal) {
+	        $scope.modalWebview = modal;
+	    })
+
+	    //Cleanup the modal when we're done with it!
+	    $scope.$on('$destroy', function () {
+            if(!!$scope.chatMenuModal) {
+	            $scope.chatMenuModal.remove();
+            }
+	        $scope.modalSticker.remove();
+	        $scope.modalAudio.remove();
+	        $scope.modalWebview.remove();
+	        $scope.readerViewModal.remove();
+            if(!!$scope.mapViewModal) {
+	            $scope.mapViewModal.remove();
+            }
+	    });
+	    // Execute action on hide modal
+	    $scope.$on('modal.hidden', function () {
+	        // Execute action
+
+	        if (modalcount > 0) {
+	            modalcount--;
+	        }
+
+	        if (modalcount == 1) {
+	            if ($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
+	                $scope.chatMenuModal.hide();
+	            }
+	            else {
+	                $scope.isOpenChatMenu = false;
+	            }
+	        }
+
+	        $('#chatMessage').animate({ 'bottom': '0' }, 350);
+	        $('#chatDetail').animate({ 'top': '0' }, 350);
+
+	        if ($('.audio-recorder').is(".recording")) {
+	            $('.audio-recorder').removeClass("recording");
+	            $('.audio-recorder').addClass("unrecording");
+	            $scope.$broadcast('cancelRecord', 'cancelRecord');
+	        }
+	    });
+	    // Execute action on remove modal
+	    $scope.$on('modal.removed', function () {
+	        // Execute action
+	    });
+	}
 	// Modal - Chat menu 
 	function openChatMenusModal() {
 		modalcount++;
@@ -527,7 +527,18 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		$scope.modalWebview.hide();
 	};
 	function openReaderModal() {
-		$scope.readerViewModal.show();
+        if($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
+		    $scope.readerViewModal.show();
+        }
+        else {
+			$rootScope.readers = $scope.readers;
+            $mdDialog.show({
+                templateUrl: 'templates_web/modal-reader-view.html',
+                parent: angular.element(document.body),
+                //targetEvent: ev,
+                clickOutsideToClose: true
+            });
+        }
 	};
 	function closeReaderModal() {
 		$scope.readerViewModal.hide();
