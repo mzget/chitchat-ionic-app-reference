@@ -73,11 +73,6 @@
 .message-list .other .type-location > * { width: 160px; height: 160px; margin:0 0px 0 0px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 
 .message-list .owner { text-align:right; }
-.message-list .owner > * { display:inline-block; }
-.message-list .owner p { margin:0 5px 0 0; text-align:right; border-top-right-radius:0; }
-.message-list .owner p a { color:#666; }
-.message-list .owner p u { cursor:pointer; }
-.message-list .owner label { margin:0 5px 0 0; font-size:10px; line-height:10px; color:#aaa; }
 .message-list .owner .type-img { width: 160px; height: 160px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px;}
 .message-list .owner .type-voice { width: 60px; height: 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .owner .type-voice > * { line-height: 60px; }
