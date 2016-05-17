@@ -20,25 +20,23 @@
                                           style="height:auto; width:100%;" 
                                           ng-repeat="message in chat track by $index">
                                 <!-- Date.. -->
-                                <div ng-show="message.firstMsg != undefined" style="text-align:center; height:22px;">
+                                <!--<div ng-show="message.firstMsg" style="text-align:center; height:22px;">
                                     <div class="md-body-2" style="color:blue;"> {{message.firstMsg}} </div>
                                     <md-divider></md-divider>
-                                </div>
+                                </div>-->
 
-                                <div ng-hide="message.firstMsg" style="width:100%;">
+                                <div style="width:100%;">
                                     <!-- @Incomings message. -->
                                     <div ng-show="message.sender != myprofile._id && !!message.sender"
                                          class="other item-avatar"
-                                         type="item-text-wrap"
                                          style="white-space:normal !important; margin:5px;">
                                         <img ng-if="allMembers[message.sender]['image'] != null" ng-src="{{webServer}}/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" class="md-avatar" />
                                         <img ng-if="allMembers[message.sender]['image'] == null" ng-src="img/img.jpg" height="40" width="40" class="md-avatar" />
                                         <span class="md-body-2">{{allMembers[message.sender]['displayname']}}</span>
                                         <br />
-
                                         <!-- Text type label. -->
                                         <div id="{{message._id}}" ng-if="message.type=='Text'"
-                                             style="background-color:gainsboro; padding:5px; border-radius:10px;">
+                                             style="background-color:gainsboro; border-radius:5px;">
                                             <p ng-if="!isValidURI(message.body)">
                                                 {{message.body}}
                                             </p>
@@ -48,7 +46,7 @@
                                                     {{message.body}}
                                                 </u>
                                             </a>
-                                        </div>
+                                        </div>                                        
                                         <!-- File type label. -->
                                         <span id="{{message._id}}" ng-if="message.type=='File'">
                                             <a href="{{message.url}}" target="_blank">{{message.name}}</a>
@@ -89,6 +87,8 @@
                                             <div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
                                         </div>
                                         <br />
+                                        <label>{{message.createTime}}</label>        
+                                        <br />               
                                         <label>{{message.time}}</label>
                                         <br />
                                     </div>
@@ -182,7 +182,10 @@
                                                 </div>
                                             </div>                                           
                                         </div>
-                                        <label ng-if="message.temp != 'true'" style="font-size:10px; line-height:10px; color:#aaa; margin:5px; text-align:right;"> {{message.time}}</label>
+                                        <label ng-if="message.temp != 'true'" style="font-size:10px; line-height:10px; color:#aaa; margin:5px; text-align:right;">
+                                            {{message.createTime}}</label>
+                                        <label ng-if="message.temp != 'true'" style="font-size:10px; line-height:10px; color:#aaa; margin:5px; text-align:right;"> 
+                                            {{message.time}}</label>
                                     </div>
                                 </div>
                             </md-list-item>

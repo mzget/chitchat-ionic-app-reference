@@ -60,8 +60,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    setRoom();
 
 		$scope.$on('onNewMessage', function (event, data) {
-            $scope.chat = chatRoomService.all();
-            $scope.$apply(); //@ Call for changed scope.
+			console.debug('onNewMessage');
+            $scope.$apply(function() {$scope.chat = chatRoomService.all();}); //@ Call for changed scope.
             
 		    setTimeout(function () {
 		    	if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
@@ -73,7 +73,14 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    }, 100);
 		});
 		$scope.$on('onMessagesReady', function (event, data) {
-		    $scope.chat = chatRoomService.all();
+			console.debug('onMessagesReady');
+			
+           	$scope.$apply(function() {
+		    	$scope.chat = chatRoomService.all();
+			}); //@ Call for changed scope.
+			
+			chatRoomService.all().map(function itor(v, i ,a) { console.warn(JSON.stringify(v))})
+			
 		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 		   		setTimeout(function () {
 			        $ionicLoading.hide();
@@ -83,12 +90,12 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	    		$ionicLoading.hide();
 	    		setTimeout(function () {
 			        $("#chatLayout").animate({scrollTop:$("#chatLayout")[0].scrollHeight}, 500);
-			    }, 100);
+			    }, 200);
 	    	}
 		});
 		$scope.$on('onJoinRoomReady', function (event, data) {
-		    $scope.chat = chatRoomService.all(); 
-            $scope.$apply();
+			console.debug('onJoinRoomReady');
+            $scope.$apply(function() {$scope.chat = chatRoomService.all(); });
             
             setTimeout(function () {
                 $ionicLoading.hide();
@@ -125,6 +132,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
             $scope.showLoadMessage = hasOlderMessage;
         });
         $scope.$on('onMessageChanged', function (event, data) {
+			console.debug('onMessageChanged');
+			
             $scope.chat = chatRoomService.all();
             $scope.isLoadingMessage = false;
             console.debug('chats.all: ', chatRoomService.all().length, $scope.chat.length);
@@ -815,9 +824,11 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	
 	$scope.$on('changeChat', function(event, args) { 
 	    console.log('changed chatroom.', args);
+		
         var newRoom = JSON.parse(JSON.stringify(args));
         if(newRoom._id == roomSelected.getRoomOrLastRoom()._id) { return; }
         
+		$scope.chat = null;
         $ionicLoading.show({
 		    template: 'Loading...'
 		});
