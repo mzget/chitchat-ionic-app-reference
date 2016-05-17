@@ -4,18 +4,15 @@ var newchatmessage;
 var chatlog_count = 0;
 
 angular.module('spartan.controllers')
-
 .factory('getProfileMember',function(){
     var result;
     function _all(){
 
     }
 })
-
 .controller('FreecallCtrl', function($scope, $stateParams) {
 	
 })
-
 .controller('HeaderChatCtrl', function($state, $scope, $rootScope, $ionicLoading,
  Favorite, blockNotifications, roomSelected, networkService){ 
     $scope.warnMessage = '';

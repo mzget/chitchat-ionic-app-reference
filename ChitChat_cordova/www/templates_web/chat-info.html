@@ -1,7 +1,9 @@
 <div>
     <div>
-        <img class="avatar-modal" ng-if="group.image != null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=60&w=60" style="border-radius:50%; padding:15px;"/>
-        <img class="avatar-modal" ng-if="group.image == null" src="img/img.jpg" height="60" width="60"  style="border-radius:50%; padding:15px;"/>
+        <img class="avatar-modal" ng-if="group.image != null" ng-src="{{webServer}}/timthumb.php?src={{group.image}}&h=60&w=60" 
+        style="border-radius:50%; padding:15px;"/>
+        <img class="avatar-modal" ng-if="group.image == null" ng-src="img/img.jpg" height="60" width="60"  
+        style="border-radius:50%; padding:15px;"/>
         <p style="display:inline; margin-left:10px;" ng-if="group.name != null"> {{group.name}} </p>
         <p style="display:inline; margin-left:10px;" ng-if="group.name == null"> {{group.displayname}} </p>
     </div>
@@ -22,8 +24,10 @@
                 </md-button>
 
             <ion-item class="item-remove-animate item-avatar item-icon-right" 
-            ng-repeat="member in members|orderObjectBy:'displayname':false|filter:search track by $index" type="item-text-wrap" ng-click="openContactModal(member._id)" style="border-style: solid none;">
-                <img ng-src="http://203.113.25.44/timthumb.php?src={{member.image}}&h=40&w=40" />
+                ng-repeat="member in members|orderObjectBy:'displayname':false|filter:search track by $index" 
+                type="item-text-wrap" ng-click="openContactModal(member._id)" style="border-style: solid none;">
+                <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}&h=40&w=40" />
+                <img ng-if="member.image == null" ng-src="img/img.jpg" height="40" width="40" />
                 <div ng-if="chatGroup.type==privateIndex || chatGroup.type==orgGroupsIndex">
                     <h2>{{member.displayname}}</h2>
                     <p>{{member.status}}</p>
@@ -42,8 +46,10 @@
                 <i class="material-icons">settings</i>
             </md-button>
             <ion-item class="item-remove-animate item-avatar item-icon-right" 
-            ng-repeat="member in members|orderObjectBy:'displayname':false track by $index" type="item-text-wrap" ng-click="openContactModal(member._id)" style="border-style: solid none;" ng-show="member._id != null">
-                <img ng-src="http://203.113.25.44/timthumb.php?src={{member.image}}&h=40&w=40" />
+                ng-repeat="member in members|orderObjectBy:'displayname':false track by $index" 
+                type="item-text-wrap" ng-click="openContactModal(member._id)" style="border-style: solid none;" ng-show="member._id != null">
+                <img ng-if="member.image != null" ng-src="{{webServer}}/timthumb.php?src={{member.image}}&h=40&w=40" />
+                <img ng-if="member.image == null" ng-src="img/img.jpg" height="40" width="40" />
                 <h2>{{member.displayname}}</h2>
                 <p style="float:right; position:absolute; right:5px;" ng-show="member.role!=0 && member.role!=1">{{member.role}}</p>
                 <p style="float:right; position:absolute; right:5px;" ng-show="member.role==0 || member.role==1">{{member.textRole}}</p>
