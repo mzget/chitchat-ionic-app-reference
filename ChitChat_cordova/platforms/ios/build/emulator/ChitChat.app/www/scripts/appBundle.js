@@ -1313,6 +1313,7 @@ var WebRtcComponent = (function () {
     function WebRtcComponent() {
         console.log("starting.. webRtcComponent.");
         this.webRtcCallState = new WebRtcCallState();
+        this.webRtcCallState.callState = CallState.idle;
     }
     WebRtcComponent.prototype.setCallState = function (state) {
         this.webRtcCallState.callState = state;
@@ -1334,10 +1335,9 @@ var WebRtcComponent = (function () {
         }
     };
     WebRtcComponent.prototype.onVoiceCall = function (dataEvent) {
-        var body = dataEvent.body;
+        var body = JSON.parse(JSON.stringify(dataEvent));
         var contactId = body.from;
         var peerId = body.peerId;
-        console.warn("onVoiceCall", body);
         if (this.webRtcCallState.callState === CallState.idle) {
             if (this.voiceCallEvent != null) {
                 this.voiceCallEvent(contactId, peerId);
@@ -2346,7 +2346,6 @@ var ChatServer;
             });
             pomelo.on(ServerEventListener.ON_VOICE_CALL, function (data) {
                 console.log(ServerEventListener.ON_VOICE_CALL, JSON.stringify(data));
-                console.warn("ON_VOICE_CALL", self.rtcCallListener);
                 self.rtcCallListener.onVoiceCall(data);
             });
             pomelo.on(ServerEventListener.ON_HANGUP_CALL, function (data) {

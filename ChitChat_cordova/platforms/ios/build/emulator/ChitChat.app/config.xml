@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.rfl.stalk" version="0.1.1b" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <preference name="BackupWebStorage" value="cloud" />
+<widget id="com.rfl.stalk" version="0.1.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <feature name="LocalStorage">
         <param name="ios-package" value="CDVLocalStorage" />
     </feature>
@@ -10,7 +9,6 @@
     <feature name="Camera">
         <param name="ios-package" value="CDVCamera" />
     </feature>
-    <preference name="CameraUsesGeolocation" value="false" />
     <feature name="Console">
         <param name="ios-package" value="CDVLogger" />
     </feature>
@@ -20,7 +18,6 @@
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
     </feature>
-    <preference name="AndroidPersistentFileLocation" value="Internal" />
     <feature name="File">
         <param name="ios-package" value="CDVFile" />
         <param name="onload" value="true" />
@@ -76,6 +73,29 @@
         <param name="ios-package" value="ChitchatRTC" />
         <param name="onload" value="true" />
     </feature>
+    <allow-intent href="itms:*" />
+    <allow-intent href="itms-apps:*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <name>ChitChat</name>
+    <description>
+       ChitChat team communication, A messaging app for teams.
+    </description>
+    <author email="" href="http://ahoo.co.th/">
+        Ahoo Studio Team 
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <icon src="resources/ios/icon/icon-small@3x.png" />
+    <vs:platformSpecificValues xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps">
+        <vs:platformSpecificWidget id="com.ahoostudio.chitchat" platformName="windows" version="1.0.0.0">
+            <vs:name>ChitChat</vs:name>
+        </vs:platformSpecificWidget>
+    </vs:platformSpecificValues>
     <icon height="57" src="resources/ios/icon/icon.png" width="57" />
     <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
     <icon height="40" src="resources/ios/icon/icon-40.png" width="40" />
@@ -102,8 +122,10 @@
     <splash height="1024" src="resources/ios/splash/Default-Portrait~ipad.png" width="768" />
     <splash height="960" src="resources/ios/splash/Default@2x~iphone.png" width="640" />
     <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
-    <preference name="AllowInlineMediaPlayback" value="false" />
     <preference name="BackupWebStorage" value="local" />
+    <preference name="CameraUsesGeolocation" value="false" />
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
+    <preference name="AllowInlineMediaPlayback" value="false" />
     <preference name="DisallowOverscroll" value="false" />
     <preference name="EnableViewportScale" value="false" />
     <preference name="KeyboardDisplayRequiresUserAction" value="true" />
@@ -116,28 +138,5 @@
     <preference name="windows-target-version" value="10.0" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
-    <allow-intent href="itms:*" />
-    <allow-intent href="itms-apps:*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-    <name>ChitChat</name>
-    <description>
-       ChitChat team communication, A messaging app for teams.
-    </description>
-    <author email="" href="http://ahoo.co.th/">
-        Ahoo Studio Team 
-    </author>
-    <content src="index.html" />
-    <access origin="*" />
-    <icon src="resources/ios/icon/icon-small@3x.png" />
     <preference name="Orientation" value="portrait" />
-    <vs:platformSpecificValues xmlns:vs="http://schemas.microsoft.com/appx/2014/htmlapps">
-        <vs:platformSpecificWidget id="com.ahoostudio.chitchat" platformName="windows" version="1.0.0.0">
-            <vs:name>ChitChat</vs:name>
-        </vs:platformSpecificWidget>
-    </vs:platformSpecificValues>
 </widget>

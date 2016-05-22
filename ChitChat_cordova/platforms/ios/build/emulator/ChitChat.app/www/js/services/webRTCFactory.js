@@ -44,12 +44,16 @@
             cordova.exec(function success(callId) {
                 console.warn(callId);
                 server.hangupCall(main.getDataManager().getMyProfile()._id, contactId);
+                
+                webRtcComponent.setCallState(CallState.idle);
             }, function fail() {
 
             }, "ChitchatRTC", "waitForEndCall", []);
         }
         
         function voiceCallHandler(contactId, callerId) {
+            console.log("voiceCallHandler", contactId, callerId);
+            
             webRtcComponent.setCallState(CallState.signalingCall);
             
             cordova.exec(function success(callId) {
@@ -57,6 +61,15 @@
             }, function fail() {
 
             }, "ChitchatRTC", "freeCall", [callerId, dataManager.getContactProfile(contactId)]);
+            
+             cordova.exec(function success(callId) {
+                console.warn(callId);
+                server.hangupCall(main.getDataManager().getMyProfile()._id, contactId);
+                
+                webRtcComponent.setCallState(CallState.idle);
+            }, function fail() {
+
+            }, "ChitchatRTC", "waitForEndCall", []);
         }
          
         function videoCallHandler(contactId, callerId) {
