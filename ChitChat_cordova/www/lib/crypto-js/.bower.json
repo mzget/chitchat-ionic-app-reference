@@ -38,7 +38,7 @@
     "tag": "3.1.6",
     "commit": "f92d7ed1c322b305d04c4b6fcd8970644da89111"
   },
-  "_source": "git://github.com/brix/crypto-js.git",
+  "_source": "https://github.com/brix/crypto-js.git",
   "_target": "3.1.6",
   "_originalSource": "crypto-js"
 }

@@ -5,8 +5,6 @@
         .module('spartan.controllers')
         .controller('companyController', companyController);
 
-//    companyController.$inject = ['$location']; 
-
     function companyController($location, $scope, $state, $ionicModal, $timeout, CreateGroup, $localStorage, $rootScope,
         $ionicPopover, $window, $mdDialog, dbAccessService, localNotifyService) {
         /* jshint validthis:true */
@@ -21,6 +19,7 @@
         $scope.createGroup = createGroup;
         $scope.adminPanel = adminPanel;
         $scope.downloadApp = downloadApp;
+        $scope.versionInfo = versionInfo;
 
         activate();
 
@@ -104,6 +103,10 @@
 
         function downloadApp() {           
             $window.open('https://github.com/mzget/stalk-ionic-sample/wiki/Introducing_ChitChat-RFL', '_blank');
+        }
+        
+        function versionInfo() {
+            $window.open('https://github.com/mzget/stalk-ionic-sample/wiki/ChitChat-web-client-release-note', '_blank');
         }
     }
 })();
