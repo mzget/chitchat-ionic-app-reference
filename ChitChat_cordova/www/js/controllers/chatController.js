@@ -79,8 +79,6 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		    	$scope.chat = chatRoomService.all();
 			}); //@ Call for changed scope.
 			
-			chatRoomService.all().map(function itor(v, i ,a) { console.warn(JSON.stringify(v))})
-			
 		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
 		   		setTimeout(function () {
 			        $ionicLoading.hide();

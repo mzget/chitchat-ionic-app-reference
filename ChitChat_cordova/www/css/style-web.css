@@ -65,7 +65,8 @@
 .message-list .other p { padding:10px; text-align:left; border-top-left-radius:0; }
 .message-list .other p a { color:#666; }
 .message-list .other p u { cursor:pointer; }
-.message-list .other .type-img { width: 160px; height: 160px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
+.message-list .other .type-img { width: 192px; height: 192px; border: 1px solid rgb(204, 204, 204); padding: 5px; }
+.message-list .other .type-sticker { width: 128px; height: 128px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 .message-list .other .type-voice { width: 60px; height: 60px; margin:0 0px 0 0px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .other .type-voice > * { line-height: 60px; }
 .message-list .other .type-video { width: 160px; height: 160px; margin:0 0px 0 0px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
@@ -73,7 +74,8 @@
 .message-list .other .type-location > * { width: 160px; height: 160px; margin:0 0px 0 0px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px; }
 
 .message-list .owner { text-align:right; }
-.message-list .owner .type-img { width: 160px; height: 160px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px;}
+.message-list .owner .type-img { width: 192px; height: 192px; border: 1px solid rgb(204, 204, 204); padding: 5px; }
+.message-list .owner .type-sticker { width: 128px; height: 128px; border: 1px solid rgb(204, 204, 204); padding: 5px; border-radius: 20px;}
 .message-list .owner .type-voice { width: 60px; height: 60px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }
 .message-list .owner .type-voice > * { line-height: 60px; }
 .message-list .owner .type-video { width: 160px; height: 160px; font-size: 40px; text-align: center; border: 1px solid rgb(204, 204, 204); border-radius: 20px; }

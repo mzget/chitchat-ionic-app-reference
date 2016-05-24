@@ -53,11 +53,11 @@
                                         </span>
                                         <!-- Image type label. -->
                                         <img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'"
-                                             ng-src="{{webServer}}{{message.body}}"
+                                             ng-src="{{webServer}}/timthumb.php?src={{message.body}}&h=192&w=192"
                                              ng-click="viewImageWeb($event, message.type, message.body)" />
 
                                         <!-- Sticker type label. -->
-                                        <img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
+                                        <img class="type-sticker" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
                                         <!-- Voice type label. -->
                                         <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
@@ -150,7 +150,7 @@
                                                      ng-click="viewImageWeb($event,message.type, message.body)" />
 
                                                 <!-- Sticker Type. -->
-                                                <img class="type-img" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
+                                                <img class="type-sticker" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
 
                                                 <!-- Voice Type.-->
                                                 <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
