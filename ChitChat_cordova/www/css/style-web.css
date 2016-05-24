@@ -97,7 +97,7 @@
 .modal-chatmenu > * { text-align:center; padding:20px 0; cursor:pointer; } 
 .modal-chatmenu > *:active { background-color:rgba(0,0,0,0.1); }
 .modal-chatmenu i { font-size:30px; }
-.audio-recorder { background:url(../img/ic_audio-recorder.png) no-repeat center center; height:272px;}
+.audio-recorder { background:url(../img/ic_audio-recorder.png) no-repeat center center; height:170px;}
 
 .stickerhead { width:100%; padding:5px 0; margin-bottom:10px; border-bottom:1px solid #ccc; white-space:nowrap; overflow-x:auto; overflow-y:hidden; cursor:pointer; position:relative; z-index:100; background-color:#fff; }
 .stickerhead > * { float:left; display:inline-block; width:33px; height:33px; margin:0 0 0 10px; background-size:contain; background-repeat:no-repeat; background-position:50% 50%; opacity:0.5; }

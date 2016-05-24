@@ -1,10 +1,15 @@
-<ion-modal-view id="recorderContain" style="position:fixed; top:initial; box-shadow:0 2px 0 -1px rgba(0,0,0,0.1) inset; min-height:inherit; height:272px; bottom:0px;">
-	
-	<ion-head>
-	</ion-head>
-
-	<ion-content id="audio-rec" scroll="false">
-		<div class="unrecording audio-recorder" ng-click="voice()"></div>
-	</ion-content>
-
-</ion-modal-view>
+<div id="recorderContain" style="top:initial; box-shadow:0 2px 0 -1px rgba(0,0,0,0.1) inset;
+ min-height:initial; bottom:0px;">
+    <div layout="column">
+        <div class="md-primaty" layout="row">
+            <p class="md-body-2 md-primary" style="margin:10px;">Voice recorder</p>
+            <div flex> </div>
+            <md-button class="md-primary" aria-label="close" ng-click="closeVoiceRecorder()">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+	    <div id="audio-rec" scroll="false">
+		    <div class="unrecording audio-recorder" ng-click="voice()"></div>
+	    </div>
+    </div>
+</div>

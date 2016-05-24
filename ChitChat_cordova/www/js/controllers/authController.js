@@ -13,14 +13,19 @@
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'authController';
-        var registrationId = "";
+
         $ionicTabsDelegate.showBar(false);
+        $rootScope.currentPlatform = ionic.Platform.platform();
+        if(ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+            $rootScope.isMobile = true;
+        }
+
+        var registrationId = "";
         $scope.user = {
             email: "",
             password: ""
         };
         $rootScope.teamInfo = {};
-        $rootScope.currentPlatform = ionic.Platform.platform();
         
         $ionicPlatform.ready(function () {
             console.log(vm.title + " : ionic ready.");

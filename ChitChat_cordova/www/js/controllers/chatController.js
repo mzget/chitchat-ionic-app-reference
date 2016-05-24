@@ -52,6 +52,8 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
     $scope.isLoadingMessage = false;
     $scope.showLoadMessage = false;
     $scope.isOpenChatMenu = false; 
+    $scope.isOpenAudioRecordMenu = false;
+    $scope.closeVoiceRecorder = closeVoiceRecorder;
     $scope.chat = [];
     
 	function activate() {
@@ -384,7 +386,7 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 
 	modalcount = 0;		
     function setupModals() {
-        if(ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+        if($rootScope.isMobile) {
 			// Reload Modal - Chat menu
 		    $ionicModal.fromTemplateUrl('templates/modal-chatmenu.html', {
 	            scope: $scope,
@@ -418,14 +420,15 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	        }).then(function (modal) {
 	            $scope.modalSticker = modal;
 	        });
-        }
 
-	    $ionicModal.fromTemplateUrl('templates_web/modal-audio-recorder.html', {
-	        scope: $scope,
-	        animation: 'slide-in-up'
-	    }).then(function (modal) {
-	        $scope.modalAudio = modal;
-	    })
+            // Audio recorder modal.
+	        $ionicModal.fromTemplateUrl('templates/modal-audio-recorder.html', {
+	            scope: $scope,
+	            animation: 'slide-in-up'
+	        }).then(function (modal) {
+	            $scope.modalAudio = modal;
+	        })
+        }
 
 	    // Reload Modal - WebView
 	    $ionicModal.fromTemplateUrl('templates/modal-webview.html', {
@@ -501,11 +504,10 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	// Modal - Sticker
 	function openModalSticker() {
 		modalcount++;
-        if($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
+        if($rootScope.isMobile) {
 		    $scope.modalSticker.show();
         }
-        
-        if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
+        else {
             $scope.isOpenChatMenu = false;
             //document.getElementById('stickerContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
             //document.getElementById('stickerContain').style.width = jQuery('#webchatdetail').width() + "px";
@@ -530,13 +532,30 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 	// Modal - Audio Recorder
 	function openModalRecorder(){
 		modalcount++;
-		$scope.modalAudio.show();
-        
-        if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
-            document.getElementById('recorderContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
-            document.getElementById('recorderContain').style.width = jQuery('#webchatdetail').width() + "px";
+        if($rootScope.isMobile) {
+		    $scope.modalAudio.show();
         }
-	}	
+        else{
+            $scope.isOpenChatMenu = false;
+			$scope.isOpenAudioRecordMenu = true;
+        
+			/* Old code from ionic v.1.1+
+			if(ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
+				document.getElementById('recorderContain').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
+				document.getElementById('recorderContain').style.width = jQuery('#webchatdetail').width() + "px";
+			}
+			*/
+        }
+	}
+	function closeVoiceRecorder() {
+        $scope.isOpenAudioRecordMenu = false;
+		
+		if ($('.audio-recorder').is(".recording")) {
+	        $('.audio-recorder').removeClass("recording");
+	        $('.audio-recorder').addClass("unrecording");
+	        $scope.$broadcast('cancelRecord', 'cancelRecord');
+	    }
+    }
 	// Modal - Webview 
 	function openModalWebview() {
 		modalcount++;
@@ -652,14 +671,18 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
 		if($('.audio-recorder').is(".recording")){
 			$('.audio-recorder').removeClass("recording");
 			$('.audio-recorder').addClass("unrecording");
-			if (ionic.Platform.platform() === "ios") 
+			if ($rootScope.isMobile) { 
 				$scope.$broadcast('stopRecord', 'stopRecord');
-			else
+			}
+			else { 
 				$rootScope.$broadcast('stopRecord', 'stopRecord');
-		}else{
+				closeVoiceRecorder();
+			}
+		}
+        else{
 			$('.audio-recorder').removeClass("unrecording");
 			$('.audio-recorder').addClass("recording");
-			if (ionic.Platform.platform() === "ios") 
+			if ($rootScope.isMobile) 
 				$scope.$broadcast('startRecord', 'startRecord');
 			else
 				$rootScope.$broadcast('startRecord', 'startRecord');
