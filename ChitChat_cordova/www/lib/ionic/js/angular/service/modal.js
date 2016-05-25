@@ -2,7 +2,6 @@
  * @ngdoc service
  * @name $ionicModal
  * @module ionic
- * @codepen gblny
  * @description
  *
  * Related: {@link ionic.controller:ionicModal ionicModal controller}.
@@ -48,7 +47,7 @@
  *   $scope.closeModal = function() {
  *     $scope.modal.hide();
  *   };
- *   // Cleanup the modal when we're done with it!
+ *   //Cleanup the modal when we're done with it!
  *   $scope.$on('$destroy', function() {
  *     $scope.modal.remove();
  *   });
@@ -182,7 +181,6 @@ function($rootScope, $ionicBody, $compile, $timeout, $ionicPlatform, $ionicTempl
         self.el.classList.add('active');
         self.scope.$broadcast('$ionicHeader.align');
         self.scope.$broadcast('$ionicFooter.align');
-        self.scope.$broadcast('$ionic.modalPresented');
       }, 20);
 
       return $timeout(function() {
@@ -225,8 +223,6 @@ function($rootScope, $ionicBody, $compile, $timeout, $ionicPlatform, $ionicTempl
         if (self._isShown) return;
         modalEl.addClass('ng-leave-active')
                .removeClass('ng-enter ng-enter-active active');
-
-        self.scope.$broadcast('$ionic.modalRemoved');
       }, 20, false);
 
       self.$el.off('click');
@@ -254,24 +250,10 @@ function($rootScope, $ionicBody, $compile, $timeout, $ionicPlatform, $ionicTempl
      * @returns {promise} A promise which is resolved when the modal is finished animating out.
      */
     remove: function() {
-      var self = this,
-          deferred, promise;
+      var self = this;
       self.scope.$parent && self.scope.$parent.$broadcast(self.viewType + '.removed', self);
 
-      // Only hide modal, when it is actually shown!
-      // The hide function shows a click-block-div for a split second, because on iOS,
-      // clicks will sometimes bleed through/ghost click on underlying elements.
-      // However, this will make the app unresponsive for short amount of time.
-      // We don't want that, if the modal window is already hidden.
-      if (self._isShown) {
-        promise = self.hide();
-      } else {
-        deferred = $$q.defer();
-        deferred.resolve();
-        promise = deferred.promise;
-      }
-
-      return promise.then(function() {
+      return self.hide().then(function() {
         self.scope.$destroy();
         self.$el.remove();
       });

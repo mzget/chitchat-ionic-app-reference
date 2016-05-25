@@ -1,7 +1,7 @@
 {
   "name": "chitchat_cordova",
   "dependencies": {
-      "ionic": "*",
+      "ionic": "1.2.4",
       "angular-material": "*",
       "async": "*",
       "angular-toArrayFilter": "*",

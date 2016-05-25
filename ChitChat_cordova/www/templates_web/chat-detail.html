@@ -212,7 +212,7 @@
 <ion-footer-bar id="chatMessage" 
 	align-title="left" class="bar-light" 
 	style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none; height:initial;" layout="column">
-    <div ng-if="!isOpenAudioRecordMenu">
+    <div ng-show="!isOpenAudioRecordMenu">
         <div layout="row">
             <div>
                 <button ng-hide="isOpenChatMenu" ng-disabled="inactive" ng-click="openModal()" 
@@ -227,11 +227,10 @@
             
             <span style="width:10px;"> </span>
             <input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" 
-                type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
+                type="text" name="message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
             <input ng-disabled="inactive" ng-show="inactive==true" id="send_message" 
-                type="text" name="send_message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" 
+                type="text" name="message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" 
                 value="This is Empty Room" />
-
             <div class="buttons">
                 <button ng-disabled="inactive" ng-click="sendMsg()" class="button button-clear" 
                     style="width:initial; font-size:20px; padding:0 20px;">
@@ -245,7 +244,7 @@
             </div>
         </div>
 	</div>
-    <div ng-if="isOpenAudioRecordMenu">
+    <div ng-show="isOpenAudioRecordMenu">
         <span style="height:5px;"></span>
         <div ng-include src="'templates_web/modal-audio-recorder.html'"> 
 		</div>
