@@ -16,7 +16,7 @@
         this.dataManager = this.main.getDataManager();
         this.roomId = room_id;
         this.messageDAL = messageDAL;
-        
+
         console.log("constructor ChatRoomComponent");
     }
 
@@ -25,7 +25,7 @@
 
         console.log('chatRoomComponent.onChat', JSON.stringify(chatMessageImp));
 
-        if(this.roomId === chatMessageImp.rid) {
+        if (this.roomId === chatMessageImp.rid) {
             let secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
                 if (self.serverImp.appConfig.encryption == true) {
@@ -66,7 +66,7 @@
         }
         else {
             console.log("this msg come from other room.");
-            
+
             if (!!this.notifyEvent) {
                 this.notifyEvent(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
             }
@@ -83,7 +83,7 @@
 
     onMessageRead(dataEvent) {
         console.log("onMessageRead", JSON.stringify(dataEvent));
-        
+
         let self = this;
         let newMsg: Message = JSON.parse(JSON.stringify(dataEvent));
 
@@ -106,25 +106,25 @@
 
     onGetMessagesReaders(dataEvent) {
         console.log('onGetMessagesReaders', dataEvent);
-        
+
         let self = this;
         interface Ireaders {
-            _id : string;
+            _id: string;
             readers: Array<string>;
         }
-        let myMessagesArr : Array<Ireaders> = JSON.parse(JSON.stringify(dataEvent.data));
-        
+        let myMessagesArr: Array<Ireaders> = JSON.parse(JSON.stringify(dataEvent.data));
+
         self.chatMessages.forEach((originalMsg, id, arr) => {
-            if(self.dataManager.isMySelf(originalMsg.sender)) {
+            if (self.dataManager.isMySelf(originalMsg.sender)) {
                 myMessagesArr.some((myMsg, index, array) => {
-                    if(originalMsg._id === myMsg._id) {
+                    if (originalMsg._id === myMsg._id) {
                         originalMsg.readers = myMsg.readers;
                         return true;
                     }
-                });     
+                });
             }
         });
-        
+
         self.messageDAL.saveData(self.roomId, self.chatMessages);
     }
 
@@ -132,11 +132,10 @@
         var self = this;
         self.messageDAL.getData(rid, (err, messages) => {
             if (messages !== null) {
-                var chats: Array<Message> = JSON.parse(JSON.stringify(messages));
-
+                let chats = messages.slice(0);
                 async.mapSeries(chats, function iterator(item, result) {
                     if (item.type === ContentType.Text) {
-                        if(self.serverImp.appConfig.encryption == true) {
+                        if (self.serverImp.appConfig.encryption == true) {
                             self.main.decodeService(item.body, function (err, res) {
                                 if (!err) {
                                     item.body = res;
@@ -166,7 +165,7 @@
             }
             else {
                 self.chatMessages = [];
-                
+
                 console.debug("chatMessages", self.chatMessages.length);
                 done(err, messages);
             }
@@ -213,7 +212,7 @@
 
     private getNewerMessageFromNet(lastMessageTime: Date, callback: (err, res) => void) {
         var self = this;
-       
+
         self.chatRoomApi.getChatHistory(self.roomId, lastMessageTime, function (err, result) {
             var histories = [];
             if (result.code === 200) {
@@ -222,7 +221,7 @@
                 if (histories.length > 0) {
 
                     var messages: Array<Message> = JSON.parse(JSON.stringify(histories));
-                    
+
                     async.mapSeries(messages, function (item, cb) {
                         if (item.type.toString() === ContentType[ContentType.Text]) {
                             if (self.serverImp.appConfig.encryption == true) {
@@ -248,10 +247,17 @@
                             cb(null, item);
                         }
                     }, function done(err) {
-                        console.log("get newer message completed.", err);
+                        if (!err) {
+                            console.log("get newer message completed.");
+                        }
+                        else {
+                            console.error('get newer message error', err);
+                        }
+
+                        console.debug("chatMessage.Count", self.chatMessages.length);
                         //<!-- Save persistent chats log here.
                         self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
-                           //self.getNewerMessageRecord();
+                            //self.getNewerMessageRecord();
                         });
 
                         if (callback !== null) {
@@ -261,7 +267,7 @@
                 }
                 else {
                     console.log("Have no newer message.");
-                    
+
 
                     if (callback !== null) {
                         callback(null, result.code);
@@ -281,7 +287,7 @@
     public getOlderMessageChunk(callback: (err, res) => void) {
         let self = this;
         self.getTopEdgeMessageTime(function done(err, res) {
-            self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {                
+            self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {
                 //@ todo.
                 /**
                  * Merge messages record to chatMessages array.
@@ -291,36 +297,36 @@
                 datas = res.data;
                 let clientMessages = self.chatMessages.slice(0);
                 let mergedArray: Array<Message> = [];
-                if(datas.length > 0) {
+                if (datas.length > 0) {
                     var messages: Array<Message> = JSON.parse(JSON.stringify(datas));
                     mergedArray = messages.concat(clientMessages);
                 }
-                
+
                 let resultsArray: Array<Message> = [];
-                async.map(mergedArray, function  iterator(item, cb) {
+                async.map(mergedArray, function iterator(item, cb) {
                     let hasMessage = resultsArray.some(function itor(value, id, arr) {
-                        if(value._id == item._id) {
-                            return true;  
+                        if (value._id == item._id) {
+                            return true;
                         }
                     });
-                    
-                    if(hasMessage == false) {
+
+                    if (hasMessage == false) {
                         resultsArray.push(item);
                         cb(null, null);
                     }
-                    else{
+                    else {
                         cb(null, null);
                     }
                 }, function done(err, results: Array<Message>) {
                     resultsArray.sort(self.compareMessage);
 
                     self.chatMessages = resultsArray.slice(0);
-                    
+
                     callback(err, resultsArray);
                     
                     self.messageDAL.saveData(self.roomId, self.chatMessages);
                 });
-            }); 
+            });
         });
     }
 
@@ -477,7 +483,7 @@
 
                                     localStorage.removeItem(myProfile._id + '_' + chatId);
                                     localStorage.setItem(myProfile._id + '_' + chatId, JSON.stringify(self.chatMessages));
-                                    
+
                                     callback(joinRoomRes);
                                 });
                             }
@@ -497,24 +503,24 @@
             console.warn("promiss.onRejected", reason);
         });
     }
-    
+
     public updateReadMessages() {
         let self = this;
-        
-        async.map(self.chatMessages, function  itorator(message, resultCb) {
-            if(!self.dataManager.isMySelf(message.sender)) {
+
+        async.map(self.chatMessages, function itorator(message, resultCb) {
+            if (!self.dataManager.isMySelf(message.sender)) {
                 self.chatRoomApi.updateMessageReader(message._id, message.rid);
             }
-            
+
             resultCb(null, null);
-        }, function  done(err) {
+        }, function done(err) {
             //@ done.
         })
     }
-    
+
     public updateWhoReadMyMessages() {
         let self = this;
-        
+
         self.getTopEdgeMessageTime((err, res) => {
             self.chatRoomApi.getMessagesReaders(res);
         });
@@ -522,18 +528,18 @@
 
     public leaveRoom(room_id, callback: (err, res) => void) {
         var self = this;
-       
-       if(self.serverImp._isConnected) {
+
+        if (self.serverImp._isConnected) {
             self.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
                 console.log("leave room", JSON.stringify(res));
                 callback(err, res);
             });
-       }
-       else {
-           console.warn(ChatServer.ServerImplemented.connectionProblemString);
-           
-           callback(new Error(ChatServer.ServerImplemented.connectionProblemString), null);
-       }
+        }
+        else {
+            console.warn(ChatServer.ServerImplemented.connectionProblemString);
+
+            callback(new Error(ChatServer.ServerImplemented.connectionProblemString), null);
+        }
     }
 
     public joinRoom(callback: (err, res) => void) {

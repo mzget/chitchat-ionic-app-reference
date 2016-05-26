@@ -132,11 +132,10 @@ function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelega
             $scope.showLoadMessage = hasOlderMessage;
         });
         $scope.$on('onMessageChanged', function (event, data) {
-			console.debug('onMessageChanged');
+			console.debug('onMessageChanged', chatRoomService.all().length);
 			
             $scope.chat = chatRoomService.all();
             $scope.isLoadingMessage = false;
-            console.debug('chats.all: ', chatRoomService.all().length, $scope.chat.length);
 		});
         $scope.$on('ondeactivateBgMode', function (event, data) {
             console.log('Need to update message read here.');

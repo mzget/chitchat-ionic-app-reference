@@ -148,7 +148,7 @@ var ChatRoomComponent = (function () {
         var self = this;
         self.messageDAL.getData(rid, function (err, messages) {
             if (messages !== null) {
-                var chats = JSON.parse(JSON.stringify(messages));
+                var chats = messages.slice(0);
                 async.mapSeries(chats, function iterator(item, result) {
                     if (item.type === ContentType.Text) {
                         if (self.serverImp.appConfig.encryption == true) {
@@ -251,7 +251,13 @@ var ChatRoomComponent = (function () {
                             cb(null, item);
                         }
                     }, function done(err) {
-                        console.log("get newer message completed.", err);
+                        if (!err) {
+                            console.log("get newer message completed.");
+                        }
+                        else {
+                            console.error('get newer message error', err);
+                        }
+                        console.debug("chatMessage.Count", self.chatMessages.length);
                         //<!-- Save persistent chats log here.
                         self.messageDAL.saveData(self.roomId, self.chatMessages, function (err, result) {
                             //self.getNewerMessageRecord();
@@ -1406,20 +1412,23 @@ var MessageDAL = (function () {
     }
     MessageDAL.prototype.getData = function (rid, done) {
         this.store.getItem(rid).then(function (value) {
+            var docs = JSON.parse(JSON.stringify(value));
             console.log("get persistent success");
-            done(null, value);
+            done(null, docs);
         }).catch(function rejected(err) {
             console.warn(err);
         });
     };
     MessageDAL.prototype.saveData = function (rid, chatRecord, callback) {
+        var self = this;
         this.store.setItem(rid, chatRecord).then(function (value) {
-            console.log("save persistent success", value.length);
+            console.log("save persistent success");
             if (callback != null) {
                 callback(null, value);
             }
         }).catch(function rejected(err) {
             console.warn(err);
+            self.removeData(rid);
             if (callback != null) {
                 callback(err, null);
             }
@@ -1428,7 +1437,9 @@ var MessageDAL = (function () {
     MessageDAL.prototype.removeData = function (rid, callback) {
         this.store.removeItem(rid).then(function () {
             console.info('room_id %s is removed: ', rid);
-            callback(null, null);
+            if (callback) {
+                callback(null, null);
+            }
         }).catch(function (err) {
             console.warn(err);
         });
