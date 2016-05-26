@@ -23,6 +23,9 @@
             }
         }).catch(function rejected(err) {
             console.warn(err);
+            if(callback != null) {
+                callback(err, null);
+            }
         });
     }
 

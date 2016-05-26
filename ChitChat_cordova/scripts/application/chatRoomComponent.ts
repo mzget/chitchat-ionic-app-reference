@@ -248,7 +248,7 @@
                             cb(null, item);
                         }
                     }, function done(err) {
-                        console.log("get newer message completed.");
+                        console.log("get newer message completed.", err);
                         //<!-- Save persistent chats log here.
                         self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
                            //self.getNewerMessageRecord();

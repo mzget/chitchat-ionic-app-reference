@@ -20,6 +20,7 @@
         $scope.adminPanel = adminPanel;
         $scope.downloadApp = downloadApp;
         $scope.versionInfo = versionInfo;
+        $scope.bugsReport = bugsReport;
 
         activate();
 
@@ -107,6 +108,10 @@
         
         function versionInfo() {
             $window.open('https://github.com/mzget/stalk-ionic-sample/wiki/ChitChat-web-client-release-note', '_blank');
+        }
+        
+        function bugsReport() {
+            $window.open("http://git.animation-genius.com/prathan/chitchatbugreport/issues", '_blank');
         }
     }
 })();

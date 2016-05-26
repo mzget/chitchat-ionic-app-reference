@@ -6,7 +6,6 @@
             <div class="md-toolbar-tools">
 
                 <md-menu style="margin:0 0;">
-
                     <md-button class="md-icon-button" aria-label="Settings" ng-click="$mdOpenMenu($event)" 
                     style="margin:0 0; padding:0 0;">
                         <!--<md-icon md-svg-icon="img/icons/menu.svg"></md-icon>-->
@@ -46,13 +45,17 @@
                             <md-button class="md-primary" ng-click="downloadApp()">
                                 <i class="ion-information-circled" style="margin-right:10px;"></i> Download ChitChat app...
                             </md-button>
-                        </md-menu-item>
-                        
-                        <md-menu-divider></md-menu-divider>
+                        </md-menu-item>                        
+                        <!--<md-menu-divider></md-menu-divider>-->
                         <!-- Version displaying -->
                         <md-menu-item>
                             <md-button class="md-primary" ng-click="versionInfo()"> 
                                 <i class="ion-information-circled" style="margin-right:10px;"></i> Version: {{appVersion}} 
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button class="md-warn" ng-click="bugsReport()"> 
+                                <i class="material-icons">bug_report</i>  Bugs issues, Report. 
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
