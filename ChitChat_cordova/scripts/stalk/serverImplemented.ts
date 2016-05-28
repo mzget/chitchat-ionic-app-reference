@@ -27,12 +27,12 @@ module ChatServer {
             return this.Instance;
         }
 
-        static connectionProblemString : string = 'Server connection is unstable.';
+        static connectionProblemString: string = 'Server connection is unstable.';
 
         host: string;
         port: number;
         authenData: AuthenData;
-        appConfig : any;
+        appConfig: any;
         _isConnected = false;
         _isLogedin = false;
         socketComponent: SocketComponent;
@@ -70,7 +70,7 @@ module ChatServer {
                 pomelo = null;
             }
         }
-       
+
         public logout() {
             var registrationId = localStorage.getItem("registrationId");
             var msg: IDictionary = {};
@@ -145,10 +145,10 @@ module ChatServer {
                 console.log(err)
             });
         }
-        
+
         private connectServer(_host: string, _port: number, callback: (err) => void) {
             console.log("socket connecting to: ", _host, _port);
-            
+
             // var self = this;    
             pomelo.init({ host: _host, port: _port }, function cb(err) {
                 console.log("socket init result: " + err);
@@ -156,7 +156,7 @@ module ChatServer {
             });
         }
 
-        public connectToConnectorServer(callback:(err, res) => void) {
+        public connectToConnectorServer(callback: (err, res) => void) {
 
         }
 
@@ -237,7 +237,7 @@ module ChatServer {
                     if (callback != null) {
                         callback(null, res);
                     }
-                    
+
                     pomelo.on('disconnect', function data(reason) {
                         self._isConnected = false;
                         if (self.socketComponent !== null)
@@ -354,7 +354,7 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, (result) => {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
-                    callback(null, result);
+                callback(null, result);
             });
         }
 
@@ -366,7 +366,7 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, (result) => {
                 console.log("updateClosedNoticeUsers: ", JSON.stringify(result));
-                    callback(null, result);
+                callback(null, result);
             });
         }
 
@@ -378,10 +378,10 @@ module ChatServer {
             //<!-- Get user info.
             pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, (result) => {
                 console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
-                    callback(null, result);
+                callback(null, result);
             });
         }
-        
+
         public getMemberProfile(userId: string, callback: (err, res) => void) {
             var msg: IDictionary = {};
             msg["userId"] = userId;
@@ -695,7 +695,7 @@ module ChatServer {
     }
 
     export class ChatRoomApiProvider {
-        
+
         public chat(room_id: string, target: string, sender_id: string, content: string, contentType: string, callback: (err, res) => void) {
             var message: IDictionary = {};
             message["rid"] = room_id;
@@ -710,7 +710,7 @@ module ChatServer {
                     callback(null, data);
             });
         }
-        
+
         public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: string, meta: any, callback: (err, res) => void) {
             console.log("Send file to ", target);
 
@@ -766,7 +766,7 @@ module ChatServer {
                     callback(null, result);
             });
         }
-        
+
         /**
          * get older message histories.
          */
@@ -791,7 +791,7 @@ module ChatServer {
                     callback(null, result);
             });
         }
-        
+
         public getMessagesReaders(topEdgeMessageTime: string) {
             var message: IDictionary = {};
             message["topEdgeMessageTime"] = topEdgeMessageTime;
@@ -816,9 +816,9 @@ module ChatServer {
             message["roomId"] = roomId;
             pomelo.notify("chat.chatHandler.updateWhoReadMessage", message);
         }
-        
-        public updateMessageReaders(messageIds:string[], roomId:string) {
-            var message : IDictionary = {};
+
+        public updateMessageReaders(messageIds: string[], roomId: string) {
+            var message: IDictionary = {};
             message["messageIds"] = JSON.stringify(messageIds);
             message["roomId"] = roomId;
             pomelo.notify("chat.chatHandler.updateWhoReadMessages", message);
@@ -890,19 +890,19 @@ module ChatServer {
         }
 
         private callFrontendServer() {
-            let self = this; 
+            let self = this;
 
-            pomelo.on(ServerEventListener.ON_GET_ME, function(data) {
+            pomelo.on(ServerEventListener.ON_GET_ME, function (data) {
                 console.log(ServerEventListener.ON_GET_ME, JSON.stringify(data));
 
                 self.frontendListener.onGetMe(data);
             });
-            pomelo.on(ServerEventListener.ON_GET_COMPANY_INFO, function(data) {
+            pomelo.on(ServerEventListener.ON_GET_COMPANY_INFO, function (data) {
                 console.log(ServerEventListener.ON_GET_COMPANY_INFO, JSON.stringify(data));
 
                 self.frontendListener.onGetCompanyInfo(data);
             });
-                
+
             //wait message from the server.
             pomelo.on(ServerEventListener.ON_GET_ORGANIZE_GROUPS, function (data) {
                 console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS, JSON.stringify(data));

@@ -370,9 +370,10 @@ define(['jquery'], function (jq) {
       });
 
       socket.on('error', function (err) {
-          console.error("pomelo.init: error! " + JSON.stringify(err) + " : " + url);
+		  var msg = err + " : " + url;
+          console.error("pomelo.init: error! " + msg);
 
-          cb(err);
+          cb(msg);
       });
 
       socket.on('disconnect', function (reason) {

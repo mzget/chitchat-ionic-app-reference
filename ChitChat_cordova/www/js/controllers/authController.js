@@ -16,7 +16,7 @@
 
         $ionicTabsDelegate.showBar(false);
         $rootScope.currentPlatform = ionic.Platform.platform();
-        if(ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+        if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
             $rootScope.isMobile = true;
         }
 
@@ -26,7 +26,7 @@
             password: ""
         };
         $rootScope.teamInfo = {};
-        
+
         $ionicPlatform.ready(function () {
             console.log(vm.title + " : ionic ready.");
 
@@ -54,15 +54,15 @@
             activateNetworkService();
 
             setTimeout(function () {
-                if(ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
                     if (!!navigator.splashscreen) {
                         navigator.splashscreen.hide();
                     }
                 }
-                else{
+                else {
                     document.getElementById('splash').style.display = 'none';
                 }
-                
+
                 main.onMyProfileReadyListener = function (dataManager) {
                     $('#login').css('display', 'none');
                     $('.bar-stable').css({ 'display': '' });
@@ -127,20 +127,20 @@
                 }
             }
             else {
-                window.onpageshow = function onPageShow(pageTransition) {    
-//                    console.info('page hide');
+                window.onpageshow = function onPageShow(pageTransition) {
+                    //                    console.info('page hide');
                 }
                 window.onpagehide = function onPageHide(pageTrans) {
-//                    console.info('page hide');
+                    //                    console.info('page hide');
                 }
                 window.onfocus = function onFocus(focusEvent) {
-//                    console.info('page onfocus');
-                                    
+                    //                    console.info('page onfocus');
+
                     $rootScope.isPageFocus = true;
                 }
                 window.onblur = function onBlur(focusEvent) {
-//                    console.info('page blur');
-                    
+                    //                    console.info('page blur');
+
                     $rootScope.isPageFocus = false;
                 }
             }
@@ -158,14 +158,14 @@
 
                         var logCount = chatslogService.getChatsLogCount();
                         cordova.plugins.notification.badge.set(logCount);
-                        
+
                         $rootScope.$broadcast('onactivateBgMode');
                     };
 
                     // Get informed when the background mode has been deactivated
                     cordova.plugins.backgroundMode.ondeactivate = function () {
                         console.warn("backgroundMode.ondeactivate");
-                        
+
                         $rootScope.$broadcast('ondeactivateBgMode');
                     };
                 }
@@ -287,7 +287,7 @@
                         });
                     }
                 }
-                
+
                 $scope.signup = function () {
                     $state.go('signup');
                 }
@@ -357,35 +357,35 @@
                 $cordovaSpinnerDialog.hide();
 
                 $cordovaDialogs.confirm("May be you use this app in other devices \n You want to logout other devices", "Duplicated login!", ["OK", "Cancel"])
-                .then(function (buttonIndex) {
-                    console.log("clicked", buttonIndex);
-                    switch (buttonIndex) {
-                        case 1:
-                            server.kickMeAllSession(param.uid);
-                            location.href = "";
-                            break;
-                        case 2:
-                            localStorage.clear();
-                            location.href = '';
-                            break;
-                    }
-                });
+                    .then(function (buttonIndex) {
+                        console.log("clicked", buttonIndex);
+                        switch (buttonIndex) {
+                            case 1:
+                                server.kickMeAllSession(param.uid);
+                                location.href = "";
+                                break;
+                            case 2:
+                                localStorage.clear();
+                                location.href = '';
+                                break;
+                        }
+                    });
             }
             else {
                 $ionicLoading.hide();
-                
+
                 // Appending dialog to document.body to cover sidenav in docs app
                 var confirm = $mdDialog.confirm()
-                      .title('Duplicated login!')
-                      .textContent('May be you use this app in other devices \n You want to logout other devices')
-                      .ok('OK')
-                      .cancel('Cancel');
-                $mdDialog.show(confirm).then(function() {
-                        server.kickMeAllSession(param.uid);
-                        location.href = "";
-                }, function() {
-                        localStorage.clear();
-                        location.href = '';
+                    .title('Duplicated login!')
+                    .textContent('May be you use this app in other devices \n You want to logout other devices')
+                    .ok('OK')
+                    .cancel('Cancel');
+                $mdDialog.show(confirm).then(function () {
+                    server.kickMeAllSession(param.uid);
+                    location.href = "";
+                }, function () {
+                    localStorage.clear();
+                    location.href = '';
                 });
             }
         }
@@ -397,11 +397,11 @@
                     $cordovaSpinnerDialog.hide();
 
                     $cordovaDialogs.alert(errMessage, 'Authentication Fail!', 'OK')
-                    .then(function () {
-                        // callback success
-                        localStorage.clear();
-                        location.href = '';
-                    });
+                        .then(function () {
+                            // callback success
+                            localStorage.clear();
+                            location.href = '';
+                        });
                 } catch (ex) {
                     console.warn(ex);
                 }
@@ -426,43 +426,53 @@
             console.warn("onServerConnectionFail: " + errMessage);
 
             // Hide spinner dialog
-            if (ionic.Platform.platform() === "ios") {
+            if ($rootScope.isMobile) {
                 $cordovaSpinnerDialog.hide();
+
+                if ($cordovaNetwork.isOnline()) {
+                    $cordovaDialogs.confirm('Fail to connecting server! \n Please try again.',
+                        'Fail to connecting server!', ['OK', 'Try Again'])
+                        .then(function (buttonId) {
+                            // callback success
+                            if (buttonId === 1) {
+                                $('#login').css('display', 'none');
+                                $('.bar-stable').css({ 'display': '' });
+                                $('#splash').css({ 'display': 'none' });
+
+                                location.href = "#/tab/login/error";
+                            }
+                            else if (buttonId === 2) {
+                                location.href = '';
+                            }
+                        });
+                }
+                else {
+                    console.warn("Just go to no connection page. " + errMessage);
+
+                    $cordovaDialogs.alert('Fail to connecting server! \n Please come back again.',
+                        'No internet connection!', 'OK')
+                        .then(function () {
+                            // callback success
+                            $('#login').css('display', 'none');
+                            $('.bar-stable').css({ 'display': '' });
+                            $('#splash').css({ 'display': 'none' });
+
+                            location.href = "#/tab/login/error";
+                        });
+                }
             }
             else {
                 $ionicLoading.hide();
-            }
 
-            if ($cordovaNetwork.isOnline()) {
-                $cordovaDialogs.confirm('Fail to connecting server! \n Please try again.',
-                    'Fail to connecting server!', ['OK', 'Try Again'])
-                .then(function (buttonId) {
-                    // callback success
-                    if (buttonId === 1) {
-                        $('#login').css('display', 'none');
-                        $('.bar-stable').css({ 'display': '' });
-                        $('#splash').css({ 'display': 'none' });
-
-                        location.href = "#/tab/login/error";
-                    }
-                    else if (buttonId === 2) {
+                var alert = $mdDialog.alert()
+                    .title('Connection problem!')
+                    .textContent('Fail to connecting server! \n Please try again.')
+                    .ok('Close');
+                $mdDialog.show(alert)
+                    .finally(function () {
+                        alert = undefined;
                         location.href = '';
-                    }
-                });
-            }
-            else {
-                console.warn("Just go to no connection page. " + errMessage);
-
-                $cordovaDialogs.alert('Fail to connecting server! \n Please come back again.',
-                    'No internet connection!', 'OK')
-                .then(function () {
-                    // callback success
-                    $('#login').css('display', 'none');
-                    $('.bar-stable').css({ 'display': '' });
-                    $('#splash').css({ 'display': 'none' });
-
-                    location.href = "#/tab/login/error";
-                });
+                    });
             }
         }
 
