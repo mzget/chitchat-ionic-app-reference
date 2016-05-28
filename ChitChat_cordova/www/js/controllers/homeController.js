@@ -280,7 +280,7 @@
 
 		//<!-- Org group modal -->
 		$scope.openOrgModal = function (groupId) {
-			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+			if ($rootScope.isMobile) {
 				initOrgModal($state, $scope, groupId, roomSelected, function () {
 					$scope.orgModal.show();
 				}, $rootScope);
@@ -330,7 +330,6 @@
 				modalFactory.initContactWeb($rootScope, contactId);				
 			}
 		};
-
 		$scope.closeContactModal = function () {
 			$scope.contactModal.hide();
 		};

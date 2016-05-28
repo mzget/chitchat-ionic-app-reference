@@ -5,7 +5,8 @@
         .module('spartan.services')
         .factory('modalFactory', modalFactory);
 
-    function modalFactory($http, $state, $ionicLoading, webRTCFactory, localNotifyService, sharedObjectService) {
+    function modalFactory($http, $state, $ionicLoading, 
+    webRTCFactory, localNotifyService, sharedObjectService, chatsListHelperService) {
         var service = {
             initContactModal: initContactModal,
             initMyProfileModal: initMyProfileModal,
@@ -17,16 +18,8 @@
 
         function initContactWeb($rootScope, contactId) {
             console.info("Init Private Chat Room.");
-				
-            async.map(main.getDataManager().orgMembers, function iterator(item, result) {
-                if(document.getElementById(item._id) != null) {
-                    document.getElementById(item._id).style = "";						
-                }
-                result();
-            }, function done(err) {
-                document.getElementById(contactId).style.background = "#C5CAE9";
-            });
             
+            chatsListHelperService.highlightContactRoom(contactId);
             if (server._isConnected) {
                 $ionicLoading.show({
                     template: 'Waiting for validation your contact...'

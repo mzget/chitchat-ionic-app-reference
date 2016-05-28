@@ -1,10 +1,12 @@
+/// <reference path="../../../typings/index.d.ts" />
+
 angular.module('spartan.chat', [])
 
 	.controller('chatController',
 	function ($scope, $timeout, $stateParams, $rootScope, $state, $ionicScrollDelegate,
 		$ionicTabsDelegate, $ionicPopup, $ionicPopover, $ionicLoading, $ionicModal, $mdDialog,
 		$sce, $cordovaGeolocation, $cordovaDialogs, $cordovaInAppBrowser, chatRoomService, roomSelected,
-		Favorite, blockNotifications, localNotifyService, sharedObjectService, networkService) {
+		Favorite, blockNotifications, localNotifyService, sharedObjectService, chatsListHelperService, networkService) {
 		// Hide nav-tab # in chat detail
 		$('#chatMessage').animate({ 'bottom': '0' }, 350);
 		$ionicTabsDelegate.showBar(false);
@@ -848,6 +850,9 @@ angular.module('spartan.chat', [])
 
 			var newRoom = JSON.parse(JSON.stringify(args));
 			if (newRoom._id == roomSelected.getRoomOrLastRoom()._id) { return; }
+
+			//@ Highlight a new room selected.
+			chatsListHelperService.highlightGroup(newRoom._id);
 
 			$scope.chat = null;
 			$ionicLoading.show({

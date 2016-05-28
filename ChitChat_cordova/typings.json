@@ -3,6 +3,7 @@
     "debug": "registry:npm/debug#2.0.0+20160511151334"
   },
   "globalDependencies": {
-    "async": "registry:dt/async#1.4.2+20160501155344"
+    "async": "registry:dt/async#1.4.2+20160501155344",
+    "promise": "registry:dt/promise#7.1.1+20160316171810"
   }
 }
