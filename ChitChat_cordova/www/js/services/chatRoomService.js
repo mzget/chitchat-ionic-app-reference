@@ -18,8 +18,8 @@
             updateReadMessages: updateReadMessages,
             updateWhoReadMyMessages: updateWhoReadMyMessages,
             all: all,
-            remove:remove,
-            get:get ,
+            remove: remove,
+            get: get,
             set: set,
             getChatRoomComponent: getChatRoomComponent,
             leaveRoom: leaveRoom,
@@ -36,7 +36,7 @@
 
         function init() {
             console.info('chatRoomService.init()');
-            
+
             var curRoom = roomSelected.getRoom();
             var chatRoomApi = main.getChatRoomApi();
             chatRoomComponent = new ChatRoomComponent(main, curRoom._id, dbAccessService.getMessageDAL());
@@ -82,8 +82,8 @@
                             console.warn(ex);
                         }
                     }
-                    else{
-                        if(!$rootScope.isPageFocus) {
+                    else {
+                        if (!$rootScope.isPageFocus) {
                             sharedObjectService.getNotifyManager().notify(newMsg, appBackground, localNotifyService);
                         }
                     }
@@ -91,7 +91,7 @@
                     $rootScope.$broadcast('onNewMessage', { data: null });
                 }
                 else if (event === ChatServer.ServerEventListener.ON_MESSAGE_READ) {
-					service.set(chatRoomComponent.chatMessages);
+                    service.set(chatRoomComponent.chatMessages);
                 }
             }
             chatRoomComponent.notifyEvent = function (event, data) {
@@ -117,7 +117,7 @@
             chatRoomComponent.getPersistentMessage(curRoom._id, function (err, messages) {
                 console.log("getPersistendMessage of room %s: completed.", curRoom.name, chatRoomComponent.chatMessages.length);
 
-				set(chatRoomComponent.chatMessages);
+                set(chatRoomComponent.chatMessages);
 
                 $rootScope.$broadcast('onMessagesReady', { data: null });
 
@@ -128,8 +128,8 @@
 
         function getNewerMessageFromNet() {
             chatRoomComponent.getNewerMessageRecord(function done(err, result) {
-				set(chatRoomComponent.chatMessages);
-                
+                set(chatRoomComponent.chatMessages);
+
                 $rootScope.$broadcast('onJoinRoomReady', { data: null });
             });
         }
@@ -137,37 +137,37 @@
         function getOlderMessageChunk() {
             chatRoomComponent.getOlderMessageChunk(function done(err, res) {
                 console.info('olderMessages %s => %s', res.length, chatRoomComponent.chatMessages.length);
-                
+
                 set(chatRoomComponent.chatMessages);
                 $rootScope.$broadcast('onMessageChanged');
-                
-                
+
+
                 //@ check older message again.
                 checkOlderMessages();
             });
         }
-        
+
         function checkOlderMessages() {
             chatRoomComponent.checkOlderMessages(function done(err, res) {
-                if(!err) {
+                if (!err) {
                     if (res.data > 0) {
                         console.info('has olderMessage => ', res.data);
                         $rootScope.$broadcast('onOlderMessageReady', true);
-                        
+
                         return;
                     }
                 }
-                
+
                 setTimeout(function handler() {
-                    $rootScope.$broadcast('onOlderMessageReady', false); 
+                    $rootScope.$broadcast('onOlderMessageReady', false);
                 }, 1000);
             });
         }
-        
+
         function updateReadMessages() {
             chatRoomComponent.updateReadMessages();
         }
-        
+
         function updateWhoReadMyMessages() {
             chatRoomComponent.updateWhoReadMyMessages();
         }
@@ -195,13 +195,13 @@
             }
 
             for (var i = 0; i < chats.length; i++) {
-                    
-                if(chats[i].hasOwnProperty('createTime')){
+
+                if (chats[i].hasOwnProperty('createTime')) {
                     var dateTime = chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T'));
                     chats[i].time = ConvertDateTime.getTime(chats[i].createTime);
                 }
-                  
-                    
+
+
                 if (date.indexOf(dateTime) == -1 && chats[i].hasOwnProperty('createTime')) {
                     date.push(chats[i].createTime.substr(0, chats[i].createTime.lastIndexOf('T')));
 
@@ -209,13 +209,13 @@
                     var dateNow = new Date();
 
                     if (dateMsg.getFullYear() == dateNow.getFullYear() &&
-                     dateMsg.getMonth() == dateNow.getMonth() &&
-                     dateMsg.getDate() == dateNow.getDate()) {
+                        dateMsg.getMonth() == dateNow.getMonth() &&
+                        dateMsg.getDate() == dateNow.getDate()) {
                         chats[i].firstMsg = "Today";
                     }
                     else if (dateMsg.getFullYear() == dateNow.getFullYear() &&
-                     dateMsg.getMonth() == dateNow.getMonth() &&
-                     dateMsg.getDate() == dateNow.getDate() - 1) {
+                        dateMsg.getMonth() == dateNow.getMonth() &&
+                        dateMsg.getDate() == dateNow.getDate() - 1) {
                         chats[i].firstMsg = "Yesterday";
                     }
                     else {
@@ -245,9 +245,9 @@
                     chats[i].long = location.longitude;
                 }
 
-                else if(chats[i].type == ContentType[ContentType.File]){
+                else if (chats[i].type == ContentType[ContentType.File]) {
                     if (ionic.Platform.platform() !== "ios") {
-                        var meta = jQuery.parseJSON( chats[i].meta );
+                        var meta = jQuery.parseJSON(chats[i].meta);
                         chats[i].name = meta.name;
                         chats[i].url = $rootScope.webServer + chats[i].body;
                     }
@@ -260,17 +260,16 @@
 
         function leaveRoom() {
             var curRoom = roomSelected.getRoom();
-            chatRoomComponent.leaveRoom(curRoom._id, function callback(err, res) 
-            {
-            	chatRoomComponent.chatMessages = [];
-            	clear();
+            chatRoomComponent.leaveRoom(curRoom._id, function callback(err, res) {
+                chatRoomComponent.chatMessages = [];
+                clear();
 
-            	sharedObjectService.getDataListener().removeChatListenerImp(chatRoomComponent);
-            	sharedObjectService.regisNotifyNewMessageEvent();
+                sharedObjectService.getDataListener().removeChatListenerImp(chatRoomComponent);
+                sharedObjectService.regisNotifyNewMessageEvent();
             });
         }
 
-        function leaveRoomCB(cb){
+        function leaveRoomCB(cb) {
             var curRoom = roomSelected.getRoom();
             chatRoomComponent.leaveRoom(curRoom._id, function callback(err, res) {
                 roomSelected.setRoom(null);
@@ -319,7 +318,7 @@
 
                 callback(false);
                 return;
-            } 
+            }
             else {
                 callback(false);
                 return;

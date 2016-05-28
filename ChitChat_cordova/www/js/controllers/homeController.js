@@ -1,3 +1,5 @@
+/// <reference path="../../../typings/index.d.ts" />
+
 (function () {
 	'use strict';
 
@@ -5,10 +7,9 @@
 		.module('spartan.home', [])
 		.controller('homeController', homeController);
 
-	//homeController.$inject = ['$location'];
-
 	function homeController($location, $state, $scope, $rootScope, $timeout, $ionicModal, $ionicLoading, $cordovaSpinnerDialog,
-    $ionicTabsDelegate, roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, modalFactory, webRTCFactory) {
+		$ionicTabsDelegate, roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, 
+		modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
 		vm.title = 'homeController';
@@ -16,23 +17,25 @@
 
         $scope.openProfileModal = openProfileModal;
         $scope.closeProfileModal = closeProfileModal;
+        $scope.openContactModal = openContactModal;
+		$scope.contacts = null;
 
 		function activate() {
-		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+			if ($rootScope.isMobile) {
                 try {
-		          $cordovaSpinnerDialog.hide();
+					$cordovaSpinnerDialog.hide();
                 }
-                catch(ex) { console.warn(ex); }
-		    }
+                catch (ex) { console.warn(ex); }
+			}
             else {
-		        $ionicLoading.hide();
-                
-                if(!server._isConnected) {
+				$ionicLoading.hide();
+
+                if (!server._isConnected) {
                     location.href = '';
                 }
             }
 
-		    dbAccessService.setMessageDAL(messageDAL);
+			dbAccessService.setMessageDAL(messageDAL);
 			localNotifyService.registerPermission();
 			sharedObjectService.createNotifyManager(main);
 			chatslogService.init();
@@ -44,83 +47,82 @@
 		}
 
 		function setupScope() {
-		    $scope.myProfile = main.getDataManager().myProfile;
+			$scope.myProfile = main.getDataManager().myProfile;
 
-		    if (!!main.getDataManager().orgGroups) {
-		        $scope.orgGroups = main.getDataManager().orgGroups;
-		    }
-		    else {
-		        main.getDataManager().onOrgGroupDataReady = function () {
-		            $scope.orgGroups = main.getDataManager().orgGroups;
-		        };
-		    }
+			if (!!main.getDataManager().orgGroups) {
+				$scope.orgGroups = main.getDataManager().orgGroups;
+			}
+			else {
+				main.getDataManager().onOrgGroupDataReady = function () {
+					$scope.orgGroups = main.getDataManager().orgGroups;
+				};
+			}
 
-		    if (!!main.getDataManager().projectBaseGroups) {
-		        $scope.pjbGroups = main.getDataManager().projectBaseGroups;
-		    }
-		    else {
-		        main.getDataManager().onProjectBaseGroupsDataReady = function () {
-		            $scope.pjbGroups = main.getDataManager().projectBaseGroups;
-		        }
-		    }
+			if (!!main.getDataManager().projectBaseGroups) {
+				$scope.pjbGroups = main.getDataManager().projectBaseGroups;
+			}
+			else {
+				main.getDataManager().onProjectBaseGroupsDataReady = function () {
+					$scope.pjbGroups = main.getDataManager().projectBaseGroups;
+				}
+			}
 
-		    if (!!main.getDataManager().privateGroups) {
-		        $scope.pvGroups = main.getDataManager().privateGroups;
-		    }
-		    else {
-		        main.getDataManager().onPrivateGroupsDataReady = function () {
-		            $scope.pvGroups = main.getDataManager().privateGroups;
-		        }
-		    }
+			if (!!main.getDataManager().privateGroups) {
+				$scope.pvGroups = main.getDataManager().privateGroups;
+			}
+			else {
+				main.getDataManager().onPrivateGroupsDataReady = function () {
+					$scope.pvGroups = main.getDataManager().privateGroups;
+				}
+			}
 
-		    if (!!main.getDataManager().orgMembers) {
-		        $scope.chats = main.getDataManager().orgMembers;
-		    }
-		    else {
-		        main.getDataManager().onContactsDataReady = function () {
-		            $scope.chats = main.getDataManager().orgMembers;
-		        }
-		    }
+			if (!!main.getDataManager().orgMembers) {
+				$scope.contacts = main.getDataManager().orgMembers;
+			}
+			else {
+				main.getDataManager().onContactsDataReady = function () {
+					$scope.contacts = main.getDataManager().orgMembers;
+				}
+			}
 
-		    $scope.favorites = getFavorite();
-		    tryGetFavorite();
+			$scope.favorites = getFavorite();
+			tryGetFavorite();
 		}
-        
-		function getChatWeb(){
+
+		function getChatWeb() {
 			var chatheight = $(window).height() - 43;
-			$('ion-content').find('#webgroup').css({'height':chatheight+'px'});
-			$('ion-content').find('#webchatdetail').css({'height':chatheight-44+'px'});
-            
-			$rootScope.$broadcast('enterChat','');
+			$('ion-content').find('#webgroup').css({ 'height': chatheight + 'px' });
+			$('ion-content').find('#webchatdetail').css({ 'height': chatheight - 44 + 'px' });
+
+			$rootScope.$broadcast('enterChat', '');
 		}
 
 		function tryGetFavorite() {
             var interval = setInterval(function () {
-			        FavoriteReady();
-			    }, 500);
-            
-            function FavoriteReady() {
-                if(!!main.getDataManager().orgGroups && !!main.getDataManager().projectBaseGroups &&
-                    !!main.getDataManager().privateGroups && !!main.getDataManager().orgMembers)
-                    {
-                        clearInterval(interval);
-                        
-                        setTimeout(function () {
-                            $scope.favorites = getFavorite();
+				FavoriteReady();
+			}, 500);
 
-                            if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform !== 'android') {
-                            	getChatWeb();
-                            }
+            function FavoriteReady() {
+                if (!!main.getDataManager().orgGroups && !!main.getDataManager().projectBaseGroups &&
+                    !!main.getDataManager().privateGroups && !!main.getDataManager().orgMembers) {
+					clearInterval(interval);
+
+					setTimeout(function () {
+						$scope.favorites = getFavorite();
+
+						if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform !== 'android') {
+							getChatWeb();
+						}
                     }, 1000);
                 }
             }
 		}
 
-		$scope.pullRefresh = function() {
+		$scope.pullRefresh = function () {
 			$scope.$broadcast('scroll.refreshComplete');
 		}
 
-		function getFavorite(){
+		function getFavorite() {
 			var favoriteArray = Favorite.getAllFavorite();
 			var favorite = [];
 			for (var x = 0; x < favoriteArray.length; x++) {
@@ -140,15 +142,15 @@
 			return favorite;
 		}
 
-		$scope.editFavorite = function(editType,id,type){
+		$scope.editFavorite = function (editType, id, type) {
 			$ionicLoading.show({
-				  template: 'Loading..'
+				template: 'Loading..'
 			});
-			if(type==undefined){
-				server.updateFavoriteMember(editType,id,function (err, res) {
-					if (!err && res.code==200) {
+			if (type == undefined) {
+				server.updateFavoriteMember(editType, id, function (err, res) {
+					if (!err && res.code == 200) {
 						console.log(JSON.stringify(res));
-						Favorite.updateFavorite(editType,id,type);
+						Favorite.updateFavorite(editType, id, type);
 						$scope.favorites = getFavorite();
 						$ionicLoading.hide();
 					}
@@ -157,11 +159,11 @@
 						$ionicLoading.hide();
 					}
 				});
-			}else{
-				server.updateFavoriteGroups(editType,id,function (err, res) {
-					if (!err && res.code==200) {
+			} else {
+				server.updateFavoriteGroups(editType, id, function (err, res) {
+					if (!err && res.code == 200) {
 						console.log(JSON.stringify(res));
-						Favorite.updateFavorite(editType,id,type);
+						Favorite.updateFavorite(editType, id, type);
 						$scope.favorites = getFavorite();
 						$ionicLoading.hide();
 					}
@@ -172,92 +174,92 @@
 				});
 			}
 		}
-   
-		$scope.isFavorite = function(id){
+
+		$scope.isFavorite = function (id) {
 			return Favorite.isFavorite(id);
 		}
-        
-		if (ionic.Platform.platform() != 'ios' && ionic.Platform.platform() != 'android') {
-		    activate();
-		    setupScope();
+
+		if (!$rootScope.isMobile) {
+			activate();
+			setupScope();
 		}
 
-			//<!-- My profile.
-			$ionicModal.fromTemplateUrl('templates/modal-myprofile.html', {
-				scope: $scope,
-				animation: 'slide-in-up'
-			}).then(function (modal) {
-			    $scope.myProfileModal = modal;
-			});
-			//<!-- Org modal.
-			$ionicModal.fromTemplateUrl('templates/modal-orggroup.html', {
-				scope: $scope,
-				animation: 'slide-in-up'
-			}).then(function (modal) {
-				$scope.orgModal = modal;
-			});
-			//<!-- Projectbase modal.
-			$ionicModal.fromTemplateUrl('templates/modal-projectbasegroup.html', {
-				scope: $scope,
-				animation: 'slide-in-up'
-			}).then(function (modal) {
-				$scope.pjbModal = modal;
-			});
-			//<!-- Private group modal.
-			$ionicModal.fromTemplateUrl('templates/modal-privategroup.html', {
-				scope: $scope,
-				animation: 'slide-in-up'
-			}).then(function (modal) {
-				$scope.pvgModal = modal;
-			});
-			//<!-- Contact modal.
-			$ionicModal.fromTemplateUrl('templates/modal-contact.html', {
-				scope: $scope,
-				animation: 'slide-in-up'
-			}).then(function (modal) {
-				$scope.contactModal = modal;
-			});
+		//<!-- My profile.
+		$ionicModal.fromTemplateUrl('templates/modal-myprofile.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function (modal) {
+			$scope.myProfileModal = modal;
+		});
+		//<!-- Org modal.
+		$ionicModal.fromTemplateUrl('templates/modal-orggroup.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function (modal) {
+			$scope.orgModal = modal;
+		});
+		//<!-- Projectbase modal.
+		$ionicModal.fromTemplateUrl('templates/modal-projectbasegroup.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function (modal) {
+			$scope.pjbModal = modal;
+		});
+		//<!-- Private group modal.
+		$ionicModal.fromTemplateUrl('templates/modal-privategroup.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function (modal) {
+			$scope.pvgModal = modal;
+		});
+		//<!-- Contact modal.
+		$ionicModal.fromTemplateUrl('templates/modal-contact.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function (modal) {
+			$scope.contactModal = modal;
+		});
 
-			//Cleanup the modal when we're done with it!
-			$scope.$on('$destroy', function () {
-				$scope.myProfileModal.remove();
-				$scope.orgModal.remove();
-				$scope.pjbModal.remove();
-				$scope.pvgModal.remove();
-				$scope.contactModal.remove();
-			});
+		//Cleanup the modal when we're done with it!
+		$scope.$on('$destroy', function () {
+			$scope.myProfileModal.remove();
+			$scope.orgModal.remove();
+			$scope.pjbModal.remove();
+			$scope.pvgModal.remove();
+			$scope.contactModal.remove();
+		});
 
-			// Execute action on hide modal
-			$scope.$on('modal.hidden', function () {
-				// Execute action
-			});
-			// Execute action on remove modal
-			$scope.$on('modal.removed', function () {
-				// Execute action
-			});
+		// Execute action on hide modal
+		$scope.$on('modal.hidden', function () {
+			// Execute action
+		});
+		// Execute action on remove modal
+		$scope.$on('modal.removed', function () {
+			// Execute action
+		});
 
-			$scope.$on('editFavorite', function (event, args) {
-			    $scope.$apply(function () { $scope.favorites = getFavorite(); });
-			})
-	
-		$scope.viewlist = function(list) {
-			var listHeight = $('#list-'+list+' .list').height();		
-			if( parseInt(listHeight) != 0 ){
-				$('#nav-'+list+' .button i').attr('class','icon ion-chevron-down');
-				$('#list-'+list+' .list').animate({'height':'0'});
-			}else{
-				$('#nav-'+list+' .button i').attr('class','icon ion-chevron-up');
-				$('#list-'+list+' .list').css({'height':'auto'});
+		$scope.$on('editFavorite', function (event, args) {
+			$scope.$apply(function () { $scope.favorites = getFavorite(); });
+		})
+
+		$scope.viewlist = function (list) {
+			var listHeight = $('#list-' + list + ' .list').height();
+			if (parseInt(listHeight) != 0) {
+				$('#nav-' + list + ' .button i').attr('class', 'icon ion-chevron-down');
+				$('#list-' + list + ' .list').animate({ 'height': '0' });
+			} else {
+				$('#nav-' + list + ' .button i').attr('class', 'icon ion-chevron-up');
+				$('#list-' + list + ' .list').css({ 'height': 'auto' });
 			}
 		};
-	
+
 		//<!-- My profile modal. -->
 		function openProfileModal(groupId) {
-			if(ionic.Platform.platform() == "ios" || ionic.Platform.platform() == 'android') {
-	            modalFactory.initMyProfileModal($scope, function done(){
-				    $scope.myProfileModal.show();
+			if (ionic.Platform.platform() == "ios" || ionic.Platform.platform() == 'android') {
+				modalFactory.initMyProfileModal($scope, function done() {
+					$scope.myProfileModal.show();
 				});
-        	}
+			}
 		};
 		function closeProfileModal() {
 			$scope.myProfileModal.hide();
@@ -269,7 +271,7 @@
 				initOrgModal($state, $scope, groupId, roomSelected, function () {
 					$scope.orgModal.show();
 				}, $rootScope);
-			}else{
+			} else {
 				var group = main.getDataManager().orgGroups[groupId];
 				$rootScope.$broadcast('changeChat', group);
 			}
@@ -283,7 +285,7 @@
 				initPjbModal($state, $scope, groupId, roomSelected, function () {
 					$scope.pjbModal.show();
 				}, $rootScope);
-			}else{
+			} else {
 				var group = main.getDataManager().projectBaseGroups[groupId];
 				$rootScope.$broadcast('changeChat', group);
 			}
@@ -293,49 +295,58 @@
 		}
 		//<!-- Private group modal ////////////////////////////////////////////
 		$scope.openPvgModal = function (groupId) {
-		    if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
-		        initPvgModal($state, $scope, groupId, roomSelected, function () {
-		            $scope.pvgModal.show();
-		        }, $rootScope);
-		    } else {
-		        var group = main.getDataManager().privateGroups[groupId];
-		        $rootScope.$broadcast('changeChat', group);
-		    }
+			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+				initPvgModal($state, $scope, groupId, roomSelected, function () {
+					$scope.pvgModal.show();
+				}, $rootScope);
+			} else {
+				var group = main.getDataManager().privateGroups[groupId];
+				$rootScope.$broadcast('changeChat', group);
+			}
 		};
 		$scope.closePvgModal = function () {
 			$scope.pvgModal.hide();
 		}
 		//<!-- Contact modal -------------------------->
-		$scope.openContactModal = function (contactId) {
-			if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
-			    modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
-			        $scope.contactModal.show();
-			    });
-			}else{
-			    modalFactory.initContactWeb($rootScope, contactId);
-			}		
+		function openContactModal(contactId) {
+			if ($rootScope.isMobile) {
+				modalFactory.initContactModal($scope, $rootScope, contactId, roomSelected, function done() {
+					$scope.contactModal.show();
+				});
+			} else {
+				modalFactory.initContactWeb($rootScope, contactId);				
+				async.map($scope.contacts, function iterator(item, result) {
+					if(document.getElementById(item._id) != null) {
+						document.getElementById(item._id).style = "";						
+					}
+					result();
+				}, function done(err) {
+					document.getElementById(contactId).style.background = "#C5CAE9";
+				});
+			}
 		};
-		$scope.closeContactModal = function() {
-			$scope.contactModal.hide();	
+
+		$scope.closeContactModal = function () {
+			$scope.contactModal.hide();
 		};
         //@ Call all group modal.
 		$scope.openModal = function (id, type) {
-		    if (type == RoomType.organizationGroup) {
-		        $scope.openOrgModal(id);
-		    } else if (type == RoomType.projectBaseGroup) {
-		        $scope.openPjbModal(id);
-		    } else if (type == RoomType.privateGroup) {
-		        $scope.openPvgModal(id);
-		    } else {
-		        $scope.openContactModal(id);
-		    }
+			if (type == RoomType.organizationGroup) {
+				$scope.openOrgModal(id);
+			} else if (type == RoomType.projectBaseGroup) {
+				$scope.openPjbModal(id);
+			} else if (type == RoomType.privateGroup) {
+				$scope.openPvgModal(id);
+			} else {
+				$scope.openContactModal(id);
+			}
 		}
-        
-		$scope.$on('$ionicView.enter', function() { 
-		    console.log("$ionicView.enter: ", vm.title);
 
-		    activate();
-		    setupScope();
+		$scope.$on('$ionicView.enter', function () {
+			console.log("$ionicView.enter: ", vm.title);
+
+			activate();
+			setupScope();
         });
 		$scope.$on('$ionicView.beforeLeave', function () {
 			console.log("beforeLeave: homeController");
@@ -365,11 +376,11 @@
 		//<!-- Join chat room.
 		$scope.toggle = function (chatId) {
 			$scope.closeOrgModal();
-            if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-			    $scope.$broadcast('changeChat', group);
+            if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+				$scope.$broadcast('changeChat', group);
             }
             else {
-			    $state.go(NGStateUtil.tab_group_chat);
+				$state.go(NGStateUtil.tab_group_chat);
             }
 		};
 
@@ -396,11 +407,11 @@
 		$scope.toggle = function (chatId) {
 			$scope.closePjbModal();
 
-			if(ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-			    $scope.$broadcast('changeChat', group);
+			if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
+				$scope.$broadcast('changeChat', group);
 			}
             else {
-			    $state.go(NGStateUtil.tab_group_chat);
+				$state.go(NGStateUtil.tab_group_chat);
             }
 		};
 
@@ -428,10 +439,10 @@
 			$scope.closePvgModal();
 
 			if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform() !== 'android') {
-			    $scope.$broadcast('changeChat', group);
+				$scope.$broadcast('changeChat', group);
 			}
 			else {
-			    $state.go(NGStateUtil.tab_group_chat);
+				$state.go(NGStateUtil.tab_group_chat);
 			}
 		};
 

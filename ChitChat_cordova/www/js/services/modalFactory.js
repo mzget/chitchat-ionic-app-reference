@@ -5,7 +5,7 @@
         .module('spartan.services')
         .factory('modalFactory', modalFactory);
 
-    function modalFactory($http, $state, webRTCFactory, localNotifyService, sharedObjectService) {
+    function modalFactory($http, $state, $ionicLoading, webRTCFactory, localNotifyService, sharedObjectService) {
         var service = {
             initContactModal: initContactModal,
             initMyProfileModal: initMyProfileModal,
@@ -17,6 +17,10 @@
 
         function initContactWeb($rootScope, contactId) {
             if (server._isConnected) {
+                $ionicLoading.show({
+                    template: 'Waiting for validation your contact...'
+                });
+                
                 server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
                     if (res.code === HttpStatusCode.success) {
                         var room = JSON.parse(JSON.stringify(res.data));
@@ -25,6 +29,8 @@
                     else {
                         console.warn(err, res);
                     }
+                    
+                    $ionicLoading.hide();
                 });
             }
             else {
