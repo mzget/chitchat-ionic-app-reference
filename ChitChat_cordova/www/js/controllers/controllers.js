@@ -10,7 +10,7 @@ angular.module('spartan.controllers')
 
         }
     })
-    
+
     .controller('optionsController', function ($scope, $state, $ionicModal, $timeout, CreateGroup, $localStorage, $rootScope, $ionicPopover, dbAccessService) {
         $scope.settings = {
             logOut: true,
@@ -617,7 +617,7 @@ function EditGroupController($scope, $rootScope, $mdDialog, $ionicLoading, mdToa
         });
     });
 }
-function ProfileController($scope, $rootScope, mdToast) {
+function ProfileController($scope, $rootScope, $ionicLoading, mdToast) {
     $scope.myProfile = main.getDataManager().myProfile;
     $scope.webServer = $rootScope.webServer;
     $scope.model = {
@@ -632,6 +632,10 @@ function ProfileController($scope, $rootScope, mdToast) {
 
     $scope.save = function () {
         saveImg();
+
+        $ionicLoading.show({
+            template: 'Updating please wait...'
+        }).then(function () { });
     }
 
     $scope.imageSource = function () {
@@ -654,16 +658,19 @@ function ProfileController($scope, $rootScope, mdToast) {
         if (main.getDataManager().myProfile.displayname != $scope.model.displayname
             || main.getDataManager().myProfile.status != $scope.model.status
             || main.getDataManager().myProfile.tel != $scope.model.tel) {
-            server.UpdateUserProfile(main.getDataManager().myProfile._id, $scope.model, function (err, res) {
+            server.UpdateUserProfile(main.getDataManager().myProfile._id, $scope.model, function (err, res)
+            {
                 main.getDataManager().myProfile.displayname = $scope.model.displayname;
                 main.getDataManager().myProfile.status = $scope.model.status;
                 main.getDataManager().myProfile.tel = $scope.model.tel;
                 $scope.$apply();
 
                 mdToast.showToast('success', 'Change Complete');
+                $ionicLoading.hide();
             });
         } else {
             mdToast.showToast('success', 'Change Complete');
+            $ionicLoading.hide();
         }
     }
 
