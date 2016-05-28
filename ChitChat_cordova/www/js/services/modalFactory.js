@@ -16,6 +16,17 @@
         return service;
 
         function initContactWeb($rootScope, contactId) {
+            console.info("Init Private Chat Room.");
+				
+            async.map(main.getDataManager().orgMembers, function iterator(item, result) {
+                if(document.getElementById(item._id) != null) {
+                    document.getElementById(item._id).style = "";						
+                }
+                result();
+            }, function done(err) {
+                document.getElementById(contactId).style.background = "#C5CAE9";
+            });
+            
             if (server._isConnected) {
                 $ionicLoading.show({
                     template: 'Waiting for validation your contact...'

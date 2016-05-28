@@ -315,14 +315,6 @@
 				});
 			} else {
 				modalFactory.initContactWeb($rootScope, contactId);				
-				async.map($scope.contacts, function iterator(item, result) {
-					if(document.getElementById(item._id) != null) {
-						document.getElementById(item._id).style = "";						
-					}
-					result();
-				}, function done(err) {
-					document.getElementById(contactId).style.background = "#C5CAE9";
-				});
 			}
 		};
 
