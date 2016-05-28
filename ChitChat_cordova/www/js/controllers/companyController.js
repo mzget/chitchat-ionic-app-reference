@@ -14,7 +14,6 @@
         $scope.teamInfo = {};
         $scope.myProfile = {};
         $scope.logOut = logOut;
-        $scope.showMyProfile = showMyProfile;
         $scope.openProfileModal = openProfileModal;
         $scope.createGroup = createGroup;
         $scope.adminPanel = adminPanel;
@@ -59,21 +58,6 @@
             localStorage.clear();
             //$state.go('tab.login');
             location.href = '';
-        }
-
-        function showMyProfile(ev) {
-            $mdDialog.show({
-              controller: ProfileController,
-              templateUrl: 'templates_web/modal-myprofile.html',
-              parent: angular.element(document.body),
-              targetEvent: ev,
-              clickOutsideToClose:true,
-              onRemoving: closeDialogProfile
-            });
-        };
-
-        function closeDialogProfile() {
-            document.getElementById("UploadAvatar").reset();
         }
 
         function createGroup(ev,type) {

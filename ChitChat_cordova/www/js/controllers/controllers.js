@@ -622,7 +622,8 @@ function ProfileController($scope, $rootScope, mdToast) {
     $scope.webServer = $rootScope.webServer;
     $scope.model = {
         displayname: $scope.myProfile.displayname,
-        status: $scope.myProfile.status
+        status: $scope.myProfile.status,
+        tel: $scope.myProfile.tel
     };
 
     $scope.image = function () {
@@ -650,11 +651,15 @@ function ProfileController($scope, $rootScope, mdToast) {
     }
 
     function saveInfo() {
-        if (main.getDataManager().myProfile.displayname != $scope.model.displayname || main.getDataManager().myProfile.status != $scope.model.status) {
+        if (main.getDataManager().myProfile.displayname != $scope.model.displayname
+            || main.getDataManager().myProfile.status != $scope.model.status
+            || main.getDataManager().myProfile.tel != $scope.model.tel) {
             server.UpdateUserProfile(main.getDataManager().myProfile._id, $scope.model, function (err, res) {
                 main.getDataManager().myProfile.displayname = $scope.model.displayname;
                 main.getDataManager().myProfile.status = $scope.model.status;
+                main.getDataManager().myProfile.tel = $scope.model.tel;
                 $scope.$apply();
+
                 mdToast.showToast('success', 'Change Complete');
             });
         } else {
@@ -670,6 +675,8 @@ function ProfileController($scope, $rootScope, mdToast) {
             saveInfo();
         });
     });
+
+    console.log(main.getDataManager().myProfile)
 }
 
 function isAdminInProjectBase(room, memberId) {

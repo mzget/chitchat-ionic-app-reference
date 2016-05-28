@@ -234,6 +234,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
     //<!------------------------------------------------------
 
     public onUserLogin(dataEvent) {
+        console.log("user logedIn", JSON.stringify(dataEvent));
         let jsonObject = JSON.parse(JSON.stringify(dataEvent));
         let _id: string = jsonObject._id;
         let self = this;

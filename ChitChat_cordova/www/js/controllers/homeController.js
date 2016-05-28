@@ -8,7 +8,7 @@
 		.controller('homeController', homeController);
 
 	function homeController($location, $state, $scope, $rootScope, $timeout, $ionicModal, $ionicLoading, $cordovaSpinnerDialog,
-		$ionicTabsDelegate, roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, 
+		$ionicTabsDelegate, $mdDialog, roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, 
 		modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
@@ -254,16 +254,29 @@
 		};
 
 		//<!-- My profile modal. -->
-		function openProfileModal(groupId) {
-			if (ionic.Platform.platform() == "ios" || ionic.Platform.platform() == 'android') {
+		function openProfileModal(ev) {
+			if ($rootScope.isMobile) {
 				modalFactory.initMyProfileModal($scope, function done() {
 					$scope.myProfileModal.show();
 				});
 			}
+            else {
+                $mdDialog.show({
+                  controller: ProfileController,
+                  templateUrl: 'templates_web/modal-myprofile.html',
+                  parent: angular.element(document.body),
+                  targetEvent: ev,
+                  clickOutsideToClose:true,
+                  onRemoving: closeDialogProfile
+                });
+            }
 		};
 		function closeProfileModal() {
 			$scope.myProfileModal.hide();
 		};
+		function closeDialogProfile() {
+		    document.getElementById("UploadAvatar").reset();
+		}
 
 		//<!-- Org group modal -->
 		$scope.openOrgModal = function (groupId) {

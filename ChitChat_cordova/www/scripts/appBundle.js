@@ -978,6 +978,7 @@ var DataManager = (function () {
     };
     //<!------------------------------------------------------
     DataManager.prototype.onUserLogin = function (dataEvent) {
+        console.log("user logedIn", JSON.stringify(dataEvent));
         var jsonObject = JSON.parse(JSON.stringify(dataEvent));
         var _id = jsonObject._id;
         var self = this;

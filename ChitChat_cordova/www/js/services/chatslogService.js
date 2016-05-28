@@ -293,7 +293,7 @@
 
         function onUnreadMessageMapChanged(unread) {
             var roomInfo = dataManager.getGroup(unread.rid);
-            console.debug('UnreadMessageMapChanged %s \n room is %s', JSON.stringify(unread), roomInfo.name);
+            console.debug('UnreadMessageMapChanged %s \n room is %s', JSON.stringify(unread), roomInfo);
             organizeChatLogMap(unread, roomInfo, function () { });
         }
 
