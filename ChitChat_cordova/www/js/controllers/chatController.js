@@ -567,7 +567,7 @@ angular.module('spartan.chat', [])
 			$scope.modalWebview.hide();
 		};
 		function openReaderModal() {
-			if ($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
+			if ($rootScope.isMobile) {
 				$scope.readerViewModal.show();
 			}
 			else {

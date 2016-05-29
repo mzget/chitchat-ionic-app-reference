@@ -8,17 +8,19 @@
             </md-button>
         </div>
     </md-toolbar>
-	<md-dialog-content>			
-		<md-list>
-			<md-list-item class="md-2-line md-long-text" ng-repeat="user in readers">
-				 <img ng-if="user.image != null" ng-src="{{webServer}}/timthumb.php?src={{user.image}}&h=60&w=60" class="md-avatar"/>
-                 <img ng-if="user.image == null" ng-src="img/img.jpg" class="md-avatar"/>
-                 <div class="md-list-item-text">
-                    <h3>{{user.displayname}}</h3>
-                    <p>{{user.status}}</p>
-                 </div>
-                <md-divider></md-divider>
-			</md-list-item>
-		</md-list>
-	</md-dialog-content>
+    <md-dialog-content>
+        <div class="md-dialog-content" style="min-width:480px;">
+            <md-list>
+                <md-list-item class="md-2-line md-long-text" ng-repeat="user in readers">
+                    <img ng-if="user.image != null" ng-src="{{webServer}}/timthumb.php?src={{user.image}}&h=60&w=60" class="md-avatar" />
+                    <img ng-if="user.image == null" ng-src="img/img.jpg" class="md-avatar" />
+                    <div class="md-list-item-text">
+                        <h3>{{user.displayname}}</h3>
+                        <p>{{user.status}}</p>
+                    </div>
+                    <md-divider></md-divider>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-dialog-content>
 </md-dialog>
