@@ -18,8 +18,9 @@
 
         function initContactWeb($rootScope, contactId) {
             console.info("Init Private Chat Room.");
-            
+            //@ Highlight contact chats list.
             chatsListHelperService.highlightContactRoom(contactId);
+            
             if (server._isConnected) {
                 $ionicLoading.show({
                     template: 'Waiting for validation your contact...'
@@ -28,6 +29,8 @@
                 server.getPrivateChatRoomId(dataManager.myProfile._id, contactId, function result(err, res) {
                     if (res.code === HttpStatusCode.success) {
                         var room = JSON.parse(JSON.stringify(res.data));
+                        main.getDataManager().addGroup(room);
+                        
                         $rootScope.$broadcast('changeChat', room);
                     }
                     else {

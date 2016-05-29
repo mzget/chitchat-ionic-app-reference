@@ -2445,7 +2445,7 @@ var ChatServer;
         ServerEventListener.prototype.callFrontendServer = function () {
             var self = this;
             pomelo.on(ServerEventListener.ON_GET_ME, function (data) {
-                console.log(ServerEventListener.ON_GET_ME, JSON.stringify(data));
+                console.log(ServerEventListener.ON_GET_ME);
                 self.frontendListener.onGetMe(data);
             });
             pomelo.on(ServerEventListener.ON_GET_COMPANY_INFO, function (data) {
@@ -2454,19 +2454,19 @@ var ChatServer;
             });
             //wait message from the server.
             pomelo.on(ServerEventListener.ON_GET_ORGANIZE_GROUPS, function (data) {
-                console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS, JSON.stringify(data));
+                console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS);
                 self.frontendListener.onGetOrganizeGroupsComplete(data);
             });
             pomelo.on(ServerEventListener.ON_GET_COMPANY_MEMBERS, function (data) {
-                console.log(ServerEventListener.ON_GET_COMPANY_MEMBERS, JSON.stringify(data));
+                console.log(ServerEventListener.ON_GET_COMPANY_MEMBERS);
                 self.frontendListener.onGetCompanyMemberComplete(data);
             });
             pomelo.on(ServerEventListener.ON_GET_PRIVATE_GROUPS, function (data) {
-                console.log(ServerEventListener.ON_GET_PRIVATE_GROUPS, JSON.stringify(data));
+                console.log(ServerEventListener.ON_GET_PRIVATE_GROUPS);
                 self.frontendListener.onGetPrivateGroupsComplete(data);
             });
             pomelo.on(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS, function (data) {
-                console.log(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS, JSON.stringify(data));
+                console.log(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS);
                 self.frontendListener.onGetProjectBaseGroupsComplete(data);
             });
         };

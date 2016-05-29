@@ -616,7 +616,7 @@ angular.module('spartan.services', [])
         lastJoinRoom = room;
         room = newRoom;
        
-        console.log("setRoom", JSON.stringify(room));
+        console.log("RoomService.setRoom");
     };
 
     function getRoomOrLastRoom() {

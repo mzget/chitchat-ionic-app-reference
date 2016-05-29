@@ -156,7 +156,7 @@ angular.module('spartan.chat', [])
 		}
 		function setRoom() {
 			self.currentRoom = roomSelected.getRoomOrLastRoom();
-			console.info("setup new room: ", self.currentRoom);
+			console.info("setup room: $currentRoom is ", self.currentRoom);
 
 			if (!$rootScope.isMobile) {
 				if (self.currentRoom == null || self.currentRoom === undefined) {

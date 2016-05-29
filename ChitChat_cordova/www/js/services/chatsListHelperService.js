@@ -73,18 +73,24 @@
             }
             var unHighlightContactRoom = function () {
                 return new Promise(function resolver(resolve, reject) {
-                    if (group.type === RoomType.privateChat) {
-                        resolve();
-                    }
-                    else {
-                        async.map(main.getDataManager().orgMembers, function iterator(item, result) {
-                            if (document.getElementById(item._id) != null) {
-                                document.getElementById(item._id).style = "";
-                            }
-                            result();
-                        }, function done(err) {
+                    try {
+                        if (group.type === RoomType.privateChat) {
                             resolve();
-                        });
+                        }
+                        else {
+                            async.map(main.getDataManager().orgMembers, function iterator(item, result) {
+                                if (document.getElementById(item._id) != null) {
+                                    document.getElementById(item._id).style = "";
+                                }
+                                result();
+                            }, function done(err) {
+                                resolve();
+                            });
+                        }
+                    }
+                    catch(err){
+                        console.warn("There is no have a group info in room store." + err);
+                        resolve();
                     }
                 });
             }

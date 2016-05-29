@@ -17,8 +17,6 @@
             organizeChatLogMap: organizeChatLogMap
         };
 
-        return service;
-
         var chatsLogComponent = null;
         var listenerImp;
         var dataListener = null;
@@ -27,6 +25,8 @@
         var unreadMessageMap = {};
         var chatslog = {};
         var isInit = false;
+        
+        return service;
 
         function init() {
             if (!isInit) {
@@ -292,8 +292,14 @@
         }
 
         function onUnreadMessageMapChanged(unread) {
+            console.log('UnreadMessageMapChanged: ', JSON.stringify(unread));
             var roomInfo = dataManager.getGroup(unread.rid);
-            console.debug('UnreadMessageMapChanged %s \n room is %s', JSON.stringify(unread), roomInfo);
+            if(!roomInfo) {
+                console.warn("No have roomInfo in room store.", roomInfo);
+            }
+            else {
+                console.log("Prepare update chats log of room: ", roomInfo.name);
+            }
             organizeChatLogMap(unread, roomInfo, function () { });
         }
 
