@@ -14,6 +14,10 @@
         vm.title = 'chatslogController';
         $ionicTabsDelegate.showBar(true);
 
+            
+        $scope.roomAccess = [];
+        $scope.gotoChat = gotoChat;
+
         var dataManager = main.getDataManager();
 
         activate();
@@ -21,8 +25,6 @@
         function activate() { 
             console.warn(vm.title, "activate");
             
-            $scope.roomAccess = [];
-
             displayLogs();
         }
 
@@ -30,10 +32,10 @@
             $scope.roomAccess = chatslogService.getChatsLog();
         }
         
-        $scope.gotoChat = function (roomId, chatlog) 
+        function gotoChat(roomId, chatlog)
         {	
             var group = dataManager.getGroup(roomId);
-            if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+            if ($rootScope.isMobile) {
                 roomSelected.setRoom(group);
                 $state.go(NGStateUtil.tab_chats_chat, {});
             }

@@ -833,6 +833,7 @@ angular.module('spartan.chat', [])
 		$scope.$on('delectTemp', function (event, args) {
 			deleteTemp(args);
 		});
+
 		$scope.$on('enterChat', function (event, args) {
 			console.log("App view (menu) entered.");
 
@@ -853,6 +854,7 @@ angular.module('spartan.chat', [])
 
 			//@ Highlight a new room selected.
 			chatsListHelperService.highlightGroup(newRoom._id);
+			chatsListHelperService.highlightChatslog(newRoom._id);
 
 			$scope.chat = null;
 			$ionicLoading.show({
@@ -867,6 +869,7 @@ angular.module('spartan.chat', [])
 
 			$('#webchatdetail').find('.message-list').empty();
 		});
+
 		$scope.$on('$ionicView.enter', function () {
 			console.debug('$ionicView.enter', self.title);
 

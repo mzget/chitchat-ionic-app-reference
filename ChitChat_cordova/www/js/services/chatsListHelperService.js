@@ -7,14 +7,30 @@
         .module('spartan.services')
         .factory('chatsListHelperService', chatsListHelperService);
 
-    function chatsListHelperService($http, $state, $ionicLoading, webRTCFactory, localNotifyService, sharedObjectService) {
+    function chatsListHelperService($http, $state, $ionicLoading, chatslogService) {
         var service = {
             highlightContactRoom: highlightContactRoom,
-            highlightGroup: highlightGroup
+            highlightGroup: highlightGroup,
+            highlightChatslog: highlightChatslog
         };
 
-
         return service;
+
+        function highlightChatslog(roomId) {
+            var roomAccess = chatslogService.getChatsLog();
+            var docID = "log:" + roomId;   
+            async.map(roomAccess, function iterator(item, result) {
+                var _doc = "log:" + item.id;
+                if (document.getElementById(_doc) != null) {
+                    document.getElementById(_doc).style = "";
+                }
+                result();
+            }, function done(err) {
+                if (document.getElementById(docID) != null) {
+                    document.getElementById(docID).style.background = "#C5CAE9";
+                }
+            });
+        }
 
         function highlightContactRoom(contactId) {
             return new Promise(function (resolve, reject) {

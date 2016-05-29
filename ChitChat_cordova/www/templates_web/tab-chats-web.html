@@ -1,7 +1,9 @@
 <md-content>
     <md-list>
         <md-list-item ng-repeat="access in roomAccess | orderByDate:'timeMsg':true | filter:search track by $index" 
-                        ng-click="gotoChat(access.id, access.count)" type="item-text-wrap">
+                        ng-click="gotoChat(access.id, access.count)" 
+                      type="item-text-wrap"
+                      id="log:{{access.id}}">
             <img ng-if="access.room.image != null" class="md-avatar" 
                     ng-src="{{webServer}}/timthumb.php?src={{access.room.image}}&h=40&w=40"/>
             <img ng-if="access.room.image == null" class="md-avatar" 
