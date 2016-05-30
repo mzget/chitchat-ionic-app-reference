@@ -9,6 +9,13 @@
         $scope.warnMessage = '';
         $scope.reload = reload;
         var viewInfo = true;
+
+        activate();
+
+        function activate() {
+            setViewInfo();
+        }
+
         $scope.isFavorite = function (id) {
             return Favorite.isFavorite(id);
         }
@@ -36,8 +43,11 @@
             $scope.warnMessage = 'Server connection problems. App still working offline.';
         });
 
-        window.onresize = function (event) {
-            resizeUI();
+        window.onresize = function (event) { 
+            setViewInfo();
+            setTimeout(function () {
+                resizeUI();
+            }, 100);
         };
 
         $scope.toggleInfo = function () {
@@ -47,15 +57,22 @@
                 resizeUI();
             }, 100);
 
+            setViewInfo();
+        }
+
+        function setViewInfo() {
             if (viewInfo == true) {
-                document.getElementById('chatLayout').style.width = "60%";
+                document.getElementById('chatLayout').style.width = "65%";
+                document.getElementById('infoLayout').style.width = "35%";
             }
             else {
                 document.getElementById('chatLayout').style.width = "100%";
+                document.getElementById('infoLayout').style.width = "0%";
             }
         }
 
         function resizeUI() {
+            console.info('resizeUI', viewInfo);
             document.getElementById('chatMessage').style.left = jQuery('#leftLayout').offset().left + jQuery('#leftLayout').width() + "px";
             document.getElementById('chatMessage').style.width = jQuery('#webchatdetail').width() + "px";
             document.getElementById('chatLayout').style.height = window.innerHeight - 110 + "px";
