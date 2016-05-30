@@ -1,28 +1,3 @@
-<md-content>
-    <md-list>
-        <md-list-item ng-repeat="access in roomAccess | orderByDate:'timeMsg':true | filter:search track by $index" 
-                        ng-click="gotoChat(access.id, access.count)" 
-                      type="item-text-wrap"
-                      id="log:{{access.id}}">
-            <img ng-if="access.room.image != null" class="md-avatar" 
-                    ng-src="{{webServer}}/timthumb.php?src={{access.room.image}}&h=40&w=40"/>
-            <img ng-if="access.room.image == null" class="md-avatar" 
-                    ng-src="img/img.jpg" height="40" width="40" />
-            <div layout="column">
-                <h5 style="color:black; text-overflow:ellipsis; word-break:break-word;">{{access.roomName}}</h5>
-                <h6 style="color:darkgray; text-overflow:ellipsis; word-break:break-word;">{{ access.lastMessage }}</h6>
-            </div>
-            <span flex />
-            <div layout="column" style="text-align:right;">
-                <h6 style="color:darkgrey;"> {{access.time}} </h6>
-                <i style="display:inline; margin-top:8px;" class="icon" ng-if="access.count > 0 ">
-                        <small style="height:20px; line-height:20px; padding:0 5px; border-radius:10px;
-                        font-weight:bold; font-size:14px; color:#fff; background-color:#f00;"><i class="fa fa-clock-o"></i>{{access.count}}</small>
-                </i>
-            </div>
-            <md-divider></md-divider>
-        </md-list-item>
-    </md-list>
 
     <!--<div class="bar bar-header item-input-inset">
                 <label class="item-input-wrapper">
@@ -30,23 +5,25 @@
                     <input type="search" placeholder="Search" ng-model="search.roomName">
                 </label>
             </div>-->
-    <!--<ion-list>
-            <ion-item class="item-remove-animate item-avatar item-icon-right"
-                      ng-repeat="access in roomAccess | orderByDate:'timeMsg':true | filter:search track by $index" type="item-text-wrap"
-                      ng-click="gotoChat(access.id, access.count)">
-                <img ng-if="access.room.image != null" ng-src="{{webServer}}/timthumb.php?src={{access.room.image}}&h=40&w=40" />
-                <img ng-if="access.room.image == null" src="img/img.jpg" height="40" width="40" />
-                <div>
-                    <h2 style="display:inline;">{{access.roomName}}</h2>
+    <ion-list>
+        <ion-item class="item-avatar" id="log:{{access.id}}" 
+        ng-repeat="access in roomAccess | orderByDate:'timeMsg':true | filter:search track by $index"
+            type="item-text-wrap" ng-click="gotoChat(access.id, access.count)">
+            <img ng-if="access.room.image != null" ng-src="{{webServer}}/timthumb.php?src={{access.room.image}}&h=40&w=40" />
+            <img ng-if="access.room.image == null" ng-src="img/img.jpg" height="40" width="40" />
+            <div layout="row">
+                <div layout="column">
+                    <p class="md-body-2" style="color:black;">{{access.roomName}}</p>
+                    <p class="md-body-1" style="white-space: initial;">{{ access.lastMessage }}</p>
+                </div>
+                <span flex />
+                <div layout="column" style="text-align:right;">
+                    <p class="item-note"> {{access.time}} </p>
                     <i style="display:inline; margin-top:8px;" class="icon" ng-if="access.count > 0 ">
                         <small style="height:20px; line-height:20px; padding:0 5px; border-radius:10px;
                         font-weight:bold; font-size:14px; color:#fff; background-color:#f00;"><i class="fa fa-clock-o"></i>{{access.count}}</small>
                     </i>
                 </div>
-                <div style="margin-top:5px;">
-                    <p >{{ access.lastMessage }}</p>
-                    <span style="display:inline; float:right; margin-right:-40px;" class="item-note"> {{access.time}} </span>
-                </div>
-            </ion-item>
-        </ion-list>-->
-</md-content>
+            </div>
+        </ion-item>
+    </ion-list>

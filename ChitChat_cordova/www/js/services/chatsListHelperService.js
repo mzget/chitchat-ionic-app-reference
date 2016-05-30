@@ -22,7 +22,7 @@
             async.map(roomAccess, function iterator(item, result) {
                 var _doc = "log:" + item.id;
                 if (document.getElementById(_doc) != null) {
-                    document.getElementById(_doc).style = "";
+                    document.getElementById(_doc).style.background = "#FFFFFF";
                 }
                 result();
             }, function done(err) {
@@ -36,7 +36,7 @@
             return new Promise(function (resolve, reject) {
                 async.map(main.getDataManager().orgMembers, function iterator(item, result) {
                     if (document.getElementById(item._id) != null) {
-                        document.getElementById(item._id).style = "";
+                        document.getElementById(item._id).style.background = "#FFFFFF";
                     }
                     result();
                 }, function done(err) {
@@ -55,7 +55,7 @@
                 return new Promise(function resolver(resolve, reject) {
                     async.map(main.getDataManager().orgGroups, function iterator(item, result) {
                         if (document.getElementById(item._id) != null) {
-                            document.getElementById(item._id).style = "";
+                            document.getElementById(item._id).style.background = "#FFFFFF";
                         }
                         result();
                     }, function done(err) {
@@ -67,7 +67,7 @@
                 return new Promise(function resolver(resolve, reject) {
                     async.map(main.getDataManager().projectBaseGroups, function iterator(item, result) {
                         if (document.getElementById(item._id) != null) {
-                            document.getElementById(item._id).style = "";
+                            document.getElementById(item._id).style.background = "#FFFFFF";
                         }
                         result();
                     }, function done(err) {
@@ -79,7 +79,7 @@
                 return new Promise(function resolver(resolve, reject) {
                     async.map(main.getDataManager().privateGroups, function iterator(item, result) {
                         if (document.getElementById(item._id) != null) {
-                            document.getElementById(item._id).style = "";
+                            document.getElementById(item._id).style.background = "#FFFFFF";
                         }
                         result();
                     }, function done(err) {
@@ -96,7 +96,7 @@
                         else {
                             async.map(main.getDataManager().orgMembers, function iterator(item, result) {
                                 if (document.getElementById(item._id) != null) {
-                                    document.getElementById(item._id).style = "";
+                                    document.getElementById(item._id).background = "#FFFFFF";
                                 }
                                 result();
                             }, function done(err) {
