@@ -524,9 +524,14 @@ angular.module('spartan.chat', [])
 			}
 		};
 		function sendSticker(sticker) {
+			$ionicLoading.show({
+				template: 'Sending...'
+			}).then(function () {
+				console.log("The loading indicator is now displayed");
+			});
 			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
 
-			if ($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
+			if ($rootScope.isMobile) {
 				$scope.modalSticker.hide();
 				$scope.chatMenuModal.hide();
 			}
@@ -644,6 +649,11 @@ angular.module('spartan.chat', [])
 			}
 		};
 		function sendLocation(locationObj) {
+			$ionicLoading.show({
+				template: 'Sending...'
+			}).then(function () {
+				console.log("The loading indicator is now displayed");
+			});
 			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
 		}
 		function image() {
@@ -714,11 +724,21 @@ angular.module('spartan.chat', [])
 							console.error(err);
 						}
 						else {
+							$ionicLoading.show({
+								template: 'Sending...'
+							}).then(function () {
+								console.log("The loading indicator is now displayed");
+							});
 							chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
 						}
 					});
 				}
 				else {
+					$ionicLoading.show({
+						template: 'Sending...'
+					}).then(function () {
+						console.log("The loading indicator is now displayed");
+					});
 					chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, content, ContentType[ContentType.Text], sendMessageResponse);
 				}
 			}
@@ -729,6 +749,9 @@ angular.module('spartan.chat', [])
 		}
 
 		function sendMessageResponse(err, res) {
+			$ionicLoading.hide().then(function () {
+				console.log("The loading indicator is now hidden");
+			});
 			if (!!err) {
 				console.warn("send message fail.", err);
 			}
@@ -740,11 +763,20 @@ angular.module('spartan.chat', [])
 
 		//@ Broadcast from mediaController.
 		$scope.$on('sendFile', function (event, args) {
+			$ionicLoading.show({
+				template: 'Sending...'
+			}).then(function () {
+				console.log("The loading indicator is now displayed");
+			});
+
 			var mediaName = args.mediaName;
 			var url = args.url;
 			var type = args.type;
 			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, url, type, function (err, res) {
 				hideAllModal();
+				$ionicLoading.hide().then(function () {
+					console.log("The loading indicator is now hidden");
+				});
 
 				if (err || res === null) {
 					console.warn("send message fail.");
@@ -767,13 +799,14 @@ angular.module('spartan.chat', [])
 
 		$scope.$on('menuChat.hidden', function () {
 			modalcount--;
-			if (ionic.Platform.platform == "ios" || ionic.Platform.platform == "android") {
+			if ($rootScope.isMobile) {
 				$scope.chatMenuModal.hide();
+				$scope.modalAudio.hide();
 			}
 			else {
 				$scope.isOpenChatMenu = false;
 			}
-			$scope.modalAudio.hide();
+			
 			$('#chatMessage').animate({ 'bottom': '0' }, 350);
 			$('#chatDetail').animate({ 'top': '0' }, 350);
 
@@ -812,15 +845,35 @@ angular.module('spartan.chat', [])
 		// Send Image and remove temp Image
 		$scope.$on('fileUrl', function (event, args) {
 			if (args[2] == ContentType[ContentType.Image]) {
+				$ionicLoading.show({
+					template: 'Sending...'
+				}).then(function () {
+					console.log("The loading indicator is now displayed");
+				});
 				chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], sendMessageResponse);
 			} else if (args[2] == ContentType[ContentType.Voice]) {
+				$ionicLoading.show({
+					template: 'Sending...'
+				}).then(function () {
+					console.log("The loading indicator is now displayed");
+				});
 				chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], sendMessageResponse);
 			} else if (args[2] == ContentType[ContentType.Video]) {
+				$ionicLoading.show({
+					template: 'Sending...'
+				}).then(function () {
+					console.log("The loading indicator is now displayed");
+				});
 				chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
 			}
-			if (ionic.Platform.platform() !== "ios") {
+			
+			if (!$rootScope.isMobile) {
 				if (args[2] == ContentType[ContentType.File]) {
-					console.log(args);
+					// $ionicLoading.show({
+					// 	template: 'Sending...'
+					// }).then(function () {
+					// 	console.log("The loading indicator is now displayed");
+					// });
 					chatRoomApi.chatFile(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.File], 'bobobobo');
 				}
 			}
