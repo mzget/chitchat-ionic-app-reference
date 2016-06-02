@@ -281,6 +281,9 @@ module ChatServer {
                     console.log("kickMe", JSON.stringify(result));
                 });
             }
+            else{
+                console.error("Cannot kick session.");
+            }
         }
 
         //<@--- ServerAPIProvider.

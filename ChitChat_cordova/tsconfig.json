@@ -3,7 +3,6 @@
   "compilerOptions": {
     "outFile": "www/scripts/appBundle.js",
     "target": "es5",
-    "allowJs": false,
     "rootDir": "scripts"
   },
   "exclude": [

@@ -934,14 +934,17 @@ angular.module('spartan.chat', [])
 			setupMenuItem();
 			setupModals();
 		});
+		
 		$scope.$on('$ionicView.beforeLeave', function () { //This just one when leaving, which happens when I logout
 			console.debug('$ionicView.beforeLeave', self.title);
 
 			chatRoomService.leaveRoom();
 		});
+		
 		$scope.$on('$ionicView.leave', function () {
 			console.debug("$ionicView.leave:", self.title);
 		});
+		
 		$scope.$on('$ionicView.loaded', function () {
 			console.debug("$ionicView.loaded: ", self.title);
 		});
