@@ -54,6 +54,7 @@ angular.module('spartan.chat', [])
 		$scope.showLoadMessage = false;
 		$scope.isOpenChatMenu = false;
 		$scope.isOpenAudioRecordMenu = false;
+		$scope.inactive = true;
 		$scope.closeVoiceRecorder = closeVoiceRecorder;
 		$scope.chat = [];
 
@@ -155,6 +156,7 @@ angular.module('spartan.chat', [])
 			$scope.myprofile = myprofile;
 		}
 		function setRoom() {
+            blockUI(true);
 			self.currentRoom = roomSelected.getRoomOrLastRoom();
 			console.info("setup room: $currentRoom is ", self.currentRoom);
 
@@ -752,12 +754,9 @@ angular.module('spartan.chat', [])
 			$ionicLoading.hide().then(function () {
 				console.log("The loading indicator is now hidden");
 			});
-			if (!!err) {
-				console.warn("send message fail.", err);
-			}
-			else if (res.code !== HttpStatusCode.success) {
-				console.warn("send message fail:", JSON.stringify(res));
-				blockUI(true);
+
+			if (!!err || res.code !== HttpStatusCode.success) {
+				console.error("send message fail.", err, res);
 			}
 		}
 

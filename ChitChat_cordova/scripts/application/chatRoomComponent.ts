@@ -187,6 +187,7 @@
                         lastMessageTime = item.accessTime;
                         cb(true);
                     }
+                    else cb(false);
                 }, (result) => {
                     console.log(result);
 
