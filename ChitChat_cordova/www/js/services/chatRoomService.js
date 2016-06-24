@@ -5,8 +5,6 @@
         .module('spartan.services')
         .factory('chatRoomService', chatRoomService);
 
-    //    chatRoomService.$inject = ['$http'];
-
     function chatRoomService($http, $rootScope, $sce, $cordovaFile, roomSelected, ConvertDateTime, sharedObjectService, localNotifyService, dbAccessService) {
         var service = {
             init: init,
@@ -56,7 +54,7 @@
                     // - Chatroom is not run in background.
                     if (!main.getDataManager().isMySelf(newMsg.sender)) {
                         //@ Check app not run in background.
-                        if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                        if ($rootScope.isMobile) {
                             try {
                                 var appBackground = cordova.plugins.backgroundMode.isActive();
                                 if (appBackground == false) {
@@ -73,7 +71,7 @@
                     }
 
                     //@ When app state is join room but not active.
-                    if (ionic.Platform.platform() == 'ios' || ionic.Platform.platform() == 'android') {
+                    if ($rootScope.isMobile) {
                         try {
                             var appBackground = cordova.plugins.backgroundMode.isActive();
                             if (appBackground == true) {
