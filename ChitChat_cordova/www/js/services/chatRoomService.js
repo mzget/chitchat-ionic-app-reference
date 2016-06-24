@@ -23,7 +23,9 @@
             set: set,
             getChatRoomComponent: getChatRoomComponent,
             leaveRoom: leaveRoom,
-            leaveRoomCB: leaveRoomCB
+            leaveRoomCB: leaveRoomCB,
+            sendMessage: sendMessage,
+            sendFile: sendFile
         };
 
         var chats = [];
@@ -323,6 +325,15 @@
                 callback(false);
                 return;
             }
+        }
+
+        function sendMessage(room_id, target, user_id, body, contentType, callback) {
+            var chatRoomApi = main.getChatRoomApi();
+			chatRoomApi.chat(room_id, target, user_id, body, contentType, callback);
+        }
+        function sendFile(room_id, target, user_id, fileUrl, contentType, meta, callback) {
+            var chatRoomApi = main.getChatRoomApi();
+            chatRoomApi.chatFile(room_id, target, user_id, fileUrl, contentType, meta);
         }
     }
 })();

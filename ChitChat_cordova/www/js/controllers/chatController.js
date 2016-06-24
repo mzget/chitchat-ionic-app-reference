@@ -16,7 +16,6 @@ angular.module('spartan.chat', [])
 
 		var myprofile = main.getDataManager().myProfile;
 		var allMembers = main.getDataManager().orgMembers;
-		var chatRoomApi = main.getChatRoomApi();
 		var hasOlderMessage = false;
 
 		$scope.allMembers = allMembers;
@@ -151,7 +150,6 @@ angular.module('spartan.chat', [])
 		function setScopeData() {
 			myprofile = main.getDataManager().myProfile;
 			allMembers = main.getDataManager().orgMembers;
-			chatRoomApi = main.getChatRoomApi();
 			$scope.allMembers = allMembers;
 			$scope.myprofile = myprofile;
 		}
@@ -526,12 +524,11 @@ angular.module('spartan.chat', [])
 			}
 		};
 		function sendSticker(sticker) {
-			$ionicLoading.show({
-				template: 'Sending...'
-			}).then(function () {
-				console.log("The loading indicator is now displayed");
-			});
-			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
+		    $ionicLoading.show({
+		        template: 'Sending...'
+		    });
+
+			chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
 
 			if ($rootScope.isMobile) {
 				$scope.modalSticker.hide();
@@ -653,10 +650,9 @@ angular.module('spartan.chat', [])
 		function sendLocation(locationObj) {
 			$ionicLoading.show({
 				template: 'Sending...'
-			}).then(function () {
-				console.log("The loading indicator is now displayed");
 			});
-			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
+
+			chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, JSON.stringify(locationObj), ContentType[ContentType.Location], sendMessageResponse);
 		}
 		function image() {
 			if ($rootScope.currentPlatform == "ios" || $rootScope.currentPlatform == "android") {
@@ -706,6 +702,7 @@ angular.module('spartan.chat', [])
 		$("#modal-webview-iframe").on('load', function () {
 			alert($(this).contentDocument.title);
 		});
+
 		$("#send_message").on("keyup", function (event) {
 			//@ detect return button.
 			if (event.keyCode == 13) {
@@ -731,7 +728,7 @@ angular.module('spartan.chat', [])
 							}).then(function () {
 								console.log("The loading indicator is now displayed");
 							});
-							chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
+							chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, result, ContentType[ContentType.Text], sendMessageResponse);
 						}
 					});
 				}
@@ -741,7 +738,7 @@ angular.module('spartan.chat', [])
 					}).then(function () {
 						console.log("The loading indicator is now displayed");
 					});
-					chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, content, ContentType[ContentType.Text], sendMessageResponse);
+					chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, content, ContentType[ContentType.Text], sendMessageResponse);
 				}
 			}
 			else {
@@ -751,10 +748,9 @@ angular.module('spartan.chat', [])
 		}
 
 		function sendMessageResponse(err, res) {
-			$ionicLoading.hide().then(function () {
-				console.log("The loading indicator is now hidden");
-			});
-
+			$ionicLoading.hide();
+			console.log("sendMessageResponse:", JSON.stringify(res));
+            
 			if (!!err || res.code !== HttpStatusCode.success) {
 				console.error("send message fail.", err, res);
 			}
@@ -771,7 +767,7 @@ angular.module('spartan.chat', [])
 			var mediaName = args.mediaName;
 			var url = args.url;
 			var type = args.type;
-			chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, url, type, function (err, res) {
+			chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, url, type, function (err, res) {
 				hideAllModal();
 				$ionicLoading.hide().then(function () {
 					console.log("The loading indicator is now hidden");
@@ -849,21 +845,21 @@ angular.module('spartan.chat', [])
 				}).then(function () {
 					console.log("The loading indicator is now displayed");
 				});
-				chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], sendMessageResponse);
+				chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Image], sendMessageResponse);
 			} else if (args[2] == ContentType[ContentType.Voice]) {
 				$ionicLoading.show({
 					template: 'Sending...'
 				}).then(function () {
 					console.log("The loading indicator is now displayed");
 				});
-				chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], sendMessageResponse);
+				chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Voice], sendMessageResponse);
 			} else if (args[2] == ContentType[ContentType.Video]) {
 				$ionicLoading.show({
 					template: 'Sending...'
 				}).then(function () {
 					console.log("The loading indicator is now displayed");
 				});
-				chatRoomApi.chat(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
+				chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
 			}
 			
 			if (!$rootScope.isMobile) {
@@ -873,7 +869,7 @@ angular.module('spartan.chat', [])
 					// }).then(function () {
 					// 	console.log("The loading indicator is now displayed");
 					// });
-					chatRoomApi.chatFile(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.File], 'bobobobo');
+					chatRoomService.sendFile(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.File], 'bobobobo');
 				}
 			}
 			$.each($scope.chat, function (index, value) {

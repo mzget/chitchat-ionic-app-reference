@@ -63,7 +63,6 @@ var ChatRoomComponent = (function () {
     ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
         var _this = this;
         var self = this;
-        console.log('chatRoomComponent.onChat', JSON.stringify(chatMessageImp));
         if (this.roomId === chatMessageImp.rid) {
             var secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
@@ -1459,6 +1458,16 @@ var MessageDAL = (function () {
     };
     return MessageDAL;
 }());
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+}());
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
+}());
 var CompanyInfo = (function () {
     function CompanyInfo() {
     }
@@ -1503,16 +1512,6 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
-var MessageMeta = (function () {
-    function MessageMeta() {
-    }
-    return MessageMeta;
-}());
-var Message = (function () {
-    function Message() {
-    }
-    return Message;
-}());
 var MinLocation = (function () {
     function MinLocation() {
     }

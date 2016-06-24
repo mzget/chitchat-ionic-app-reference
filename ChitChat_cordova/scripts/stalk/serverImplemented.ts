@@ -700,7 +700,7 @@ module ChatServer {
     export class ChatRoomApiProvider {
 
         public chat(room_id: string, target: string, sender_id: string, content: string, contentType: string, callback: (err, res) => void) {
-            var message: IDictionary = {};
+            let message: IDictionary = {};
             message["rid"] = room_id;
             message["content"] = content;
             message["sender"] = sender_id;
@@ -717,7 +717,7 @@ module ChatServer {
         public chatFile(room_id: string, target: string, sender_id: string, fileUrl: string, contentType: string, meta: any, callback: (err, res) => void) {
             console.log("Send file to ", target);
 
-            var message: IDictionary = {};
+            let message: IDictionary = {};
             message["rid"] = room_id;
             message["content"] = fileUrl;
             message["sender"] = sender_id;

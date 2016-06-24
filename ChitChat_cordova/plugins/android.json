@@ -1,0 +1,72 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "chitchat-plugin-cameraroll": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-camera": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-media": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-media-capture": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "cordova-plugin-x-toast": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "de.appplant.cordova.common.registerusernotificationsettings": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "de.appplant.cordova.plugin.background-mode": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "de.appplant.cordova.plugin.badge": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "hu.dpal.phonegap.plugins.SpinnerDialog": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "org.pbernasconi.progressindicator": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        },
+        "phonegap-plugin-push": {
+            "PACKAGE_NAME": "com.rfl.stalk"
+        }
+    },
+    "dependent_plugins": {}
+}

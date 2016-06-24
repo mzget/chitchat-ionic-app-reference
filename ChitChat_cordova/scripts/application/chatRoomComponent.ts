@@ -22,9 +22,7 @@
 
     onChat(chatMessageImp: Message) {
         let self = this;
-
-        console.log('chatRoomComponent.onChat', JSON.stringify(chatMessageImp));
-
+        
         if (this.roomId === chatMessageImp.rid) {
             let secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {

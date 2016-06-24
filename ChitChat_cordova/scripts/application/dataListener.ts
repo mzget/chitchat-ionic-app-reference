@@ -141,7 +141,7 @@
     //<!-- chat room data listener.
 
     onChat(data) {
-        var chatMessageImp: Message = JSON.parse(JSON.stringify(data));
+        let chatMessageImp: Message = JSON.parse(JSON.stringify(data));
 
         if (!!this.notifyNewMessageEvents && this.notifyNewMessageEvents.length !== 0) {
             this.notifyNewMessageEvents.map((v, id, arr) => {
