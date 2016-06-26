@@ -1,42 +1,37 @@
-<md-content id="webchatdetail" style="width:100%; height:100%; overflow-x:hidden;" ng-cloak>    
-		<div ng-controller="FileController">
-			<div ng-controller="ImageController">
-				<div ng-controller="VoiceController">
-					<div ng-controller="VideoController">
-						<div ng-show="showLoadMessage">
-							<md-button class="md-raised md-primary md-hue-3" 
-                                       ng-click="loadOlderMessage()">Show more message!</md-button>
-							<md-divider md-inset></md-divider> 
-						</div>  
-						
-						<div ng-show="isLoadingMessage">
-							<md-subheader class="md-primary">Loading messages</md-subheader>
-							<md-progress-linear md-mode="indeterminate" class="md-hue-3"></md-progress-linear>
-						</div>
+<md-content id="webchatdetail" style="width:100%; height:100%; overflow-x:hidden;" ng-cloak>
+    <div ng-controller="FileController">
+        <div ng-controller="ImageController">
+            <div ng-controller="VoiceController">
+                <div ng-controller="VideoController">
+                    <div ng-show="showLoadMessage">
+                        <md-button class="md-raised md-primary md-hue-3" ng-click="loadOlderMessage()">Show more message!</md-button>
+                        <md-divider md-inset></md-divider>
+                    </div>
 
-                        <!-- Message List. -->
-                        <md-list>
-                            <md-list-item class="message-list md-long-text" 
-                                          style="height:auto; width:100%;" 
-                                          ng-repeat="message in chat track by $index">
-                                <!-- Date.. -->
-                                <!--<div ng-show="message.firstMsg" style="text-align:center; height:22px;">
-                                    <div class="md-body-2" style="color:blue;"> {{message.firstMsg}} </div>
-                                    <md-divider></md-divider>
-                                </div>-->
+                    <div ng-show="isLoadingMessage">
+                        <md-subheader class="md-primary">Loading messages</md-subheader>
+                        <md-progress-linear md-mode="indeterminate" class="md-hue-3"></md-progress-linear>
+                    </div>
 
-                                <div style="width:100%;">
-                                    <!-- @Incomings message. -->
-                                    <div ng-show="message.sender != myprofile._id && !!message.sender"
-                                         class="other item-avatar"
-                                         style="white-space:normal !important; margin:5px;">
-                                        <img ng-if="allMembers[message.sender]['image'] != null" ng-src="{{webServer}}/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40" class="md-avatar" />
+                    <!-- Message List. -->
+                    <md-list>
+                        <md-list-item class="message-list md-long-text" style="height:auto; width:100%; margin-right:5px;" ng-repeat="message in chat track by $index">
+                            <div style="width:100%;">
+                                <!-- @Incomings message. -->
+                                <div layout="column" ng-show="message.sender != myprofile._id && !!message.sender">
+                                    <!-- Date.. -->
+                                    <div ng-show="message.firstMsg" style="text-align:center;">
+                                        <p class="md-body-2" style="color:blue;"> {{message.firstMsg}} </p>
+                                    </div>
+                                    <!--    Message body    -->
+                                    <div class="other" style="white-space:normal !important;">
+                                        <img ng-if="allMembers[message.sender]['image'] != null" ng-src="{{webServer}}/timthumb.php?src={{allMembers[message.sender]['image']}}&h=40&w=40"
+                                            class="md-avatar" />
                                         <img ng-if="allMembers[message.sender]['image'] == null" ng-src="img/img.jpg" height="40" width="40" class="md-avatar" />
                                         <span class="md-body-2">{{allMembers[message.sender]['displayname']}}</span>
                                         <br />
                                         <!-- Text type label. -->
-                                        <div id="{{message._id}}" ng-if="message.type=='Text'"
-                                             style="background-color:gainsboro; border-radius:5px;">
+                                        <div id="{{message._id}}" ng-if="message.type=='Text'" style="background-color:gainsboro; border-radius:5px;">
                                             <p ng-if="!isValidURI(message.body)">
                                                 {{message.body}}
                                             </p>
@@ -46,33 +41,28 @@
                                                     {{message.body}}
                                                 </u>
                                             </a>
-                                        </div>                                        
+                                        </div>
                                         <!-- File type label. -->
                                         <span id="{{message._id}}" ng-if="message.type=='File'">
-                                            <a href="{{message.url}}" target="_blank">{{message.name}}</a>
-                                        </span>
+                                                <a href="{{message.url}}" target="_blank">{{message.name}}</a>
+                                            </span>
                                         <!-- Image type label. -->
-                                        <img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'"
-                                             ng-src="{{webServer}}/timthumb.php?src={{message.body}}&h=192&w=192"
-                                             ng-click="viewImageWeb($event, message.type, message.body)" />
-
+                                        <img id="{{message._id}}" class="type-img" ng-if="message.type=='Image'" ng-src="{{webServer}}/timthumb.php?src={{message.body}}&h=192&w=192"
+                                            ng-click="viewImageWeb($event, message.type, message.body)" />
                                         <!-- Sticker type label. -->
                                         <img class="type-sticker" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
-
                                         <!-- Voice type label. -->
                                         <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice'">
                                             <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id,message.body)"></i>
                                             <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
                                         </div>
-
                                         <!-- Video type label. -->
                                         <div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideoWeb($event,message.type,message.body)"
-                                             style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+                                            style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
                                             <div style="margin-left:10px;">
                                                 <i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
                                             </div>
                                         </div>
-
                                         <div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
                                             <div>
                                                 <div class="item item-text-wrap">
@@ -82,171 +72,167 @@
                                                 </div>s
                                             </div>
                                         </div>
-
                                         <div id="{{message._id}}-downloaded" class="hide">
-                                            <div id="{{message._id}}-download-contain" class="download-contain"><div id="{{message._id}}-download-progress" class="download-bar"></div></div>
+                                            <div id="{{message._id}}-download-contain" class="download-contain">
+                                                <div id="{{message._id}}-download-progress" class="download-bar"></div>
+                                            </div>
                                         </div>
+                                        <!--<br />-->
+                                        <!--<label>{{message.createTime}}</label>-->
                                         <br />
-                                        <label>{{message.createTime}}</label>        
-                                        <br />               
                                         <label>{{message.time}}</label>
                                         <br />
                                     </div>
+                                </div>
 
-                                    <!-- @Outcomings message. -->
-                                    <div layout="column" ng-show="message.sender == myprofile._id">                         
-                                        <div class="owner" style="text-align:right; margin:5px; width:100%;" layout="row" flex>
-                                            <div flex="0.8"></div>
-                                            <div layout="row" style="text-align:right;">
-                                                <!-- Readers -->
-                                                <label style="cursor:pointer; margin:auto; padding:10px; text-align:center;"
-                                                       ng-show="message.readers != null && message.readers.length != 0"
-                                                       ng-click="viewReader(message.readers)">
+                                <!-- @Outcomings message. -->
+                                <div layout="column" ng-show="message.sender == myprofile._id">
+                                    <!-- Date.. -->
+                                    <div ng-show="message.firstMsg" style="text-align:center;">
+                                        <p class="md-body-2" style="color:blue;"> {{message.firstMsg}} </p>
+                                    </div>
+                                    <!--    Message Body    -->
+                                    <div class="owner" style="text-align:right; margin:5px; width:100%;" layout="row" flex>
+                                        <div flex="0.8"></div>
+                                        <div layout="row" style="text-align:right;">
+                                            <!-- Readers -->
+                                            <label style="cursor:pointer; margin:auto; padding:10px; text-align:center;" ng-show="message.readers != null && message.readers.length != 0"
+                                                ng-click="viewReader(message.readers)">
                                                     read {{message.readers.length}}
                                                 </label>
-                                                <!-- Resend -->
-                                                <div id="{{message._id}}-resend" class="hide" style="font-size:10px;"
-                                                     ng-click="resend(message.body,message._id)">
-                                                    Resend
-                                                </div>
+                                            <!-- Resend -->
+                                            <div id="{{message._id}}-resend" class="hide" style="font-size:10px;" ng-click="resend(message.body,message._id)">
+                                                Resend
+                                            </div>
 
-                                                <!-- Load-progress. -->
-                                                <div id="{{message._id}}-downloaded" class="hide">
-                                                    <i class="ion-ios-close" style="margin-right:5px; float:left;"
-                                                       ng-click="sentCancel(message._id)">
+                                            <!-- Load-progress. -->
+                                            <div id="{{message._id}}-downloaded" class="hide">
+                                                <i class="ion-ios-close" style="margin-right:5px; float:left;" ng-click="sentCancel(message._id)">
                                                     </i>
-                                                    <div id="{{message._id}}-download-contain" class="download-contain">
-                                                        <div id="{{message._id}}-download-progress" class="download-bar"></div>
-                                                    </div>
+                                                <div id="{{message._id}}-download-contain" class="download-contain">
+                                                    <div id="{{message._id}}-download-progress" class="download-bar"></div>
                                                 </div>
+                                            </div>
 
-                                                <!-- Text type. -->
-                                                <div ng-if="message.type=='Text'" id="{{message._id}}"
-                                                     style="background-color:lightblue; padding:5px; border-radius:10px;">
-                                                    <p ng-if="!isValidURI(message.body)">
-                                                        {{message.body}}
-                                                    </p>
-                                                    <a ng-if="isValidURI(message.body)">
-                                                        <u ng-click="webview(message.body)">
-                                                            {{message.body}}
-                                                        </u>
-                                                    </a>
-                                                </div>
-
-                                                <!-- File type. -->
-                                                <div id="{{message._id}}" ng-if="message.type=='File' && message.temp=='true'" ng-init="uploadFile(message._id)">
+                                            <!-- Text type. -->
+                                            <div ng-if="message.type=='Text'" id="{{message._id}}" style="background-color:lightblue; padding:5px; border-radius:10px;">
+                                                <p ng-if="!isValidURI(message.body)">
                                                     {{message.body}}
-                                                </div>
-                                                <div id="{{message._id}}" ng-if="message.type=='File'">
-                                                    <a href="{{message.url}}" target="_blank">{{message.name}}</a>
-                                                </div>
+                                                </p>
+                                                <a ng-if="isValidURI(message.body)">
+                                                    <u ng-click="webview(message.body)">
+                                                        {{message.body}}
+                                                    </u>
+                                                </a>
+                                            </div>
 
-                                                <!-- Image Type. -->
-                                                <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'"
-                                                     ng-init="uploadImage(message._id)" ng-src="{{message.body}}"
-                                                     ng-click="viewImageWeb($event,message.type, message.body)" />
-                                                <img class="type-img" ng-if="message.type=='Image' && message.temp==null"
-                                                     ng-src="{{webServer}}{{message.body}}"
-                                                     ng-click="viewImageWeb($event,message.type, message.body)" />
+                                            <!-- File type. -->
+                                            <div id="{{message._id}}" ng-if="message.type=='File' && message.temp=='true'" ng-init="uploadFile(message._id)">
+                                                {{message.body}}
+                                            </div>
+                                            <div id="{{message._id}}" ng-if="message.type=='File'">
+                                                <a href="{{message.url}}" target="_blank">{{message.name}}</a>
+                                            </div>
 
-                                                <!-- Sticker Type. -->
-                                                <img class="type-sticker" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
+                                            <!-- Image Type. -->
+                                            <img class="type-img" ng-if="message.type=='Image' && message.temp=='true'" ng-init="uploadImage(message._id)" ng-src="{{message.body}}"
+                                                ng-click="viewImageWeb($event,message.type, message.body)" />
+                                            <img class="type-img" ng-if="message.type=='Image' && message.temp==null" ng-src="{{webServer}}{{message.body}}" ng-click="viewImageWeb($event,message.type, message.body)"
+                                            />
 
-                                                <!-- Voice Type.-->
-                                                <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
-                                                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
-                                                    <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
+                                            <!-- Sticker Type. -->
+                                            <img class="type-sticker" ng-if="message.type=='Sticker'" ng-src="stickers/sticker{{message.body}}.png" />
+
+                                            <!-- Voice Type.-->
+                                            <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp=='true'" ng-init="uploadVoice(message._id)">
+                                                <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
+                                                <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
+                                            </div>
+                                            <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp==null">
+                                                <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
+                                                <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
+                                            </div>
+                                            <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo(message._id)">
+                                                <video id="{{message._id}}" src="{{message.body}}" controls="controls" preload="metadata"></video>
+                                            </div>
+                                            <div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideoWeb($event,message.type,message.body)"
+                                                style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
+                                                <div style="margin-left:10px;">
+                                                    <i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
                                                 </div>
-                                                <div id="{{message._id}}" class="type-voice" ng-if="message.type=='Voice' && message.temp==null">
-                                                    <i id="{{message._id}}-voice-play" class="ion-play" ng-click="play(message._id, message.body)"></i>
-                                                    <i id="{{message._id}}-voice-pause" class="ion-pause" ng-click="pause(message._id)" style="display:none;"></i>
-                                                </div>
-                                                <div class="type-video" ng-if="message.type=='Video' && message.temp=='true'" ng-init="uploadVideo(message._id)">
-                                                    <video id="{{message._id}}" src="{{message.body}}" controls="controls" preload="metadata"></video>
-                                                </div>
-                                                <div class="type-video" ng-if="message.type=='Video' && message.temp==null" ng-click="openVideoWeb($event,message.type,message.body)"
-                                                     style="background-image: url({{ message.thumbnail }}); background-repeat: no-repeat; background-position: center center; background-size:contain;">
-                                                    <div style="margin-left:10px;">
-                                                        <i class="ion-ios-play" style="line-height: 160px;  padding:0px 13px; border-radius:50%; background-color:gray;"></i>
+                                            </div>
+
+                                            <div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
+                                                <div>
+                                                    <div class="item item-text-wrap">
+                                                        {{message.locationName}}
+                                                        <br /> {{message.locationAddress}}
+                                                        <br /> {{message.lat}} , {{message.long}}
                                                     </div>
                                                 </div>
-
-                                                <div class="type-location" ng-if="message.type == 'Location'" ng-click="viewLocation(message._id)">
-                                                    <div>
-                                                        <div class="item item-text-wrap">
-                                                            {{message.locationName}}
-                                                            <br /> {{message.locationAddress}}
-                                                            <br /> {{message.lat}} , {{message.long}}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>                                           
+                                            </div>
                                         </div>
-                                        <label ng-if="message.temp != 'true'" style="font-size:10px; line-height:10px; color:#aaa; margin:5px; text-align:right;">
-                                            {{message.createTime}}</label>
-                                        <label ng-if="message.temp != 'true'" style="font-size:10px; line-height:10px; color:#aaa; margin:5px; text-align:right;"> 
-                                            {{message.time}}</label>
                                     </div>
+                                    <!--<label ng-if="message.temp != 'true'" style="font-size:10px; line-height:10px; color:#aaa; margin:5px; text-align:right;">
+                                            {{message.createTime}}</label>-->
+                                    <label ng-if="message.temp != 'true'" style="font-size:10px; line-height:10px; color:#aaa; margin:5px; text-align:right;"> 
+                                            {{message.time}}</label>
                                 </div>
-                            </md-list-item>
-                        </md-list>
+                            </div>
+                        </md-list-item>
+                    </md-list>
 
-						<form id="UploadForm" style="position: absolute; top:-1000px;">
-							<input type="file" name="fileToUpload" id="fileToUpload" onchange="angular.element(this).scope().onGetFileSelect()">
-						</form>
+                    <form id="UploadForm" style="position: absolute; top:-1000px;">
+                        <input type="file" name="fileToUpload" id="fileToUpload" onchange="angular.element(this).scope().onGetFileSelect()">
+                    </form>
 
-						<form id="UploadAvatar" style="position: absolute; top:-1000px;">
-							<input type="file" name="fileToUpload" id="avatarToUpload" onchange="angular.element(this).scope().onGetAvatarSelect()">
-						</form>
+                    <form id="UploadAvatar" style="position: absolute; top:-1000px;">
+                        <input type="file" name="fileToUpload" id="avatarToUpload" onchange="angular.element(this).scope().onGetAvatarSelect()">
+                    </form>
 
-						<audio id="audio" style="position: absolute; top:-1000px;" controls>
-							<source src="">
-						</audio>
-					</div>
-				</div>
-			</div>
-		</div>
+                    <audio id="audio" style="position: absolute; top:-1000px;" controls>
+                        <source src="">
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </div>
 </md-content>
 
 <!-- @Chat Typings Bar -->
-<ion-footer-bar id="chatMessage" 
-	align-title="left" class="bar-light" 
-	style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none; height:initial;" layout="column">
+<ion-footer-bar id="chatMessage" align-title="left" class="bar-light" style="box-shadow:0 0 0 1px #ccc; position:absolute; display:none; height:initial;"
+    layout="column">
     <div ng-show="!isOpenAudioRecordMenu">
         <div layout="row">
             <div>
-                <button ng-hide="isOpenChatMenu" ng-disabled="inactive" ng-click="openModal()" 
-                        class="button button-clear" style="padding:0 20px;">
+                <button ng-hide="isOpenChatMenu" ng-disabled="inactive" ng-click="openModal()" class="button button-clear" style="padding:0 20px;">
                     <i class="ion-ios-arrow-up"></i>
                 </button>
-                <button ng-show="isOpenChatMenu" ng-disabled="inactive" ng-click="closeChatMenu()" 
-                        class="button button-dark" style="padding:0 20px;">
+                <button ng-show="isOpenChatMenu" ng-disabled="inactive" ng-click="closeChatMenu()" class="button button-dark" style="padding:0 20px;">
                     <i class="ion-ios-arrow-down"></i>
                 </button>
             </div>
-            
+
             <span style="width:10px;"> </span>
-            <input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" 
-                type="text" name="message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" />
-            <input ng-disabled="inactive" ng-show="inactive==true" id="send_message" 
-                type="text" name="message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;" 
+            <input ng-disabled="inactive" ng-show="inactive!=true" id="send_message" type="text" name="message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;"
+            />
+            <input ng-disabled="inactive" ng-show="inactive==true" id="send_message" type="text" name="message" style="width:100%; height:33px; padding:0 10px; box-shadow:0 0 0 1px rgba(0,0,0,0.1) inset;"
                 value="This is empty room or not yet ready." />
             <div class="buttons">
-                <button ng-disabled="inactive" ng-click="sendMsg()" class="button button-clear" 
-                    style="width:initial; font-size:20px; padding:0 20px;">
+                <button ng-disabled="inactive" ng-click="sendMsg()" class="button button-clear" style="width:initial; font-size:20px; padding:0 20px;">
                     <i class="ion-share" data-pack="default" data-tags="outbound"></i>
                 </button>
             </div>
-        </div>      
+        </div>
         <div ng-if="isOpenChatMenu">
             <span style="height:5px;"></span>
-            <div ng-include src="'templates_web/modal-chatmenu.html'"> 
+            <div ng-include src="'templates_web/modal-chatmenu.html'">
             </div>
         </div>
-	</div>
+    </div>
     <div ng-show="isOpenAudioRecordMenu">
         <span style="height:5px;"></span>
-        <div ng-include src="'templates_web/modal-audio-recorder.html'"> 
-		</div>
-	</div>
+        <div ng-include src="'templates_web/modal-audio-recorder.html'">
+        </div>
+    </div>
 </ion-footer-bar>
