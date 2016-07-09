@@ -1915,6 +1915,7 @@ var ChatServer;
             var msg = {};
             msg["token"] = tokenBearer;
             pomelo.request("gate.gateHandler.authenGateway", msg, function (result) {
+                console.log("TokenAuthen: ", result);
                 _this.OnTokenAuthenticate(result, checkTokenCallback);
             });
         };
@@ -1928,7 +1929,7 @@ var ChatServer;
             }
             else {
                 if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(null, null);
+                    onSuccessCheckToken(tokenRes.message, null);
             }
         };
         ServerImplemented.prototype.kickMeAllSession = function (uid) {

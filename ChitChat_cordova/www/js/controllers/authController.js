@@ -323,8 +323,29 @@
                             });
                         }
                     }
+                    else {
+                        onAuthTokenFail();
+                    }
                 });
             }
+        }
+
+        function onAuthTokenFail() {
+            //@ clear all local info when sign with token fail.
+            if ($rootScope.isMobile) {
+                try {
+                    $cordovaSpinnerDialog.hide();
+                }
+                catch (ex) {
+                    console.warn(ex);
+                }
+            }
+            else {
+                $ionicLoading.hide();
+            }
+
+            localStorage.clear();
+            dbAccessService.clearMessageDAL();
         }
 
         function onLoginTimeout(param) {
@@ -353,7 +374,7 @@
         function onDuplicateLogin(param) {
             console.log("onDuplicateLogin", JSON.stringify(param));
             // Hide spinner dialog
-            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() == 'android') {
+            if ($rootScope.isMobile) {
                 $cordovaSpinnerDialog.hide();
 
                 $cordovaDialogs.confirm("May be you use this app in other devices \n You want to logout other devices", "Duplicated login!", ["OK", "Cancel"])
@@ -382,10 +403,8 @@
                     .cancel('Cancel');
                 $mdDialog.show(confirm).then(function () {
                     server.kickMeAllSession(param.uid);
-                    location.href = "";
                 }, function () {
                     localStorage.clear();
-                    location.href = '';
                 });
             }
         }
@@ -405,19 +424,27 @@
                 } catch (ex) {
                     console.warn(ex);
                 }
+
+                // navigator.notification.alert(errMessage, function callback() { }, "Login fail!", "OK");
+                $ionicPopup.alert({
+                    title: "Login fail!",
+                    template: errMessage
+                }).then(function (res) {
+                    localStorage.clear();
+                    location.href = '';
+                });
             }
             else {
                 $ionicLoading.hide();
 
-                // navigator.notification.alert(errMessage, function callback() { }, "Login fail!", "OK");
-                var alertPopup = $ionicPopup.alert({
-                    title: "Login fail!",
-                    template: errMessage
-                });
-
-                alertPopup.then(function (res) {
+                var alert = $mdDialog.alert()
+                    .clickOutsideToClose(false)
+                    .title('Login fail!')
+                    .textContent(errMessage)
+                    .ariaLabel('Alert Dialog')
+                    .ok('OK');
+                $mdDialog.show(alert).then(function (params) {                    
                     localStorage.clear();
-                    location.href = '';
                 });
             }
         }

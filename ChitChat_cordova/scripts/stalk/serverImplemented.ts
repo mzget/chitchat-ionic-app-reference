@@ -256,6 +256,7 @@ module ChatServer {
             var msg: IDictionary = {};
             msg["token"] = tokenBearer;
             pomelo.request("gate.gateHandler.authenGateway", msg, (result) => {
+                console.log("TokenAuthen: ", result);
                 this.OnTokenAuthenticate(result, checkTokenCallback);
             });
         }
@@ -270,7 +271,7 @@ module ChatServer {
             }
             else {
                 if (onSuccessCheckToken != null)
-                    onSuccessCheckToken(null, null);
+                    onSuccessCheckToken(tokenRes.message, null);
             }
         }
 
