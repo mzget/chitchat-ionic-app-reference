@@ -5,7 +5,7 @@
         .module('spartan.services')
         .factory('chatRoomService', chatRoomService);
 
-    function chatRoomService($http, $rootScope, $sce, $cordovaFile, roomSelected, ConvertDateTime, sharedObjectService, localNotifyService, dbAccessService) {
+    function chatRoomService($http, $rootScope, $sce, $cordovaFile, roomSelected, ConvertDateTime, sharedObjectService, localNotifyService) {
         var service = {
             init: init,
             getPersistendMessage: getPersistendMessage,
@@ -35,11 +35,11 @@
         return service;
 
         function init() {
-            console.info('chatRoomService.init()');
+            console.log('chatRoomService.init()');
 
             var curRoom = roomSelected.getRoom();
             var chatRoomApi = main.getChatRoomApi();
-            chatRoomComponent = new ChatRoomComponent(main, curRoom._id, dbAccessService.getMessageDAL());
+            chatRoomComponent = new ChatRoomComponent(main, curRoom._id, main.getMessageDAL());
 
             sharedObjectService.getDataListener().addChatListenerImp(chatRoomComponent);
             sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
@@ -49,16 +49,21 @@
                     service.set(chatRoomComponent.chatMessages);
 
                     //@ Tell message doccument who read this message_id.
-                    // - This will work when message_sender is not me. 
                     // - Message displaying in chat room.
                     // - Chatroom is not run in background.
+
+
+                    //@ When message_sender is not me.
                     if (!main.getDataManager().isMySelf(newMsg.sender)) {
                         //@ Check app not run in background.
                         if ($rootScope.isMobile) {
                             try {
                                 var appBackground = cordova.plugins.backgroundMode.isActive();
-                                if (appBackground == false) {
+                                if (!appBackground) {
                                     chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
+                                }
+                                else {
+                                    sharedObjectService.getNotifyManager().notify(newMsg, appBackground, localNotifyService);
                                 }
                             }
                             catch (ex) {
@@ -66,25 +71,12 @@
                             }
                         }
                         else {
-                            chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
-                        }
-                    }
-
-                    //@ When app state is join room but not active.
-                    if ($rootScope.isMobile) {
-                        try {
-                            var appBackground = cordova.plugins.backgroundMode.isActive();
-                            if (appBackground == true) {
+                            if ($rootScope.isPageFocus) {
+                                chatRoomApi.updateMessageReader(newMsg._id, curRoom._id);
+                            } 
+                            else {
                                 sharedObjectService.getNotifyManager().notify(newMsg, appBackground, localNotifyService);
                             }
-                        }
-                        catch (ex) {
-                            console.warn(ex);
-                        }
-                    }
-                    else {
-                        if (!$rootScope.isPageFocus) {
-                            sharedObjectService.getNotifyManager().notify(newMsg, appBackground, localNotifyService);
                         }
                     }
 
@@ -94,9 +86,10 @@
                     service.set(chatRoomComponent.chatMessages);
                 }
             }
+
             chatRoomComponent.notifyEvent = function (event, data) {
                 if (event === ChatServer.ServerEventListener.ON_CHAT) {
-                    if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                    if ($rootScope.isMobile) {
                         try {
                             var appBackground = cordova.plugins.backgroundMode.isActive();
                             sharedObjectService.getNotifyManager().notify(data, appBackground, localNotifyService);
@@ -327,7 +320,7 @@
 
         function sendMessage(room_id, target, user_id, body, contentType, callback) {
             var chatRoomApi = main.getChatRoomApi();
-			chatRoomApi.chat(room_id, target, user_id, body, contentType, callback);
+            chatRoomApi.chat(room_id, target, user_id, body, contentType, callback);
         }
         function sendFile(room_id, target, user_id, fileUrl, contentType, meta, callback) {
             var chatRoomApi = main.getChatRoomApi();
