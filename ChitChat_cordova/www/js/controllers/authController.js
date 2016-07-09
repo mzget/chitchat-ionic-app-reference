@@ -403,8 +403,10 @@
                     .cancel('Cancel');
                 $mdDialog.show(confirm).then(function () {
                     server.kickMeAllSession(param.uid);
+                    location.href = '';
                 }, function () {
                     localStorage.clear();
+                    location.href = '';
                 });
             }
         }
@@ -443,8 +445,9 @@
                     .textContent(errMessage)
                     .ariaLabel('Alert Dialog')
                     .ok('OK');
-                $mdDialog.show(alert).then(function (params) {                    
+                $mdDialog.show(alert).then(function (params) {
                     localStorage.clear();
+                    location.href = "";
                 });
             }
         }
