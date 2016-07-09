@@ -18,7 +18,7 @@ class Main {
         }
         return this.instance;
     }
-    
+
     private serverImp: ChatServer.ServerImplemented;
     private serverListener: ChatServer.ServerEventListener;
     private chatRoomApi: ChatServer.ChatRoomApiProvider;
@@ -79,11 +79,13 @@ class Main {
     public authenUser(server: ChatServer.ServerImplemented, email: string, password: string, callback: (err, res) => void) {
         console.log("authenUser:", email);
 
-        var self = this;
+        let self = this;
         server.logIn(email, password, function (err, loginRes) {
+            console.log("logIn result: ", err, loginRes);
+
             callback(err, loginRes);
 
-            if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {    
+            if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {
                 //<!-- Listen all event in the spartan world.
                 var promiseForAddListener = new Promise(function callback(resolve, rejected) {
                     self.startChatServerListener(resolve, rejected);
@@ -156,5 +158,5 @@ class Main {
         });
     }
 
-    public onMyProfileReadyListener:(dataManager: DataManager) => void;
+    public onMyProfileReadyListener: (dataManager: DataManager) => void;
 }

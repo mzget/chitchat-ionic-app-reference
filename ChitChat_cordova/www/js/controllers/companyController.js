@@ -54,25 +54,25 @@
             server.logout();
             server.dispose();
 
-            dbAccessService.clearMessageDAL();
+            dbAccessService.clearMessageDAL(function next(err) {
+                location.href = '';
+            });
             localStorage.clear();
-            //$state.go('tab.login');
-            location.href = '';
         }
 
-        function createGroup(ev,type) {
+        function createGroup(ev, type) {
             $rootScope.createType = type;
             $mdDialog.show({
-              controller: CreateController,
-              templateUrl: 'templates_web/modal-creategroup.html',
-              parent: angular.element(document.body),
-              targetEvent: ev,
-              clickOutsideToClose:true,
-              onRemoving: closeDialogCreateGroup
+                controller: CreateController,
+                templateUrl: 'templates_web/modal-creategroup.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                onRemoving: closeDialogCreateGroup
             });
         }
 
-        function closeDialogCreateGroup(){
+        function closeDialogCreateGroup() {
             CreateGroup.clear();
             document.getElementById("UploadAvatar").reset();
         }
@@ -80,20 +80,20 @@
         function adminPanel() {
             var warnMsg = 'This time admin panel is not ready for you.';
             console.warn(warnMsg);
-            
+
             localNotifyService.makeToast(warnMsg);
 
-//            $state.go('backend.members');
+            //            $state.go('backend.members');
         }
 
-        function downloadApp() {           
+        function downloadApp() {
             $window.open('https://github.com/mzget/stalk-ionic-sample/wiki/Introducing_ChitChat-RFL', '_blank');
         }
-        
+
         function versionInfo() {
             $window.open('https://github.com/mzget/stalk-ionic-sample/wiki/ChitChat-web-client-release-note', '_blank');
         }
-        
+
         function bugsReport() {
             $window.open("http://git.animation-genius.com/prathan/chitchatbugreport/issues", '_blank');
         }

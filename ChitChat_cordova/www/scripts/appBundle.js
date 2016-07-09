@@ -1180,6 +1180,7 @@ var Main = (function () {
         console.log("authenUser:", email);
         var self = this;
         server.logIn(email, password, function (err, loginRes) {
+            console.log("logIn result: ", err, loginRes);
             callback(err, loginRes);
             if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {
                 //<!-- Listen all event in the spartan world.
