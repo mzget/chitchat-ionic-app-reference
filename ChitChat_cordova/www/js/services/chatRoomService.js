@@ -5,7 +5,7 @@
         .module('spartan.services')
         .factory('chatRoomService', chatRoomService);
 
-    function chatRoomService($http, $rootScope, $sce, $cordovaFile, roomSelected, ConvertDateTime, sharedObjectService, localNotifyService) {
+    function chatRoomService($http, $rootScope, $sce, $cordovaFile, roomSelected, ConvertDateTime, sharedObjectService, localNotifyService, dbAccessService) {
         var service = {
             init: init,
             getPersistendMessage: getPersistendMessage,
@@ -39,7 +39,7 @@
 
             var curRoom = roomSelected.getRoom();
             var chatRoomApi = main.getChatRoomApi();
-            chatRoomComponent = new ChatRoomComponent(main, curRoom._id, main.getMessageDAL());
+            chatRoomComponent = new ChatRoomComponent(main, curRoom._id, dbAccessService.getMessageDAL());
 
             sharedObjectService.getDataListener().addChatListenerImp(chatRoomComponent);
             sharedObjectService.unsubscribeGlobalNotifyMessageEvent();
