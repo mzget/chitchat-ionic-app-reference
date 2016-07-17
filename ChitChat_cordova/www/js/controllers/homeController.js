@@ -8,7 +8,7 @@
 		.controller('homeController', homeController);
 
 	function homeController($location, $state, $scope, $rootScope, $timeout, $ionicModal, $ionicLoading, $cordovaSpinnerDialog,
-		$ionicTabsDelegate, $mdDialog, roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, dbAccessService, 
+		$ionicTabsDelegate, $mdDialog, roomSelected, localNotifyService, Favorite, sharedObjectService, chatslogService, 
 		modalFactory, webRTCFactory) {
 		/* jshint validthis:true */
 		var vm = this;
@@ -34,8 +34,7 @@
                     location.href = '';
                 }
             }
-
-			dbAccessService.setMessageDAL(messageDAL);
+            
 			localNotifyService.registerPermission();
 			sharedObjectService.createNotifyManager(main);
 			chatslogService.init();
@@ -89,7 +88,7 @@
 			tryGetFavorite();
 		}
 
-		function getChatWeb() {
+        function getChatWeb() {
 			var chatheight = $(window).height() - 43;
 			$('ion-content').find('#webgroup').css({ 'height': chatheight + 'px' });
 			$('ion-content').find('#webchatdetail').css({ 'height': chatheight - 44 + 'px' });
@@ -110,7 +109,7 @@
 					setTimeout(function () {
 						$scope.favorites = getFavorite();
 
-						if (ionic.Platform.platform() !== 'ios' && ionic.Platform.platform !== 'android') {
+                        if (!$rootScope.isMobile) {
 							getChatWeb();
 						}
                     }, 1000);

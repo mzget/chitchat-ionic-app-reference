@@ -11,7 +11,7 @@ angular.module('spartan.controllers')
         }
     })
 
-    .controller('optionsController', function ($scope, $state, $ionicModal, $timeout, CreateGroup, $localStorage, $rootScope, $ionicPopover, dbAccessService) {
+    .controller('optionsController', function ($scope, $state, $ionicModal, $timeout, CreateGroup, $localStorage, $rootScope, $ionicPopover) {
         $scope.settings = {
             logOut: true,
         };
@@ -66,9 +66,9 @@ angular.module('spartan.controllers')
             server.logout();
             server.dispose();
 
-            dbAccessService.clearMessageDAL();
             localStorage.clear();
-            //$state.go('tab.login');
+            main.clearMessageReducer();
+            main.clearAuthReducer();
             location.href = '';
         }
     })

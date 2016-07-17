@@ -22,7 +22,7 @@
 
     onChat(chatMessageImp: Message) {
         let self = this;
-        
+
         if (this.roomId === chatMessageImp.rid) {
             let secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
@@ -183,9 +183,9 @@
                 async.some(roomAccess, (item, cb) => {
                     if (item.roomId === self.roomId) {
                         lastMessageTime = item.accessTime;
-                        cb(true);
+                        cb(null, true);
                     }
-                    else cb(false);
+                    else cb(null, false);
                 }, (result) => {
                     console.log(result);
 
@@ -322,7 +322,7 @@
                     self.chatMessages = resultsArray.slice(0);
 
                     callback(err, resultsArray);
-                    
+
                     self.messageDAL.saveData(self.roomId, self.chatMessages);
                 });
             });
@@ -508,12 +508,32 @@
 
         async.map(self.chatMessages, function itorator(message, resultCb) {
             if (!self.dataManager.isMySelf(message.sender)) {
-                self.chatRoomApi.updateMessageReader(message._id, message.rid);
-            }
+                if (!!message.readers) {
+                    let isReaded = message.readers.some(element => {
+                        //@ if you readed it.
+                        if (self.dataManager.isMySelf(element)) {
+                            return true;
+                        }
+                    });
 
-            resultCb(null, null);
+                    if (isReaded)
+                        resultCb(null, null);
+                    else {
+                        self.chatRoomApi.updateMessageReader(message._id, message.rid);
+                        resultCb(null, null);
+                    }
+                }
+                else {
+                    self.chatRoomApi.updateMessageReader(message._id, message.rid);
+                    resultCb(null, null);
+                }
+            }
+            else {
+                resultCb(null, null);
+            }
         }, function done(err) {
             //@ done.
+            console.warn("Next version we has to call updateMessageReader once time at here.");
         })
     }
 

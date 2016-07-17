@@ -5,7 +5,7 @@
         .module('spartan.controllers')
         .controller('optionsController', optionsController);
 
-    function optionsController($location, $scope, $state, $ionicModal, $ionicTabsDelegate, $timeout, CreateGroup, $localStorage, $rootScope, $ionicPopover, dbAccessService) {
+    function optionsController($location, $scope, $state, $ionicModal, $ionicTabsDelegate, $timeout, CreateGroup, $localStorage, $rootScope, $ionicPopover) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'optionsController';
@@ -82,10 +82,9 @@
             server.dispose();
 
             localStorage.clear();
-            dbAccessService.clearMessageDAL(function done() {
-                //$state.go('tab.login');
-                location.href = '';
-            });
+            main.clearMessageReducer();
+            main.clearAuthReducer();
+            location.href = '';
         }
     }
 })();

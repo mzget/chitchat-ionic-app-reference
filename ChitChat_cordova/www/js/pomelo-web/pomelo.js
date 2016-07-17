@@ -305,7 +305,7 @@ var bt2Str = function(byteArray,start,end) {
 
 })('object' === typeof module ? module.exports : (this.Protocol = {}), this);
 
-define(['jquery'], function (jq) {
+define(['../pomelo-web/pomelo'], function (pomelo) {
 	
   if (typeof Object.create !== 'function') {
 	Object.create = function (o) {

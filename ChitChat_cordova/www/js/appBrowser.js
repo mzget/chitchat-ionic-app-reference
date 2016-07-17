@@ -8,7 +8,7 @@
 angular.module('starter',
      ['ionic','spartan.controllers', 'spartan.home', 'spartan.chatslog',
 	  'spartan.directives', 'spartan.chat', 'spartan.media', 'spartan.group', 'spartan.backend',
-      'spartan.services', 'spartan.notify', 'spartan.db', 
+      'spartan.services', 'spartan.notify', 
 	  'ngCordova', 'ngStorage', 'ngMaterial', 'ngMessages','angular-toArrayFilter', 'angular-web-notification', 'ui.router'])
 
 

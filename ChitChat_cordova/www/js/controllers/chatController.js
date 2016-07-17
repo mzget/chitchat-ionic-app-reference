@@ -1,3 +1,5 @@
+/// <reference path="../../../typings/index.d.ts" />
+
 angular.module('spartan.chat', [])
 
 	.controller('chatController',
@@ -6,7 +8,8 @@ angular.module('spartan.chat', [])
 		$sce, $cordovaGeolocation, $cordovaDialogs, $cordovaInAppBrowser, chatRoomService, roomSelected,
 		Favorite, blockNotifications, localNotifyService, sharedObjectService, chatsListHelperService, networkService) {
 		// Hide nav-tab # in chat detail
-		$('#chatMessage').animate({ 'bottom': '0' }, 350);
+
+		// $('#chatMessage').animate({ 'bottom': '0' }, 350);
 		$ionicTabsDelegate.showBar(false);
 
 		var self = this;
@@ -80,14 +83,15 @@ angular.module('spartan.chat', [])
 					$scope.chat = chatRoomService.all();
 				}); //@ Call for changed scope.
 
-				if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+                if ($rootScope.isMobile) {
 					setTimeout(function () {
 						$ionicLoading.hide();
 						$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 					}, 100);
-				} else {
+                }
+                else {
 					$ionicLoading.hide();
-					setTimeout(function () {
+                    setTimeout(function () {
 						$("#chatLayout").animate({ scrollTop: $("#chatLayout")[0].scrollHeight }, 500);
 					}, 200);
 				}
@@ -97,11 +101,11 @@ angular.module('spartan.chat', [])
 				$scope.$apply(function () { $scope.chat = chatRoomService.all(); });
 
 				setTimeout(function () {
-					$ionicLoading.hide();
-					if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+                    $ionicLoading.hide();
+                    if ($rootScope.isMobile) {
 						$ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
 					}
-					else {
+                    else {
 						$("#chatLayout").animate({ scrollTop: $("#chatLayout")[0].scrollHeight }, 500);
 					}
 				}, 100);
@@ -522,9 +526,9 @@ angular.module('spartan.chat', [])
 			}
 		};
 		function sendSticker(sticker) {
-		    $ionicLoading.show({
-		        template: 'Sending...'
-		    });
+			$ionicLoading.show({
+				template: 'Sending...'
+			});
 
 			chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, sticker, ContentType[ContentType.Sticker], sendMessageResponse);
 
@@ -697,16 +701,25 @@ angular.module('spartan.chat', [])
 			}
 		}
 
-		$("#modal-webview-iframe").on('load', function () {
-			alert($(this).contentDocument.title);
-		});
+		// $("#modal-webview-iframe").on('load', function () {
+		// 	alert($(this).contentDocument.title);
+		// });
+		//@ It not support in electron client.
+		if (document.getElementById("modal-webview-iframe")) {
+			document.getElementById("modal-webview-iframe").onload(function (event) {
+				alert($(this).contentDocument.title);
+			});
+		}
 
-		$("#send_message").on("keyup", function (event) {
-			//@ detect return button.
-			if (event.keyCode == 13) {
-				sendMessage();
-			}
-		});
+		if (document.getElementById("send_message")) {
+			document.getElementById("send_message").onkeyup = function (event) {
+				//@ detect return button.
+				if (event.keyCode == 13) {
+					sendMessage();
+				}
+			};
+		}
+
 		// Send Message btn
 		function sendMessage() {
 			var value = $('#send_message').val();
@@ -748,7 +761,7 @@ angular.module('spartan.chat', [])
 		function sendMessageResponse(err, res) {
 			$ionicLoading.hide();
 			console.log("sendMessageResponse:", JSON.stringify(res));
-            
+
 			if (!!err || res.code !== HttpStatusCode.success) {
 				console.error("send message fail.", err, res);
 			}
@@ -799,7 +812,7 @@ angular.module('spartan.chat', [])
 			else {
 				$scope.isOpenChatMenu = false;
 			}
-			
+
 			$('#chatMessage').animate({ 'bottom': '0' }, 350);
 			$('#chatDetail').animate({ 'top': '0' }, 350);
 
@@ -859,7 +872,7 @@ angular.module('spartan.chat', [])
 				});
 				chatRoomService.sendMessage(self.currentRoom._id, "*", myprofile._id, args[0], ContentType[ContentType.Video], sendMessageResponse);
 			}
-			
+
 			if (!$rootScope.isMobile) {
 				if (args[2] == ContentType[ContentType.File]) {
 					// $ionicLoading.show({
@@ -927,17 +940,17 @@ angular.module('spartan.chat', [])
 			setupMenuItem();
 			setupModals();
 		});
-		
+
 		$scope.$on('$ionicView.beforeLeave', function () { //This just one when leaving, which happens when I logout
 			console.debug('$ionicView.beforeLeave', self.title);
 
 			chatRoomService.leaveRoom();
 		});
-		
+
 		$scope.$on('$ionicView.leave', function () {
 			console.debug("$ionicView.leave:", self.title);
 		});
-		
+
 		$scope.$on('$ionicView.loaded', function () {
 			console.debug("$ionicView.loaded: ", self.title);
 		});

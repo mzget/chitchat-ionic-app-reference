@@ -44,10 +44,12 @@
             }
         };
         
-        $scope.$on('getunreadmessagecomplete', function(event, data){
+        $scope.$on('getunreadmessagecomplete', function (event, data) {
+            displayLogs();
         });
 
         $scope.$on('onUnreadMessageMapChanged', function (event, data) {
+            displayLogs();
         });
     }
 })();

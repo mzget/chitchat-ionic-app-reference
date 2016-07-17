@@ -1,4 +1,4 @@
-﻿
+﻿var config;
 var pomelo;
 var username: string = "";
 var password: string = "";
@@ -64,6 +64,7 @@ module ChatServer {
 
         public disConnect() {
             console.log('disconnecting...');
+            
             if (!!pomelo) {
                 pomelo.removeAllListeners();
                 pomelo.disconnect();
@@ -71,9 +72,8 @@ module ChatServer {
             }
         }
 
-        public logout() {
-            var registrationId = localStorage.getItem("registrationId");
-            var msg: IDictionary = {};
+        public logout(registrationId) {
+            let msg: IDictionary = {};
             msg["username"] = username;
             msg["registrationId"] = registrationId;
             if (pomelo != null)
@@ -87,17 +87,9 @@ module ChatServer {
             var self = this;
 
             this._isConnected = false;
-            username = localStorage.getItem("username");
-            password = localStorage.getItem("password");
-            var authen = localStorage.getItem("authen");
-            if (authen !== null) {
-                this.authenData = JSON.parse(authen);
-            }
-            else {
-                this.authenData = new AuthenData();
-            }
+            this.authenData = new AuthenData();
 
-            var promiseForSocket = new Promise(function (resolve, rejected) {
+            let pro = new Promise(function (resolve, rejected) {
                 self.loadSocket(resolve, rejected);
             }).then(function onfulfilled(value) {
                 self.loadConfig(callback);
@@ -107,43 +99,25 @@ module ChatServer {
         }
 
         private loadSocket(resolve, rejected) {
-            require(['../js/pomelo/pomeloclient'], function (obj) {
-                pomelo = obj;
-                resolve();
+            require(["../js/pomelo-web/pomelo"], (value) => {
+                pomelo = value;
+                resolve(pomelo);
             });
         }
 
         private loadConfig(callback: (err, res) => void) {
-            var self = this;
-            var promiseForFileConfig = new Promise(function (resolve, reject) {
-                // This only is an example to create asynchronism
-                $.ajax({
-                    url: "configs/appconfig.json",
-                    dataType: "json",
-                    success: function (config) {
-                        self.appConfig = JSON.parse(JSON.stringify(config));
-
-                        resolve();
-                    }, error: function (jqXHR, textStatus, errorThrown) {
-                        console.error(jqXHR, textStatus, errorThrown);
-                        reject(errorThrown);
-                    }
+            this.appConfig = JSON.parse(config);
+            this.host = this.appConfig.socketHost;
+            this.port = this.appConfig.socketPort;
+            if (!!pomelo) {
+                //<!-- Connecting gate server.
+                this.connectServer(this.host, this.port, (err) => {
+                    callback(err, this);
                 });
-            }).then(function resolve(val) {
-                self.host = self.appConfig.socketHost;
-                self.port = self.appConfig.socketPort;
-                if (!!pomelo) {
-                    //<!-- Connecting gate server.
-                    self.connectServer(self.host, self.port, (err) => {
-                        callback(err, self);
-                    });
-                }
-                else {
-                    console.error("pomelo socket is un ready.");
-                }
-            }).catch(function onRejected(err) {
-                console.log(err)
-            });
+            }
+            else {
+                console.error("pomelo socket is un ready.");
+            }
         }
 
         private connectServer(_host: string, _port: number, callback: (err) => void) {
@@ -164,17 +138,14 @@ module ChatServer {
         /// <summary>
         /// Connect to gate server then get query of connector server.
         /// </summary>
-        public logIn(_username: string, _hash: string, callback: (err, res) => void) {
+        public logIn(_username: string, _hash: string, registrationId: string, callback: (err, res) => void) {
             var self = this;
 
             username = _username;
             password = _hash;
 
-            localStorage.setItem("username", username);
-            localStorage.setItem("password", password);
-
             if (pomelo !== null && this._isConnected === false) {
-                var msg = { uid: username };
+                let msg = { uid: username };
                 //<!-- Quering connector server.
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
 
@@ -196,7 +167,7 @@ module ChatServer {
                                     callback(err, null);
                                 }
                                 else {
-                                    self.authenForFrontendServer(callback);
+                                    self.authenForFrontendServer(registrationId, callback);
                                 }
                             });
                         }).catch((error) => {
@@ -206,23 +177,18 @@ module ChatServer {
                 });
             }
             else if (pomelo !== null && this._isConnected) {
-                self.authenForFrontendServer(callback);
+                self.authenForFrontendServer(registrationId, callback);
             }
         }
 
         //<!-- Authentication. request for token sign.
-        private authenForFrontendServer(callback: (err, res) => void) {
-            var self = this;
-            var registrationId = localStorage.getItem("registrationId");
-            var msg = { username: username, password: password, registrationId: registrationId };
-
-            //if (SpartanTalkApplication.getSharedAppData().contains(INSTALLATION_ID)) {
-            //    msg.put(INSTALLATION_ID, SpartanTalkApplication.getSharedAppData().getString(INSTALLATION_ID, ""));
-            //}
+        private authenForFrontendServer(registrationId: string, callback: (err, res) => void) {
+            let self = this;
+            let msg = { username: username, password: password, registrationId: registrationId };
 
             //<!-- Authentication.
             pomelo.request("connector.entryHandler.login", msg, (res) => {
-                console.log("login response: ", JSON.stringify(res), res.code);
+                console.log("login response: ", JSON.stringify(res));
 
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
@@ -230,10 +196,6 @@ module ChatServer {
                     }
                 }
                 else if (res.code === HttpStatusCode.success) {
-                    self.authenData.userId = res.uid;
-                    self.authenData.token = res.token;
-                    localStorage.setItem("authen", JSON.stringify(self.authenData));
-
                     if (callback != null) {
                         callback(null, res);
                     }
@@ -253,10 +215,9 @@ module ChatServer {
         }
 
         public TokenAuthen(tokenBearer: string, checkTokenCallback: (err, res) => void) {
-            var msg: IDictionary = {};
+            let msg: IDictionary = {};
             msg["token"] = tokenBearer;
             pomelo.request("gate.gateHandler.authenGateway", msg, (result) => {
-                console.log("TokenAuthen: ", result);
                 this.OnTokenAuthenticate(result, checkTokenCallback);
             });
         }
@@ -270,8 +231,9 @@ module ChatServer {
                     onSuccessCheckToken(null, { success: true, username: decodedModel.username, password: decodedModel.password });
             }
             else {
-                if (onSuccessCheckToken != null)
+                if (onSuccessCheckToken != null) {
                     onSuccessCheckToken(tokenRes.message, null);
+                }
             }
         }
 
@@ -282,7 +244,7 @@ module ChatServer {
                     console.log("kickMe", JSON.stringify(result));
                 });
             }
-            else{
+            else {
                 console.error("Cannot kick session.");
             }
         }
@@ -313,9 +275,9 @@ module ChatServer {
             });
         }
 
-        public getLastAccessRoomsInfo(callback: Function) {
+        public getLastAccessRoomsInfo(sessionToken: string = "", callback: Function) {
             var msg: IDictionary = {};
-            msg["token"] = this.authenData.token;
+            msg["token"] = sessionToken;
             //<!-- Get user info.
             pomelo.request("connector.entryHandler.getLastAccessRooms", msg, (result) => {
                 if (callback !== null) {
@@ -325,7 +287,7 @@ module ChatServer {
         }
 
         public getMe(callback: (err, res) => void) {
-            var msg: IDictionary = {};
+            let msg: IDictionary = {};
             msg["username"] = username;
             msg["password"] = password;
             msg["token"] = this.authenData.token;
@@ -618,7 +580,7 @@ module ChatServer {
         /// </summary>
         /// <c> return data</c>
         public getRoomInfo(roomId: string, callback: (err, res) => void) {
-            var msg: IDictionary = {};
+            let msg: IDictionary = {};
             msg["token"] = this.authenData.token;
             msg["roomId"] = roomId;
 
@@ -629,7 +591,7 @@ module ChatServer {
         }
 
         public getUnreadMsgOfRoom(roomId: string, lastAccessTime: string, callback: (err, res) => void) {
-            var msg: IDictionary = {};
+            let msg: IDictionary = {};
             msg["token"] = this.authenData.token;
             msg["roomId"] = roomId;
             msg["lastAccessTime"] = lastAccessTime;

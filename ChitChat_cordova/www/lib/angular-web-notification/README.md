@@ -1,6 +1,6 @@
 # angular-web-notification
 
-[![Bower Version](https://img.shields.io/bower/v/angular-web-notification.svg?style=flat)](https://github.com/sagiegurari/angular-web-notification/releases) [![NPM Version](http://img.shields.io/npm/v/angular-web-notification.svg?style=flat)](https://www.npmjs.org/package/angular-web-notification) [![Build Status](https://travis-ci.org/sagiegurari/angular-web-notification.svg)](http://travis-ci.org/sagiegurari/angular-web-notification) [![Coverage Status](https://coveralls.io/repos/sagiegurari/angular-web-notification/badge.svg)](https://coveralls.io/r/sagiegurari/angular-web-notification) [![Code Climate](https://codeclimate.com/github/sagiegurari/angular-web-notification/badges/gpa.svg)](https://codeclimate.com/github/sagiegurari/angular-web-notification) [![bitHound Code](https://www.bithound.io/github/sagiegurari/angular-web-notification/badges/code.svg)](https://www.bithound.io/github/sagiegurari/angular-web-notification) [![Inline docs](http://inch-ci.org/github/sagiegurari/angular-web-notification.svg?branch=master)](http://inch-ci.org/github/sagiegurari/angular-web-notification)<br>
+[![Bower Version](https://img.shields.io/bower/v/angular-web-notification.svg?style=flat)](https://github.com/sagiegurari/angular-web-notification/releases) [![Build Status](https://travis-ci.org/sagiegurari/angular-web-notification.svg)](http://travis-ci.org/sagiegurari/angular-web-notification) [![Coverage Status](https://coveralls.io/repos/sagiegurari/angular-web-notification/badge.svg)](https://coveralls.io/r/sagiegurari/angular-web-notification) [![Code Climate](https://codeclimate.com/github/sagiegurari/angular-web-notification/badges/gpa.svg)](https://codeclimate.com/github/sagiegurari/angular-web-notification) [![bitHound Code](https://www.bithound.io/github/sagiegurari/angular-web-notification/badges/code.svg)](https://www.bithound.io/github/sagiegurari/angular-web-notification) [![Inline docs](http://inch-ci.org/github/sagiegurari/angular-web-notification.svg?branch=master)](http://inch-ci.org/github/sagiegurari/angular-web-notification)<br>
 [![License](https://img.shields.io/bower/l/angular-web-notification.svg)](https://github.com/sagiegurari/angular-web-notification/blob/master/LICENSE) [![Retire Status](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/angular-web-notification/master/bower.json)](http://retire.insecurity.today/api/image?uri=https://raw.githubusercontent.com/sagiegurari/angular-web-notification/master/bower.json)
 
 > Web Notifications AngularJS Service
@@ -80,22 +80,15 @@ return {
 <a name="installation"></a>
 ## Installation
 Run bower install in your project as follows:
-
-```sh
-bower install angular-web-notification --save
 ```
-
-Or if you are using NPM to download client libraries, you can install it as follows:
-
-```sh
-npm install --save angular-web-notification
+bower install angular-web-notification --save
 ```
 
 <a name="limitations"></a>
 ## Limitations
 The web notifications API is not fully supported in all browsers.
 
-Please see [supported browser versions](http://caniuse.com/#feat=notifications) for more information on the official spec support and at [HTML5-Desktop-Notifications](https://github.com/ttsvetko/HTML5-Desktop-Notifications) for more browser specific API support.
+Please see http://caniuse.com/#feat=notifications for more information on the official spec support and at [HTML5-Desktop-Notifications](https://github.com/ttsvetko/HTML5-Desktop-Notifications) for more browser specific API support.
 
 ## API Documentation
 See full docs at: [API Docs](docs/api.md)
@@ -108,9 +101,7 @@ See [contributing guide](.github/CONTRIBUTING.md)
 
 | Date        | Version | Description |
 | ----------- | ------- | ----------- |
-| 2016-07-06  | v0.0.83 | Maintenance |
-| 2016-06-14  | v0.0.78 | Published via NPM (in addition to bower) |
-| 2016-06-14  | v0.0.77 | Maintenance |
+| 2016-05-11  | v0.0.70 | Maintenance |
 | 2016-03-08  | v0.0.65 | Added webNotification.permissionGranted attribute |
 | 2016-02-24  | v0.0.64 | Maintenance |
 | 2015-09-26  | v0.0.31 | Update bower dependencies |

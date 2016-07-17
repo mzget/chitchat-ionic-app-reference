@@ -6,7 +6,7 @@
         .controller('companyController', companyController);
 
     function companyController($location, $scope, $state, $ionicModal, $timeout, CreateGroup, $localStorage, $rootScope,
-        $ionicPopover, $window, $mdDialog, dbAccessService, localNotifyService) {
+        $ionicPopover, $window, $mdDialog, localNotifyService) {
         /* jshint validthis:true */
         var vm = this;
         vm.title = 'companyController';
@@ -54,10 +54,9 @@
             server.logout();
             server.dispose();
 
-            dbAccessService.clearMessageDAL(function next(err) {
+            main.clearAllData().then(function () {
                 location.href = '';
             });
-            localStorage.clear();
         }
 
         function createGroup(ev, type) {

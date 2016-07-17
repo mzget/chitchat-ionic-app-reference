@@ -747,10 +747,16 @@ angular.module('spartan.media', [])
 
 		}
 
-		$("#audio").bind('ended', function () {
-			$('.ion-pause').css({ 'display': 'none' });
-			$('.ion-play').css({ 'display': 'inline' });
-		});
+		// $("#audio").bind('ended', function () {
+		// 	$('.ion-pause').css({ 'display': 'none' });
+		// 	$('.ion-play').css({ 'display': 'inline' });
+		// });
+		if (document.getElementById("audio")) {
+			document.getElementById("audio").onended = function (event) {
+				$('.ion-pause').css({ 'display': 'none' });
+				$('.ion-play').css({ 'display': 'inline' });
+			}
+		}
 
 		$scope.pause = function (id) {
 			$('#' + id + '-voice-play').css({ 'display': 'inline' });

@@ -13,8 +13,7 @@
             decreaseLogsCount: decreaseLogsCount,
             increaseLogsCount: increaseLogsCount,
             getUnreadMessageMap: getUnreadMessageMap,
-            getChatsLog: getChatsLog,
-            organizeChatLogMap: organizeChatLogMap
+            getChatsLog: getChatsLog
         };
 
         var chatsLogComponent = null;
@@ -23,7 +22,6 @@
         var dataManager = null;
         var chatlog_count = 0;
         var unreadMessageMap = {};
-        var chatslog = {};
         var isInit = false;
         
         return service;
@@ -31,8 +29,7 @@
         function init() {
             if (!isInit) {
                 isInit = true;
-
-                chatslog = {};
+                
                 dataListener = main.getDataListener();
                 dataManager = main.getDataManager();
                 chatlog_count = 0;
@@ -56,12 +53,11 @@
                         unread.count = count;
                         unreadMessageMap[unread.rid] = unread;
 
-                        //$rootScope.$broadcast('onUnreadMessageMapChanged', { data: unread });
                         onUnreadMessageMapChanged(unread);
                         //             chatLogDAL.savePersistedUnreadMsgMap(unread);
                     }
                 }
-                chatsLogComponent = new ChatsLogComponent(main, server);
+                chatsLogComponent = new ChatsLogComponent(main, server, ConvertDateTime);
                 chatsLogComponent.onReady = function () {
                     getUnreadMessages();
 
@@ -76,7 +72,6 @@
 
                             calculateUnreadCount();
 
-                            //$rootScope.$broadcast('onUnreadMessageMapChanged', { data: unread });
                             onUnreadMessageMapChanged(unread);
                             //chatLogDAL.savePersistedUnreadMsgMap(unread);
                         }
@@ -91,7 +86,7 @@
                     $rootScope.$broadcast('onEditedGroupMember',[]);
                 }
 
-                server.getLastAccessRoomsInfo(function (err, res) {
+                server.getLastAccessRoomsInfo("", function (err, res) {
                     console.log("getLastAccessRoomsInfo:", JSON.stringify(res));
                 });
             }
@@ -99,7 +94,7 @@
 
         function getUnreadMessages() {
             unreadMessageMap = {};
-            chatsLogComponent.getUnreadMessages(main.getDataManager().myProfile.roomAccess, function done(err, unreadLogs) {
+            chatsLogComponent.getUnreadMessages(dataManager.myProfile.roomAccess, function done(err, unreadLogs) {
                 if (!!unreadLogs) {
                     unreadLogs.map(function element(unread) {
                         unreadMessageMap[unread.rid] = unread;
@@ -110,7 +105,6 @@
                     calculateUnreadCount();
                 }
 
-                //$rootScope.$broadcast('getunreadmessagecomplete', {});
                 getunreadmessagecomplete();
             });
         }
@@ -146,149 +140,7 @@
         }
 
         function getChatsLog() {
-            return chatslog;
-        }
-
-        function organizeChatLogMap(unread, roomInfo, done) {
-            var log = new ChatLog(roomInfo);
-            log.setNotiCount(unread.count);
-
-            if (!!unread.message) {
-                log.setLastMessageTime(unread.message.createTime);
-
-                var contact = main.getDataManager().getContactProfile(unread.message.sender);
-                var sender = (contact != null) ? contact.displayname : "";
-                if (unread.message.body != null) {
-                    var displayMsg = unread.message.body;
-                    switch (unread.message.type) {
-                        case ContentType[ContentType.Text]:
-                            main.decodeService(displayMsg, function (err, res) {
-                                if (!err) {
-                                    displayMsg = res;
-                                } else { console.warn(err, res); }
-
-                                setLogProp(log, displayMsg, function (log) {
-                                    addChatLog(log, done);
-                                });
-                            });
-                            break;
-                        case ContentType[ContentType.Sticker]:
-                            displayMsg = sender + " sent a sticker.";
-                            setLogProp(log, displayMsg, function (log) {
-                                addChatLog(log, done);
-                            });
-                            break;
-                        case ContentType[ContentType.Voice]:
-                            displayMsg = sender + " sent a voice message.";
-                            setLogProp(log, displayMsg, function (log) {
-                                addChatLog(log, done);
-                            });
-                            break;
-                        case ContentType[ContentType.Image]:
-                            displayMsg = sender + " sent a image.";
-                            setLogProp(log, displayMsg, function (log) {
-                                addChatLog(log, done);
-                            });
-                            break;
-                        case ContentType[ContentType.Video]:
-                            displayMsg = sender + " sent a video.";
-                            setLogProp(log, displayMsg, function (log) {
-                                addChatLog(log, done);
-                            });
-                            break;
-                        case ContentType[ContentType.Location]:
-                            displayMsg = sender + " sent a location.";
-                            setLogProp(log, displayMsg, function (log) {
-                                addChatLog(log, done);
-                            });
-                            break;
-                        case ContentType[ContentType.File]:
-                            displayMsg = sender + " sent a File.";
-                            setLogProp(log, displayMsg, function (log) {
-                                addChatLog(log, done);
-                            });
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-            else {
-                log.setLastMessage("Start Chatting Now!");
-
-                setLogProp(log, displayMsg, function (log) {
-                    addChatLog(log, done);
-                });
-            }
-        }
-
-        function setLogProp(log, displayMessage, callback) {
-            log.setLastMessage(displayMessage);
-
-            callback(log);
-        }
-
-        function addChatLog(chatLog, done) {
-            chatLog.time = ConvertDateTime.getTimeChatlog(chatLog.lastMessageTime);
-            chatLog.timeMsg = new Date(chatLog.lastMessageTime);
-            chatslog[chatLog.id] = chatLog;
-            done();
-            //            console.debug("addChatLog", chatLog);
-        }
-
-        function getRoomInfo() {
-            console.log("my roomAccess.length", dataManager.getRoomAccess().length);
-
-            async.mapSeries(unreadMessageMap, function iterator(item, resultCB) {
-                var roomInfo = dataManager.getGroup(item.rid);
-                if (!!roomInfo) {
-                    organizeChatLogMap(item, roomInfo, function done() {
-                        resultCB(null, {});
-                    });
-                }
-                else {
-                    console.warn("Can't find roomInfo from persisted data: ", item.rid);
-
-                    server.getRoomInfo(item.rid, function (err, res) {
-                        if (res['code'] === HttpStatusCode.success) {
-                            var roomInfo = JSON.parse(JSON.stringify(res.data));
-                            if (roomInfo.type === RoomType.privateChat) {
-                                var targetMemberId = "";
-                                roomInfo.members.some(function itorator(item) {
-                                    if (item.id !== dataManager.myProfile._id) {
-                                        targetMemberId = item.id;
-                                        return item.id;
-                                    }
-                                });
-
-                                var contactProfile = dataManager.getContactProfile(targetMemberId);
-                                if (contactProfile == null) {
-                                    roomInfo.name = "EMPTY ROOM";
-                                }
-                                else {
-                                    roomInfo.name = contactProfile.displayname;
-                                    roomInfo.image = contactProfile.image;
-                                }
-                            }
-                            else {
-                                console.warn("OMG: the god only know. May be group status is not active.");
-                            }
-
-                            dataManager.addGroup(roomInfo);
-
-                            organizeChatLogMap(item, roomInfo, function done() {
-                                resultCB(null, {});
-                            });
-                        }
-                        else {
-                            console.warn("Fail to get room info of room %s", item.rid, res.message);
-                            resultCB(null, {});
-                        }
-                    });
-                }
-            }, function done(err, results) {
-                console.debug("getRoomInfo Completed.");
-            });
+            return chatsLogComponent.getChatsLog();
         }
 
         function onUnreadMessageMapChanged(unread) {
@@ -300,11 +152,15 @@
             else {
                 console.log("Prepare update chats log of room: ", roomInfo.name);
             }
-            organizeChatLogMap(unread, roomInfo, function () { });
+            
+            chatsLogComponent.organizeChatLogMap(unread, roomInfo, function () {
+                $rootScope.$broadcast('onUnreadMessageMapChanged', { data: unread });
+            });
         }
 
         function getunreadmessagecomplete() {
-            getRoomInfo();
+            $rootScope.$broadcast('getunreadmessagecomplete', {});
+            chatsLogComponent.getRoomsInfo(unreadMessageMap);
         }
     }
 })();

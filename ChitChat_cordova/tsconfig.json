@@ -1,8 +1,8 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "outFile": "www/scripts/appBundle.js",
-    "target": "es5",
+    "outFile": "www/src/appBundle.js",
+    "target": "es2015",
     "rootDir": "scripts"
   },
   "exclude": [
@@ -10,7 +10,6 @@
     "www",
     "platforms",
     "plugins",
-    "vscode",
-    "scripts/typings"
+    "vscode"
   ]
 }

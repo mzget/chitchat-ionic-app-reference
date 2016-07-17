@@ -50,6 +50,13 @@ class DataManager implements absSpartan.IFrontendServerListener {
             return false;
         }
     }
+
+    /**
+     * RoomAccess...
+     */
+    public getRoomAccess(): RoomAccessData[] {
+        return this.myProfile.roomAccess;
+    }
     public setRoomAccessForUser(data) {
         if(!!data.roomAccess) {
             this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
@@ -58,7 +65,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
         }
     }
     public updateRoomAccessForUser(data) {
-        var arr: Array<RoomAccessData> = JSON.parse(JSON.stringify(data.roomAccess));
+        let arr: Array<RoomAccessData> = JSON.parse(JSON.stringify(data.roomAccess));
         this.myProfile.roomAccess.forEach(value => {
             if (value.roomId === arr[0].roomId) {
                 value.accessTime = arr[0].accessTime;
@@ -66,9 +73,6 @@ class DataManager implements absSpartan.IFrontendServerListener {
                 return;
             }
         });
-    }
-    public getRoomAccess(): RoomAccessData[] {
-        return this.myProfile.roomAccess;
     }
 
     public getCompanyInfo() {
