@@ -173,7 +173,7 @@
     public getNewerMessageRecord(callback: (err, res) => void) {
         let self = this;
         let lastMessageTime = new Date();
-        let promise = new Promise(function promise(resolve, reject) {
+        new Promise(function promise(resolve, reject) {
             if (self.chatMessages[self.chatMessages.length - 1] != null) {
                 lastMessageTime = self.chatMessages[self.chatMessages.length - 1].createTime;
                 resolve();
@@ -197,12 +197,11 @@
                     }
                 });
             }
-        });
-
-        promise.then((value) => {
+        })
+        .then((value) => {
             self.getNewerMessageFromNet(lastMessageTime, callback);
-        });
-        promise.catch(() => {
+        })
+        .catch((err) => {
             console.warn("this room_id is not contain in roomAccess list.");
 
             self.getNewerMessageFromNet(lastMessageTime, callback);
@@ -505,8 +504,8 @@
 
     public updateReadMessages() {
         let self = this;
-
-        async.map(self.chatMessages, function itorator(message, resultCb) {
+        
+        async.each(self.chatMessages, function itorator(message, errCb) {
             if (!self.dataManager.isMySelf(message.sender)) {
                 if (!!message.readers) {
                     let isReaded = message.readers.some(element => {
@@ -517,19 +516,22 @@
                     });
 
                     if (isReaded)
-                        resultCb(null, null);
+                        errCb(null);
                     else {
+                        message.readers.push(self.dataManager.myProfile._id);
                         self.chatRoomApi.updateMessageReader(message._id, message.rid);
-                        resultCb(null, null);
+                        errCb(null);
                     }
                 }
                 else {
+                    message.readers = new Array<string>();
+                    message.readers.push(self.dataManager.myProfile._id);
                     self.chatRoomApi.updateMessageReader(message._id, message.rid);
-                    resultCb(null, null);
+                    errCb(null);
                 }
             }
             else {
-                resultCb(null, null);
+                errCb(null);
             }
         }, function done(err) {
             //@ done.

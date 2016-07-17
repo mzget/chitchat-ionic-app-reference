@@ -184,7 +184,7 @@ class ChatRoomComponent {
     getNewerMessageRecord(callback) {
         let self = this;
         let lastMessageTime = new Date();
-        let promise = new Promise(function promise(resolve, reject) {
+        new Promise(function promise(resolve, reject) {
             if (self.chatMessages[self.chatMessages.length - 1] != null) {
                 lastMessageTime = self.chatMessages[self.chatMessages.length - 1].createTime;
                 resolve();
@@ -208,11 +208,11 @@ class ChatRoomComponent {
                     }
                 });
             }
-        });
-        promise.then((value) => {
+        })
+            .then((value) => {
             self.getNewerMessageFromNet(lastMessageTime, callback);
-        });
-        promise.catch(() => {
+        })
+            .catch((err) => {
             console.warn("this room_id is not contain in roomAccess list.");
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
@@ -484,7 +484,7 @@ class ChatRoomComponent {
     }
     updateReadMessages() {
         let self = this;
-        async.map(self.chatMessages, function itorator(message, resultCb) {
+        async.each(self.chatMessages, function itorator(message, errCb) {
             if (!self.dataManager.isMySelf(message.sender)) {
                 if (!!message.readers) {
                     let isReaded = message.readers.some(element => {
@@ -494,19 +494,22 @@ class ChatRoomComponent {
                         }
                     });
                     if (isReaded)
-                        resultCb(null, null);
+                        errCb(null);
                     else {
+                        message.readers.push(self.dataManager.myProfile._id);
                         self.chatRoomApi.updateMessageReader(message._id, message.rid);
-                        resultCb(null, null);
+                        errCb(null);
                     }
                 }
                 else {
+                    message.readers = new Array();
+                    message.readers.push(self.dataManager.myProfile._id);
                     self.chatRoomApi.updateMessageReader(message._id, message.rid);
-                    resultCb(null, null);
+                    errCb(null);
                 }
             }
             else {
-                resultCb(null, null);
+                errCb(null);
             }
         }, function done(err) {
             //@ done.
@@ -1730,10 +1733,6 @@ class RoomDAL {
         });
     }
 }
-class MessageMeta {
-}
-class Message {
-}
 class CompanyInfo {
 }
 class ContactInfo {
@@ -1771,6 +1770,10 @@ var MemberRole;
     MemberRole[MemberRole["member"] = 0] = "member";
     MemberRole[MemberRole["admin"] = 1] = "admin";
 })(MemberRole || (MemberRole = {}));
+class MessageMeta {
+}
+class Message {
+}
 class MinLocation {
 }
 var RoomType;
