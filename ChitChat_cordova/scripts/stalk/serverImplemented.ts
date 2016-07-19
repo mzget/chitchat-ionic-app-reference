@@ -585,6 +585,7 @@ module ChatServer {
             msg["roomId"] = roomId;
 
             pomelo.request("chat.chatRoomHandler.getRoomInfo", msg, (result) => {
+                console.log("chat.chatRoomHandler.getRoomInfo", result);
                 if (callback != null)
                     callback(null, result);
             });
@@ -596,6 +597,7 @@ module ChatServer {
             msg["roomId"] = roomId;
             msg["lastAccessTime"] = lastAccessTime;
             pomelo.request("chat.chatRoomHandler.getUnreadRoomMessage", msg, (result) => {
+                console.log("chat.chatRoomHandler.getUnreadRoomMessage", result);
                 if (callback != null) {
                     callback(null, result);
                 }

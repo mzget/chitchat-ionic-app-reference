@@ -17,25 +17,30 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
             v(dataEvent);
         });
     }
+
     onAccessRoom(dataEvent) {
         let self = this;
         let dataManager = self.main.getDataManager();
         let roomAccess: RoomAccessData[] = JSON.parse(JSON.stringify(dataEvent.roomAccess));
 
-        console.debug("ChatsLogComponent.onAccessRoom", roomAccess.length, roomAccess);
-        roomAccess.map(value => {
-            self.main.roomDAL.getData(value.roomId, (err, roomInfo) => {
+        console.debug("ChatsLogComponent.onAccessRoom", roomAccess.length);
+
+        async.map(roomAccess, function iterator(item, resultCallback) {
+            self.main.roomDAL.getData(item.roomId, (err, roomInfo) => {
                 if (!err) {
                     dataManager.addGroup(roomInfo);
                 }
+
+                resultCallback(null, roomInfo);
             });
+        }, function done(err, results) {
+            self._isReady = true;
+
+            if (!!self.onReady)
+                self.onReady();
         });
-
-
-        this._isReady = true;
-        if (!!this.onReady)
-            this.onReady();
     }
+
     public updatedLastAccessTimeEvent: (data) => void;
     onUpdatedLastAccessTime(dataEvent) {
         console.warn("ChatsLogComponent.onUpdatedLastAccessTime", JSON.stringify(dataEvent));
@@ -101,7 +106,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
                 cb(null, null);
             }
         }, function done(err) {
-            console.log("get unread message of all your roomAccess is done.");
+            console.log("getUnreadMessages from your roomAccess is done.");
             callback(null, unreadLogs);
         });
     }
@@ -127,7 +132,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
         let self = this;
         let dataManager = this.main.getDataManager();
 
-        async.map(unreadMessageMap, function iterator(item, resultCB: (err, room: Room) => void) {
+        async.map(unreadMessageMap, function iterator(item: IUnreadMessage, resultCB: (err, result: Room) => void) {
             let roomInfo = dataManager.getGroup(item.rid);
             if (!!roomInfo) {
                 self.organizeChatLogMap(item, roomInfo, function done() {
