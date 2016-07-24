@@ -1144,7 +1144,6 @@ class DataManager {
     }
     //<!------------------------------------------------------
     onUserLogin(dataEvent) {
-        console.log("user logedIn", JSON.stringify(dataEvent));
         let jsonObject = JSON.parse(JSON.stringify(dataEvent));
         let _id = jsonObject._id;
         let self = this;
@@ -1160,13 +1159,16 @@ class DataManager {
                 contact.displayname = data.displayname;
                 contact.image = data.image;
                 contact.status = data.status;
-                console.warn(contact);
                 self.orgMembers[contact._id] = contact;
+                console.log(contact);
                 if (self.onContactsDataReady != null) {
                     self.onContactsDataReady();
                 }
                 console.log("We need to save contacts list to persistence data layer.");
             });
+        }
+        else {
+            console.log("Online:", this.orgMembers[_id]);
         }
     }
     updateContactImage(contactId, url) {
@@ -2765,7 +2767,7 @@ var ChatServer;
             });
             //<!-- User -->
             pomelo.on(ServerEventListener.ON_USER_LOGIN, data => {
-                console.log(ServerEventListener.ON_USER_LOGIN);
+                console.log(ServerEventListener.ON_USER_LOGIN, data);
                 self.serverListener.onUserLogin(data);
             });
             pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, (data) => {

@@ -4,7 +4,6 @@
   },
   "globalDependencies": {
     "async": "registry:dt/async#1.4.2+20160501155344",
-    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
     "localforage": "registry:dt/localforage#0.0.0+20160629074517",
     "promise": "registry:dt/promise#7.1.1+20160316171810"
   }

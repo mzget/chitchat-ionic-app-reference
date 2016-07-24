@@ -974,7 +974,7 @@ module ChatServer {
 
             //<!-- User -->
             pomelo.on(ServerEventListener.ON_USER_LOGIN, data => {
-                console.log(ServerEventListener.ON_USER_LOGIN);
+                console.log(ServerEventListener.ON_USER_LOGIN, data);
 
                 self.serverListener.onUserLogin(data);
             });
