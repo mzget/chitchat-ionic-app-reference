@@ -30,7 +30,7 @@
         $ionicPlatform.ready(function () {
             console.log(vm.title + " : ionic ready.");
 
-            if (ionic.Platform.platform() === 'ios' || ionic.Platform.platform() === 'android') {
+            if ($rootScope.isMobile) {
                 try {
                     $cordovaSpinnerDialog.show("", "Wait for signing...", true);
                 }
@@ -69,7 +69,7 @@
                     $('#splash').css({ 'display': 'none' });
 
                     // Hide spinner dialog
-                    if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                    if ($rootScope.isMobile) {
                         try {
                             $cordovaSpinnerDialog.hide();
                         }
@@ -81,7 +81,7 @@
                         $ionicLoading.hide();
                     }
 
-                    if (ionic.Platform.platform() == "ios" || ionic.Platform.platform() == 'android') {
+                    if ($rootScope.isMobile) {
                         $state.go('tab.group');
                     }
                     else {
@@ -247,7 +247,7 @@
                         }
                         else {
                             // Show spinner dialog
-                            if (ionic.Platform.platform() === "ios" || ionic.Platform.platform() === 'android') {
+                            if ($rootScope.isMobile) {
                                 try {
                                     $cordovaSpinnerDialog.show(null, "loging in...", true);
                                 }
@@ -259,9 +259,9 @@
                                 });
                             }
 
-                            main.getHashService(password, function (err, res) {
-                                main.authenUser(server, email, res, registrationId, function (err, res) {
-                                    if (!err && res !== null) {
+                            main.getHashService(password, function (err, hash) {
+                                main.authenUser(server, email, hash, registrationId, function (err, res) {
+                                    if (!err) {
                                         if (res.code === HttpStatusCode.success) {
                                             console.log("Success Authen User via siging...");
                                         }
