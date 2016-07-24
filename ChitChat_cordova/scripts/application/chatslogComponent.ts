@@ -156,6 +156,8 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
                 }
 
                 self.main.getDataManager().addGroup(roomInfo);
+                self.main.roomDAL.saveData(roomInfo._id, roomInfo);
+
                 resultCB(null, roomInfo);
             }
             else {

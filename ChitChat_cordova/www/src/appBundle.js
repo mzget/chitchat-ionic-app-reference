@@ -670,6 +670,7 @@ class ChatsLogComponent {
                     console.warn("OMG: the god only know. May be group status is not active.");
                 }
                 self.main.getDataManager().addGroup(roomInfo);
+                self.main.roomDAL.saveData(roomInfo._id, roomInfo);
                 resultCB(null, roomInfo);
             }
             else {
