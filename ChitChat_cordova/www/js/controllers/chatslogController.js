@@ -23,7 +23,7 @@
         activate();
             
         function activate() { 
-            console.warn(vm.title, "activate");
+            console.debug(vm.title, "activate");
             
             displayLogs();
         }

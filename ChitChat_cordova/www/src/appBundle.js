@@ -2048,10 +2048,16 @@ var ChatServer;
             });
         }
         loadSocket(resolve, rejected) {
-            require(["../js/pomelo-web/pomelo"], (value) => {
-                pomelo = value;
+            try {
+                pomelo = require("./js/pomelo/pomeloclient");
                 resolve(pomelo);
-            });
+            }
+            catch (e) {
+                require(["../js/pomelo-web/pomelo"], (value) => {
+                    pomelo = value;
+                    resolve(pomelo);
+                });
+            }
         }
         loadConfig(callback) {
             this.appConfig = JSON.parse(config);

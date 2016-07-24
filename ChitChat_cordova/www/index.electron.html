@@ -18,7 +18,6 @@
         <link rel="stylesheet" href="lib/angular-material/angular-material.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <!-- All of angular... -->
-        <script src="js/jquery.min.js"></script>
         <script src="lib/angular/angular.min.js"></script>
         <script src="lib/angular-toArrayFilter/toArrayFilter.js"></script>
         <script src="lib/angular-aria/angular-aria.js"></script>
@@ -33,6 +32,17 @@
         <script src="lib/ngCordova/dist/ng-cordova.js"></script>
         <script src="js/ngStorage.js"></script>
 
+        <!-- Other utils plugins -->
+        <script src="lib/jquery/dist/jquery.min.js"></script>
+        <script src="lib/async/dist/async.min.js"></script>
+        <script src="lib/localforage/dist/localforage.min.js"></script>
+        <script src="lib/crypto-js/crypto-js.js"></script>
+        <script src="lib/HTML5-Desktop-Notifications2/desktop-notify.js"></script>
+        <script src="lib/angular-web-notification/angular-web-notification.js"></script>
+        <script src="lib/socket-io-client/dist/socket.io.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHES_5dswUs4LmAJ8FKOaZcDPiuNWdEg&libraries=places"></script>
+        <script src="lib/requirejs/require.js" data-main="src/appBundle.js"></script>
+        <script src="src/appBundle.js"></script>
 
         <!-- your app's js -->
         <script src="js/appBrowser.js"></script>
@@ -68,18 +78,6 @@
         <script src="js/directives/mapDirectives.js"></script>
         <script src="js/directives/webNotifyDirective.js"></script>
 
-        <script type="text/javascript" src="lib/HTML5-Desktop-Notifications2/desktop-notify.js"></script>
-        <script type="text/javascript" src="lib/angular-web-notification/angular-web-notification.js"></script>
-
-        <!-- Other utils plugins -->
-        <script src="lib/async/dist/async.min.js"></script>
-        <script src="lib/localforage/dist/localforage.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIHES_5dswUs4LmAJ8FKOaZcDPiuNWdEg&libraries=places"></script>
-        <script src="lib/socket-io-client/dist/socket.io.min.js"></script>
-
-        <script src="js/require.js" data-main="scripts/appBundle"></script>
-        <script src="scripts/appBundle.js"></script>
-
         <script type="application/javascript">          
             function loadBody() {
                 console.log('loadBody');
@@ -92,15 +90,28 @@
     <body ng-app="starter" ng-cloak onload="javascript:loadBody()" onunload="javascript:unloadBody()" class="web-notify">
         <!--<script src="js/socket.io.js"></script>-->
         <script>
-            let EventEmitter = require("./js/pomelo/EventEmitter.js");
-            let pomeloclient = require("./js/pomelo/pomeloclient.js"); 
+            //let EventEmitter = require("./js/pomelo/EventEmitter.js");
+            //let pomeloclient = require("./js/pomelo/pomeloclient.js"); 
             let async = require("./lib/async/dist/async.min.js");
+            window.$ = window.jQuery = require('./lib/jquery/dist/jquery.min.js');
             
             console.log("index.electron.html");
 
-            window.$ = window.jQuery = require('./js/jquery.min.js');
-            
-            let socket = io;
+            var config;
+            var CryptoJS;
+            var socket = io;
+
+            let xobj = new XMLHttpRequest();
+            xobj.overrideMimeType("application/json");
+            xobj.open('GET', 'configs/appconfig.json', true); // Replace 'my_data' with the path to your file
+            xobj.onreadystatechange = function () {
+                if (xobj.readyState == 4 && xobj.status == "200") {
+                    // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+                    config = xobj.responseText;
+                }
+            };
+            xobj.send(null);
+
             let main = Main.getInstance();
             let server = ChatServer.ServerImplemented.prototype;
             let serverEvents = ChatServer.ServerEventListener.prototype;

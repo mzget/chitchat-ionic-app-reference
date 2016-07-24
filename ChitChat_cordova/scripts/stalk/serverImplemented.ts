@@ -64,7 +64,7 @@ module ChatServer {
 
         public disConnect() {
             console.log('disconnecting...');
-            
+
             if (!!pomelo) {
                 pomelo.removeAllListeners();
                 pomelo.disconnect();
@@ -99,10 +99,16 @@ module ChatServer {
         }
 
         private loadSocket(resolve, rejected) {
-            require(["../js/pomelo-web/pomelo"], (value) => {
-                pomelo = value;
+            try {
+                pomelo = require("./js/pomelo/pomeloclient");
                 resolve(pomelo);
-            });
+            }
+            catch (e) {
+                require(["../js/pomelo-web/pomelo"], (value) => {
+                    pomelo = value;
+                    resolve(pomelo);
+                });
+            }
         }
 
         private loadConfig(callback: (err, res) => void) {
