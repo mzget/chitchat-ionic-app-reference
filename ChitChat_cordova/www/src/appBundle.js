@@ -1152,19 +1152,24 @@ class DataManager {
         if (!this.orgMembers[_id]) {
             //@ Need to get new contact info.
             ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, (err, res) => {
-                console.log("getMemberProfile : ", err, JSON.stringify(res));
-                let data = JSON.parse(JSON.stringify(res.data));
-                let contact = new ContactInfo();
-                contact._id = data._id;
-                contact.displayname = data.displayname;
-                contact.image = data.image;
-                contact.status = data.status;
-                self.orgMembers[contact._id] = contact;
-                console.log(contact);
-                if (self.onContactsDataReady != null) {
-                    self.onContactsDataReady();
+                if (!err) {
+                    console.log("getMemberProfile : result", JSON.stringify(res));
+                    let datas = JSON.parse(JSON.stringify(res.data));
+                    let contact = new ContactInfo();
+                    contact._id = datas[0]._id;
+                    contact.displayname = datas[0].displayname;
+                    contact.image = datas[0].image;
+                    contact.status = datas[0].status;
+                    self.orgMembers[contact._id] = contact;
+                    console.log(contact);
+                    if (self.onContactsDataReady != null) {
+                        self.onContactsDataReady();
+                    }
+                    console.log("We need to save contacts list to persistence data layer.");
                 }
-                console.log("We need to save contacts list to persistence data layer.");
+                else {
+                    console.error("getMemberProfile fail.", err);
+                }
             });
         }
         else {

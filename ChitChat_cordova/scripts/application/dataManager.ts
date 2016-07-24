@@ -6,16 +6,16 @@ interface IMemberMep {
 }
 
 class DataManager implements absSpartan.IFrontendServerListener {
-/*
-    private static _instance: DataManager;
-    public static getInstance(): DataManager {
-        if (this._instance === null || this._instance === undefined) {
-            this._instance = new DataManager();
+    /*
+        private static _instance: DataManager;
+        public static getInstance(): DataManager {
+            if (this._instance === null || this._instance === undefined) {
+                this._instance = new DataManager();
+            }
+    
+            return this._instance;
         }
-
-        return this._instance;
-    }
-*/
+    */
     public myProfile: User;
     public orgGroups: IRoomMap = {};
     public projectBaseGroups: IRoomMap = {};
@@ -58,9 +58,9 @@ class DataManager implements absSpartan.IFrontendServerListener {
         return this.myProfile.roomAccess;
     }
     public setRoomAccessForUser(data) {
-        if(!!data.roomAccess) {
+        if (!!data.roomAccess) {
             this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
-            
+
             console.info('set user roomAccess info.');
         }
     }
@@ -80,22 +80,22 @@ class DataManager implements absSpartan.IFrontendServerListener {
     }
     public setCompanyInfo(data: any) {
         this.companyInfo = JSON.parse(JSON.stringify(data));
-        
-        if(!!this.onCompanyInfoReady) {
+
+        if (!!this.onCompanyInfoReady) {
             this.onCompanyInfoReady();
         }
     }
 
     //<!---------- Group ------------------------------------
 
-    public getGroup(id:string) : Room {
-        if(!!this.orgGroups[id]) {
+    public getGroup(id: string): Room {
+        if (!!this.orgGroups[id]) {
             return this.orgGroups[id];
         }
-        else if(!!this.projectBaseGroups[id]) {
+        else if (!!this.projectBaseGroups[id]) {
             return this.projectBaseGroups[id];
         }
-        else if(!!this.privateGroups[id]) {
+        else if (!!this.privateGroups[id]) {
             return this.privateGroups[id];
         }
         else if (!!this.privateChats && !!this.privateChats[id]) {
@@ -129,18 +129,18 @@ class DataManager implements absSpartan.IFrontendServerListener {
                 break;
             default:
                 console.info("new room is not a group type.");
-            break;
+                break;
         }
     }
-    
+
     public updateGroupImage(data: Room) {
-        if(!!this.orgGroups[data._id]) {
+        if (!!this.orgGroups[data._id]) {
             this.orgGroups[data._id].image = data.image;
         }
-        else if(!!this.projectBaseGroups[data._id]) {
+        else if (!!this.projectBaseGroups[data._id]) {
             this.projectBaseGroups[data._id].image = data.image;
         }
-        else if(!!this.privateGroups[data._id]) {
+        else if (!!this.privateGroups[data._id]) {
             this.privateGroups[data._id].image = data.image;
         }
     }
@@ -228,13 +228,13 @@ class DataManager implements absSpartan.IFrontendServerListener {
     private checkMySelfInNewMembersReceived(data: Room): boolean {
         var self = this;
         var hasMe = data.members.some(function isMySelfId(element, index, array) {
-            return element.id === self.myProfile._id; 
+            return element.id === self.myProfile._id;
         });
 
         console.debug("New data has me", hasMe);
         return hasMe;
     }
-    
+
     //<!------------------------------------------------------
 
     public onUserLogin(dataEvent) {
@@ -246,24 +246,29 @@ class DataManager implements absSpartan.IFrontendServerListener {
         if (!this.orgMembers[_id]) {
             //@ Need to get new contact info.
             ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, (err, res) => {
-                console.log("getMemberProfile : ", err, JSON.stringify(res));
+                if (!err) {
+                    console.log("getMemberProfile : result", JSON.stringify(res));
 
-                let data = JSON.parse(JSON.stringify(res.data));
-                let contact: ContactInfo = new ContactInfo();
-                contact._id = data._id;
-                contact.displayname = data.displayname;
-                contact.image = data.image;
-                contact.status = data.status;
+                    let datas: Array<any> = JSON.parse(JSON.stringify(res.data));
+                    let contact: ContactInfo = new ContactInfo();
+                    contact._id = datas[0]._id;
+                    contact.displayname = datas[0].displayname;
+                    contact.image = datas[0].image;
+                    contact.status = datas[0].status;
 
-                self.orgMembers[contact._id] = contact;
+                    self.orgMembers[contact._id] = contact;
 
-                console.log(contact);
+                    console.log(contact);
 
-                if (self.onContactsDataReady != null) {
-                    self.onContactsDataReady();
+                    if (self.onContactsDataReady != null) {
+                        self.onContactsDataReady();
+                    }
+
+                    console.log("We need to save contacts list to persistence data layer.");
                 }
-
-                console.log("We need to save contacts list to persistence data layer.");
+                else {
+                    console.error("getMemberProfile fail.", err);
+                }
             });
         }
         else {
@@ -272,34 +277,34 @@ class DataManager implements absSpartan.IFrontendServerListener {
     }
 
     public updateContactImage(contactId: string, url: string) {
-        if(!!this.orgMembers[contactId]) {
-           this.orgMembers[contactId].image = url;
+        if (!!this.orgMembers[contactId]) {
+            this.orgMembers[contactId].image = url;
         }
     }
-    public updateContactProfile(contactId:string, params: any) {
-        if(!!this.orgMembers[contactId]) {
+    public updateContactProfile(contactId: string, params: any) {
+        if (!!this.orgMembers[contactId]) {
             var jsonObj = JSON.parse(JSON.stringify(params));
-            if(!!jsonObj.displayname) {
+            if (!!jsonObj.displayname) {
                 this.orgMembers[contactId].displayname = jsonObj.displayname;
             }
-            if(!!jsonObj.status) {
+            if (!!jsonObj.status) {
                 this.orgMembers[contactId].status = jsonObj.status;
             }
         }
     }
-    public getContactProfile(contactId: string) : ContactInfo {
-        if(!!this.orgMembers[contactId]) {
+    public getContactProfile(contactId: string): ContactInfo {
+        if (!!this.orgMembers[contactId]) {
             return this.orgMembers[contactId];
         }
         else {
             console.warn('this contactId is invalid. Maybe it not contain in list of contacts.');
         }
     }
-    
+
     public onGetMe(dataEvent) {
         var self = this;
         var _profile = JSON.parse(JSON.stringify(dataEvent));
-        if(dataEvent.code === 200) {
+        if (dataEvent.code === 200) {
             this.setMyProfile(dataEvent.data);
         }
         else {
@@ -309,7 +314,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
     public onGetCompanyInfo(dataEvent) {
         var self = this;
         var _company = JSON.parse(JSON.stringify(dataEvent));
-        if(dataEvent.code === 200) {
+        if (dataEvent.code === 200) {
             this.setCompanyInfo(dataEvent.data);
         }
         else {
@@ -327,11 +332,11 @@ class DataManager implements absSpartan.IFrontendServerListener {
             if (!self.orgMembers[item._id]) {
                 self.orgMembers[item._id] = item;
             }
-            
+
             cb();
         }, function done(err) {
             self.isOrgMembersReady = true;
-            });
+        });
 
         if (this.onContactsDataReady != null)
             this.onContactsDataReady();
