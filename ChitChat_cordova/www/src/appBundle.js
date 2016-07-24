@@ -644,6 +644,39 @@ class ChatsLogComponent {
             }
         });
     }
+    getRoomInfo(room_id, resultCB) {
+        let self = this;
+        this.server.getRoomInfo(room_id, function (err, res) {
+            if (res.code === HttpStatusCode.success) {
+                let roomInfo = JSON.parse(JSON.stringify(res.data));
+                if (roomInfo.type === RoomType.privateChat) {
+                    let targetMemberId = "";
+                    roomInfo.members.some((item) => {
+                        if (item.id !== self.main.getDataManager().myProfile._id) {
+                            targetMemberId = item.id;
+                            return true;
+                        }
+                    });
+                    let contactProfile = self.main.getDataManager().getContactProfile(targetMemberId);
+                    if (contactProfile == null) {
+                        roomInfo.name = "EMPTY ROOM";
+                    }
+                    else {
+                        roomInfo.name = contactProfile.displayname;
+                        roomInfo.image = contactProfile.image;
+                    }
+                }
+                else {
+                    console.warn("OMG: the god only know. May be group status is not active.");
+                }
+                self.main.getDataManager().addGroup(roomInfo);
+                resultCB(null, roomInfo);
+            }
+            else {
+                resultCB("Cannot get roomInfo", null);
+            }
+        });
+    }
     getRoomsInfo(unreadMessageMap) {
         let self = this;
         let dataManager = this.main.getDataManager();
@@ -785,6 +818,30 @@ class ChatsLogComponent {
         chatLog.timeMsg = new Date(chatLog.lastMessageTime);
         this.chatslog[chatLog.id] = chatLog;
         done();
+    }
+    checkRoomInfo(unread) {
+        return new Promise((resolve, rejected) => {
+            let roomInfo = this.main.getDataManager().getGroup(unread.rid);
+            if (!roomInfo) {
+                console.warn("No have roomInfo in room store.", roomInfo);
+                this.getRoomInfo(unread.rid, (err, res) => {
+                    if (!!res) {
+                        this.organizeChatLogMap(unread, res, () => {
+                            resolve();
+                        });
+                    }
+                    else {
+                        rejected();
+                    }
+                });
+            }
+            else {
+                console.log("Prepare update chats log of room: ", roomInfo.name);
+                this.organizeChatLogMap(unread, roomInfo, () => {
+                    resolve();
+                });
+            }
+        });
     }
 }
 class DataListener {

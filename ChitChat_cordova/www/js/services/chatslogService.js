@@ -145,16 +145,11 @@
 
         function onUnreadMessageMapChanged(unread) {
             console.log('UnreadMessageMapChanged: ', JSON.stringify(unread));
-            var roomInfo = dataManager.getGroup(unread.rid);
-            if(!roomInfo) {
-                console.warn("No have roomInfo in room store.", roomInfo);
-            }
-            else {
-                console.log("Prepare update chats log of room: ", roomInfo.name);
-            }
-            
-            chatsLogComponent.organizeChatLogMap(unread, roomInfo, function () {
+            let promise = chatsLogComponent.checkRoomInfo(unread);
+            promise.then(function() {
                 $rootScope.$broadcast('onUnreadMessageMapChanged', { data: unread });
+            }).catch(function() {
+                console.error("Cannot get roomInfo of ", unread.rid);
             });
         }
 
