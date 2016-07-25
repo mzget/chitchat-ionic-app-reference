@@ -242,9 +242,11 @@ angular.module('spartan.chat', [])
 		}
 		function viewReader(readers) {
 			var members = [];
-			async.eachSeries(readers, function iterator(item, cb) {
+			async.each(readers, function iterator(item, cb) {
 				var member = dataManager.orgMembers[item];
-				members.push(member);
+				if (!!member) {
+					members.push(member);
+				}
 				cb();
 			}, function done(err) {
 				$scope.readers = members;
