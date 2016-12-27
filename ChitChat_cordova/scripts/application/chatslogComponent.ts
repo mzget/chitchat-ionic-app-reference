@@ -27,7 +27,7 @@ class ChatsLogComponent implements absSpartan.IRoomAccessListenerImp {
 
         async.map(roomAccess, function iterator(item, resultCallback) {
             self.main.roomDAL.getData(item.roomId, (err, roomInfo) => {
-                if (!err) {
+                if (!err && !!roomInfo) {
                     dataManager.addGroup(roomInfo);
                 }
 

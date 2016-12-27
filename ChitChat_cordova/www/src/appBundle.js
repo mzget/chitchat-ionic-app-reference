@@ -1,55 +1,23 @@
-// For an introduction to the Blank template, see the following documentation:
-// http://go.microsoft.com/fwlink/?LinkID=397705
-// To debug code on page load in Ripple or on Android devices/emulators: launch your app, set breakpoints, 
-// and then run "window.location.reload()" in the JavaScript Console.
-var BlankCordovaApp1;
-(function (BlankCordovaApp1) {
-    "use strict";
-    var Application;
-    (function (Application) {
-        function initialize() {
-            document.addEventListener('deviceready', onDeviceReady, false);
-        }
-        Application.initialize = initialize;
-        function onDeviceReady() {
-            // Handle the Cordova pause and resume events
-            document.addEventListener('pause', onPause, false);
-            document.addEventListener('resume', onResume, false);
-            // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
-            console.warn("onDeviceReady");
-        }
-        function onPause() {
-            // TODO: This application has been suspended. Save application state here.
-            console.warn('onPause');
-        }
-        function onResume() {
-            // TODO: This application has been reactivated. Restore application state here.
-            console.warn('onResume');
-        }
-    })(Application = BlankCordovaApp1.Application || (BlankCordovaApp1.Application = {}));
-    window.onload = function () {
-        Application.initialize();
-    };
-})(BlankCordovaApp1 || (BlankCordovaApp1 = {}));
-class ChatLog {
-    constructor(room) {
+var ChatLog = (function () {
+    function ChatLog(room) {
         this.id = room._id;
         this.roomName = room.name;
         this.roomType = room.type;
         this.room = room;
     }
-    setNotiCount(count) {
+    ChatLog.prototype.setNotiCount = function (count) {
         this.count = count;
-    }
-    setLastMessage(lastMessage) {
+    };
+    ChatLog.prototype.setLastMessage = function (lastMessage) {
         this.lastMessage = lastMessage;
-    }
-    setLastMessageTime(lastMessageTime) {
+    };
+    ChatLog.prototype.setLastMessageTime = function (lastMessageTime) {
         this.lastMessageTime = lastMessageTime;
-    }
-}
-class ChatRoomComponent {
-    constructor(main, room_id, messageDAL) {
+    };
+    return ChatLog;
+}());
+var ChatRoomComponent = (function () {
+    function ChatRoomComponent(main, room_id, messageDAL) {
         this.chatMessages = [];
         this.main = main;
         this.serverImp = this.main.getServerImp();
@@ -59,26 +27,27 @@ class ChatRoomComponent {
         this.messageDAL = messageDAL;
         console.log("constructor ChatRoomComponent");
     }
-    onChat(chatMessageImp) {
-        let self = this;
+    ChatRoomComponent.prototype.onChat = function (chatMessageImp) {
+        var _this = this;
+        var self = this;
         if (this.roomId === chatMessageImp.rid) {
-            let secure = new SecureService();
+            var secure = new SecureService();
             if (chatMessageImp.type.toString() === ContentType[ContentType.Text]) {
                 if (self.serverImp.appConfig.encryption == true) {
-                    secure.decryptWithSecureRandom(chatMessageImp.body, (err, res) => {
+                    secure.decryptWithSecureRandom(chatMessageImp.body, function (err, res) {
                         if (!err) {
                             chatMessageImp.body = res;
                             self.chatMessages.push(chatMessageImp);
                             self.messageDAL.saveData(self.roomId, self.chatMessages);
-                            if (!!this.serviceListener)
-                                this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                            if (!!_this.serviceListener)
+                                _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                         }
                         else {
                             console.log(err, res);
                             self.chatMessages.push(chatMessageImp);
                             self.messageDAL.saveData(self.roomId, self.chatMessages);
-                            if (!!this.serviceListener)
-                                this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
+                            if (!!_this.serviceListener)
+                                _this.serviceListener(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
                         }
                     });
                 }
@@ -102,16 +71,16 @@ class ChatRoomComponent {
                 this.notifyEvent(ChatServer.ServerEventListener.ON_CHAT, chatMessageImp);
             }
         }
-    }
-    onLeaveRoom(data) {
-    }
-    onRoomJoin(data) {
-    }
-    onMessageRead(dataEvent) {
+    };
+    ChatRoomComponent.prototype.onLeaveRoom = function (data) {
+    };
+    ChatRoomComponent.prototype.onRoomJoin = function (data) {
+    };
+    ChatRoomComponent.prototype.onMessageRead = function (dataEvent) {
         console.log("onMessageRead", JSON.stringify(dataEvent));
-        let self = this;
-        let newMsg = JSON.parse(JSON.stringify(dataEvent));
-        let promise = new Promise(function (resolve, reject) {
+        var self = this;
+        var newMsg = JSON.parse(JSON.stringify(dataEvent));
+        var promise = new Promise(function (resolve, reject) {
             self.chatMessages.some(function callback(value) {
                 if (value._id === newMsg._id) {
                     value.readers = newMsg.readers;
@@ -121,17 +90,17 @@ class ChatRoomComponent {
                     return true;
                 }
             });
-        }).then((value) => {
+        }).then(function (value) {
             self.messageDAL.saveData(self.roomId, self.chatMessages);
         });
-    }
-    onGetMessagesReaders(dataEvent) {
+    };
+    ChatRoomComponent.prototype.onGetMessagesReaders = function (dataEvent) {
         console.log('onGetMessagesReaders', dataEvent);
-        let self = this;
-        let myMessagesArr = JSON.parse(JSON.stringify(dataEvent.data));
-        self.chatMessages.forEach((originalMsg, id, arr) => {
+        var self = this;
+        var myMessagesArr = JSON.parse(JSON.stringify(dataEvent.data));
+        self.chatMessages.forEach(function (originalMsg, id, arr) {
             if (self.dataManager.isMySelf(originalMsg.sender)) {
-                myMessagesArr.some((myMsg, index, array) => {
+                myMessagesArr.some(function (myMsg, index, array) {
                     if (originalMsg._id === myMsg._id) {
                         originalMsg.readers = myMsg.readers;
                         return true;
@@ -140,12 +109,12 @@ class ChatRoomComponent {
             }
         });
         self.messageDAL.saveData(self.roomId, self.chatMessages);
-    }
-    getPersistentMessage(rid, done) {
+    };
+    ChatRoomComponent.prototype.getPersistentMessage = function (rid, done) {
         var self = this;
-        self.messageDAL.getData(rid, (err, messages) => {
+        self.messageDAL.getData(rid, function (err, messages) {
             if (messages !== null) {
-                let chats = messages.slice(0);
+                var chats = messages.slice(0);
                 async.mapSeries(chats, function iterator(item, result) {
                     if (item.type === ContentType.Text) {
                         if (self.serverImp.appConfig.encryption == true) {
@@ -169,7 +138,7 @@ class ChatRoomComponent {
                         self.chatMessages.push(item);
                         result(null, item);
                     }
-                }, (err, results) => {
+                }, function (err, results) {
                     console.log("decode chats text completed.", self.chatMessages.length);
                     done(err, messages);
                 });
@@ -180,10 +149,10 @@ class ChatRoomComponent {
                 done(err, messages);
             }
         });
-    }
-    getNewerMessageRecord(callback) {
-        let self = this;
-        let lastMessageTime = new Date();
+    };
+    ChatRoomComponent.prototype.getNewerMessageRecord = function (callback) {
+        var self = this;
+        var lastMessageTime = new Date();
         new Promise(function promise(resolve, reject) {
             if (self.chatMessages[self.chatMessages.length - 1] != null) {
                 lastMessageTime = self.chatMessages[self.chatMessages.length - 1].createTime;
@@ -191,14 +160,14 @@ class ChatRoomComponent {
             }
             else {
                 var roomAccess = self.dataManager.getRoomAccess();
-                async.some(roomAccess, (item, cb) => {
+                async.some(roomAccess, function (item, cb) {
                     if (item.roomId === self.roomId) {
                         lastMessageTime = item.accessTime;
                         cb(null, true);
                     }
                     else
                         cb(null, false);
-                }, (result) => {
+                }, function (result) {
                     console.log(result);
                     if (result) {
                         resolve();
@@ -209,15 +178,15 @@ class ChatRoomComponent {
                 });
             }
         })
-            .then((value) => {
+            .then(function (value) {
             self.getNewerMessageFromNet(lastMessageTime, callback);
         })
-            .catch((err) => {
+            .catch(function (err) {
             console.warn("this room_id is not contain in roomAccess list.");
             self.getNewerMessageFromNet(lastMessageTime, callback);
         });
-    }
-    getNewerMessageFromNet(lastMessageTime, callback) {
+    };
+    ChatRoomComponent.prototype.getNewerMessageFromNet = function (lastMessageTime, callback) {
         var self = this;
         self.chatRoomApi.getChatHistory(self.roomId, lastMessageTime, function (err, result) {
             var histories = [];
@@ -258,7 +227,7 @@ class ChatRoomComponent {
                         }
                         console.debug("chatMessage.Count", self.chatMessages.length);
                         //<!-- Save persistent chats log here.
-                        self.messageDAL.saveData(self.roomId, self.chatMessages, (err, result) => {
+                        self.messageDAL.saveData(self.roomId, self.chatMessages, function (err, result) {
                             //self.getNewerMessageRecord();
                         });
                         if (callback !== null) {
@@ -280,9 +249,9 @@ class ChatRoomComponent {
                 }
             }
         });
-    }
-    getOlderMessageChunk(callback) {
-        let self = this;
+    };
+    ChatRoomComponent.prototype.getOlderMessageChunk = function (callback) {
+        var self = this;
         self.getTopEdgeMessageTime(function done(err, res) {
             self.chatRoomApi.getOlderMessageChunk(self.roomId, res, function response(err, res) {
                 //@ todo.
@@ -290,17 +259,17 @@ class ChatRoomComponent {
                  * Merge messages record to chatMessages array.
                  * Never save message to persistend layer.
                  */
-                let datas = [];
+                var datas = [];
                 datas = res.data;
-                let clientMessages = self.chatMessages.slice(0);
-                let mergedArray = [];
+                var clientMessages = self.chatMessages.slice(0);
+                var mergedArray = [];
                 if (datas.length > 0) {
                     var messages = JSON.parse(JSON.stringify(datas));
                     mergedArray = messages.concat(clientMessages);
                 }
-                let resultsArray = [];
+                var resultsArray = [];
                 async.map(mergedArray, function iterator(item, cb) {
-                    let hasMessage = resultsArray.some(function itor(value, id, arr) {
+                    var hasMessage = resultsArray.some(function itor(value, id, arr) {
                         if (value._id == item._id) {
                             return true;
                         }
@@ -320,18 +289,18 @@ class ChatRoomComponent {
                 });
             });
         });
-    }
-    checkOlderMessages(callback) {
-        let self = this;
+    };
+    ChatRoomComponent.prototype.checkOlderMessages = function (callback) {
+        var self = this;
         self.getTopEdgeMessageTime(function done(err, res) {
             self.chatRoomApi.checkOlderMessagesCount(self.roomId, res, function response(err, res) {
                 callback(err, res);
             });
         });
-    }
-    getTopEdgeMessageTime(callback) {
-        let self = this;
-        let topEdgeMessageTime = null;
+    };
+    ChatRoomComponent.prototype.getTopEdgeMessageTime = function (callback) {
+        var self = this;
+        var topEdgeMessageTime = null;
         if (self.chatMessages != null && self.chatMessages.length != 0) {
             if (!!self.chatMessages[0].createTime) {
                 topEdgeMessageTime = self.chatMessages[0].createTime;
@@ -345,8 +314,8 @@ class ChatRoomComponent {
         }
         console.debug('topEdgeMsg:', topEdgeMessageTime, JSON.stringify(self.chatMessages[0]));
         callback(null, topEdgeMessageTime);
-    }
-    compareMessage(a, b) {
+    };
+    ChatRoomComponent.prototype.compareMessage = function (a, b) {
         if (a.createTime > b.createTime) {
             return 1;
         }
@@ -355,8 +324,8 @@ class ChatRoomComponent {
         }
         // a must be equal to b
         return 0;
-    }
-    getMessage(chatId, Chats, callback) {
+    };
+    ChatRoomComponent.prototype.getMessage = function (chatId, Chats, callback) {
         var self = this;
         var myProfile = self.dataManager.myProfile;
         var chatLog = localStorage.getItem(myProfile._id + '_' + chatId);
@@ -376,7 +345,7 @@ class ChatRoomComponent {
                     else {
                         console.log("Decode local chat history for displaying:", arr_fromLog.length);
                         // let count = 0;
-                        arr_fromLog.map((log, i, a) => {
+                        arr_fromLog.map(function (log, i, a) {
                             var messageImp = log;
                             if (messageImp.type === ContentType[ContentType.Text]) {
                                 if (self.serverImp.appConfig.encryption == true) {
@@ -481,13 +450,13 @@ class ChatRoomComponent {
         }).catch(function onRejected(reason) {
             console.warn("promiss.onRejected", reason);
         });
-    }
-    updateReadMessages() {
-        let self = this;
+    };
+    ChatRoomComponent.prototype.updateReadMessages = function () {
+        var self = this;
         async.each(self.chatMessages, function itorator(message, errCb) {
             if (!self.dataManager.isMySelf(message.sender)) {
                 if (!!message.readers) {
-                    let isReaded = message.readers.some(element => {
+                    var isReaded = message.readers.some(function (element) {
                         //@ if you readed it.
                         if (self.dataManager.isMySelf(element)) {
                             return true;
@@ -515,14 +484,14 @@ class ChatRoomComponent {
             //@ done.
             console.warn("Next version we has to call updateMessageReader once time at here.");
         });
-    }
-    updateWhoReadMyMessages() {
-        let self = this;
-        self.getTopEdgeMessageTime((err, res) => {
+    };
+    ChatRoomComponent.prototype.updateWhoReadMyMessages = function () {
+        var self = this;
+        self.getTopEdgeMessageTime(function (err, res) {
             self.chatRoomApi.getMessagesReaders(res);
         });
-    }
-    leaveRoom(room_id, callback) {
+    };
+    ChatRoomComponent.prototype.leaveRoom = function (room_id, callback) {
         var self = this;
         if (self.serverImp._isConnected) {
             self.serverImp.LeaveChatRoomRequest(room_id, function (err, res) {
@@ -534,17 +503,18 @@ class ChatRoomComponent {
             console.warn(ChatServer.ServerImplemented.connectionProblemString);
             callback(new Error(ChatServer.ServerImplemented.connectionProblemString), null);
         }
-    }
-    joinRoom(callback) {
+    };
+    ChatRoomComponent.prototype.joinRoom = function (callback) {
         var self = this;
         self.serverImp.JoinChatRoomRequest(self.roomId, callback);
-    }
-    getMemberProfile(member, callback) {
+    };
+    ChatRoomComponent.prototype.getMemberProfile = function (member, callback) {
         this.serverImp.getMemberProfile(member.id, callback);
-    }
-}
-class ChatsLogComponent {
-    constructor(main, server, _convertDateService) {
+    };
+    return ChatRoomComponent;
+}());
+var ChatsLogComponent = (function () {
+    function ChatsLogComponent(main, server, _convertDateService) {
         this.chatListeners = new Array();
         this.chatslog = {};
         this.main = main;
@@ -553,24 +523,24 @@ class ChatsLogComponent {
         this.convertDateService = _convertDateService;
         console.log("ChatsLogComponent : constructor");
     }
-    addOnChatListener(listener) {
+    ChatsLogComponent.prototype.addOnChatListener = function (listener) {
         this.chatListeners.push(listener);
-    }
-    onChat(dataEvent) {
+    };
+    ChatsLogComponent.prototype.onChat = function (dataEvent) {
         console.log("ChatsLogComponent.onChat");
         //<!-- Provide chatslog service.
-        this.chatListeners.map((v, i, a) => {
+        this.chatListeners.map(function (v, i, a) {
             v(dataEvent);
         });
-    }
-    onAccessRoom(dataEvent) {
-        let self = this;
-        let dataManager = self.main.getDataManager();
-        let roomAccess = JSON.parse(JSON.stringify(dataEvent.roomAccess));
+    };
+    ChatsLogComponent.prototype.onAccessRoom = function (dataEvent) {
+        var self = this;
+        var dataManager = self.main.getDataManager();
+        var roomAccess = JSON.parse(JSON.stringify(dataEvent.roomAccess));
         console.debug("ChatsLogComponent.onAccessRoom", roomAccess.length);
         async.map(roomAccess, function iterator(item, resultCallback) {
-            self.main.roomDAL.getData(item.roomId, (err, roomInfo) => {
-                if (!err) {
+            self.main.roomDAL.getData(item.roomId, function (err, roomInfo) {
+                if (!err && !!roomInfo) {
                     dataManager.addGroup(roomInfo);
                 }
                 resultCallback(null, roomInfo);
@@ -580,31 +550,31 @@ class ChatsLogComponent {
             if (!!self.onReady)
                 self.onReady();
         });
-    }
-    onUpdatedLastAccessTime(dataEvent) {
+    };
+    ChatsLogComponent.prototype.onUpdatedLastAccessTime = function (dataEvent) {
         console.warn("ChatsLogComponent.onUpdatedLastAccessTime", JSON.stringify(dataEvent));
         if (!!this.updatedLastAccessTimeEvent) {
             this.updatedLastAccessTimeEvent(dataEvent);
         }
-    }
-    onAddRoomAccess(dataEvent) {
+    };
+    ChatsLogComponent.prototype.onAddRoomAccess = function (dataEvent) {
         console.warn("ChatsLogComponent.onAddRoomAccess", JSON.stringify(dataEvent));
         if (!!this.addNewRoomAccessEvent) {
             this.addNewRoomAccessEvent(dataEvent);
         }
-    }
-    onUpdateMemberInfoInProjectBase(dataEvent) {
+    };
+    ChatsLogComponent.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
         console.warn("ChatsLogComponent.onUpdateMemberInfoInProjectBase", JSON.stringify(dataEvent));
-    }
-    onEditedGroupMember(dataEvent) {
+    };
+    ChatsLogComponent.prototype.onEditedGroupMember = function (dataEvent) {
         console.warn("ChatsLogComponent.onEditedGroupMember", JSON.stringify(dataEvent));
-    }
-    getChatsLog() {
+    };
+    ChatsLogComponent.prototype.getChatsLog = function () {
         return this.chatslog;
-    }
-    getUnreadMessages(roomAccess, callback) {
-        let self = this;
-        let unreadLogs = [];
+    };
+    ChatsLogComponent.prototype.getUnreadMessages = function (roomAccess, callback) {
+        var self = this;
+        var unreadLogs = [];
         async.mapSeries(roomAccess, function iterator(item, cb) {
             if (!!item.roomId && !!item.accessTime) {
                 self.server.getUnreadMsgOfRoom(item.roomId, item.accessTime.toString(), function res(err, res) {
@@ -613,7 +583,7 @@ class ChatsLogComponent {
                     }
                     else {
                         if (res.code === HttpStatusCode.success) {
-                            let unread = JSON.parse(JSON.stringify(res.data));
+                            var unread = JSON.parse(JSON.stringify(res.data));
                             unread.rid = item.roomId;
                             unreadLogs.push(unread);
                         }
@@ -628,8 +598,8 @@ class ChatsLogComponent {
             console.log("getUnreadMessages from your roomAccess is done.");
             callback(null, unreadLogs);
         });
-    }
-    getUnreadMessage(roomAccess, callback) {
+    };
+    ChatsLogComponent.prototype.getUnreadMessage = function (roomAccess, callback) {
         this.server.getUnreadMsgOfRoom(roomAccess.roomId, roomAccess.accessTime.toString(), function res(err, res) {
             console.warn("getUnreadMsgOfRoom: ", JSON.stringify(res));
             if (err || res === null) {
@@ -637,27 +607,27 @@ class ChatsLogComponent {
             }
             else {
                 if (res.code === HttpStatusCode.success) {
-                    let unread = JSON.parse(JSON.stringify(res.data));
+                    var unread = JSON.parse(JSON.stringify(res.data));
                     unread.rid = roomAccess.roomId;
                     callback(null, unread);
                 }
             }
         });
-    }
-    getRoomInfo(room_id, resultCB) {
-        let self = this;
+    };
+    ChatsLogComponent.prototype.getRoomInfo = function (room_id, resultCB) {
+        var self = this;
         this.server.getRoomInfo(room_id, function (err, res) {
             if (res.code === HttpStatusCode.success) {
-                let roomInfo = JSON.parse(JSON.stringify(res.data));
+                var roomInfo = JSON.parse(JSON.stringify(res.data));
                 if (roomInfo.type === RoomType.privateChat) {
-                    let targetMemberId = "";
-                    roomInfo.members.some((item) => {
+                    var targetMemberId_1 = "";
+                    roomInfo.members.some(function (item) {
                         if (item.id !== self.main.getDataManager().myProfile._id) {
-                            targetMemberId = item.id;
+                            targetMemberId_1 = item.id;
                             return true;
                         }
                     });
-                    let contactProfile = self.main.getDataManager().getContactProfile(targetMemberId);
+                    var contactProfile = self.main.getDataManager().getContactProfile(targetMemberId_1);
                     if (contactProfile == null) {
                         roomInfo.name = "EMPTY ROOM";
                     }
@@ -677,12 +647,12 @@ class ChatsLogComponent {
                 resultCB("Cannot get roomInfo", null);
             }
         });
-    }
-    getRoomsInfo(unreadMessageMap) {
-        let self = this;
-        let dataManager = this.main.getDataManager();
+    };
+    ChatsLogComponent.prototype.getRoomsInfo = function (unreadMessageMap) {
+        var self = this;
+        var dataManager = this.main.getDataManager();
         async.map(unreadMessageMap, function iterator(item, resultCB) {
-            let roomInfo = dataManager.getGroup(item.rid);
+            var roomInfo = dataManager.getGroup(item.rid);
             if (!!roomInfo) {
                 self.organizeChatLogMap(item, roomInfo, function done() {
                     resultCB(null, roomInfo);
@@ -692,30 +662,30 @@ class ChatsLogComponent {
                 console.warn("Can't find roomInfo from persisted data: ", item.rid);
                 self.server.getRoomInfo(item.rid, function (err, res) {
                     if (res.code === HttpStatusCode.success) {
-                        let roomInfo = JSON.parse(JSON.stringify(res.data));
-                        if (roomInfo.type === RoomType.privateChat) {
-                            let targetMemberId = "";
-                            roomInfo.members.some((item) => {
+                        var roomInfo_1 = JSON.parse(JSON.stringify(res.data));
+                        if (roomInfo_1.type === RoomType.privateChat) {
+                            var targetMemberId_2 = "";
+                            roomInfo_1.members.some(function (item) {
                                 if (item.id !== dataManager.myProfile._id) {
-                                    targetMemberId = item.id;
+                                    targetMemberId_2 = item.id;
                                     return true;
                                 }
                             });
-                            let contactProfile = dataManager.getContactProfile(targetMemberId);
+                            var contactProfile = dataManager.getContactProfile(targetMemberId_2);
                             if (contactProfile == null) {
-                                roomInfo.name = "EMPTY ROOM";
+                                roomInfo_1.name = "EMPTY ROOM";
                             }
                             else {
-                                roomInfo.name = contactProfile.displayname;
-                                roomInfo.image = contactProfile.image;
+                                roomInfo_1.name = contactProfile.displayname;
+                                roomInfo_1.image = contactProfile.image;
                             }
                         }
                         else {
                             console.warn("OMG: the god only know. May be group status is not active.");
                         }
-                        dataManager.addGroup(roomInfo);
-                        self.organizeChatLogMap(item, roomInfo, function done() {
-                            resultCB(null, roomInfo);
+                        dataManager.addGroup(roomInfo_1);
+                        self.organizeChatLogMap(item, roomInfo_1, function done() {
+                            resultCB(null, roomInfo_1);
                         });
                     }
                     else {
@@ -727,25 +697,25 @@ class ChatsLogComponent {
         }, function done(err, results) {
             if (!err) {
                 console.log("getRoomsInfo Completed.");
-                for (let key in results) {
+                for (var key in results) {
                     if (results.hasOwnProperty(key)) {
-                        let element = results[key];
+                        var element = results[key];
                         if (!!element)
                             self.main.roomDAL.saveData(element._id, element);
                     }
                 }
             }
         });
-    }
-    organizeChatLogMap(unread, roomInfo, done) {
-        let self = this;
-        let dataManager = this.main.getDataManager();
-        let log = new ChatLog(roomInfo);
+    };
+    ChatsLogComponent.prototype.organizeChatLogMap = function (unread, roomInfo, done) {
+        var self = this;
+        var dataManager = this.main.getDataManager();
+        var log = new ChatLog(roomInfo);
         log.setNotiCount(unread.count);
         if (!!unread.message) {
             log.setLastMessageTime(unread.message.createTime);
-            let contact = dataManager.getContactProfile(unread.message.sender);
-            let sender = (contact != null) ? contact.displayname : "";
+            var contact = dataManager.getContactProfile(unread.message.sender);
+            var sender = (contact != null) ? contact.displayname : "";
             if (unread.message.body != null) {
                 var displayMsg = unread.message.body;
                 switch (unread.message.type) {
@@ -809,25 +779,26 @@ class ChatsLogComponent {
                 self.addChatLog(log, done);
             });
         }
-    }
-    setLogProp(log, displayMessage, callback) {
+    };
+    ChatsLogComponent.prototype.setLogProp = function (log, displayMessage, callback) {
         log.setLastMessage(displayMessage);
         callback(log);
-    }
-    addChatLog(chatLog, done) {
+    };
+    ChatsLogComponent.prototype.addChatLog = function (chatLog, done) {
         chatLog.time = this.convertDateService.getTimeChatlog(chatLog.lastMessageTime);
         chatLog.timeMsg = new Date(chatLog.lastMessageTime);
         this.chatslog[chatLog.id] = chatLog;
         done();
-    }
-    checkRoomInfo(unread) {
-        return new Promise((resolve, rejected) => {
-            let roomInfo = this.main.getDataManager().getGroup(unread.rid);
+    };
+    ChatsLogComponent.prototype.checkRoomInfo = function (unread) {
+        var _this = this;
+        return new Promise(function (resolve, rejected) {
+            var roomInfo = _this.main.getDataManager().getGroup(unread.rid);
             if (!roomInfo) {
                 console.warn("No have roomInfo in room store.", roomInfo);
-                this.getRoomInfo(unread.rid, (err, res) => {
+                _this.getRoomInfo(unread.rid, function (err, res) {
                     if (!!res) {
-                        this.organizeChatLogMap(unread, res, () => {
+                        _this.organizeChatLogMap(unread, res, function () {
                             resolve();
                         });
                     }
@@ -838,174 +809,324 @@ class ChatsLogComponent {
             }
             else {
                 console.log("Prepare update chats log of room: ", roomInfo.name);
-                this.organizeChatLogMap(unread, roomInfo, () => {
+                _this.organizeChatLogMap(unread, roomInfo, function () {
                     resolve();
                 });
             }
         });
+    };
+    return ChatsLogComponent;
+}());
+var AuthenReducer = (function () {
+    function AuthenReducer(_store) {
+        this.key = "session_token";
+        this.store = _store;
     }
-}
-class DataListener {
-    constructor(dataManager) {
+    AuthenReducer.prototype.getData = function (done) {
+        this.store.getItem(this.key).then(function (value) {
+            var docs = JSON.parse(JSON.stringify(value));
+            console.log("get session_token success", value);
+            done(null, docs);
+        }).catch(function rejected(err) {
+            console.warn(err);
+            done(err, null);
+        });
+    };
+    AuthenReducer.prototype.saveData = function (authInfo, callback) {
+        var self = this;
+        this.store.setItem(self.key, authInfo).then(function (value) {
+            console.log("save persistent success");
+            if (callback != null) {
+                callback(null, value);
+            }
+        }).catch(function rejected(err) {
+            console.warn(err);
+            self.removeData(self.key);
+            if (callback != null) {
+                callback(err, null);
+            }
+        });
+    };
+    AuthenReducer.prototype.removeData = function (rid, callback) {
+        this.store.removeItem(rid).then(function () {
+            console.info('room_id %s is removed: ', rid);
+            if (callback) {
+                callback(null, null);
+            }
+        }).catch(function (err) {
+            console.warn(err);
+        });
+    };
+    AuthenReducer.prototype.clearData = function (next) {
+        this.store.clear(function (err) {
+            if (err != null) {
+                console.warn("Clear database fail", err);
+            }
+            next(err);
+        });
+    };
+    return AuthenReducer;
+}());
+var MessageDAL = (function () {
+    function MessageDAL(_store) {
+        this.store = _store;
+    }
+    MessageDAL.prototype.getData = function (rid, done) {
+        this.store.getItem(rid).then(function (value) {
+            var docs = JSON.parse(JSON.stringify(value));
+            console.log("get persistent success");
+            done(null, docs);
+        }).catch(function rejected(err) {
+            console.warn(err);
+        });
+    };
+    MessageDAL.prototype.saveData = function (rid, chatRecord, callback) {
+        var self = this;
+        this.store.setItem(rid, chatRecord).then(function (value) {
+            console.log("save persistent success");
+            if (callback != null) {
+                callback(null, value);
+            }
+        }).catch(function rejected(err) {
+            console.warn(err);
+            self.removeData(rid);
+            if (callback != null) {
+                callback(err, null);
+            }
+        });
+    };
+    MessageDAL.prototype.removeData = function (rid, callback) {
+        this.store.removeItem(rid).then(function () {
+            console.info('room_id %s is removed: ', rid);
+            if (callback) {
+                callback(null, null);
+            }
+        }).catch(function (err) {
+            console.warn(err);
+        });
+    };
+    MessageDAL.prototype.clearData = function (next) {
+        console.warn('MessageDAL.clearData');
+        this.store.clear(function (err) {
+            if (err != null) {
+                console.warn("Clear database fail", err);
+            }
+            console.warn("message db now empty.");
+            next(err);
+        });
+    };
+    return MessageDAL;
+}());
+var RoomDAL = (function () {
+    function RoomDAL(_store) {
+        this.store = _store;
+    }
+    RoomDAL.prototype.getData = function (room_id, done) {
+        this.store.getItem(room_id).then(function (value) {
+            var docs = JSON.parse(JSON.stringify(value));
+            done(null, docs);
+        }).catch(function (err) {
+            console.warn(err);
+            done(err, null);
+        });
+    };
+    RoomDAL.prototype.saveData = function (room_id, roomInfo, callback) {
+        var self = this;
+        this.store.setItem(room_id, roomInfo)
+            .then(function (value) {
+            if (callback != null) {
+                callback(null, value);
+            }
+        }).catch(function rejected(err) {
+            console.warn(err);
+            self.removeData(room_id);
+            if (callback != null) {
+                callback(err, null);
+            }
+        });
+    };
+    RoomDAL.prototype.removeData = function (room_id, callback) {
+        this.store.removeItem(room_id)
+            .then(function () {
+            if (callback) {
+                callback(null, null);
+            }
+        }).catch(function (err) {
+            console.warn(err);
+        });
+    };
+    RoomDAL.prototype.clearData = function (next) {
+        this.store.clear(function (err) {
+            if (err != null) {
+                console.warn("Clear database fail", err);
+            }
+            next(err);
+        });
+    };
+    return RoomDAL;
+}());
+var DataListener = (function () {
+    function DataListener(dataManager) {
         this.notifyNewMessageEvents = new Array();
         this.chatListenerImps = new Array();
         this.roomAccessListenerImps = new Array();
         this.dataManager = dataManager;
     }
-    addNoticeNewMessageEvent(listener) {
+    DataListener.prototype.addNoticeNewMessageEvent = function (listener) {
         if (this.notifyNewMessageEvents.length === 0) {
             this.notifyNewMessageEvents.push(listener);
         }
-    }
-    removeNoticeNewMessageEvent(listener) {
+    };
+    DataListener.prototype.removeNoticeNewMessageEvent = function (listener) {
         var id = this.notifyNewMessageEvents.indexOf(listener);
         this.notifyNewMessageEvents.splice(id, 1);
-    }
-    addChatListenerImp(listener) {
+    };
+    DataListener.prototype.addChatListenerImp = function (listener) {
         this.chatListenerImps.push(listener);
-    }
-    removeChatListenerImp(listener) {
+    };
+    DataListener.prototype.removeChatListenerImp = function (listener) {
         var id = this.chatListenerImps.indexOf(listener);
         this.chatListenerImps.splice(id, 1);
-    }
-    addRoomAccessListenerImp(listener) {
+    };
+    DataListener.prototype.addRoomAccessListenerImp = function (listener) {
         this.roomAccessListenerImps.push(listener);
-    }
-    removeRoomAccessListener(listener) {
+    };
+    DataListener.prototype.removeRoomAccessListener = function (listener) {
         var id = this.roomAccessListenerImps.indexOf(listener);
         this.roomAccessListenerImps.splice(id, 1);
-    }
-    onAccessRoom(dataEvent) {
+    };
+    DataListener.prototype.onAccessRoom = function (dataEvent) {
         console.info('onRoomAccess: ', dataEvent);
         this.dataManager.setRoomAccessForUser(dataEvent);
         if (!!this.roomAccessListenerImps) {
-            this.roomAccessListenerImps.map(value => {
+            this.roomAccessListenerImps.map(function (value) {
                 value.onAccessRoom(dataEvent);
             });
         }
-    }
-    onUpdatedLastAccessTime(dataEvent) {
+    };
+    DataListener.prototype.onUpdatedLastAccessTime = function (dataEvent) {
         this.dataManager.updateRoomAccessForUser(dataEvent);
         if (!!this.roomAccessListenerImps) {
-            this.roomAccessListenerImps.map(value => {
+            this.roomAccessListenerImps.map(function (value) {
                 value.onUpdatedLastAccessTime(dataEvent);
             });
         }
-    }
-    onAddRoomAccess(dataEvent) {
+    };
+    DataListener.prototype.onAddRoomAccess = function (dataEvent) {
         var data = JSON.parse(JSON.stringify(dataEvent));
         var roomAccess = data.roomAccess;
         if (roomAccess !== null && roomAccess.length !== 0) {
             this.dataManager.setRoomAccessForUser(dataEvent);
         }
         if (!!this.roomAccessListenerImps) {
-            this.roomAccessListenerImps.map(value => {
+            this.roomAccessListenerImps.map(function (value) {
                 value.onAddRoomAccess(dataEvent);
             });
         }
-    }
-    onCreateGroupSuccess(dataEvent) {
+    };
+    DataListener.prototype.onCreateGroupSuccess = function (dataEvent) {
         var group = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.addGroup(group);
-    }
-    onEditedGroupMember(dataEvent) {
+    };
+    DataListener.prototype.onEditedGroupMember = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupMembers(jsonObj);
         if (!!this.roomAccessListenerImps) {
-            this.roomAccessListenerImps.map(value => {
+            this.roomAccessListenerImps.map(function (value) {
                 value.onEditedGroupMember(dataEvent);
             });
         }
-    }
-    onEditedGroupName(dataEvent) {
+    };
+    DataListener.prototype.onEditedGroupName = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupName(jsonObj);
-    }
-    onEditedGroupImage(dataEvent) {
+    };
+    DataListener.prototype.onEditedGroupImage = function (dataEvent) {
         var obj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupImage(obj);
-    }
-    onNewGroupCreated(dataEvent) {
+    };
+    DataListener.prototype.onNewGroupCreated = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.addGroup(jsonObj);
-    }
-    onUpdateMemberInfoInProjectBase(dataEvent) {
+    };
+    DataListener.prototype.onUpdateMemberInfoInProjectBase = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         this.dataManager.updateGroupMemberDetail(jsonObj);
         if (!!this.roomAccessListenerImps) {
-            this.roomAccessListenerImps.map(value => {
+            this.roomAccessListenerImps.map(function (value) {
                 value.onUpdateMemberInfoInProjectBase(dataEvent);
             });
         }
-    }
+    };
     //#region User.
-    onUserLogin(dataEvent) {
+    DataListener.prototype.onUserLogin = function (dataEvent) {
         this.dataManager.onUserLogin(dataEvent);
-    }
-    onUserUpdateImageProfile(dataEvent) {
+    };
+    DataListener.prototype.onUserUpdateImageProfile = function (dataEvent) {
         var jsonObj = JSON.parse(JSON.stringify(dataEvent));
         var _id = jsonObj._id;
         var path = jsonObj.path;
         this.dataManager.updateContactImage(_id, path);
-    }
-    onUserUpdateProfile(dataEvent) {
+    };
+    DataListener.prototype.onUserUpdateProfile = function (dataEvent) {
         var jsonobj = JSON.parse(JSON.stringify(dataEvent));
         var params = jsonobj.params;
         var _id = jsonobj._id;
         this.dataManager.updateContactProfile(_id, params);
-    }
+    };
     //#endregion
     /*******************************************************************************/
     //<!-- chat room data listener.
-    onChat(data) {
-        let chatMessageImp = JSON.parse(JSON.stringify(data));
+    DataListener.prototype.onChat = function (data) {
+        var chatMessageImp = JSON.parse(JSON.stringify(data));
         if (!!this.notifyNewMessageEvents && this.notifyNewMessageEvents.length !== 0) {
-            this.notifyNewMessageEvents.map((v, id, arr) => {
+            this.notifyNewMessageEvents.map(function (v, id, arr) {
                 v(chatMessageImp);
             });
         }
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
-            this.chatListenerImps.forEach((value, id, arr) => {
+            this.chatListenerImps.forEach(function (value, id, arr) {
                 value.onChat(chatMessageImp);
             });
         }
         if (!!this.roomAccessListenerImps && this.roomAccessListenerImps.length !== 0) {
-            this.roomAccessListenerImps.map(v => {
+            this.roomAccessListenerImps.map(function (v) {
                 v.onChat(chatMessageImp);
             });
         }
-    }
+    };
     ;
-    onLeaveRoom(data) {
+    DataListener.prototype.onLeaveRoom = function (data) {
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
-            this.chatListenerImps.forEach(value => {
+            this.chatListenerImps.forEach(function (value) {
                 value.onLeaveRoom(data);
             });
         }
-    }
+    };
     ;
-    onRoomJoin(data) {
-    }
+    DataListener.prototype.onRoomJoin = function (data) {
+    };
     ;
-    onMessageRead(dataEvent) {
+    DataListener.prototype.onMessageRead = function (dataEvent) {
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
-            this.chatListenerImps.forEach(value => {
+            this.chatListenerImps.forEach(function (value) {
                 value.onMessageRead(dataEvent);
             });
         }
-    }
+    };
     ;
-    onGetMessagesReaders(dataEvent) {
+    DataListener.prototype.onGetMessagesReaders = function (dataEvent) {
         if (!!this.chatListenerImps && this.chatListenerImps.length !== 0) {
-            this.chatListenerImps.forEach(value => {
+            this.chatListenerImps.forEach(function (value) {
                 value.onGetMessagesReaders(dataEvent);
             });
         }
-    }
+    };
     ;
-}
-class DataManager {
-    constructor() {
+    return DataListener;
+}());
+var DataManager = (function () {
+    function DataManager() {
         this.orgGroups = {};
         this.projectBaseGroups = {};
         this.privateGroups = {};
@@ -1014,54 +1135,54 @@ class DataManager {
         this.isOrgMembersReady = false;
     }
     //@ Profile...
-    setMyProfile(data) {
+    DataManager.prototype.setMyProfile = function (data) {
         this.myProfile = JSON.parse(JSON.stringify(data));
         if (!!this.onMyProfileReady)
             this.onMyProfileReady(this);
-    }
-    getMyProfile() {
+    };
+    DataManager.prototype.getMyProfile = function () {
         return this.myProfile;
-    }
-    isMySelf(uid) {
+    };
+    DataManager.prototype.isMySelf = function (uid) {
         if (uid === this.myProfile._id) {
             return true;
         }
         else {
             return false;
         }
-    }
+    };
     /**
      * RoomAccess...
      */
-    getRoomAccess() {
+    DataManager.prototype.getRoomAccess = function () {
         return this.myProfile.roomAccess;
-    }
-    setRoomAccessForUser(data) {
+    };
+    DataManager.prototype.setRoomAccessForUser = function (data) {
         if (!!data.roomAccess) {
             this.myProfile.roomAccess = JSON.parse(JSON.stringify(data.roomAccess));
             console.info('set user roomAccess info.');
         }
-    }
-    updateRoomAccessForUser(data) {
-        let arr = JSON.parse(JSON.stringify(data.roomAccess));
-        this.myProfile.roomAccess.forEach(value => {
+    };
+    DataManager.prototype.updateRoomAccessForUser = function (data) {
+        var arr = JSON.parse(JSON.stringify(data.roomAccess));
+        this.myProfile.roomAccess.forEach(function (value) {
             if (value.roomId === arr[0].roomId) {
                 value.accessTime = arr[0].accessTime;
                 return;
             }
         });
-    }
-    getCompanyInfo() {
+    };
+    DataManager.prototype.getCompanyInfo = function () {
         return this.companyInfo;
-    }
-    setCompanyInfo(data) {
+    };
+    DataManager.prototype.setCompanyInfo = function (data) {
         this.companyInfo = JSON.parse(JSON.stringify(data));
         if (!!this.onCompanyInfoReady) {
             this.onCompanyInfoReady();
         }
-    }
+    };
     //<!---------- Group ------------------------------------
-    getGroup(id) {
+    DataManager.prototype.getGroup = function (id) {
         if (!!this.orgGroups[id]) {
             return this.orgGroups[id];
         }
@@ -1074,8 +1195,8 @@ class DataManager {
         else if (!!this.privateChats && !!this.privateChats[id]) {
             return this.privateChats[id];
         }
-    }
-    addGroup(data) {
+    };
+    DataManager.prototype.addGroup = function (data) {
         switch (data.type) {
             case RoomType.organizationGroup:
                 if (!this.orgGroups[data._id]) {
@@ -1104,8 +1225,8 @@ class DataManager {
                 console.info("new room is not a group type.");
                 break;
         }
-    }
-    updateGroupImage(data) {
+    };
+    DataManager.prototype.updateGroupImage = function (data) {
         if (!!this.orgGroups[data._id]) {
             this.orgGroups[data._id].image = data.image;
         }
@@ -1115,8 +1236,8 @@ class DataManager {
         else if (!!this.privateGroups[data._id]) {
             this.privateGroups[data._id].image = data.image;
         }
-    }
-    updateGroupName(data) {
+    };
+    DataManager.prototype.updateGroupName = function (data) {
         if (!!this.orgGroups[data._id]) {
             this.orgGroups[data._id].name = data.name;
         }
@@ -1126,8 +1247,8 @@ class DataManager {
         else if (!!this.privateGroups[data._id]) {
             this.privateGroups[data._id].name = data.name;
         }
-    }
-    updateGroupMembers(data) {
+    };
+    DataManager.prototype.updateGroupMembers = function (data) {
         //<!-- Beware please checking myself before update group members.
         //<!-- May be your id is removed from group.
         var hasMe = this.checkMySelfInNewMembersReceived(data);
@@ -1175,8 +1296,9 @@ class DataManager {
             }
         }
         console.log('dataManager.updateGroupMembers:');
-    }
-    updateGroupMemberDetail(jsonObj) {
+    };
+    DataManager.prototype.updateGroupMemberDetail = function (jsonObj) {
+        var _this = this;
         var editMember = jsonObj.editMember;
         var roomId = jsonObj.roomId;
         var groupMember = new Member();
@@ -1184,36 +1306,36 @@ class DataManager {
         var role = editMember.role;
         groupMember.role = MemberRole[role];
         groupMember.jobPosition = editMember.jobPosition;
-        this.getGroup(roomId).members.forEach((value, index, arr) => {
+        this.getGroup(roomId).members.forEach(function (value, index, arr) {
             if (value.id === groupMember.id) {
-                this.getGroup(roomId).members[index].role = groupMember.role;
-                this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role];
-                this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
+                _this.getGroup(roomId).members[index].role = groupMember.role;
+                _this.getGroup(roomId).members[index].textRole = MemberRole[groupMember.role];
+                _this.getGroup(roomId).members[index].jobPosition = groupMember.jobPosition;
             }
         });
-    }
-    checkMySelfInNewMembersReceived(data) {
+    };
+    DataManager.prototype.checkMySelfInNewMembersReceived = function (data) {
         var self = this;
         var hasMe = data.members.some(function isMySelfId(element, index, array) {
             return element.id === self.myProfile._id;
         });
         console.debug("New data has me", hasMe);
         return hasMe;
-    }
+    };
     //<!------------------------------------------------------
-    onUserLogin(dataEvent) {
-        let jsonObject = JSON.parse(JSON.stringify(dataEvent));
-        let _id = jsonObject._id;
-        let self = this;
+    DataManager.prototype.onUserLogin = function (dataEvent) {
+        var jsonObject = JSON.parse(JSON.stringify(dataEvent));
+        var _id = jsonObject._id;
+        var self = this;
         if (!this.orgMembers)
             this.orgMembers = {};
         if (!this.orgMembers[_id]) {
             //@ Need to get new contact info.
-            ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, (err, res) => {
+            ChatServer.ServerImplemented.getInstance().getMemberProfile(_id, function (err, res) {
                 if (!err) {
                     console.log("getMemberProfile : result", JSON.stringify(res));
-                    let datas = JSON.parse(JSON.stringify(res.data));
-                    let contact = new ContactInfo();
+                    var datas = JSON.parse(JSON.stringify(res.data));
+                    var contact = new ContactInfo();
                     contact._id = datas[0]._id;
                     contact.displayname = datas[0].displayname;
                     contact.image = datas[0].image;
@@ -1233,13 +1355,13 @@ class DataManager {
         else {
             console.log("Online:", this.orgMembers[_id]);
         }
-    }
-    updateContactImage(contactId, url) {
+    };
+    DataManager.prototype.updateContactImage = function (contactId, url) {
         if (!!this.orgMembers[contactId]) {
             this.orgMembers[contactId].image = url;
         }
-    }
-    updateContactProfile(contactId, params) {
+    };
+    DataManager.prototype.updateContactProfile = function (contactId, params) {
         if (!!this.orgMembers[contactId]) {
             var jsonObj = JSON.parse(JSON.stringify(params));
             if (!!jsonObj.displayname) {
@@ -1249,16 +1371,16 @@ class DataManager {
                 this.orgMembers[contactId].status = jsonObj.status;
             }
         }
-    }
-    getContactProfile(contactId) {
+    };
+    DataManager.prototype.getContactProfile = function (contactId) {
         if (!!this.orgMembers[contactId]) {
             return this.orgMembers[contactId];
         }
         else {
             console.warn('this contactId is invalid. Maybe it not contain in list of contacts.');
         }
-    }
-    onGetMe(dataEvent) {
+    };
+    DataManager.prototype.onGetMe = function (dataEvent) {
         var self = this;
         var _profile = JSON.parse(JSON.stringify(dataEvent));
         if (dataEvent.code === 200) {
@@ -1267,8 +1389,8 @@ class DataManager {
         else {
             console.error("get use profile fail!", dataEvent.message);
         }
-    }
-    onGetCompanyInfo(dataEvent) {
+    };
+    DataManager.prototype.onGetCompanyInfo = function (dataEvent) {
         var self = this;
         var _company = JSON.parse(JSON.stringify(dataEvent));
         if (dataEvent.code === 200) {
@@ -1277,10 +1399,10 @@ class DataManager {
         else {
             console.error("get company info fail!", dataEvent.message);
         }
-    }
-    onGetCompanyMemberComplete(dataEvent) {
-        let self = this;
-        let members = JSON.parse(JSON.stringify(dataEvent));
+    };
+    DataManager.prototype.onGetCompanyMemberComplete = function (dataEvent) {
+        var self = this;
+        var members = JSON.parse(JSON.stringify(dataEvent));
         if (!this.orgMembers)
             this.orgMembers = {};
         async.eachSeries(members, function iterator(item, cb) {
@@ -1293,142 +1415,271 @@ class DataManager {
         });
         if (this.onContactsDataReady != null)
             this.onContactsDataReady();
-    }
+    };
     ;
-    onGetOrganizeGroupsComplete(dataEvent) {
+    DataManager.prototype.onGetOrganizeGroupsComplete = function (dataEvent) {
+        var _this = this;
         var rooms = JSON.parse(JSON.stringify(dataEvent));
         if (!this.orgGroups)
             this.orgGroups = {};
-        rooms.forEach(value => {
-            if (!this.orgGroups[value._id]) {
-                this.orgGroups[value._id] = value;
+        rooms.forEach(function (value) {
+            if (!_this.orgGroups[value._id]) {
+                _this.orgGroups[value._id] = value;
             }
         });
         if (this.onOrgGroupDataReady != null) {
             this.onOrgGroupDataReady();
         }
-    }
+    };
     ;
-    onGetProjectBaseGroupsComplete(dataEvent) {
+    DataManager.prototype.onGetProjectBaseGroupsComplete = function (dataEvent) {
+        var _this = this;
         var groups = JSON.parse(JSON.stringify(dataEvent));
         if (!this.projectBaseGroups)
             this.projectBaseGroups = {};
-        groups.forEach(value => {
-            if (!this.projectBaseGroups[value._id]) {
-                this.projectBaseGroups[value._id] = value;
+        groups.forEach(function (value) {
+            if (!_this.projectBaseGroups[value._id]) {
+                _this.projectBaseGroups[value._id] = value;
             }
         });
         if (this.onProjectBaseGroupsDataReady != null) {
             this.onProjectBaseGroupsDataReady();
         }
-    }
+    };
     ;
-    onGetPrivateGroupsComplete(dataEvent) {
+    DataManager.prototype.onGetPrivateGroupsComplete = function (dataEvent) {
+        var _this = this;
         var groups = JSON.parse(JSON.stringify(dataEvent));
         if (!this.privateGroups)
             this.privateGroups = {};
-        groups.forEach(value => {
-            if (!this.privateGroups[value._id]) {
-                this.privateGroups[value._id] = value;
+        groups.forEach(function (value) {
+            if (!_this.privateGroups[value._id]) {
+                _this.privateGroups[value._id] = value;
             }
         });
         if (this.onPrivateGroupsDataReady != null) {
             this.onPrivateGroupsDataReady();
         }
-    }
+    };
     ;
-}
-class Main {
-    static getInstance() {
+    return DataManager;
+}());
+var CompanyInfo = (function () {
+    function CompanyInfo() {
+    }
+    return CompanyInfo;
+}());
+var ContactInfo = (function () {
+    function ContactInfo() {
+    }
+    return ContactInfo;
+}());
+/**
+ * Created by nattapon on 7/17/15 AD.
+ */
+var ContentType;
+(function (ContentType) {
+    ContentType[ContentType["Unload"] = 0] = "Unload";
+    ContentType[ContentType["File"] = 1] = "File";
+    ContentType[ContentType["Text"] = 2] = "Text";
+    ContentType[ContentType["Voice"] = 3] = "Voice";
+    ContentType[ContentType["Image"] = 4] = "Image";
+    ContentType[ContentType["Video"] = 5] = "Video";
+    ContentType[ContentType["Sticker"] = 6] = "Sticker";
+    ContentType[ContentType["Location"] = 7] = "Location";
+})(ContentType || (ContentType = {}));
+//<!--- Referrence by http://management.about.com/od/people/a/EEgradelevels.htm
+var JobLevel;
+(function (JobLevel) {
+    JobLevel[JobLevel["employees"] = 0] = "employees";
+    JobLevel[JobLevel["junior"] = 1] = "junior";
+    JobLevel[JobLevel["senior"] = 2] = "senior";
+    JobLevel[JobLevel["directors"] = 3] = "directors";
+    JobLevel[JobLevel["vice_president"] = 4] = "vice_president"; //Vice President,
+})(JobLevel || (JobLevel = {}));
+var Member = (function () {
+    function Member() {
+        this.role = MemberRole.member;
+    }
+    return Member;
+}());
+var MemberRole;
+(function (MemberRole) {
+    MemberRole[MemberRole["member"] = 0] = "member";
+    MemberRole[MemberRole["admin"] = 1] = "admin";
+})(MemberRole || (MemberRole = {}));
+var MessageMeta = (function () {
+    function MessageMeta() {
+    }
+    return MessageMeta;
+}());
+var Message = (function () {
+    function Message() {
+    }
+    return Message;
+}());
+var MinLocation = (function () {
+    function MinLocation() {
+    }
+    return MinLocation;
+}());
+var RoomType;
+(function (RoomType) {
+    RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
+    RoomType[RoomType["projectBaseGroup"] = 1] = "projectBaseGroup";
+    RoomType[RoomType["privateGroup"] = 2] = "privateGroup";
+    RoomType[RoomType["privateChat"] = 3] = "privateChat";
+})(RoomType || (RoomType = {}));
+;
+var RoomStatus;
+(function (RoomStatus) {
+    RoomStatus[RoomStatus["active"] = 0] = "active";
+    RoomStatus[RoomStatus["disable"] = 1] = "disable";
+    RoomStatus[RoomStatus["delete"] = 2] = "delete";
+})(RoomStatus || (RoomStatus = {}));
+;
+var Room = (function () {
+    function Room() {
+        this._visibility = true;
+    }
+    Object.defineProperty(Room.prototype, "visibility", {
+        set: function (_boo) {
+            this._visibility = _boo;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Room.prototype, "visibilty", {
+        get: function () {
+            return this._visibility;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Room.prototype.setName = function (name) {
+        this.name = name;
+    };
+    return Room;
+}());
+var RoomAccessData = (function () {
+    function RoomAccessData() {
+    }
+    return RoomAccessData;
+}());
+;
+var TokenDecode = (function () {
+    function TokenDecode() {
+    }
+    return TokenDecode;
+}());
+var User = (function () {
+    function User() {
+    }
+    return User;
+}());
+var UserRole;
+(function (UserRole) {
+    UserRole[UserRole["personnel"] = 0] = "personnel";
+    UserRole[UserRole["section_chief"] = 1] = "section_chief";
+    UserRole[UserRole["department_chief"] = 2] = "department_chief";
+    UserRole[UserRole["division_chief"] = 3] = "division_chief";
+    UserRole[UserRole["admin"] = 4] = "admin";
+})(UserRole || (UserRole = {}));
+;
+var Main = (function () {
+    function Main() {
+    }
+    Main.getInstance = function () {
         if (this.instance === null || this.instance === undefined) {
             this.instance = Main.prototype;
         }
         return this.instance;
-    }
-    getMessageDAL() {
+    };
+    Main.prototype.getMessageDAL = function () {
         return this.messageReducer;
-    }
-    setMessageReducer(store) {
+    };
+    Main.prototype.setMessageReducer = function (store) {
         this.messageReducer = store;
-    }
-    setAuthReducer(store) {
+    };
+    Main.prototype.setAuthReducer = function (store) {
         this.authenReducer = store;
-    }
-    setRoomDAL(dal) {
+    };
+    Main.prototype.setRoomDAL = function (dal) {
         this.roomDAL = dal;
-    }
-    clearRoomDAL() {
-        this.roomDAL.clearData(err => {
+    };
+    Main.prototype.clearRoomDAL = function () {
+        this.roomDAL.clearData(function (err) {
             console.error(err);
         });
-    }
-    clearMessageReducer() {
-        this.messageReducer.clearData((err) => {
+    };
+    Main.prototype.clearMessageReducer = function () {
+        this.messageReducer.clearData(function (err) {
             console.error(err);
         });
-    }
-    clearAuthReducer() {
-        this.authenReducer.clearData((err) => {
+    };
+    Main.prototype.clearAuthReducer = function () {
+        this.authenReducer.clearData(function (err) {
             console.error(err);
         });
-    }
-    clearAllData() {
-        return new Promise((resolve, reject) => {
+    };
+    Main.prototype.clearAllData = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
             localStorage.clear();
-            this.clearAuthReducer();
-            this.clearRoomDAL();
-            this.clearMessageReducer();
+            _this.clearAuthReducer();
+            _this.clearRoomDAL();
+            _this.clearMessageReducer();
             resolve();
         });
-    }
-    getDataManager() {
+    };
+    Main.prototype.getDataManager = function () {
         return this.dataManager;
-    }
-    setDataManager(data) {
+    };
+    Main.prototype.setDataManager = function (data) {
         this.dataManager = data;
         this.dataListener = new DataListener(this.dataManager);
-    }
-    getDataListener() {
+    };
+    Main.prototype.getDataListener = function () {
         return this.dataListener;
-    }
-    getServerImp() {
+    };
+    Main.prototype.getServerImp = function () {
         //console.log("getServerImp", this.serverImp);
         return this.serverImp;
-    }
-    setServerImp(server) {
+    };
+    Main.prototype.setServerImp = function (server) {
         this.serverImp = server;
         //console.log("setServerImp", server);
-    }
-    getChatRoomApi() {
+    };
+    Main.prototype.getChatRoomApi = function () {
         if (!this.chatRoomApi) {
             this.chatRoomApi = ChatServer.ChatRoomApiProvider.prototype;
         }
         return this.chatRoomApi;
-    }
-    setServerListener(server) {
+    };
+    Main.prototype.setServerListener = function (server) {
         this.serverListener = server;
-    }
-    startChatServerListener(resolve, rejected) {
+    };
+    Main.prototype.startChatServerListener = function (resolve, rejected) {
         this.serverListener.addFrontendListener(this.dataManager);
         this.serverListener.addServerListener(this.dataListener);
         this.serverListener.addChatListener(this.dataListener);
         this.serverListener.addListenner(resolve, rejected);
-    }
-    getHashService(content, callback) {
+    };
+    Main.prototype.getHashService = function (content, callback) {
         var hashService = new SecureService();
         hashService.hashCompute(content, callback);
-    }
-    encodeService(content, callback) {
+    };
+    Main.prototype.encodeService = function (content, callback) {
         var crypto = new SecureService();
         crypto.encryptWithSecureRandom(content, callback);
-    }
-    decodeService(content, callback) {
+    };
+    Main.prototype.decodeService = function (content, callback) {
         var crypto = new SecureService();
         crypto.decryptWithSecureRandom(content, callback);
-    }
-    authenUser(server, email, password, deviceToken, callback) {
+    };
+    Main.prototype.authenUser = function (server, email, password, deviceToken, callback) {
         console.log("authenUser:", email);
-        let self = this;
+        var self = this;
         server.logIn(email, password, deviceToken, function (err, loginRes) {
             callback(err, loginRes);
             if (!err && loginRes !== null && loginRes.code === HttpStatusCode.success) {
@@ -1500,16 +1751,17 @@ class Main {
                 console.warn(err, JSON.stringify(loginRes));
             }
         });
-    }
-}
-class NotifyManager {
-    constructor(main) {
+    };
+    return Main;
+}());
+var NotifyManager = (function () {
+    function NotifyManager(main) {
         console.log("NotifyManager.constructor");
         this.dataManager = main.getDataManager();
         this.serverImp = main.getServerImp();
     }
-    notify(chatMessageImp, appBackground, notifyService) {
-        let self = this;
+    NotifyManager.prototype.notify = function (chatMessageImp, appBackground, notifyService) {
+        var self = this;
         var contactName, contactId;
         if (this.dataManager.getGroup(chatMessageImp.rid) === undefined) {
             contactName = this.dataManager.getContactProfile(chatMessageImp.sender).displayname;
@@ -1593,330 +1845,38 @@ class NotifyManager {
                 notifyService.scheduleSingleNotification(contactId, contactName, message);
             }
         }
-    }
-}
-var CallState;
-(function (CallState) {
-    CallState[CallState["idle"] = 0] = "idle";
-    CallState[CallState["signalingCall"] = 1] = "signalingCall";
-    CallState[CallState["calling"] = 2] = "calling";
-})(CallState || (CallState = {}));
-;
-class WebRtcCallState {
-}
-class WebRtcComponent {
-    constructor() {
-        console.log("starting.. webRtcComponent.");
-        this.webRtcCallState = new WebRtcCallState();
-    }
-    setCallState(state) {
-        this.webRtcCallState.callState = state;
-    }
-    onVideoCall(dataEvent) {
-        let body = dataEvent.body;
-        let contactId = body.from;
-        let peerId = body.peerId;
-        if (this.webRtcCallState.callState === CallState.idle) {
-            if (this.videoCallEvent != null) {
-                this.videoCallEvent(contactId, peerId);
-            }
-        }
-        else {
-            console.warn("Call status is not idle. " + this.webRtcCallState.callState.toString());
-            if (this.lineBusyEvent != null) {
-                this.lineBusyEvent(contactId);
-            }
-        }
-    }
-    onVoiceCall(dataEvent) {
-        let body = dataEvent.body;
-        let contactId = body.from;
-        let peerId = body.peerId;
-        if (this.webRtcCallState.callState === CallState.idle) {
-            if (this.voiceCallEvent != null) {
-                this.voiceCallEvent(contactId, peerId);
-            }
-        }
-        else {
-            console.warn("Call status is not idle. " + this.webRtcCallState.callState.toString());
-            if (this.lineBusyEvent != null) {
-                this.lineBusyEvent(contactId);
-            }
-        }
-    }
-    onHangupCall(dataEvent) {
-        if (this.hangUpCallEvent != null) {
-            this.hangUpCallEvent();
-        }
-    }
-    onTheLineIsBusy(dataEvent) {
-        if (this.contactLineBusyEvent != null) {
-            this.contactLineBusyEvent();
-        }
-    }
-}
-class AuthenReducer {
-    constructor(_store) {
-        this.key = "session_token";
-        this.store = _store;
-    }
-    getData(done) {
-        this.store.getItem(this.key).then(function (value) {
-            let docs = JSON.parse(JSON.stringify(value));
-            console.log("get session_token success", value);
-            done(null, docs);
-        }).catch(function rejected(err) {
-            console.warn(err);
-            done(err, null);
-        });
-    }
-    saveData(authInfo, callback) {
-        let self = this;
-        this.store.setItem(self.key, authInfo).then(function (value) {
-            console.log("save persistent success");
-            if (callback != null) {
-                callback(null, value);
-            }
-        }).catch(function rejected(err) {
-            console.warn(err);
-            self.removeData(self.key);
-            if (callback != null) {
-                callback(err, null);
-            }
-        });
-    }
-    removeData(rid, callback) {
-        this.store.removeItem(rid).then(() => {
-            console.info('room_id %s is removed: ', rid);
-            if (callback) {
-                callback(null, null);
-            }
-        }).catch((err) => {
-            console.warn(err);
-        });
-    }
-    clearData(next) {
-        this.store.clear((err) => {
-            if (err != null) {
-                console.warn("Clear database fail", err);
-            }
-            next(err);
-        });
-    }
-}
-class MessageDAL {
-    constructor(_store) {
-        this.store = _store;
-    }
-    getData(rid, done) {
-        this.store.getItem(rid).then(function (value) {
-            let docs = JSON.parse(JSON.stringify(value));
-            console.log("get persistent success");
-            done(null, docs);
-        }).catch(function rejected(err) {
-            console.warn(err);
-        });
-    }
-    saveData(rid, chatRecord, callback) {
-        let self = this;
-        this.store.setItem(rid, chatRecord).then(function (value) {
-            console.log("save persistent success");
-            if (callback != null) {
-                callback(null, value);
-            }
-        }).catch(function rejected(err) {
-            console.warn(err);
-            self.removeData(rid);
-            if (callback != null) {
-                callback(err, null);
-            }
-        });
-    }
-    removeData(rid, callback) {
-        this.store.removeItem(rid).then(() => {
-            console.info('room_id %s is removed: ', rid);
-            if (callback) {
-                callback(null, null);
-            }
-        }).catch((err) => {
-            console.warn(err);
-        });
-    }
-    clearData(next) {
-        console.warn('MessageDAL.clearData');
-        this.store.clear((err) => {
-            if (err != null) {
-                console.warn("Clear database fail", err);
-            }
-            console.warn("message db now empty.");
-            next(err);
-        });
-    }
-}
-class RoomDAL {
-    constructor(_store) {
-        this.store = _store;
-    }
-    getData(room_id, done) {
-        this.store.getItem(room_id).then(function (value) {
-            let docs = JSON.parse(JSON.stringify(value));
-            done(null, docs);
-        }).catch(function (err) {
-            console.warn(err);
-            done(err, null);
-        });
-    }
-    saveData(room_id, roomInfo, callback) {
-        let self = this;
-        this.store.setItem(room_id, roomInfo)
-            .then(function (value) {
-            if (callback != null) {
-                callback(null, value);
-            }
-        }).catch(function rejected(err) {
-            console.warn(err);
-            self.removeData(room_id);
-            if (callback != null) {
-                callback(err, null);
-            }
-        });
-    }
-    removeData(room_id, callback) {
-        this.store.removeItem(room_id)
-            .then(() => {
-            if (callback) {
-                callback(null, null);
-            }
-        }).catch((err) => {
-            console.warn(err);
-        });
-    }
-    clearData(next) {
-        this.store.clear((err) => {
-            if (err != null) {
-                console.warn("Clear database fail", err);
-            }
-            next(err);
-        });
-    }
-}
-class MessageMeta {
-}
-class Message {
-}
-class CompanyInfo {
-}
-class ContactInfo {
-}
-/**
- * Created by nattapon on 7/17/15 AD.
- */
-var ContentType;
-(function (ContentType) {
-    ContentType[ContentType["Unload"] = 0] = "Unload";
-    ContentType[ContentType["File"] = 1] = "File";
-    ContentType[ContentType["Text"] = 2] = "Text";
-    ContentType[ContentType["Voice"] = 3] = "Voice";
-    ContentType[ContentType["Image"] = 4] = "Image";
-    ContentType[ContentType["Video"] = 5] = "Video";
-    ContentType[ContentType["Sticker"] = 6] = "Sticker";
-    ContentType[ContentType["Location"] = 7] = "Location";
-})(ContentType || (ContentType = {}));
-//<!--- Referrence by http://management.about.com/od/people/a/EEgradelevels.htm
-var JobLevel;
-(function (JobLevel) {
-    JobLevel[JobLevel["employees"] = 0] = "employees";
-    JobLevel[JobLevel["junior"] = 1] = "junior";
-    JobLevel[JobLevel["senior"] = 2] = "senior";
-    JobLevel[JobLevel["directors"] = 3] = "directors";
-    JobLevel[JobLevel["vice_president"] = 4] = "vice_president"; //Vice President,
-})(JobLevel || (JobLevel = {}));
-class Member {
-    constructor() {
-        this.role = MemberRole.member;
-    }
-}
-var MemberRole;
-(function (MemberRole) {
-    MemberRole[MemberRole["member"] = 0] = "member";
-    MemberRole[MemberRole["admin"] = 1] = "admin";
-})(MemberRole || (MemberRole = {}));
-class MinLocation {
-}
-var RoomType;
-(function (RoomType) {
-    RoomType[RoomType["organizationGroup"] = 0] = "organizationGroup";
-    RoomType[RoomType["projectBaseGroup"] = 1] = "projectBaseGroup";
-    RoomType[RoomType["privateGroup"] = 2] = "privateGroup";
-    RoomType[RoomType["privateChat"] = 3] = "privateChat";
-})(RoomType || (RoomType = {}));
-;
-var RoomStatus;
-(function (RoomStatus) {
-    RoomStatus[RoomStatus["active"] = 0] = "active";
-    RoomStatus[RoomStatus["disable"] = 1] = "disable";
-    RoomStatus[RoomStatus["delete"] = 2] = "delete";
-})(RoomStatus || (RoomStatus = {}));
-;
-class Room {
-    constructor() {
-        this._visibility = true;
-    }
-    set visibility(_boo) {
-        this._visibility = _boo;
-    }
-    get visibilty() {
-        return this._visibility;
-    }
-    setName(name) {
-        this.name = name;
-    }
-}
-class RoomAccessData {
-}
-;
-class TokenDecode {
-}
-class User {
-}
-var UserRole;
-(function (UserRole) {
-    UserRole[UserRole["personnel"] = 0] = "personnel";
-    UserRole[UserRole["section_chief"] = 1] = "section_chief";
-    UserRole[UserRole["department_chief"] = 2] = "department_chief";
-    UserRole[UserRole["division_chief"] = 3] = "division_chief";
-    UserRole[UserRole["admin"] = 4] = "admin";
-})(UserRole || (UserRole = {}));
-;
+    };
+    return NotifyManager;
+}());
 var CryptoJS; //= require("../lib/crypto-js/index");
-class SecureService {
-    constructor() {
+var SecureService = (function () {
+    function SecureService() {
         this.key = "CHITCHAT!@#$%^&*()_+|===";
         this.passiv = "ThisIsUrPassword";
     }
-    hashCompute(content, callback) {
-        let hash = CryptoJS.MD5(content);
-        let md = hash.toString(CryptoJS.enc.Hex);
+    SecureService.prototype.hashCompute = function (content, callback) {
+        var hash = CryptoJS.MD5(content);
+        var md = hash.toString(CryptoJS.enc.Hex);
         callback(null, md);
         // require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
         //     var hash = CryptoJS.MD5(content);
         //     var md = hash.toString(CryptoJS.enc.Hex);
         //     callback(null, md);
         // });
-    }
-    encryption(content, callback) {
-        let self = this;
-        let ciphertext = CryptoJS.AES.encrypt(content, self.key);
+    };
+    SecureService.prototype.encryption = function (content, callback) {
+        var self = this;
+        var ciphertext = CryptoJS.AES.encrypt(content, self.key);
         callback(null, ciphertext.toString());
         // require([], function (CryptoJS) {
         //     var ciphertext = CryptoJS.AES.encrypt(content, self.key);
         //     callback(null, ciphertext.toString());
         // });
-    }
-    decryption(content, callback) {
-        let self = this;
-        let bytes = CryptoJS.AES.decrypt(content, self.key);
-        let plaintext = bytes.toString(CryptoJS.enc.Utf8);
+    };
+    SecureService.prototype.decryption = function (content, callback) {
+        var self = this;
+        var bytes = CryptoJS.AES.decrypt(content, self.key);
+        var plaintext = bytes.toString(CryptoJS.enc.Utf8);
         callback(null, plaintext);
         /*
                 require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
@@ -1926,12 +1886,12 @@ class SecureService {
                     callback(null, plaintext);
                 });
                 */
-    }
-    encryptWithSecureRandom(content, callback) {
-        let self = this;
-        let key = CryptoJS.enc.Utf8.parse(self.key);
-        let iv = CryptoJS.enc.Utf8.parse(self.passiv);
-        let ciphertext = CryptoJS.AES.encrypt(content, key, { iv: iv });
+    };
+    SecureService.prototype.encryptWithSecureRandom = function (content, callback) {
+        var self = this;
+        var key = CryptoJS.enc.Utf8.parse(self.key);
+        var iv = CryptoJS.enc.Utf8.parse(self.passiv);
+        var ciphertext = CryptoJS.AES.encrypt(content, key, { iv: iv });
         callback(null, ciphertext.toString());
         /*
         require(["../lib/crypto-js/crypto-js"], function (CryptoJS) {
@@ -1942,13 +1902,13 @@ class SecureService {
             callback(null, ciphertext.toString());
         });
         */
-    }
-    decryptWithSecureRandom(content, callback) {
-        let self = this;
-        let key = CryptoJS.enc.Utf8.parse(self.key);
-        let iv = CryptoJS.enc.Utf8.parse(self.passiv);
-        let bytes = CryptoJS.AES.decrypt(content, key, { iv: iv, padding: CryptoJS.pad.Pkcs7, mode: CryptoJS.mode.CBC });
-        let plaintext;
+    };
+    SecureService.prototype.decryptWithSecureRandom = function (content, callback) {
+        var self = this;
+        var key = CryptoJS.enc.Utf8.parse(self.key);
+        var iv = CryptoJS.enc.Utf8.parse(self.passiv);
+        var bytes = CryptoJS.AES.decrypt(content, key, { iv: iv, padding: CryptoJS.pad.Pkcs7, mode: CryptoJS.mode.CBC });
+        var plaintext;
         try {
             plaintext = bytes.toString(CryptoJS.enc.Utf8);
         }
@@ -1978,32 +1938,35 @@ class SecureService {
                 callback(new Error("cannot decrypt content"), content);
         });
         */
-    }
-}
-class Dummy {
-    constructor() {
+    };
+    return SecureService;
+}());
+var Dummy = (function () {
+    function Dummy() {
         this.chatRoom = ChatServer.ChatRoomApiProvider.prototype;
         this.bots = [{ name: "test1@rfl.com", pass: "1234" }, { name: "test2@rfl.com", pass: "1234" },
             { name: "test3@rfl.com", pass: "1234" }, { name: "test4@rfl.com", pass: "1234" }, { name: "test5@rfl.com", pass: "1234" },
             { name: "test6@rfl.com", pass: "1234" }, { name: "test7@rfl.com", pass: "1234" }];
         this.serverApi = ChatServer.ServerImplemented.getInstance();
     }
-    getBot() {
+    Dummy.prototype.getBot = function () {
         var r = Math.floor((Math.random() * this.bots.length) + 1);
         return this.bots[r];
-    }
-    fireChatInRoom(myUid) {
-        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", (err, res) => {
+    };
+    Dummy.prototype.fireChatInRoom = function (myUid) {
+        var _this = this;
+        this.serverApi.JoinChatRoomRequest("55d5bb67451bbf090b0e8cde", function (err, res) {
             if (!err && res !== null) {
-                setInterval(() => {
-                    this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
+                setInterval(function () {
+                    _this.chatRoom.chat("55d5bb67451bbf090b0e8cde", "bot", myUid, "test for bot", ContentType[ContentType.Text], function (err, res) {
                         console.log(res);
                     });
                 }, 1000);
             }
         });
-    }
-}
+    };
+    return Dummy;
+}());
 /*
 {
     "_id" : ObjectId("55d5bb67451bbf090b0e8cde"),
@@ -2021,15 +1984,19 @@ class Dummy {
 /**
  * ngControllerUtil
  */
-class ngControllerUtil {
-    constructor(parameters) {
+var ngControllerUtil = (function () {
+    function ngControllerUtil(parameters) {
     }
-}
+    return ngControllerUtil;
+}());
 ngControllerUtil.viewProfileController = "viewProfileController";
 ngControllerUtil.groupDetailCtrl = "groupDetailCtrl";
 ngControllerUtil.editMemberGroup = 'editMemberGroup';
-class NGStateUtil {
-}
+var NGStateUtil = (function () {
+    function NGStateUtil() {
+    }
+    return NGStateUtil;
+}());
 NGStateUtil.tab_login = 'tab.login';
 NGStateUtil.tab_login_error = 'tab.login-error';
 NGStateUtil.tab_group = 'tab.group';
@@ -2044,30 +2011,130 @@ NGStateUtil.tab_chats_chat = 'tab.chats-chat';
 NGStateUtil.tab_chats_chat_viewprofile = 'tab.chats-chat-viewprofile';
 NGStateUtil.tab_chats_chat_members = 'tab.chats-chat-members';
 NGStateUtil.tab_chats_chat_members_invite = 'tab.chats-chat-members-invite';
+var CallState;
+(function (CallState) {
+    CallState[CallState["idle"] = 0] = "idle";
+    CallState[CallState["signalingCall"] = 1] = "signalingCall";
+    CallState[CallState["calling"] = 2] = "calling";
+})(CallState || (CallState = {}));
+;
+var WebRtcCallState = (function () {
+    function WebRtcCallState() {
+    }
+    return WebRtcCallState;
+}());
+var WebRtcComponent = (function () {
+    function WebRtcComponent() {
+        console.log("starting.. webRtcComponent.");
+        this.webRtcCallState = new WebRtcCallState();
+    }
+    WebRtcComponent.prototype.setCallState = function (state) {
+        this.webRtcCallState.callState = state;
+    };
+    WebRtcComponent.prototype.onVideoCall = function (dataEvent) {
+        var body = dataEvent.body;
+        var contactId = body.from;
+        var peerId = body.peerId;
+        if (this.webRtcCallState.callState === CallState.idle) {
+            if (this.videoCallEvent != null) {
+                this.videoCallEvent(contactId, peerId);
+            }
+        }
+        else {
+            console.warn("Call status is not idle. " + this.webRtcCallState.callState.toString());
+            if (this.lineBusyEvent != null) {
+                this.lineBusyEvent(contactId);
+            }
+        }
+    };
+    WebRtcComponent.prototype.onVoiceCall = function (dataEvent) {
+        var body = dataEvent.body;
+        var contactId = body.from;
+        var peerId = body.peerId;
+        if (this.webRtcCallState.callState === CallState.idle) {
+            if (this.voiceCallEvent != null) {
+                this.voiceCallEvent(contactId, peerId);
+            }
+        }
+        else {
+            console.warn("Call status is not idle. " + this.webRtcCallState.callState.toString());
+            if (this.lineBusyEvent != null) {
+                this.lineBusyEvent(contactId);
+            }
+        }
+    };
+    WebRtcComponent.prototype.onHangupCall = function (dataEvent) {
+        if (this.hangUpCallEvent != null) {
+            this.hangUpCallEvent();
+        }
+    };
+    WebRtcComponent.prototype.onTheLineIsBusy = function (dataEvent) {
+        if (this.contactLineBusyEvent != null) {
+            this.contactLineBusyEvent();
+        }
+    };
+    return WebRtcComponent;
+}());
+// For an introduction to the Blank template, see the following documentation:
+// http://go.microsoft.com/fwlink/?LinkID=397705
+// To debug code on page load in Ripple or on Android devices/emulators: launch your app, set breakpoints, 
+// and then run "window.location.reload()" in the JavaScript Console.
+var BlankCordovaApp1;
+(function (BlankCordovaApp1) {
+    "use strict";
+    var Application;
+    (function (Application) {
+        function initialize() {
+            document.addEventListener('deviceready', onDeviceReady, false);
+        }
+        Application.initialize = initialize;
+        function onDeviceReady() {
+            // Handle the Cordova pause and resume events
+            document.addEventListener('pause', onPause, false);
+            document.addEventListener('resume', onResume, false);
+            // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
+            console.warn("onDeviceReady");
+        }
+        function onPause() {
+            // TODO: This application has been suspended. Save application state here.
+            console.warn('onPause');
+        }
+        function onResume() {
+            // TODO: This application has been reactivated. Restore application state here.
+            console.warn('onResume');
+        }
+    })(Application = BlankCordovaApp1.Application || (BlankCordovaApp1.Application = {}));
+    window.onload = function () {
+        Application.initialize();
+    };
+})(BlankCordovaApp1 || (BlankCordovaApp1 = {}));
 var config;
 var pomelo;
 var username = "";
 var password = "";
 var ChatServer;
 (function (ChatServer) {
-    class AuthenData {
-    }
-    class ServerImplemented {
-        constructor() {
+    var AuthenData = (function () {
+        function AuthenData() {
+        }
+        return AuthenData;
+    }());
+    var ServerImplemented = (function () {
+        function ServerImplemented() {
             this._isConnected = false;
             this._isLogedin = false;
             console.warn("serv imp. constructor");
         }
-        static getInstance() {
+        ServerImplemented.getInstance = function () {
             if (this.Instance === null || this.Instance === undefined) {
                 this.Instance = new ServerImplemented();
             }
             return this.Instance;
-        }
-        setSocketComponent(socket) {
+        };
+        ServerImplemented.prototype.setSocketComponent = function (socket) {
             this.socketComponent = socket;
-        }
-        getClient() {
+        };
+        ServerImplemented.prototype.getClient = function () {
             var self = this;
             if (pomelo !== null) {
                 return pomelo;
@@ -2075,99 +2142,100 @@ var ChatServer;
             else {
                 console.warn("disconnect Event");
             }
-        }
-        dispose() {
+        };
+        ServerImplemented.prototype.dispose = function () {
             console.warn("dispose socket client.");
             this.disConnect();
             this.authenData = null;
-        }
-        disConnect() {
+        };
+        ServerImplemented.prototype.disConnect = function () {
             console.log('disconnecting...');
             if (!!pomelo) {
                 pomelo.removeAllListeners();
                 pomelo.disconnect();
                 pomelo = null;
             }
-        }
-        logout(registrationId) {
-            let msg = {};
+        };
+        ServerImplemented.prototype.logout = function (registrationId) {
+            var msg = {};
             msg["username"] = username;
             msg["registrationId"] = registrationId;
             if (pomelo != null)
                 pomelo.notify("connector.entryHandler.logout", msg);
             this.disConnect();
-        }
-        init(callback) {
+        };
+        ServerImplemented.prototype.init = function (callback) {
             console.log('serverImp.init()');
             var self = this;
             this._isConnected = false;
             this.authenData = new AuthenData();
-            let pro = new Promise(function (resolve, rejected) {
+            var pro = new Promise(function (resolve, rejected) {
                 self.loadSocket(resolve, rejected);
             }).then(function onfulfilled(value) {
                 self.loadConfig(callback);
             }).catch(function onRejected(err) {
                 console.error(err);
             });
-        }
-        loadSocket(resolve, rejected) {
+        };
+        ServerImplemented.prototype.loadSocket = function (resolve, rejected) {
             try {
                 pomelo = require("./js/pomelo/pomeloclient");
                 resolve(pomelo);
             }
             catch (e) {
-                require(["../js/pomelo-web/pomelo"], (value) => {
+                require(["../js/pomelo-web/pomelo"], function (value) {
                     pomelo = value;
                     resolve(pomelo);
                 });
             }
-        }
-        loadConfig(callback) {
+        };
+        ServerImplemented.prototype.loadConfig = function (callback) {
+            var _this = this;
             this.appConfig = JSON.parse(config);
             this.host = this.appConfig.socketHost;
             this.port = this.appConfig.socketPort;
             if (!!pomelo) {
                 //<!-- Connecting gate server.
-                this.connectServer(this.host, this.port, (err) => {
-                    callback(err, this);
+                this.connectServer(this.host, this.port, function (err) {
+                    callback(err, _this);
                 });
             }
             else {
                 console.error("pomelo socket is un ready.");
             }
-        }
-        connectServer(_host, _port, callback) {
+        };
+        ServerImplemented.prototype.connectServer = function (_host, _port, callback) {
             console.log("socket connecting to: ", _host, _port);
             // var self = this;    
             pomelo.init({ host: _host, port: _port }, function cb(err) {
                 console.log("socket init result: " + err);
                 callback(err);
             });
-        }
-        connectToConnectorServer(callback) {
-        }
+        };
+        ServerImplemented.prototype.connectToConnectorServer = function (callback) {
+        };
         // region <!-- Authentication...
         /// <summary>
         /// Connect to gate server then get query of connector server.
         /// </summary>
-        logIn(_username, _hash, registrationId, callback) {
+        ServerImplemented.prototype.logIn = function (_username, _hash, registrationId, callback) {
             var self = this;
             username = _username;
             password = _hash;
             if (pomelo !== null && this._isConnected === false) {
-                let msg = { uid: username };
+                var msg = { uid: username };
                 //<!-- Quering connector server.
                 pomelo.request("gate.gateHandler.queryEntry", msg, function (result) {
                     console.log("QueryConnectorServ", result.code);
                     if (result.code === HttpStatusCode.success) {
                         self.disConnect();
-                        let promiseLoadSocket = new Promise((resolve, reject) => {
+                        var promiseLoadSocket = new Promise(function (resolve, reject) {
                             self.loadSocket(resolve, reject);
                         });
-                        promiseLoadSocket.then((value) => {
+                        promiseLoadSocket.then(function (value) {
                             var connectorPort = result.port;
                             //<!-- Connecting to connector server.
-                            self.connectServer(self.host, connectorPort, (err) => {
+                            self.connectServer(self.host, connectorPort, function (err) {
                                 self._isConnected = true;
                                 if (!!err) {
                                     callback(err, null);
@@ -2176,7 +2244,7 @@ var ChatServer;
                                     self.authenForFrontendServer(registrationId, callback);
                                 }
                             });
-                        }).catch((error) => {
+                        }).catch(function (error) {
                             console.error('Load socket fail!');
                         });
                     }
@@ -2185,13 +2253,13 @@ var ChatServer;
             else if (pomelo !== null && this._isConnected) {
                 self.authenForFrontendServer(registrationId, callback);
             }
-        }
+        };
         //<!-- Authentication. request for token sign.
-        authenForFrontendServer(registrationId, callback) {
-            let self = this;
-            let msg = { username: username, password: password, registrationId: registrationId };
+        ServerImplemented.prototype.authenForFrontendServer = function (registrationId, callback) {
+            var self = this;
+            var msg = { username: username, password: password, registrationId: registrationId };
             //<!-- Authentication.
-            pomelo.request("connector.entryHandler.login", msg, (res) => {
+            pomelo.request("connector.entryHandler.login", msg, function (res) {
                 console.log("login response: ", JSON.stringify(res));
                 if (res.code === HttpStatusCode.fail) {
                     if (callback != null) {
@@ -2214,15 +2282,16 @@ var ChatServer;
                     }
                 }
             });
-        }
-        TokenAuthen(tokenBearer, checkTokenCallback) {
-            let msg = {};
+        };
+        ServerImplemented.prototype.TokenAuthen = function (tokenBearer, checkTokenCallback) {
+            var _this = this;
+            var msg = {};
             msg["token"] = tokenBearer;
-            pomelo.request("gate.gateHandler.authenGateway", msg, (result) => {
-                this.OnTokenAuthenticate(result, checkTokenCallback);
+            pomelo.request("gate.gateHandler.authenGateway", msg, function (result) {
+                _this.OnTokenAuthenticate(result, checkTokenCallback);
             });
-        }
-        OnTokenAuthenticate(tokenRes, onSuccessCheckToken) {
+        };
+        ServerImplemented.prototype.OnTokenAuthenticate = function (tokenRes, onSuccessCheckToken) {
             if (tokenRes.code === 200) {
                 var data = tokenRes.data;
                 var decode = data.decoded; //["decoded"];
@@ -2235,8 +2304,8 @@ var ChatServer;
                     onSuccessCheckToken(tokenRes.message, null);
                 }
             }
-        }
-        kickMeAllSession(uid) {
+        };
+        ServerImplemented.prototype.kickMeAllSession = function (uid) {
             if (pomelo !== null) {
                 var msg = { uid: uid };
                 pomelo.request("connector.entryHandler.kickMe", msg, function (result) {
@@ -2246,178 +2315,179 @@ var ChatServer;
             else {
                 console.error("Cannot kick session.");
             }
-        }
+        };
         //<@--- ServerAPIProvider.
         //region <!-- user profile -->
-        UpdateUserProfile(myId, profileFields, callback) {
+        ServerImplemented.prototype.UpdateUserProfile = function (myId, profileFields, callback) {
             profileFields["token"] = this.authenData.token;
             profileFields["_id"] = myId;
-            pomelo.request("auth.profileHandler.profileUpdate", profileFields, (result) => {
+            pomelo.request("auth.profileHandler.profileUpdate", profileFields, function (result) {
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
-        ProfileImageChanged(userId, path, callback) {
+        };
+        ServerImplemented.prototype.ProfileImageChanged = function (userId, path, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["userId"] = userId;
             msg["path"] = path;
-            pomelo.request("auth.profileHandler.profileImageChanged", msg, (result) => {
+            pomelo.request("auth.profileHandler.profileImageChanged", msg, function (result) {
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
-        getLastAccessRoomsInfo(sessionToken = "", callback) {
+        };
+        ServerImplemented.prototype.getLastAccessRoomsInfo = function (sessionToken, callback) {
+            if (sessionToken === void 0) { sessionToken = ""; }
             var msg = {};
             msg["token"] = sessionToken;
             //<!-- Get user info.
-            pomelo.request("connector.entryHandler.getLastAccessRooms", msg, (result) => {
+            pomelo.request("connector.entryHandler.getLastAccessRooms", msg, function (result) {
                 if (callback !== null) {
                     callback(null, result);
                 }
             });
-        }
-        getMe(callback) {
-            let msg = {};
+        };
+        ServerImplemented.prototype.getMe = function (callback) {
+            var msg = {};
             msg["username"] = username;
             msg["password"] = password;
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
-            pomelo.request("connector.entryHandler.getMe", msg, (result) => {
+            pomelo.request("connector.entryHandler.getMe", msg, function (result) {
                 console.log("getMe: ", JSON.stringify(result.code));
                 if (callback !== null) {
                     callback(null, result);
                 }
             });
-        }
-        updateFavoriteMember(editType, member, callback) {
+        };
+        ServerImplemented.prototype.updateFavoriteMember = function (editType, member, callback) {
             var msg = {};
             msg["editType"] = editType;
             msg["member"] = member;
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
-            pomelo.request("auth.profileHandler.editFavoriteMembers", msg, (result) => {
+            pomelo.request("auth.profileHandler.editFavoriteMembers", msg, function (result) {
                 console.log("updateFavoriteMember: ", JSON.stringify(result));
                 callback(null, result);
             });
-        }
-        updateFavoriteGroups(editType, group, callback) {
+        };
+        ServerImplemented.prototype.updateFavoriteGroups = function (editType, group, callback) {
             var msg = {};
             msg["editType"] = editType;
             msg["group"] = group;
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
-            pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, (result) => {
+            pomelo.request("auth.profileHandler.updateFavoriteGroups", msg, function (result) {
                 console.log("updateFavoriteGroups: ", JSON.stringify(result));
                 callback(null, result);
             });
-        }
-        updateClosedNoticeMemberList(editType, member, callback) {
+        };
+        ServerImplemented.prototype.updateClosedNoticeMemberList = function (editType, member, callback) {
             var msg = {};
             msg["editType"] = editType;
             msg["member"] = member;
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
-            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, (result) => {
+            pomelo.request("auth.profileHandler.updateClosedNoticeUsers", msg, function (result) {
                 console.log("updateClosedNoticeUsers: ", JSON.stringify(result));
                 callback(null, result);
             });
-        }
-        updateClosedNoticeGroupsList(editType, group, callback) {
+        };
+        ServerImplemented.prototype.updateClosedNoticeGroupsList = function (editType, group, callback) {
             var msg = {};
             msg["editType"] = editType;
             msg["group"] = group;
             msg["token"] = this.authenData.token;
             //<!-- Get user info.
-            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, (result) => {
+            pomelo.request("auth.profileHandler.updateClosedNoticeGroups", msg, function (result) {
                 console.log("updateClosedNoticeGroups: ", JSON.stringify(result));
                 callback(null, result);
             });
-        }
-        getMemberProfile(userId, callback) {
+        };
+        ServerImplemented.prototype.getMemberProfile = function (userId, callback) {
             var msg = {};
             msg["userId"] = userId;
-            pomelo.request("auth.profileHandler.getMemberProfile", msg, (result) => {
+            pomelo.request("auth.profileHandler.getMemberProfile", msg, function (result) {
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
+        };
         //endregion
         //region  Company data. 
         /// <summary>
         /// Gets the company info.
         /// Beware for data loading so mush. please load from cache before load from server.
         /// </summary>
-        getCompanyInfo(callBack) {
+        ServerImplemented.prototype.getCompanyInfo = function (callBack) {
             var msg = {};
             msg["token"] = this.authenData.token;
-            pomelo.request("connector.entryHandler.getCompanyInfo", msg, (result) => {
+            pomelo.request("connector.entryHandler.getCompanyInfo", msg, function (result) {
                 if (callBack != null)
                     callBack(null, result);
             });
-        }
+        };
         /// <summary>
         /// Gets the company members.
         /// Beware for data loading so mush. please load from cache before load from server.
         /// </summary>
-        getCompanyMembers(callBack) {
+        ServerImplemented.prototype.getCompanyMembers = function (callBack) {
             var msg = {};
             msg["token"] = this.authenData.token;
-            pomelo.request("connector.entryHandler.getCompanyMember", msg, (result) => {
+            pomelo.request("connector.entryHandler.getCompanyMember", msg, function (result) {
                 console.log("getCompanyMembers", JSON.stringify(result));
                 if (callBack != null)
                     callBack(null, result);
             });
-        }
+        };
         /// <summary>
         /// Gets the company chat rooms.
         /// Beware for data loading so mush. please load from cache before load from server.
         /// </summary>
-        getOrganizationGroups(callBack) {
+        ServerImplemented.prototype.getOrganizationGroups = function (callBack) {
             var msg = {};
             msg["token"] = this.authenData.token;
-            pomelo.request("connector.entryHandler.getCompanyChatRoom", msg, (result) => {
+            pomelo.request("connector.entryHandler.getCompanyChatRoom", msg, function (result) {
                 console.log("getOrganizationGroups: " + JSON.stringify(result));
                 if (callBack != null)
                     callBack(null, result);
             });
-        }
+        };
         //endregion
         //region Project base.
-        getProjectBaseGroups(callback) {
+        ServerImplemented.prototype.getProjectBaseGroups = function (callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
-            pomelo.request("connector.entryHandler.getProjectBaseGroups", msg, (result) => {
+            pomelo.request("connector.entryHandler.getProjectBaseGroups", msg, function (result) {
                 console.log("getProjectBaseGroups: " + JSON.stringify(result));
                 if (callback != null)
                     callback(null, result);
             });
-        }
-        requestCreateProjectBaseGroup(groupName, members, callback) {
+        };
+        ServerImplemented.prototype.requestCreateProjectBaseGroup = function (groupName, members, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["groupName"] = groupName;
             msg["members"] = JSON.stringify(members);
-            pomelo.request("chat.chatRoomHandler.requestCreateProjectBase", msg, (result) => {
+            pomelo.request("chat.chatRoomHandler.requestCreateProjectBase", msg, function (result) {
                 console.log("requestCreateProjectBaseGroup: " + JSON.stringify(result));
                 if (callback != null)
                     callback(null, result);
             });
-        }
-        editMemberInfoInProjectBase(roomId, roomType, member, callback) {
+        };
+        ServerImplemented.prototype.editMemberInfoInProjectBase = function (roomId, roomType, member, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["roomId"] = roomId;
             msg["roomType"] = roomType.toString();
             msg["member"] = JSON.stringify(member);
-            pomelo.request("chat.chatRoomHandler.editMemberInfoInProjectBase", msg, (result) => {
+            pomelo.request("chat.chatRoomHandler.editMemberInfoInProjectBase", msg, function (result) {
                 if (callback != null)
                     callback(null, result);
             });
-        }
+        };
         //endregion
         //region <!-- Private Group Room... -->
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2426,40 +2496,40 @@ var ChatServer;
         /// Beware for data loading so mush. please load from cache before load from server.
         /// </summary>
         /// <param name="callback">Callback.</param>
-        getPrivateGroups(callback) {
+        ServerImplemented.prototype.getPrivateGroups = function (callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
-            pomelo.request("connector.entryHandler.getMyPrivateGroupChat", msg, (result) => {
+            pomelo.request("connector.entryHandler.getMyPrivateGroupChat", msg, function (result) {
                 console.log("getPrivateGroups: " + JSON.stringify(result));
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
-        UserRequestCreateGroupChat(groupName, memberIds, callback) {
+        };
+        ServerImplemented.prototype.UserRequestCreateGroupChat = function (groupName, memberIds, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["groupName"] = groupName;
             msg["memberIds"] = JSON.stringify(memberIds);
-            pomelo.request("chat.chatRoomHandler.userCreateGroupChat", msg, (result) => {
+            pomelo.request("chat.chatRoomHandler.userCreateGroupChat", msg, function (result) {
                 console.log("RequestCreateGroupChat", JSON.stringify(result));
                 if (callback != null)
                     callback(null, result);
             });
-        }
-        UpdatedGroupImage(groupId, path, callback) {
+        };
+        ServerImplemented.prototype.UpdatedGroupImage = function (groupId, path, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["groupId"] = groupId;
             msg["path"] = path;
-            pomelo.request("chat.chatRoomHandler.updateGroupImage", msg, (result) => {
+            pomelo.request("chat.chatRoomHandler.updateGroupImage", msg, function (result) {
                 console.log("UpdatedGroupImage", JSON.stringify(result));
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
-        editGroupMembers(editType, roomId, roomType, members, callback) {
+        };
+        ServerImplemented.prototype.editGroupMembers = function (editType, roomId, roomType, members, callback) {
             if (editType == null || editType.length === 0)
                 return;
             if (roomId == null || roomId.length === 0)
@@ -2474,14 +2544,14 @@ var ChatServer;
             msg["roomId"] = roomId;
             msg["roomType"] = roomType.toString();
             msg["members"] = JSON.stringify(members);
-            pomelo.request("chat.chatRoomHandler.editGroupMembers", msg, (result) => {
+            pomelo.request("chat.chatRoomHandler.editGroupMembers", msg, function (result) {
                 console.log("editGroupMembers response." + result.toString());
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
-        editGroupName(roomId, roomType, newGroupName, callback) {
+        };
+        ServerImplemented.prototype.editGroupName = function (roomId, roomType, newGroupName, callback) {
             if (roomId == null || roomId.length === 0)
                 return;
             if (roomType === null)
@@ -2493,78 +2563,78 @@ var ChatServer;
             msg["roomId"] = roomId;
             msg["roomType"] = roomType.toString();
             msg["newGroupName"] = newGroupName;
-            pomelo.request("chat.chatRoomHandler.editGroupName", msg, (result) => {
+            pomelo.request("chat.chatRoomHandler.editGroupName", msg, function (result) {
                 console.log("editGroupName response." + result.toString());
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
+        };
         /// <summary>
         /// Gets Private Chat Room.
         /// </summary>
         /// <param name="myId">My identifier.</param>
         /// <param name="myRoommateId">My roommate identifier.</param>
-        getPrivateChatRoomId(myId, myRoommateId, callback) {
+        ServerImplemented.prototype.getPrivateChatRoomId = function (myId, myRoommateId, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["ownerId"] = myId;
             msg["roommateId"] = myRoommateId;
-            pomelo.request("chat.chatRoomHandler.getRoomById", msg, (result) => {
+            pomelo.request("chat.chatRoomHandler.getRoomById", msg, function (result) {
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
+        };
         //<!-- Join and leave chat room.
-        JoinChatRoomRequest(room_id, callback) {
+        ServerImplemented.prototype.JoinChatRoomRequest = function (room_id, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["rid"] = room_id;
             msg["username"] = username;
-            pomelo.request("connector.entryHandler.enterRoom", msg, (result) => {
+            pomelo.request("connector.entryHandler.enterRoom", msg, function (result) {
                 console.log("JoinChatRoom: " + JSON.stringify(result));
                 if (callback !== null) {
                     callback(null, result);
                 }
             });
-        }
-        LeaveChatRoomRequest(roomId, callback) {
+        };
+        ServerImplemented.prototype.LeaveChatRoomRequest = function (roomId, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["rid"] = roomId;
             msg["username"] = username;
-            pomelo.request("connector.entryHandler.leaveRoom", msg, (result) => {
+            pomelo.request("connector.entryHandler.leaveRoom", msg, function (result) {
                 if (callback != null)
                     callback(null, result);
             });
-        }
+        };
         /// <summary>
         /// Gets the room info. For load Room info by room_id.
         /// </summary>
         /// <c> return data</c>
-        getRoomInfo(roomId, callback) {
-            let msg = {};
+        ServerImplemented.prototype.getRoomInfo = function (roomId, callback) {
+            var msg = {};
             msg["token"] = this.authenData.token;
             msg["roomId"] = roomId;
-            pomelo.request("chat.chatRoomHandler.getRoomInfo", msg, (result) => {
+            pomelo.request("chat.chatRoomHandler.getRoomInfo", msg, function (result) {
                 console.log("chat.chatRoomHandler.getRoomInfo", result);
                 if (callback != null)
                     callback(null, result);
             });
-        }
-        getUnreadMsgOfRoom(roomId, lastAccessTime, callback) {
-            let msg = {};
+        };
+        ServerImplemented.prototype.getUnreadMsgOfRoom = function (roomId, lastAccessTime, callback) {
+            var msg = {};
             msg["token"] = this.authenData.token;
             msg["roomId"] = roomId;
             msg["lastAccessTime"] = lastAccessTime;
-            pomelo.request("chat.chatRoomHandler.getUnreadRoomMessage", msg, (result) => {
+            pomelo.request("chat.chatRoomHandler.getUnreadRoomMessage", msg, function (result) {
                 console.log("chat.chatRoomHandler.getUnreadRoomMessage", result);
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
+        };
         //endregion
         // region <!-- Web RTC Calling...
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2572,71 +2642,74 @@ var ChatServer;
         /// Videos the call requesting.
         /// - tell target client for your call requesting...
         /// </summary>
-        videoCallRequest(targetId, myRtcId, callback) {
+        ServerImplemented.prototype.videoCallRequest = function (targetId, myRtcId, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["targetId"] = targetId;
             msg["myRtcId"] = myRtcId;
-            pomelo.request("connector.entryHandler.videoCallRequest", msg, (result) => {
+            pomelo.request("connector.entryHandler.videoCallRequest", msg, function (result) {
                 console.log("videoCallRequesting =>: " + JSON.stringify(result));
                 if (callback != null)
                     callback(null, result);
             });
-        }
-        voiceCallRequest(targetId, myRtcId, callback) {
+        };
+        ServerImplemented.prototype.voiceCallRequest = function (targetId, myRtcId, callback) {
             var msg = {};
             msg["token"] = this.authenData.token;
             msg["targetId"] = targetId;
             msg["myRtcId"] = myRtcId;
-            pomelo.request("connector.entryHandler.voiceCallRequest", msg, (result) => {
+            pomelo.request("connector.entryHandler.voiceCallRequest", msg, function (result) {
                 console.log("voiceCallRequesting =>: " + JSON.stringify(result));
                 if (callback != null)
                     callback(null, result);
             });
-        }
-        hangupCall(myId, contactId) {
+        };
+        ServerImplemented.prototype.hangupCall = function (myId, contactId) {
             var msg = {};
             msg["userId"] = myId;
             msg["contactId"] = contactId;
             msg["token"] = this.authenData.token;
-            pomelo.request("connector.entryHandler.hangupCall", msg, (result) => {
+            pomelo.request("connector.entryHandler.hangupCall", msg, function (result) {
                 console.log("hangupCall: ", JSON.stringify(result));
             });
-        }
-        theLineIsBusy(contactId) {
+        };
+        ServerImplemented.prototype.theLineIsBusy = function (contactId) {
             var msg = {};
             msg["contactId"] = contactId;
-            pomelo.request("connector.entryHandler.theLineIsBusy", msg, (result) => {
+            pomelo.request("connector.entryHandler.theLineIsBusy", msg, function (result) {
                 console.log("theLineIsBusy response: " + JSON.stringify(result));
             });
-        }
-    }
+        };
+        return ServerImplemented;
+    }());
     ServerImplemented.connectionProblemString = 'Server connection is unstable.';
     ChatServer.ServerImplemented = ServerImplemented;
-    class ChatRoomApiProvider {
-        chat(room_id, target, sender_id, content, contentType, callback) {
-            let message = {};
+    var ChatRoomApiProvider = (function () {
+        function ChatRoomApiProvider() {
+        }
+        ChatRoomApiProvider.prototype.chat = function (room_id, target, sender_id, content, contentType, callback) {
+            var message = {};
             message["rid"] = room_id;
             message["content"] = content;
             message["sender"] = sender_id;
             message["target"] = target;
             message["type"] = contentType;
-            pomelo.request("chat.chatHandler.send", message, (result) => {
+            pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
                 if (callback !== null)
                     callback(null, data);
             });
-        }
-        chatFile(room_id, target, sender_id, fileUrl, contentType, meta, callback) {
+        };
+        ChatRoomApiProvider.prototype.chatFile = function (room_id, target, sender_id, fileUrl, contentType, meta, callback) {
             console.log("Send file to ", target);
-            let message = {};
+            var message = {};
             message["rid"] = room_id;
             message["content"] = fileUrl;
             message["sender"] = sender_id;
             message["target"] = target;
             message["meta"] = meta;
             message["type"] = contentType;
-            pomelo.request("chat.chatHandler.send", message, (result) => {
+            pomelo.request("chat.chatHandler.send", message, function (result) {
                 var data = JSON.parse(JSON.stringify(result));
                 console.log("chatFile callback: ", data);
                 if (data.code == 200) {
@@ -2648,15 +2721,15 @@ var ChatServer;
                     console.error("WTF", "WTF god only know.");
                 }
             });
-        }
-        getSyncDateTime(callback) {
+        };
+        ChatRoomApiProvider.prototype.getSyncDateTime = function (callback) {
             var message = {};
-            pomelo.request("chat.chatHandler.getSyncDateTime", message, (result) => {
+            pomelo.request("chat.chatHandler.getSyncDateTime", message, function (result) {
                 if (callback != null) {
                     callback(null, result);
                 }
             });
-        }
+        };
         /**
          * getChatHistory function used for pull history chat record...
          * Beware!!! please call before JoinChatRoom.
@@ -2664,93 +2737,94 @@ var ChatServer;
          * @param lastAccessTime
          * @param callback
          */
-        getChatHistory(room_id, lastAccessTime, callback) {
+        ChatRoomApiProvider.prototype.getChatHistory = function (room_id, lastAccessTime, callback) {
             var message = {};
             message["rid"] = room_id;
             if (lastAccessTime != null) {
                 //<!-- Only first communication is has a problem.
                 message["lastAccessTime"] = lastAccessTime.toString();
             }
-            pomelo.request("chat.chatHandler.getChatHistory", message, (result) => {
+            pomelo.request("chat.chatHandler.getChatHistory", message, function (result) {
                 if (callback !== null)
                     callback(null, result);
             });
-        }
+        };
         /**
          * get older message histories.
          */
-        getOlderMessageChunk(roomId, topEdgeMessageTime, callback) {
+        ChatRoomApiProvider.prototype.getOlderMessageChunk = function (roomId, topEdgeMessageTime, callback) {
             var message = {};
             message["rid"] = roomId;
             message["topEdgeMessageTime"] = topEdgeMessageTime.toString();
-            pomelo.request("chat.chatHandler.getOlderMessageChunk", message, (result) => {
+            pomelo.request("chat.chatHandler.getOlderMessageChunk", message, function (result) {
                 if (callback !== null)
                     callback(null, result);
             });
-        }
-        checkOlderMessagesCount(roomId, topEdgeMessageTime, callback) {
+        };
+        ChatRoomApiProvider.prototype.checkOlderMessagesCount = function (roomId, topEdgeMessageTime, callback) {
             var message = {};
             message["rid"] = roomId;
             message["topEdgeMessageTime"] = topEdgeMessageTime.toString();
-            pomelo.request("chat.chatHandler.checkOlderMessagesCount", message, (result) => {
+            pomelo.request("chat.chatHandler.checkOlderMessagesCount", message, function (result) {
                 if (callback !== null)
                     callback(null, result);
             });
-        }
-        getMessagesReaders(topEdgeMessageTime) {
+        };
+        ChatRoomApiProvider.prototype.getMessagesReaders = function (topEdgeMessageTime) {
             var message = {};
             message["topEdgeMessageTime"] = topEdgeMessageTime;
-            pomelo.request("chat.chatHandler.getMessagesReaders", message, (result) => {
+            pomelo.request("chat.chatHandler.getMessagesReaders", message, function (result) {
                 console.info('getMessagesReaders respones: ', result);
             });
-        }
-        getMessageContent(messageId, callback) {
+        };
+        ChatRoomApiProvider.prototype.getMessageContent = function (messageId, callback) {
             var message = {};
             message["messageId"] = messageId;
-            pomelo.request("chat.chatHandler.getMessageContent", message, (result) => {
+            pomelo.request("chat.chatHandler.getMessageContent", message, function (result) {
                 if (!!callback) {
                     callback(null, result);
                 }
             });
-        }
-        updateMessageReader(messageId, roomId) {
+        };
+        ChatRoomApiProvider.prototype.updateMessageReader = function (messageId, roomId) {
             var message = {};
             message["messageId"] = messageId;
             message["roomId"] = roomId;
             pomelo.notify("chat.chatHandler.updateWhoReadMessage", message);
-        }
-        updateMessageReaders(messageIds, roomId) {
+        };
+        ChatRoomApiProvider.prototype.updateMessageReaders = function (messageIds, roomId) {
             var message = {};
             message["messageIds"] = JSON.stringify(messageIds);
             message["roomId"] = roomId;
             pomelo.notify("chat.chatHandler.updateWhoReadMessages", message);
-        }
-    }
+        };
+        return ChatRoomApiProvider;
+    }());
     ChatServer.ChatRoomApiProvider = ChatRoomApiProvider;
-    class ServerEventListener {
-        constructor() {
+    var ServerEventListener = (function () {
+        function ServerEventListener() {
         }
-        addFrontendListener(obj) {
+        ServerEventListener.prototype.addFrontendListener = function (obj) {
             this.frontendListener = obj;
-        }
-        addServerListener(obj) {
+        };
+        ServerEventListener.prototype.addServerListener = function (obj) {
             this.serverListener = obj;
-        }
-        addChatListener(obj) {
+        };
+        ServerEventListener.prototype.addChatListener = function (obj) {
             this.chatServerListener = obj;
-        }
-        addRTCListener(obj) {
+        };
+        ServerEventListener.prototype.addRTCListener = function (obj) {
             this.rtcCallListener = obj;
-        }
-        addListenner(resolve, rejected) {
+        };
+        ServerEventListener.prototype.addListenner = function (resolve, rejected) {
             this.callFrontendServer();
             this.callChatServer();
             this.callRTCEvents();
             this.callServerEvents();
             resolve();
-        }
-        callFrontendServer() {
-            let self = this;
+        };
+        ServerEventListener.prototype.callFrontendServer = function () {
+            var self = this;
             pomelo.on(ServerEventListener.ON_GET_ME, function (data) {
                 console.log(ServerEventListener.ON_GET_ME);
                 self.frontendListener.onGetMe(data);
@@ -2764,21 +2838,21 @@ var ChatServer;
                 console.log(ServerEventListener.ON_GET_ORGANIZE_GROUPS);
                 self.frontendListener.onGetOrganizeGroupsComplete(data);
             });
-            pomelo.on(ServerEventListener.ON_GET_COMPANY_MEMBERS, data => {
+            pomelo.on(ServerEventListener.ON_GET_COMPANY_MEMBERS, function (data) {
                 console.log(ServerEventListener.ON_GET_COMPANY_MEMBERS);
                 self.frontendListener.onGetCompanyMemberComplete(data);
             });
-            pomelo.on(ServerEventListener.ON_GET_PRIVATE_GROUPS, data => {
+            pomelo.on(ServerEventListener.ON_GET_PRIVATE_GROUPS, function (data) {
                 console.log(ServerEventListener.ON_GET_PRIVATE_GROUPS);
                 self.frontendListener.onGetPrivateGroupsComplete(data);
             });
-            pomelo.on(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS, data => {
+            pomelo.on(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS, function (data) {
                 console.log(ServerEventListener.ON_GET_PROJECT_BASE_GROUPS);
                 self.frontendListener.onGetProjectBaseGroupsComplete(data);
             });
-        }
-        callChatServer() {
-            let self = this;
+        };
+        ServerEventListener.prototype.callChatServer = function () {
+            var self = this;
             pomelo.on(ServerEventListener.ON_CHAT, function (data) {
                 console.log(ServerEventListener.ON_CHAT, JSON.stringify(data));
                 self.chatServerListener.onChat(data);
@@ -2787,93 +2861,94 @@ var ChatServer;
             //    console.log(ServerEventListener.ON_ADD, data);
             //    self.onChatListener.on(data);
             //});
-            pomelo.on(ServerEventListener.ON_LEAVE, (data) => {
+            pomelo.on(ServerEventListener.ON_LEAVE, function (data) {
                 console.log(ServerEventListener.ON_LEAVE, JSON.stringify(data));
                 self.chatServerListener.onLeaveRoom(data);
             });
-            pomelo.on(ServerEventListener.ON_MESSAGE_READ, (data) => {
+            pomelo.on(ServerEventListener.ON_MESSAGE_READ, function (data) {
                 // console.log(ServerEventListener.ON_MESSAGE_READ);
                 self.chatServerListener.onMessageRead(data);
             });
-            pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, (data) => {
+            pomelo.on(ServerEventListener.ON_GET_MESSAGES_READERS, function (data) {
                 // console.log(ServerEventListener.ON_GET_MESSAGES_READERS);
                 self.chatServerListener.onGetMessagesReaders(data);
             });
-        }
-        callRTCEvents() {
+        };
+        ServerEventListener.prototype.callRTCEvents = function () {
             var self = this;
-            pomelo.on(ServerEventListener.ON_VIDEO_CALL, (data) => {
+            pomelo.on(ServerEventListener.ON_VIDEO_CALL, function (data) {
                 console.log(ServerEventListener.ON_VIDEO_CALL, JSON.stringify(data));
                 self.rtcCallListener.onVideoCall(data);
             });
-            pomelo.on(ServerEventListener.ON_VOICE_CALL, (data) => {
+            pomelo.on(ServerEventListener.ON_VOICE_CALL, function (data) {
                 console.log(ServerEventListener.ON_VOICE_CALL, JSON.stringify(data));
                 self.rtcCallListener.onVoiceCall(data);
             });
-            pomelo.on(ServerEventListener.ON_HANGUP_CALL, (data) => {
+            pomelo.on(ServerEventListener.ON_HANGUP_CALL, function (data) {
                 console.log(ServerEventListener.ON_HANGUP_CALL, JSON.stringify(data));
                 self.rtcCallListener.onHangupCall(data);
             });
-            pomelo.on(ServerEventListener.ON_THE_LINE_IS_BUSY, (data) => {
+            pomelo.on(ServerEventListener.ON_THE_LINE_IS_BUSY, function (data) {
                 console.log(ServerEventListener.ON_THE_LINE_IS_BUSY, JSON.stringify(data));
                 self.rtcCallListener.onTheLineIsBusy(data);
             });
-        }
-        callServerEvents() {
+        };
+        ServerEventListener.prototype.callServerEvents = function () {
             var self = this;
             //<!-- AccessRoom Info -->
-            pomelo.on(ServerEventListener.ON_ACCESS_ROOMS, (data) => {
+            pomelo.on(ServerEventListener.ON_ACCESS_ROOMS, function (data) {
                 console.log(ServerEventListener.ON_ACCESS_ROOMS);
                 self.serverListener.onAccessRoom(data);
             });
-            pomelo.on(ServerEventListener.ON_ADD_ROOM_ACCESS, (data) => {
+            pomelo.on(ServerEventListener.ON_ADD_ROOM_ACCESS, function (data) {
                 console.log(ServerEventListener.ON_ADD_ROOM_ACCESS);
                 self.serverListener.onAddRoomAccess(data);
             });
-            pomelo.on(ServerEventListener.ON_UPDATED_LASTACCESSTIME, (data) => {
+            pomelo.on(ServerEventListener.ON_UPDATED_LASTACCESSTIME, function (data) {
                 console.log(ServerEventListener.ON_UPDATED_LASTACCESSTIME);
                 self.serverListener.onUpdatedLastAccessTime(data);
             });
             //<!-- User -->
-            pomelo.on(ServerEventListener.ON_USER_LOGIN, data => {
+            pomelo.on(ServerEventListener.ON_USER_LOGIN, function (data) {
                 console.log(ServerEventListener.ON_USER_LOGIN, data);
                 self.serverListener.onUserLogin(data);
             });
-            pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, (data) => {
+            pomelo.on(ServerEventListener.ON_USER_UPDATE_PROFILE, function (data) {
                 console.log(ServerEventListener.ON_USER_UPDATE_PROFILE);
                 self.serverListener.onUserUpdateProfile(data);
             });
-            pomelo.on(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, (data) => {
+            pomelo.on(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE, function (data) {
                 console.log(ServerEventListener.ON_USER_UPDATE_IMAGE_PROFILE);
                 self.serverListener.onUserUpdateImageProfile(data);
             });
             //<!-- Group -->
-            pomelo.on(ServerEventListener.ON_CREATE_GROUP_SUCCESS, (data) => {
+            pomelo.on(ServerEventListener.ON_CREATE_GROUP_SUCCESS, function (data) {
                 console.log(ServerEventListener.ON_CREATE_GROUP_SUCCESS);
                 self.serverListener.onCreateGroupSuccess(data);
             });
-            pomelo.on(ServerEventListener.ON_EDITED_GROUP_MEMBER, (data) => {
+            pomelo.on(ServerEventListener.ON_EDITED_GROUP_MEMBER, function (data) {
                 console.log(ServerEventListener.ON_EDITED_GROUP_MEMBER);
                 self.serverListener.onEditedGroupMember(data);
             });
-            pomelo.on(ServerEventListener.ON_EDITED_GROUP_NAME, (data) => {
+            pomelo.on(ServerEventListener.ON_EDITED_GROUP_NAME, function (data) {
                 console.log(ServerEventListener.ON_EDITED_GROUP_NAME);
                 self.serverListener.onEditedGroupName(data);
             });
-            pomelo.on(ServerEventListener.ON_EDITED_GROUP_IMAGE, (data) => {
+            pomelo.on(ServerEventListener.ON_EDITED_GROUP_IMAGE, function (data) {
                 console.log(ServerEventListener.ON_EDITED_GROUP_IMAGE);
                 self.serverListener.onEditedGroupImage(data);
             });
-            pomelo.on(ServerEventListener.ON_NEW_GROUP_CREATED, (data) => {
+            pomelo.on(ServerEventListener.ON_NEW_GROUP_CREATED, function (data) {
                 console.log(ServerEventListener.ON_NEW_GROUP_CREATED);
                 self.serverListener.onNewGroupCreated(data);
             });
-            pomelo.on(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, (data) => {
+            pomelo.on(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE, function (data) {
                 console.log(ServerEventListener.ON_UPDATE_MEMBER_INFO_IN_PROJECTBASE);
                 self.serverListener.onUpdateMemberInfoInProjectBase(data);
             });
-        }
-    }
+        };
+        return ServerEventListener;
+    }());
     ServerEventListener.ON_ADD = "onAdd";
     ServerEventListener.ON_LEAVE = "onLeave";
     ServerEventListener.ON_CHAT = "onChat";
@@ -2907,18 +2982,24 @@ var ChatServer;
     ServerEventListener.ON_GET_PROJECT_BASE_GROUPS = "onGetProjectBaseGroups";
     ChatServer.ServerEventListener = ServerEventListener;
 })(ChatServer || (ChatServer = {}));
-class SocketComponent {
-    disconnected(reason) {
+var SocketComponent = (function () {
+    function SocketComponent() {
+    }
+    SocketComponent.prototype.disconnected = function (reason) {
         if (!!this.onDisconnect) {
             this.onDisconnect(reason);
         }
         else {
             console.warn("onDisconnected delegate is empty.");
         }
+    };
+    return SocketComponent;
+}());
+var HttpStatusCode = (function () {
+    function HttpStatusCode() {
     }
-}
-class HttpStatusCode {
-}
+    return HttpStatusCode;
+}());
 HttpStatusCode.success = 200;
 HttpStatusCode.fail = 500;
 HttpStatusCode.requestTimeout = 408;

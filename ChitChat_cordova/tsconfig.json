@@ -2,8 +2,11 @@
   "compileOnSave": true,
   "compilerOptions": {
     "outFile": "www/src/appBundle.js",
-    "target": "es2015",
-    "rootDir": "scripts"
+    "target": "es5",
+    "rootDir": "scripts",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "exclude": [
     "node_modules",

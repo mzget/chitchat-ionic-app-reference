@@ -171,7 +171,7 @@ angular.module('spartan.chat', [])
 			$scope.currentRoom = self.currentRoom;
 
 			//<!-- Set up roomname for display title of chatroom.
-			var roomName = self.currentRoom.name;
+			let roomName = (self.currentRoom) ? self.currentRoom.name : "";
 			if (!roomName || roomName === "") {
 				if (self.currentRoom.type === RoomType.privateChat) {
 					self.currentRoom.members.some(function iterator(member) {
