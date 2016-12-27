@@ -910,7 +910,12 @@ angular.module('spartan.chat', [])
 		$scope.$on('changeChat', function (event, args) {
 			console.info('changed chat room.', args);
 
-			var newRoom = JSON.parse(JSON.stringify(args));
+			if(!args) {
+				alert("Cannot load chatroom.");
+				return;
+			}
+
+			let newRoom = JSON.parse(JSON.stringify(args));
 			if (newRoom._id == roomSelected.getRoomOrLastRoom()._id) { return; }
 
 			//@ Highlight a new room selected.
