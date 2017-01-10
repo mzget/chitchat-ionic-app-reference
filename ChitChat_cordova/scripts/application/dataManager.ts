@@ -343,6 +343,7 @@ class DataManager implements absSpartan.IFrontendServerListener {
     };
     public onGetOrganizeGroupsComplete(dataEvent) {
         var rooms: Array<Room> = JSON.parse(JSON.stringify(dataEvent));
+
         if (!this.orgGroups)
             this.orgGroups = {};
 

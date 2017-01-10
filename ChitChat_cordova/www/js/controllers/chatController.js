@@ -173,7 +173,7 @@ angular.module('spartan.chat', [])
 			//<!-- Set up roomname for display title of chatroom.
 			let roomName = (self.currentRoom) ? self.currentRoom.name : "";
 			if (!roomName || roomName === "") {
-				if (self.currentRoom.type === RoomType.privateChat) {
+				if ( !!self.currentRoom && self.currentRoom.type === RoomType.privateChat) {
 					self.currentRoom.members.some(function iterator(member) {
 						if (member.id !== myprofile._id) {
 							self.currentRoom.name = allMembers[member.id].displayname;
@@ -183,7 +183,7 @@ angular.module('spartan.chat', [])
 				}
 			}
 
-			if ($scope.currentRoom.type == RoomType.privateChat) {
+			if (!!self.currentRoom && $scope.currentRoom.type == RoomType.privateChat) {
 				$.each($scope.currentRoom.members, function (index, value) {
 					if (value.id != main.getDataManager().myProfile._id) {
 						$scope.otherId = value.id;
@@ -192,7 +192,7 @@ angular.module('spartan.chat', [])
 			}
 
 			//@ Sent room name to headerController.
-			if (!$rootScope.isMobile) {
+			if (!$rootScope.isMobile && $scope.currentRoom) {
 				$rootScope.$broadcast('roomName', $scope.currentRoom.name);
 			}
 
@@ -206,7 +206,7 @@ angular.module('spartan.chat', [])
 			$scope.inactive = boo;
 		}
 		function setupMenuItem() {
-			if (self.currentRoom.type != RoomType.privateChat) {
+			if ($scope.currentRoom && self.currentRoom.type != RoomType.privateChat) {
 				$ionicPopover.fromTemplateUrl('templates/popover-group.html', {
 					scope: $scope,
 				}).then(function (popover) {
